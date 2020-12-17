@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -22,9 +22,9 @@
 /* remove this when we no longer support WATCOM, or WATCOM supports inlines */
 #if (defined(__WATCOMC__) || !defined(NDEBUG))
 static DISPATCH *select_dpp(THREAD *act, PROCESS *prp, part_id_t id)
-#else	/* (defined(__WATCOMC__) || !defined(NDEBUG)) */ 
+#else	/* (defined(__WATCOMC__) || !defined(NDEBUG)) */
 static __inline__ DISPATCH *select_dpp(THREAD *act, PROCESS *prp, part_id_t id)
-#endif	/* (defined(__WATCOMC__) || !defined(NDEBUG)) */ 
+#endif	/* (defined(__WATCOMC__) || !defined(NDEBUG)) */
 {
 	DISPATCH *d = (DISPATCH *)SCHEDPART_SELECT_DPP(prp, id);
 	return (d == NULL) ? act->dpp : d;
@@ -91,7 +91,7 @@ kerext_process_create(void *data) {
 	MUTEX_INIT(prp, &prp->mpartlist_lock);
 	MUTEX_INIT(prp, &prp->spartlist_lock);
 
-	CRASHCHECK((kap->extra == NULL) || (kap->extra->mpart_list == NULL) || 
+	CRASHCHECK((kap->extra == NULL) || (kap->extra->mpart_list == NULL) ||
 				((kap->extra->spart_list == NULL) && SCHEDPART_INSTALLED()));
 	{
 		part_list_t  *mpart_list = kap->extra->mpart_list;
@@ -174,7 +174,7 @@ kerext_process_create(void *data) {
 	cred_set(&prp->cred, &info);
 	prp->seq = 1;
 
-	// inherit setrlimit/getrlimit settings 
+	// inherit setrlimit/getrlimit settings
 	for(i=0; i < RLIM_NLIMITS; i++) {
 		prp->rlimit_vals_soft[i] = parent->rlimit_vals_soft[i];
 		prp->rlimit_vals_hard[i] = parent->rlimit_vals_hard[i];
@@ -217,7 +217,7 @@ kerext_process_create(void *data) {
 /*
  * The addition parameter <extra> is used to pass in a list of partitions
  * that the newly created process should be associated with as well as any
- * kernel object memory class overrides 
+ * kernel object memory class overrides
 */
 PROCESS *
 ProcessCreate(pid_t parent_pid, void *lcp, proc_create_attr_t *extra) {
@@ -390,7 +390,7 @@ kerext_process_destroy(void *data) {
 	(void)MEMPART_DISASSOCIATE(prp, part_id_t_INVALID);
 	(void)MUTEX_DESTROY(prp, &prp->mpartlist_lock);
 	(void)MUTEX_DESTROY(prp, &prp->spartlist_lock);
-		
+
 	CRASHCHECK(prp->mpart_list.vector != NULL);
 	CRASHCHECK(prp->spart_list != NULL);	// no vector for sched partitions since only 1
 
@@ -415,7 +415,7 @@ static void
 kerext_process_restore(void *data) {
 	struct kerargs_process_restore	*kap = data;
 	THREAD							*thp;
-	
+
 	if(!(lookup_rcvid(0, kap->rcvid, &thp)) || thp->state != STATE_REPLY) {
 		return;
 	}
@@ -448,7 +448,7 @@ kerext_process_startup(void *data) {
 	PROCESS						*prp;
 	struct _cred_info			info;
 	void						*lcp;
-	
+
 	if((prp = lookup_pid(kap->pid)) == NULL || (prp->flags & _NTO_PF_LOADING) == 0) {
 		kererr(act, ESRCH);
 		return;
@@ -621,7 +621,7 @@ kerext_process_swap(void *data) {
 	DEBUG							*swap;
 
 	lock_kernel();
-	
+
 	/* Swap process containers */
 	process_vector.vector[PINDEX(parent->pid)] = child;
 	process_vector.vector[PINDEX(child->pid)] = parent;
@@ -711,7 +711,7 @@ kerext_process_swap(void *data) {
 
 	SETKSTATUS(actives[KERNCPU], 0);
 }
-	
+
 int
 ProcessSwap(PROCESS *parent, PROCESS *child) {
 	struct kerargs_process_swap	data;
@@ -804,7 +804,7 @@ kerext_process_shutdown(void *data) {
 		if(prp->flags & _NTO_PF_VFORKED) {
 			// We're shutting down a vfork'd process. Don't free the
 			// aspace, the parent process is still using it.
-			prp->memory = NULL; 
+			prp->memory = NULL;
 		} else {
 			memmgr.mdestroy(prp);
 		}
@@ -826,7 +826,7 @@ kerext_process_shutdown(void *data) {
 	if(prp->guardian && (prp->guardian->flags & (_NTO_PF_LOADING | _NTO_PF_TERMING | _NTO_PF_ZOMBIE)) == 0) {
 		process_swap(prp->guardian);
 		prp->guardian = 0;
-	}		
+	}
 
 	if(prp == act->process) {
 		if(!args->exec) {
@@ -862,8 +862,8 @@ ProcessShutdown(PROCESS *prp, int exec) {
 		#define 	DBG_LOOP_SET()	(loop = 0)
 		#define		DBG_LOOP_CHK()	if(++loop == 0) crash()
 #else
-		#define 	DBG_LOOP_SET()	
-		#define		DBG_LOOP_CHK()	
+		#define 	DBG_LOOP_SET()
+		#define		DBG_LOOP_CHK()
 #endif
 		/*
 		 * The memory barriers below will translate into bus synchronizing opcodes
@@ -917,7 +917,7 @@ kerext_thread_tls(void *data) {
 		if(act->un.lcl.tls->__errptr == &act->un.lcl.tls->__errval) {
 			kap->tls->__errptr = &kap->tls->__errval;
 		}
-	} 
+	}
 	lock_kernel();
 	if(kap->tls) {
 		act->un.lcl.tls = kap->tls;

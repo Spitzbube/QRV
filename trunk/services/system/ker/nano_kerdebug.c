@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -40,7 +40,7 @@ static const struct kdebug_private private = {
 SMP_SPINVAR(static, kdebug_slock);
 
 
-unsigned 
+unsigned
 kdebug_vtop(struct kdebug_entry *entry, uintptr_t vaddr,
 			paddr64_t *paddrp, paddr64_t *sizep) {
 	PROCESS					*prp;
@@ -73,7 +73,7 @@ kd_request(union kd_request *r) {
 
 	switch(r->hdr.req) {
 	case KDREQ_VADDRINFO:
-		r->vaddrinfo.prot = 
+		r->vaddrinfo.prot =
 			kdebug_vtop(r->vaddrinfo.entry, r->vaddrinfo.vaddr,
 						&r->vaddrinfo.paddr, &r->vaddrinfo.size);
 		break;
@@ -84,14 +84,14 @@ kd_request(union kd_request *r) {
 			r->path.len = 0;
 		}
 		break;
-	case KDREQ_PARKIT:	
+	case KDREQ_PARKIT:
 		for(i = 0; i < NUM_PROCESSORS; ++i) {
 			if((i != RUNCPU) && alives[i]) {
 				SENDIPI(i, IPI_PARKIT);
 			}
 		}
 		break;
-	case KDREQ_INVOKE:	
+	case KDREQ_INVOKE:
 		if(kdinvoke_hook != NULL) {
 			return kdinvoke_hook(r);
 		}
@@ -113,7 +113,7 @@ register_info(void) {
 
 		info->proc_version = KDEBUG_PROC_CURRENT;
 		info->request = outside_kd_request;
-		// We can get rid of outside_kdebug_path & vaddr_to_paddr2 
+		// We can get rid of outside_kdebug_path & vaddr_to_paddr2
 		// after a while: 2008/04/24
 		info->debug_path = outside_kdebug_path;
 		info->vaddr_to_paddr2 = outside_vaddr_to_paddr;
@@ -126,7 +126,7 @@ register_info(void) {
 }
 
 
-void 
+void
 kdebug_init(int (*kdebug_path)(struct kdebug_entry *entry, char *buff, int buffsize)) {
 
 	kdebug_path_callout = kdebug_path;
@@ -135,7 +135,7 @@ kdebug_init(int (*kdebug_path)(struct kdebug_entry *entry, char *buff, int buffs
 
 
 //	LINK2_BEG(kdebug_info.resident_list, &prp->kdebug, struct kdebug_entry);
-int 
+int
 kdebug_attach(struct kdebug_entry *entry, int resident) {
 	struct kdebug_info		*info;
 	struct kdebug_entry		**head;
@@ -157,7 +157,7 @@ kdebug_attach(struct kdebug_entry *entry, int resident) {
 }
 
 
-int 
+int
 kdebug_unlink(struct kdebug_entry *entry) {
 	INTR_LOCK(&kdebug_slock);
 	if((*entry->prev = entry->next)) {
@@ -169,7 +169,7 @@ kdebug_unlink(struct kdebug_entry *entry) {
 }
 
 
-static void 
+static void
 do_kdebug_detach(void *data) {
 	struct kdebug_entry	*entry = data;
 
@@ -186,14 +186,14 @@ do_kdebug_detach(void *data) {
 }
 
 
-int 
+int
 kdebug_detach(struct kdebug_entry *entry) {
 	__Ring0(do_kdebug_detach, entry);
 	return 0;
 }
 
 
-int 
+int
 kdebug_watch_entry(struct kdebug_entry *entry, uintptr_t ip) {
 	struct kdebug_callback *call;
 

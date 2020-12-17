@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -44,7 +44,7 @@ kerext_memclass_pid_acct(void *data)
 /*
  * MemclassPidUse
  * MemclassPidFree
- * 
+ *
  * We pass in the part_id_t instead of the memclass_id_t so that we can
  * obtain the class_id for the partition AFTER entering the kernel. This is to
  * avoid entering the kernel first to obtain the class id in preparation for the
@@ -101,7 +101,7 @@ kerext_mempart_associate(void *data)
 
 /*
  * ProcessAssociate
- * 
+ *
  * Associate process <prp> with partition <mpid>. The process must not
  * be associated with a partition of the same memory class as <mpid>
  * otherwise an error will be returned
@@ -116,7 +116,7 @@ int ProcessAssociate(PROCESS *prp, part_id_t mpid, mempart_dcmd_flags_t flags)
 	data.associate = bool_t_TRUE;
 	data.disassociate = bool_t_FALSE;
 	data.associate_flags = flags;
-	
+
 	__Ring0(kerext_mempart_associate, &data);
 
 	return data.err;
@@ -124,7 +124,7 @@ int ProcessAssociate(PROCESS *prp, part_id_t mpid, mempart_dcmd_flags_t flags)
 
 /*
  * ProcessDisassociate
- * 
+ *
  * Disassociate process <prp> from partition <mpid>
 */
 int ProcessDisassociate(PROCESS *prp, part_id_t mpid)
@@ -137,7 +137,7 @@ int ProcessDisassociate(PROCESS *prp, part_id_t mpid)
 	data.associate = bool_t_FALSE;
 	data.disassociate = bool_t_TRUE;
 	data.associate_flags = part_flags_NONE;
-	
+
 	__Ring0(kerext_mempart_associate, &data);
 
 	return data.err;
@@ -145,7 +145,7 @@ int ProcessDisassociate(PROCESS *prp, part_id_t mpid)
 
 /*
  * ProcessReassociate
- * 
+ *
  * change process association to <mempart_id>. The process <prp> must already
  * be associated with a partition of the same memory class as <mempart_id>
  * otherwise an error will be returned
@@ -160,11 +160,11 @@ int ProcessReassociate(PROCESS *prp, part_id_t mpid, mempart_dcmd_flags_t flags)
 	data.associate = bool_t_TRUE;
 	data.disassociate = bool_t_TRUE;
 	data.associate_flags = flags;
-	
+
 	__Ring0(kerext_mempart_associate, &data);
 
 	return data.err;
 }
 
-	
+
 __SRCVERSION("kerext_mempart.c $Rev: 153001 $");

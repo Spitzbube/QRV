@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -30,7 +30,7 @@
 
 #if defined(__WATCOMC__)
 
-void 
+void
 enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_entry * sysp );
 #pragma aux enter_func = \
 	"mov ebp,ebx" \
@@ -39,7 +39,7 @@ enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_e
 
 #elif defined(__GNUC__)
 
-static inline void 
+static inline void
 enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_entry *sysp ) {
 	asm("	movl %3,%%ebp	;"
 		"	jmp	*%0 "
@@ -55,7 +55,7 @@ enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_e
 
 #elif defined(__PPC__)
 
-static inline void 
+static inline void
 enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_entry *sysp ) {
 	asm(
 		"subi 	%%r1,%%r1, 4;"
@@ -78,7 +78,7 @@ enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_e
 
 #elif defined(__MIPS__)
 
-static inline void 
+static inline void
 enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_entry *sysp ) {
 	asm("	j	%0 ;"
 		"	 move $4,%1 ;"
@@ -88,7 +88,7 @@ enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_e
 
 #elif defined(__SH__)
 
-static inline void 
+static inline void
 enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_entry *sysp ) {
 	asm("	jsr	@%0 ;"
 		"	mov %1,r4 ;"
@@ -98,7 +98,7 @@ enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_e
 
 #elif defined(__ARM__)
 
-static inline void 
+static inline void
 enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_entry *sysp ) {
 	asm("	mov	r0, %1\n"
 		"	b	%0"
@@ -120,7 +120,7 @@ static void *
 startup(void * in) {
 	union script_cmd	*scp = in;
 	Elf32_Ehdr			*ehdr;
-	int					i; 
+	int					i;
 	char				**args;
 	char				**argv;
 	char				**envp;
@@ -158,7 +158,7 @@ startup(void * in) {
     ehdr = find_file( argv[0], path );
 	if(ehdr == NULL)
 		exit(1);
-	
+
 	enter_func(ehdr->e_entry, argv, envp, privateptr->user_syspageptr);
 	return NULL;
 }
@@ -177,7 +177,7 @@ wait_a_tenth()
 static int
 map_ifs(struct asinfo_entry *as, char *name, void *data) {
 	struct image_header		**ihpp = data;
-	
+
 	*ihpp = mmap(0, (as->end - as->start) + 1, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_PHYS, NOFD, as->start);
 	return 1;
 }

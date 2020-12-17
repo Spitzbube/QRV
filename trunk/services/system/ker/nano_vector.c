@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -80,7 +80,7 @@ vector_lookup(VECTOR *vec, int id) {
 	if(vec  &&  (unsigned)id < vec->nentries) {
 		return(VECP(ptr, vec, id));
 	}
-	
+
 	return(NULL);
 }
 
@@ -93,7 +93,7 @@ vector_lookup2(VECTOR *vec, int id) {
 	if(vec  &&  (unsigned)id < vec->nentries  &&  VECAND(ptr = VEC(vec, id), 1) == 0) {
 		return(VECAND(ptr, ~3));
 	}
-	
+
 	return(NULL);
 }
 
@@ -130,7 +130,7 @@ vector_search(VECTOR *vec, unsigned id, unsigned *found) {
 // The next bit may be used as a flag for various purposes. Thread
 // vectors use it to indicate a destroyed thread which has not been joined
 // while connections use it to indicate close on exec.
-// 
+//
 int rdecl
 vector_add(VECTOR *vec, void *object, unsigned index) {
 	unsigned nentries, inc;
@@ -177,7 +177,7 @@ vector_add(VECTOR *vec, void *object, unsigned index) {
 	}
 
 	/* Note: since we need to fix up the entries, we cannot simply
-	 * realloc a bigger vector as this leave the vectors 
+	 * realloc a bigger vector as this leave the vectors
 	 * inconsistent (think timers firing from the clock handler)
 	 * See PR 24407.
 	 */

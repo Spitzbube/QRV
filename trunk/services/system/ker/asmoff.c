@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -26,9 +26,9 @@
 
 COMMENT("object struct _sighandler_info");
 VALUE( SIGSTACK_SIGINFO , offsetof(struct _sighandler_info, siginfo));
-VALUE( SIGSTACK_SIGNO   , offsetof(struct _sighandler_info, siginfo.si_signo)); 
-VALUE( SIGSTACK_SIGCODE , offsetof(struct _sighandler_info, siginfo.si_code)); 
-VALUE( SIGSTACK_SIGVALUE, offsetof(struct _sighandler_info, siginfo.si_value)); 
+VALUE( SIGSTACK_SIGNO   , offsetof(struct _sighandler_info, siginfo.si_signo));
+VALUE( SIGSTACK_SIGCODE , offsetof(struct _sighandler_info, siginfo.si_code));
+VALUE( SIGSTACK_SIGVALUE, offsetof(struct _sighandler_info, siginfo.si_value));
 VALUE( SIGSTACK_HANDLER , offsetof(struct _sighandler_info, handler));
 VALUE( SIGSTACK_CONTEXT , offsetof(struct _sighandler_info, context));
 
@@ -197,7 +197,7 @@ VALUE( SIGCODE_FATAL,		SIGCODE_FATAL );
 VALUE( SIGCODE_STORE,		SIGCODE_STORE );
 VALUE( SIGCODE_SSTEP,		SIGCODE_SSTEP );
 VALUE( SIGCODE_BDSLOT, 		SIGCODE_BDSLOT );
-VALUE( AP_INTREVENT_FROM_IO_FLAG, AP_INTREVENT_FROM_IO_FLAG ); 
+VALUE( AP_INTREVENT_FROM_IO_FLAG, AP_INTREVENT_FROM_IO_FLAG );
 VALUE( SIGSEGV            , SIGSEGV );
   VALUE( SEGV_MAPERR      , SEGV_MAPERR );
   VALUE( SEGV_ACCERR      , SEGV_ACCERR );

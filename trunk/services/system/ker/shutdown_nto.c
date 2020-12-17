@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -71,7 +71,7 @@ void dump_tracering(void)
 					if ( t_b_p->h.num_events > 0 &&
 							!(t_b_p->h.flags & _TRACE_FLAGS_WRITING) ) {
 						for( i = 0, e_p = (traceevent_t *)t_b_p->h.begin_ptr; e_p < t_b_p->h.tail_ptr; e_p++, i++ ) {
-							kprintf( "%8x %8x %8x %8x%s", 
+							kprintf( "%8x %8x %8x %8x%s",
 								e_p->header,
 								e_p->data[0],
 								e_p->data[1],
@@ -105,7 +105,7 @@ shutdown(unsigned sigcode, const CPU_REGISTERS *reg) {
 	if(!shutting_down) {
 		shutting_down = 1;
 		SPINUNLOCK(&debug_slock);
-	
+
 #ifdef ENABLE_DUMP_TRACERING
 		dump_tracering();
 #endif
@@ -114,7 +114,7 @@ shutdown(unsigned sigcode, const CPU_REGISTERS *reg) {
 				RUNCPU, KERNCPU,
 				SIGCODE_SIGNO(sigcode), SIGCODE_CODE(sigcode), SIGCODE_FAULT(sigcode),
 				(void *)&main, (void *)&actives);
-	
+
    		valid_thp = VTHP_CHAR;
 		ker = get_inkernel();
 		if(ker != 0) {
@@ -142,7 +142,7 @@ shutdown(unsigned sigcode, const CPU_REGISTERS *reg) {
    		for(i = 0; i < NUM_PROCESSORS; ++i) {
 			thp = actives[i];
 			prp = thp->process;
-	
+
 			kprintf("\n[%d]PID-TID=%d-%d%c P/T FL=%08x/%08x",
 				i, prp->pid, thp->tid + 1, valid_thp, prp->flags, thp->flags);
 			if(prp->debug_name) {
@@ -165,15 +165,15 @@ shutdown(unsigned sigcode, const CPU_REGISTERS *reg) {
 				}
 			}
 		}
-	
+
    		dump_mem32(CPU_STRINGNAME ENDIAN " context", (void *)reg, sizeof(CPU_REGISTERS));
-	
+
 		ip = (uint8_t *)REGIP(reg);
 		kprintf("\ninstruction[%p]:\n", ip);
 		for(i = 0; i < 26; ++i) {
 			kprintf("%02x ", *ip++);
 		}
-	
+
 		stack = (uint32_t *)REGSP(reg);
 #ifdef __X86__
 		//
@@ -190,7 +190,7 @@ shutdown(unsigned sigcode, const CPU_REGISTERS *reg) {
 		dump_mem32("stack", stack, 32*4);
 		kprintf("\n");
 	}
-		
+
 	RebootSystem(1);
 }
 

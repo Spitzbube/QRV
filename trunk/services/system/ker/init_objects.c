@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -95,12 +95,12 @@ init_objects() {
 		prp->rlimit_vals_soft[i] = prp->rlimit_vals_hard[i] = RLIM_INFINITY;
 	}
 
-	// override the max file descriptor entry 
+	// override the max file descriptor entry
 	prp->rlimit_vals_soft[RLIMIT_NOFILE] = prp->rlimit_vals_hard[RLIMIT_NOFILE] = max_fds;
 
 	// make sure we have a big limit for cpu time
 	prp->max_cpu_time = RLIM64_INFINITY;
-	
+
 	prp->start_time = qtimeptr->nsec_tod_adjust;
 	if(limits_max[0]) {
 		prp->limits = object_alloc(0, &limits_souls);
@@ -142,7 +142,7 @@ init_objects() {
 		thp->runmask = ~(1 << i);
 		thp->last_chid = -1;
 		thp->policy = SCHED_RR;
-		thp->sched_flags = 0; 
+		thp->sched_flags = 0;
 		thp->dpp = thp->orig_dpp = dpp;
 		SIGMASK_ONES(&thp->sig_blocked);
 		thp->type = TYPE_THREAD;

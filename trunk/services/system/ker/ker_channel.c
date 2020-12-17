@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -60,7 +60,7 @@ ker_channel_create(THREAD *act, struct kerargs_channel_create *kap) {
 
 	if(kap->flags & _NTO_CHF_GLOBAL) {
 		if(chp->reply_queue) crash();
-	}	
+	}
 	// Check if this is the network managers msg channel.
 	// Don't do this until we know the channel's fully created, so
 	// we (mostly) don't have to worry about net.* fields not getting cleared
@@ -125,11 +125,11 @@ ker_channel_create(THREAD *act, struct kerargs_channel_create *kap) {
 
 
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
-static void 
+static void
 clear_msgxfer(THREAD *thp) {
 
 	switch(thp->state) {
-	case STATE_REPLY: 
+	case STATE_REPLY:
 		thp->flags &= ~_NTO_TF_UNBLOCK_REQ;
 		/* fall through */
 
@@ -149,7 +149,7 @@ clear_msgxfer(THREAD *thp) {
 #ifndef NDEBUG
 		kprintf("\nclear_msgxfer: should not reach here. thread state %x\n",thp->state);
 #endif
-		crash(); 
+		crash();
 		/* NOTREACHED */
 		return;
 	}
@@ -185,7 +185,7 @@ ker_channel_destroy(THREAD *act, struct kerargs_channel_destroy *kap) {
 		chid &= ~_NTO_GLOBAL_CHANNEL;
 		chvec = &chgbl_vector;
 	}
-	
+
 	// Make sure the channel is valid.
 	chp = vector_lookup2(chvec, chid);
 	if((chp == NULL) || (chp->type != TYPE_CHANNEL)) {
@@ -241,23 +241,23 @@ ker_channel_destroy(THREAD *act, struct kerargs_channel_destroy *kap) {
 	// below so that force_ready can find the appropriate PRIL_HEAD structure.
 	while((thp=pril_first(&chp->send_queue))) {
 		switch(TYPE_MASK(thp->type)) {
-		case TYPE_PULSE:	
+		case TYPE_PULSE:
 		case TYPE_VPULSE:
 			pril_rem(&chp->send_queue, thp);
 			object_free(chp->process, &pulse_souls, thp);
 			break;
-		case TYPE_VTHREAD:	
+		case TYPE_VTHREAD:
 			// Turn on _NTO_TF_KERERR_SET so that if net_send2() calls
 			// kererr(), it won't advance the IP - we're going to be
 			// restarting the kernel call so that qnet has a chance
 			// to process the pulse
 			act->flags |= _NTO_TF_KERERR_SET;
-			(void)net_send2((KERARGS *)(void *)kap, thp->un.net.vtid, 
+			(void)net_send2((KERARGS *)(void *)kap, thp->un.net.vtid,
 								thp->blocked_on, thp);
 			CLR_MSGXFER(thp);
 			KERCALL_RESTART(act);
 			return ENOERROR;
-		case TYPE_THREAD:	
+		case TYPE_THREAD:
 			force_ready(thp, ESRCH);
 			CLR_MSGXFER(thp);
 			break;
@@ -280,21 +280,21 @@ ker_channel_destroy(THREAD *act, struct kerargs_channel_destroy *kap) {
 		// Unblock all threads reply blocked on the channel
 		while((thp = chp->reply_queue)) {
 			switch(TYPE_MASK(thp->type)) {
-			case TYPE_VTHREAD:	
+			case TYPE_VTHREAD:
 				// Turn on _NTO_TF_KERERR_SET so that if net_send2() calls
 				// kererr(), it won't advance the IP - we're going to be
 				// restarting the kernel call so that qnet has a chance
 				// to process the pulse
 				act->flags |= _NTO_TF_KERERR_SET;
-				(void)net_send2((KERARGS *)(void *)kap, thp->un.net.vtid, 
+				(void)net_send2((KERARGS *)(void *)kap, thp->un.net.vtid,
 									thp->blocked_on, thp);
 				CLR_MSGXFER(thp);
 				KERCALL_RESTART(act);
 				return ENOERROR;
-			case TYPE_THREAD:	
+			case TYPE_THREAD:
 				// Disable unblock pulse since we don't want to add more stuff
 				// to this channel that we're in the process of destroying...
-				force_ready(thp, ESRCH | _FORCE_SET_ERROR | _FORCE_NO_UNBLOCK);	
+				force_ready(thp, ESRCH | _FORCE_SET_ERROR | _FORCE_NO_UNBLOCK);
 				CLR_MSGXFER(thp);
 				break;
 			default:
@@ -324,10 +324,10 @@ ker_channel_destroy(THREAD *act, struct kerargs_channel_destroy *kap) {
 		for(i = 0 ; i < prp->chancons.nentries ; ++i) {
 			if((cop = VECP2(cop, &prp->chancons, i))) {
 				if(cop->type == TYPE_CONNECTION  &&  cop->channel == chp  &&  cop->scoid == i) {
-	
+
 					// Remove the server connection from the servers channels vector.
 					vector_rem(&prp->chancons, i);
-	
+
 					if(cop->links == 0) {
 						// Remove server connection object.
 						object_free(prp, &connect_souls, cop);

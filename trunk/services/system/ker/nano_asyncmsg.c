@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -55,7 +55,7 @@ msgsend_gbl(THREAD *act, CONNECT *cop, void *msg, size_t size, unsigned priority
 		if(cop->flags & _NTO_COF_NONBLOCK) {
 			return EAGAIN;
 		}
-		
+
 		if(IMTO(act, STATE_SEND)) {
 			return ETIMEDOUT;
 		}
@@ -64,7 +64,7 @@ msgsend_gbl(THREAD *act, CONNECT *cop, void *msg, size_t size, unsigned priority
 		act->args.ms.smsg= msg;
 		act->args.ms.sparts= -size;
 		lock_kernel();
-		act->state = STATE_SEND;	
+		act->state = STATE_SEND;
 		block();
 		act->args.ms.coid = coid;
 		act->blocked_on = cop;
@@ -72,7 +72,7 @@ msgsend_gbl(THREAD *act, CONNECT *cop, void *msg, size_t size, unsigned priority
 		++cop->links;
 	} else {
 		struct gblmsg_entry *gblmsg;
-		
+
 re_send:
 		if((thp = chp->ch.receive_queue)) {
 			// somebody is waiting, deliver the message directly
@@ -151,7 +151,7 @@ msgreceive_gbl(THREAD *act, CHANNELGBL *chp, void *msg, size_t size, struct _msg
 	if(size < chp->buffer_size) {
 		return EMSGSIZE;
 	}
-	
+
 	// check boundry
 	RD_VERIFY_PTR(act, msg, size);
 
@@ -223,14 +223,14 @@ msgreceive_gbl(THREAD *act, CHANNELGBL *chp, void *msg, size_t size, struct _msg
 int rdecl
 msgsend_async(THREAD *act, CONNECT *cop) {
 
-	if(!cop->cd) { 
+	if(!cop->cd) {
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
-		/* if the cop don't have a cd pointer, then another thread is 
+		/* if the cop don't have a cd pointer, then another thread is
 	 	* in the middle of xfer this cop. This is a poor solution, but
 	 	* restart this thread's kernel call
 	 	*/
-	 	KERCALL_RESTART(act); 
-	 	return EOK; 
+	 	KERCALL_RESTART(act);
+	 	return EOK;
 #else
 		//it's never valid for cop->cd to be null on a single processor machine
 		crash();
@@ -240,7 +240,7 @@ msgsend_async(THREAD *act, CONNECT *cop) {
 	if(cop->cd->num_curmsg) {
 		CHANNELASYNC *chp;
 		THREAD *thp;
-		
+
 		chp = (CHANNELASYNC *)cop->channel;
 		lock_kernel();
  		if(!(cop->flags & COF_ASYNC_QUEUED)) {
@@ -289,7 +289,7 @@ msgreceive_async(THREAD *act, CHANNELASYNC *chp, iov_t *iov, unsigned parts) {
 	CONNECT **q;
 	IOV     dstiov[1], srciov[1], *srcp;
 	int     dparts, sparts, soff, nbytes;
-	
+
 
 	/* scan iov list to find out memory errors in header */
 	if (!act->restart) {
@@ -303,10 +303,10 @@ restart:
 		lcd = cop->cd;
 
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
-		/* if the cop don't have a cd pointer, then another thread is 
+		/* if the cop don't have a cd pointer, then another thread is
 		 * in the middle of xfer this cop. We move to next cop.
 		 */
-		
+
 		if (lcd == NULL) {
 			continue;
 		}
@@ -318,14 +318,14 @@ restart:
 			SETIOV(srciov, lcd, sizeof(*lcd) + sizeof(struct _asyncmsg_put_header) * cop->sendq_size);
 			if(!CHECKBOUND(cop->process, lcd, GETIOVLEN(srciov))) {
 				return EFAULT;
-			} 
+			}
 			srcp = srciov;
 			sparts = 1;
 			soff = 0;
 			dparts = 1;
 			SETIOV(dstiov, 0, 0);
 			nbytes = memmgr.map_xfer(act->process,
-									 cop->process, 
+									 cop->process,
 									 (IOV **)&srcp,
 									 &sparts,
 									 &soff,
@@ -333,30 +333,30 @@ restart:
 									 &dparts,
 									 MAPADDR_FLAGS_IOVKERNEL);
 			if(nbytes < 0) {
-				return EFAULT;			
+				return EFAULT;
 			}
 			cd = dstiov[0].iov_base;
 		}
 		sendq = (struct _asyncmsg_put_header *)((char *)cd + sizeof(*cd));
-		
+
 		/*
 		 * Check make sure *cd is read/writeable
 		 */
 		RD_PROBE_INT(act, cd, sizeof(*cd) / sizeof(int));
 		WR_PROBE_INT(act, cd, sizeof(*cd) / sizeof(int));
-		
+
 		/* if act has been preempted, and somebody else touched cop, or
 		 *    cop is not the one last time act operated,
 		 * reset the args.ms.msglen so we start from a fresh xfer.
 		 */
 		if ((THREAD *)cop->restart != act || act->restart != (THREAD *)cop)
 		{
-			act->args.ms.msglen = 0;			
+			act->args.ms.msglen = 0;
 		}
-		
+
 		act->restart = (THREAD *)cop;
 		cop->restart = act;
-		
+
 		q = (CONNECT **)&chp->ch.reply_queue;
 		iov += act->args.ms.sparts;
 		while((cd->sendq_head != cd->sendq_tail) && (act->args.ms.sparts < parts)) {
@@ -384,14 +384,14 @@ restart:
 
 			/* see if we need to set srcmsglen */
 			memset(&ghp->info, 0, sizeof(struct _msg_info));
-			
+
 			/* deliver a msg */
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
 			act->args.ms.rparts = (uintptr_t)lcd; //BUG? Dead code? We dont seem to read lcd back out of rparts later. Broken  restart mechanism?
 			*(volatile int_fl_t*) &(act->internal_flags) |= _NTO_ITF_MSG_DELIVERY;
 			cop->cd = NULL;
-			//BUG? what if we are prempted at this point. will cop->cd ever have it's value restored? Could explain loss of 
-			//messages in SMP. 
+			//BUG? what if we are prempted at this point. will cop->cd ever have it's value restored? Could explain loss of
+			//messages in SMP.
 #endif
 			status = rcvmsg(act, cop->process, ghp->iov, ghp->parts, php->iov, php->parts);
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
@@ -399,20 +399,20 @@ restart:
 			*(volatile int_fl_t*) &(act->internal_flags) &= ~_NTO_ITF_MSG_DELIVERY;
 #endif
 			/* restore cd mapping in case it is invalid */
-			/* FUTURE: can check the address range to see if it is in one to one mapping area. 
+			/* FUTURE: can check the address range to see if it is in one to one mapping area.
 				   Later will get a permanent mapping area for it */
 			if (act->process != cop->process) {
 				SETIOV(srciov, lcd, sizeof(*lcd) + sizeof(struct _asyncmsg_put_header) * cop->sendq_size);
 				if(!CHECKBOUND(cop->process, lcd, GETIOVLEN(srciov))) {
 					return EFAULT;
-				} 
+				}
 				srcp = srciov;
 				sparts = 1;
 				soff = 0;
 				dparts = 1;
 				SETIOV(dstiov, 0, 0);
 				nbytes = memmgr.map_xfer(act->process,
-									 cop->process, 
+									 cop->process,
 									 (IOV **)&srcp,
 									 &sparts,
 									 &soff,
@@ -420,12 +420,12 @@ restart:
 									 &dparts,
 									 MAPADDR_FLAGS_IOVKERNEL);
 				if(nbytes < 0) {
-					return EFAULT;			
+					return EFAULT;
 				}
 				cd = dstiov[0].iov_base;
 				sendq = (struct _asyncmsg_put_header *)((char *)cd + sizeof(*cd));
 			}
-		
+
 			if(status) {
 				if(status & XFER_SRC_FAULT) {
 					/* sender address fault */
@@ -446,8 +446,8 @@ restart:
 					if (cop->process->valid_thp) {
 						sigevent_exe(&cd->ev, cop->process->valid_thp, 1);
 					}
-					
-					/* 
+
+					/*
 					 * if receiver already got some messages, return it.
 					 * if receiver got nothing, go try next cop
 					 */
@@ -521,7 +521,7 @@ restart:
 			LINK1_REM(*q, cop, CONNECT);
 			cop->restart = NULL;
  			cop->flags &= ~COF_ASYNC_QUEUED;
-		}	
+		}
 		if (cop->process->valid_thp) {
 			sigevent_exe(&cd->ev, cop->process->valid_thp, 1);
 		}

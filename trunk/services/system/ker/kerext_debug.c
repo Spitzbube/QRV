@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -120,7 +120,7 @@ kerext_debug_process(void *args) {
 			}
 		}
 		break;
-			
+
 	case NTO_DEBUG_SET_FPREG:			// pid:tid:debug_fpreg_t
 		if(thp && stopped) {
 			FPU_REGISTERS	*fpudata = FPUDATA_PTR(thp->fpudata);
@@ -271,7 +271,7 @@ int DebugProcess(enum nto_debug_request request, pid_t pid, int tid, union nto_d
 
 	return __Ring0(kerext_debug_process, &args);
 }
-		
+
 struct kerargs_debug_channel {
 	CHANNEL				*chp;
 	debug_channel_t		*data;
@@ -294,7 +294,7 @@ static void kerext_debug_channel(void *args) {
 	THREAD								*act = actives[KERNCPU];
 
 	switch(kap->state) {
-	case DC_INIT:	
+	case DC_INIT:
 		p->chid = chp->chid;
 		p->type = chp->type;
 		p->zero = chp->zero;
@@ -329,14 +329,14 @@ static void kerext_debug_channel(void *args) {
 		pril_update_unregister(&chp->send_queue, &kap->up);
 		for(tp = (THREAD *)kap->up.pril; tp != NULL; tp = pril_next(tp)) {
 			switch(TYPE_MASK(tp->type)) {
-			case TYPE_PULSE:		
-			case TYPE_VPULSE:	
+			case TYPE_PULSE:
+			case TYPE_VPULSE:
 				p->pulse_queue_depth += ((PULSE *)tp)->count;
 				break;
 			default:
 				p->send_queue_depth++;
 				break;
-			} 
+			}
 			if(NEED_PREEMPT(act)) {
 				// Tell the pril routines to update the up.pril pointer
 				// if somebody deletes the entry while we're preempted
@@ -365,7 +365,7 @@ int DebugChannel(CHANNEL *chp, debug_channel_t *data) {
 
 	return EOK;
 }
-	
+
 struct kerargs_debug_attach {
 	pid_t							pid;
 	unsigned						flags;
@@ -410,7 +410,7 @@ int DebugAttach(pid_t pid, unsigned flags) {
 
 	return __Ring0(kerext_debug_attach, &args);
 }
-	
+
 struct kerargs_debug_detach {
 	pid_t							pid;
 };
@@ -434,7 +434,7 @@ static void kerext_debug_detach(void *args) {
 		if(prp->flags & _NTO_PF_TERMING) {
 			if(procmgr.process_threads_destroyed) {
 				struct	sigevent	ev;
-				
+
 				(*procmgr.process_threads_destroyed)(prp, &ev);
 				sigevent_proc(&ev);
 			}

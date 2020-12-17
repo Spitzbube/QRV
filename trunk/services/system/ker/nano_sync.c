@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -55,7 +55,7 @@ sync_create(PROCESS *bill_prp, sync_t *sync, unsigned flags) {
 		return(NULL);
 	}
 
-	if (sync_create_hook) { 
+	if (sync_create_hook) {
 		sync_create_hook(bill_prp);
 	}
 
@@ -109,16 +109,16 @@ sync_destroy(PROCESS  *prp, sync_t *sync) {
 
 
 
-	if (sync_destroy_hook) { 
+	if (sync_destroy_hook) {
 		sync_destroy_hook(prp, sync);
 	}
-	
+
 	// Remove from the sync hash and release object back to sync_souls.
 	synchash_rem(addr, obp, addr, addr, NULL, NULL);
 
 	/* since synchash_rem() does not have any return code ... */
 	CRASHCHECK(synchash_lookup(obp, addr) != NULL);
-	
+
 	return EOK;
 }
 
@@ -151,9 +151,9 @@ sync_lookup(sync_t *sync, unsigned create) {
 	// its address is used for the memmgr.vaddr_to_memobj return - if
 	// it happens to fall on a different page than the 'owner' field,
 	// we could have it's paddr move on us after the vaddr_to_memobj
-	// has returned it and we've entered the original value in the hash 
+	// has returned it and we've entered the original value in the hash
 	// table.
-	// 
+	//
 #if defined(VARIANT_smp)
 	atomic_set((unsigned *)&sync->__count, 0);
 	atomic_set(&sync->__owner, 0);
@@ -205,7 +205,7 @@ sync_lookup(sync_t *sync, unsigned create) {
 	unlock_kernel();
 	KER_PREEMPT(act, NULL);
 
-found_it:	
+found_it:
 	if(sync->__owner == _NTO_SYNC_INITIALIZER) {
 		kererr(act, EINVAL);
 		return(NULL);
@@ -239,7 +239,7 @@ sync_wakeup(SYNC *syp, int all) {
 
 		orig_runmask = thp->runmask;
 		switch(thp->state) {
-		case STATE_MUTEX:	
+		case STATE_MUTEX:
 		case STATE_CONDVAR:
 			thp->flags |= _NTO_TF_ACQUIRE_MUTEX;
 			if(first) {
@@ -354,7 +354,7 @@ synchash_rem(unsigned addr, OBJECT *obp, unsigned addr1, unsigned addr2, PROCESS
 					unlock_kernel();
 					//
 					// Can't use WR_PROBE_INT on the sync->__owner because it is not
-					// SMP friendly (on x86 it does a read-modify-write with out a 
+					// SMP friendly (on x86 it does a read-modify-write with out a
 					// lock prefix).  Therefore we use atomic_set() to check if we
 					// can write to sync->__owner so that we're SMP safe.
 					//
@@ -451,7 +451,7 @@ synchash_rem(unsigned addr, OBJECT *obp, unsigned addr1, unsigned addr2, PROCESS
 							mutex_holdlist_rem(syp);
 							thp->args.mu.owner = 0;
 						}
-					
+
 						// Force ready any threads blocked on the sync
 						do {
 							if(TYPE_MASK(thp->type) == TYPE_THREAD) {
@@ -584,7 +584,7 @@ mutex_holdlist_add(THREAD *thp, SYNC *syp) {
 
 
 void
-mutex_holdlist_rem(SYNC *syp) {	
+mutex_holdlist_rem(SYNC *syp) {
 	THREAD	*thp;
 	THREAD	*next_thp;
 	SYNC	*next_syp;

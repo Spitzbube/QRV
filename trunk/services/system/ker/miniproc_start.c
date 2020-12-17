@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -142,7 +142,7 @@ do_miniproc(void) {
 				struct _io_connect_entry		entry;
 			}								rmsg;
 			IOV								iov[2];
-			
+
 			SETIOV(iov + 0, &rmsg, sizeof(rmsg));
 			SETIOV(iov + 1, msp->open.connect.path, msp->open.connect.path_len);
 			memset(&rmsg, 0, sizeof(rmsg));
@@ -178,7 +178,7 @@ do_miniproc(void) {
 		case _MEM_MAP:
 			err = memmgr.mmap(0, msp->memmap.i.addr, msp->memmap.i.len,
 						msp->memmap.i.prot, msp->memmap.i.flags,
-						0, (unsigned)msp->memmap.i.offset, msp->memmap.i.align, 
+						0, (unsigned)msp->memmap.i.offset, msp->memmap.i.align,
 						msp->memmap.i.preload, msp->memmap.i.fd,
 						(void **)&msp->memmap.o.real_addr, (size_t *)&msp->memmap.o.real_size,
 						mempart_getid(NULL, sys_memclass_id)); // FIX ME - this ok for miniproc ?

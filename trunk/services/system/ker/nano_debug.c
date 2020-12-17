@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -69,7 +69,7 @@ int rdecl debug_process(PROCESS *prp, debug_process_t *dpp) {
 		dpp->sgid = crp->info.sgid;
 	} else {
 		dpp->uid =
-		dpp->gid = 
+		dpp->gid =
 		dpp->euid =
 		dpp->egid =
 		dpp->suid =
@@ -85,10 +85,10 @@ int rdecl debug_process(PROCESS *prp, debug_process_t *dpp) {
 	dpp->priority = prp->process_priority;
 	dpp->pls = (uintptr_t)prp->pls;
 	debug_moduleinfo(prp, NULL, &dpp->extsched);
-	memset(dpp->reserved2, 0x00, sizeof dpp->reserved2);	
+	memset(dpp->reserved2, 0x00, sizeof dpp->reserved2);
 	dpp->sigstub = (uintptr_t)prp->sigstub;
 	dpp->canstub = (uintptr_t)prp->canstub;
-	memset(dpp->reserved, 0x00, sizeof dpp->reserved);	
+	memset(dpp->reserved, 0x00, sizeof dpp->reserved);
 	return EOK;
 }
 
@@ -186,7 +186,7 @@ int rdecl debug_thread(PROCESS *prp, THREAD *thp, debug_thread_t *dtp) {
 	case STATE_SEM:
 		dtp->blocked.sync.sync = 0;
 		dtp->blocked.sync.id = thp->blocked_on ? ((SYNC *)thp->blocked_on)->addr : 0;
-		break;	
+		break;
 	case STATE_RECEIVE:
 		dtp->blocked.channel.chid = ((CHANNEL *)thp->blocked_on)->chid;
 		break;
@@ -209,23 +209,23 @@ int rdecl debug_thread(PROCESS *prp, THREAD *thp, debug_thread_t *dtp) {
 	dtp->last_chid = thp->last_chid;
 	dtp->sig_blocked = thp->sig_blocked;
 
-	dtp->nsec_since_block = get_nsec_since_block(thp);  
-	
+	dtp->nsec_since_block = get_nsec_since_block(thp);
+
 	debug_sigset(&thp->sig_pending, &dtp->sig_pending);
 	debug_moduleinfo(prp, thp, &dtp->extsched);
-	memset(dtp->reserved2, 0x00, sizeof dtp->reserved2);	
+	memset(dtp->reserved2, 0x00, sizeof dtp->reserved2);
 	return EOK;
 }
 
 
-uint64_t get_nsec_since_block(THREAD *thp) { 
-	if (thp->state==STATE_READY || thp->state==STATE_RUNNING) { 
+uint64_t get_nsec_since_block(THREAD *thp) {
+	if (thp->state==STATE_READY || thp->state==STATE_RUNNING) {
 		/*not valid if thp isnt blocked */
-		return (uint64_t)0; 
-	} else { 
+		return (uint64_t)0;
+	} else {
 		uint64_t	snapshot;
 		snap_time(&snapshot,0);
-		return snapshot - thp->timestamp_last_block; 
+		return snapshot - thp->timestamp_last_block;
 	}
 }
 
@@ -233,7 +233,7 @@ uint64_t get_nsec_since_block(THREAD *thp) {
 static int					debug_code;
 
 static void debug_event(pid_t pid, int priority) {
-	struct sigevent				event; 
+	struct sigevent				event;
 
 	// Pulse the process manager
 	event.sigev_notify = SIGEV_PULSE;

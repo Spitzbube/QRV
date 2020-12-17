@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -221,7 +221,7 @@ purger_register(int (*purger)(size_t), unsigned prio) {
 // The PRIL (PRIority List) data structure is a modified doubly linked
 // list. The next pointers are the usual. The prev pointer field is
 // as per usual *except* for the first element on the list of a particular
-// priority (known as a HEAD entry). In that case, what's normally the prev 
+// priority (known as a HEAD entry). In that case, what's normally the prev
 // field instead points at the last element on the list of the same priority
 // (the TAIL entry). In this particular implementation, HEAD entries are
 // marked with FLAG_HEAD in the 'type' field, though we could actually
@@ -378,7 +378,7 @@ pril_add(PRIL_HEAD *ph, void *d) {
 	pril_validate(ph, new, NULL);
 	return;
 
-new_level:	
+new_level:
 	// create new level
 	new->next.pril = head;
 	new->type |= FLAG_HEAD|FLAG_TAIL;
@@ -462,7 +462,7 @@ pril_update_register(PRIL_HEAD *ph, struct pril_update *upp) {
 	for( ;; ) {
 		if(chk == NULL) break;
 		// We're keeping the list sorted so that we can
-		// keep all updaters working on the same pril together. 
+		// keep all updaters working on the same pril together.
 		// That way it's easier for the pril_update_unregister
 		// routine to know when to turn off FLAG_UPDATER.
 		if((uintptr_t)chk->pril >= (uintptr_t)pril) break;

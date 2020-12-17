@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -37,7 +37,7 @@ scrn_display(const char *text, int len) {
 		--len;
 	}
 	SPINUNLOCK(&debug_slock);
-	if (( status )) { 
+	if (( status )) {
 		InterruptEnable();
 	}
 }
@@ -114,7 +114,7 @@ int kvsnprintf(char *buf, size_t buflen, const char *fmt, va_list ap) {
 						value = i;
 					}
 					break;
-	
+
 				case 'u':
 					radix = 10;
 					value = va_arg(ap, unsigned);
@@ -129,7 +129,7 @@ int kvsnprintf(char *buf, size_t buflen, const char *fmt, va_list ap) {
 					radix = 8;
 					value = va_arg(ap, unsigned);
 					break;
-	
+
 				case 'P':
 					radix = 16;
 					value = va_arg(ap, paddr_t);
@@ -146,14 +146,14 @@ int kvsnprintf(char *buf, size_t buflen, const char *fmt, va_list ap) {
 					radix = 16;
 					value = va_arg(ap, unsigned);
 					break;
-					
+
 				case 'c':
 					str = temp;
 					str[0] = (char)va_arg(ap, int);
 					str[1] = '\0';
 					strwidth = 1;
 					break;
-	
+
 				case 's':
 					str = va_arg(ap, char *);
 					if(!str) {
@@ -164,7 +164,7 @@ int kvsnprintf(char *buf, size_t buflen, const char *fmt, va_list ap) {
 				case '-':
 					left = 1;
 					break;
-	
+
 				case '0':
 					fill = *fmt;
 					break;
@@ -177,7 +177,7 @@ int kvsnprintf(char *buf, size_t buflen, const char *fmt, va_list ap) {
 					}
 					ignore = 1;
 					break;
-	
+
 				default:
 					if(!ignore) {
 						if(*fmt >= '0' && *fmt <= '9') {

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -39,18 +39,18 @@ ker_msg_current(THREAD *act, struct kerargs_msg_current *kap) {
 	if((cop = lookup_rcvid((KERARGS *)(void *)kap, kap->rcvid, &thp)) == NULL) {
 		return ENOERROR;
 	}
-	
+
 	// Make sure thread is replied blocked on a channel owned by this process.
 	if(thp->state != STATE_REPLY && thp->state != STATE_NET_REPLY) {
 			return ESRCH;
 	}
-	
+
 	// Verify that the message has been fully received, and that the receiving
 	// thread has completed any specialret() processing that needs to be done.
 	if ( thp->internal_flags & _NTO_ITF_SPECRET_PENDING ) {
 		return ESRCH;
 	}
-	
+
 	if(thp->blocked_on != cop) {
 		CONNECT *cop1 = cop;
 		cop = thp->blocked_on;
@@ -92,13 +92,13 @@ ker_msg_readv(THREAD *act, struct kerargs_msg_readv *kap) {
 	if(thp->state != STATE_REPLY && thp->state != STATE_NET_REPLY) {
 			return ESRCH;
 	}
-	
+
 	// Verify that the message has been fully received, and that the receiving
 	// thread has completed any specialret() processing that needs to be done.
 	if ( thp->internal_flags & _NTO_ITF_SPECRET_PENDING ) {
 		return ESRCH;
 	}
-	
+
 	if(thp->blocked_on != cop) {
 		CONNECT *cop1 = cop;
 		cop = thp->blocked_on;
@@ -106,7 +106,7 @@ ker_msg_readv(THREAD *act, struct kerargs_msg_readv *kap) {
 			return ESRCH;
 		}
 	}
-	
+
 	act->args.ms.rmsg = kap->rmsg;
 	act->args.ms.rparts = kap->rparts;
 
@@ -215,13 +215,13 @@ ker_msg_writev(THREAD *act, struct kerargs_msg_writev *kap) {
 	if(thp->state != STATE_REPLY && thp->state != STATE_NET_REPLY) {
 			return ESRCH;
 	}
-	
+
 	// Verify that the message has been fully received, and that the receiving
 	// thread has completed any specialret() processing that needs to be done.
 	if ( thp->internal_flags & _NTO_ITF_SPECRET_PENDING ) {
 		return ESRCH;
 	}
-	
+
 	if(thp->blocked_on != cop) {
 		CONNECT *cop1 = cop;
 		cop = thp->blocked_on;
@@ -270,7 +270,7 @@ ker_msg_writev(THREAD *act, struct kerargs_msg_writev *kap) {
 			--rparts;
 		}
 	}
-	
+
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
 	*(volatile void**) &(act->blocked_on) = thp;
 	*(volatile int_fl_t*) &(act->internal_flags) |= _NTO_ITF_MSG_DELIVERY;
@@ -285,7 +285,7 @@ ker_msg_writev(THREAD *act, struct kerargs_msg_writev *kap) {
 	act->internal_flags &= ~_NTO_ITF_MSG_DELIVERY;
 	act->blocked_on = 0;
 	if(thp->internal_flags & _NTO_ITF_MSG_FORCE_RDY) {
-		force_ready(thp,KSTATUS(thp));		
+		force_ready(thp,KSTATUS(thp));
 		thp->internal_flags &= ~_NTO_ITF_MSG_FORCE_RDY;
 	}
 #endif
@@ -318,13 +318,13 @@ ker_msg_readiov(THREAD *act, struct kerargs_msg_readiov *kap) {
 	if(thp->state != STATE_REPLY && thp->state != STATE_NET_REPLY) {
 			return ESRCH;
 	}
-	
+
 	// Verify that the message has been fully received, and that the receiving
 	// thread has completed any specialret() processing that needs to be done.
 	if ( thp->internal_flags & _NTO_ITF_SPECRET_PENDING ) {
 		return ESRCH;
 	}
-	
+
 	if(thp->blocked_on != cop) {
 		CONNECT *cop1 = cop;
 		cop = thp->blocked_on;
@@ -332,7 +332,7 @@ ker_msg_readiov(THREAD *act, struct kerargs_msg_readiov *kap) {
 			return ESRCH;
 		}
 	}
-	
+
 	if(kap->flags & _NTO_READIOV_REPLY) {
 		n = viov_to_piov(thp->process, kap->iov, kap->parts, thp->args.ms.rmsg,
 							thp->args.ms.rparts, kap->offset);
@@ -367,13 +367,13 @@ ker_msg_info(THREAD *act, struct kerargs_msg_info *kap) {
 	if(thp->state != STATE_REPLY && thp->state != STATE_NET_REPLY) {
 			return ESRCH;
 	}
-	
+
 	// Verify that the message has been fully received, and that the receiving
 	// thread has completed any specialret() processing that needs to be done.
 	if ( thp->internal_flags & _NTO_ITF_SPECRET_PENDING ) {
 		return ESRCH;
 	}
-	
+
 	if(thp->blocked_on != cop) {
 		CONNECT *cop1 = cop;
 		cop = thp->blocked_on;
@@ -412,7 +412,7 @@ ker_msg_deliver_event(THREAD *act, struct kerargs_msg_deliver_event *kap) {
 	pulse_souls.flags &= ~SOUL_CRITICAL;
 	status = sigevent_exe(&event, thp, 1);
 	pulse_souls.flags |= SOUL_CRITICAL;
-	
+
 	if (status != 0) {
 		return status;
 	}
@@ -487,7 +487,7 @@ ker_msg_readwritev(THREAD *act, struct kerargs_msg_readwritev *kap) {
 	CONNECT	*src_cop, *dst_cop;
 	THREAD	*src_thp, *dst_thp;
 	int		xferstat;
-	
+
 	if((src_cop = lookup_rcvid((KERARGS *)(void *)kap, kap->src_rcvid, &src_thp)) == NULL) {
 		return ENOERROR;
 	}

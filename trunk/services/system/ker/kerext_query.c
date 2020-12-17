@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -47,12 +47,12 @@ kerext_query_object(void *data) {
 	obj = nano_query(kap->type, kap->index1, kap->subtype,
 				kap->index2, (unsigned *)kap->next, kap->objbuf, kap->objsize);
 	lock_kernel();
-	if((obj != NULL) 
-	  && (kap->type == _QUERY_PROCESS) 
+	if((obj != NULL)
+	  && (kap->type == _QUERY_PROCESS)
 	  && (kap->subtype == _QUERY_PROCESS_VECTOR)) {
 		// We got a PROCESS pointer back. We have to mark it as having a
 		// query in-process so that the ProcessDestroy() code doesn't
-		// free the memory for it while some other thread is looking at 
+		// free the memory for it while some other thread is looking at
 		// the fields.
 		((PROCESS *)obj)->querying = 1;
 	}
@@ -77,7 +77,7 @@ void *QueryObject( int type, unsigned index1, int subtype,
 }
 
 
-void 
+void
 QueryObjectDone(void *obj) {
 	// Who ever called QueryObject on a process is done looking at
 	// the fields and it's OK for a ProcessDestroy() to happen

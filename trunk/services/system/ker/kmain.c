@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -44,12 +44,12 @@ getmem(char *arg) {
 
 	size = strtoul(arg, &arg, 0);
 	switch(*arg) {
-	case 'k':	
-	case 'K':	
+	case 'k':
+	case 'K':
 		size *= KILO(1);
 		break;
-	case 'm':	
-	case 'M':	
+	case 'm':
+	case 'M':
 		size *= MEG(1);
 		break;
 	default:
@@ -93,7 +93,7 @@ kernel_main(int argc, char *argv[], char *env[]) {
 			    break;
 			}
 			break;
-		
+
 		case 'c':
 			intrs_aps_critical = 0;
 			break;
@@ -168,7 +168,7 @@ kernel_main(int argc, char *argv[], char *env[]) {
 			 * This option is independent or the partitioning module
 			*/
 			mempart_dcmd_flags_t  tmp = strtoul(optarg, NULL, 0);
-				
+
 			if ((tmp & (mempart_flags_HEAP_CREATE | mempart_flags_HEAP_SHARE)) == 0) {
 				kprintf("Illegal -M option to procnto\n"
 						"Must contain mempart_flags_HEAP_CREATE and/or mempart_flags_HEAP_SHARE\n");

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -107,7 +107,7 @@ common:
 							if(cop_master == NULL) {
 								cop_master = (cop->flags & COF_VCONNECT)?cop->un.lcl.cop:cop;
 							}
-						} else {							
+						} else {
 							lock_kernel();
 							if((coid = vector_add(newvec, cop, kap->index & ~_NTO_SIDE_CHANNEL)) == -1) {
 								return EAGAIN;
@@ -118,31 +118,31 @@ common:
 								vector_rem(newvec, coid);
 								return EMFILE;
 							}
-		
+
 							++cop->links;
-		
+
 							if(kap->flags & _NTO_COF_CLOEXEC) {
 								vector_flag(newvec, coid, 1);
 							}
-		
+
 							status = coid | (kap->index & _NTO_SIDE_CHANNEL);
 							SETKSTATUS(act, status);
 							prpc->nfds++;
-		
+
 							return ENOERROR;
 						}
 					}
 				}
 			}
-	
+
 			if(vec == &prpc->chancons) {
 				break;
 			}
-	
+
 			vec = &prpc->chancons;
 		}
-	}	
-	
+	}
+
 	if(chp->flags & _NTO_CHF_ASYNC) {
 		WR_PROBE_INT(act, kap->cd, sizeof(struct _asyncmsg_connection_descriptor) / sizeof(int));
 	}
@@ -252,7 +252,7 @@ ker_connect_detach(THREAD *act, struct kerargs_connect_detach *kap) {
 	   kap->coid == (cop->scoid | _NTO_SIDE_CHANNEL)  &&  cop->links != 0)) {
 		return EINVAL;
 	}
-		
+
 	lock_kernel();
 
 
@@ -267,7 +267,7 @@ ker_connect_detach(THREAD *act, struct kerargs_connect_detach *kap) {
 
 			if((thp = VECP(thp, &prp->threads, tid)) &&
 					((thp->args.ms.coid == kap->coid) &&
-					 (thp->state == STATE_SEND || 
+					 (thp->state == STATE_SEND ||
 						(thp->state == STATE_REPLY &&
 						!(((CONNECT *)thp->blocked_on)->flags & COF_NETCON)))
 					 || (thp->state == STATE_RECEIVE && thp->args.ri.id == kap->coid
@@ -308,7 +308,7 @@ ker_connect_detach(THREAD *act, struct kerargs_connect_detach *kap) {
 				object_free(NULL, &vthread_souls, vthp);
 			}
 		}
-		
+
 		// connect detach pulse for QNET
 		if((act->process == net.prp) && ((cop->channel && cop->channel->process != net.prp) ||  (cop->scoid != coid))) {
 			prio = act->priority;
@@ -322,10 +322,10 @@ ker_connect_detach(THREAD *act, struct kerargs_connect_detach *kap) {
 						force_ready(thp, ESRCH | _FORCE_NO_UNBLOCK);
 					}
 				}
-			} 
+			}
 			if(net.chp) {
 				pulse_deliver(net.chp, prio, _PULSE_CODE_NET_DETACH, kap->coid, 0, 0);
-			}	
+			}
 		}
 	}
 
@@ -589,7 +589,7 @@ ker_channel_connect_attrs(THREAD *act, struct kerargs_channel_connect_attr *kap)
 		if(!(kap->id & _NTO_GLOBAL_CHANNEL)) {
 			return EINVAL;
 		}
-			
+
 		if((chgblp = (CHANNELGBL*)vector_lookup2(&chgbl_vector, kap->id & ~_NTO_GLOBAL_CHANNEL)) == NULL  ||
 			chgblp->ch.type != TYPE_CHANNEL) {
 			return EINVAL;
@@ -599,7 +599,7 @@ ker_channel_connect_attrs(THREAD *act, struct kerargs_channel_connect_attr *kap)
 			case _NTO_CHANCON_ATTR_CURMSGS:
 				if(kap->old_attrs != NULL) {
 					kap->old_attrs->num_curmsgs = chgblp->num_curr_msg;
-				} 
+				}
 				break;
 
 			case _NTO_CHANCON_ATTR_EVENT:

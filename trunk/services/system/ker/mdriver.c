@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -26,7 +26,7 @@ void
 	mdriver_ptr = SYSPAGE_ENTRY(mdriver);
 	mdriver_num = _syspage_ptr->mdriver.entry_size / sizeof(*mdriver_ptr);
 	mdriver_check();
-}	
+}
 
 void
 (mdriver_check)(void) {
@@ -66,7 +66,7 @@ kerext_md_detach(void *d) {
 			--num;
 		}
 		mdriver_num = num;
-	}	
+	}
 }
 
 static void
@@ -74,7 +74,7 @@ md_detach(union sigval d) {
 	// Do the detaching in the kernel to avoid race conditions
 	// with md_intr_attach().
 	__Ring0(kerext_md_detach, d.sival_ptr);
-}	
+}
 
 
 static const struct sigevent *
@@ -90,8 +90,8 @@ md_intr(void *d, int id) {
 			md->intr = _NTO_INTR_SPARE;
 			SIGEV_THREAD_INIT(&sigev, md_detach, md, &attr);
 			return &sigev;
-		}	
-	}	
+		}
+	}
 	return NULL;
 }
 
@@ -127,12 +127,12 @@ void
 	// Set mdriver_num to zero temporarily so that mdriver_intr_attach()
 	// doesn't try calling the mini-driver handlers for any of these
 	// InterruptAttach's.
-	mdriver_num = 0; 
+	mdriver_num = 0;
 	for(i = 0; i < num; ++i, ++md) {
 		if(md->intr != _NTO_INTR_SPARE) {
 			__Ring0(kerext_md_attach, md);
-		}	
-	}	
+		}
+	}
 	mdriver_num = num;
 }
 
@@ -160,7 +160,7 @@ int
 			}
 		} else if(md->intr != _NTO_INTR_SPARE) {
 			last = i;
-		}	
+		}
 	}
 	mdriver_num = last + 1;
 	return count;

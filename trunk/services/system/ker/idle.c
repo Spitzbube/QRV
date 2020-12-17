@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -23,7 +23,7 @@ kerext_soul_compact(unsigned *n) {
 	SOUL		*soulp;
 	THREAD		*act = actives[KERNCPU];
 	unsigned	index = *n;
-	
+
 	if((soulp = vector_search(&soul_vector, index, &index)) == NULL) {
 		lock_kernel();
 		SETKSTATUS(act,-1);
@@ -89,7 +89,7 @@ loop(void) {
 			}
 		}
 #endif
-	
+
 		if(!nohalt) {
 			__Ring0(kerext_idle, interrupt_level[HOOK_TO_LEVEL(_NTO_HOOK_IDLE)].queue);
 		}
@@ -109,7 +109,7 @@ void idle_release_stack(void* data) {
 	void							*dummy;
 
 	lock_kernel();
-	
+
 	isp = _scalloc(sizeof(*isp));
 
 	/* load new stack pointer */

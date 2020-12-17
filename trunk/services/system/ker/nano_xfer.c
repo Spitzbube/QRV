@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,19 +33,19 @@ jmp_buf					*xfer_env;
  *
  */
  void xfer_restorestate(THREAD *act) {
-	 THREAD *thp; 
-	 
+	 THREAD *thp;
+
 	lock_kernel();
 	if(act->internal_flags & _NTO_ITF_MSG_DELIVERY) {
 		act->internal_flags &= ~_NTO_ITF_MSG_DELIVERY;
-		
+
 		/* AsyncMsg store a cop in act->restart */
 		if (act->restart && ((CONNECT *)(act->restart))->type == TYPE_CONNECTION) {
-			((CONNECT *)(act->restart))->cd = 
+			((CONNECT *)(act->restart))->cd =
 			  (struct _asyncmsg_connection_descriptor *)act->args.ms.rparts;
 			return;
 		}
-		
+
 		if((thp = act->blocked_on)) {
 			act->blocked_on = 0;
 #ifndef NDEBUG
@@ -133,7 +133,7 @@ void xfer_async_restart(THREAD *thp, CPU_REGISTERS *regs) {
  * nessessary to allow the lower level xferiov() to transfer
  * the data. It also converts negative parts into a single
  * iov, so the xferiov() doesn't have to worry about this.
- *   
+ *
  * memmgr.aspace() may be called to change the current address
  * space for more efficent transfers. The caller must be aware
  * that when this function returns, the address space may have
@@ -169,7 +169,7 @@ void xfer_async_restart(THREAD *thp, CPU_REGISTERS *regs) {
  *
  *   sthp->args.ms.smsg
  *      IOV if sparts is positive, buffer if sparts is negative
- *  
+ *
  *   soff
  *      Number of bytes to skip in source before starting xfer
  *
@@ -193,7 +193,7 @@ void xfer_async_restart(THREAD *thp, CPU_REGISTERS *regs) {
 #define	XFER_FAULTRET(fault)							\
 		SET_XFER_HANDLER(0);							\
 		actives[KERNCPU]->restart = 0;					\
-		return fault									
+		return fault
 
 #define BOUNDRY_CHECK(bound, iov, parts, fault) 		\
 	if(xfer_memchk(bound, iov, parts) != 0) {			\
@@ -208,7 +208,7 @@ void xfer_async_restart(THREAD *thp, CPU_REGISTERS *regs) {
 			return 0;									\
 		}												\
 		++iov;											\
-	}												
+	}
 
 #define OFFSET_SKIP_BR(off, iov, iovparts)				\
 	do{													\
@@ -219,7 +219,7 @@ void xfer_async_restart(THREAD *thp, CPU_REGISTERS *regs) {
 		}												\
 		SET_XFER_HANDLER(0);							\
 	}while(0)
-	
+
 
 int xfermsg(THREAD *dthp, THREAD *sthp, int doff, int soff) {
 	IOV						*dst, *src;
@@ -304,7 +304,7 @@ int xfermsg(THREAD *dthp, THREAD *sthp, int doff, int soff) {
 	 *    1            2       1           1(NC)*
 	 *    1            NULL    1           1(NC)
 	 *    NULL         NULL    any         same(NC)
-	 *    NULL         2       2           2(NC)	
+	 *    NULL         2       2           2(NC)
 	 *    NULL         2       !2          2
 	 */
 	if(dprp) {
@@ -413,7 +413,7 @@ int xfermsg(THREAD *dthp, THREAD *sthp, int doff, int soff) {
 		SET_XFER_HANDLER(&xfer_dst_handlers);
 		OFFSET_SKIP(doff, dst, dparts);
 	}
-	
+
 	SET_XFER_HANDLER(&xfer_src_handlers);
 
 	/* Check for a src offset and skip over it. */
@@ -444,7 +444,7 @@ int rcvmsg(THREAD *dthp, PROCESS *sprp, void *destp, int destparts, void *srcp, 
 	if(srcparts == 0 || destparts == 0) {
 		return 0;
 	}
-	
+
 	/* Special case for 1 part source messages. */
 	if(srcparts < 0) {
 		SETIOV(siov, srcp, -srcparts);
@@ -480,13 +480,13 @@ int rcvmsg(THREAD *dthp, PROCESS *sprp, void *destp, int destparts, void *srcp, 
 		IOV							iovlist[XFER_IOV_NUM];
 		int							parts = 0;
 		int							nbytes;
-		
+
 		/* check dst iov addresses */
 		SET_XFER_HANDLER(&xfer_dst_handlers);
 		if(dprp->pid != SYSMGR_PID) {
 			BOUNDRY_CHECK(dprp->boundry_addr, dst, dparts, XFER_DST_FAULT);
 		}
-		
+
 		/* Check for a dst offset and skip over it. */
 		if(doff) {
 			OFFSET_SKIP(doff, dst, dparts);
@@ -495,7 +495,7 @@ int rcvmsg(THREAD *dthp, PROCESS *sprp, void *destp, int destparts, void *srcp, 
 		do {
 			XFER_PREEMPT(actives[KERNCPU]);
 			SET_XFER_HANDLER(&xfer_async_handlers);
-			
+
 			if(sprp->pid != SYSMGR_PID) {
 				BOUNDRY_CHECK(sprp->boundry_addr, src, sparts, XFER_DST_FAULT);
 			}
@@ -510,7 +510,7 @@ int rcvmsg(THREAD *dthp, PROCESS *sprp, void *destp, int destparts, void *srcp, 
 				}
 			}
 			sflags |= MAPADDR_FLAGS_NOTFIRST;
-			
+
 			if((status = xferiov(dthp, dst, iovlist, dparts, parts, doff, soff)) != 0) {
 				XFER_FAULTRET(status);
 			}
@@ -524,24 +524,24 @@ int rcvmsg(THREAD *dthp, PROCESS *sprp, void *destp, int destparts, void *srcp, 
 		SET_XFER_HANDLER(0);
 	} else {
 		/* dprp == sprp */
-		
+
 		/* check dst iov addresses */
 		if(dprp->pid != SYSMGR_PID) {
 			SET_XFER_HANDLER(&xfer_dst_handlers);
 			BOUNDRY_CHECK(dprp->boundry_addr, dst, dparts, XFER_DST_FAULT);
 		}
-		
+
 		/* Check for a dst offset and skip over it. */
 		if(doff) {
 			SET_XFER_HANDLER(&xfer_dst_handlers);
 			OFFSET_SKIP(doff, dst, dparts);
 		}
-		
+
 		if(sprp->pid != SYSMGR_PID) {
 			SET_XFER_HANDLER(&xfer_src_handlers);
 			BOUNDRY_CHECK(sprp->boundry_addr, src, sparts, XFER_DST_FAULT);
 		}
-		
+
 		/* Check for a dst offset and skip over it. */
 		if(soff) {
 			SET_XFER_HANDLER(&xfer_src_handlers);
@@ -553,7 +553,7 @@ int rcvmsg(THREAD *dthp, PROCESS *sprp, void *destp, int destparts, void *srcp, 
 		status = xferiov(dthp, dst, src, dparts, sparts, doff, soff);
 		SET_XFER_HANDLER(0);
 	}
-	
+
 	return EOK;
 }
 

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,14 +29,14 @@ struct kerargs_trace_args {
 #if defined(VARIANT_instr)
 
 /**
- * This function belongs in nano_trace as part of a generic filter function.  
+ * This function belongs in nano_trace as part of a generic filter function.
  * However, since there are no generic filter functions in place yet, and all
  * of the filtering is actually done in a hard coded fashion, we need to have
  * a migration path to this generic filter function.
  *
  * This function serves as the initial generic filter point for the process
  * manager events.  It will reject any events that it isn't configured for
- * initially, though eventually it should be configured to allow other 
+ * initially, though eventually it should be configured to allow other
  * events to be emitted through this interface.
  *
  * Oh the woes of legacy code
@@ -160,10 +160,10 @@ int KerextSlogf( int opcode, int severity, const char *fmt, ... )
 #ifdef VARIANT_instr
 	buff[0] = opcode;
 	buff[1] = severity;
-	SETIOV( &iov, buff, (2 * sizeof(unsigned)) + l + 1 ); 
+	SETIOV( &iov, buff, (2 * sizeof(unsigned)) + l + 1 );
 
 	if ( KerextAmInKernel() ) {
-		add_trace_iovs( _TRACE_MAKE_CODE( RUNCPU, _TRACE_STRUCT_S, 
+		add_trace_iovs( _TRACE_MAKE_CODE( RUNCPU, _TRACE_STRUCT_S,
 					_TRACE_SYSTEM_C, _NTO_TRACE_SYS_SLOG), &iov, 1 );
 	} else {
 		KerextAddTraceEventIOV( _TRACE_SYSTEM_C, _NTO_TRACE_SYS_SLOG, &iov, 1 );

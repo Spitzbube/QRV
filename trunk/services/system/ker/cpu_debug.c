@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,7 +33,7 @@
  * flag _NTO_TF_SSTEP is also set on this thread, so this could
  * be used by the fault handler code if needed. If single stepping
  * is done throught temporary breakpoints, the temp information could
- * be stored in the cpu area off the DEBUG structure so the 
+ * be stored in the cpu area off the DEBUG structure so the
  * cpu_debug_attach_brkpts() function can install them when the
  * thread is being executed.
  * On entry:
@@ -101,10 +101,10 @@ int rdecl cpu_debug_fault(DEBUG *dep, THREAD *thp, siginfo_t *info, unsigned *pf
  *      DEBUG structure of process to for breakpoints.
  *   bpp
  *      BREAKPT structure with breakpoint to install.
- *      
+ *
  * On exit:
  *   a errno is returned, the breakpoint will not be added unless EOK is returned.
- * 
+ *
  */
 int rdecl cpu_debug_brkpt(DEBUG *dep, BREAKPT *bpp) {
 	return ENOTSUP;

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -88,17 +88,17 @@ pulse_add(PROCESS *prp, PRIL_HEAD *queue, int priority, int code, int value, int
 
 int rdecl
 pulse_deliver(CHANNEL *chp, int priority, int code, int value, int id, unsigned pulse_flags) {
-// pulse_flags are an or-ing of kermacros.h: PULSE_DELIVER_*_FLAG 
+// pulse_flags are an or-ing of kermacros.h: PULSE_DELIVER_*_FLAG
 	THREAD *thp;
 	int prio = priority & 0xff;
 
 	if((prio == 0) || (((unsigned) prio) > NUM_PRI-1)) {
 		return EINVAL;
 	}
-	
+
 	// Was there was a waiting thread on the channel?
 	thp = chp->receive_queue;
-#if defined(VARIANT_smp) && defined(SMP_MSGOPT)  
+#if defined(VARIANT_smp) && defined(SMP_MSGOPT)
 	while((thp != NULL) && (thp->internal_flags & _NTO_ITF_MSG_DELIVERY)) {
 		thp = thp->next.thread;
 	}
@@ -147,7 +147,7 @@ pulse_deliver(CHANNEL *chp, int priority, int code, int value, int id, unsigned 
 			((THREAD *)id)->internal_flags |= _NTO_ITF_SPECRET_PENDING;
 		}
         if(pulse_flags & PULSE_DELIVER_APS_CRITICAL_FLAG) {
-			AP_MARK_THREAD_CRITICAL(thp); 
+			AP_MARK_THREAD_CRITICAL(thp);
 		}
 		ready(thp);
 		return status ? ESRVRFAULT : EOK;
@@ -162,7 +162,7 @@ pulse_deliver(CHANNEL *chp, int priority, int code, int value, int id, unsigned 
 		lock_kernel();
 	}
 
-	// No-one waiting for a msg, 
+	// No-one waiting for a msg,
 	// we loose the _PULSE_DELIVER_APS_CRITICAL state at this point. PR27529
 	if(pulse_add(chp->process, &chp->send_queue, priority, code, value, id)) {
 		// To prevent priority inversion, boost all threads in the server
