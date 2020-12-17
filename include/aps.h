@@ -1,12 +1,12 @@
-/* 
- * $QNXLicenseC:  
+/*
+ * $QNXLicenseC:
  * Copyright 2006, QNX Software Systems. All Rights Reserved.
  *
- * This source code may contain confidential information of QNX Software 
- * Systems (QSS) and its licensors.  Any use, reproduction, modification, 
- * disclosure, distribution or transfer of this software, or any software 
- * that includes or is based upon any of this code, is prohibited unless 
- * expressly authorized by QSS by written agreement.  For more information 
+ * This source code may contain confidential information of QNX Software
+ * Systems (QSS) and its licensors.  Any use, reproduction, modification,
+ * disclosure, distribution or transfer of this software, or any software
+ * that includes or is based upon any of this code, is prohibited unless
+ * expressly authorized by QSS by written agreement.  For more information
  * (including whether this source code file has been published) please
  * email licensing@qnx.com. $
 */
@@ -18,7 +18,7 @@
 
 #ifdef __WATCOMC__
 typedef char _Bool;	// not done in stdbool.h for watcom
-#endif	/* __WATCOMC__ */ 
+#endif	/* __WATCOMC__ */
 
 /*
  * this file contains external interfaces for the scheduler partitioning module
@@ -46,7 +46,7 @@ extern int spid_unique;
 
 /*
  * schedpart_flags_t
- * 
+ *
 */
 typedef enum
 {
@@ -65,19 +65,19 @@ typedef enum
 
 /*
  * schedpart_t
- * 
+ *
  * This is the internal scheduler partition structure. It is created when a scheduler
  * partition for a scheduler class is added to the system (typically through the
  * resource manager).
- * 
+ *
  * This structure contains all of the attributes and policies for a partition
  * of a given class of scheduler. This structure is all that is required in order
  * to maintain the accounting data and enforce scheduler partition policies when
  * a process attempts to allocate/deallocate scheduler for its objects.
- * 
+ *
  * A linked list of these 'schedpart_node_t' structures is maintained by each
  * process which contains a 'schedpart_t' pointer to this structure
- * 
+ *
  * The structure is referenced from the respective resource manager structure
  * representing the partition and (as previously stated) by all of the processes
  * which have associated with this partition.
@@ -86,7 +86,7 @@ typedef enum
  * all of the processes/objects that reference this partition) as well as a parent
  * partition pointer (which will be NULL if this is a root partition).
  * In addition is event information which allows asynchronous events to be sent
- * to registered process when specified event conditions occur.  
+ * to registered process when specified event conditions occur.
 */
 #define SCHEDPART_SIGNATURE		0x31911978
 
@@ -103,7 +103,7 @@ typedef struct schedpart_s
 
 #ifdef USE_PROC_OBJ_LISTS
 	pthread_mutex_t	prplist_lock;	// FIX ME
-//	kerproc_lock_t	prplist_lock;	// protects the 'prp_list' 
+//	kerproc_lock_t	prplist_lock;	// protects the 'prp_list'
 	part_qnodehdr_t	prp_list;		// associated process list
 #endif	/* USE_PROC_OBJ_LISTS */
 
@@ -113,7 +113,7 @@ typedef struct schedpart_s
 
 /*
  * schedpart_node_t
- * 
+ *
  * Per process partition structure.
  * When a process is associated with a partition, a 'schedpart_node_t' is created
  * to reference the associated partition as well as hold per process partition
@@ -139,7 +139,7 @@ typedef struct schedpart_node_s
 
 /*
  * rsrcmgr_schedpart_fnctbl_t
- * 
+ *
  * This type defines the table of interface functions provided by the scheduler
  * partitioning resource manager for use by the scheduler partitioning module.
 */
@@ -153,7 +153,7 @@ typedef struct rsrcmgr_schedpart_fnctbl_s
 
 /*
  * schedpart_rsrcmgr_fnctbl_t
- * 
+ *
  * This type defines the table of interface functions provided by the scheduler
  * partitioning module for use by the scheduler partitioning resource manager.
 */
@@ -170,14 +170,14 @@ typedef struct schedpart_rsrcmgr_fnctbl_s
 
 /*
  * schedpart_fncTbl_t
- * 
+ *
  * This type defines the table of interface functions between the kernel
  * and the scheduler partitioning module. These functions (with the exception of
  * rsrcmgr_attach()), provide the means to account all allocations/deallocations
  * The rsrcmgr_attach() call is used by the partition resource manager code
  * to obtain the resource manager interfaces to the scheduler partitioning module.
  * It also allows the resource manager to supply a set of interface routines
- * for the scheduler partitioning module to use. 
+ * for the scheduler partitioning module to use.
 */
 typedef struct schedpart_fnctbl_s
 {
@@ -185,7 +185,7 @@ typedef struct schedpart_fnctbl_s
 	int			(*disassociate)(PROCESS *prp, part_id_t, ext_lockfncs_t *lf);
 	schedpart_node_t *	(*get_schedpart)(PROCESS *prp);
 	int			(*get_schedpartlist)(PROCESS *prp, part_list_t *spart_list, int n, schedpart_flags_t flags, struct _cred_info *cred);
-	int			(*validate_association)(part_id_t spid, struct _cred_info *cred); 
+	int			(*validate_association)(part_id_t spid, struct _cred_info *cred);
 	schedpart_rsrcmgr_fnctbl_t *  (*rsrcmgr_attach)(rsrcmgr_schedpart_fnctbl_t *);
 } schedpart_fnctbl_t;
 
@@ -209,10 +209,10 @@ extern bool apmgr_module_installed(void);
 
 /*
  * FIX ME - this should be someplace common with apm
- * 
+ *
  * SET_SCHEDPART_POLICY_KEY
  * ISSET_SCHEDPART_POLICY_KEY
- * 
+ *
  * These macros are used to produce a unique 'key' for use in the internal
  * maintenance of schedpart_policy_t types. There are (currently) 3 boolean policies
  * 'terminal', permanent' and 'cfg_lock'. These policies are meant to provide an
@@ -232,10 +232,10 @@ extern bool apmgr_module_installed(void);
  * key value will be taken to mean a value of TRUE, or no child configurations.
  * Only a valid key value will be taken as a policy value of FALSE, and hence
  * permit child partition creation.
- * 
+ *
  * ISSET_SCHEDPART_POLICY_KEY() will evaluate (v) against the key and return
  * TRUE or FALSE according to whether (v) is equivalent to the key or not.
- * 
+ *
  * SET_SCHEDPART_POLICY_KEY() will set (v) to the key depending on whether the
  * current value of (v) is (p) or not.
 */
@@ -246,18 +246,18 @@ extern bool apmgr_module_installed(void);
  * SET/GET_SPART_POLICY_CFG_LOCKED
  * SET/GET_SPART_POLICY_TERMINAL
  * SET/GET_SPART_POLICY_PERMANENT
- * 
+ *
  * These 6 macros encapsulate the setting/retrieving of the internal keying
  * mechanism used to protect the policy states and translate between the internal
  * representation of the policy and the external (ap_bool_t) representation of the
  * boolean valued policies.
- * 
+ *
  * For all boolean valued policies, once they are set TRUE, they can never be
  * changed therefore we want to protect the TRUE state. This means that the key
  * value will be used to represent the FALSE state so that any other value except
  * the key value will be considered TRUE.
  * This protects against errant overwrites which if the key represented the TRUE
- * state would allow an overwrite to inadvertently change the state to FALSE. 
+ * state would allow an overwrite to inadvertently change the state to FALSE.
 */
 #define GET_SPART_POLICY_CFG_LOCK(c)	(ISSET_SCHEDPART_POLICY_KEY((c)->policy.config_lock) ? bool_t_FALSE : bool_t_TRUE)
 #define GET_SPART_POLICY_TERMINAL(c)	(ISSET_SCHEDPART_POLICY_KEY((c)->policy.terminal) ? bool_t_FALSE : bool_t_TRUE)
@@ -269,14 +269,14 @@ extern bool apmgr_module_installed(void);
 
 
 /*==============================================================================
- * 
+ *
  * 				public interfaces for scheduler partition management
- * 
+ *
 */
 
 /*
  * SCHEDPART_INSTALLED
- * 
+ *
  * True or False depending on whether or not scheduler partitioning is installed
  * and initialized (SCHEDPART_INSTALLED) and whether the scheduler partitioning
  * module is loaded (SCHEDPART_MODULE_LOADED) respectively.
@@ -285,22 +285,22 @@ extern bool apmgr_module_installed(void);
 
 /*
  * SCHEDPART_ASSOCIATE
- * 
+ *
  * Associate process <p> with partition identified by partition id <spid>
- * 
+ *
  * Returns: EOK if successful, otherwise errno
- * 
+ *
 */
 #define SCHEDPART_ASSOCIATE(p, spid, f)	(SCHEDPART_INSTALLED() ? schedpart_fnctbl->associate((p), (spid), (f), NULL) : EOK)
 
 /*
  * SCHEDPART_DISASSOCIATE
- * 
+ *
  * disassociate PROCESS <p> from the associated partition identified by partition
  * id <spid>. If <spid> == part_id_t_INVALID, the process will be disassociated
  * from all of its associated partitions (this is the situation when a process
  * is destroyed during process termination).
- * 
+ *
  * Returns: EOK if successful, otherwise errno
 */
 #define SCHEDPART_DISASSOCIATE(p, spid)	(SCHEDPART_INSTALLED() ? schedpart_fnctbl->disassociate((p), (spid), NULL) : EOK)
@@ -308,24 +308,24 @@ extern bool apmgr_module_installed(void);
 
 /*
  * SCHEDPART_GETLIST
- * 
+ *
  * Retrieve the list of partitions associated with process <prp>.
  * This function will fill in the provided <mplist> for the process <p> filtering
  * the results based on the flags <f>.
  * The number of entries that can be filled in is specified by <n> and indicates
  * the space available in <mplist>
- * 
+ *
  * if the caller just wants the (max) number of associated partitions for <prp>
  * then <mplist> will be NULL and <n> will be 0. <f> and <c> are ignore in this
  * case
- * 
+ *
  * The flags which can be specified are
  * 		schedpart_flags_t_GETLIST_ALL			- no filtering, return all associated partitions
  * 		schedpart_flags_t_GETLIST_INHERITABLE	- filter out partitions which have the
  * 											  schedpart_flags_NO_INHERIT flag is set
  *		schedpart_flags_t_GETLIST_CREDENTIALS	- filter out partitions which do not have
- * 											  appropriate credentials as pointed to by <c>  
- * 
+ * 											  appropriate credentials as pointed to by <c>
+ *
  * Returns: -1 on any error. If successful, the number of remaining partitions
  * 			which would not fit in <mplist> is returned. A return value of 0
  * 			indicates that all of the partitions are contained in <mplist>
@@ -336,9 +336,9 @@ extern bool apmgr_module_installed(void);
 
 /*
  * SCHEDPART_VALIDATE_ID
- * 
+ *
  * Validate a part_id_t coming in from user space
- * 
+ *
  * Returns: EOK is <spid> represents a valid scheduler partition identifier
  * 			otherwise an errno is returned
 */
@@ -347,12 +347,12 @@ extern bool apmgr_module_installed(void);
 
 /*
  * SCHEDPART_VALIDATE_ASSOCIATION
- * 
+ *
  * This API is used to determine whether or not the partition identified by
  * 'part_id_t' <spid> can be associated with based on the 'struct _cred_info' <c>.
- * 
+ *
  * Returns: EOK if association is permitted, otherwise and errno.
- * 
+ *
  * If the resource manager module is not installed, EOK will be returned since
  * associations control is meaningless
  *
@@ -363,7 +363,7 @@ extern bool apmgr_module_installed(void);
 /*
  * SCHEDPART_T_TO_ID
  * SCHEDPART_ID_TO_T
- * 
+ *
  * These macros translate between a part_id_t and a schedpart_t *
 */
 #define SCHEDPART_T_TO_ID(s)	(((s) == NULL) ? part_id_t_INVALID : (s)->info.id)
@@ -371,10 +371,10 @@ extern bool apmgr_module_installed(void);
 
 /*
  * SCHEDPART_NODEGET
- * 
+ *
  * This function will return a pointer to the 'schedpart_node_t' for the process
  * <p>
- * 
+ *
  * Returns: the partition pointer or NULL if no partition of the scheduler class
  * 			is associated with the process
 */
@@ -382,28 +382,28 @@ extern bool apmgr_module_installed(void);
 
 /*
  * SCHEDPART_SELECT_DPP
- * 
+ *
  * This function provides the mechanism by which a newly created process can be
  * associated with a specific scheduling partition via posix_spawn(). It is
  * called via SCHEDPART_SELECT_DPP() in kerext_process_create() with the partition
  * id <spid> for which the respective DISPATCH structure is to be selected.
- * 
- * If the DISPATCH structure could be selected, it will be returned (cast to void *) 
+ *
+ * If the DISPATCH structure could be selected, it will be returned (cast to void *)
  * If the aps or apmgr modules are not installed, or any other error occurs, NULL
- * will be returned. 
+ * will be returned.
 */
 /* remove this when we no longer support WATCOM, or WATCOM supports inlines */
 #if (defined(__WATCOMC__) || !defined(NDEBUG))
 extern void *_select_dpp(PROCESS *prp, part_id_t spid);
 #else	/* (defined(__WATCOMC__) || !defined(NDEBUG)) */
-static __inline__ void *_select_dpp(PROCESS *prp, part_id_t spid) 
+static __inline__ void *_select_dpp(PROCESS *prp, part_id_t spid)
 {
 	if (!SCHEDPART_INSTALLED() || !apmgr_module_installed() || (schedpart_select_dpp == NULL)) {
 		return NULL;
 	} else {
 		schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
 		CRASHCHECK(spart == NULL);
-	
+
 		return schedpart_select_dpp(prp, spart->info.info.id);
 	}
 }
@@ -413,7 +413,7 @@ static __inline__ void *_select_dpp(PROCESS *prp, part_id_t spid)
 
 /*
  * SCHEDPART_INIT
- * 
+ *
  * This function is called to initialize the scheduler partition module. There is
  * an module initialization function (initialize_aps()) which is called by
  * the module_init() which installs the (*schedpart_init)() function pointer used
@@ -423,7 +423,7 @@ static __inline__ void *_select_dpp(PROCESS *prp, part_id_t spid)
  * and effectively activate all aforementioned SCHEDPART macros.
  * See the comments in aps.c for initialize_aps() and _schedpart_init()
  * for rationale for this 2 stage initialization.
- * 
+ *
  * Since the default system scheduler partition is created at the time the
  * scheduler is initialized (see init_objects.c), and by the existing APS code,
  * this routine takes as its arguments, the internal 'id' of the created
@@ -431,7 +431,7 @@ static __inline__ void *_select_dpp(PROCESS *prp, part_id_t spid)
  * It will initialize any additional data structures required in order to sync
  * up and have the system operate as if the system scheduler partition was
  * created via a SCHEDPART_CREATE() call
- * 
+ *
  * Returns: (void) nothing
 */
 #define SCHEDPART_INIT(i_spid, i)		if (schedpart_init != NULL) schedpart_init((i_spid), (i))

@@ -1,12 +1,12 @@
-/* 
- * $QNXLicenseC:  
+/*
+ * $QNXLicenseC:
  * Copyright 2006, QNX Software Systems. All Rights Reserved.
  *
- * This source code may contain confidential information of QNX Software 
- * Systems (QSS) and its licensors.  Any use, reproduction, modification, 
- * disclosure, distribution or transfer of this software, or any software 
- * that includes or is based upon any of this code, is prohibited unless 
- * expressly authorized by QSS by written agreement.  For more information 
+ * This source code may contain confidential information of QNX Software
+ * Systems (QSS) and its licensors.  Any use, reproduction, modification,
+ * disclosure, distribution or transfer of this software, or any software
+ * that includes or is based upon any of this code, is prohibited unless
+ * expressly authorized by QSS by written agreement.  For more information
  * (including whether this source code file has been published) please
  * email licensing@qnx.com. $
 */
@@ -18,7 +18,7 @@
 
 #ifdef __WATCOMC__
 typedef char _Bool;	// not done in stdbool.h for watcom
-#endif	/* __WATCOMC__ */ 
+#endif	/* __WATCOMC__ */
 
 /*
  * this file contains common interfaces, types and definitions for the
@@ -26,29 +26,29 @@ typedef char _Bool;	// not done in stdbool.h for watcom
 */
 /*
  * ===========================================================================
- * 
+ *
  * 				Partitioning Compile time Behaviour Modification
- *  
+ *
  * ===========================================================================
 */
 /*
  * USE_PROC_OBJ_LISTS
- * 
+ *
  * whether to use the process and object lists to keep track of process and
  * object associations to a memory partition.
- * 
+ *
  * Note that it is extremely unlikely at this point that this define will ever
  * be turned off however it is here because the code still contains the
  * conditional compilation control ... although I have not compiled with this
  * #define off in many moons so it may not even build without it anymore.
- * 
+ *
  * Just leave it alone ... go away ... skedaddle
 */
 #define USE_PROC_OBJ_LISTS
 
 /*
  * ext_lockfncs_t
- *  
+ *
  * This type is to allow me to pass partitioning specific lock/unlock functions
  * to the partitioning modules.
  * For example, for the process association/disassociation implementation in
@@ -56,7 +56,7 @@ typedef char _Bool;	// not done in stdbool.h for watcom
 */
 /*
  * part_evtflags_DEACTIVATE
- * 
+ *
  * This flag is used by event registration to mark an event as being deactivated.
  * This causes the event delivery code to move the event off of the active list
  * and on to the inactive list where it will eventually be deleted
@@ -82,7 +82,7 @@ typedef struct
 
 /*
  * Internal event related types
- * 
+ *
  * evtdest_t
  * part_evtlist_t
 */

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -48,27 +48,27 @@
 	#define PROCESSORS_MAX			1
 	#define NUM_PROCESSORS			1U
 	#define RUNCPU					0
-	#define SPINLOCK(spin)			
-	#define SPINUNLOCK(spin)		
-	#define SENDIPI(cpu,cmd)		
-	#define SMP_FLUSH_TLB()		
+	#define SPINLOCK(spin)
+	#define SPINUNLOCK(spin)
+	#define SENDIPI(cpu,cmd)
+	#define SMP_FLUSH_TLB()
 	#if defined(_lint)
 		#define SMP_SPINVAR(class,var) _to_semi
 	#else
 		#define SMP_SPINVAR(class,var)
-	#endif	
+	#endif
 	#define INTR_LOCK(s)			InterruptDisable()
 	/* the following ensure we don't enable interrupts during kernel initialization */
 	#define INTR_UNLOCK(s)			InterruptEnable()
-	#define MEM_BARRIER_RD()		
-	#define MEM_BARRIER_WR()	
+	#define MEM_BARRIER_RD()
+	#define MEM_BARRIER_WR()
 	#define MEM_BARRIER_RW()
 #endif
 
 #if PROCESSORS_MAX >= 32
 	// Have to use this slightly more complicated formula to calculate
 	// the bitmask if we can have 32 CPU's because a lot of processors
-	// 'and' the shift count with 0x1f, which makes a shift count of 32 
+	// 'and' the shift count with 0x1f, which makes a shift count of 32
 	// become one of zero.
 	#define LEGAL_CPU_BITMASK ((0x2 << (NUM_PROCESSORS-1))-1)
 #else
