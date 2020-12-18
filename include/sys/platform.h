@@ -40,6 +40,8 @@
     #define _NTO_CPU_HDR_DIR_(h)   sh/h
 #elif defined(__ARM__)
     #define _NTO_CPU_HDR_DIR_(h)   arm/h
+#elif defined(__RISCV__)
+    #define _NTO_CPU_HDR_DIR_(h)   riscv/h
 
 /* New CPU types go here */
 
@@ -254,12 +256,8 @@ typedef _INT32			_Ssizet;
 #define _LLONG_MAX      0x7fffffffffffffffLL
 #define _ULLONG_MAX     0xffffffffffffffffULL
 
-#if defined(__QNXNTO__)
+#ifdef __QNXNTO__
 	#include _NTO_HDR_(sys/target_nto.h)
-#elif defined(__QNX__)
-	#include _NTO_HDR_(sys/target_qnx.h)
-#elif defined(__SOLARIS__) || defined(__NT__) || defined(__CYGWIN__) || defined(__MINGW32__) || defined(__LINUX__)
-	/* partial support only, solaris/win32/linux hosted targetting qnx6 */
 #else
 	#error not configured for target
 #endif

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -84,14 +84,14 @@
 #define PPC_MSR_ILE		_ONEBIT32B( 15 ) /* 400 series, 603e,860 */
 #define PPC_MSR_EE		_ONEBIT32B( 16 )
 #define PPC_MSR_PR		_ONEBIT32B( 17 )
-#define PPC_MSR_FP		_ONEBIT32B( 18 ) 
+#define PPC_MSR_FP		_ONEBIT32B( 18 )
 #define PPC_MSR_ME		_ONEBIT32B( 19 )
-#define PPC_MSR_FE0		_ONEBIT32B( 20 ) 
+#define PPC_MSR_FE0		_ONEBIT32B( 20 )
 #define PPC_MSR_SE		_ONEBIT32B( 21 ) /* 601,603e,860 */
 #define PPC_MSR_DWE		_ONEBIT32B( 21 ) /* 405 */
 #define PPC_MSR_DE		_ONEBIT32B( 22 ) /* 400,booke series */
 #define PPC_MSR_BE		_ONEBIT32B( 22 ) /* 603e,860 */
-#define PPC_MSR_FE1		_ONEBIT32B( 23 ) 
+#define PPC_MSR_FE1		_ONEBIT32B( 23 )
 #define PPC_MSR_EP  	_ONEBIT32B( 25 ) /* 601, 603e */
 #define PPC_MSR_IP  	_ONEBIT32B( 25 ) /* 860 */
 #define PPC_MSR_IT		_ONEBIT32B( 26 ) /* 601, 603e */
@@ -103,7 +103,7 @@
 #define PPC_MSR_PE		_ONEBIT32B( 28 ) /* 403 */
 #define PPC_MSR_PX		_ONEBIT32B( 29 ) /* 403 */
 #define PPC_MSR_RI		_ONEBIT32B( 30 ) /* 603e,860 */
-#define PPC_MSR_LE		_ONEBIT32B( 31 ) 
+#define PPC_MSR_LE		_ONEBIT32B( 31 )
 
 #define PPC64_MSR_SF	_ONEBIT64B(  0 )
 #define PPC64_MSR_HV	_ONEBIT64B(  3 )
@@ -334,14 +334,14 @@
 #define PPC64_SPR_HIOR			311
 #define PPC64_SPR_HSSR0			314
 #define PPC64_SPR_HSSR1			315
-#define PPC64_SPR_LPCR		 	318  
-#define PPC64_SPR_RMOR			312   
-#define PPC64_SPR_HRMOR			313 
-#define PPC64_SPR_LPIDR		 	319  
-#define PPC64_SPR_PPR		 	896  
-#define PPC64_SPR_PURR		 	309  
-#define PPC64_SPR_DABRX			1015 
-#define PPC64_SPR_VRSAVE		256    
+#define PPC64_SPR_LPCR		 	318
+#define PPC64_SPR_RMOR			312
+#define PPC64_SPR_HRMOR			313
+#define PPC64_SPR_LPIDR		 	319
+#define PPC64_SPR_PPR		 	896
+#define PPC64_SPR_PURR		 	309
+#define PPC64_SPR_DABRX			1015
+#define PPC64_SPR_VRSAVE		256
 
 /*
  * Extended BAT Registers

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -56,7 +56,7 @@
 #define	PPC8260CPM_CPCR_PAGE_IDMA1			_BITFIELD32B(5, 0x07)
 #define	PPC8260CPM_CPCR_PAGE_IDMA2			_BITFIELD32B(5, 0x08)
 #define	PPC8260CPM_CPCR_PAGE_IDMA3			_BITFIELD32B(5, 0x09)
-/* SBC: subblock code */ 
+/* SBC: subblock code */
 #define	PPC8260CPM_CPCR_SBC_FCC1			_BITFIELD32B(10, 0x10)
 #define	PPC8260CPM_CPCR_SBC_FCC2			_BITFIELD32B(10, 0x11)
 #define	PPC8260CPM_CPCR_SBC_FCC3			_BITFIELD32B(10, 0x12)
@@ -307,7 +307,7 @@
 /*
  *** Parameter RAM
  */
- 
+
 /* Parameter RAM MAP */
 /* Offset from DPRAM_BASE */
 #define	PPC8260CPM_DPRAMPARA_SCC1			0x8000
@@ -334,7 +334,7 @@
 /*
  * Parameter RAM MAP for SMC and SCC
  */
- 
+
 /* common for SMC and SCC */
 #define	PPC8260CPM_PARARAM_SCCSMC_RBASE		0x0
 #define	PPC8260CPM_PARARAM_SCCSMC_TBASE		0x2
@@ -456,7 +456,7 @@
 #define	PPC8260CPM_SMCMR_UART_CLENM			_BITFIELD16B(4, 0xf)
 #define	PPC8260CPM_SMCMR_UART_CLEN(data,parity,stop) _BITFIELD16B(4, ((data)+(parity)+(stop)))
 #define	PPC8260CPM_SMCMR_UART_Sl			_ONEBIT16B(5)
-#define	PPC8260CPM_SMCMR_UART_PEN			_ONEBIT16B(6)	
+#define	PPC8260CPM_SMCMR_UART_PEN			_ONEBIT16B(6)
 #define	PPC8260CPM_SMCMR_UART_PM			_ONEBIT16B(7)
 #define	PPC8260CPM_SMCMR_UART_SM_M			_BITFIELD16B(11, 0x3)
 #define	PPC8260CPM_SMCMR_UART_SMUART		_BITFIELD16B(11, 0x2)
@@ -466,7 +466,7 @@
 #define	PPC8260CPM_SMCMR_UART_DMECHO		_BITFIELD16B(13, 0x2)
 #define	PPC8260CPM_SMCMR_UART_TEN			_ONEBIT16B(14)
 #define	PPC8260CPM_SMCMR_UART_REN			_ONEBIT16B(15)
-	
+
 /* Event register SMC UART & Mask register SMC UART */
 #define	PPC8260CPM_SMCERMSKR_UART_BRKE		_ONEBIT8B(1)
 #define	PPC8260CPM_SMCERMSKR_UART_BRK 		_ONEBIT8B(3)
@@ -594,7 +594,7 @@
 #define	PPC8260CPM_SCCMR_UART_UMMULTIDROP	_BITFIELD16B(5,0x1)
 #define	PPC8260CPM_SCCMR_UART_UMMULTIDROPAU	_BITFIELD16B(5,0x3)
 #define	PPC8260CPM_SCCMR_UART_FRZ			_ONEBIT16B(6)
-#define	PPC8260CPM_SCCMR_UART_RZS			_ONEBIT16B(7)	
+#define	PPC8260CPM_SCCMR_UART_RZS			_ONEBIT16B(7)
 #define	PPC8260CPM_SCCMR_UART_SYN			_ONEBIT16B(8)
 #define	PPC8260CPM_SCCMR_UART_DRT			_ONEBIT16B(9)
 #define	PPC8260CPM_SCCMR_UART_PEN			_ONEBIT16B(11)
@@ -608,7 +608,7 @@
 #define	PPC8260CPM_SCCMR_UART_TPMLOW		_BITFIELD16B(15, 0x1)
 #define	PPC8260CPM_SCCMR_UART_TPMEVEN		_BITFIELD16B(15, 0x2)
 #define	PPC8260CPM_SCCMR_UART_TPMHIGH		_BITFIELD16B(15, 0x3)
-	
+
 /* Event register SCC UART & Mask register SCC UART */
 #define	PPC8260CPM_SCCERMSKR_UART_GLR 		_ONEBIT16B(3)
 #define	PPC8260CPM_SCCERMSKR_UART_GLT 		_ONEBIT16B(4)
@@ -749,11 +749,11 @@ typedef enum {
 */
 #define	PPC8260CPM_DPRAM_BDT_SMC1			PPC8260CPM_DPRAM_BD7_S
 #define	PPC8260CPM_DPRAM_DBUF_SMC1			PPC8260CPM_DPRAM_BDT_SMC1 + 0x100
-#define	PPC8260CPM_DPRAM_BDT_SMC2			PPC8260CPM_DPRAM_DBUF_SMC1 + 0x100	
+#define	PPC8260CPM_DPRAM_BDT_SMC2			PPC8260CPM_DPRAM_DBUF_SMC1 + 0x100
 #define	PPC8260CPM_DPRAM_DBUF_SMC2			PPC8260CPM_DPRAM_BDT_SMC2 + 0x100
 #define	PPC8260CPM_DPRAM_PARA_SMC1			PPC8260CPM_DPRAM_DBUF_SMC2 + 0x100
 #define	PPC8260CPM_DPRAM_PARA_SMC2			PPC8260CPM_DPRAM_PARA_SMC1 + 0x100
-#define	PPC8260CPM_DPRAM_BDT_SCC1			PPC8260CPM_DPRAM_BD8_S	
+#define	PPC8260CPM_DPRAM_BDT_SCC1			PPC8260CPM_DPRAM_BD8_S
 #define	PPC8260CPM_DPRAM_DBUF_SCC1			PPC8260CPM_DPRAM_BDT_SCC1 + 0x100
 #define	PPC8260CPM_DPRAM_BDT_SCC2			PPC8260CPM_DPRAM_DBUF_SCC1 + 0x100
 #define	PPC8260CPM_DPRAM_DBUF_SCC2			PPC8260CPM_DPRAM_BDT_SCC2 + 0x100

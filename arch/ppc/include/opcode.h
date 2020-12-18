@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -39,14 +39,14 @@
 
 	union ppc_instr {
 		unsigned int op_code;
-	
+
 		struct {
 			unsigned kk : 1;
 			unsigned aa : 1;
 			unsigned li : 24;
 			unsigned op : 6;
 		} i_t;
-	
+
 		struct {
 			unsigned kk : 1;
 			unsigned aa : 1;
@@ -55,7 +55,7 @@
 			unsigned bo : 5;
 			unsigned op : 6;
 		} b_t;
-	
+
 		struct {
 			unsigned res1:1;
 			unsigned aa : 1;
@@ -63,14 +63,14 @@
 			unsigned rt : 5;
 			unsigned op : 6;
 		} sc_t;
-	
+
 		struct {
 			signed 	 d	: 16;
 			unsigned a  : 5;
 			unsigned ds : 5;
 			unsigned op : 6;
 		} d_t;
-	
+
 		struct {
 			unsigned rc : 1;
 			unsigned xo : 10;
@@ -79,7 +79,7 @@
 			unsigned ds : 5;
 			unsigned op : 6;
 		} x_t;
-	
+
 		struct {
 			unsigned lk : 1;
 			unsigned xo : 10;
@@ -88,7 +88,7 @@
 			unsigned bo_d: 5;
 			unsigned op : 6;
 		} xl_t;
-	
+
 		struct {
 			unsigned res: 1;
 			unsigned xo : 10;
@@ -116,7 +116,7 @@
 			unsigned d	: 5;
 			unsigned op : 6;
 		} xo_t;
-	
+
 		struct {
 			unsigned rc : 1;
 			unsigned xo : 5;
@@ -126,7 +126,7 @@
 			unsigned d	: 5;
 			unsigned op : 6;
 		} a_t;
-	
+
 		struct {
 			unsigned rc : 1;
 			unsigned me : 5;
@@ -136,7 +136,7 @@
 			unsigned s	: 5;
 			unsigned op : 6;
 		} m_t;
-	
+
 	};
 
 #else /* __BIGENDIAN__ */
@@ -150,7 +150,7 @@
 			unsigned aa : 1;
 			unsigned kk : 1;
 		} i_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned bo : 5;
@@ -159,7 +159,7 @@
 			unsigned aa : 1;
 			unsigned kk : 1;
 		} b_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned rt : 5;
@@ -167,14 +167,14 @@
 			unsigned aa : 1;
 			unsigned res1:1;
 		} sc_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned ds : 5;
 			unsigned a  : 5;
 			signed 	 d	: 16;
 		} d_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned ds : 5;
@@ -183,7 +183,7 @@
 			unsigned xo : 10;
 			unsigned rc : 1;
 		} x_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned bo_d: 5;
@@ -192,7 +192,7 @@
 			unsigned xo : 10;
 			unsigned lk : 1;
 		} xl_t;
-	
+
 		struct {
 			unsigned op	: 6;
 			unsigned ds	: 5;
@@ -219,7 +219,7 @@
 			unsigned xo : 9;
 			unsigned rc : 1;
 		} xo_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned d	: 5;
@@ -229,7 +229,7 @@
 			unsigned xo : 5;
 			unsigned rc : 1;
 		} a_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned s	: 5;
@@ -239,9 +239,9 @@
 			unsigned me : 5;
 			unsigned rc : 1;
 		} m_t;
-	
+
 	};
-	
+
 #endif
 
 /* PPC instructions opcodes */

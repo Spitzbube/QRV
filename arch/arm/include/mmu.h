@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 
@@ -151,7 +151,7 @@ typedef unsigned	ptp_t;
  *   1   0   1	priv RO / user NA
  *   0   0   1	priv RW / user NA
  *   1   1   0	priv RO / user RO
- *   0   1   1	priv RW / user RW 
+ *   0   1   1	priv RW / user RW
  */
 #define	ARM_PTP_V6_AP_U		ARM_PTP_V6_AP1
 #define	ARM_PTP_V6_AP_URO	(ARM_PTP_V6_AP1|ARM_PTP_V6_APX)
@@ -199,7 +199,7 @@ typedef unsigned	pte_t;
  *   1   0   1	priv RO / user NA
  *   0   0   1	priv RW / user NA
  *   1   1   0	priv RO / user RO
- *   0   1   1	priv RW / user RW 
+ *   0   1   1	priv RW / user RW
  */
 #define	ARM_PTE_V6_AP_U		ARM_PTE_V6_AP1
 #define	ARM_PTE_V6_AP_URO	(ARM_PTE_V6_AP1|ARM_PTE_V6_APX)
@@ -385,7 +385,7 @@ arm_v4_fcse_get()
 	__asm__ __volatile__("mrc	p15, 0, %0, c13, c0, 0" : "=r" (pid));
 	return pid;
 }
- 
+
 /*
  * Set FCSE PID register
  */

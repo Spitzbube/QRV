@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -315,7 +315,7 @@
 #define	PPC8CPM_SICR_BRG1					0
 #define	PPC8CPM_SICR_BRG2					1
 #define	PPC8CPM_SICR_BRG3					2
-#define	PPC8CPM_SICR_BRG4					3 
+#define	PPC8CPM_SICR_BRG4					3
 /* SCC1 and SCC2 */
 #define	PPC8CPM_SICR_CLK1					4
 #define	PPC8CPM_SICR_CLK2					5
@@ -404,7 +404,7 @@
 #define	PPC8CPM_INTNO_PC6					0x06
 #define	PPC8CPM_INTNO_SPI					0x05
 #define	PPC8CPM_INTNO_SMC1					0x04
-#define	PPC8CPM_INTNO_SMC2PIP				0x03	
+#define	PPC8CPM_INTNO_SMC2PIP				0x03
 #define	PPC8CPM_INTNO_PC5					0x02
 #define	PPC8CPM_INTNO_PC4					0x01
 
@@ -417,7 +417,7 @@
 #define	PPC8CPM_SMCMR_UART_CLENM			_BITFIELD16B(4, 0xf)
 #define	PPC8CPM_SMCMR_UART_CLEN(data,parity,stop) _BITFIELD16B(4, ((data)+(parity)+(stop)))
 #define	PPC8CPM_SMCMR_UART_Sl				_ONEBIT16B(5)
-#define	PPC8CPM_SMCMR_UART_PEN				_ONEBIT16B(6)	
+#define	PPC8CPM_SMCMR_UART_PEN				_ONEBIT16B(6)
 #define	PPC8CPM_SMCMR_UART_PM				_ONEBIT16B(7)
 #define	PPC8CPM_SMCMR_UART_SM				_BITFIELD16B(11, 0x3)
 #define	PPC8CPM_SMCMR_UART_SMGCI			_BITFIELD16B(11, 0x0)
@@ -429,7 +429,7 @@
 #define	PPC8CPM_SMCMR_UART_DMECHO			_BITFIELD16B(13, 0x2)
 #define	PPC8CPM_SMCMR_UART_TEN				_ONEBIT16B(14)
 #define	PPC8CPM_SMCMR_UART_REN				_ONEBIT16B(15)
-	
+
 /* Event register SMC UART & Mask register SMC UART */
 #define	PPC8CPM_SMCERMSKR_UART_BRKE			_ONEBIT8B(1)
 #define	PPC8CPM_SMCERMSKR_UART_BRK 			_ONEBIT8B(3)
@@ -559,7 +559,7 @@
 #define	PPC8CPM_SCCMR_UART_UMMULTIDROP		_BITFIELD16B(5,0x1)
 #define	PPC8CPM_SCCMR_UART_UMMULTIDROPAU	_BITFIELD16B(5,0x3)
 #define	PPC8CPM_SCCMR_UART_FRZ				_ONEBIT16B(6)
-#define	PPC8CPM_SCCMR_UART_RZS				_ONEBIT16B(7)	
+#define	PPC8CPM_SCCMR_UART_RZS				_ONEBIT16B(7)
 #define	PPC8CPM_SCCMR_UART_SYN				_ONEBIT16B(8)
 #define	PPC8CPM_SCCMR_UART_DRT				_ONEBIT16B(9)
 #define	PPC8CPM_SCCMR_UART_PEN				_ONEBIT16B(11)
@@ -573,7 +573,7 @@
 #define	PPC8CPM_SCCMR_UART_TPMLOW			_BITFIELD16B(15, 0x1)
 #define	PPC8CPM_SCCMR_UART_TPMEVEN			_BITFIELD16B(15, 0x2)
 #define	PPC8CPM_SCCMR_UART_TPMHIGH			_BITFIELD16B(15, 0x3)
-	
+
 /* Event register SCC UART & Mask register SCC UART */
 #define	PPC8CPM_SCCERMSKR_UART_GLR 			_ONEBIT16B(3)
 #define	PPC8CPM_SCCERMSKR_UART_GLT 			_ONEBIT16B(4)
@@ -619,13 +619,13 @@ typedef enum {
 /* Offset from DPRAM_BASE
  The format of DBT: ptr to current DB (4), data buffer size (2), reserve (2), table
 */
-#define	PPC8CPM_DPRAM_BDT_SMC1				PPC8CPM_DPRAM_BD_S 		
+#define	PPC8CPM_DPRAM_BDT_SMC1				PPC8CPM_DPRAM_BD_S
 #define	PPC8CPM_DPRAM_DBUF_SMC1				PPC8CPM_DPRAM_BDT_SMC1 + 0x100
-#define	PPC8CPM_DPRAM_BDT_SMC2				PPC8CPM_DPRAM_DBUF_SMC1 + 0x100	
+#define	PPC8CPM_DPRAM_BDT_SMC2				PPC8CPM_DPRAM_DBUF_SMC1 + 0x100
 #define	PPC8CPM_DPRAM_DBUF_SMC2				PPC8CPM_DPRAM_BDT_SMC2 + 0x100
 #define	PPC8CPM_DPRAM_BDT_SCC1				PPC8CPM_DPRAM_DBUF_SMC2	+ 0x100
 #define	PPC8CPM_DPRAM_DBUF_SCC1				PPC8CPM_DPRAM_BDT_SCC1 + 0x100
-#define	PPC8CPM_DPRAM_BDT_SCC2				PPC8CPM_DPRAM_BDC2_S				
+#define	PPC8CPM_DPRAM_BDT_SCC2				PPC8CPM_DPRAM_BDC2_S
 #define	PPC8CPM_DPRAM_DBUF_SCC2				PPC8CPM_DPRAM_BDT_SCC2 + 0x100
 #define	PPC8CPM_DPRAM_BDT_SCC3				PPC8CPM_DPRAM_BDC1_S + 0x400
 #define	PPC8CPM_DPRAM_DBUF_SCC3				PPC8CPM_DPRAM_BDT_SCC3 + 0x100

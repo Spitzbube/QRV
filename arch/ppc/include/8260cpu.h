@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -38,7 +38,7 @@
 #endif
 
 /*
- * SIU 
+ * SIU
  */
 
 /* SIU Module Configuration Register */
@@ -188,7 +188,7 @@
 #define PPC8260_IMMR_OFF_DPRAM1		0x0
 #define PPC8260_IMMR_OFF_DPRAM2		0x08000
 #define PPC8260_IMMR_OFF_DPRAM3		0x0b000
-#define PPC8260_IMMR_OFF_SIUMCR		0x10000 
+#define PPC8260_IMMR_OFF_SIUMCR		0x10000
 #define PPC8260_IMMR_OFF_SYPCR		0x10004
 #define PPC8260_IMMR_OFF_SWSR		0x1000e
 #define PPC8260_IMMR_OFF_BCR		0x10024
@@ -444,7 +444,7 @@
 #define PPC8260_IMMR_OFF_SI2RXRAM	0x12c00
 
 /* default immr location for neutrino */
-#define PPC8260_IMMR_ISB_DEFAULT	0x30000000	
+#define PPC8260_IMMR_ISB_DEFAULT	0x30000000
 #define PPC8260_IMMR(reg,size)	(*(volatile uint##size##_t *)(PPC8260_IMMR_ISB_DEFAULT+PPC8260_IMMR_OFF_##reg))
 
 #endif

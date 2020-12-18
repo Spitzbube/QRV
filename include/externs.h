@@ -36,6 +36,8 @@
 #include <sys/resmgr.h>
 #include <sys/iomsg.h>
 
+#include <cpu_def.h>
+
 #ifndef KERHDR
 #include <kernel/nto.h>
 #endif

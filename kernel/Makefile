@@ -4,8 +4,7 @@
 
 include ../def.mk
 
-CC = riscv64-linux-gnu-gcc
-CFLAGS = -Wall -DVARIANT_smp
+CFLAGS += -nostdinc -I../include -I../include/kernel -I../arch/$(ARCH)/include
 
 OBJECTS = _main.o \
           init.o

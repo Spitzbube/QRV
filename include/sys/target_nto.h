@@ -204,10 +204,10 @@
  */
 #undef __TIMESPEC_DEF
 #define __TIMESPEC_DEF(__name, __pref) \
-	struct __name {						\
-	    _CSTD time_t	__pref##_sec;	\
-	    long			__pref##_nsec;	\
-    }
+	struct __name { \
+	    _CSTD time_t	__pref##_sec; \
+	    long			__pref##_nsec; \
+	}
 
 #undef	__TIMESPEC
 #define __TIMESPEC	__TIMESPEC_DEF(timespec, tv)
@@ -231,10 +231,10 @@
 			}			__ss;	\
 		}			__ss_un;	\
 	}
-	#define __sched_ss_low_priority	__ss_un.__ss.__ss_low_priority
-	#define __sched_ss_max_repl		__ss_un.__ss.__ss_max_repl
-	#define __sched_ss_repl_period	__ss_un.__ss.__ss_repl_period
-	#define __sched_ss_init_budget	__ss_un.__ss.__ss_init_budget
+#define __sched_ss_low_priority	__ss_un.__ss.__ss_low_priority
+#define __sched_ss_max_repl		__ss_un.__ss.__ss_max_repl
+#define __sched_ss_repl_period	__ss_un.__ss.__ss_repl_period
+#define __sched_ss_init_budget	__ss_un.__ss.__ss_init_budget
 #else
 #define __SCHED_PARAM_DEF(__name, __ts, __pref) \
 	struct __name { \
@@ -289,28 +289,28 @@
 
 /* These are C99 types */
 
-typedef _Int8t						_Intleast8t;
-typedef _Uint8t						_Uintleast8t;
-typedef _Int8t						_Intfast8t;
-typedef _Uint8t						_Uintfast8t;
+typedef _Int8t _Intleast8t;
+typedef _Uint8t _Uintleast8t;
+typedef _Int8t _Intfast8t;
+typedef _Uint8t _Uintfast8t;
 
-typedef _Int16t						_Intleast16t;
-typedef _Uint16t					_Uintleast16t;
-typedef _Int16t						_Intfast16t;
-typedef _Uint16t					_Uintfast16t;
+typedef _Int16t _Intleast16t;
+typedef _Uint16t _Uintleast16t;
+typedef _Int16t _Intfast16t;
+typedef _Uint16t _Uintfast16t;
 
-typedef _Int32t						_Intleast32t;
-typedef _Uint32t					_Uintleast32t;
-typedef _Int32t						_Intfast32t;
-typedef _Uint32t					_Uintfast32t;
+typedef _Int32t _Intleast32t;
+typedef _Uint32t _Uintleast32t;
+typedef _Int32t _Intfast32t;
+typedef _Uint32t _Uintfast32t;
 
-typedef _Int64t						_Intleast64t;
-typedef _Uint64t					_Uintleast64t;
-typedef _Int64t						_Intfast64t;
-typedef _Uint64t					_Uintfast64t;
+typedef _Int64t _Intleast64t;
+typedef _Uint64t _Uintleast64t;
+typedef _Int64t _Intfast64t;
+typedef _Uint64t _Uintfast64t;
 
-typedef _Int64t						_Intmaxt;
-typedef _Uint64t					_Uintmaxt;
+typedef _Int64t _Intmaxt;
+typedef _Uint64t _Uintmaxt;
 
 #undef __PTHREAD_KEY_T
 #define __PTHREAD_KEY_T		int
@@ -341,50 +341,50 @@ typedef _Uint64t					_Uintmaxt;
 
 /* Customize DINKUM libraries */
 #if defined(__LITTLEENDIAN__)
-#define _D0		3	/* 0: big endian, 3: little endian floating-point */
+#define _D0		3               /* 0: big endian, 3: little endian floating-point */
 #elif defined(__BIGENDIAN__)
-#define _D0		0	/* 0: big endian, 3: little endian floating-point */
+#define _D0		0               /* 0: big endian, 3: little endian floating-point */
 #else
 #error ENDIAN Not defined for system
 #endif
 #if __LONGDOUBLE_BITS__ == 64
-#define _DLONG	0		/* 0: 64, 1: 80, 2: 128 long double bits */
-#define _LBIAS	0x3fe	/* 64 long double bits */
-#define _LOFF	4		/* 64 long double bits */
+#define _DLONG	0               /* 0: 64, 1: 80, 2: 128 long double bits */
+#define _LBIAS	0x3fe           /* 64 long double bits */
+#define _LOFF	4               /* 64 long double bits */
 #elif __LONGDOUBLE_BITS__ == 80
-#define _DLONG	1		/* 0: 64, 1: 80, 2: 128 long double bits */
-#define _LBIAS	0x3ffe	/* 80/128 long double bits */
-#define _LOFF	15		/* 80/128 long double bits */
+#define _DLONG	1               /* 0: 64, 1: 80, 2: 128 long double bits */
+#define _LBIAS	0x3ffe          /* 80/128 long double bits */
+#define _LOFF	15              /* 80/128 long double bits */
 #elif __LONGDOUBLE_BITS__ == 128
-#define _DLONG	2		/* 0: 64, 1: 80, 2: 128 long double bits */
-#define _LBIAS	0x3ffe	/* 80/128 long double bits */
-#define _LOFF	15		/* 80/128 long double bits */
+#define _DLONG	2               /* 0: 64, 1: 80, 2: 128 long double bits */
+#define _LBIAS	0x3ffe          /* 80/128 long double bits */
+#define _LOFF	15              /* 80/128 long double bits */
 #error __LONGDOUBLE_BITS__ not a supported size
 #endif
 
-		/* FLOATING-POINT PROPERTIES */
-#define _DBIAS	0x3fe	/* IEEE format double and float */
+        /* FLOATING-POINT PROPERTIES */
+#define _DBIAS	0x3fe           /* IEEE format double and float */
 #define _DOFF	4
 #define _FBIAS	0x7e
 #define _FOFF	7
 #define _FRND	1
 
-		/* integer properties */
+        /* integer properties */
 #define _BITS_BYTE	8
-#define _C2			1	/* 0 if not 2's complement */
+#define _C2			1           /* 0 if not 2's complement */
 #if defined(__CHAR_SIGNED__)
-#define _CSIGN		1	/* 0 if char is not signed */
+#define _CSIGN		1           /* 0 if char is not signed */
 #elif defined(__CHAR_UNSIGNED__)
-#define _CSIGN		0	/* 0 if char is not signed */
+#define _CSIGN		0           /* 0 if char is not signed */
 #endif
-#define _MBMAX		8	/* MB_LEN_MAX */
+#define _MBMAX		8           /* MB_LEN_MAX */
 
-#define _MAX_EXP_DIG	8	/* for parsing numerics */
+#define _MAX_EXP_DIG	8       /* for parsing numerics */
 #define _MAX_INT_DIG	32
 #define _MAX_SIG_DIG	48
 
 #if defined(__GNUC__) || defined(__INTEL_COMPILER)
-	#define	__SECSTR(__sec, __s) __asm__(".section " #__sec ";.asciz \"" __s "\";.previous")
+#define	__SECSTR(__sec, __s) __asm__(".section " #__sec ";.asciz \"" __s "\";.previous")
 #endif
 
 

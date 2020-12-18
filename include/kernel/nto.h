@@ -37,6 +37,8 @@
 	#include <kernel/cpu_sh.h>
 #elif defined(__ARM__)
 	#include <kernel/cpu_arm.h>
+#elif defined(__RISCV__)
+	#include <kernel/cpu_riscv.h>
 #else
     #error not configured for system
 #endif

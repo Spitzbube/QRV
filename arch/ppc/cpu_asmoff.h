@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -156,7 +156,7 @@ VALUE(PPC400_TLBHI_SIZE_4K,	PPC400_TLBHI_SIZE_4K);
 VALUE(PPC400_TLBHI_SIZE_16M,PPC400_TLBHI_SIZE_16M);
 VALUE(PPC400_TLBHI_VALID,	PPC400_TLBHI_VALID);
 
-VALUE(PPC_CPU_HW_POW,		PPC_CPU_HW_POW); 
+VALUE(PPC_CPU_HW_POW,		PPC_CPU_HW_POW);
 
 VALUE(PPC_KERENTRY_COMMON,	PPC_KERENTRY_COMMON);
 VALUE(PPC_KEREXIT_COMMON,	PPC_KEREXIT_COMMON);
@@ -216,7 +216,7 @@ VALUE(PPC800_SPR_MD_DBRAM1, PPC800_SPR_MD_DBRAM1);
 VALUE(PPC800_RPN_PP1_SHIFT, PPC800_RPN_PP1_SHIFT);
 VALUE(PPC800_RPN_PP2_SHIFT, PPC800_RPN_PP2_SHIFT);
 VALUE(PPC800_RPN_LPS,		PPC800_RPN_LPS);
-	
+
 VALUE(VM_MSG_XFER_START  , VM_MSG_XFER_START);
 VALUE(VM_MSG_XFER_END    , VM_MSG_XFER_END);
 

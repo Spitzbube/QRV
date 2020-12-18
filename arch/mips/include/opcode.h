@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,12 +33,12 @@
 
 	union r4k_instr {
 		unsigned int op_code;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned target : 26;
 		} j_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned rs : 5;
@@ -52,14 +52,14 @@
 			unsigned ft : 5;
 			signed s_offset : 16;
 	    } fi_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned rs : 5;
 			unsigned rt : 5;
 			unsigned u_imd : 16;
 		} u_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned rs : 5;
@@ -77,7 +77,7 @@
             unsigned fd : 5;
             unsigned func : 6;
 		} fr_t;
-	
+
 		struct {
 			unsigned op : 6;
 			unsigned base : 5;
@@ -91,19 +91,19 @@
 
 	union r4k_instr {
 		unsigned int op_code;
-	
+
 		struct {
 			unsigned target : 26;
 			unsigned op : 6;
 		} j_t;
-	
+
 		struct {
 			signed s_imd : 16;
 			unsigned rt : 5;
 			unsigned rs : 5;
 			unsigned op : 6;
 		} i_t;
-	
+
         struct {
             signed s_offset : 16;
             unsigned ft : 5;
@@ -117,7 +117,7 @@
 			unsigned rs : 5;
 			unsigned op : 6;
 		} u_t;
-	
+
 		struct {
 			unsigned func : 6;
 			unsigned re : 5;
@@ -135,7 +135,7 @@
             unsigned fmt : 5;
             unsigned op : 6;
 		} fr_t;
-	
+
 		struct {
 			signed s_imd : 16;
 			unsigned cache : 2;

@@ -81,89 +81,92 @@
 
 #if defined(__X86__)
 #define __LONGDOUBLE_BITS__		80
-#elif defined(__PPC__) || defined(__MIPS__) || defined(__SH__) || defined(__ARM__) || defined(__SPARC__)
+#elif defined(__PPC__) || defined(__MIPS__) || defined(__SH__) || defined(__ARM__) || defined(__SPARC__) || defined(__RISCV__)
 #define __LONGDOUBLE_BITS__		64
 #else
- #error not configured for CPU
+#error not configured for CPU
 #endif
 
 #if (__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 7)) && !defined(_lint)
-typedef int							_GCC_ATTR_ALIGN_64t __attribute__((__mode__(__DI__)));
-typedef unsigned int				_GCC_ATTR_ALIGN_u64t __attribute__((__mode__(__DI__)));
-typedef _GCC_ATTR_ALIGN_64t			_Int64t __attribute__((__aligned__(8)));
-typedef _GCC_ATTR_ALIGN_u64t		_Uint64t __attribute__((__aligned__(8)));
+typedef int _GCC_ATTR_ALIGN_64t __attribute__((__mode__(__DI__)));
+typedef unsigned int _GCC_ATTR_ALIGN_u64t
+    __attribute__((__mode__(__DI__)));
+typedef _GCC_ATTR_ALIGN_64t _Int64t __attribute__((__aligned__(8)));
+typedef _GCC_ATTR_ALIGN_u64t _Uint64t __attribute__((__aligned__(8)));
 #else
-typedef unsigned long long			_GCC_ATTR_ALIGN_u64t;
-typedef signed long long			_GCC_ATTR_ALIGN_64t;
-typedef _GCC_ATTR_ALIGN_u64t		_Uint64t __attribute__((__aligned__(8)));
-typedef _GCC_ATTR_ALIGN_64t 		_Int64t __attribute__((__aligned__(8)));
+typedef unsigned long long _GCC_ATTR_ALIGN_u64t;
+typedef signed long long _GCC_ATTR_ALIGN_64t;
+typedef _GCC_ATTR_ALIGN_u64t _Uint64t __attribute__((__aligned__(8)));
+typedef _GCC_ATTR_ALIGN_64t _Int64t __attribute__((__aligned__(8)));
 #endif
 
 #if __INT_BITS__ == 32
-typedef unsigned					_GCC_ATTR_ALIGN_u32t;
-typedef int							_GCC_ATTR_ALIGN_32t;
-typedef _GCC_ATTR_ALIGN_u32t		_Uint32t __attribute__((__aligned__(4)));
-typedef _GCC_ATTR_ALIGN_32t			_Int32t __attribute__((__aligned__(4)));
+typedef unsigned _GCC_ATTR_ALIGN_u32t;
+typedef int _GCC_ATTR_ALIGN_32t;
+typedef _GCC_ATTR_ALIGN_u32t _Uint32t __attribute__((__aligned__(4)));
+typedef _GCC_ATTR_ALIGN_32t _Int32t __attribute__((__aligned__(4)));
 #elif __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 7)
-typedef int                         _GCC_ATTR_ALIGN_32t __attribute__((__mode__(__SI__)));
-typedef unsigned int                _GCC_ATTR_ALIGN_u32t __attribute__((__mode__(__SI__)));
-typedef _GCC_ATTR_ALIGN_32t			_Int32t __attribute__((__aligned__(4)));
-typedef _GCC_ATTR_ALIGN_u32t		_Uint32t  __attribute__((__aligned__(4)));
+typedef int _GCC_ATTR_ALIGN_32t __attribute__((__mode__(__SI__)));
+typedef unsigned int _GCC_ATTR_ALIGN_u32t
+    __attribute__((__mode__(__SI__)));
+typedef _GCC_ATTR_ALIGN_32t _Int32t __attribute__((__aligned__(4)));
+typedef _GCC_ATTR_ALIGN_u32t _Uint32t __attribute__((__aligned__(4)));
 #else
-typedef unsigned long				_GCC_ATTR_ALIGN_u32t;
-typedef signed long					_GCC_ATTR_ALIGN_32t;
-typedef _GCC_ATTR_ALIGN_u32t		_Uint32t __attribute__((__aligned__(4)));
-typedef _GCC_ATTR_ALIGN_32t			_Int32t __attribute__((__aligned__(4)));
+typedef unsigned long _GCC_ATTR_ALIGN_u32t;
+typedef signed long _GCC_ATTR_ALIGN_32t;
+typedef _GCC_ATTR_ALIGN_u32t _Uint32t __attribute__((__aligned__(4)));
+typedef _GCC_ATTR_ALIGN_32t _Int32t __attribute__((__aligned__(4)));
 #endif
 
 #if __INT_BITS__ == 16
-typedef int							_GCC_ATTR_ALIGN_16t;
-typedef unsigned					_GCC_ATTR_ALIGN_u16t;
-typedef _GCC_ATTR_ALIGN_u16t		_Uint16t __attribute__((__aligned__(2)));
-typedef _GCC_ATTR_ALIGN_16t			_Int16t __attribute__((__aligned__(2)));
+typedef int _GCC_ATTR_ALIGN_16t;
+typedef unsigned _GCC_ATTR_ALIGN_u16t;
+typedef _GCC_ATTR_ALIGN_u16t _Uint16t __attribute__((__aligned__(2)));
+typedef _GCC_ATTR_ALIGN_16t _Int16t __attribute__((__aligned__(2)));
 #elif (__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 7)) && !defined(_lint)
-typedef int							_GCC_ATTR_ALIGN_16t __attribute__((__mode__(__HI__)));
-typedef unsigned int				_GCC_ATTR_ALIGN_u16t __attribute__((__mode__(__HI__)));
-typedef _GCC_ATTR_ALIGN_16t			_Int16t __attribute__((__aligned__(2)));
-typedef _GCC_ATTR_ALIGN_u16t		_Uint16t __attribute__((__aligned__(2)));
+typedef int _GCC_ATTR_ALIGN_16t __attribute__((__mode__(__HI__)));
+typedef unsigned int _GCC_ATTR_ALIGN_u16t
+    __attribute__((__mode__(__HI__)));
+typedef _GCC_ATTR_ALIGN_16t _Int16t __attribute__((__aligned__(2)));
+typedef _GCC_ATTR_ALIGN_u16t _Uint16t __attribute__((__aligned__(2)));
 #else
-typedef signed short				_GCC_ATTR_ALIGN_16t;
-typedef unsigned short				_GCC_ATTR_ALIGN_u16t;
-typedef _GCC_ATTR_ALIGN_u16t		_Uint16t __attribute__((__aligned__(2)));
-typedef _GCC_ATTR_ALIGN_16t			_Int16t __attribute__((__aligned__(2)));
+typedef signed short _GCC_ATTR_ALIGN_16t;
+typedef unsigned short _GCC_ATTR_ALIGN_u16t;
+typedef _GCC_ATTR_ALIGN_u16t _Uint16t __attribute__((__aligned__(2)));
+typedef _GCC_ATTR_ALIGN_16t _Int16t __attribute__((__aligned__(2)));
 #endif
 
 #if (__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 7)) && !defined(_lint)
-typedef int							_GCC_ATTR_ALIGN_8t __attribute__((__mode__(__QI__)));
-typedef unsigned int				_GCC_ATTR_ALIGN_u8t __attribute__((__mode__(__QI__)));
-typedef _GCC_ATTR_ALIGN_8t			_Int8t __attribute__((__aligned__(1)));
-typedef _GCC_ATTR_ALIGN_u8t			_Uint8t __attribute__((__aligned__(1)));
+typedef int _GCC_ATTR_ALIGN_8t __attribute__((__mode__(__QI__)));
+typedef unsigned int _GCC_ATTR_ALIGN_u8t __attribute__((__mode__(__QI__)));
+typedef _GCC_ATTR_ALIGN_8t _Int8t __attribute__((__aligned__(1)));
+typedef _GCC_ATTR_ALIGN_u8t _Uint8t __attribute__((__aligned__(1)));
 #else
-typedef signed char					_GCC_ATTR_ALIGN_8t;
-typedef unsigned char				_GCC_ATTR_ALIGN_u8t;
-typedef _GCC_ATTR_ALIGN_u8t			_Uint8t __attribute__((__aligned__(1)));
-typedef _GCC_ATTR_ALIGN_8t			_Int8t __attribute__((__aligned__(1)));
+typedef signed char _GCC_ATTR_ALIGN_8t;
+typedef unsigned char _GCC_ATTR_ALIGN_u8t;
+typedef _GCC_ATTR_ALIGN_u8t _Uint8t __attribute__((__aligned__(1)));
+typedef _GCC_ATTR_ALIGN_8t _Int8t __attribute__((__aligned__(1)));
 #endif
 
 #if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 7)
-typedef int							_Intptrt __attribute__((__mode__(__pointer__)));
-typedef unsigned int				_Uintptrt __attribute__((__mode__(__pointer__)));
+typedef int _Intptrt __attribute__((__mode__(__pointer__)));
+typedef unsigned int _Uintptrt __attribute__((__mode__(__pointer__)));
 #elif __PTR_BITS__ <= 16
-typedef _Uint16t					_Uintptrt;
-typedef _Int16t						_Intptrt;
+typedef _Uint16t _Uintptrt;
+typedef _Int16t _Intptrt;
 #elif __PTR_BITS__ <= 32
-typedef _Uint32t					_Uintptrt;
-typedef _Int32t						_Intptrt;
+typedef _Uint32t _Uintptrt;
+typedef _Int32t _Intptrt;
 #elif __PTR_BITS__ <= 64
-typedef _Uint64t					_Uintptrt;
-typedef _Int64t						_Intptrt;
+typedef _Uint64t _Uintptrt;
+typedef _Int64t _Intptrt;
 #else
 #error Unable to declare integral pointer type
 #endif
 
 
-__extension__ typedef long long				_Longlong;
-__extension__ typedef unsigned long long	_ULonglong;
+__extension__ typedef long long _Longlong;
+__extension__ typedef unsigned long long _ULonglong;
 
 /*
  * This is to override the gcc local include files to use
@@ -196,7 +199,7 @@ __extension__ typedef unsigned long long	_ULonglong;
 typedef __builtin_va_list __gnuc_va_list;
 #endif
 
-typedef __gnuc_va_list                __NTO_va_list;
+typedef __gnuc_va_list __NTO_va_list;
 #define __NTO_va_start_stdarg(__p1,__p2)  __builtin_va_start(__p1,__p2)
 #define __NTO_va_arg(__p1, __p2)          __builtin_va_arg(__p1,__p2)
 #define __NTO_va_end(__p1)                __builtin_va_end(__p1)

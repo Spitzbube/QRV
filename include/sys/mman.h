@@ -143,7 +143,8 @@ typedef __OFF64_T	off64_t;
  || defined(__PPC__) \
  || defined(__MIPS__) \
  || defined(__SH__) \
- || defined(__ARM__)
+ || defined(__ARM__) \
+ || defined(__RISCV__)
 	#define __PAGESIZE 0x1000
 #else
     #error PAGESIZE not configured for system

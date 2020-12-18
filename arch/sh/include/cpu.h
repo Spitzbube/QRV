@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -20,7 +20,7 @@
 /*
  *  sh/cpu.h
  *
- * 
+ *
  * Note that the original definitions in this file came from the 7750/7751 days.
  * If a constant begins SH_, it might or might not be applicable for later hardware.
  * Look out for SH77xx_ definitions, and also have a look in sh4acpu.h.  Your
@@ -75,9 +75,9 @@
  */
 #define SH_SR_MD			_ONEBIT32L( 30 )
 #define SH_SR_RB			_ONEBIT32L( 29 )
-#define SH_SR_BL			_ONEBIT32L( 28 ) 
+#define SH_SR_BL			_ONEBIT32L( 28 )
 #define SH_SR_FD			_ONEBIT32L( 15 )
-#define SH_SR_M				_ONEBIT32L( 9 ) 
+#define SH_SR_M				_ONEBIT32L( 9 )
 #define SH_SR_Q				_ONEBIT32L( 8 )
 #define SH_SR_IMASK			_BITFIELD32L( 4, 0xf )
 #define SH_SR_IMASKL(x)		_BITFIELD32L( 4, x )
@@ -186,14 +186,14 @@
 #define SH7760_EXC_CODE_SCIFRXI2	0xBA0
 #define SH7760_EXC_CODE_SCIFBRI2	0xBC0
 #define SH7760_EXC_CODE_SCIFTXI2	0xBE0
-	
+
 /*#define OPCODE_BREAK	0x7fe00008*/
 
 
 /*
  * Memory Mapped Register addresses
  */
- 
+
 #define SH_MMR_CCN_PTEH			0xff000000
 #define SH_MMR_CCN_PTEL			0xff000004
 #define SH_MMR_CCN_TTB			0xff000008
@@ -315,7 +315,7 @@
  * sh_mmr_tmu_base_address appropriately.
  * References to TMU registers in the kernel are then done through
  * *(sh_mmr_tmu_base_address + OFFSET).
- * 
+ *
  * TMU register offsets are (mostly) unchanged, so we can use constants for those.
  */
 #define SH_X3P_MMR_TMU_BASE_ADDRESS 0xffc10000
@@ -376,7 +376,7 @@
 
 
 /* Macros for converting between physical addresses and various virtual memory windows.
- * 
+ *
  * Note that in these definitions we assume the 29-bit physical address space of
  * the SH-4, which means a conversion to a physical address just involves clearing the
  * upper 3 bits of an address.  With the SH-4a architecture, we run in 32-bit mode,
@@ -386,7 +386,7 @@
  * though we have to be careful.  If a piece of memory is allocated using the restrict_proc
  * restriction, we are guaranteed that the memory is safe for these routines.  So generally
  * procnto only needs to be careful with memory addresses that were allocated by the user.
- * 
+ *
  * Also note that for accessing the memory mapped control register area from user mode,
  * there are differences between the SH-4 and SH-4a architectures.  For privileged mode,
  * both architectures access the control register area through the P4 window of
@@ -437,7 +437,7 @@
  */
 #define SH4_ITLB_SIZE				0x4
 #define SH4_UTLB_SIZE				0x40
- 
+
 /*
  * Memory Mapped control address
  */

@@ -20,30 +20,7 @@
 #include <kernel/hooks.h>
 
 #if defined(__X86__)
-#if defined(__WATCOMC__)
-	//
-	// The following overloading of fortran calling conventions allows us
-	// a minor increase in performance by telling the compiler that it need
-	// not save any registers for the kernel calls which are called from
-	// the assembly stub kernel.asm. We also tell it to use stack calling
-	// conventions for its arguments.
-	//
-	// The following overloading of pascal calling conventions allows us
-	// a minor increase in performance by passing args through registers.
-	//
-	#pragma aux fortran "*" modify exact [eax ebx ecx edx esi edi gs] parm caller [];
-	#define kdecl fortran
-
-	#pragma aux pascal "*" parm [eax edx ebx ecx] routine;
-	#define rdecl pascal
-
-	#pragma aux specialret 		parm [eax] modify exact [eax ebx ecx edx esi edi gs];
-	#pragma aux intrevent_add	parm [eax] [edx] [ecx] value [eax] modify exact [eax ecx edx edi gs];
-	#pragma aux intrevent_drain	modify exact [eax ebx ecx edx esi edi gs];
-	#define specialret_attr
-	#define intrevent_add_attr
-	#define intrevent_drain_attr rdecl
-#elif defined(__GNUC__) || defined(__INTEL_COMPILER)
+#if defined(__GNUC__) || defined(__INTEL_COMPILER)
 	/*-
 	 * not much fancy for now; just a little gnu-insanity
 	 */
@@ -69,7 +46,8 @@
 	#define intrevent_drain_attr
 #elif defined(__MIPS__) \
    || defined(__SH__) \
-   || defined(__ARM__)
+   || defined(__ARM__) \
+   || defined(__RISCV__)
 	/*-
 	 * nothing fancy for now; maybe later tap some gnu-insanity
 	 */

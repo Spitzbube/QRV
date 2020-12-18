@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -442,12 +442,12 @@
 /*
  * Exception table vectors
  */
-#define PPC400_EXC_PIT			(0x1000/sizeof(uint32_t)) 
-#define PPC400_EXC_FIT			(0x1010/sizeof(uint32_t)) 
-#define PPC400_EXC_WATCHDOG		(0x1020/sizeof(uint32_t)) 
-#define PPC400_EXC_DTLB_MISS	(0x1100/sizeof(uint32_t)) 
-#define PPC400_EXC_ITLB_MISS	(0x1200/sizeof(uint32_t)) 
-#define PPC400_EXC_DEBUG		(0x2000/sizeof(uint32_t)) 
+#define PPC400_EXC_PIT			(0x1000/sizeof(uint32_t))
+#define PPC400_EXC_FIT			(0x1010/sizeof(uint32_t))
+#define PPC400_EXC_WATCHDOG		(0x1020/sizeof(uint32_t))
+#define PPC400_EXC_DTLB_MISS	(0x1100/sizeof(uint32_t))
+#define PPC400_EXC_ITLB_MISS	(0x1200/sizeof(uint32_t))
+#define PPC400_EXC_DEBUG		(0x2000/sizeof(uint32_t))
 
 #endif
 

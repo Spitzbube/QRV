@@ -30,7 +30,8 @@
  && !defined(_DEBUG_TARGET_X86) \
  && !defined(_DEBUG_TARGET_PPC) \
  && !defined(_DEBUG_TARGET_MIPS) \
- && !defined(_DEBUG_TARGET_ARM)
+ && !defined(_DEBUG_TARGET_ARM) \
+ && !defined(_DEBUG_TARGET_RISCV)
 	#if defined(__X86__)
 		#define _DEBUG_TARGET_X86
 	#elif defined(__PPC__)
@@ -41,6 +42,8 @@
 		#define _DEBUG_TARGET_SH
 	#elif defined(__ARM__)
 		#define _DEBUG_TARGET_ARM
+	#elif defined(__RISCV__)
+		#define _DEBUG_TARGET_RISCV
 	#else
 		#error not configured for system
 	#endif
@@ -69,6 +72,11 @@
 #if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_ARM)
 #ifndef __ARM_CONTEXT_H_INCLUDED
 #include _NTO_HDR_(arm/context.h)
+#endif
+#endif
+#if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_RISCV)
+#ifndef __RISCV_CONTEXT_H_INCLUDED
+#include _NTO_HDR_(riscv/context.h)
 #endif
 #endif
 
@@ -338,6 +346,9 @@ typedef union _debug_gregs {
 #endif
 #if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_SH)
 	SH_CPU_REGISTERS			sh;
+#endif
+#if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_RISCV)
+	RISCV_CPU_REGISTERS			sh;
 #endif
 	_Uint64t						padding[1024];
 }							debug_greg_t;

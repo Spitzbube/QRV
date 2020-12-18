@@ -89,6 +89,18 @@
 	#define SET_REGSP	ARM_SET_REGSP
 	#define GET_REGIP	ARM_GET_REGIP
 	#define GET_REGSP	ARM_GET_REGSP
+#elif defined(__RISCV__)
+	#ifndef __RISCV_CONTEXT_H_INCLUDED
+		#include <riscv/context.h>
+	#endif
+	typedef struct {
+		RISCV_CPU_REGISTERS	cpu;
+		RISCV_FPU_REGISTERS	fpu;
+	} mcontext_t;
+	#define SET_REGIP	RISCV_SET_REGIP
+	#define SET_REGSP	RISCV_SET_REGSP
+	#define GET_REGIP	RISCV_GET_REGIP
+	#define GET_REGSP	RISCV_GET_REGSP
 #else
 	#error Context structure not defined
 #endif

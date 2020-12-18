@@ -76,18 +76,6 @@ extern void siglongjmp(sigjmp_buf __env, int __val) __attribute__((__noreturn__)
 #define setjmp(__env)			sigsetjmp(__env, 1)
 #define longjmp(__env, __val)	siglongjmp((__env), (__val))
 
-#if defined(__X86__)
- #if defined(__WATCOMC__)
-   #pragma aux _setjmp modify [8087];
- #endif
-#elif defined(__PPC__) \
-   || defined(__MIPS__) \
-   || defined(__SH__) \
-   || defined(__ARM__)
-#else
- #error not configured for system
-#endif
-
 #include <_packpop.h>
 
 __END_DECLS

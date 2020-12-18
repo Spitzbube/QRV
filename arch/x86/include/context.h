@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -91,7 +91,7 @@ typedef struct x86_alt_registers {
 typedef struct x86_pentium_perfregs {
 	_Uint32t	id; /* unique part id */
 
-	_Uint32t	cesr; 
+	_Uint32t	cesr;
 	_Uint64t	ctr0; /* 40 bit */
 	_Uint64t	ctr1; /* 40 bit */
 } X86_PENTIUM_PERFREGS;
@@ -102,7 +102,7 @@ typedef struct x86_p6family_perfregs {
 	_Uint32t	spare0;	/* make sure things are aligned */
 
 	_Uint64t	PerfEvtSel0;
-	_Uint64t	PerfEvtSel1; 
+	_Uint64t	PerfEvtSel1;
 	_Uint64t	PerfCtr0; /* 40 bit */
 	_Uint64t	PerfCtr1; /* 40 bit */
 } X86_P6FAMILY_PERFREGS;
@@ -116,7 +116,7 @@ typedef struct x86_p6family_perfregs {
 typedef struct x86_pentium4xeon_perfregs {
 	_Uint32t	id; 	/* unique part id */
 	_Uint32t	spare0; /* Align */
-	
+
 	_Uint64t	bsu_escr[2];
 	_Uint64t	fsb_escr[2];
 	_Uint64t	mob_escr[2];
@@ -132,20 +132,20 @@ typedef struct x86_pentium4xeon_perfregs {
 	_Uint64t	flame_escr[2];
 	_Uint64t	dac_escr[2];
 	_Uint64t	saat_escr[2];
-	_Uint64t	u2l_escr[2];		
+	_Uint64t	u2l_escr[2];
 	_Uint64t	cru_escr[6];
 	_Uint64t	iq_escr[2];
 	_Uint64t	rat_escr[2];
 	_Uint64t	ssu_escr0;
 	_Uint64t	alf_escr[2];
-	
+
 
 	_Uint64t	bpu_cccr[X86_P4XEON_BPU];
 	_Uint64t	ms_cccr[X86_P4XEON_MS];
 	_Uint64t	flame_cccr[X86_P4XEON_FLAME];
 	_Uint64t	iq_cccr[X86_P4XEON_IQ];
-	
-	
+
+
 	_Uint64t	bpu_counter[X86_P4XEON_BPU];
 	_Uint64t	ms_counter[X86_P4XEON_MS];
 	_Uint64t	flame_counter[X86_P4XEON_FLAME];
@@ -153,7 +153,7 @@ typedef struct x86_pentium4xeon_perfregs {
 
 
 	/* Extra space for expansion. */
-	_Uint64t	spare1[10];	
+	_Uint64t	spare1[10];
 
 } X86_PENTIUM4XEON_PERFREGS;
 

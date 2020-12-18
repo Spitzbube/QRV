@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -59,7 +59,7 @@ rd_probe_num(const void *loc, int num) {
 		"subi	%1,%2,4;"
 		"mtctr	%3;"
 		"1:;"
-		"	lwzu %0,4(%1);" 
+		"	lwzu %0,4(%1);"
 		"bdnz	1b;"
 		: "=&r" (tmp), "=&b"(loc)
 		: "1" (loc), "r" (num)
@@ -182,14 +182,14 @@ extern const struct exc_copy_block	intr_entry;
 extern const struct exc_copy_block	intr_entry_critical;
 
 /*
- * Reserved areas in exc. table 
+ * Reserved areas in exc. table
  *
  *  0x1e00:	used by 6xx tlb miss handlers
  *  0x2100:	low code area
  *  0x2100: TLB reload random sequence (book E)
  *	0x2c00:	kerentry sequence
  *	0x2e00:	kerexit sequence
- */  
+ */
 #define PPC_LOW_CODE_START	0x2100
 #define PPCBKE_RANDOM_BASE	0x2100
 #define PPCBKE_RANDOM_SHIFT	6

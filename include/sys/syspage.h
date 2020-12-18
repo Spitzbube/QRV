@@ -15,12 +15,9 @@
  * $
  */
 
-
-
 /*
  *  sys/syspage.h
  *
-
  */
 
 #ifndef __SYSPAGE_H_INCLUDED
@@ -98,6 +95,8 @@ typedef struct {
 		#define SYSPAGE_TARGET_ARM
 	#elif defined(__SH__)
 		#define SYSPAGE_TARGET_SH
+	#elif defined(__RISCV__)
+		#define SYSPAGE_TARGET_RISCV
 	#else
 		#error not configured for system
 	#endif

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -40,52 +40,52 @@
 #define PPCPA6T_SPR_ASID		1022
 #define PPCPA6T_SPR_BAR			 862
 #define PPCPA6T_SPR_BTCR		 978
-#define PPCPA6T_SPR_DABR1		1016 
-#define PPCPA6T_SPR_DER			 982 
-#define PPCPA6T_SPR_DLCNT		 986 
-#define PPCPA6T_SPR_HDAR		 307 
-#define PPCPA6T_SPR_HDSISR		 306 
-#define PPCPA6T_SPR_HID0		1008   
-#define PPCPA6T_SPR_HID1		1009   
-#define PPCPA6T_SPR_HID4		1012   
-#define PPCPA6T_SPR_HID5		1014   
-#define PPCPA6T_SPR_HMEER		 337 
-#define PPCPA6T_SPR_HMER		 336 
-#define PPCPA6T_SPR_IABR		1010  
-#define PPCPA6T_SPR_IABR1		1011  
-#define PPCPA6T_SPR_IER			 981  
-#define PPCPA6T_SPR_IMA0		 880  
-#define PPCPA6T_SPR_IMA1		 881  
-#define PPCPA6T_SPR_IMA2		 882  
-#define PPCPA6T_SPR_IMA3		 883  
-#define PPCPA6T_SPR_IMA4		 884  
-#define PPCPA6T_SPR_IMA5		 885  
-#define PPCPA6T_SPR_IMA6		 886  
-#define PPCPA6T_SPR_IMA7		 887  
-#define PPCPA6T_SPR_IMA8		 888  
-#define PPCPA6T_SPR_IMA9		 889  
-#define PPCPA6T_SPR_IMMAT		 979  
-#define PPCPA6T_SPR_MER			 849  
-#define PPCPA6T_SPR_PWRC0		1018   
-#define PPCPA6T_SPR_RPCCR		1021    
-#define PPCPA6T_SPR_SIER		 785    
-#define PPCPA6T_SPR_SIER_USER	 769    
-#define PPCPA6T_SPR_TBCTL		 863    
-#define PPCPA6T_SPR_TBU40		 286    
-#define PPCPA6T_SPR_TSR0		 793    
-#define PPCPA6T_SPR_TSR0_USER	 777    
-#define PPCPA6T_SPR_TSR1		 794    
-#define PPCPA6T_SPR_TSR1_USER	 778    
-#define PPCPA6T_SPR_TSR2		 799    
-#define PPCPA6T_SPR_TSR2_USER	 783    
-#define PPCPA6T_SPR_TSR3		 784    
-#define PPCPA6T_SPR_TSR3_USER	 768    
+#define PPCPA6T_SPR_DABR1		1016
+#define PPCPA6T_SPR_DER			 982
+#define PPCPA6T_SPR_DLCNT		 986
+#define PPCPA6T_SPR_HDAR		 307
+#define PPCPA6T_SPR_HDSISR		 306
+#define PPCPA6T_SPR_HID0		1008
+#define PPCPA6T_SPR_HID1		1009
+#define PPCPA6T_SPR_HID4		1012
+#define PPCPA6T_SPR_HID5		1014
+#define PPCPA6T_SPR_HMEER		 337
+#define PPCPA6T_SPR_HMER		 336
+#define PPCPA6T_SPR_IABR		1010
+#define PPCPA6T_SPR_IABR1		1011
+#define PPCPA6T_SPR_IER			 981
+#define PPCPA6T_SPR_IMA0		 880
+#define PPCPA6T_SPR_IMA1		 881
+#define PPCPA6T_SPR_IMA2		 882
+#define PPCPA6T_SPR_IMA3		 883
+#define PPCPA6T_SPR_IMA4		 884
+#define PPCPA6T_SPR_IMA5		 885
+#define PPCPA6T_SPR_IMA6		 886
+#define PPCPA6T_SPR_IMA7		 887
+#define PPCPA6T_SPR_IMA8		 888
+#define PPCPA6T_SPR_IMA9		 889
+#define PPCPA6T_SPR_IMMAT		 979
+#define PPCPA6T_SPR_MER			 849
+#define PPCPA6T_SPR_PWRC0		1018
+#define PPCPA6T_SPR_RPCCR		1021
+#define PPCPA6T_SPR_SIER		 785
+#define PPCPA6T_SPR_SIER_USER	 769
+#define PPCPA6T_SPR_TBCTL		 863
+#define PPCPA6T_SPR_TBU40		 286
+#define PPCPA6T_SPR_TSR0		 793
+#define PPCPA6T_SPR_TSR0_USER	 777
+#define PPCPA6T_SPR_TSR1		 794
+#define PPCPA6T_SPR_TSR1_USER	 778
+#define PPCPA6T_SPR_TSR2		 799
+#define PPCPA6T_SPR_TSR2_USER	 783
+#define PPCPA6T_SPR_TSR3		 784
+#define PPCPA6T_SPR_TSR3_USER	 768
 
 /*
  * Exception table vectors
  */
-#define PPCPA6T_EXC_INSTR_BREAK	(0x1300/sizeof(uint32_t)) 
-#define PPCPA6T_EXC_SOFT_PATCH	(0x1500/sizeof(uint32_t)) 
+#define PPCPA6T_EXC_INSTR_BREAK	(0x1300/sizeof(uint32_t))
+#define PPCPA6T_EXC_SOFT_PATCH	(0x1500/sizeof(uint32_t))
 
 /*
  * HID0
@@ -203,7 +203,7 @@
 #define	PPCPA6T_SPR_HID5_EN_205_MEI				_ONEBIT64B(61)
 
 
- 
+
 #endif
 
 /* __SRCVERSION("pa6tcpu.h $Rev: 153052 $"); */

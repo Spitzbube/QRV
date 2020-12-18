@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -45,7 +45,7 @@ VALUE(SH_MMR_CCN_TEA,		SH_MMR_CCN_TEA);
 VALUE(SH_MMR_CCN_PTEH,		SH_MMR_CCN_PTEH);
 VALUE(SH_MMR_CCN_TEA_OFF,	SH_MMR_CCN_TEA_OFF);
 VALUE(SH_MMR_CCN_TTB_OFF,	SH_MMR_CCN_TTB_OFF);
-VALUE(SH_MMR_CCN_PTEL_OFF,	SH_MMR_CCN_PTEL_OFF);		
+VALUE(SH_MMR_CCN_PTEL_OFF,	SH_MMR_CCN_PTEL_OFF);
 VALUE(SH_MMR_CCN_PTEH_OFF,	SH_MMR_CCN_PTEH_OFF);
 VALUE(SH_MMR_CCN_PTEA_OFF,	SH_MMR_CCN_PTEA_OFF);
 VALUE(SH_CCN_BASE,			SH_CCN_BASE);

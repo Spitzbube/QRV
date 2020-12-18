@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -56,7 +56,7 @@
 #define PPC86xx_CSn_CONFIG_COL_BITS_9		_BITFIELD32B(31,0x1)
 #define PPC86xx_CSn_CONFIG_COL_BITS_10		_BITFIELD32B(31,0x2)
 #define PPC86xx_CSn_CONFIG_COL_BITS_11		_BITFIELD32B(31,0x3)
- 
+
 /*
  * POR PLL Status Register
  */
@@ -271,7 +271,7 @@
 #define PPC86xx_CCSR_OFF_PC_EOI			0x600b0
 /* LAWs */
 #define PPC86xx_CCSR_OFF_LAWBAR(n)		(0xc08 + (n)*0x20)  /* n = 0-9 */
-#define PPC86xx_CCSR_OFF_LAWAR(n)		(0xc10 + (n)*0x20)  /* n = 0-9 */ 
+#define PPC86xx_CCSR_OFF_LAWAR(n)		(0xc10 + (n)*0x20)  /* n = 0-9 */
 /* PEX 1*/
 #define PPC86xx_CCSR_OFF_PEX1_CFG_ADDR      0x8000
 #define PPC86xx_CCSR_OFF_PEX1_CFG_DATA      0x8004

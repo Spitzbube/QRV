@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -40,7 +40,7 @@
 #endif
 
 /*
-** System Control 
+** System Control
 */
 #define AU1000_SYS_BASE		0x11900000
 
@@ -60,13 +60,13 @@
 #define	AU1000_ICR0_BASE		0x10400000
 #define	AU1000_ICR1_BASE		0x11800000
 
-#define	AU1000_ICR_CFG0RD		0x0040 
+#define	AU1000_ICR_CFG0RD		0x0040
 #define	AU1000_ICR_CFG0SET		0x0040
 #define	AU1000_ICR_CFG0CLR		0x0044
-#define	AU1000_ICR_CFG1RD		0x0048 
+#define	AU1000_ICR_CFG1RD		0x0048
 #define	AU1000_ICR_CFG1SET		0x0048
 #define	AU1000_ICR_CFG1CLR		0x004C
-#define	AU1000_ICR_CFG2RD		0x0050 
+#define	AU1000_ICR_CFG2RD		0x0050
 #define	AU1000_ICR_CFG2SET		0x0050
 #define	AU1000_ICR_CFG2CLR		0x0054
 #define	AU1000_ICR_REQ0INT		0x0054
@@ -291,7 +291,7 @@
 #define AU1000_IRDA_BAUD_38400 		2
 #define AU1000_IRDA_BAUD_57600 		1
 #define AU1000_IRDA_BAUD_115200 	0
-#define AU1000_IRDA_PHY_PW12 		0x0180 
+#define AU1000_IRDA_PHY_PW12 		0x0180
 
 
 #define _RAU1000UNIT(unit,reg,size)	(*(volatile uint##size##_t *)((MIPS_R4K_K1BASE+AU1000_##unit##_BASE + AU1000_##reg)))
