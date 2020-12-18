@@ -1,0 +1,7 @@
+#! /bin/sh
+
+# For 32-bit
+#riscv64-linux-gnu-gcc -march=rv32g -mabi=ilp32 $@
+
+# For 64-bit
+riscv64-linux-gnu-gcc $@
