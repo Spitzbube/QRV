@@ -30,6 +30,9 @@
  */
 
 .section .text
+
+.global _entry
+
 _entry:
 	# set up a stack for C.
         # stack0 is declared in start.c,

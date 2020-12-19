@@ -23,7 +23,7 @@
 #define __PLATFORM_H_INCLUDED
 
 #include <platform.h>
-#include <sys/compiler_gnu.h>
+#include <sys/gcc_lp64.h>
 
 #if !defined(__LINT)
 #define __LINT(__expr)

@@ -1,16 +1,16 @@
 #
 # $QNXLicenseA:
 # Copyright 2007, QNX Software Systems. All Rights Reserved.
-# 
-# You must obtain a written license from and pay applicable license fees to QNX 
-# Software Systems before you may reproduce, modify or distribute this software, 
-# or any work that includes all or part of this software.   Free development 
-# licenses are available for evaluation and non-commercial purposes.  For more 
+#
+# You must obtain a written license from and pay applicable license fees to QNX
+# Software Systems before you may reproduce, modify or distribute this software,
+# or any work that includes all or part of this software.   Free development
+# licenses are available for evaluation and non-commercial purposes.  For more
 # information visit http://licensing.qnx.com or email licensing@qnx.com.
-#  
-# This file may contain contributions from others.  Please review this entire 
-# file for other proprietary rights or license notices, as well as the QNX 
-# Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+#
+# This file may contain contributions from others.  Please review this entire
+# file for other proprietary rights or license notices, as well as the QNX
+# Development Suite License Guide at http://licensing.qnx.com/license-guide/
 # for other information.
 # $
 #
@@ -34,15 +34,15 @@
 	_handler_xfer_cpy_diov_dst:
 	.long	_fault_xfer_cpy_diov_dst
 	.long	0
-	
+
 	.text
 
 /
 /	int xfer_memcpy(void *dst, const void *src, size_t len)
 /	Copy of a short msg (buffer to buffer)
-/	
 /
-/	parameter list: 
+/
+/	parameter list:
 #define XFER_MEMCPY_SAVE_NARGS	2		// ebx,ret
 #define	XFER_MEMCPY_ARGS		(4+XFER_MEMCPY_SAVE_NARGS*4)
 #define	XFER_MEMCPY_DST			(XFER_MEMCPY_ARGS+0x0)
@@ -52,10 +52,10 @@
 xfer_memcpy:
 	push	%esi
 	push	%edi
-	movl	XFER_MEMCPY_DST(%esp),%edi 
+	movl	XFER_MEMCPY_DST(%esp),%edi
 	movl	XFER_MEMCPY_SRC(%esp),%esi
 	movl	XFER_MEMCPY_LEN(%esp),%ecx
-	
+
 	SETXFERHANDLER	_handler_xfer_memcpy,%eax,0
 	mov	%ecx,%eax
 	shr	$2,%ecx
@@ -63,18 +63,18 @@ xfer_memcpy:
 	movb	%al,%cl
 	andb	$3,%cl
 	repne;	movsb
-	
+
 	SETXFERHANDLER	0,%eax,0
-	
+
 	pop		%edi
 	pop		%esi
-	
+
 	xor		%eax,%eax
 	ret
 
 /
-/	Fault handler for xfer_memcpy	
-/	
+/	Fault handler for xfer_memcpy
+/
 /	parameter list:
 /	(from sp + 4 + saved args * 4)
 / 	0 thp
@@ -86,20 +86,20 @@ _fault_xfer_memcpy:
 	testl	$X86_FAULT_WRITE,12(%esp)	/ 4+8
 	jne		1f
 	movl	$XFER_SRC_FAULT,%eax
-1:	
+1:
 	/ restore regs
 	movl	8(%esp),%esi	/ *regs
 	movl	REG_EBP(%esi),%ebp
 	movl	REG_EBX(%esi),%ebx
 	movl	REG_EBP+4(%esi),%esp
 	addl	$12,%esp
-	
+
 	pop		%edi
 	pop		%esi
 	ret
 
 /
-/	Fault handler for xfer_cpy_diov	
+/	Fault handler for xfer_cpy_diov
 /
 /	parameter list:
 /	(from sp + 4 + saved args * 4)
@@ -113,20 +113,20 @@ _fault_xfer_cpy_diov_dst:
 	je		1f
 	movl	$XFER_SRC_FAULT,%eax
 	jmp		1f
-		
+
 _fault_xfer_cpy_diov_src:
 	/ see what fault it is
 	movl	$XFER_DST_FAULT,%eax
 	testl	$X86_FAULT_WRITE,12(%esp)	/ 4+8
 	jne		1f
 	movl	$XFER_SRC_FAULT,%eax
-1:	
+1:
 	/ restore regs
 	movl	8(%esp),%esi	/ *regs
 	movl	REG_EBP(%esi),%ebp
 	movl	REG_EBP+4(%esi),%esp
 	addl	$12,%esp
-	
+
 	pop		%edi
 	pop		%esi
 	pop		%ebx
@@ -155,20 +155,20 @@ xfer_cpy_diov:
  	movl	XFER_CPY_DIOV_SADDR(%esp),%esi 	/ saddr
 	movl	XFER_CPY_DIOV_DPARTS(%esp),%ecx	/ dparts
 	movl	PROCESS(%ebx),%ebx	/ thpd->process
- 
+
 / dparts < 0?
 	cmpl	$0x0,%ecx
 	jnl		1f
 	movl	%eax,%edi
-	
-/ Invert dparts	
+
+/ Invert dparts
 	negl	%ecx
 
  	movl	XFER_CPY_DIOV_SLEN(%esp),%edx 	/ slen
 	cmpl	%edx,%ecx
 	jbe		2f
 	movl	%edx,%ecx
-2:	
+2:
 	SETXFERHANDLER	_handler_xfer_cpy_diov_src,%eax,0
 	mov		%ecx,%eax
 	shr		$2,%ecx
@@ -177,12 +177,12 @@ xfer_cpy_diov:
 	andb	$3,%cl
 	repne;	movsb
 
-	jmp		100f	/ OK	
+	jmp		100f	/ OK
 
-1:	
+1:
 	je		100f	/ zero dparts
-	 
-/ multi parts IOV 
+
+/ multi parts IOV
 / ebx porcess; esi saddr; edi daddr; eax dst; ecx dlen/t; edx temp;
 10:
 	SETXFERHANDLER	_handler_xfer_cpy_diov_dst,%ecx,0
@@ -199,7 +199,7 @@ xfer_cpy_diov:
 	movb	%dl,%cl
 	andb	$3,%cl
 	repne;	movsb
-	jmp		100f	/ OK	
+	jmp		100f	/ OK
 
 2:
 	SETXFERHANDLER	_handler_xfer_cpy_diov_src,%edx,0
@@ -211,11 +211,11 @@ xfer_cpy_diov:
 	repne;	movsb
 
 	decl	28(%esp)	/ dparts
-	je		100f		/ OK	
-	
+	je		100f		/ OK
+
 	subl	%edx,XFER_CPY_DIOV_SLEN(%esp)	/ slen
 	addl	$8,%eax
-	
+
 	jmp		10b
 
 99:
@@ -223,10 +223,10 @@ xfer_cpy_diov:
 	jmp		101f
 100:
 	xor		%eax,%eax
-101:	
+101:
 	SETXFERHANDLER	0,%ebx,0
 	popl	%edi
 	popl	%esi
    	popl	%ebx
-	ret	
-	
+	ret
+

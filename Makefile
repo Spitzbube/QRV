@@ -1,1 +1,3 @@
-include recurse.mk
+all:
+	make -C arch/riscv/startup
+

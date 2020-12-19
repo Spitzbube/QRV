@@ -1,16 +1,16 @@
 #
 # $QNXLicenseA:
 # Copyright 2007, QNX Software Systems. All Rights Reserved.
-# 
-# You must obtain a written license from and pay applicable license fees to QNX 
-# Software Systems before you may reproduce, modify or distribute this software, 
-# or any work that includes all or part of this software.   Free development 
-# licenses are available for evaluation and non-commercial purposes.  For more 
+#
+# You must obtain a written license from and pay applicable license fees to QNX
+# Software Systems before you may reproduce, modify or distribute this software,
+# or any work that includes all or part of this software.   Free development
+# licenses are available for evaluation and non-commercial purposes.  For more
 # information visit http://licensing.qnx.com or email licensing@qnx.com.
-#  
-# This file may contain contributions from others.  Please review this entire 
-# file for other proprietary rights or license notices, as well as the QNX 
-# Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+#
+# This file may contain contributions from others.  Please review this entire
+# file for other proprietary rights or license notices, as well as the QNX
+# Development Suite License Guide at http://licensing.qnx.com/license-guide/
 # for other information.
 # $
 #
@@ -22,7 +22,7 @@
 #include "util.ah"
 
 	.text
-	
+
 /
 /	int xfer_cpy(THREAD* thp, void* src, void* dst, unsigned bytes)
 /	entry:
@@ -44,7 +44,7 @@ xfer_cpy:
 	jb		1f
 
 /release inkernel flag
-	andb	$~(INKERNEL_NOW>>8),(inkernel+1)	
+	andb	$~(INKERNEL_NOW>>8),(inkernel+1)
 	mov		$1,%ebx
 
 1:
@@ -52,7 +52,7 @@ xfer_cpy:
 #endif
 	mov	%ecx,%eax
 	shr	$2,%ecx
-xmovsd:	
+xmovsd:
 	repne;	movsl
 	movb	%al,%cl
 	andb	$3,%cl
@@ -60,7 +60,7 @@ xmovsd:
 / There is a small window from after the "rep movsd" to the "add" that
 / a restart after premption will recopy bytes already copied.
 	add	%eax,ARGS_MSGLEN(%edx)
-	
+
 #ifdef	VARIANT_smp
 #ifdef	SMP_MSGOPT
 	and		%ebx,%ebx
@@ -83,7 +83,7 @@ xmovsd:
 	jz		45f
 	pause
 	jmp		4b
-45:	
+45:
 	GETCPU	%cx,%ecx
 	mov		%eax,%edx
 	andl	$0x00ffffff,%edx
@@ -94,10 +94,10 @@ xmovsd:
 	jz		1f
 	pause
 	jmp		4b
-	
+
 1:
-#endif	
-#endif	
+#endif
+#endif
 
 	sub		%eax,%eax
 	ret
@@ -179,15 +179,15 @@ next:
 	mov	%ebp,%ecx
 #ifdef	VARIANT_smp
 #ifdef	SMP_MSGOPT
-	push	%ebx	
+	push	%ebx
 #endif
-#endif	
+#endif
 	call	xfer_cpy
 #ifdef	VARIANT_smp
 #ifdef	SMP_MSGOPT
-	pop		%ebx	
+	pop		%ebx
 #endif
-#endif	
+#endif
 	cmpl	$0,%eax
 	jne		exit
 	decl	SPARTS(%esp)
@@ -211,15 +211,15 @@ dst_smaller:
 	mov	%ebp,%ecx
 #ifdef	VARIANT_smp
 #ifdef	SMP_MSGOPT
-	push	%ebx	
+	push	%ebx
 #endif
-#endif	
+#endif
 	call	xfer_cpy
 #ifdef	VARIANT_smp
 #ifdef	SMP_MSGOPT
-	pop		%ebx	
+	pop		%ebx
 #endif
-#endif	
+#endif
 	cmpl	$0,%eax
 	jne		exit
 	decl	DPARTS(%esp)
@@ -249,15 +249,15 @@ len_equal:
 	mov	STHP(%esp),%edx
 #ifdef	VARIANT_smp
 #ifdef	SMP_MSGOPT
-	push	%ebx	
+	push	%ebx
 #endif
-#endif	
+#endif
 	call	xfer_cpy
 #ifdef	VARIANT_smp
 #ifdef	SMP_MSGOPT
-	pop		%ebx	
+	pop		%ebx
 #endif
-#endif	
+#endif
 	cmpl	$0,%eax
 	jne		exit
 	decl	DPARTS(%esp)

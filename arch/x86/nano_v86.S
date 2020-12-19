@@ -1,21 +1,21 @@
 #
 # $QNXLicenseA:
 # Copyright 2007, QNX Software Systems. All Rights Reserved.
-# 
-# You must obtain a written license from and pay applicable license fees to QNX 
-# Software Systems before you may reproduce, modify or distribute this software, 
-# or any work that includes all or part of this software.   Free development 
-# licenses are available for evaluation and non-commercial purposes.  For more 
+#
+# You must obtain a written license from and pay applicable license fees to QNX
+# Software Systems before you may reproduce, modify or distribute this software,
+# or any work that includes all or part of this software.   Free development
+# licenses are available for evaluation and non-commercial purposes.  For more
 # information visit http://licensing.qnx.com or email licensing@qnx.com.
-#  
-# This file may contain contributions from others.  Please review this entire 
-# file for other proprietary rights or license notices, as well as the QNX 
-# Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+#
+# This file may contain contributions from others.  Please review this entire
+# file for other proprietary rights or license notices, as well as the QNX
+# Development Suite License Guide at http://licensing.qnx.com/license-guide/
 # for other information.
 # $
 #
 
-	
+
 	.text
 
 	.globl	__v86
@@ -120,10 +120,10 @@ prefix:
 	je		segcs
 	cmpb	$0x03e,%bl					/ Check for "ds:"
 	je		segds
-	
+
 	mov		%ebx,(%edi)				/ Stash instr for possible emulation
-	
-   	sub		$V86_EXECCODE-1,%edi	/ remember prefix size and guess 
+
+   	sub		$V86_EXECCODE-1,%edi	/ remember prefix size and guess
 	mov		%edi,OPBYTES(%ebp)		/ one byte opcode
 
 /
@@ -206,7 +206,7 @@ _pushf:
 	mov		VEFL(%ebp),%ebx		/ Get flags
 	mov		%bx,-2(%esi)		/ Push them on v86 stack
 	jmp		v86ret
-	
+
 _pushfd:
 	sub		$4,VESP(%ebp)		/ Adjust v86 stack
 	mov		VEFL(%ebp),%ebx		/ Get flags
@@ -217,7 +217,7 @@ _popf:
 	testb	$OPSIZ_OVER,SIZOVER(%ebp)
 	jne		_popfd
 	add		$2,VESP(%ebp)			/ Adjust v86 stack
-	mov 	(%esi),%bx				/ Get popf flags 
+	mov 	(%esi),%bx				/ Get popf flags
 #ifndef TRUST_BIOS
 	or		$0x200,%bx			/ Dont let v86 code disable interrupts
 #endif
@@ -226,7 +226,7 @@ _popf:
 
 _popfd:
 	add		$4,VESP(%ebp)			/ Adjust v86 stack
-	mov		(%esi),%ebx				/ Get popf flags 
+	mov		(%esi),%ebx				/ Get popf flags
 #ifndef TRUST_BIOS
 	or		$0x200,%bx			/ Dont let v86 code disable interrupts
 #endif
@@ -245,7 +245,7 @@ _ins:
 	jz		ins1
 	mov		SEGOVER(%ebp),%esi
 	movzwl	(%esi),%esi				/ Convert seg:di into 32 bit 0:edi
-ins1:	
+ins1:
 	shl		$4,%esi
 //NYI: doesn't deal with a piece of 16-bit code wanting to do an ADDRSIZ
 //override
@@ -262,7 +262,7 @@ _outs:
 	jz		outs1
 	mov		SEGOVER(%ebp),%edi
 	movzwl	(%edi),%edi				/ Convert seg:di into 32 bit 0:edi
-outs1:	
+outs1:
 	shl		$4,%edi
 //NYI: doesn't deal with a piece of 16-bit code wanting to do an ADDRSIZ
 //override
@@ -280,7 +280,7 @@ v86ret:
 	inc		%ebx			/ If override, real instr is 1 byte longer
 1:
 	add		%ebx,VEIP(%ebp)			/ Bump instruction over emulated opcode
-v86ret2:	
+v86ret2:
 	lea		TEMP_SIZE(%ebp),%esp	/ restore old stack pointer & toss temps
 	pop		%ebp
 	pop		%edi
@@ -308,7 +308,7 @@ _iret:
 	movzwl	2(%esi),%edi			/ Load new cs
 	mov		%edi,VCS(%ebp)
 	jmp		v86ret2
-	
+
 _iretd:
 	mov		(%esi),%edi				/ Load eip
 	mov		%edi,VEIP(%ebp)
@@ -363,52 +363,52 @@ v86leave:
 / 6c:insb        6d:insw
 /
 / V86_EXECCODE buffer is of form:
-/     
+/
 /     [prefixes] opcode  066 retf
 /     [prefixes] opcode  port 066 retf
 
 exec_addr: // add an addrsize override to the mix
 	push	%eax
-	mov		OPBYTES(%ebp),%ebx			
+	mov		OPBYTES(%ebp),%ebx
 	mov		$0x67,%al
 	xchg	%al,V86_EXECCODE-1(%ebx)	// Assume 1 byte opcode
-	movb	%al,V86_EXECCODE(%ebx)	
+	movb	%al,V86_EXECCODE(%ebx)
 	inc		%ebx
-	
+
 	movw	$0xcb66,V86_EXECCODE(%ebx)	/ End opcode with a retf 32bit.
-	
+
 	movl	%cr0,%eax	// make sure the prefetcher gets newly written
-	movl	%eax,%cr0	// instructions by using serializing instruction 
-	
+	movl	%eax,%cr0	// instructions by using serializing instruction
+
 	pop		%eax
-	
-   	// "call far X86_V86_GPF_CS:V86_EXECCODE" sequence 
+
+   	// "call far X86_V86_GPF_CS:V86_EXECCODE" sequence
 	// (X86_V86_GPF_CS is 16-bit segment)
 	.byte	0x9a
 	.long	V86_EXECCODE
 	.short	X86_V86_GPF_CS
-	
+
 	ret
-	
+
 exec:
 	mov		OPBYTES(%ebp),%ebx			/ Get size of opcode
 	movw	$0xcb66,V86_EXECCODE(%ebx)	/ End opcode with a retf 32bit.
-	
+
    	push	%ebx
 	push	%ebp
-	
-	movl	%cr0,%ebx	// make sure the prefetcher gets newly written
-	movl	%ebx,%cr0	// instructions by using serializing instruction 
 
-//                            CF     PF     AF     ZF     SF     DF      OF			
+	movl	%cr0,%ebx	// make sure the prefetcher gets newly written
+	movl	%ebx,%cr0	// instructions by using serializing instruction
+
+//                            CF     PF     AF     ZF     SF     DF      OF
 #define FLAG_RESTORE_BITS	((1<<0)+(1<<2)+(1<<4)+(1<<6)+(1<<7)+(1<<10)+(1<<11))
-	
+
 	// Restore these register values in case the in/out is triggering
 	// system management mode and SMM wants to look at stuff in them.
 	// (Can't do all of the PSW bits, restrict it to a safe subset)
 	pushfl
 	movl	VEFL(%ebp),%ebx
-	andl	$FLAG_RESTORE_BITS,%ebx	
+	andl	$FLAG_RESTORE_BITS,%ebx
 	andl	$~FLAG_RESTORE_BITS,0(%esp)
 	orl		%ebx,0(%esp)
 	movl	VEBX(%ebp),%ebx
@@ -417,12 +417,12 @@ exec:
 	movl	VEBP(%ebp),%ebp
 	popfl
 
-   	// "call far X86_V86_GPF_CS:V86_EXECCODE" sequence 
+   	// "call far X86_V86_GPF_CS:V86_EXECCODE" sequence
 	// (X86_V86_GPF_CS is 16-bit segment)
 	.byte	0x9a
 	.long	V86_EXECCODE
 	.short	X86_V86_GPF_CS
-	
+
 	// Update the saved register values in case SMM twiddled them. Ugh.
 	// (Can't update all the flag bits, only do a safe subset)
 	pushfl
@@ -438,5 +438,5 @@ exec:
 	popl	VEBP(%ebp)
 
 	pop		%ebx
-	
+
 	ret

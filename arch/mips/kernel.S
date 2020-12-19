@@ -1,16 +1,16 @@
 #
 # $QNXLicenseA:
 # Copyright 2007, QNX Software Systems. All Rights Reserved.
-# 
-# You must obtain a written license from and pay applicable license fees to QNX 
-# Software Systems before you may reproduce, modify or distribute this software, 
-# or any work that includes all or part of this software.   Free development 
-# licenses are available for evaluation and non-commercial purposes.  For more 
+#
+# You must obtain a written license from and pay applicable license fees to QNX
+# Software Systems before you may reproduce, modify or distribute this software,
+# or any work that includes all or part of this software.   Free development
+# licenses are available for evaluation and non-commercial purposes.  For more
 # information visit http://licensing.qnx.com or email licensing@qnx.com.
-#  
-# This file may contain contributions from others.  Please review this entire 
-# file for other proprietary rights or license notices, as well as the QNX 
-# Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+#
+# This file may contain contributions from others.  Please review this entire
+# file for other proprietary rights or license notices, as well as the QNX
+# Development Suite License Guide at http://licensing.qnx.com/license-guide/
 # for other information.
 # $
 #
@@ -87,7 +87,7 @@
 	.extern int_exit_enable_mask,4
 	.extern int_enter_enable_mask,4
 #endif
-	
+
 	.extern emulate_instruction
 	.extern usr_fault
 	.extern shutdown
@@ -114,7 +114,7 @@
 	#define GET_L1PAGETABLE_2(reg)  dsra	reg,32
 	#define SET_L1PAGETABLE(reg)	dsll    reg,32; dmtc0 reg,CP0_CONTEXT
 #endif
-	
+
 #if defined(VARIANT_smp)
 	.extern	need_to_run,4
 	.extern need_to_run_cpu,4
@@ -132,28 +132,28 @@
 		sltu	reg,sp,reg;					\
 		beq  	reg,zero,sys_lbl;			\
 		999:
-		
+
 	#define SMPADDR(areg,cpu_x4)	addu areg,cpu_x4
-		
+
 	#define SMPREF(ins,reg,var,cpu_x4)	\
-		ins 	reg,var(cpu_x4)		
-		
+		ins 	reg,var(cpu_x4)
+
 	#define FORCED_KERNEL_RESTORE(tmp,act)	\
 		lw		tmp,ARGS_ASYNC_TYPE(act);	\
 		SAVE_ONE_REG(tmp,V0,REG_OFF,act);	\
 		lw		tmp,ARGS_ASYNC_IP(act);		\
 		SAVE_ONE_REG(tmp,EPC,REG_OFF,act)
-		
+
 	#define CLEAR_FPUPTR(reg)		\
 		ori		reg,(~FPUDATA_MASK & 0xFFFFFFFF);	\
 		xori	reg,(~FPUDATA_MASK & 0xFFFFFFFF)
-		
+
 	// store in second byte
 	#define NEW_INKERNEL_BITS(reg,bits) \
 		li	reg,(bits) >> 8;	\
 		sb	reg,inkernel+1+MIPS_REGS_LOW_WORD; \
 		sync
-		
+
 	// store in second byte
 	#define NEW_INKERNEL_BITS_REG(tmp,reg) \
 		.ifc reg,zero;	\
@@ -163,7 +163,7 @@
 			sb	tmp,inkernel+1+MIPS_REGS_LOW_WORD;	\
 		.endif;	\
 		sync
-		
+
 	#define ACQUIRE_KERNEL(bits,or_in_reg,must_be_usermode)	\
 		.if must_be_usermode;								\
 			jal		usr_acquire_kernel;						\
@@ -176,9 +176,9 @@
 			 nop;											\
 			999:;											\
 		.endif
-	
+
 	.extern intr_slock,4
-	
+
 	#define ACQUIRE_INTR_SLOCK(tmp0,tmp1)	\
 		la		tmp0,intr_slock;			\
 		999:;								\
@@ -188,48 +188,48 @@
 		sc		tmp1,(tmp0);				\
 		beq		tmp1,zero,999b;				\
 		 nop
-	
+
 	#define RELEASE_INTR_SLOCK	sw zero,intr_slock; sync
-	
+
 #else
 
 	#define BRANCH_INKERNEL(reg,sys_lbl) \
 		GET_INKERNEL(reg,1); \
 		bne  reg,zero,sys_lbl
-		
-	#define SMPADDR(areg,cpu_x4)	
-		
+
+	#define SMPADDR(areg,cpu_x4)
+
 	#define SMPREF(ins,reg,var,cpu_x4)	\
-		ins 	reg,var		
-		
-	#define CLEAR_FPUPTR(reg)		
-	
+		ins 	reg,var
+
+	#define CLEAR_FPUPTR(reg)
+
 	#define NEW_INKERNEL_BITS(reg,bits) \
 		li	reg,(bits);	\
 		SET_INKERNEL(reg)
-		
+
 	#define NEW_INKERNEL_BITS_REG(tmp,reg) \
 		SET_INKERNEL(reg)
-		
+
 	#define ACQUIRE_KERNEL(bits,or_in_reg,must_be_usermode)	\
 		.ifnc or_in_reg,zero;		\
 		   GET_INKERNEL(or_in_reg,0);\
 		.endif;						\
 		ori	a0,or_in_reg,bits;		\
 		SET_INKERNEL(a0)
-		
+
 	#define ACQUIRE_INTR_SLOCK(tmp0,tmp1)
-	
-	#define RELEASE_INTR_SLOCK	
-	
+
+	#define RELEASE_INTR_SLOCK
+
 #endif
 
 #if defined(SMP_MSGOPT)
 	#define MSGOPT_SMPADDR(r1,r2)	SMPADDR(r2,r2)
 #else
-	#define MSGOPT_SMPADDR(r1,r2)	
+	#define MSGOPT_SMPADDR(r1,r2)
 #endif
-		
+
 //
 // If I could figure out a way to ensure that actives & ker_stack are
 // in the same 64K block of memory I could spiffy up this sequence a bit.
@@ -249,7 +249,7 @@
 //following will fail and be recycled.
 #define KILL_LOAD_LINKED(reg) li reg,-1; sw	reg,load_linked_addr
 
-	
+
 .sdata
 
 //
@@ -278,7 +278,7 @@ actives:	.space	4*PROCESSORS_MAX
 #define KER_STACK_TO_ACTIVES_DISTANCE (4*PROCESSORS_MAX)
 
 	/*
- 	 * Exception Table 
+ 	 * Exception Table
 	 */
 	.globl	r4k_exception_table
 
@@ -319,7 +319,7 @@ r4k_exception_table:
 	.word	r4k_cache_handler		/* 32 : Cache Error		*/
 	.word	r4k_exception_handler	/* 33 : TLB exception		*/
 	.word	r4k_exception_handler	/* 34 : XTLB exception		*/
-	
+
 .text
 
 
@@ -337,12 +337,12 @@ r4k_exception_table:
 .endm
 
 	.set	noat
- 
+
 /*
- * tlbmiss: 	
+ * tlbmiss:
  *
- * The tlb refill exception vector. This code does not save registers, 
- * and hence only touches k0 and k1. If successful, it will load the tlb 
+ * The tlb refill exception vector. This code does not save registers,
+ * and hence only touches k0 and k1. If successful, it will load the tlb
  * up with a pair of entries, but it is only guaranteed that one of these
  * entries will be valid (the one satisfying the tlb miss). If the refill
  * is unsuccessful, then it will jump into the exception handler as if
@@ -357,9 +357,9 @@ r4k_exception_table:
 EXC_COPY_CODE_START	&rtn
 	mfc0	k1,CP0_BADVADDR
 .ifeq &var - MISS_SB1
-	// Deal with the Broadcom SB-1 chip bug "M3" where it might record bad 
-	// virtual address information in the EntryHi register. The BadVaddr 
-	// register information is good, so we transfer that to EntryHi while 
+	// Deal with the Broadcom SB-1 chip bug "M3" where it might record bad
+	// virtual address information in the EntryHi register. The BadVaddr
+	// register information is good, so we transfer that to EntryHi while
 	// maintaining the ASID portion of the register.
 	mfc0	k0,CP0_TLB_HI
 	ori		k1,0xfff			// turn off offset bits
@@ -387,7 +387,7 @@ EXC_COPY_CODE_START	&rtn
 #if defined(VARIANT_r3k)
 	lw		k0,0(k1)
 	mtc0	k0,CP0_TLB_LO_0
-#else	
+#else
 	lw		k0,4(k1)
 	mtc0	k0,CP0_PAGEMASK
 	 lw		k0,0(k1)
@@ -399,13 +399,13 @@ EXC_COPY_CODE_START	&rtn
 	/* PTE(s) zero? Head to general handler (referencing syspage) */
 	beq		k0,zero,1f
 	 ssnop
-.if &var - MISS_SB1	
+.if &var - MISS_SB1
 	ssnop
-.endif	
-.ifeq &var - MISS_E9K	
+.endif
+.ifeq &var - MISS_E9K
 	ssnop
-.endif	
-.ifeq &var - MISS_R7K	
+.endif
+.ifeq &var - MISS_R7K
 	nop		//R7K Hazard
 	nop
 	nop
@@ -417,15 +417,15 @@ EXC_COPY_CODE_START	&rtn
 	j		k0
 	 rfe
 #else
-.if &var - MISS_SB1	
+.if &var - MISS_SB1
 	ssnop
-.endif	
-.ifeq &var - MISS_E9K	
+.endif
+.ifeq &var - MISS_E9K
 	ssnop; ssnop
-.endif	
-.ifeq &var - MISS_R7K	
+.endif
+.ifeq &var - MISS_R7K
 	sync	//R7K bug workaround
-.endif	
+.endif
 	.set mips3
 	eret
 	.set MIPSARCH
@@ -443,9 +443,9 @@ EXC_COPY_CODE_END
 	TLBMISS exc_tlbmiss_sb1, MISS_SB1
 	TLBMISS exc_tlbmiss_r7k, MISS_R7K
 	TLBMISS exc_tlbmiss_e9k, MISS_E9K
-#endif	
-	
-	
+#endif
+
+
 EXC_COPY_CODE_START exc_general
 	/*
 	 * General exception handler : 0x80000180 (0x80000080 for R3k)
@@ -457,11 +457,11 @@ EXC_COPY_CODE_START exc_general
 	lw		k0,%lo(r4k_exception_table)(k0)	# Get routine
 	j		k0								# Go
 	 nop
-EXC_COPY_CODE_END	
+EXC_COPY_CODE_END
 
-	
+
 #if !defined(VARIANT_r3k)
-EXC_COPY_CODE_START exc_cache_generic	
+EXC_COPY_CODE_START exc_cache_generic
 	/*
 	 * Cache error handler : 0xa0000100
 	 */
@@ -470,9 +470,9 @@ EXC_COPY_CODE_START exc_cache_generic
 	lw      k1,%lo(r4k_exception_table+0x80)(k1)
 	j       k1                      # jump to the handler
 	 nop
-EXC_COPY_CODE_END	 
+EXC_COPY_CODE_END
 
-EXC_COPY_CODE_START exc_cache_sr7100	
+EXC_COPY_CODE_START exc_cache_sr7100
 
 	/* errata prescribes that you should always set ERL in cache handler */
 	mfc0	k0,CP0_SREG
@@ -488,7 +488,7 @@ EXC_COPY_CODE_START exc_cache_sr7100
 	lw      k1,%lo(r4k_exception_table+0x80)(k1)
 	j       k1                      # jump to the handler
 	 nop
-EXC_COPY_CODE_END	 
+EXC_COPY_CODE_END
 
 /*
  * Special verisons of the general exception vector for SR7100 and SB-1 Cores
@@ -511,7 +511,7 @@ EXC_COPY_CODE_END
  * The error can be recovered - just knock down the ERL bit.
  *
  */
-EXC_COPY_CODE_START exc_general_sb1	
+EXC_COPY_CODE_START exc_general_sb1
 
 	mfc0	k0,CP0_SREG
 	li		k1,MIPS_SREG_ERL
@@ -538,9 +538,9 @@ handle_errata:
 	j       k1                      # jump to the handler
 	 nop
 
-EXC_COPY_CODE_END	 
+EXC_COPY_CODE_END
 
-EXC_COPY_CODE_START exc_general_sr7100	
+EXC_COPY_CODE_START exc_general_sr7100
 
 	mfc0	k0,CP0_SREG
 	li		k1,MIPS_SREG_ERL
@@ -566,7 +566,7 @@ handle_sr7100_errata:
 	j       k1                      # jump to the handler
 	 nop
 
-EXC_COPY_CODE_END	 
+EXC_COPY_CODE_END
 
 /*
  * Cache err code for Broadcom 12500 chip - it's copied to offset 0x100
@@ -583,7 +583,7 @@ EXC_COPY_CODE_START exc_cache_sb1
 	bltz	k0,2f		// recoverable cache error
 	 nop
 	bne		k0,k1,1f	// not a data cache error
-#if 0	
+#if 0
 //DEBUG
 li		k1,0xa0000000
 sw		k0,0x30c(k1)
@@ -596,7 +596,7 @@ sw		k0,0x308(k1)
 	 MFC0_SEL_OPCODE(26,27,1)
 sw		k0,0x300(k1)
 //END DEBUG
-#endif	
+#endif
 	 li		k1,0xffe00000
 	and		k0,k1
 	li		k1,0x02000000
@@ -621,7 +621,7 @@ sw		k0,0x300(k1)
 	eret
 	.set MIPSARCH
 #endif
-EXC_COPY_CODE_END	
+EXC_COPY_CODE_END
 
 
 EXC_COPY_CODE_START	exc_intr
@@ -680,8 +680,8 @@ EXC_COPY_CODE_END
 		 nop ;\
 		nop
 #endif
-	
-	
+
+
 #if defined(VARIANT_tx79)
 
 	/* define some TX79 instructions that the assembler doesn't support */
@@ -695,21 +695,21 @@ EXC_COPY_CODE_END
 	#define MTSA(rs)			RINSTR(0x00,rs,0,0,0,0x29)
 	#define PCPYLD(rd,rs,rt)	RINSTR(0x1c,rs,rt,rd,0x0e,0x09)
 	#define PCPYUD(rd,rs,rt)	RINSTR(0x1c,rs,rt,rd,0x0e,0x29)
-		
+
 	#define XREGNAME(tmp)	$##tmp
 	#define REGNAME(tmp)	XREGNAME(tmp)
-		
-		
+
+
 	#define SAVE_ONE_REG_GPR(src, dst, adj, base, tmp)	\
 		SAVE_ONE_REG(src, dst, adj, base);				\
 		PCPYUD(MIPS_REG_AT,MIPS_REG_##dst,MIPS_REG_ZERO);	\
-		sd	AT,(-MIPS_CONTEXT_HI_SIZE)+MIPSTX79_CONTEXT_GPR_HI+(MIPS_REG_##dst*8)+(adj)(base); 
+		sd	AT,(-MIPS_CONTEXT_HI_SIZE)+MIPSTX79_CONTEXT_GPR_HI+(MIPS_REG_##dst*8)+(adj)(base);
 
 	#define RESTORE_ONE_REG_GPR(dst, src, adj, base)	\
 		ld	AT,(-MIPS_CONTEXT_HI_SIZE)+MIPSTX79_CONTEXT_GPR_HI+(MIPS_REG_##src*8)+(adj)(base); \
 		PCPYLD(MIPS_REG_##src,MIPS_REG_AT,MIPS_REG_ZERO);	\
 		RESTORE_ONE_REG(dst, src, adj, base)
-		
+
 	#define SAVE_ONE_REG_CP0(src, dst, adj, base, tmp)	\
 		SAVE_ONE_REG(src, dst, adj, base)
 
@@ -718,28 +718,28 @@ EXC_COPY_CODE_END
 
 	#define SAVE_ONE_REG_HL(src,dst,adj,base,tmp) \
 		SAVE_ONE_REG(src, dst, adj, base)
-		
+
 	#define RESTORE_ONE_REG_HL(dst,src,adj,base) \
 		RESTORE_ONE_REG(dst, src, adj, base)
-	
+
 	#define SAVE_TX79_REGS(adj,base,tmp)		\
 		MFSA(tmp);								\
 		sw	REGNAME(tmp),(-MIPS_CONTEXT_HI_SIZE)+MIPSTX79_CONTEXT_SA+(adj)(base); \
 		MFLO1(tmp); 							\
 		sd	REGNAME(tmp),(-MIPS_CONTEXT_HI_SIZE)+MIPSTX79_CONTEXT_LO1+(adj)(base); \
 		MFHI1(tmp);								\
-		sd	REGNAME(tmp),(-MIPS_CONTEXT_HI_SIZE)+MIPSTX79_CONTEXT_HI1+(adj)(base); 
-	
+		sd	REGNAME(tmp),(-MIPS_CONTEXT_HI_SIZE)+MIPSTX79_CONTEXT_HI1+(adj)(base);
+
 	#define RESTORE_TX79_REGS(adj,base,tmp)	\
 		lw	REGNAME(tmp),(-MIPS_CONTEXT_HI_SIZE)+MIPSTX79_CONTEXT_SA+(adj)(base); \
 		MTSA(tmp);								\
 		ld	REGNAME(tmp),(-MIPS_CONTEXT_HI_SIZE)+MIPSTX79_CONTEXT_LO1+(adj)(base); \
 		MTLO1(tmp); 							\
 		ld	REGNAME(tmp),(-MIPS_CONTEXT_HI_SIZE)+MIPSTX79_CONTEXT_HI1+(adj)(base); \
-		MTHI1(tmp);					
-	
+		MTHI1(tmp);
+
 #elif defined(VARIANT_32) || defined(VARIANT_r3k)
-		
+
 	#define SAVE_ONE_REG_GPR(src, dst, adj, base, tmp)	\
 		SAVE_ONE_REG(src, dst, adj, base);	\
 		sra tmp,src,31; \
@@ -747,31 +747,31 @@ EXC_COPY_CODE_END
 
 	#define RESTORE_ONE_REG_GPR(dst, src, adj, base)	\
 		RESTORE_ONE_REG(dst, src, adj, base)
-		
+
 	#define SAVE_ONE_REG_CP0(src, dst, adj, base, tmp)	\
 		SAVE_ONE_REG_GPR(src, dst, adj, base, tmp)
-		
+
 	#define RESTORE_ONE_REG_CP0(dst, src, adj, base)	\
 		RESTORE_ONE_REG(dst, src, adj, base)
 
 	#define SAVE_ONE_REG_HL(src,dst,adj,base,tmp) \
 		SAVE_ONE_REG_GPR(src, dst, adj, base, tmp)
-		
+
 	#define RESTORE_ONE_REG_HL(dst,src,adj,base) \
 		RESTORE_ONE_REG_GPR(dst, src, adj, base)
-	
+
 	#define SAVE_TX79_REGS(adj,base,tmp)
-	
+
 	#define RESTORE_TX79_REGS(adj,base,tmp)
 
 #else
-		
+
 	#define SAVE_ONE_REG_GPR(src, dst, adj, base, tmp)	\
 		SAVE_ONE_REG(src, dst, adj, base)
 
 	#define RESTORE_ONE_REG_GPR(dst, src, adj, base)	\
 		RESTORE_ONE_REG(dst, src, adj, base)
-		
+
 	#define SAVE_ONE_REG_CP0(src, dst, adj, base, tmp)	\
 		SAVE_ONE_REG(src, dst, adj, base)
 
@@ -780,14 +780,14 @@ EXC_COPY_CODE_END
 
 	#define SAVE_ONE_REG_HL(src,dst,adj,base,tmp) \
 		SAVE_ONE_REG(src, dst, adj, base)
-		
+
 	#define RESTORE_ONE_REG_HL(dst,src,adj,base) \
 		RESTORE_ONE_REG(dst, src, adj, base)
-	
+
 	#define SAVE_TX79_REGS(adj,base,tmp)
-	
+
 	#define RESTORE_TX79_REGS(adj,base,tmp)
-	
+
 #endif
 
 
@@ -815,7 +815,7 @@ the kernel/interrupt context).
 	 nop;													\
 	.endif;													\
 	move	v0,s1;											\
-1111:														
+1111:
 
 #else
 
@@ -878,7 +878,7 @@ the kernel/interrupt context).
 	SAVE_ONE_REG_CP0(t0,BADVADDR,0,k0,AT);	\
 	SAVE_ONE_REG_GPR(ra,RA,0,k0,AT);	\
 	SAVE_TX79_REGS(0,k0,MIPS_REG_AT)
-	
+
 /*
  * RESTORE_REGS()
  *	Restore all registers from a save area based at 'base_reg'
@@ -894,7 +894,7 @@ the kernel/interrupt context).
 	#define RESTORE_EPC(reg) MV_INSTR(mtc0) reg,CP0_EPC
 	#define RESTORE_SREG_ON_BITS	(MIPS_SREG_IMASK|MIPS_SREG_EXL)
 #endif
-	
+
 #define RESTORE_REGS(base_reg) \
 	RESTORE_TX79_REGS(0,base_reg,MIPS_REG_AT);	\
 	RESTORE_ONE_REG_GPR(ra,RA,0,base_reg);	\
@@ -966,7 +966,7 @@ FRAME(r4k_cache_handler,sp,0,ra)
 	 LD_ACTIVE_AND_KERSTACK(k0,k1)
 	b		2f
 	 addiu	k0,k0,REG_OFF
-	 
+
 1:
 	 /*
 	  * We're nested, lop off some more stack.
@@ -976,9 +976,9 @@ FRAME(r4k_cache_handler,sp,0,ra)
 	xori	k0,k0,7
 	addiu	k1,k0,-MIPS_CONTEXT_EXTRA_SIZE
 
-2:	
+2:
 	SAVE_REGS(0)
-	
+
 	move	sp,k1
 	.set  at
 	/*
@@ -1000,7 +1000,7 @@ FRAME(r4k_check_handler,sp,0,ra)
 	/*
 	 * Call for help.  This one does not return (he's dead, Jim).
 	 */
-	 
+
 	 // Fall into hardcrash1 handler
 
 	.set	at
@@ -1077,7 +1077,7 @@ FRAME(r4k_tlb_handler,sp,0,ra)
 	 LD_ACTIVE_AND_KERSTACK(k0,k1)
 	b		2f
 	 addiu	k0,k0,REG_OFF
-	 
+
 1:
 	 /*
 	  * We're nested, lop off some more stack.
@@ -1087,15 +1087,15 @@ FRAME(r4k_tlb_handler,sp,0,ra)
 	xori	k0,k0,7
 	addiu	k1,k0,-MIPS_CONTEXT_EXTRA_SIZE
 
-2:	
+2:
 	SAVE_REGS(0)
-	
+
 	move	sp,k1
-	
+
    	move	s5,k0		// remember save area
 	addiu	k0,-MIPS_CONTEXT_EXTRA_SIZE
-	subu	s6,k0,k1	// set S6: in system => 0, in user => !0 
-	
+	subu	s6,k0,k1	// set S6: in system => 0, in user => !0
+
 	.set	at
 
 	/*
@@ -1110,8 +1110,8 @@ FRAME(r4k_tlb_handler,sp,0,ra)
 
 	beq		s6,zero,31f		// Only save if in user
 	 addiu	s0,s5,-REG_OFF	// Top of actives
-	SAVE_PERFREGS(s0,0)  	
-31:	
+	SAVE_PERFREGS(s0,0)
+31:
 
 	mfc0	t0,CP0_CAUSE		# Get cause
 	mfc0	s2,CP0_BADVADDR		# get address
@@ -1125,7 +1125,7 @@ FRAME(r4k_tlb_handler,sp,0,ra)
 	// bits on to tell that we're on the kernel stack. We do, however,
 	// have to pretend that we're in an interrupt so that we don't ever
 	// preempt this code when coming out from an interrupt.
-#if defined(VARIANT_smp)	
+#if defined(VARIANT_smp)
 	SMPREF(lw,s4,cpupageptr,s8)
 	li		t1,1
 	lw		s7,CPUPAGE_STATE(s4)
@@ -1133,11 +1133,11 @@ FRAME(r4k_tlb_handler,sp,0,ra)
 	sync
 #else
 	ACQUIRE_KERNEL(INKERNEL_NOW+INKERNEL_LOCK,s7,0);
-#endif	
-	
+#endif
+
 	STI
-	
-	andi	t4,t0,MIPS_CAUSE_MASK	# Extract exception cause index 
+
+	andi	t4,t0,MIPS_CAUSE_MASK	# Extract exception cause index
 
 	SMPREF(lw,s0,actives,s8)
 
@@ -1146,24 +1146,24 @@ FRAME(r4k_tlb_handler,sp,0,ra)
 	 li		t0,SIGCODE_BDSLOT
 	or		s1,t0
 	li		t0,0
-1:	 
+1:
 	bne		s6,zero,1f
 	 la		t2,xfer_handlers
-	li		t0,SIGCODE_KERNEL >> 24 
+	li		t0,SIGCODE_KERNEL >> 24
 	MSGOPT_SMPADDR(t2,s8)
 	lw		t1,(t2)
 	beq		t1,zero,2f
 	 nop
 	ori		t0,SIGCODE_INXFER >> 24
-2:	
-	GET_INKERNEL(t1,0) 			
+2:
+	GET_INKERNEL(t1,0)
 	andi	t1,INKERNEL_EXIT
 	beq		t1,zero,1f
 	 nop
 	ori		t0,SIGCODE_KEREXIT >> 24
-1:	 
+1:
 	sll		t0,24
-	// Don't want the SIGCODE_KERNEL, INXFER, KEREXIT bits on in 
+	// Don't want the SIGCODE_KERNEL, INXFER, KEREXIT bits on in
 	// S1 - it'll confuse other code since those bits have multiple
 	// meanings
 	or		t0,s1
@@ -1177,35 +1177,35 @@ FRAME(r4k_tlb_handler,sp,0,ra)
 
 	jal		t4
 	 sw		s5,FI_CPU_REGS(a0)
-	 
+
 	CLI
 
-#if defined(VARIANT_smp)	
+#if defined(VARIANT_smp)
 	// undo the 'in interrupt' indication
 	sw		s7,CPUPAGE_STATE(s4)
-#endif	
-	
+#endif
+
 
 	bgt		v0,zero,corrected	// Was the fault corrected?
 	 nop
 
 // Since we haven't acquired the kernel yet in the SMP case, do it now
-#if defined(VARIANT_smp)	
+#if defined(VARIANT_smp)
 	// NOTE: the acquire kernel code must not modify V0
 	ACQUIRE_KERNEL(INKERNEL_NOW+INKERNEL_LOCK,s7,0);
-#endif	
+#endif
 
 	beq		v0,zero,deferred	// Was the fault deferred?
 	 nop
 
-	// Fault needs to be signalled 
-	
-signalled:	 
+	// Fault needs to be signalled
+
+signalled:
 	beq		s6,zero,sys_tlb
 	 move	v0,s1				// V0 = S1 for sys_tlb processing below....
-	 
+
 	/*
-	 * TLB exception in user process 
+	 * TLB exception in user process
 	 */
 
 	la		ra,__ker_exit
@@ -1219,15 +1219,15 @@ corrected:
 #if !defined(VARIANT_smp)
 	// Restore the inkernel state
 	sw		s7,inkernel
-#endif	
+#endif
 
 	beq		s6,zero,__keriret	// if in kernel, just iret
 	 move	k0,s5
 
-// Since we haven't acquired the kernel yet in the SMP case, do it now	
-#if defined(VARIANT_smp)	
+// Since we haven't acquired the kernel yet in the SMP case, do it now
+#if defined(VARIANT_smp)
 	ACQUIRE_KERNEL(INKERNEL_NOW+INKERNEL_LOCK,s7,0);
-#endif	
+#endif
 	b		__ker_exit
 	 nop
 
@@ -1244,40 +1244,40 @@ deferred:
 
 	bne		s6,zero,__ker_exit	// if user, get back into execution
 	 li		v0,0				// V0 = 0 for sys_tlb processing below....
-	 
-	/* 
-	 * TLB exception in system 
+
+	/*
+	 * TLB exception in system
 	 */
 sys_tlb:
 	addiu	sp,SIZEOF_FAULT_INFO
-	
+
 	andi	t0,s7,INKERNEL_LOCK /* are we locked? */
 	bne		t0,zero,tlb_maybecrash
-	
+
 	 andi	t0,s7,INKERNEL_INTRMASK /* are we in an interrupt handler? */
 	bne		t0,zero,tlb_intr
-	
+
 sys_tlb_not_intr:
-	 
+
 	/*
-	 * If INKERNEL_SPECRET is set then it has to be cleared. 
+	 * If INKERNEL_SPECRET is set then it has to be cleared.
 	 */
 	 andi	t0,s7,INKERNEL_SPECRET
 	bne		t0,zero,tlb_specret
 	 xor	t0,s7,t0				# turn off SPECRET bit (if it was on)
 
 	/*
-	 * page fault, no specret. If an error was 
+	 * page fault, no specret. If an error was
 	 * returned by memmgr.fault, need to return
 	 * EFAULT for kernel call.
 	 */
-	bne		v0,zero,fixup_kcall 
-	 
+	bne		v0,zero,fixup_kcall
+
 	/*
-	 * page fault, no specret, no error. 
+	 * page fault, no specret, no error.
 	 * The faulting thread is blocked now. When faulting
 	 * in the kernel the kernel call has to be restarted,
-	 * so back the pc up unless we're in kernel exit processing. 
+	 * so back the pc up unless we're in kernel exit processing.
 	 */
 	andi	t0,s7,INKERNEL_EXIT
 	bne		t0,zero,__ker_exit
@@ -1285,7 +1285,7 @@ sys_tlb_not_intr:
 	addiu	t0,t0,-4
 	b		__ker_exit
 	 SAVE_ONE_REG(t0,EPC,REG_OFF,s0)
-	
+
    	/*
 	 * TLB exception during interrupt handling.
 	 */
@@ -1296,7 +1296,7 @@ tlb_intr:
 	beq		t1,zero,sys_tlb_not_intr
 	 // first instr of CLI macro below is in branch shadow.
 #endif
-	
+
    	/*
 	 * TLB exception while kernel was locked (or in an interrupt)
 	 */
@@ -1304,10 +1304,10 @@ tlb_maybecrash:
 	CLI
 	# restore original inkernel value
 	NEW_INKERNEL_BITS_REG(t0,s7)
-	
+
 // Don't think these next two lines should be here. If we were locked and
 // The fault wasn't corrected, we can't just return to that code, even
-// if vmm_fault() thinks it can fix things up later.	
+// if vmm_fault() thinks it can fix things up later.
 //	beq		v0,zero,__keriret
 //	 addiu	k0,sp,MIPS_CONTEXT_EXTRA_SIZE
 	/*
@@ -1330,17 +1330,17 @@ tlb_maybecrash:
 	 addiu	a1,sp,MIPS_CONTEXT_EXTRA_SIZE
 
 tlb_specret:
-	/* 
+	/*
 	 * If memmgr.fault returned an error,
 	 * then return EFAULT for kernel call.
-	 * Otherwise, return through __ker_exit 
-	 * and let someone else run. 
-	 */ 
-	
+	 * Otherwise, return through __ker_exit
+	 * and let someone else run.
+	 */
+
 	bne		v0,zero,fixup_specret
 	 nop
 	NEW_INKERNEL_BITS_REG(t0,t0) 		# clear in INKERNEL_SPECRET bit
-	 
+
 #if defined(SMP_MSGOPT)
 	SMPREF(sw,zero,xfer_handlers,s8)
 #else
@@ -1348,7 +1348,7 @@ tlb_specret:
 #endif
 	j		__ker_exit
 	 nop
-	
+
 ENDFRAME(r4k_tlb_handler)
 
 
@@ -1373,7 +1373,7 @@ FRAME(r4k_brkpt_handler,sp,0,ra)
 	SAVE_REGS(0)
 
 	.set	at
-	
+
 	addiu	s0,k0,-REG_OFF
 	move	sp,k1
 
@@ -1434,7 +1434,7 @@ div_zero:
 	li		s1,SIGFPE + (FPE_INTOVF*256) + (FLTIOVF*65536)
 	b		deliver_user_synth
 	 nop
-	 
+
 kd_break:
 	/* DebugKD*() opcode */
 	li		a2,SIGCODE_KERNEL
@@ -1443,17 +1443,17 @@ kd_break:
 	 addiu	a1,s0,REG_OFF		# point at register set context
 	bne		v0,zero,deliver_user_synth
 	 move	s1,v0
-	 
+
 #if defined(VARIANT_smp)
    	ACQUIRE_KERNEL(INKERNEL_NOW+INKERNEL_EXIT,zero,1)
 #endif
 	b		__ker_exit
 	 nop
-	 
-	
+
+
 sys_brkpt:
 	.set	noat
-	
+
 	/*
 	 * breakpoint happened during kernel code (or ISR).  We'll need
 	 * to nest onto the existing kernel stack.
@@ -1461,7 +1461,7 @@ sys_brkpt:
 	addiu	k0,sp,-(MIPS_CONTEXT_SIZE + 7)
 	ori		k0,k0,7
 	xori	k0,k0,7
-	
+
 	SAVE_REGS(0)
 
 	.set	at
@@ -1470,7 +1470,7 @@ sys_brkpt:
 	IDHARDCRASH(k0,t0)
 	b		hardcrash	# let the kernel debugger take it
 	 addiu	sp,k0,-MIPS_CONTEXT_EXTRA_SIZE
-	
+
 ENDFRAME(r4k_brkpt_handler)
 
 
@@ -1509,9 +1509,9 @@ FRAME(r4k_addrerr_handler,sp,0,ra)
 	and		k0,k1
 	bne		zero,k0,r4k_exception_handler	/* fault alignment errors */
 	 nop
-	 
+
 	/* fall through to r4k_illop_handler (try and emulate instr) */
-	 
+
 	.set	at
 ENDFRAME(r4k_addrerr_handler)
 
@@ -1547,40 +1547,40 @@ sys_illop:
 
 1:
 	SAVE_REGS(0)
-	
+
 	move	sp,k1
-	
+
 	.set	at
-	
+
    	GETCPU_1(s8,2)
 	la		gp,_gp
 	GETCPU_2(s8,2)
 
 	move	s0,k0	// remember reg storage area
-	
-	addiu	k0,-MIPS_CONTEXT_EXTRA_SIZE 
-	subu	s6,k0,k1	// set S6: in system => 0, in user => !0 
-	
+
+	addiu	k0,-MIPS_CONTEXT_EXTRA_SIZE
+	subu	s6,k0,k1	// set S6: in system => 0, in user => !0
+
 	/*
 	 * Move CPU mode to kernel, interrupts still disabled
 	 */
 	KERNEL_MODE(t0,t1)
-	
+
 	beq		s6,zero,2f		// Only save if in user
 	 addiu	s2,s0,-REG_OFF	// Point to actives
-	SAVE_PERFREGS(s2,0) 	
+	SAVE_PERFREGS(s2,0)
 2:
 
-	/* 
+	/*
 	 * emulate_instruction needs the BD bit of the cause register.
-	 * We have to save it here since an interrupt could come along and 
+	 * We have to save it here since an interrupt could come along and
 	 * hammer the contents after they're enabled.
 	 */
 try_emulation:
-	mfc0	a1,CP0_CAUSE	
-	
+	mfc0	a1,CP0_CAUSE
+
    	ACQUIRE_KERNEL(INKERNEL_NOW+INKERNEL_EXIT,s7,0)
-	 
+
 	ori		t0,s7,INKERNEL_NOW+INKERNEL_EXIT
 	NEW_INKERNEL_BITS_REG(t0,t0)
 #ifdef TXHACK
@@ -1589,46 +1589,46 @@ li		t1,~0x00010000
 and		t0,t0,t1
 mtc0    t0,CP0_SREG
 #endif
-	
+
    	/*
 	 * Enable interrupts again, if they were enabled in the original pgm.
 	 * Also pass the original state to emulate_instruction.
 	 */
    	mfc0	t0,CP0_SREG
-	 lw		a2,MIPS_AREG(MIPS_REG_SREG)+(MIPS_REGS_LOW_WORD*4)(s0) 
+	 lw		a2,MIPS_AREG(MIPS_REG_SREG)+(MIPS_REGS_LOW_WORD*4)(s0)
 
 #if defined(VARIANT_r3k)
 	// Need to use the IEp bit to see if intrs were enabled previously
 	srl		a2,2
 #endif
-	 
+
 	ori		t0,MIPS_SREG_IE
 	andi	a2,MIPS_SREG_IE
 	xori	t0,MIPS_SREG_IE
 	or		t0,a2
 	mtc0	t0,CP0_SREG
-	 
+
 	jal		emulate_instruction
 	 move	a0,s0
-	 
+
 	CLI
-	
+
 	bne		v0,zero,1f
 	 move	k0,s0				# point at saved register set
-	 
+
 	# we successfully emulated instruction
-	
+
 	beq		s6,zero,2f			# if in kernel, just return
 	 SMPREF(lw,s0,actives,s8)
-	 
+
 	NEW_INKERNEL_BITS(t0,INKERNEL_NOW+INKERNEL_LOCK+INKERNEL_EXIT)
 	b		__ker_emu_restart	# do a little more work if user
 	 nop
-2:	
+2:
 	NEW_INKERNEL_BITS_REG(zero,s7)
-	b		__keriret	
+	b		__keriret
 	 nop
-	
+
 1:
 #if defined(VARIANT_r3k)
 	// Check for instructions that R3K's don't handle, but we want to use
@@ -1637,14 +1637,14 @@ mtc0    t0,CP0_SREG
 	li		t0,SIGILL + (ILL_PRVOPC*256) + (FLTPRIV*65536)
 	li		t1,MIPS_CAUSE_CP_UNUSABLE << MIPS_CAUSE_SHIFT
 	beq		v0,t0,do_fp_emulation
-	 sw		t1,MIPS_AREG(MIPS_REG_CAUSE)+(MIPS_REGS_LOW_WORD*4)+REG_OFF(s0) 
+	 sw		t1,MIPS_AREG(MIPS_REG_CAUSE)+(MIPS_REGS_LOW_WORD*4)+REG_OFF(s0)
 #endif
 
 	# we did NOT successfully emulate instruction
-	
+
 	beq		s6,zero,deliver_system	# handle fault in system space
 	 move	s1,v0					# put sigcode where deliver_system expects
-	
+
 	b		deliver_user_synth2
 	 move	s2,zero
 
@@ -1653,7 +1653,7 @@ ENDFRAME(r4k_illop_handler)
 
 /*
  * r4k_nocoproc_handler:
- *	Handle coprocessor unusable exceptions when we're doing floating point 
+ *	Handle coprocessor unusable exceptions when we're doing floating point
  *  emulation.
  */
 FRAME(r4k_nocoproc_handler,sp,0,ra)
@@ -1673,7 +1673,7 @@ FRAME(r4k_nocoproc_handler,sp,0,ra)
 	SAVE_REGS(0)
 
 	.set	at
-	
+
 	addiu	s0,k0,-REG_OFF					// save active pointer
 	move	sp,k1
 
@@ -1681,51 +1681,51 @@ FRAME(r4k_nocoproc_handler,sp,0,ra)
 	 * Move CPU mode to kernel, interrupts still disabled
 	 */
 	KERNEL_MODE(t0,t1)
-	
+
 	mfc0	t0,CP0_CAUSE
-	
+
 	GETCPU_1(s8,2)
 	la		gp,_gp
 	GETCPU_2(s8,2)
 
 	SAVE_PERFREGS(s0,0)
 
-//	sw		t0,MIPS_AREG(MIPS_REG_CAUSE)+(MIPS_REGS_LOW_WORD*4)+REG_OFF(s0) 
+//	sw		t0,MIPS_AREG(MIPS_REG_CAUSE)+(MIPS_REGS_LOW_WORD*4)+REG_OFF(s0)
 	srl		t0,t0,28				// get the coproc unit number
 	andi	t0,t0,0x3				// ...
 	beq		t0,zero,check_mfc0_count2 // no emulation of coproc zero
 do_fp_emulation:
 	 lw		t0,PROCESS(s0)
-	 
+
 	lw		t0,PLS(t0)
 	lw		s1,PLS_MATHEMULATOR(t0)	// have we got a math emulator?
 	beq		s1,zero,deliver_user
 	 nop
-	
+
 	/*
 	 * We're going to try to emulate the instruction
 	 */
 	ACQUIRE_KERNEL(INKERNEL_NOW+INKERNEL_EXIT,zero,1)
-	
+
 	STI
-	
+
 	move	a1,s0
 	li		a2,SIZEOF_REG
 	jal		fpu_emulation_prep
 	 addiu	a0,s0,REG_OFF
 	// Where registers got stored comes back in V0
 
-	lw		t0,MIPS_AREG(MIPS_REG_CAUSE)+(MIPS_REGS_LOW_WORD*4)+REG_OFF(s0) 
+	lw		t0,MIPS_AREG(MIPS_REG_CAUSE)+(MIPS_REGS_LOW_WORD*4)+REG_OFF(s0)
 	andi	a0,t0,MIPS_CAUSE_MASK	# Extract index
 	lw		s2,__mips_cause2sig_map(a0)
 	bgez	t0,1f
 	 li		t0,SIGCODE_BDSLOT
 	or		a0,t0
-1:	
-	 
-	// invoke user handler 
+1:
+
+	// invoke user handler
 	NEW_INKERNEL_BITS(t0,INKERNEL_NOW+INKERNEL_LOCK+INKERNEL_EXIT)
-	
+
 	lw		t0,TLS(s0)
 	SAVE_ONE_REG(s1,EPC,REG_OFF,s0)
 	SAVE_ONE_REG(v0,A2,REG_OFF,s0)
@@ -1734,7 +1734,7 @@ do_fp_emulation:
 	SAVE_ONE_REG(s2,A0,REG_OFF,s0)
 	SAVE_ONE_REG(t0,A1,REG_OFF,s0)
 	SAVE_ONE_REG(v0,SP,REG_OFF,s0)
-	
+
    	// Suppress any single stepping going on.
 	jal		begin_fp_emulation
    	 move	a0,s0
@@ -1742,16 +1742,16 @@ do_fp_emulation:
 	 li		t0,SIGCODE_SSTEP
 	or		s2,t0
 	SAVE_ONE_REG(s2,A0,REG_OFF,s0)
-	 
+
 	b		__ker_exit
 	 nop
-	
+
 ENDFRAME(r4k_nocoproc_handler)
 
 
 /*
  * r4k_fpu_handler:
- *	Handle coprocessor unusable exceptions when we're doing floating point 
+ *	Handle coprocessor unusable exceptions when we're doing floating point
  *  hardware support.
  */
 FRAME(r4k_fpu_handler,sp,0,ra)
@@ -1771,7 +1771,7 @@ FRAME(r4k_fpu_handler,sp,0,ra)
 	SAVE_REGS(0)
 
 	.set	at
-	
+
 	addiu	s0,k0,-REG_OFF					// save active pointer
 	move	sp,k1
 
@@ -1779,26 +1779,26 @@ FRAME(r4k_fpu_handler,sp,0,ra)
 	 * Move CPU mode to kernel, interrupts still disabled
 	 */
 	KERNEL_MODE(t0,t1)
-	
+
 	mfc0	t0,CP0_CAUSE
-	
+
 	GETCPU_1(s8,2)
 	la		gp,_gp
 	GETCPU_2(s8,2)
 
 	SAVE_PERFREGS(s0,0)
 
-//	sw		t0,MIPS_AREG(MIPS_REG_CAUSE)+(MIPS_REGS_LOW_WORD*4)+REG_OFF(s0) 
+//	sw		t0,MIPS_AREG(MIPS_REG_CAUSE)+(MIPS_REGS_LOW_WORD*4)+REG_OFF(s0)
 	srl		t0,t0,28				// get the coproc unit number
 	andi	t0,t0,0x3				// ...
 	li		t1,1
 	bne		t0,t1,check_mfc0_count	// only interested in CP1
 	 lw		s1,FPUDATA(s0)
-	 
+
 	bne		s1,zero,1f
 	 // Branch delay instr below
 	/*
-	 * Allocate an FP save area 
+	 * Allocate an FP save area
 	 */
 #if defined(VARIANT_smp)
 2:
@@ -1816,18 +1816,18 @@ FRAME(r4k_fpu_handler,sp,0,ra)
 	b		__ker_exit
 	 sw		t0,ATFLAGS(s0)
 #endif
-	 
+
 1:
 	ACQUIRE_KERNEL(INKERNEL_NOW+INKERNEL_EXIT,zero,1)
-	
+
 	la		s3,actives_fpu
 	SMPADDR(s3,s8)
 	lw		t0,(s3)
 	STI
-	
+
 	beq		t0,s0,2f	// active fpu is us - just enable FPU access
 	 nop
-	
+
 	beq		t0,zero,1f	// no active FPU, just have to load our context.
 	 nop
 	.set mips3
@@ -1942,7 +1942,7 @@ not_busy:
 	or		t0,t1
 	b		__ker_exit
 	 sw		t0,MIPS_AREG(MIPS_REG_SREG)+(MIPS_REGS_LOW_WORD*4)+REG_OFF(s0)
-	 
+
 ENDFRAME(r4k_fpu_handler)
 
 /*
@@ -1952,7 +1952,7 @@ ENDFRAME(r4k_fpu_handler)
 check_mfc0_count:
 	bne		t0,zero,deliver_user	//Make sure it's CP0
 	 nop
-	/* 
+	/*
 	 * S0 is pointing at the active thread
 	 */
 check_mfc0_count2:
@@ -1983,7 +1983,7 @@ check_mfc0_count2:
 	SAVE_ONE_REG(s2,EPC,REG_OFF,s0)
 	b		__keriret
 	 LS_INSTR(s) t2,REG_POS_BASE(t1)	// save count reg value
-	 
+
 #if defined(VARIANT_r3k)
 // Workaround for TX39 - it reports a coprocessor unusable exception
 // for LL & SC conditional instructions when in user mode with CP0 access
@@ -2031,14 +2031,14 @@ FRAME(r4k_fpu_exc_handler,sp,0,ra)
 	SAVE_REGS(0)
 
 	.set	at
-	
+
 	addiu	s0,k0,-REG_OFF					// save active pointer
 	move	sp,k1
 
 	GETCPU_1(s8,2)
 	la		gp,_gp
 	GETCPU_2(s8,2)
-	
+
 	/*
 	 * Move CPU mode to kernel, interrupts still disabled
 	 */
@@ -2048,15 +2048,15 @@ FRAME(r4k_fpu_exc_handler,sp,0,ra)
 
 	SAVE_PERFREGS(s0,0)
 
-	/* User fault expects a1 to contain the active pointer. 
+	/* User fault expects a1 to contain the active pointer.
 	SAVE_PERFERGS uses a1, so assign it here. */
 	move 	a1, s0
-	
+
 	STI
-	
+
 	lw		t0,FPUDATA(a1)	//Must have allocated save area by now
 	CLEAR_FPUPTR(t0)
-	
+
    	.set mips3
 	/*
 	 * Save state for any user exception handler
@@ -2099,7 +2099,7 @@ FRAME(r4k_fpu_exc_handler,sp,0,ra)
 	li		t0,MIPS_FCR31_CAUSE_MASK
 	and		t2,t1,t0		//Extract exception cause bits
 	addiu	t3,t2,-1		//Isolate low order bit
-	and		t4,t3,t2	
+	and		t4,t3,t2
 	xor		t4,t2
 	li		t5,MIPS_FCR31_ENABLE_MASK
 	and		t6,t1,t5		//Extract enabled exception bits
@@ -2107,24 +2107,24 @@ FRAME(r4k_fpu_exc_handler,sp,0,ra)
 	sll		t6,5
 	not		t6
 	and		t1,t6			//Turn off any enabled cause bits
-	
+
 	cfc1	zero,$31	// Make sure no FP instructions executing
 	ctc1	t1,$31
-	
+
 	srl		t4,11			//get the exception bit to the bottom of reg
-	
+
 	la		t0,fpe_codes-4	//turn exception bit into signal code
 1:
 	srl		t4,1
 	andi	a0, t4, 1		//Check this exception bit
 	beq		a0,zero,1b
-	 addiu	t0,4			
+	 addiu	t0,4
 	lw		a0,(t0)
-	
+
 	la		ra,__ker_exit
 	j		usr_fault
 	 move	a2,zero
-	 
+
 ENDFRAME(r4k_fpu_exc_handler)
 
 
@@ -2141,7 +2141,7 @@ FRAME(sb1_bus_handler,sp,0,ra)
 	 LD_ACTIVE_AND_KERSTACK(k0,k1)
 	b		2f
 	 addiu	k0,k0,REG_OFF
-	 
+
 1:
 	 /*
 	  * We're nested, lop off some more stack.
@@ -2151,15 +2151,15 @@ FRAME(sb1_bus_handler,sp,0,ra)
 	xori	k0,k0,7
 	addiu	k1,k0,-MIPS_CONTEXT_EXTRA_SIZE
 
-2:	
+2:
 	SAVE_REGS(0)
-	
+
 	move	sp,k1
-	
+
    	move	s5,k0		// remember save area
 	addiu	k0,-MIPS_CONTEXT_EXTRA_SIZE
-	subu	s6,k0,k1	// set S6: in system => 0, in user => !0 
-	
+	subu	s6,k0,k1	// set S6: in system => 0, in user => !0
+
 	.set	at
 
 	/*
@@ -2175,18 +2175,18 @@ FRAME(sb1_bus_handler,sp,0,ra)
 	la		ra,sys_exc1
 	beq		s6,zero,31f		// Only save if in user
 	 addiu	s0,s5,-REG_OFF	// Top of actives
-	SAVE_PERFREGS(s0,0)  	
+	SAVE_PERFREGS(s0,0)
 	la		ra,deliver_user
-31:	
+31:
 	.set mips64
 	dmfc0	a1,$26,1	// Get buserr-DPA
 	 nop
-	mtc0	zero,$26,1	// Unlock buserr-DPA for the next time 
+	mtc0	zero,$26,1	// Unlock buserr-DPA for the next time
 
 	 // We have to make sure that the bus error didn't 'infect' the
 	 // cache with an entry that will cause an error when it gets tossed
-	 // out. We've already set up the return address register above with 
-	 // the right place for the subroutine to come back to, so we don't 
+	 // out. We've already set up the return address register above with
+	 // the right place for the subroutine to come back to, so we don't
 	 // bother loading it here with a 'jal'
 	j		sb1_cache_clean
 	 dsrl	a0,a1,32	// get high order portion in A0, low order in A1
@@ -2203,7 +2203,7 @@ FRAME(r4k_watch_handler,sp,0,ra)
 	and		k0,k1
 	mtc0	k0,CP0_CAUSE
 	 // delay slot instruction below
-	 
+
 	// fall through to r4k_exception_handler
 ENDFRAME(r4k_watch_handler)
 /*
@@ -2212,7 +2212,7 @@ ENDFRAME(r4k_watch_handler)
  */
 FRAME(r4k_exception_handler,sp,0,ra)
 	.set	noat
-	
+
 	/*
 	 * See if we're in the kernel already.
 	 */
@@ -2227,7 +2227,7 @@ FRAME(r4k_exception_handler,sp,0,ra)
 	SAVE_REGS(0)
 
 	.set	at
-	
+
 	move	sp,k1
 
 	/*
@@ -2242,7 +2242,7 @@ FRAME(r4k_exception_handler,sp,0,ra)
 	addiu	s0,k0,-REG_OFF	// Back to start
 	SAVE_PERFREGS(s0,0)
 
-	
+
 deliver_user:
 	mfc0	t8,CP0_CAUSE
 	mfc0	s2,CP0_BADVADDR
@@ -2256,7 +2256,7 @@ deliver_user_synth:
 	/*
 	 * S1 - signal code fields
 	 * S2 - faulting address (if applicable)
-	 * 
+	 *
 	 */
 	ACQUIRE_KERNEL(INKERNEL_NOW+INKERNEL_LOCK,zero,1)
 deliver_user_synth2:
@@ -2280,26 +2280,26 @@ sys_exc:
 	addiu	sp,k0,-MIPS_CONTEXT_EXTRA_SIZE
 
 	.set	at
-	
-sys_exc1:	
+
+sys_exc1:
 	mfc0 	a0,CP0_CAUSE		# Get cause
-	
+
    	GETCPU_1(s8,2)
 	la		gp,_gp
    	GETCPU_2(s8,2)
 
-	andi	t0,a0,MIPS_CAUSE_MASK	
+	andi	t0,a0,MIPS_CAUSE_MASK
 	lw		s1,__mips_cause2sig_map(t0)	# get signal code
 	bgez	a0,1f
 	 li		a0,SIGCODE_BDSLOT
 	or		s1,a0
-1:	
+1:
 	GET_INKERNEL(s7,0) 			# remember original inkernel value
 
 deliver_system:
-	
+
 	SMPREF(lw,s0,actives,s8)
-	
+
 	/*
 	 * Special return?
 	 */
@@ -2316,11 +2316,11 @@ mtc0	t0,CP0_SREG
 	 andi	k0,s7,INKERNEL_SPECRET
 	bne		k0,zero,fixup_specret
 	 /* the "li a2,SIGCODE_USER" below is in the branch delay slot */
-	
+
 fixup_kcall:
 	/*
 	 * 	S0 - actives
-	 *  S1 - sigcode 
+	 *  S1 - sigcode
 	 *  S7 - original inkernel value
 	 */
 	 li		a2,SIGCODE_USER
@@ -2333,10 +2333,10 @@ fixup_kcall:
 	move	a0,s1
 	jal		kdebug_callout
 	 addiu	a1,sp,MIPS_CONTEXT_EXTRA_SIZE		# get context pointer
-	 
+
 	beq	v0,zero,__keriret	# is excp handled by kdebugger?
 	 addiu	k0,sp,MIPS_CONTEXT_EXTRA_SIZE	# yes, restore regs and return
-	 
+
 	andi	t0,s7,INKERNEL_LOCK
 	IDHARDCRASH(k0,t1)
 	move	a0,s1
@@ -2356,7 +2356,7 @@ fixup_kcall:
 	move	a0,s0
 	jal		t0
 	 addiu	a1,sp,MIPS_CONTEXT_EXTRA_SIZE
-	
+
 no_xfer:
 	/*
 	 * Clear timeout flags
@@ -2384,7 +2384,7 @@ no_xfer:
 	addiu	t1,t1,KERERR_SKIPAHEAD
 	j		__ker_exit
 	 SAVE_ONE_REG(t1,EPC,REG_OFF,s0)
-	 
+
 fixup_specret:
 	/*
 	 * Lock us in the kernel, clear specret
@@ -2441,7 +2441,7 @@ ENDFRAME(r4k_exception_handler)
  */
 FRAME(ker_start,sp,0,ra)
 #if defined(VARIANT_smp)
-// 
+//
 // The X86 version has looping to make sure that multiple people
 // don't get into the kernel at the same time, but I don't think it's
 // needed since idle() cycles the CPU's into the system one at a time
@@ -2578,7 +2578,7 @@ __ker_exit_start:
 	 * of this function.
 	 */
 	SMPREF(lw,s0,actives,s8)
-	
+
 	/*
 	 * We can take interrupts now, even if we were called from
 	 * an interrupt handler.
@@ -2612,7 +2612,7 @@ dbgret:
 aspaceret:
 
 	/*
-	 * Check for a process switch since we may need to add breakpoints 
+	 * Check for a process switch since we may need to add breakpoints
 	 * and change PLS
 	 */
 	lw	t1,PROCESS(s0)
@@ -2659,9 +2659,9 @@ kerret:
 	bne	t4,zero,ker_intrevent
 	 nop
 	sw	zero,queued_event_priority
-	
+
 	KILL_LOAD_LINKED(t0)
-	
+
 __ker_emu_restart:
 #if defined(VARIANT_smp)
 1:
@@ -2719,17 +2719,17 @@ __ker_exit2:
 	SAVE_ONE_REG(t0,V0,REG_OFF,s0)
 	SAVE_ONE_REG(t1,EPC,REG_OFF,s0)
 
-11:	
+11:
 
 // Sometimes we aren't able to drain the interrupt event queue
-// so here we check if we've got anything pending that hasn't 
+// so here we check if we've got anything pending that hasn't
 // been processed yet.  If there are some interrupt events, we
 // send an IPI to the next cpu numerically and hope that they're
 // able to take care of it.
-// 
+//
 // note: there is another check, identical to this one down in
 //       case4/5 of intr_done.
-//          
+//
 	lw		t0,intrevent_pending
 	beq		t0,zero,9f
 
@@ -2744,7 +2744,7 @@ __ker_exit2:
 	li		a0,0
 1:
 	jal		send_ipi
-	 li		a1,IPI_CHECK_INTR						
+	 li		a1,IPI_CHECK_INTR
 
 9:
 #endif
@@ -2834,7 +2834,7 @@ ker_intrevent:
 	j	intrevent_drain
 	 move	a0,s0
 
-	/* 
+	/*
 	 * take out breakpoints for old process
 	 */
 dbg_check:
@@ -2850,11 +2850,11 @@ dbg_check:
 	jal		t4
 	 move 	a0,t2
 1:
-	lw		t1,debug_detach_brkpts	
+	lw		t1,debug_detach_brkpts
 	la		ra,dbgret
 	j		t1
 	 move	a0,s1
-	 
+
 	/*
 	 * Ask the memory manager if he'd like to switch processes,
 	 * as aspaces_prp no longer matches.  He may switch it or not,
@@ -2870,7 +2870,7 @@ aspace_switch:
 	la	ra,aspaceret
 	j	t4
 	 nop
-	 
+
 	/*
 	 * set actives_prp, put in breakpoints for new process
 	 */
@@ -2894,9 +2894,9 @@ ker_specialret:
 	/*
 	 * Reset the kernel stack; the old context is not needed, and a
 	 * sequence of specialret's intermingled with pagewaits can
-	 * cause the stack to grow indefinitely. Do the load explicitly 
+	 * cause the stack to grow indefinitely. Do the load explicitly
 	 * since a "lw sp,ker_stack" may be split into two instructions
-	 * and the stack pointer won't be valid after the first one. 
+	 * and the stack pointer won't be valid after the first one.
 	 */
 	lui		t0,%hi(ker_stack)
 	SMPADDR(t0,s8)
@@ -2918,7 +2918,7 @@ ker_specialret:
 2:
 	STI
 #endif
-	
+
 	/*
 	 * Call specialret() C code, arrange for return to re-run
 	 * __ker_exit().
@@ -2975,7 +2975,7 @@ ker_atflags:
 	 nop
 	j		__ker_exit
 	 nop
-	 
+
 #if defined(VARIANT_smp)
 1:
 	lw		t0,need_to_run
@@ -2987,7 +2987,7 @@ ker_atflags:
 	b		2b
 	 nop
 #endif
-	 
+
 	/*
 	 * Switch FP context. We don't actually do that here - just disable
 	 * access to CU1 so that it happens at next FP instruction.
@@ -2998,7 +2998,7 @@ fpusave:
 	and		t0,t1
 	j		fpuret
 	 sw		t0,MIPS_AREG(MIPS_REG_SREG)+(MIPS_REGS_LOW_WORD*4)+REG_OFF(s0)
-	 
+
 set_err:
 	/*
 	 * NOTE: We're setting the error on the initial active thread (in s0),
@@ -3022,7 +3022,7 @@ real_err:
 	la		ra,__ker_exit
 	j		kererr
 	 nop
-	 
+
 ENDFRAME(__ker_exit)
 
 /*
@@ -3055,7 +3055,7 @@ intr_entry_start:
 	 LD_ACTIVE_AND_KERSTACK(k0,k1)
 	b		2f
 	 addiu	k0,k0,REG_OFF
-	
+
 1:
 	 /*
 	  * We're nested, lop off some more stack.
@@ -3065,14 +3065,14 @@ intr_entry_start:
 	xori	k0,k0,7
 	addiu	k1,k0,-MIPS_CONTEXT_EXTRA_SIZE
 
-2:	
+2:
 	SAVE_REGS(0)
-	
+
 	move	sp,k1
-	
+
     addiu	k0,-MIPS_CONTEXT_EXTRA_SIZE
-	subu	s6,k0,k1	// set S6: in system => 0, in user => !0 
-	
+	subu	s6,k0,k1	// set S6: in system => 0, in user => !0
+
 	.set	at
 
 	/*
@@ -3087,7 +3087,7 @@ intr_entry_start:
 
 	beq		s6, zero, 31f	// only save if in user
 	 addiu	s0,k0,MIPS_CONTEXT_EXTRA_SIZE-REG_OFF	// Start of actives
-	SAVE_PERFREGS(s0,1)		
+	SAVE_PERFREGS(s0,1)
 31:
 
    	ACQUIRE_INTR_SLOCK(t0,t1)
@@ -3108,7 +3108,7 @@ FRAME(intr_process_queue,sp,0,ra)
 	 * at this point. Later on, interrupt() should be coded in assembly
 	 * and moved here for efficiency's sake.
 	 */
-	 
+
 	# generated code puts interrupt level ptr in S1
 
 	KILL_LOAD_LINKED(t0)
@@ -3122,7 +3122,7 @@ FRAME(intr_process_queue,sp,0,ra)
 	 nop
 #else
 	j	interrupt
-	 move	a0,s1		
+	 move	a0,s1
 #endif
 ENDFRAME(intr_process_queue)
 
@@ -3134,7 +3134,7 @@ FRAME(intr_done_chk_fault,sp,0,ra)
 	 * figure out how to continue the interrupted context.
 	 * Interupts are disabled.
 	 */
-	 
+
 	 RELEASE_INTR_SLOCK
 	/*
 	 * Lower the inkernel count
@@ -3151,7 +3151,7 @@ FRAME(intr_done_chk_fault,sp,0,ra)
 	 move	s1,a0				// put sigcode in correct register
 	bne		s6,zero,deliver_user_synth
 	 move	s2,a1				// put reference addr in correct reg
-	 
+
 	// exception in system code or interrupt handler:
 	b		deliver_system
 	 mtc0	a1,CP0_BADVADDR		// in case someone wants the reference addr
@@ -3166,7 +3166,7 @@ FRAME(intr_done,sp,0,ra)
 	 */
 
 	RELEASE_INTR_SLOCK
-	
+
 	/*
 	 * Lower the inkernel count
 	 */
@@ -3174,7 +3174,7 @@ FRAME(intr_done,sp,0,ra)
 
 intr_done2:
 	KILL_LOAD_LINKED(t0)
-	
+
 //
 // We have 6 cases to consider (3 in non-smp).
 //
@@ -3193,7 +3193,7 @@ intr_done2:
 
 	beq		s6,zero,from_kerorintr
 	 // branch delay instruction from below
-	
+
 case1:
 #if defined(VARIANT_smp)
 	 sll	t3,s8,24-2
@@ -3211,7 +3211,7 @@ case1:
 	 nop
 	b		__ker_exit
 	 nop
-	 
+
 #if defined(VARIANT_smp)
 case2:
 	lw		s0,actives(s8)
@@ -3224,13 +3224,13 @@ case2:
 	// We've got something queued that's a higher priority than us,
 	// Send an IPI to the guy in the kernel so that he knows to
 	// reschedule things.
-	 li		a1,IPI_CHECK_INTR					
+	 li		a1,IPI_CHECK_INTR
 	la		ra,__ker_exit2
 	j		send_ipi
 	 lbu	a0,cpunum
 #endif
-	
-	
+
+
 from_kerorintr:
 #if defined(VARIANT_smp)
 	andi	t1,s7,INKERNEL_LOCK
@@ -3257,7 +3257,7 @@ case6:
 	li		t1,INKERNEL_NOW
 	bne		t2,t1,1f
 	 nop
-	 // Waiting for entry on syscall - have to back up EPC 
+	 // Waiting for entry on syscall - have to back up EPC
 	 // to re-execute.
 	lw		s0,actives(s8)
 	RESTORE_ONE_REG(t3,EPC,REG_OFF,s0)
@@ -3281,7 +3281,7 @@ case3:
 	sltu	t2,t2,t3
 	bne		t2,zero,preempt
 	 nop
-	
+
 case4:
 case5:
 #if defined(VARIANT_smp)
@@ -3292,13 +3292,13 @@ case5:
 //
 	lw		t0,intrevent_pending
 	beq		t0,zero,9f
-	 
+
     // if we're here it means there's an interrupt event pending
-	// but we're not going to drain it.  so we tell another cpu 
+	// but we're not going to drain it.  so we tell another cpu
 	// to deal with it so that the event gets drained in a timely
 	// fashion.
     //
-	// we pick another cpu by incrementing our cpu number and doing 
+	// we pick another cpu by incrementing our cpu number and doing
     // a modulo on the number of cpu's present.
 
 	 srl	a0,s8,2
@@ -3309,7 +3309,7 @@ case5:
 	li		a0,0
 1:
 	jal		send_ipi
-	 li		a1,IPI_CHECK_INTR						
+	 li		a1,IPI_CHECK_INTR
 9:
 #endif
 	b		__keriret
@@ -3337,7 +3337,7 @@ DEBUGKDBREAK
 	ori		t0,s7,INKERNEL_NOW+INKERNEL_LOCK+INKERNEL_SPECRET+INKERNEL_EXIT
 	xori	t0,INKERNEL_SPECRET
 	NEW_INKERNEL_BITS_REG(t0,t0)
-	
+
 1:
 	la		t1,xfer_handlers
 	MSGOPT_SMPADDR(t1,s8)
@@ -3366,12 +3366,12 @@ ENDFRAME(intr_done)
 
 
 FRAME(set_l1pagetable,sp,0,ra)
-	
+
    	KILL_LOAD_LINKED(t0)
 	SET_L1PAGETABLE(a0)
 	j		ra
 	 mtc0	a1,CP0_TLB_HI
-	 
+
 ENDFRAME(set_l1pagetable)
 
 
@@ -3420,7 +3420,7 @@ ENDFRAME(cpu_force_fpu_save)
 
 #if defined(VARIANT_smp)
 
-// 
+//
 // A0 - has bits to turn on in 'inkernel' variable.
 //
 // Return original inkernel value in S7
@@ -3453,8 +3453,8 @@ beg_acquire_kernel_attempt:
 	 nop
 	jr		ra
 	 sync
-		   
-			 
+
+
 sys_acquire_kernel:
 	STI
 1:
@@ -3476,8 +3476,8 @@ end_acquire_kernel_attempt:
 	 nop
 	j		ra
 	 sync
-	
-	
+
+
 //
 // SMP inter-processor interrupt handler
 //
@@ -3490,7 +3490,7 @@ intr_process_ipi:
 	move	s7,ra
 
 	RELEASE_INTR_SLOCK
-	
+
 	SMPREF(lw, t0,cpupageptr,s8)
 	li		t1,1
 	lw		s4,CPUPAGE_STATE(t0)
@@ -3521,11 +3521,11 @@ intr_process_ipi:
 	ori		t1,0x2
 	sb		t1,alives(t0)	// Mark the CPU as parked
 
-	// Freeze the system, we've got a kernel dump happening 
+	// Freeze the system, we've got a kernel dump happening
 2:	b		2b
 	 nop
 
-1:	
+1:
 	andi	t1,s5,IPI_CLOCK_LOAD
 	beq		t1,zero,1f
 	 nop
@@ -3551,7 +3551,7 @@ intr_process_ipi:
 	SMPREF(lw,a0,aspaces_prp,s8)
 	//KLUDGE here. Direct referencing a function in procnto memory
 	//manager. Means we can't build a standalone SMP kernel.
-	jal		smp_sync_tlb 
+	jal		smp_sync_tlb
 	 nop
 	CLI		//might have been enabled by function call
 1:
@@ -3572,8 +3572,8 @@ intr_process_ipi:
 	la		t9,actives_fpu
 	SMPADDR(t9,s8)
 	lw		t0,(t9)
-	
-	beq		t0,zero,1f	
+
+	beq		t0,zero,1f
 	 nop
 	.set mips3
 	lw		t2,FPUDATA(t0)
@@ -3615,18 +3615,18 @@ intr_process_ipi:
 	sw		zero,(t9)
 	sync
 	// clear FPUDATA_BUSY, CPU # indicators, releases CPU waiting for save
-	sw		t2,FPUDATA(t0)	
+	sw		t2,FPUDATA(t0)
 1:
 
 	// force the thread in to the kernel, if need be
 	beq		a0,zero,4f	// No reason to force kernel entry
 	 li		t8,_NTO_ATF_FORCED_KERNEL
-	 
+
 	li		t6,0
 	move	t7,s6
 
 	lw		t5,actives(s8)
-	bne		s6,zero,2f 
+	bne		s6,zero,2f
 	 la		t1,beg_acquire_kernel_attempt
 	RESTORE_ONE_REG(t0,EPC,MIPS_CONTEXT_EXTRA_SIZE,sp)
 	sltu	t2,t0,t1
@@ -3639,7 +3639,7 @@ intr_process_ipi:
 	beq		t1,zero,3f	# Waiting in system to become kernel
 	 RESTORE_ONE_REG(t2,A0,MIPS_CONTEXT_EXTRA_SIZE,sp)
 	li		t1,INKERNEL_NOW
-	bne		t2,t1,3f			
+	bne		t2,t1,3f
 
 #if 1
 	// We were spining waiting for the kernel. Set up to pretend like we
@@ -3650,7 +3650,7 @@ intr_process_ipi:
 	 nop
 	b	3f
 	 nop
-#endif	 
+#endif
 
 2:
 	or		a0,t8
@@ -3663,7 +3663,7 @@ intr_process_ipi:
 	 and	t0,t8
 	bne		t0,zero,4f
 	 and	a0,t8
-	beq		a0,zero,4f 
+	beq		a0,zero,4f
 
      // force this thread to do a null syscall so we'll process the flags
 	 RESTORE_ONE_REG(t0,V0,REG_OFF,t5)
@@ -3676,26 +3676,26 @@ intr_process_ipi:
 	sw		t1,ARGS_ASYNC_IP(t5)
 	bltz	t1,5f
 	 li		t0,__KER_NOP
-	b		6f 
+	b		6f
 	 lw		t1,kercallptr
 5:
 	// If the instruction pointer was in the KSEG region, use the
 	// KSEG0 address of the kercall instuction - we might now have an
 	// address space and the user address for it won't work then.
 	lw		t1,sys_kercallptr
-6:	
-	
+6:
+
 	SAVE_ONE_REG(t0,V0,REG_OFF,t5)
 	SAVE_ONE_REG(t1,EPC,REG_OFF,t5)
 
-4:	
+4:
 	SMPREF(lw, t2,cpupageptr,s8)
 	sw		s4,CPUPAGE_STATE(t2)
-	
+
 	ACQUIRE_INTR_SLOCK(t0,t1)
 	j		s7
 	 sync
-	 
+
 #endif
 
 #if !defined(VARIANT_r3k)

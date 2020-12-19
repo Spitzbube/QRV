@@ -30,6 +30,9 @@ extern void display_clocks(char *);
 /* ~2 cycles per loop at 720MHz, x in 1/720us units (720MHz clock) */
 #define delay_cy(x) {unsigned _delay = ((x+1)>>1); while (_delay--) asm volatile (""); }
 
+void init_riscv_ser(unsigned, const char *, const char *);
+void put_riscv_ser(int);
+
 const struct debug_device debug_devices[] = {
     { "8250",
 	{
@@ -91,7 +94,7 @@ int main(int argc, char **argv, char **envv)
      * Set CPU frequency
      */
     if (cpu_freq == 0) {
-        cpu_freq = detect_frequency_using_power();
+        crash("cpu_freq = 0");
     }
 
     /*
@@ -115,13 +118,12 @@ int main(int argc, char **argv, char **envv)
 
     if (debug_flag > STARTUP_DEBUG_LEVEL) {
         display_clocks("-------after init_clocks-------\n");
-        display_PLLs();
     }
 
     add_typed_string(_CS_MACHINE, "RISC-V virt");
 
     /*
-     * Load bootstrap executables in the image file system and Initialise
+     * Load bootstrap executables in the image file system and initialize
      * various syspage pointers. This must be the _last_ initialisation done
      * before transferring control to the next program.
      */

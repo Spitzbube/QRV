@@ -1,16 +1,16 @@
 #
 # $QNXLicenseA:
 # Copyright 2007, QNX Software Systems. All Rights Reserved.
-# 
-# You must obtain a written license from and pay applicable license fees to QNX 
-# Software Systems before you may reproduce, modify or distribute this software, 
-# or any work that includes all or part of this software.   Free development 
-# licenses are available for evaluation and non-commercial purposes.  For more 
+#
+# You must obtain a written license from and pay applicable license fees to QNX
+# Software Systems before you may reproduce, modify or distribute this software,
+# or any work that includes all or part of this software.   Free development
+# licenses are available for evaluation and non-commercial purposes.  For more
 # information visit http://licensing.qnx.com or email licensing@qnx.com.
-#  
-# This file may contain contributions from others.  Please review this entire 
-# file for other proprietary rights or license notices, as well as the QNX 
-# Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+#
+# This file may contain contributions from others.  Please review this entire
+# file for other proprietary rights or license notices, as well as the QNX
+# Development Suite License Guide at http://licensing.qnx.com/license-guide/
 # for other information.
 # $
 #
@@ -204,7 +204,7 @@ inkernel:
 		.byte 0
 		.byte 0
 		.byte 0
-cpunum:	.byte 0	
+cpunum:	.byte 0
 
 .macro	GETCPU reg
 	mrc		p15, 0, &reg, c0, c0, 5			// get cpuid
@@ -646,7 +646,7 @@ __ker_exit:
 	 */
 	ldr		ip, [r4, #TFLAGS]
 	ldr		r0, __specret_mask
-	tst		ip, r0					
+	tst		ip, r0
 	bne		__ker_specialret
 
 	/*
@@ -822,7 +822,7 @@ __ker_exit2:
 	ldr		lr, [r0, #ARM_REG_PC*4]
 	bic		ip, ip, #ARM_CPSR_I | ARM_CPSR_F	// ensure interrupts are enabled
 	msr		spsr_cxsf, ip
-	and		ip, ip, #ARM_CPSR_MODE_MASK	
+	and		ip, ip, #ARM_CPSR_MODE_MASK
 	teq		ip, #ARM_CPSR_MODE_SVC
 	beq		__ker_exit_svc
 	ldmia	r0, {r0-lr}^
@@ -917,7 +917,7 @@ __ker_specialret:
  *	r6	= &aspaces_prp[RUNCPU]
  * ---------------------------------------------------------------------
  */
-__ker_dbg_switch:									
+__ker_dbg_switch:
 	/*
 	 * Nothing to do if actives_prp[RUNCPU] == 0 || actives_prp[RUNCPU]->debug == 0
 	 */
@@ -1223,7 +1223,7 @@ __hardcrash:
  *          case6 of intr_done looks at this register to figure out if
  *          it needs to back up the pc for a system call entry.
  *          If the register changes, the intr_done code must be modified
- *          to look at the correct register containing the bits to set. 
+ *          to look at the correct register containing the bits to set.
  * ---------------------------------------------------------------------
  */
 beg_acquire_kernel_attempt:
@@ -1547,7 +1547,7 @@ case6:
 	ldr		r1, [r2, #ARM_REG_PC*4]
 	sub		r1, r1, #KER_ENTRY_SIZE
 	str		r1, [r2, #ARM_REG_PC*4]
-	
+
 	ldr		sp, =ker_stack
 	SMPLDR	sp, sp, r3						// reset to ker_stack[RUNCPU]
 	b		case1
@@ -1671,12 +1671,12 @@ intr_process_ipi:
 	// Freeze the system - we've got a kernel dump happening
 	ldr		r0, =alives
 	add		r0, r0, r7
-	ldrb	r1, [r0]	
-	orr		r1, r1, #0x2	
+	ldrb	r1, [r0]
+	orr		r1, r1, #0x2
 	strb	r1, [r0]	// Mark the CPU as parked
-2:	b		2b	
+2:	b		2b
 
-1:	
+1:
 	tst		r9, #IPI_TLB_SAFE
 	beq		1f
 	teq		r5, #0
@@ -1694,7 +1694,7 @@ intr_process_ipi:
 	orr		ip, ip, #ARM_CPSR_I
 	msr		cpsr, ip
 
-	/* 
+	/*
 	 * FIXME_SMP: do we need to handle this?
 	 */
 1:	tst		r9, #IPI_INTR_MASK
@@ -1702,7 +1702,7 @@ intr_process_ipi:
 	mov		r0, #INTR_FLAG_SMP_BROADCAST_MASK
 	bl		interrupt_smp_sync
 
-	/* 
+	/*
 	 * FIXME_SMP: do we need to handle this?
 	 */
 1:	tst		r9, #IPI_INTR_UNMASK
@@ -1891,7 +1891,7 @@ __abt_entry:
 	 *	ip = inkernel value
 	 */
 	SAVE_CONTEXT 8
-	
+
 	/*
 	 *	r6 = fault status
 	 *	r7 = fault address

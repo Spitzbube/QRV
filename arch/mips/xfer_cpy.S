@@ -1,16 +1,16 @@
 #
 # $QNXLicenseA:
 # Copyright 2007, QNX Software Systems. All Rights Reserved.
-# 
-# You must obtain a written license from and pay applicable license fees to QNX 
-# Software Systems before you may reproduce, modify or distribute this software, 
-# or any work that includes all or part of this software.   Free development 
-# licenses are available for evaluation and non-commercial purposes.  For more 
+#
+# You must obtain a written license from and pay applicable license fees to QNX
+# Software Systems before you may reproduce, modify or distribute this software,
+# or any work that includes all or part of this software.   Free development
+# licenses are available for evaluation and non-commercial purposes.  For more
 # information visit http://licensing.qnx.com or email licensing@qnx.com.
-#  
-# This file may contain contributions from others.  Please review this entire 
-# file for other proprietary rights or license notices, as well as the QNX 
-# Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+#
+# This file may contain contributions from others.  Please review this entire
+# file for other proprietary rights or license notices, as well as the QNX
+# Development Suite License Guide at http://licensing.qnx.com/license-guide/
 # for other information.
 # $
 #
@@ -34,7 +34,7 @@
  * a1: src
  * a2: nbytes
  * a3: original dst. a0 - a3 = bytes xfered.
- * 
+ *
  * Very fast byte copy.  Will handle misaligned sources and
  * destinations, although "double long" aligned (i.e. 64 bit boundary)
  * source and destination addresses will increase speed significantly.
@@ -129,7 +129,7 @@ smallcpy:
 	 slti	t3,t0,32		# do we have 32 bytes?
 
 	/* both src and dst are double word aligned. */
-	bnez	t3,bc_even_16		# try copying 16 
+	bnez	t3,bc_even_16		# try copying 16
 	 nop
 	addiu	t0,t0,-32		# decrement count
 
@@ -145,11 +145,11 @@ bc_even_loop:
 
 	addiu	a0,a0,32		# dst += 32
 	slti	t3,t0,32		# 32 bytes left?
-	bnez	t3,bc_even_16	
+	bnez	t3,bc_even_16
 	 addiu	a1,a1,32		# src += 32 (bd slot)
 
 	b	bc_even_loop		# do 32 byte loop again
-	 addiu	t0,t0,-32		# decrement real count 
+	 addiu	t0,t0,-32		# decrement real count
 
 bc_even_16:
 	slti    t3,t0,16
@@ -169,15 +169,15 @@ bc_even_16:
 bc_even_min:
 
 	slti    t3,t0,4                 # any word copies possible?
-	bnez	t3,bc_min		# go do byte copies 
-	 nop			
+	bnez	t3,bc_min		# go do byte copies
+	 nop
 
 	lw	t4,0(a1)		# read *(src)
-	addiu	a1,a1,4		
+	addiu	a1,a1,4
 	sw	t4,0(a0)		# save *(dst)
 	addiu	t0,t0,-4
 	b	bc_even_min
-	 addiu	a0,a0,4		
+	 addiu	a0,a0,4
 
 bc_odd_src:
 	bnez	t3,bc_odd_src_16	# do we have 32 bytes?
@@ -187,7 +187,7 @@ bc_odd_src:
 bc_odd_src_loop:
 	/*
 	 * We have at least 32 bytes, count has been pre-decremented
-	 * and dst is double-word-aligned and src is not. 
+	 * and dst is double-word-aligned and src is not.
 	 */
 	ldl     t4,0(a1)        	# read *(src)
 	ldr     t4,7(a1)
@@ -229,30 +229,30 @@ bc_odd_src_16:
 bc_odd_src_min:
 
 	slti    t3,t0,4                 # any word copies possible?
-	bnez	t3,bc_min		# go do byte copies 
-	 nop			
+	bnez	t3,bc_min		# go do byte copies
+	 nop
 
 	lwl     t4,0(a1)        	# read *(src)
 	lwr     t4,3(a1)
-	addiu	a1,a1,4		
+	addiu	a1,a1,4
 	sw	t4,0(a0)		# save *(dst)
 	addiu	t0,t0,-4
 	b	bc_odd_src_min
-	 addiu	a0,a0,4		
+	 addiu	a0,a0,4
 
 bc_odd_dst:
 	bnez	t5,bc_odd_src_dst
 	 nop
 
 	slti	t3,t0,32		# do we have 32 bytes?
-	bnez	t3,bc_odd_dst_16	
+	bnez	t3,bc_odd_dst_16
 	 nop
 	addiu	t0,t0,-32		# decrement count
 
 bc_odd_dst_loop:
 	/*
 	 * We have at least 32 bytes, count has been pre-decremented
-	 * src is double-word-aligned and dst is not. 
+	 * src is double-word-aligned and dst is not.
 	 */
 	ld      t4,0(a1)        	# read *(src)
 	ld      t5,8(a1)        	# read *(src + 8)
@@ -295,20 +295,20 @@ bc_odd_dst_16:
 bc_odd_dst_min:
 
 	slti    t3,t0,4         # any word copies possible?
-	bnez	t3,bc_min		# go do byte copies 
-	 nop			
+	bnez	t3,bc_min		# go do byte copies
+	 nop
 
 	lw	t4,0(a1)			# read *(src)
-	addiu	a1,a1,4		
+	addiu	a1,a1,4
 	swl     t4,0(a0)       	# save *(dst)
 	swr     t4,3(a0)
 	addiu	t0,t0,-4
 	b	bc_odd_dst_min
-	 addiu	a0,a0,4		
+	 addiu	a0,a0,4
 
 bc_odd_src_dst:
 	slti	t3,t0,32		# do we have 32 bytes?
-	bnez	t3,bc_odd_src_dst_16	
+	bnez	t3,bc_odd_src_dst_16
 	 nop
 	addiu	t0,t0,-32		# decrement count
 
@@ -345,7 +345,7 @@ bc_odd_src_dst_loop:
 
 bc_odd_src_dst_16:
 	slti	t3,t0,16		# are there at least 16 bytes left?
-	bnez	t3,bc_odd_src_dst_min	
+	bnez	t3,bc_odd_src_dst_min
 	 nop
 	addiu	t0,t0,-16
 
@@ -364,24 +364,24 @@ bc_odd_src_dst_16:
 bc_odd_src_dst_min:
 
 	slti    t3,t0,4                 # any word copies possible?
-	bnez	t3,bc_min		# go do byte copies 
-	 nop			
+	bnez	t3,bc_min		# go do byte copies
+	 nop
 
 	lwl     t4,0(a1)        	# read *(src)
 	lwr     t4,3(a1)
-	addiu	a1,a1,4		
+	addiu	a1,a1,4
 	swl     t4,0(a0)        	# save *(dst)
 	swr     t4,3(a0)
 	addiu	t0,t0,-4
 	b	bc_odd_src_dst_min
-	 addiu	a0,a0,4		
+	 addiu	a0,a0,4
 
 bc_min:
 
 	/* byte copy, less than 4 bytes left */
 	addiu	t0,t0,-1		# decrement count
 	bltz	t0,bc_exit		# any more ? no, exit
-	 nop			
+	 nop
 
 	lb	t3,0(a1)		# load a byte
 	addiu	a1,a1,1			# increment src pointer
@@ -395,7 +395,7 @@ bc_min:
 	or		t1,a0,a1
 
 	andi	v0,t1,31
-	bne		v0,zero,1200f	
+	bne		v0,zero,1200f
 	 sltiu	v0,a2,32
 	bne		v0,zero,1200f
 	 nop
@@ -403,56 +403,56 @@ bc_min:
 	ld		t3,8(a1)
 	ld		t4,16(a1)
 	ld		t5,24(a1)
-	addiu	a2,a2,-32 
+	addiu	a2,a2,-32
 	addiu	a1,a1,32
-	sltiu	v0,a2,32 
-	sd		t1,0(a0) 
-	sd		t3,8(a0) 
-	sd		t4,16(a0) 
-	sd		t5,24(a0) 
+	sltiu	v0,a2,32
+	sd		t1,0(a0)
+	sd		t3,8(a0)
+	sd		t4,16(a0)
+	sd		t5,24(a0)
 	beq 	v0,zero,1201b
-	 addiu	a0,a0,32 
-	
+	 addiu	a0,a0,32
+
 	or		t1,a0,a1
-1200:	
-	
+1200:
+
 	sltiu	v0,a2,8
 	bne		v0,zero,1100f
 	 andi	v0,t1,7
-	bne		v0,zero,1100f	
+	bne		v0,zero,1100f
 	 nop
 1101: ld	t1,0(a1)
-	addiu	a2,a2,-8 
-	addiu	a1,a1,8 
-	sltiu	v0,a2,8 
-	sd		t1,0(a0) 
+	addiu	a2,a2,-8
+	addiu	a1,a1,8
+	sltiu	v0,a2,8
+	sd		t1,0(a0)
 	beq 	v0,zero,1101b
-	 addiu	a0,a0,8 
-	
+	 addiu	a0,a0,8
+
 	or		t1,a0,a1
-1100:	
-	
+1100:
+
 	sltiu	v0,a2,4
 	bne		v0,zero,1002f
-	 andi	t1,3 
+	 andi	t1,3
 	bne		t1,zero,1002f
-	 nop 
+	 nop
 1001: lw	t1,0(a1)
-	addiu	a2,a2,-4 
-	addiu	a1,a1,4 
-	sltiu	v0,a2,4 
-	sw		t1,0(a0) 
+	addiu	a2,a2,-4
+	addiu	a1,a1,4
+	sltiu	v0,a2,4
+	sw		t1,0(a0)
 	beq 	v0,zero,1001b
-	 addiu	a0,a0,4 
+	 addiu	a0,a0,4
 1002: beq		a2,zero,1004f
 	nop
 1003: lbu		t1,0(a1)
-	addiu	a2,a2,-1 
-	addiu	a1,a1,1 
-	sb		t1,0(a0)	
+	addiu	a2,a2,-1
+	addiu	a1,a1,1
+	sb		t1,0(a0)
 	bne		a2,zero,1003b
-	 addiu	a0,a0,1 
-1004: 
+	 addiu	a0,a0,1
+1004:
 
 #endif /* not defined(VARIANT_be) -- little endian */
 

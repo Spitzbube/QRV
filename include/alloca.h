@@ -39,7 +39,6 @@ extern _Sizet	__stackavail(void);
 #define __ALLOCA_ALIGN( s )   (((s)+(sizeof(_Uint64t)-1))&~(sizeof(_Uint64t)-1))
 
 #if defined(__GNUC__) || defined(__INTEL_COMPILER)
-#warning Check 64-bit ulong
 	extern void *__builtin_alloca(unsigned long __size);
 	#define _alloca(s)	__builtin_alloca(s)
 #else
