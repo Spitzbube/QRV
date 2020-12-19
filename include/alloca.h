@@ -26,10 +26,6 @@
 #ifndef _ALLOCA_H_INCLUDED
 #define _ALLOCA_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -42,18 +38,12 @@ extern _Sizet	__stackavail(void);
 
 #define __ALLOCA_ALIGN( s )   (((s)+(sizeof(_Uint64t)-1))&~(sizeof(_Uint64t)-1))
 
-#if defined(__WATCOMC__)
-	#pragma aux __stackavail __modify __nomemory;
-
-	extern void *__doalloca(_Sizet __size);
-	#pragma aux __doalloca = "sub esp,eax" __parm __nomemory [__eax] __value [__esp] __modify __exact __nomemory [__esp];
-
-	#define _alloca(s)         __doalloca(__ALLOCA_ALIGN(s))
-#elif defined(__GNUC__) || defined(__INTEL_COMPILER)
-	extern void *__builtin_alloca(unsigned int __size);
- 	#define _alloca(s)	__builtin_alloca(s)
+#if defined(__GNUC__) || defined(__INTEL_COMPILER)
+#warning Check 64-bit ulong
+	extern void *__builtin_alloca(unsigned long __size);
+	#define _alloca(s)	__builtin_alloca(s)
 #else
- 	#error not configured for system
+	#error not configured for system
 #endif
 
 #define alloca(s)	(((__ALLOCA_ALIGN(s)+128)<__stackavail())?_alloca(s):0)
@@ -62,5 +52,3 @@ extern _Sizet	__stackavail(void);
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("alloca.h $Rev: 159125 $"); */

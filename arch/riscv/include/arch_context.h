@@ -22,7 +22,7 @@
 
 
 /*
- *  arm/context.h
+ *  riscv/context.h
  *
 
  */
@@ -34,7 +34,7 @@
 #include <sys/platform.h>
 #endif
 
-typedef struct arm_cpu_registers {
+typedef struct riscv_cpu_registers {
 	_Uint32t	gpr[16];
 	_Uint32t	spsr;
 } RISCV_CPU_REGISTERS;
@@ -87,7 +87,7 @@ union vfpv3 {
 	_Uint64t	D[32];
 };
 
-typedef struct arm_fpu_registers {
+typedef struct riscv_fpu_registers {
 	union {
 
 		struct vfp {		/* VFP register context */
@@ -105,7 +105,7 @@ typedef struct arm_fpu_registers {
 	} un;
 } RISCV_FPU_REGISTERS;
 
-typedef struct arm_fpemu_context {
+typedef struct riscv_fpemu_context {
 	RISCV_CPU_REGISTERS	reg;
 
 	/*
@@ -123,7 +123,7 @@ typedef struct arm_fpemu_context {
 	} un;
 } RISCV_FPEMU_CONTEXT;
 
-typedef struct arm_alt_registers {
+typedef struct riscv_alt_registers {
 	union {
 		struct xscale_cp0 {
 			unsigned	acc0_lo;

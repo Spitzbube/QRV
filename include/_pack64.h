@@ -15,29 +15,18 @@
  * $
  */
 
-
-
 /*
  *  _pack64.h: Set structure packing to 64 bits (8 bytes)
  *
 
  */
 
-#if defined(__WATCOMC__)
- #pragma pack(__push,8);
-#elif defined(__HIGHC__)
- #pragma push_align_members(64);
-#elif defined(__GNUC__)
+#ifdef __GNUC__
  #if defined (__PRAGMA_PACK_PUSH_POP__)
   #pragma pack(push, 0)
  #else
   #pragma pack()
  #endif
-#elif defined(__INTEL_COMPILER)
- #pragma pack(push, 0)
-#elif defined(__MWERKS__)
 #else
  #error Compiler not supported
 #endif
-
-/* __SRCVERSION("_pack64.h $Rev: 167275 $"); */

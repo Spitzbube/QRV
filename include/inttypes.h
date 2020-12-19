@@ -1,5 +1,8 @@
-/*
- * $QNXLicenseC:
+/**
+ * \file  inttypes.h
+ * \brief Defined system types
+ *
+ * \license
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
  * You must obtain a written license from and pay applicable license fees to QNX
@@ -12,21 +15,10 @@
  * file for other proprietary rights or license notices, as well as the QNX
  * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
- * $
- */
-
-
-
-/*
- *  inttypes.h Defined system types
  *
-
  */
-#ifndef _INTTYPES_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
+#ifndef _INTTYPES_H_INCLUDED
 
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
@@ -40,7 +32,7 @@
 #define _INTTYPES_H_DECLARED
 
 #ifndef _STDINT_H_INCLUDED
-#include _NTO_HDR_(stdint.h)
+#include <stdint.h>
 #endif
 
 #define PRId8			"hhd"

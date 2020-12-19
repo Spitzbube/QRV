@@ -30,11 +30,11 @@
 #endif
 
 #ifndef __TYPES_H_INCLUDED
-#include _NTO_HDR_(sys/types.h)
+#include <sys/types.h>
 #endif
 
 #ifndef _SIGNAL_H_INCLUDED
-#include _NTO_HDR_(signal.h)
+#include <signal.h>
 #endif
 
 #if defined(__EXT_POSIX1_199309) || defined(__EXT_POSIX1_199506) || defined(__EXT_POSIX1_200112)
@@ -44,24 +44,24 @@
   * to compile in older environments we only include sched.h in those later versions.
   */
  #ifndef _SCHED_H_INCLUDED
-  #include _NTO_HDR_(sched.h)
+  #include <sched.h>
  #endif
 #endif
 
 #ifndef _TIME_H_INCLUDED
-#include _NTO_HDR_(time.h)
+#include <time.h>
 #endif
 
 #ifndef _LIMITS_H_INCLUDED
-#include _NTO_HDR_(limits.h)
+#include <limits.h>
 #endif
 
 #ifndef __STORAGE_H_INCLUDED
-#include _NTO_HDR_(sys/storage.h)
+#include <sys/storage.h>
 #endif
 
 #ifndef __STATES_H_INCLUDED
-#include _NTO_HDR_(sys/states.h)
+#include <sys/states.h>
 #endif
 
 #if defined(__SYNC_T)
@@ -95,9 +95,9 @@ typedef struct intrspin {
 	volatile unsigned	value;
 } intrspin_t;
 
-#include _NTO_CPU_HDR_(neutrino.h)
+#include <arch_neutrino.h>
 
-#include _NTO_HDR_(_pack64.h)
+#include <_pack64.h>
 
 __BEGIN_DECLS
 
@@ -428,7 +428,7 @@ struct _clockperiod {
  */
 #define _NTO_SCTL_SETPRIOCEILING	1		/* mutex	const int *prioceiling */
 #define _NTO_SCTL_GETPRIOCEILING	2		/* mutex	int *prioceiling */
-#define _NTO_SCTL_SETEVENT			3		/* mutex	struct sigevent *event */
+#define _NTO_SCTL_SETEVENT		3		/* mutex	struct sigevent *event */
 
 struct iovec;
 struct _asyncmsg_connection_descriptor;
@@ -649,7 +649,7 @@ extern int SyncCreate_r(sync_t *__sync, const struct _sync_attr *__attr);
 
 __END_DECLS
 
-#include _NTO_HDR_(_packpop.h)
+#include <_packpop.h>
 
 #endif
 

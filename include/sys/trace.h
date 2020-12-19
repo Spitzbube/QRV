@@ -27,7 +27,7 @@
 #endif
 
 #ifndef __STATES_H_INCLUDED
-#include _NTO_HDR_(sys/states.h)
+#include <sys/states.h>
 #endif
 
 /* TraceEvent() - modes */
@@ -337,15 +337,15 @@ typedef struct {
 /* just needed for kernel <=> tracelogger interface */
 
 #ifndef _SYS_TIME_H
-#include _NTO_HDR_(sys/time.h)
+#include <sys/time.h>
 #endif
 
 #ifndef __NEUTRINO_H_INCLUDED
-#include _NTO_HDR_(sys/neutrino.h)
+#include <sys/neutrino.h>
 #endif
 
 #ifndef _STDARG_H_INCLUDED
-#include _NTO_HDR_(stdarg.h)
+#include <stdarg.h>
 #endif
 
 typedef struct tracebuf {
@@ -375,24 +375,14 @@ extern int trace_logb( int __code, const void *__buf, size_t __nbytes );
 extern int trace_func_enter( void *__this_fn, void *__call_site );
 extern int trace_func_exit( void *__this_fn, void *__call_site );
 
-#ifdef __WATCOMC__
-#pragma aux _trace_getpc =\
-	"  call foo" \
-	"foo: pop eax" parm nomemory [] modify nomemory exact [eax] value [eax]
-extern unsigned _trace_getpc(void);
-#define trace_here() (TraceEvent( _NTO_TRACE_INSERTSCLASSEVENT, _NTO_TRACE_SYSTEM, _NTO_TRACE_SYS_ADDRESS, _trace_getpc(), (unsigned)0 ))
-#else
 static __inline__ int trace_here( void )
 {
 	unsigned pc = (unsigned)__builtin_return_address(0);
 	return TraceEvent( _NTO_TRACE_INSERTSCLASSEVENT, _NTO_TRACE_SYSTEM, _NTO_TRACE_SYS_ADDRESS, (unsigned)pc, (unsigned)0 );
 }
-#endif
 
 __END_DECLS
 
 #endif
 
 #endif
-
-/* __SRCVERSION("trace.h $Rev: 206799 $"); */

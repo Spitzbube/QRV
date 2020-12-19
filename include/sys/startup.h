@@ -36,7 +36,7 @@
 #include <sys/platform.h>
 #endif
 
-#include _NTO_HDR_(_pack64.h)
+#include <_pack64.h>
 
 
 /*
@@ -47,35 +47,35 @@
 **   IS - used by both the QNX IPL and the startup program
 */
 struct startup_header {
-	unsigned long	signature;			/*I  Header sig, see below*/
-	unsigned short	version;			/*I  Header vers, see below*/
-	unsigned char	flags1;				/*IS Misc flags, see below*/
-	unsigned char	flags2;             /*   No flags defined yet*/
-	unsigned short	header_size;		/*S  sizeof(struct startup_header)*/
-	unsigned short	machine;			/*IS Machine type from sys/elf.h*/
-	unsigned long	startup_vaddr;		/*I  Virtual Address to transfer*/
-										/*   to after IPL is done*/
-	unsigned long	paddr_bias;			/*S  Value to add to physical address*/
-										/*   to get a value to put into a*/
-										/*   pointer and indirected through*/
-	unsigned long	image_paddr;		/*IS Physical address of image*/
-	unsigned long	ram_paddr;			/*IS Physical address of RAM to copy*/
-										/*   image to (startup_size bytes copied)*/
-	unsigned long	ram_size;			/*S  Amount of RAM used by the startup*/
-										/*   program and executables contained*/
-										/*   in the file system*/
-	unsigned long	startup_size;		/*I  Size of startup (never compressed)*/
-	unsigned long	stored_size;		/*I  Size of entire image*/
-	unsigned long	imagefs_paddr;		/*IS Set by IPL to where the imagefs is when startup runs*/
-	unsigned long	imagefs_size;		/*S  Size of uncompressed imagefs*/
-	unsigned short	preboot_size;		/*I  Size of loaded before header*/
-	unsigned short	zero0;				/*   Zeros */
-	unsigned long	zero[3];			/*   Zeros */
-	unsigned long	info[48];			/*IS Array of startup_info* structures*/
+    unsigned long signature;    /*I  Header sig, see below */
+    unsigned short version;     /*I  Header vers, see below */
+    unsigned char flags1;       /*IS Misc flags, see below */
+    unsigned char flags2;       /*   No flags defined yet */
+    unsigned short header_size; /*S  sizeof(struct startup_header) */
+    unsigned short machine;     /*IS Machine type from sys/elf.h */
+    unsigned long startup_vaddr;/*I  Virtual Address to transfer */
+    /*   to after IPL is done */
+    unsigned long paddr_bias;   /*S  Value to add to physical address */
+    /*   to get a value to put into a */
+    /*   pointer and indirected through */
+    unsigned long image_paddr;  /*IS Physical address of image */
+    unsigned long ram_paddr;    /*IS Physical address of RAM to copy */
+    /*   image to (startup_size bytes copied) */
+    unsigned long ram_size;     /*S  Amount of RAM used by the startup */
+    /*   program and executables contained */
+    /*   in the file system */
+    unsigned long startup_size; /*I  Size of startup (never compressed) */
+    unsigned long stored_size;  /*I  Size of entire image */
+    unsigned long imagefs_paddr;/*IS Set by IPL to where the imagefs is when startup runs */
+    unsigned long imagefs_size; /*S  Size of uncompressed imagefs */
+    unsigned short preboot_size;/*I  Size of loaded before header */
+    unsigned short zero0;       /*   Zeros */
+    unsigned long zero[3];      /*   Zeros */
+    unsigned long info[48];     /*IS Array of startup_info* structures */
 };
 
 /* We keep the flags as chars so they are endian neutral */
-#define STARTUP_HDR_FLAGS1_VIRTUAL			0x01
+#define STARTUP_HDR_FLAGS1_VIRTUAL		0x01
 #define STARTUP_HDR_FLAGS1_BIGENDIAN		0x02
 #define STARTUP_HDR_FLAGS1_COMPRESS_MASK	0x1c
 #define STARTUP_HDR_FLAGS1_COMPRESS_SHIFT	0x02
@@ -86,7 +86,7 @@ struct startup_header {
 
 /* All values are stored in target endian format */
 #define STARTUP_HDR_SIGNATURE			0x00ff7eeb
-#define STARTUP_HDR_VERSION				1
+#define STARTUP_HDR_VERSION			1
 
 /*
  The following explains some of the fields used by the IPL and Startup
@@ -255,27 +255,27 @@ in the address space.
 
 
 enum startup_info_types {
-	STARTUP_INFO_SKIP = 0,		/* If size 0 then end of list */
-	STARTUP_INFO_MEM,
-	STARTUP_INFO_DISK,
-	STARTUP_INFO_TIME,
-	STARTUP_INFO_BOX,
-	STARTUP_INFO_USER = 0x8000	/* User reserved numbers start here */
+    STARTUP_INFO_SKIP = 0,      /* If size 0 then end of list */
+    STARTUP_INFO_MEM,
+    STARTUP_INFO_DISK,
+    STARTUP_INFO_TIME,
+    STARTUP_INFO_BOX,
+    STARTUP_INFO_USER = 0x8000  /* User reserved numbers start here */
 };
 
 struct startup_info_hdr {
-	unsigned short		type;
-	unsigned short		size;
+    unsigned short type;
+    unsigned short size;
 };
 
 struct startup_info_skip {
-	struct startup_info_hdr	hdr;
+    struct startup_info_hdr hdr;
 };
 
 struct startup_info_mem {
-	struct startup_info_hdr	hdr;
-	unsigned long			addr;
-	unsigned long			size;
+    struct startup_info_hdr hdr;
+    unsigned long addr;
+    unsigned long size;
 };
 
 /*
@@ -284,62 +284,55 @@ struct startup_info_mem {
  * startup_info_mem entry and this one by the size field.
  */
 struct startup_info_mem_extended {
-	struct startup_info_mem	mem;
-	unsigned long			addr_hi;
-	unsigned long			size_hi;
+    struct startup_info_mem mem;
+    unsigned long addr_hi;
+    unsigned long size_hi;
 };
 
 struct startup_info_disk {
-	struct startup_info_hdr	hdr;
-	unsigned char			drive;
-	unsigned char			zero;
-	unsigned short			heads;
-	unsigned short			cylinders;
-	unsigned short			sectors;
-	unsigned long			blocks;
+    struct startup_info_hdr hdr;
+    unsigned char drive;
+    unsigned char zero;
+    unsigned short heads;
+    unsigned short cylinders;
+    unsigned short sectors;
+    unsigned long blocks;
 };
 
 struct startup_info_time {
-	struct startup_info_hdr	hdr;
-	unsigned long			time;
+    struct startup_info_hdr hdr;
+    unsigned long time;
 };
 
 struct startup_info_box {
-	struct startup_info_hdr	hdr;
-	unsigned char			boxtype;
-	unsigned char			bustype;
-	unsigned char			spare[2];
+    struct startup_info_hdr hdr;
+    unsigned char boxtype;
+    unsigned char bustype;
+    unsigned char spare[2];
 };
 
 struct bootargs_entry {
-	unsigned char			 size_lo;	/* Includes entire structure */
-	unsigned char			 size_hi;
-	char					 argc;
-	char					 envc;
-	unsigned long			 shdr_addr;
-	char					 args[1];	/* variable length */
+    unsigned char size_lo;      /* Includes entire structure */
+    unsigned char size_hi;
+    char argc;
+    char envc;
+    unsigned long shdr_addr;
+    char args[1];               /* variable length */
 };
 
 
 #if defined(__LITTLEENDIAN__) || defined(__X86__)
-   #define __SC(ch,pos)		((_Uint64t)(ch)<<((pos)*8))
+#define __SC(ch,pos)		((_Uint64t)(ch)<<((pos)*8))
 #else
-   #define __SC(ch,pos)		((_Uint64t)(ch)<<((7-(pos))*8))
+#define __SC(ch,pos)		((_Uint64t)(ch)<<((7-(pos))*8))
 #endif
 #define __STACK_SIG (__SC('d',0)+__SC('d',1)+__SC('p',2)+__SC('v',3) \
 					+__SC('b',4)+__SC('s',5)+__SC('k',6)+__SC('r',7))
 
 struct startup_trailer {
-	unsigned long			cksum;	/* Checksum from start of header to start of trailer */
+    unsigned long cksum;        /* Checksum from start of header to start of trailer */
 };
 
-#include _NTO_HDR_(_packpop.h)
+#include <_packpop.h>
 
-#endif /* __STARTUP_H_INCLUDED */
-
-/* __SRCVERSION("startup.h $Rev: 680332 $"); */
-
-#if defined(__QNXNTO__) && defined(__USESRCVERSION)
-#include <sys/srcversion.h>
-__SRCVERSION("$URL: http://svn/product/branches/6.6.0/trunk/hardware/startup/lib/public/sys/startup.h $ $Rev: 680332 $")
-#endif
+#endif                          /* __STARTUP_H_INCLUDED */

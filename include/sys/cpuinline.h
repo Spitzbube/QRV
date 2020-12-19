@@ -33,7 +33,7 @@
 #include <sys/platform.h>
 #endif
 
-#include _NTO_CPU_HDR_(cpuinline.h)
+#include <arch_cpuinline.h>
 
 #endif
 

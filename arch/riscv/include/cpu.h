@@ -34,10 +34,10 @@
 #endif
 
 #ifndef __RISCV_CONTEXT_H_INCLUDED
-#include _NTO_HDR_(riscv/context.h)
+#include <arch_context.h>
 #endif
 
-#define RISCV_STRINGNAME	"arm"
+#define RISCV_STRINGNAME	"riscv"
 
 /*
  * Exception vector offsets
@@ -81,5 +81,3 @@
 #define RISCV_CPSR_N				(1 << 31)
 
 #endif                          /* __RISCV_CPU_H_INCLUDED */
-
-/* __SRCVERSION("cpu.h $Rev: 160127 $"); */

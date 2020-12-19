@@ -65,8 +65,8 @@
 #define _NO_RETURN(fun) void fun __attribute__((__noreturn__))
 #endif
 
-#ifndef	__CDEFS_H_INCLUDED
-#include _NTO_HDR_(sys/cdefs.h)
+#ifndef __CDEFS_H_INCLUDED
+#include <sys/cdefs.h>
 #endif
 
 #ifdef __BIGREGS__
@@ -207,7 +207,6 @@ typedef __gnuc_va_list __NTO_va_list;
 #endif
 
 #endif
-
 
 #if _FILE_OFFSET_BITS - 0 == 64
 #undef __ALIAS64

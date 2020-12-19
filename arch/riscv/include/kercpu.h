@@ -15,14 +15,15 @@
  * $
  */
 
-#include <kernel/cpu_mips.h>
+#include <sys/types.h>
+#include <cpu_def.h>
 
 #define xfer_setjmp(_env)			_setjmp(_env)
 #define xfer_longjmp(_env, _ret, _regs)		_longjmp(_env, _ret)
 
 /*
-	This makes each argument in a kernel call structure take up 64 bits so
-	that it aligns with the register save area layout.
+ * This makes each argument in a kernel call structure take up 64 bits so
+ * that it aligns with the register save area layout.
 */
 #define XFILLER( line )		uint32_t	filler##line
 #define FILLER( line )		XFILLER( line )
@@ -35,15 +36,15 @@
 	#error ENDIAN Not defined for system
 #endif
 
-#define REGTYPE(rs)		((rs)->regs[MIPS_CREG(MIPS_REG_V0)])
-#define REGSTATUS(rs)	((rs)->regs[MIPS_CREG(MIPS_REG_V0)])
-#define REGIP(rs)		((rs)->regs[MIPS_CREG(MIPS_REG_EPC)])
-#define REGSP(rs)		((rs)->regs[MIPS_CREG(MIPS_REG_SP)])
+#define REGTYPE(rs)		((rs)->regs[MIPS_CREG(RISCV_REG_V0)])
+#define REGSTATUS(rs)	((rs)->regs[RISCV_CREG(RISCV_REG_V0)])
+#define REGIP(rs)		((rs)->regs[RISCV_CREG(RISCV_REG_PC)])
+#define REGSP(rs)		((rs)->regs[RISCV_CREG(RISCV_REG_SP)])
 
-#define SETREGTYPE(rs,v)	MIPS_REG_SETx64(rs, MIPS_REG_V0, v)
-#define SETREGSTATUS(rs,v)	MIPS_REG_SETx64(rs, MIPS_REG_V0, v)
-#define SETREGIP(rs,v)		MIPS_REG_SETx64(rs, MIPS_REG_EPC, v)
-#define SETREGSP(rs,v)		MIPS_REG_SETx64(rs, MIPS_REG_SP, v)
+#define SETREGTYPE(rs,v)	RISCV_REG_SETx64(rs, RISCV_REG_V0, v)
+#define SETREGSTATUS(rs,v)	RISCV_REG_SETx64(rs, RISCV_REG_V0, v)
+#define SETREGIP(rs,v)		RISCV_REG_SETx64(rs, RISCV_REG_PC, v)
+#define SETREGSP(rs,v)		RISCV_REG_SETx64(rs, RISCV_REG_SP, v)
 
 #define SETKIP_FUNC(thp,v)	cpu_invoke_func(thp, (uintptr_t)v)
 
@@ -54,8 +55,8 @@
  * Convert physical address to pointer value and vis-versa when in a
  * physical memory model.
  */
-#define PHYS_TO_PTR(phys)		((void *)MIPS_PHYS_TO_KSEG0(phys))
-#define PTR_TO_PHYS(ptr)		((uintptr_t)MIPS_KSEG0_TO_PHYS(ptr))
+#define PHYS_TO_PTR(phys)		((void *)RISCV_PHYS_TO_KSEG0(phys))
+#define PTR_TO_PHYS(ptr)		((uintptr_t)RISCV_KSEG0_TO_PHYS(ptr))
 
 
 #define rd_probe_1(ptr)	({ __attribute__((unused)) uint32_t dummy = *(const volatile uint32_t *)(ptr); })
@@ -126,11 +127,9 @@ wr_probe_num(void *loc, int num) {
 
 #endif /* SMP */
 
-#if !defined(MIPS_CAUSE2SIGMAP_CONST)
-#define MIPS_CAUSE2SIGMAP_CONST const
+#if !defined(RISCV_CAUSE2SIGMAP_CONST)
+#define RISCV_CAUSE2SIGMAP_CONST const
 #endif
-extern MIPS_CAUSE2SIGMAP_CONST unsigned long __mips_cause2sig_map[];
+extern RISCV_CAUSE2SIGMAP_CONST unsigned long __mips_cause2sig_map[];
 
 extern uintptr_t	next_instruction(CPU_REGISTERS *ctx);
-
-/* __SRCVERSION("kercpu.h $Rev: 164523 $"); */

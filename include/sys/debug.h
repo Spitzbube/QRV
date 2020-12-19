@@ -49,43 +49,14 @@
 	#endif
 #endif
 
-#if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_X86)
-#ifndef __X86_CONTEXT_H_INCLUDED
-#include _NTO_HDR_(x86/context.h)
-#endif
-#endif
-#if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_PPC)
-#ifndef __PPC_CONTEXT_H_INCLUDED
-#include _NTO_HDR_(ppc/context.h)
-#endif
-#endif
-#if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_MIPS)
-#ifndef __MIPS_CONTEXT_H_INCLUDED
-#include _NTO_HDR_(mips/context.h)
-#endif
-#endif
-#if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_SH)
-#ifndef __SH_CONTEXT_H_INCLUDED
-#include _NTO_HDR_(sh/context.h)
-#endif
-#endif
-#if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_ARM)
-#ifndef __ARM_CONTEXT_H_INCLUDED
-#include _NTO_HDR_(arm/context.h)
-#endif
-#endif
-#if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_RISCV)
-#ifndef __RISCV_CONTEXT_H_INCLUDED
-#include _NTO_HDR_(riscv/context.h)
-#endif
-#endif
+#include <arch_context.h>
 
 #ifndef __FAULT_H_INCLUDED
-#include _NTO_HDR_(sys/fault.h)
+#include <sys/fault.h>
 #endif
 
 #ifndef _SIGNAL_H_INCLUDED
-#include _NTO_HDR_(signal.h)
+#include <signal.h>
 #endif
 
 #if defined(__PID_T)
@@ -135,7 +106,7 @@ struct _timer_info __TIMER_INFO;
 
 __BEGIN_DECLS
 
-#include _NTO_HDR_(_pack64.h)
+#include <_pack64.h>
 
 #define _DEBUG_FLAG_STOPPED			0x00000001	/* Thread is not running */
 #define _DEBUG_FLAG_ISTOP			0x00000002	/* Stopped at point of interest */
@@ -410,10 +381,8 @@ typedef union _debug_perfregs {
 	_Uint64t						padding[1024];
 }							debug_perfreg_t;
 
-#include _NTO_HDR_(_packpop.h)
+#include <_packpop.h>
 
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("debug.h $Rev: 169879 $"); */

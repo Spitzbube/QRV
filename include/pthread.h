@@ -108,7 +108,7 @@ typedef __CLOCKID_T	clockid_t;
 
 #endif
 
-#include _NTO_CPU_HDR_(smpxchg.h)
+#include <smpxchg.h>
 
 #ifndef __mutex_smp_cmpxchg
 	#define __mutex_smp_cmpxchg(d, c, s)	_smp_cmpxchg((d), (c), (s))

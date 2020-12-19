@@ -92,6 +92,10 @@ int em_event(tracebuf_t*);
  #define _TRACE_ARGPTR(thp)         (&(thp)->reg.gr[4])
  #define _TRACE_CLOCK_SWAP          (1)
  #define _TRACE_SAVE_REGS(t,c)
+#elif defined(__RISCV__)
+ #define _TRACE_ARGPTR(thp)         ((thp)->reg.gpr)
+ #define _TRACE_CLOCK_SWAP          (0)
+ #define _TRACE_SAVE_REGS(t,c)
 #else
  #error instrumentation not supported
 #endif

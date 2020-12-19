@@ -1,5 +1,10 @@
-/*
- * $QNXLicenseC:
+/**
+ * \file sys/platform.h
+ *
+ *  The only symbols made visible by this header are
+ *  OS/compiler reserved symbols.
+ *
+ * \license
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
  * You must obtain a written license from and pay applicable license fees to QNX
@@ -12,83 +17,13 @@
  * file for other proprietary rights or license notices, as well as the QNX
  * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
- * $
  */
 
-
-
-/*
- *  sys/platform.h
- *
-
- *
- *  The only symbols made visible by this header are
- *  OS/compiler reserved symbols.
- */
 #ifndef __PLATFORM_H_INCLUDED
 #define __PLATFORM_H_INCLUDED
 
-#define _NTO_HDR_PIECE_(x) x
-
-#if defined(__X86__)
-    #define _NTO_CPU_HDR_DIR_(h)   x86/h
-#elif defined(__PPC__)
-    #define _NTO_CPU_HDR_DIR_(h)   ppc/h
-#elif defined(__MIPS__)
-    #define _NTO_CPU_HDR_DIR_(h)   mips/h
-#elif defined(__SH__)
-    #define _NTO_CPU_HDR_DIR_(h)   sh/h
-#elif defined(__ARM__)
-    #define _NTO_CPU_HDR_DIR_(h)   arm/h
-#elif defined(__RISCV__)
-    #define _NTO_CPU_HDR_DIR_(h)   riscv/h
-
-/* New CPU types go here */
-
-#elif defined(__QNXNTO__)
-    #error not configured for CPU
-#else
-    /* partial support only - cross hosted development targeting qnx6 */
-    #define _NTO_CPU_HDR_DIR_(h)   unknown_cpu/h
-#endif
-
-#ifndef _NTO_HDR_
-    #ifdef _NTO_HDR_DIR_
-        #define _NTO_HDR_(hdr)  <_NTO_HDR_PIECE_(_NTO_HDR_DIR_)_NTO_HDR_PIECE_(hdr)>
-    #else
-        #define _NTO_HDR_(hdr)  <hdr>
-    #endif
-#endif
-
-#ifndef _NTO_CPU_HDR_
-    #ifdef _NTO_HDR_DIR_
-		#define _NTO_CPU_HDR_(hdr)  <_NTO_HDR_PIECE_(_NTO_HDR_DIR_)_NTO_CPU_HDR_DIR_(hdr)>
-    #else
-		#define _NTO_CPU_HDR_(hdr)  <_NTO_CPU_HDR_DIR_(hdr)>
-    #endif
-#endif
-
-#define __ALIAS64(n)
-
-#if defined(__MWERKS__)
-    #include _NTO_HDR_(sys/compiler_mwerks.h)
-#elif defined(__WATCOMC__)
-    #include _NTO_HDR_(sys/compiler_watcom.h)
-#elif defined(__GNUC__)
-    #include _NTO_HDR_(sys/compiler_gnu.h)
-#elif defined(__HIGHC__)
-    #include _NTO_HDR_(sys/compiler_highc.h)
-#elif defined(__INTEL_COMPILER)
-    #include _NTO_HDR_(sys/compiler_intel.h)
-#else
-    #error not configured for compiler
-#endif
-
-#if defined(__QNXNTO__)
-    #include _NTO_CPU_HDR_(platform.h)
-#else
-    /* partial support only - cross hosted development targeting qnx6 */
-#endif
+#include <platform.h>
+#include <sys/compiler_gnu.h>
 
 /*
  * PPC numbers its bits backwards from the rest of the known universe
@@ -123,13 +58,13 @@
 #undef __EXT_POSIX1_199309	/* Posix 1003.1b, XOPEN_RT */
 #undef __EXT_POSIX1_199506	/* Posix 1003.1c, XOPEN_RTT */
 #undef __EXT_POSIX1_200112	/* Posix 1003.1-2001 */
-#undef __EXT_POSIX2			/* Posix 1003.2 */
-#undef __EXT_QNX			/* QNX extentions */
-#undef __EXT_PCDOS			/* Common DOS/Watcom Extentions */
+#undef __EXT_POSIX2		/* Posix 1003.2 */
+#undef __EXT_QNX		/* QNX extentions */
+#undef __EXT_PCDOS		/* Common DOS/Watcom Extentions */
 #undef __EXT_XOPEN_EX		/* XOPEN extentions */
 #undef __EXT_UNIX_MISC		/* UNIX definitions not defined by XOPEN */
 #undef __EXT_UNIX_HIST		/* incompatible historic unix definitions */
-#undef __EXT_BSD			/* BSD extensions */
+#undef __EXT_BSD		/* BSD extensions */
 
 #if defined(_XOPEN_SOURCE)
 	#if _XOPEN_SOURCE-0 == 500
@@ -229,7 +164,7 @@
 #define _LARGEFILE64_SOURCE 1
 #endif
 
-#include _NTO_HDR_(_pack64.h)
+#include <_pack64.h>
 
 #if __INT_BITS__ == 32
 #define _INT32		int
@@ -256,11 +191,7 @@ typedef _INT32			_Ssizet;
 #define _LLONG_MAX      0x7fffffffffffffffLL
 #define _ULLONG_MAX     0xffffffffffffffffULL
 
-#ifdef __QNXNTO__
-	#include _NTO_HDR_(sys/target_nto.h)
-#else
-	#error not configured for target
-#endif
+#include <sys/target_nto.h>
 
 #if !defined(__SECSTR)
 	#define __SECSTR(__sec, __s)
@@ -361,6 +292,6 @@ typedef bool _Bool;
 _STD_END
 #endif /* __cplusplus */
 
-#include _NTO_HDR_(_packpop.h)
+#include <_packpop.h>
 
 #endif

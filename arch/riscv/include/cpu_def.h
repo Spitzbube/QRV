@@ -17,15 +17,14 @@
 
 #include <cpu.h>
 #include <inline.h>
-#include <priv.h>
 #include <smpxchg.h>
 
 #define FAULT_ISWRITE(_n)	((_n) & SIGCODE_STORE)
 
-typedef RISCV_CPU_REGISTERS	CPU_REGISTERS;
-typedef RISCV_FPU_REGISTERS	FPU_REGISTERS;
-typedef RISCV_ALT_REGISTERS	ALT_REGISTERS;
-typedef RISCV_PERFREGS		PERF_REGISTERS;
+typedef RISCV_CPU_REGISTERS CPU_REGISTERS;
+typedef RISCV_FPU_REGISTERS FPU_REGISTERS;
+typedef RISCV_ALT_REGISTERS ALT_REGISTERS;
+typedef RISCV_PERFREGS PERF_REGISTERS;
 #define CPU_STRINGNAME		RISCV_STRINGNAME
 
 #define STARTUP_STACK_NBYTES		4096
@@ -51,7 +50,7 @@ typedef RISCV_PERFREGS		PERF_REGISTERS;
 
 /* registers that need to be saved for interrupt routine invocation */
 struct cpu_intrsave {
-	char	dummy;
+    char dummy;
 };
 
 /* Breakpoint fields that this cpu may need for breakpoints */
@@ -65,19 +64,19 @@ struct cpu_intrsave {
 
 /* CPU specific fields in the thread entry structure */
 struct cpu_thread_entry {
-	RISCV_PERFREGS				*pcr;
-	struct riscv_alt_registers	alt;	// WARNING: must be last field
+    RISCV_PERFREGS *pcr;
+    struct riscv_alt_registers alt; // WARNING: must be last field
 };
 
 /* CPU specific fields in the memmgr fault_info structure */
 struct cpu_fault_info {
-	unsigned	code;
-	unsigned	asid;
+    unsigned code;
+    unsigned asid;
 };
 
 /* Extra state (read only) made available by the kernel debugger */
 struct cpu_extra_state {
-	char	dummy;
+    char dummy;
 };
 
-extern void	mmu_set_domain(unsigned);
+extern void mmu_set_domain(unsigned);

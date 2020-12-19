@@ -43,7 +43,7 @@
 
 #ifdef __QNXNTO__
 #ifndef __CPUINLINE_H_INCLUDED
-#include _NTO_HDR_(sys/cpuinline.h)
+#include <sys/cpuinline.h>
 #endif
 #endif
 

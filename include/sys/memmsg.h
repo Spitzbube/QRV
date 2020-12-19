@@ -34,11 +34,11 @@
 #endif
 
 #ifndef __SYSMSG_H_INCLUDED
-#include _NTO_HDR_(sys/sysmsg.h)
+#include <sys/sysmsg.h>
 #endif
 
 #ifndef __MMAN_H_INCLUDED
-#include _NTO_HDR_(sys/mman.h)
+#include <sys/mman.h>
 #endif
 
 #define MEMMGR_COID				SYSMGR_COID
@@ -78,7 +78,7 @@ enum {
 	_MEM_OFFSET_PT
 };
 
-#include _NTO_HDR_(_pack64.h)
+#include <_pack64.h>
 
 /*
  * Message of _MEM_MAP
@@ -282,7 +282,7 @@ typedef union {
 	struct _mem_peer			i;
 } mem_peer_t;
 
-#include _NTO_HDR_(_packpop.h)
+#include <_packpop.h>
 
 #endif
 

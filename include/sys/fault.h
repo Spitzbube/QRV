@@ -29,13 +29,13 @@
 #include <sys/platform.h>
 #endif
 
-#include _NTO_HDR_(_pack64.h)
+#include <_pack64.h>
 
 typedef struct {
 	long __bits[2];
 } fltset_t;
 
-#include _NTO_HDR_(_packpop.h)
+#include <_packpop.h>
 
 #define	FLTILL		1	/* Illegal instruction */
 #define	FLTPRIV		2	/* Privileged instruction */
@@ -52,8 +52,7 @@ typedef struct {
 /* First CPU specific fault number */
 #define _FIRST_CPU_FAULT	32
 
-#include _NTO_CPU_HDR_(fault.h)
+#include <arch_fault.h>
 
 #endif
 
-/* __SRCVERSION("fault.h $Rev: 153052 $"); */

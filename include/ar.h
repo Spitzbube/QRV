@@ -30,7 +30,7 @@
 #include <sys/platform.h>
 #endif
 
-#include _NTO_HDR_(_pack64.h)
+#include <_pack64.h>
 
 #define ARMAG		"!<arch>\n"
 #define SARMAG		8
@@ -47,7 +47,7 @@ struct ar_hdr {
 	char				ar_fmag[2];
 };
 
-#include _NTO_HDR_(_packpop.h)
+#include <_packpop.h>
 
 #endif
 

@@ -32,7 +32,7 @@
 #include <sys/platform.h>
 #endif
 
-#include _NTO_HDR_(_pack64.h)
+#include <_pack64.h>
 
 __BEGIN_DECLS
 
@@ -209,7 +209,7 @@ void	 	*hwi_off2tag(unsigned);
 
 __END_DECLS
 
-#include _NTO_HDR_(_packpop.h)
+#include <_packpop.h>
 
 #define __HWSYSINFO_H_INCLUDED
 #endif
