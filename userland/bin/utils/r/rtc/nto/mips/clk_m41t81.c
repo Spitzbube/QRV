@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 
@@ -160,7 +160,7 @@ static int smbus_writertc(int slaveaddr,int devaddr,int b)
      */
 
     err = wait_busy();
-    if (err < 0) 
+    if (err < 0)
 		return err;
 
     return err;
@@ -189,9 +189,9 @@ RTCFUNC(get,m41t81)(struct tm *tm, int cent_reg) {
 	unsigned	year;
 
 
-	// convert BCD to binary 
+	// convert BCD to binary
 	sec 	= smbus_readrtc(RTC_SLAVE_ADDR,M41T81REG_SC) & 0xFF;
-	min 	= smbus_readrtc(RTC_SLAVE_ADDR,M41T81REG_MN) & 0xFF;	
+	min 	= smbus_readrtc(RTC_SLAVE_ADDR,M41T81REG_MN) & 0xFF;
 	hour	= smbus_readrtc(RTC_SLAVE_ADDR,M41T81REG_HR) & ~(M41T81_CENT | M41T81_CEB);
 	mday	= smbus_readrtc(RTC_SLAVE_ADDR,M41T81REG_DT) & 0xFF;
 	mon		= smbus_readrtc(RTC_SLAVE_ADDR,M41T81REG_MO) & 0xFF;

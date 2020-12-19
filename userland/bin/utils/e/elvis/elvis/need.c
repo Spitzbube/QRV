@@ -58,6 +58,6 @@ void *memmove(dest, src, size)
 /* The XrmCombineFileDatabase() function is defined in guix11/xmisc.c */
 #endif
 
-#ifdef NEED_INET_ATON	
+#ifdef NEED_INET_ATON
 /* The inet_aton() function is defined in osunix/osnet.c */
 #endif

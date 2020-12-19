@@ -130,7 +130,7 @@ bit_crc( buffer, count, crc )
 	if ( use_crc ) {
 		while( count-- ) {
 			for( shifter = 0x80; shifter; shifter >>= 1 ) {
-				flag = crc_reg & 0x8000; 
+				flag = crc_reg & 0x8000;
 				crc_reg <<= 1;
 				crc_reg |= ((shifter & *b) ? 1 : 0);
 				if ( flag ) crc_reg ^= SDLC_POLY;
@@ -151,12 +151,12 @@ bit_crc2( buffer, count, crc )
 	register char *b = buffer;
 	register unsigned crc_reg = crc;
 	unsigned shifter, flag, ch;
-	
+
 	if ( use_crc ) {
 		while( count-- ) {
 			ch = *b++;
 			for( shifter = 8; shifter; shifter--) {
-				flag = (crc_reg & 0x0001) ^ (ch & 0x0001); 
+				flag = (crc_reg & 0x0001) ^ (ch & 0x0001);
 				crc_reg >>= 1;
 				ch >>= 1;
 				if ( flag ) crc_reg ^= CCITT_POLY;

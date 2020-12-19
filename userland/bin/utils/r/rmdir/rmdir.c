@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -47,21 +47,21 @@ Where:
 	Stage 1 of the warnings/errors cleanup.
 
 	Revision 1.7  2005/06/03 01:37:58  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.6  2003/08/28 20:43:36  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.5  1996/01/26 19:37:34  dtdodge
 	*** empty log message ***
-	
+
 	Revision 1.4  1994/11/17 20:01:47  eric
 	fixed exit status to be 0 on total success and
 	non-zero if any failure occurred.
@@ -77,7 +77,7 @@ Where:
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 #include <stdio.h>
 #include <sys/types.h>
@@ -102,15 +102,15 @@ int main(int argc, char *argv[])
 
 	while(( i= getopt( argc, argv, "p")) != -1)
 	{
-		switch (i) 	
+		switch (i)
 		{
 			case 'p':
 				pflag++;
 				break;
 
 			case '?':
-				error++;                
-				break;                   
+				error++;
+				break;
 		}
 	}
 
@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
 	if (error)
 		exit( EXIT_FAILURE );
 
-	for( ; optind < argc; optind++ ) 
+	for( ; optind < argc; optind++ )
 	{
 		filename = argv[optind];
 		if(rmdir(filename) == -1) {

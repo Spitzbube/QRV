@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,22 +29,22 @@
  *
  *	These functions implement the pass options in PAX.  The pass option
  *	copies files from one directory hierarchy to another.
- * 
+ *
  * AUTHOR
  *
  *	Mark H. Colburn, NAPS International (mark@jhereg.mn.org)
  *
- * Sponsored by The USENIX Association for public distribution. 
+ * Sponsored by The USENIX Association for public distribution.
  *
  * Copyright (c) 1989 Mark H. Colburn.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms are permitted
- * provided that the above copyright notice is duplicated in all such 
- * forms and that any documentation, advertising materials, and other 
- * materials related to such distribution and use acknowledge that the 
- * software was developed * by Mark H. Colburn and sponsored by The 
- * USENIX Association. 
+ * provided that the above copyright notice is duplicated in all such
+ * forms and that any documentation, advertising materials, and other
+ * materials related to such distribution and use acknowledge that the
+ * software was developed * by Mark H. Colburn and sponsored by The
+ * USENIX Association.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
@@ -71,13 +71,13 @@
  *
  * Revision 1.3  89/02/12  10:29:51  mark
  * Fixed misspelling of Replstr
- * 
+ *
  * Revision 1.2  89/02/12  10:05:09  mark
  * 1.2 release fixes
- * 
+ *
  * Revision 1.1  88/12/23  18:02:20  mark
  * Initial revision
- * 
+ *
  */
 
 #ifndef lint
@@ -105,11 +105,11 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
  */
 
 #ifdef __STDC__
-    
+
 void pass(char *dirname)
 
 #else
-    
+
 int pass(dirname)
 char	*dirname;
 
@@ -130,7 +130,7 @@ char	*dirname;
 		close(fd);
 	    }
 	    continue;
-	} 
+	}
 
 	if (passitem(name, &sb, fd, dirname)) {
 	    close(fd);
@@ -167,7 +167,7 @@ char	*dirname;
 int passitem(char *from, Stat *asb, int ifd, char *dir)
 
 #else
-    
+
 int passitem(from, asb, ifd, dir)
 char           *from;
 Stat           *asb;

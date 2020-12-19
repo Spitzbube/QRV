@@ -203,7 +203,7 @@ c_stack_action (void (*action) (int, siginfo_t *, void *))
   return sigaction (SIGSEGV, &act, 0);
 #endif
 }
-
+
 #if DEBUG
 
 #include <stdio.h>
@@ -229,7 +229,7 @@ main (int argc, char **argv)
 }
 
 #endif /* DEBUG */
-
+
 /*
 Local Variables:
 compile-command: "gcc -D_GNU_SOURCE -DDEBUG \

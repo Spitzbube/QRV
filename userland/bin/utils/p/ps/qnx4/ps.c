@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -209,7 +209,7 @@ char *procenv(void) {
 	char *bp = buffer;
 
 	while (argc--) while (*argv++);
-	
+
 	while (argv < buffer + sizeof buffer - 1)
 	    if (*bp = *argv++) bp++;
 	    else if (envc-- == 0) break;
@@ -411,7 +411,7 @@ reswitch:   switch (ch = *fmt++) {
 			    widths[y] = width;
 /*			else
 			    message("field width only valid with 'a' specifier");
-*/		    if (title) titles[y] = title;	    
+*/		    if (title) titles[y] = title;
 		    *detail++ = ch;
 		} else
 		    message("unsupported format specifier '%c'", ch);
@@ -523,7 +523,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	    }
 	    if ((pm = qnx_vc_attach(nid, PROC_PID, sizeof ps, 1)) == -1) {
-		message("unable to connect to node %s. (%s)\n", 
+		message("unable to connect to node %s. (%s)\n",
 			nidtostr(nid, 0, 0), strerror(errno));
 		return EXIT_FAILURE;
 	    }

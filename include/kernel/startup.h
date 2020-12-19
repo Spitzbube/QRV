@@ -38,8 +38,7 @@
 #include <hw/sysinfo.h>
 #include <confname.h>
 
-
-#define PROCESSORS_MAX	32      // set this to match kernel (at least a search will find this now)
+#define PROCESSORS_MAX	8      // set this to match kernel (at least a search will find this now)
 
 /* this ASSERT is intentionally meant to not be conditionally implemented */
 #define ASSERT(_c_) \

@@ -1766,7 +1766,7 @@ void vipush(win, flags, cursor)
 }
 
 
-/* This function translates a potentially-abbreviated vi key name into 
+/* This function translates a potentially-abbreviated vi key name into
  * standardized name which can be used as a help topic.  If the name can't
  * be standardized, then it returns NULL instead.
  */
@@ -1821,7 +1821,7 @@ static	CHAR	stdname[12];
 	if (!key2 && key == 'z')
 		return NULL;
 
-	/* some commands ignore a second character */ 
+	/* some commands ignore a second character */
 	if ((key == '[' || key == ']') && key2 == key)
 	{
 		key2 = '\0';

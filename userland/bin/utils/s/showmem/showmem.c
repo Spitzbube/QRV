@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
 	struct showmem_opts opts;
 	system_entry_t		*system;
 	int 				*pidlist;
-	int 				c, pidnum; 
+	int 				c, pidnum;
 	int					noopts = 1;
 
 	init_showmem_opts(&opts);
@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
 				if(debugfd == -1) {
 					printf("Can't open debug file %s \n", optarg);
 					return 1;
-				}	
+				}
 				break;
 			case 'S':
 				opts.show_system_summary = 1;
@@ -66,18 +66,18 @@ int main(int argc, char **argv) {
 					optarg++;
 				}
 				break;
-			
+
 			case '?':
 			default:
 usemsg:
 				printf("%s [options] - display memory information \n", argv[0]);
 				printf("-S          Show memory summary (free/used) for the system\n"
 					   "-P          Show process/sharedlibrary/ summary for the system\n"
-					   "-D[lsh]     Show detailed process information\n" 
+					   "-D[lsh]     Show detailed process information\n"
              		   " l = libraries\n"
              		   " s = stack\n"
              		   " h = heap\n"
-					   "-d file     Dump the raw mapinfo to the specified file\n" 
+					   "-d file     Dump the raw mapinfo to the specified file\n"
 						);
 				return 0;
 		}
@@ -94,7 +94,7 @@ usemsg:
 		if(pidlist == NULL) {
 			return 1;
 		}
-		
+
 		for (c = 0; c < pidnum; c++) {
 			pidlist[c] = atoi(argv[optind+c]);
 		}
@@ -102,19 +102,19 @@ usemsg:
 		pidnum = 0;
 		pidlist = NULL;
 	}
-	
+
 	system = build_block_list(pidlist, pidnum);
-	
+
 	if(pidlist) {
 		free(pidlist);
 	}
-	
+
 	if(system == NULL) {
 		fprintf(stderr, "Can't build block list %s\n", strerror(errno));
 		return 1;
 	}
-		
+
 	display_overview(system, &opts);
-	
+
 	return 0;
 }

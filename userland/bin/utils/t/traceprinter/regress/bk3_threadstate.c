@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -27,9 +27,9 @@
 *
 *   Contents:	Tests to make sure the instrumentation properly intercepts
 *				thread state changes. This test will generate some system
-*				activity, then parse through the log and make sure the 
-*				thread state information looks basicly sane (the running 
-*				thread goes blocked before another thread starts running, 
+*				activity, then parse through the log and make sure the
+*				thread state information looks basicly sane (the running
+*				thread goes blocked before another thread starts running,
 *				etc)
 *
 *	Date:		Oct. 11, 2001
@@ -37,7 +37,7 @@
 *	Author:		Peter Graves
 *
 *	Notes:		This test must have the tracelogger available to it in it's
-*				path.  If this is not available the tests will not be 
+*				path.  If this is not available the tests will not be
 *				run.
 *
 *****************************************************************************/
@@ -98,9 +98,9 @@ typedef struct last_state_info {
 /*--------------------------------------------------------------------------*
  *									GLOBALS 								*
  *--------------------------------------------------------------------------*/
-/* This is a global used by the traceparser callback function to  
+/* This is a global used by the traceparser callback function to
  * tell the main thread that the values it got in the events were
- * correct 
+ * correct
  */
 static int correct_values;
 last_state_info_t * last_state;
@@ -141,7 +141,7 @@ const char * const task_state[] = {
 *
 *	Parameters: none
 *
-*	Returns:	-1 on failures, 0 if tracelogger is not found, and 1 when 
+*	Returns:	-1 on failures, 0 if tracelogger is not found, and 1 when
 *				tracelogger has been killed.
 *
 *****************************************************************************/
@@ -170,30 +170,30 @@ int kill_tl()
 				/* This is tracelogger */
 				kill(curpid, SIGINT);
 				/* We should be able to exit here, but we will continue just to make
-			 	 * sure there are no more traceloggers to kill 
+			 	 * sure there are no more traceloggers to kill
 				 */
 				rval=1;
 			}
-				
+
 		}
 	}
 	closedir(mydir);
 	return(rval);
-	
+
 }
 /****************************************************************************
 *
 *						Subroutine parse_cb
 *
-*	Purpose: 	This is a traceparcer callback. It will check that the 
-*				thread state changes come in in the order we expect them to.				
+*	Purpose: 	This is a traceparcer callback. It will check that the
+*				thread state changes come in in the order we expect them to.
 *
 *	Parameters:	header - event header
 *				time   - time of the event
 *				event_p - pointer to the event array
 *				length  - length of the event array
 *
-*	Returns:	This function will set the value of correct values. It 
+*	Returns:	This function will set the value of correct values. It
 *				will be set to -1 on failure, and 1 on success.
 *
 *****************************************************************************/
@@ -212,7 +212,7 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 	}
 
 	if (last_state[cpu].pid==0) {
-		/* If this is the first thread state for this cpu, and it's 
+		/* If this is the first thread state for this cpu, and it's
 		 * a thread ready event, keep track of it.
 		 */
 		if (_NTO_TRACE_GETEVENT(header)==STATE_RUNNING) {
@@ -221,7 +221,7 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 			last_state[cpu].state=STATE_RUNNING;
 		}
 		return(EOK);
-			
+
 	} else {
 		/* If this is not the first event for this cpu, make sure things come in in the right order. */
 		switch(_NTO_TRACE_GETEVENT(header)) {
@@ -243,7 +243,7 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 				break;
 			case STATE_RUNNING:
 				/* If a thread is running, make sure the last state we got was the blocking of another
-				 * thread 
+				 * thread
 				 */
 				if ((last_state[cpu].pid==event_p[0])&&(last_state[cpu].tid==event_p[1]) &&
 					(last_state[cpu].state==STATE_RUNNING)) {
@@ -261,14 +261,14 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 					last_state[cpu].state=STATE_RUNNING;
 				}
 				break;
-			case STATE_SEND:			
-			case STATE_RECEIVE:			
-			case STATE_STACK:			
-			case STATE_NANOSLEEP:			
+			case STATE_SEND:
+			case STATE_RECEIVE:
+			case STATE_STACK:
+			case STATE_NANOSLEEP:
 			case STATE_CONDVAR:
-			case STATE_MUTEX:			
-			case STATE_JOIN:			
-			case STATE_SEM:			
+			case STATE_MUTEX:
+			case STATE_JOIN:
+			case STATE_SEM:
 				/* These states should only be triggerable from a RUNNING thread... */
 				if ((last_state[cpu].pid!=event_p[0])||(last_state[cpu].tid!=event_p[1]) ||
 					(last_state[cpu].state!=STATE_RUNNING)) {
@@ -290,8 +290,8 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 		}
 	}
 	return(EOK);
-	
-	
+
+
 }
 
 /****************************************************************************
@@ -304,7 +304,7 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 *	Returns: 	Pid of the tracelogger
 *
 *****************************************************************************/
-int start_logger(void) 
+int start_logger(void)
 {
 	int tlpid,rc;
 	char buf[100];
@@ -359,10 +359,10 @@ int main(int argc, char *argv[])
 	 * Make sure the thread state changes are logged properly
 	 */
  	testpntbegin("Thread state change ordering");
-		
+
 	/* We need to start up the tracelogger in daemon mode, 1 itteration.
 	 * we will filter out everything other then thread state changes, and
-	 * start logging. 
+	 * start logging.
 	 */
 	tlpid=start_logger();
 	sleep(1);
@@ -372,7 +372,7 @@ int main(int argc, char *argv[])
 	/* Add thread states  */
 	rc=TraceEvent(_NTO_TRACE_ADDCLASS, _NTO_TRACE_THREAD);
 	assert(rc!=-1);
-	
+
 	rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 	assert(rc!=-1);
 	/* Generate some system activity */
@@ -380,40 +380,40 @@ int main(int argc, char *argv[])
 		stat("/proc/", &mystat);
 		stat("/dev/pipe", &mystat);
 	}
-	
+
 
 	/* Now, setup the traceparser lib to pull out the thread state events
-	 * and make sure our event shows up 
+	 * and make sure our event shows up
 	 */
 	tp_state=traceparser_init(NULL);
 	assert(tp_state!=NULL);
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_THREAD, _NTO_TRACE_THDEAD, _NTO_TRACE_THDESTROY);
 
-	/* Since we don't want a bunch of output being displayed in the 
+	/* Since we don't want a bunch of output being displayed in the
 	 * middle of the tests, turn off verbose output.
 	 */
 	traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 	/* Set correct_values to 0, so we can see if the callback actually
-	 * got called. 
+	 * got called.
 	 */
 	correct_values=0;
 	/* And parse the tracebuffer */
 	traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-	
-	if (correct_values==0) 
+
+	if (correct_values==0)
 		testpntfail("Our callback never got called, no events?");
 	else if (correct_values==-1)
 		testpntfail("Bad");
 	else if (correct_values==1)
 		testpntpass("Good");
-	else 
+	else
 		testpntfail("This should not happen");
 
 	traceparser_destroy(&tp_state);
  	testpntend();
 	/***********************************************************************/
 	/* If the tracelogger was running when we started, we should restart it again */
-	if (tlkilled==1) 
+	if (tlkilled==1)
 		system("reopen /dev/null ; tracelogger -n 0 -f /dev/null &");
 
 	teststop(argv[0]);

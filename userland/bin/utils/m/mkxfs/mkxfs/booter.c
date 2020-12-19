@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -55,8 +55,8 @@ static struct attr_types attr_table[] = {
 	{ "notloaded=",	ATTR_NOTLOADED },
 	{ "pagesize=",	ATTR_PAGESIZE },
 	{ "paddr_bias=",	ATTR_PADDR_BIAS },
-	{ "rsvd_vaddr",	ATTR_RSVD_VADDR }, 
-	{ "vboot=",		ATTR_VBOOT }, 
+	{ "rsvd_vaddr",	ATTR_RSVD_VADDR },
+	{ "vboot=",		ATTR_VBOOT },
 	{ NULL }
 };
 
@@ -156,7 +156,7 @@ handle_elf(char *p)
 	booter.data_len = swap32(endian, shdr->sh_size);
 	return(p);
 }
-	
+
 
 //
 // Set the CPU and boot data file - process the boot data
@@ -181,7 +181,7 @@ proc_booter_data(char *boot, int virtual) {
 		boot = end + 1;
 	}
 	end = strchr(boot, ' ');
-	
+
 	if(end != NULL) {
 		*end = '\0';
 		booter.filter_args = strdup(end + 1);

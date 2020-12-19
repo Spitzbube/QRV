@@ -36,7 +36,7 @@
  */
 #ifndef VOID
 # define VOID		void
-# define VCAST(t)	
+# define VCAST(t)
 #else
 # define VCAST(t)	(t)
 #endif

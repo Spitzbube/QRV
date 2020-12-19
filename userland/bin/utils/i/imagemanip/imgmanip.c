@@ -60,7 +60,7 @@ typedef struct file_struct {
     int32_t    endianarraylocation;
     int32_t    endianarraycount;
     unsigned char endianarray[MAX_ENDIAN];
-    
+
     unsigned char padchar;
     BOOL     ispad;
     BOOL     isdiscard;
@@ -158,7 +158,7 @@ void print_usage()
 		);
 #else
 	// Use message is in imgmanip.use
-	
+
 	fprintf(stderr,"imgmanip: invalid arguments. Type \"use imgmanip\" for usage\n");
 #endif // _WIN32
 }
@@ -369,7 +369,7 @@ void parse_args(int argc, char *argv[])
             case 'i':
                 if (verbosity>=3)
                     fprintf(stderr, "Input from file:\n");
-                
+
                 fs = create_new_fs(&input_chain_first,&input_chain_last, optarg);
 
                 fs->isinput = TRUE;
@@ -381,7 +381,7 @@ void parse_args(int argc, char *argv[])
                     exit(2);
                 }
 
-                // Any real file will have a limit, so we never will set 
+                // Any real file will have a limit, so we never will set
                 // limited_input_size (even if fs-maxsize==0) for this type of input.
 
                 fseek(fs->fd, 0, SEEK_END);
@@ -391,7 +391,7 @@ void parse_args(int argc, char *argv[])
                 if (verbosity>=3)
                     fprintf(stderr,"\n");
                 break;
-            
+
             case 'p':
                 if (verbosity>=3)
                     fprintf(stderr, "Input from pad:\n");
@@ -400,7 +400,7 @@ void parse_args(int argc, char *argv[])
                 fs->isinput = TRUE;
                 fs->ispad = TRUE;
                 fs->padchar = (unsigned char)strtoul(optarg, NULL, 0);
- 
+
                 // Only a pad has unlimited data; if they don't explicitly cap it, take note of it
                 if (fs->maxsize == 0)
                     limited_input_size = FALSE;
@@ -411,7 +411,7 @@ void parse_args(int argc, char *argv[])
                     fprintf(stderr,"\n");
                 }
                 break;
-			
+
             case 'o':
                 if (verbosity>=3)
                     fprintf(stderr, "Output to file:\n");
@@ -420,10 +420,10 @@ void parse_args(int argc, char *argv[])
 
                 fs->isinput = FALSE;
                 fs->fd = fopen(fs->filename, "wb");
-                
+
                 if (fs->maxsize == 0)
                     limited_output_size = FALSE;
-                
+
                 if (!fs->fd)
                 {
                     fprintf(stderr, "Error: Unable to open %s for output!\n", fs->filename);
@@ -460,7 +460,7 @@ void parse_args(int argc, char *argv[])
 
             case 'e':
                 endian_parameter = (uint32_t)get_value(optarg);
-                if (endian_parameter!=1 && 
+                if (endian_parameter!=1 &&
                     endian_parameter!=2 &&
                     endian_parameter!=4 &&
                     endian_parameter!=8)

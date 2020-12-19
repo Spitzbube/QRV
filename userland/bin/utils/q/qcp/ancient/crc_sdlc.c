@@ -79,7 +79,7 @@ clear_crc_sdlc() {
 unsigned
 compute_crc_sdlc( n, buf )
 	int		n;
-	char	*buf; 
+	char	*buf;
 	{
 	register unsigned char *s;
 	register unsigned val = 0;			/* Start CRC at 0		*/
@@ -88,7 +88,7 @@ compute_crc_sdlc( n, buf )
 	if ( use_crc ) {
 		for ( s = buf; n; --n, ++s )
 			for ( shifter = 0x80; shifter; shifter >>= 1 ) {
-				flag = val & 0x8000; 
+				flag = val & 0x8000;
 				val <<= 1;
 				val |= ((shifter & *s) ? 1 : 0);
 				if ( flag ) val ^= 0x1021;
@@ -107,7 +107,7 @@ next_crc_sdlc( ch )
 
 	if ( use_crc ) {
 		for( shifter = 0x80; shifter; shifter >>= 1 ) {
-			flag = _crc & 0x8000; 
+			flag = _crc & 0x8000;
 			_crc <<= 1;
 			_crc |= ((shifter & ch) ? 1 : 0);
 			if ( flag ) _crc ^= 0x1021;

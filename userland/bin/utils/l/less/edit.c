@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,19 +29,19 @@
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice in the documentation and/or other materials provided with 
+ *    notice in the documentation and/or other materials provided with
  *    the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
- * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN 
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -84,7 +84,7 @@ init_textlist(tlist, str)
 	char *str;
 {
 	char *s;
-	
+
 	tlist->string = skipsp(str);
 	tlist->endstring = tlist->string + strlen(tlist->string);
 	for (s = str;  s < tlist->endstring;  s++)
@@ -100,7 +100,7 @@ forw_textlist(tlist, prev)
 	char *prev;
 {
 	char *s;
-	
+
 	/*
 	 * prev == NULL means return the first word in the list.
 	 * Otherwise, return the word after "prev".
@@ -124,7 +124,7 @@ back_textlist(tlist, prev)
 	char *prev;
 {
 	char *s;
-	
+
 	/*
 	 * prev == NULL means return the last word in the list.
 	 * Otherwise, return the word before "prev".
@@ -151,7 +151,7 @@ back_textlist(tlist, prev)
 close_file()
 {
 	struct scrpos scrpos;
-	
+
 	if (curr_ifile == NULL_IFILE)
 		return;
 
@@ -196,7 +196,7 @@ edit(filename)
 		return (edit_ifile(NULL_IFILE));
 	return (edit_ifile(get_ifile(filename, curr_ifile)));
 }
-	
+
 /*
  * Edit a new file (given its IFILE).
  * ifile == NULL means just close the current file.
@@ -215,7 +215,7 @@ edit_ifile(ifile)
 	void *alt_pipe;
 	IFILE was_curr_ifile;
 	PARG parg;
-		
+
 	if (ifile == curr_ifile)
 	{
 		/*
@@ -275,13 +275,13 @@ edit_ifile(ifile)
 		 * The alternate "file" is actually a pipe.
 		 * f has already been set to the file descriptor of the pipe
 		 * in the call to open_altfile above.
-		 * Keep the file descriptor open because it was opened 
+		 * Keep the file descriptor open because it was opened
 		 * via popen(), and pclose() wants to close it.
 		 */
 		chflags |= CH_POPENED;
 	} else if (strcmp(open_filename, "-") == 0)
 	{
-		/* 
+		/*
 		 * Use standard input.
 		 * Keep the file descriptor open because we can't reopen it.
 		 */
@@ -419,10 +419,10 @@ edit_list(filelist)
 
 	save_curr_ifile = curr_ifile;
 	good_filename = NULL;
-	
+
 	/*
 	 * Run thru each filename in the list.
-	 * Try to glob the filename.  
+	 * Try to glob the filename.
 	 * If it doesn't expand, just try to open the filename.
 	 * If it does expand, try to open each name in that list.
 	 */
@@ -504,7 +504,7 @@ edit_inext(h, n)
 			return (1);
 		}
 		h = next;
-	} 
+	}
 	/*
 	 * Found a file that we can edit.
 	 */
@@ -547,7 +547,7 @@ edit_iprev(h, n)
 			return (1);
 		}
 		h = next;
-	} 
+	}
 	/*
 	 * Found a file that we can edit.
 	 */
@@ -657,7 +657,7 @@ cat_file()
 
 /*
  * If the user asked for a log file and our input file
- * is standard input, create the log file.  
+ * is standard input, create the log file.
  * We take care not to blindly overwrite an existing file.
  */
 	public void

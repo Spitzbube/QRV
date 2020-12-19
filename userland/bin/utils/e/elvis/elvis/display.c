@@ -128,7 +128,7 @@ void dispinit(before)
 				(void)(*allmodes[i]->init)(NULL);
 
 				/* make them accessible to :set */
-				optinsert(allmodes[i]->name, 
+				optinsert(allmodes[i]->name,
 					allmodes[i]->nglobopts,
 					allmodes[i]->globoptd,
 					allmodes[i]->globoptv);

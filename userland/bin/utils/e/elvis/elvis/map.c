@@ -43,7 +43,7 @@ static MAP	*abbrs;	/* the abbreviation table */
  * will call the GUI's keylabel() function to perform the conversion.  This
  * function will allocate copies of both of these strings, so the calling
  * function can discard its own copies as soon as this function returns.
- * 
+ *
  *"label" is either NULL or a key label.  The :map command always passes NULL,
  * and the GUI's init will usually call this function with a label string.  The
  * label should be NUL-terminated, and its storage space cannot be discarded
@@ -139,7 +139,7 @@ void mapinsert(rawin, rawlen, cooked, cooklen, label, flags, mode)
 					lag->next = scan->next;
 				else
 					*head = scan->next;
-			
+
 				/* free the map */
 				safefree(scan->rawin);
 				safefree(scan->cooked);
@@ -251,7 +251,7 @@ ELVBOOL mapdelete(rawin, rawlen, flags, mode, del, brk)
 						lag->next = scan->next;
 					else
 						*head = scan->next;
-				
+
 					/* free the map */
 					safefree(scan->rawin);
 					safefree(scan->cooked);
@@ -289,7 +289,7 @@ ELVBOOL mapdelete(rawin, rawlen, flags, mode, del, brk)
 		{
 			/* clear a breakpoint on this map */
 			scan->flags &= ~MAP_BREAK;
-			
+
 			lag = scan, scan = scan->next;
 		}
 #endif /* FEATURE_MAPDB */
@@ -901,14 +901,14 @@ RESULT maplearn(cbname, start)
 	MARKBUF	tmp, end;
 	BUFFER	buf;
 	CHAR	cmd;
-	
+
 	/* reject if not a letter */
 	if (!((cbname >= 'a' && cbname <= 'z')
 		|| (cbname >= 'A' && cbname <= 'Z')))
 	{
 		return RESULT_ERROR;
 	}
-	
+
 	/* Set/reset the "learn" bit for the named cut buffer.  Note that we
 	 * return RESULT_COMPLETE if you stop recording keystrokes on a buffer
 	 * that wasn't recording to begin with.
@@ -920,7 +920,7 @@ RESULT maplearn(cbname, start)
 		return RESULT_COMPLETE;
 	else
 		learning ^= bit;
-	
+
 	/* If we're starting and the cut buffer name is lowercase,
 	 * then we need to reset the cut buffer to 0 characters
 	 */
@@ -1020,7 +1020,7 @@ CHAR *mapabbr(bkwd, oldptr, newptr, exline)
 		     j >= 0 && bkwd[i] == m->rawin[j]; i++, j--)
 		{
 		}
-		
+
 		/* If all characters matched, and the preceding character in the
 		 * raw text wasn't alphanumeric, then we have a match.  If this
 		 * match is longer than any previous match, then remember it.

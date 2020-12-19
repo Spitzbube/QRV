@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -45,7 +45,7 @@ static struct seg_info	*seg;
 static unsigned			num_segs;
 
 
-unsigned	
+unsigned
 core_read_paddr(paddr64_t paddr, void *p, unsigned len) {
 	paddr64_t	start;
 	paddr64_t	end;
@@ -85,7 +85,7 @@ core_read_paddr(paddr64_t paddr, void *p, unsigned len) {
 }
 
 
-unsigned	
+unsigned
 core_read_vaddr(target_ptr vaddr, void *p, unsigned len) {
 	paddr64_t	paddr;
 	unsigned	valid;
@@ -207,7 +207,7 @@ init_seginfo(union ehdr *ehdr, int big) {
 
 	return 1;
 }
- 
+
 
 int
 core_init(const char *name) {
@@ -234,8 +234,8 @@ core_init(const char *name) {
 	}
 
 	switch(ehdr._32.e_ident[EI_DATA]) {
-	case ELFDATA2MSB:	
-	case ELFDATA2LSB:	
+	case ELFDATA2MSB:
+	case ELFDATA2LSB:
 		cross_endian = (ehdr._32.e_ident[EI_DATA] != NATIVE_ENDIAN);
 		break;
 	default:
@@ -244,12 +244,12 @@ core_init(const char *name) {
 	}
 
 	switch(ehdr._32.e_ident[EI_CLASS]) {
-	case ELFCLASS32:	
+	case ELFCLASS32:
 		mach = endian_native16(ehdr._32.e_machine);
 		type = endian_native16(ehdr._32.e_type);
 		big_elf = 0;
 		break;
-	case ELFCLASS64:	
+	case ELFCLASS64:
 		mach = endian_native16(ehdr._64.e_machine);
 		type = endian_native16(ehdr._64.e_type);
 		big_elf = 1;
@@ -305,7 +305,7 @@ set_default_dump_state(void) {
 }
 
 
-void		
+void
 core_fini(void) {
 	fclose(corefp);
 }

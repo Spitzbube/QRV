@@ -32,7 +32,7 @@ int _Putulvec(_Pft *, va_list *, char, char *);	/* hlo, lho, etc. */
 
 _STD_BEGIN
 
-char* output_for_percent_s_NULL = STDIO_OPT_PERCENT_S_NULL;   
+char* output_for_percent_s_NULL = STDIO_OPT_PERCENT_S_NULL;
 
 int _Putfld(_Pft *px, va_list *pap, char code, char *ac)
 	{	/* convert a field for _Printf */
@@ -255,10 +255,10 @@ int _Putfld(_Pft *px, va_list *pap, char code, char *ac)
 
 			px->s = va_arg(*pap, char *);
 
-#if defined(__EXT_QNX)  
-			/* STDIO_OPT_PERCENT_S_NULL is definined in lib/c/common.mk */ 
+#if defined(__EXT_QNX)
+			/* STDIO_OPT_PERCENT_S_NULL is definined in lib/c/common.mk */
 
-			if (NULL==px->s) px->s=output_for_percent_s_NULL; /* instead of sigsegv for printf("%s",NULL), output custom string, "" or "(null)" are typical */  
+			if (NULL==px->s) px->s=output_for_percent_s_NULL; /* instead of sigsegv for printf("%s",NULL), output custom string, "" or "(null)" are typical */
 #endif
 
 			px->n1 = px->prec < 0 ? strlen(px->s)

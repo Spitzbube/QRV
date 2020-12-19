@@ -517,7 +517,7 @@ void x_tb_draw(xw, fromscratch)
 		/* if the button is preceeded by a gap, draw a dimple in gap */
 		if (tool->gap && xw->tb.state[tool->id].x > 5)
 		{
-			x_drawbevel(xw, xw->tb.win, 
+			x_drawbevel(xw, xw->tb.win,
 				(xw->tb.state[lag->id].x + lag->width + xw->tb.state[tool->id].x) / 2 - 1,
 				xw->tb.state[tool->id].y + toolheight / 2,
 				3, 2, 'b', -1);

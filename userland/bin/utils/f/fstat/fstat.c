@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 	int err=0, use_fsys_stat=0, use_lstat=0, fd;
 	struct passwd *pw;
 	struct group *gr;
-	
+
 	while ((fd=getopt(argc,argv,"xl"))!=-1) {
 		switch(fd) {
 			case 'x': use_fsys_stat=!use_fsys_stat; break;
@@ -116,7 +116,7 @@ int main(int argc, char **argv)
 #ifndef __QNXNTO__
 		if (fsys_get_mount_dev(argv[optind],devicename)==-1) {
 			devicename[0]=0;
-		} else if (fsys_get_mount_pt(devicename,mountpoint)==-1) {		
+		} else if (fsys_get_mount_pt(devicename,mountpoint)==-1) {
 			mountpoint[0]=0;
 		}
 
@@ -178,7 +178,7 @@ int main(int argc, char **argv)
 
 		printf("\n");
 	}
-	
+
 	return (err?EXIT_FAILURE:EXIT_SUCCESS);
 }
 

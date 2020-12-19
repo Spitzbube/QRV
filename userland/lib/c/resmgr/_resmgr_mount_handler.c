@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -47,10 +47,10 @@ int _resmgr_mount_handler(resmgr_context_t *ctp, resmgr_iomsgs_t *msg, struct li
 		}
 		*/
 	}
-	
 
-	//We need to find a faster/more elegant way to make sure that we have the whole 
-	//sized buffer to slurp in. For now, just allocate a new buffer 
+
+	//We need to find a faster/more elegant way to make sure that we have the whole
+	//sized buffer to slurp in. For now, just allocate a new buffer
 	if (!(newextra = (io_mount_extra_t *)malloc(extra->nbytes))) {
 		if(binding) _resmgr_handle(&extra->extra.cl.info, 0, _RESMGR_HANDLE_UNLOCK);
 		return(ENOMEM);
@@ -74,11 +74,11 @@ int _resmgr_mount_handler(resmgr_context_t *ctp, resmgr_iomsgs_t *msg, struct li
 		newextra->extra.srv.data = (void *)(newextra +1);
 	}
 
-	newextra->extra.srv.type = 
+	newextra->extra.srv.type =
 	newextra->extra.srv.special = (char *)(newextra + 1) + newextra->datalen;
 
-	if ((status = ((newextra->nbytes - sizeof(io_mount_extra_t)) 
-						 - newextra->datalen) 
+	if ((status = ((newextra->nbytes - sizeof(io_mount_extra_t))
+						 - newextra->datalen)
 						 - (strlen(newextra->extra.srv.type) +1)) > 0) {
 		newextra->extra.srv.special +=  strlen(newextra->extra.srv.type) + 1;
 	}

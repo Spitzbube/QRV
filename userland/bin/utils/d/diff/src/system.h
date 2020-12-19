@@ -314,7 +314,7 @@ void *memchr ();
 #if ! HAVE_WORKING_VFORK
 # define vfork fork
 #endif
-
+
 /* Type used for fast comparison of several bytes at a time.  */
 
 #ifndef word
@@ -329,7 +329,7 @@ typedef ptrdiff_t lin;
 verify (lin_is_signed, TYPE_SIGNED (lin));
 verify (lin_is_wide_enough, sizeof (ptrdiff_t) <= sizeof (lin));
 verify (lin_is_printable_as_long, sizeof (lin) <= sizeof (long));
-
+
 /* This section contains POSIX-compliant defaults for macros
    that are meant to be overridden by hand in config.h as needed.  */
 

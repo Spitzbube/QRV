@@ -35,30 +35,45 @@
 #endif
 
 typedef struct riscv_cpu_registers {
-	_Uint32t	gpr[16];
-	_Uint32t	spsr;
+    uint64_t	gpr[32];
 } RISCV_CPU_REGISTERS;
 
 /*
  * Register names
  */
-#define	RISCV_REG_R0		0
-#define	RISCV_REG_R1		1
-#define	RISCV_REG_R2		2
-#define	RISCV_REG_R3		3
-#define	RISCV_REG_R4		4
-#define	RISCV_REG_R5		5
-#define	RISCV_REG_R6		6
-#define	RISCV_REG_R7		7
-#define	RISCV_REG_R8		8
-#define	RISCV_REG_R9		9
-#define	RISCV_REG_R10		10
-#define	RISCV_REG_R11		11
-#define	RISCV_REG_R12		12
-#define	RISCV_REG_R13		13
-#define	RISCV_REG_R14		14
-#define	RISCV_REG_R15		15
-#define	RISCV_REG_SPSR	16
+#define	RISCV_REG_X0		0
+#define	RISCV_REG_X1		1
+#define	RISCV_REG_X2		2
+#define	RISCV_REG_X3		3
+#define	RISCV_REG_X4		4
+#define	RISCV_REG_X5		5
+#define	RISCV_REG_X6		6
+#define	RISCV_REG_X7		7
+#define	RISCV_REG_X8		8
+#define	RISCV_REG_X9		9
+#define	RISCV_REG_X10		10
+#define	RISCV_REG_X11		11
+#define	RISCV_REG_X12		12
+#define	RISCV_REG_X13		13
+#define	RISCV_REG_X14		14
+#define	RISCV_REG_X15		15
+
+#define RISCV_REG_X16		16
+#define RISCV_REG_X17		17
+#define RISCV_REG_X18		18
+#define RISCV_REG_X19		19
+#define RISCV_REG_X20		20
+#define RISCV_REG_X21		21
+#define RISCV_REG_X22		22
+#define RISCV_REG_X23		23
+#define RISCV_REG_X24		24
+#define RISCV_REG_X25		25
+#define RISCV_REG_X26		26
+#define RISCV_REG_X27		27
+#define RISCV_REG_X28		28
+#define RISCV_REG_X29		29
+#define RISCV_REG_X30		30
+#define RISCV_REG_X31		31
 
 /*
  * Register name aliases
@@ -77,63 +92,8 @@ typedef struct riscv_cpu_registers {
 #define RISCV_SET_REGIP(regs,v)		((regs)->gpr[RISCV_REG_PC] = v)
 #define RISCV_SET_REGSP(regs,v)		((regs)->gpr[RISCV_REG_SP] = v)
 
-union vfpv2 {
-	_Uint32t	S[32];
-	_Uint64t	D[16];
-};
-
-union vfpv3 {
-	_Uint32t	S[32];
-	_Uint64t	D[32];
-};
-
 typedef struct riscv_fpu_registers {
-	union {
-
-		struct vfp {		/* VFP register context */
-			union {
-				_Uint64t	X[32];	/* largest register file size */
-				union vfpv2	v2;
-				union vfpv3	v3;
-			} reg;
-			_Uint32t	fpscr;
-			_Uint32t	fpexc;
-			_Uint32t	fpinst;		/* implementation specific register */
-			_Uint32t	fpinst2;	/* implementation specific register */
-		} vfp;
-
-	} un;
+    uint64_t	fpr[32];
 } RISCV_FPU_REGISTERS;
-
-typedef struct riscv_fpemu_context {
-	RISCV_CPU_REGISTERS	reg;
-
-	/*
-	 * Additional coprocessor specific state supplied by the kernel
-	 * for software handling required even if hardware is present
-	 */
-	union {
-
-		struct fpemu_vfp {			/* VFP registers passed to fpemu */
-			_Uint32t	fpexc;
-			_Uint32t	fpinst;
-			_Uint32t	fpinst2;
-		} vfp;
-
-	} un;
-} RISCV_FPEMU_CONTEXT;
-
-typedef struct riscv_alt_registers {
-	union {
-		struct xscale_cp0 {
-			unsigned	acc0_lo;
-			unsigned	acc0_hi;
-		} xscale;
-	} un;
-} RISCV_ALT_REGISTERS;
-
-typedef union {
-	_Uint32t	id;
-} RISCV_PERFREGS;
 
 #endif /* __RISCV_CONTEXT_H_INCLUDED */

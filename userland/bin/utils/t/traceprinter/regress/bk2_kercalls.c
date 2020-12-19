@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -26,14 +26,14 @@
 ******************************************************************************
 *
 *   Contents:	Tests to make sure the instrumentation properly intercepts
-*				kerel calls, and their arguments on kernel exit 
+*				kerel calls, and their arguments on kernel exit
 *
 *	Date:		August 2, 2001
 *
 *	Author:		Peter Graves
 *
 *	Notes:		This test must have the tracelogger available to it in it's
-*				path.  If this is not available the tests will not be 
+*				path.  If this is not available the tests will not be
 *				run.
 *
 *****************************************************************************/
@@ -87,9 +87,9 @@ typedef struct {
  *									FUNCTION DEFINITIONS					*
  *--------------------------------------------------------------------------*/
 int trigger_kercall_event(unsigned * event_p);
-/* The folloing 2 defines are for kernel calls that are not 
- * included in any public headers, these are just to quiet 
- * compile time warnings 
+/* The folloing 2 defines are for kernel calls that are not
+ * included in any public headers, these are just to quiet
+ * compile time warnings
  */
 void __kernop(void);
 unsigned __SysCpupageGet(unsigned);
@@ -112,7 +112,7 @@ unsigned __SysCpupageGet(unsigned);
 
 /* This is the value that we should get from a ConnectAttach for
  * the first side channel connection... The test will assert
- * out if this is not true 
+ * out if this is not true
  */
 #define COID 1073741826
 
@@ -122,9 +122,9 @@ unsigned __SysCpupageGet(unsigned);
 /*--------------------------------------------------------------------------*
  *									GLOBALS 								*
  *--------------------------------------------------------------------------*/
-/* This is a global used by the traceparser callback function to  
+/* This is a global used by the traceparser callback function to
  * tell the main thread that the values it got in the events were
- * correct 
+ * correct
  */
 static int correct_values;
 
@@ -133,7 +133,7 @@ static int correct_values;
  */
 static int fast_mode;
 
-/* 
+/*
  * This is a pointer to the current test being preformed as defined
  * in the event array in main.
  */
@@ -143,9 +143,9 @@ unsigned * cur_event;
  * to trigger the various message related kernel calls.
  */
 int chid;
- 
-/* This global array will be used to pass the expected results from the 
- * trigger_kercall_event function to the parseing callback. 
+
+/* This global array will be used to pass the expected results from the
+ * trigger_kercall_event function to the parseing callback.
  */
 unsigned global_vals[24];
 
@@ -156,7 +156,7 @@ iov_t send, reply;
 
 
 /* These are used to let us spawn copies of this program
- * if needed 
+ * if needed
  */
 char * path;
 char *token[] = { "childproc", NULL, NULL };
@@ -175,7 +175,7 @@ char *token[] = { "childproc", NULL, NULL };
 *
 *	Parameters: none
 *
-*	Returns:	-1 on failures, 0 if tracelogger is not found, and 1 when 
+*	Returns:	-1 on failures, 0 if tracelogger is not found, and 1 when
 *				tracelogger has been killed.
 *
 *****************************************************************************/
@@ -204,20 +204,20 @@ int kill_tl()
 				/* This is tracelogger */
 				kill(curpid, SIGINT);
 				/* We should be able to exit here, but we will continue just to make
-			 	 * sure there are no more traceloggers to kill 
+			 	 * sure there are no more traceloggers to kill
 				 */
 				rval=1;
 			}
-				
+
 		}
 	}
 	closedir(mydir);
 	return(rval);
-	
+
 }
 /****************************************************************************
 *
-*						Subroutine sig_hand 
+*						Subroutine sig_hand
 *
 *	Purpose: 	This is a simple signal handler that does nothing at all
 *
@@ -232,7 +232,7 @@ void sig_hand(int signo, siginfo_t *info, void *other)
 *
 *						Subroutine can_stub
 *
-*	Purpose: 	This is a simple cancelation stub which will exit the 
+*	Purpose: 	This is a simple cancelation stub which will exit the
 *				current thread
 *
 *
@@ -243,16 +243,16 @@ static void can_stub( void )
 }
 /****************************************************************************
 *
-*						Subroutine nothing_thread 
+*						Subroutine nothing_thread
 *
 *	Purpose: 	This is a do nothing thread that will just sleep for a couple
 *				seconds then exit. This is used to test the various thread
-*				related kernel calls against.	
+*				related kernel calls against.
 *
 *	Parameters:	None
 *
 *	Returns:	Nothing
-*			
+*
 *
 *****************************************************************************/
 void * nothing_thread(void * arg)
@@ -265,15 +265,15 @@ void * nothing_thread(void * arg)
 *						Subroutine msg_thread
 *
 *	Purpose: 	This is a thread that will be used as a target for triggering
-*				all of the message related kernel calls. It will sit recieved 
-*				blocked on a channel created in main, and will just receive 
+*				all of the message related kernel calls. It will sit recieved
+*				blocked on a channel created in main, and will just receive
 *				messages, and depending on the contents of the message it will:
 *				reply, send another message, send a pulse, or signal a condvar
 *
 *	Parameters:	None
 *
 *	Returns:	Nothing
-*			
+*
 *
 *****************************************************************************/
 void * msg_thread(void * arg)
@@ -296,27 +296,27 @@ void * msg_thread(void * arg)
 			MsgSendPulse(COID, 10,10,10);
 		} else if (buf[0]=='C') {
 			/* If the message starts with a C we should signal a condvar
-			 * who's sync object pointer should be in global_val1, in	
+			 * who's sync object pointer should be in global_val1, in
 			 * 4 seconds (gives the sender a chance to get condvar blocked.
 			 */
 			sleep(4);
 			SyncCondvarSignal((sync_t *)global_vals[0], 1);
 		} else if (buf[0]=='K') {
-			/* If the message starts with kill, we should 
+			/* If the message starts with kill, we should
 			 * SignalKill ourselves with a SIGUSR2
-			 */	
+			 */
 			sleep(1);
 			kill(getpid(), SIGUSR1);
 		}
 		delay(100);
 	}
-	
+
 }
 /****************************************************************************
 *
 *						Subroutine parse_cb
 *
-*	Purpose: 	This is a traceparcer callback for all events. It will check 
+*	Purpose: 	This is a traceparcer callback for all events. It will check
 *				the given event length, and parameter values against those
 *				that are currenly pointed to in the global cur_event
 *
@@ -325,7 +325,7 @@ void * msg_thread(void * arg)
 *				event_p - pointer to the event array
 *				length  - length of the event array
 *
-*	Returns:	This function will set the value of correct values. It 
+*	Returns:	This function will set the value of correct values. It
 *				will be set to -1 on failure, and 1 on success.
 *
 *****************************************************************************/
@@ -334,16 +334,16 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 	int x;
 	char buf[100];
 
-	/* This is to handle the case when we may see multiple events in the 
+	/* This is to handle the case when we may see multiple events in the
 	 * trace logger.  If we have seen the correct event, then we can just
 	 * ignore this one.  This was put in mostly to deal the the TraceEvent
 	 * call which will force us to deal with multiple events
 	 */
-	if (correct_values==1) 
+	if (correct_values==1)
 		return(EOK);
 	/*
 	 * Now check that the values that we recieved in the callback are the expected values.
-	 * The values we expecte are 
+	 * The values we expecte are
 	 */
 	if (fast_mode==WIDE) {
 		if (length!=cur_event[0]) {
@@ -355,7 +355,7 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 		}
 		for (x=0;x<(cur_event[1]);x++) {
 			if (event_p[x]!=global_vals[x]) {
-				snprintf(buf,sizeof(buf), "Expected value: %d for parameter %x but got %d", 
+				snprintf(buf,sizeof(buf), "Expected value: %d for parameter %x but got %d",
 						global_vals[x],x, event_p[x]);
 				testnote(buf);
 				correct_values=-1;
@@ -364,17 +364,17 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 		}
 		if (x==(cur_event[1]))
 			correct_values=1;
-			
 
-	
+
+
 	} else {
 		/* if we are not in fast mode we only get the two most important values */
 
-		if ((event_p[0]==global_vals[cur_event[4]]) && 
+		if ((event_p[0]==global_vals[cur_event[4]]) &&
 			(cur_event[1]>1)?(event_p[1]==global_vals[cur_event[5]]):1) {
 			correct_values=1;
 		} else {
-			snprintf(buf,sizeof(buf), "Expected values %d and %d  Got values %d and %d", 
+			snprintf(buf,sizeof(buf), "Expected values %d and %d  Got values %d and %d",
 				global_vals[cur_event[4]],global_vals[cur_event[5]],
 				event_p[0],event_p[1]);
 			testnote(buf);
@@ -384,8 +384,8 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 	}
 
 	return(EOK);
-	
-	
+
+
 }
 
 /****************************************************************************
@@ -398,7 +398,7 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 *	Returns: 	Pid of the tracelogger
 *
 *****************************************************************************/
-int start_logger(void) 
+int start_logger(void)
 {
 	int tlpid,rc;
 	char buf[100];
@@ -433,20 +433,20 @@ int main(int argc, char *argv[])
 	struct traceparser_state *tp_state;
 	char message[200];
 	/*
-	 *  This array will define all the tests to be preformed.  It is atually an 
+	 *  This array will define all the tests to be preformed.  It is atually an
 	 *  an array of arrays, where the outside array contains the arrys of tests.
 	 *  Each tests array is of the format:
-	 *  Number of parameters, Numer of valid parameters Kernel call number, 
-	 *  kernel call name, Number of  first fast mode parameter, number of 
+	 *  Number of parameters, Numer of valid parameters Kernel call number,
+	 *  kernel call name, Number of  first fast mode parameter, number of
 	 *	second fast mode parameter.
-	 *  This differs from bk1_kercalls, in that all the expected values will be 
+	 *  This differs from bk1_kercalls, in that all the expected values will be
 	 *  put in the global_vals array
-	 * 
+	 *
 	 *  For example, for the SignalKill kernel call event it would be:
 	 *  2, 1, __KER_SIGNAL_KILL, 0,1
-	 * 
+	 *
 	 */
-	unsigned events[][6] = { 
+	unsigned events[][6] = {
 		{2, 0, __KER_NOP, (unsigned)"NOP", 0, 1 },
 		{2, 1, __KER_TRACE_EVENT, (unsigned)"TraceEvent", 0, 1},
 		{2, 1, __KER_SYS_CPUPAGE_GET, (unsigned)"__SysCpupageGet", 0, 1},
@@ -534,9 +534,9 @@ int main(int argc, char *argv[])
 	 */
 	if (strcmp(argv[0], token[0]) == 0) {
 		int rc;
-		
+
 		assert(argc > 1);
-		
+
 		while ((rc = getopt(argc, argv, "123456789a")) != -1) {
 			switch (rc) {
 				case '1':
@@ -567,7 +567,7 @@ int main(int argc, char *argv[])
 	while (cur_event[0]!=0) {
 
 		/***********************************************************************/
-	
+
 		/***********************************************************************/
 		/*
 		 * Make sure that if we trigger a event, that it gets logged properly
@@ -578,11 +578,11 @@ int main(int argc, char *argv[])
 	 	testpntbegin(message);
 		/* Get rid of any old tracebuffers */
 		unlink("/dev/shmem/tracebuffer");
-			
+
 		/* We need to start up the tracelogger in daemon mode, 1 itteration.
-		 * We will filter out everything other then our kernel calls, then 
-		 * start logging. 
-		 * We then will make a kernel call, and flush the trace buffer.  This 
+		 * We will filter out everything other then our kernel calls, then
+		 * start logging.
+		 * We then will make a kernel call, and flush the trace buffer.  This
 		 * should create a VERY minimal trace buffer that will be easily parsed
 		 */
 		tlpid=start_logger();
@@ -594,7 +594,7 @@ int main(int argc, char *argv[])
 		/* Add the given kercall event in the Kernel call class back in */
 		rc=TraceEvent(_NTO_TRACE_ADDEVENT, _NTO_TRACE_KERCALLEXIT,cur_event[2]);
 		assert(rc!=-1);
-		/* Filter out all pids but our pid for kernel calls. 
+		/* Filter out all pids but our pid for kernel calls.
 		 * This filter can not be added for the THREAD_DESTROYALL kernel call
 		 * as it is triggered by proc, not by us directly
 		 */
@@ -606,50 +606,50 @@ int main(int argc, char *argv[])
 		/* then trigger an event.  Logging is started inside the trigger_kercall_event
 		 * function immediatly before the kernel call is triggered.
 		 */
-		
+
 		trigger_kercall_event(cur_event);
-		
+
 		/* flush the trace buffer */
-		rc=TraceEvent(_NTO_TRACE_FLUSHBUFFER);	
+		rc=TraceEvent(_NTO_TRACE_FLUSHBUFFER);
 		assert(rc!=-1);
-	 
+
 		/* And wait for the tracelogger to exit */
 		rc=waitpid(tlpid, &status, 0);
 		assert(tlpid==rc);
-	
-		/* Now, setup the traceparser lib to pull out the kernel call events, 
-		 * and make sure our event shows up 
+
+		/* Now, setup the traceparser lib to pull out the kernel call events,
+		 * and make sure our event shows up
 		 */
 		tp_state=traceparser_init(NULL);
 		assert(tp_state!=NULL);
 		traceparser_cs(tp_state, NULL, parse_cb, _NTO_TRACE_KERCALLEXIT, cur_event[2]);
-	
-		/* Since we don't want a bunch of output being displayed in the 
+
+		/* Since we don't want a bunch of output being displayed in the
 		 * middle of the tests, turn off verbose output.
 		 */
 		traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
-	
+
 		/* Set correct_values to 0, so we can see if the callback actually
-		 * got called. 
+		 * got called.
 		 */
 		correct_values=0;
 		/* And parse the tracebuffer */
 		traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-		
-		if (correct_values==0) 
+
+		if (correct_values==0)
 			testpntfail("Our callback never got called, no events?");
 		else if (correct_values==-1)
 			testpntfail("Wrong parameters in the event");
 		else if (correct_values==1)
 			testpntpass("Got the correct values");
-		else 
+		else
 			testpntfail("This should not happen");
 
 		traceparser_destroy(&tp_state);
 	 	testpntend();
 		/***********************************************************************/
-	
-	
+
+
 		/***********************************************************************/
 		/*
 		 * Make sure that if we trigger a event, that it gets logged properly
@@ -661,11 +661,11 @@ int main(int argc, char *argv[])
 
 		/* Get rid of any old tracebuffers */
 		unlink("/dev/shmem/tracebuffer");
-			
+
 		/* We need to start up the tracelogger in daemon mode, 1 itteration.
-		 * we will filter out everything other then our kernel calls, then 
-		 * start logging. 
-		 * We then will make a kernel call, and flush the trace buffer.  This 
+		 * we will filter out everything other then our kernel calls, then
+		 * start logging.
+		 * We then will make a kernel call, and flush the trace buffer.  This
 		 * should create a VERY minimal trace buffer that will be easily parsed
 		 */
 		tlpid=start_logger();
@@ -678,7 +678,7 @@ int main(int argc, char *argv[])
 		/* Add the  event in the Kernel call class back in */
 		rc=TraceEvent(_NTO_TRACE_ADDEVENT, _NTO_TRACE_KERCALLEXIT,cur_event[2]);
 		assert(rc!=-1);
-		/* Filter out all pids but our pid for kernel calls. 
+		/* Filter out all pids but our pid for kernel calls.
 		 * This filter can not be added for the THREAD_DESTROYALL kernel call
 		 * as it is triggered by proc, not by us directly
 		 */
@@ -686,52 +686,52 @@ int main(int argc, char *argv[])
 			rc=TraceEvent(_NTO_TRACE_SETCLASSPID, _NTO_TRACE_KERCALLEXIT, getpid());
 			assert(rc!=-1);
 		}
-		
+
 
 		trigger_kercall_event(cur_event);
-		
+
 		/* flush the trace buffer */
-		rc=TraceEvent(_NTO_TRACE_FLUSHBUFFER);	
+		rc=TraceEvent(_NTO_TRACE_FLUSHBUFFER);
 		assert(rc!=-1);
 		rc=waitpid(tlpid, &status, 0);
 		assert(tlpid==rc);
-	
-		/* Now, setup the traceparser lib to pull out the kernel call events, 
-		 * and make sure our event shows up 
+
+		/* Now, setup the traceparser lib to pull out the kernel call events,
+		 * and make sure our event shows up
 		 */
 		tp_state=traceparser_init(NULL);
 		assert(tp_state!=NULL);
 		traceparser_cs(tp_state, NULL, parse_cb, _NTO_TRACE_KERCALLEXIT, cur_event[2]);
-	
-		/* Since we don't want a bunch of output being displayed in the 
+
+		/* Since we don't want a bunch of output being displayed in the
 		 * middle of the tests, turn off verbose output.
 		 */
 		traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 		/* Set correct_values to 0, so we can see if the callback actually
-		 * got called. 
+		 * got called.
 		 */
 		correct_values=0;
 		/* And parse the tracebuffer */
 		traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-		
-		if (correct_values==0) 
+
+		if (correct_values==0)
 			testpntfail("Our callback never got called, no events?");
 		else if (correct_values==-1)
 			testpntfail("Wrong parameters in the event");
 		else if (correct_values==1)
 			testpntpass("Got the correct values");
-		else 
+		else
 			testpntfail("This should not happen");
 		traceparser_destroy(&tp_state);
 	 	testpntend();
-	
+
 		/***********************************************************************/
 
 		/* Go to the next event to test */
 		cur_event+=6;
 	}
 	/* If the tracelogger was running when we started, we should restart it again */
-	if (tlkilled==1) 
+	if (tlkilled==1)
 		system("reopen /dev/null ; tracelogger -n 0 -f /dev/null &");
 	teststop(argv[0]);
 	return 0;
@@ -747,12 +747,12 @@ int main(int argc, char *argv[])
 *	Purpose: 	This function is used to try to trigger the given event
 *				This will trigger only kernel call events and should
 *				generate both an entry and exit event
-*				
+*
 *				This function will also start the logging, as some types
 *				of events may need some setup, and that setup may need
 *				to make some kernel calls
 *
-*	Parameters:	
+*	Parameters:
 *				event_p	 - This is the pointer to the test array entry
 *						   for the event we want to trigger
 *
@@ -907,7 +907,7 @@ int trigger_kercall_event( unsigned * event_p)
 			global_vals[14]= myinfo.priority;
 			global_vals[15]= myinfo.flags;
 			global_vals[16]= myinfo.reserved;
-			
+
 			MsgReply(global_vals[0], EOK,  "bye", 4);
 			break;
 		case __KER_MSG_REPLYV:
@@ -1018,13 +1018,13 @@ int trigger_kercall_event( unsigned * event_p)
 			MsgSend(coid, "SEND", 5, reply_buf, sizeof(reply_buf));
 			rcvid=MsgReceivev(chid, &reply, 1,NULL);
 			MsgReplyv(rcvid, EOK,  &send, 1);
-			
+
 			/*Setup the event to send */
 			myevent.sigev_notify=SIGEV_NONE;
 			myevent.sigev_notify_function=NULL;
 			myevent.sigev_notify_attributes=NULL;
 			myevent.sigev_value.sival_int=10;
-		
+
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1042,7 +1042,7 @@ int trigger_kercall_event( unsigned * event_p)
 			MsgSend(coid, "SEND", 5, reply_buf, sizeof(reply_buf));
 			rcvid=MsgReceivev(chid, &reply, 1,NULL);
 			MsgReplyv(rcvid, EOK,  &send, 1);
-			
+
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1068,7 +1068,7 @@ int trigger_kercall_event( unsigned * event_p)
 			global_vals[1]= ((unsigned *)reply_buf)[0];
 			global_vals[2]= ((unsigned *)reply_buf)[1];
 			global_vals[3]= ((unsigned *)reply_buf)[2];
-			
+
 			MsgReply(rcvid, EOK,  "bye", 4);
 			break;
 		case __KER_MSG_RECEIVEPULSEV:
@@ -1101,7 +1101,7 @@ int trigger_kercall_event( unsigned * event_p)
 			global_vals[14]= myinfo.priority;
 			global_vals[15]= myinfo.flags;
 			global_vals[16]= myinfo.reserved;
-			
+
 			break;
 		case __KER_MSG_VERIFY_EVENT:
 			memset(global_vals, 0, sizeof(global_vals));
@@ -1110,7 +1110,7 @@ int trigger_kercall_event( unsigned * event_p)
 			myevent.sigev_notify_function=NULL;
 			myevent.sigev_notify_attributes=NULL;
 			myevent.sigev_value.sival_int=10;
-		
+
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1164,7 +1164,7 @@ int trigger_kercall_event( unsigned * event_p)
 			sigaddset(&myset, SIGSEGV);
 			sigaddset(&myset, SIGXCPU);
 			sigaddset(&myset, SIGRTMIN);
-	
+
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1172,7 +1172,7 @@ int trigger_kercall_event( unsigned * event_p)
 			TimerTimeout( CLOCK_REALTIME, _NTO_TIMEOUT_SIGSUSPEND,&myevent, &timeout, NULL );
 			global_vals[0]= SignalSuspend(&myset);
 			global_vals[1]= NULL;
-			
+
 			return(EOK);
 			break;
 
@@ -1190,7 +1190,7 @@ int trigger_kercall_event( unsigned * event_p)
 			sigaddset(&myset, SIGXCPU);
 			sigaddset(&myset, SIGRTMIN);
 			sigaddset(&myset, SIGRTMAX);
-	
+
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1207,7 +1207,7 @@ int trigger_kercall_event( unsigned * event_p)
 			global_vals[8]= ((unsigned *)&mysiginfo)[7];
 			global_vals[9]= ((unsigned *)&mysiginfo)[8];
 			global_vals[10]= ((unsigned *)&mysiginfo)[9];
-			
+
 			return(EOK);
 			break;
 		case __KER_CHANNEL_CREATE:
@@ -1350,7 +1350,7 @@ int trigger_kercall_event( unsigned * event_p)
 			 /* create child to run the test itself */
 			token[1] = "-1";
 			memset(&myinherit,0,sizeof(myinherit));
-			
+
 			child = spawnp(path, 0, NULL, &myinherit, token, NULL);
 			assert(child!=-1);
 			rc=waitpid(child, &a_value, 0);
@@ -1414,12 +1414,12 @@ int trigger_kercall_event( unsigned * event_p)
 			break;
 		case __KER_CLOCK_ADJUST:
 			memset(global_vals, 0, sizeof(global_vals));
-			/* This will cause the time to go ahead a total of 	
+			/* This will cause the time to go ahead a total of
 			 * 25 nano seconds, which we should never really notice..
 			 */
 			myadjustment.tick_nsec_inc=5;
 			myadjustment.tick_count=5;
-	
+
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1464,7 +1464,7 @@ int trigger_kercall_event( unsigned * event_p)
 			memset(&myevent, 0,sizeof(myevent));
 			SIGEV_SIGNAL_CODE_INIT( &myevent,SIGUSR1,0, SI_MINAVAIL+1 );
 			rc=TimerCreate(CLOCK_REALTIME, &myevent);
-			
+
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1473,7 +1473,7 @@ int trigger_kercall_event( unsigned * event_p)
 			break;
 		case __KER_TIMER_SETTIME:
 			memset(global_vals, 0, sizeof(global_vals));
-			memset(&myitime2,0, sizeof(myitime2));	
+			memset(&myitime2,0, sizeof(myitime2));
 			memset(&myevent, 0,sizeof(myevent));
 			SIGEV_SIGNAL_CODE_INIT( &myevent,SIGUSR1,0, SI_MINAVAIL+1 );
 			global_vals[0]=TimerCreate(CLOCK_REALTIME, &myevent);
@@ -1816,7 +1816,7 @@ int trigger_kercall_event( unsigned * event_p)
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
 			delay(10);
-			global_vals[0]=NetVtid(101, &myvtidinfo);	
+			global_vals[0]=NetVtid(101, &myvtidinfo);
 			break;
 		case __KER_NET_UNBLOCK:
 			memset(global_vals, 0, sizeof(global_vals));
@@ -1824,7 +1824,7 @@ int trigger_kercall_event( unsigned * event_p)
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
 			delay(10);
-			global_vals[0]=NetUnblock(101);	
+			global_vals[0]=NetUnblock(101);
 			break;
 		case __KER_NET_INFOSCOID:
 			memset(global_vals, 0, sizeof(global_vals));
@@ -1833,7 +1833,7 @@ int trigger_kercall_event( unsigned * event_p)
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
 			delay(10);
-			global_vals[0]=NetInfoscoid(101,102);	
+			global_vals[0]=NetInfoscoid(101,102);
 			break;
 		case __KER_NET_SIGNAL_KILL:
 			memset(global_vals, 0, sizeof(global_vals));

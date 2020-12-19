@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -250,7 +250,7 @@ if(3 & (unsigned) data) crash(__FILE__, __LINE__);
 #endif
 				return data;
 			} else if(new_size + sizeof *p <= old_size + p->size) {
-				// We must save "*p" as prev may overlap 
+				// We must save "*p" as prev may overlap
 				struct free_entry			save = *p;
 
 				prev = PTRADD(data, new_size);
@@ -419,7 +419,7 @@ void _salloc_init(void *data, unsigned size) {
 		(void)_sreallocfunc(data, size, 0, 0);
 	}
 }
-	
+
 unsigned _heap_alloc(unsigned size, void **addr);
 
 void *_srealloc(void *data, unsigned old_size, unsigned new_size) {
@@ -755,7 +755,7 @@ void tstcheck(void) {
 				}
 				break;
 			}
-		}			
+		}
 		if(!a) {
 			printf("free entry not in any alloced area...");
 			err = 5;
@@ -801,7 +801,7 @@ unsigned memory(void far *addr, void *src, unsigned len) {
 #endif
 static void check(struct free_entry *p) {
 	extern unsigned memory(void far *addr, void *src, unsigned len);
-	
+
 	if(p) {
 //		if(memory(0, p, sizeof p) < sizeof p) {
 //			crash(__FILE__, __LINE__);

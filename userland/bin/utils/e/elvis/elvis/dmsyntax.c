@@ -652,7 +652,7 @@ static DMINFO *init(win)
 				{
 				        long li = 0;
 				        /* find item */
-				        if( sinfo->strbegin[li] ) 
+				        if( sinfo->strbegin[li] )
 				          /* already used */
 				          li = 1;
 
@@ -840,7 +840,7 @@ static DMINFO *init(win)
 			 */
 			if (sinfo->strnewline
 			 && ( sinfo->strbegin[0] == sinfo->strend[0] ||
-			      sinfo->strbegin[1] == sinfo->strend[1] 
+			      sinfo->strbegin[1] == sinfo->strend[1]
 			    )
 			 && !sinfo->strnoindent)
 			{
@@ -1169,7 +1169,7 @@ static MARK image(w, line, info, draw)
 	{
 		/* Output this line in DOC font.  Also compare to enddoc */
 		offset = markoffset(line);
-		up = sinfo->enddoc; 
+		up = sinfo->enddoc;
 		do
 		{
 			/* If char doesn't match enddoc, then set "up" to NULL
@@ -1278,7 +1278,7 @@ static MARK image(w, line, info, draw)
 			}
 			if (up && *up == '\n')
 				up = NULL;
-			scanfree(&up);               
+			scanfree(&up);
 
 			/* if trailing, and the cursor isn't at the end of it,
 			 * and "list" is set, then show trail
@@ -1699,7 +1699,7 @@ static CHAR *tagatcursor(win, cursor)
 
 	/* search backward for first quote or whitespace */
 	for (scanalloc(&cp, cursor);
-	     cp && !elvspace(*cp) && *cp != sinfo->pqbegin && 
+	     cp && !elvspace(*cp) && *cp != sinfo->pqbegin &&
 		*cp != sinfo->strbegin[0] && *cp != sinfo->strbegin[1];
 	     scanprev(&cp))
 	{

@@ -8,7 +8,7 @@
      routine to compute it here comes from an article by Curtis Wright  in
      the Summer, 1987 issue of "The C Journal".
 
-     
+
 
 ----------------------------------------------------------------------------*/
 #include <stdio.h>
@@ -22,14 +22,14 @@ static unsigned char	checksum;				/* Checksum accumulator		*/
 static char		unused;
 
 /*
- * updcrc macro derived from article Copyright (C) 1986 Stephen Satchell. 
+ * updcrc macro derived from article Copyright (C) 1986 Stephen Satchell.
  *  NOTE: First srgument must be in range 0 to 255.
  *        Second argument is referenced twice.
- * 
- * Programmers may incorporate any or all code into their programs, 
- * giving proper credit within the source. Publication of the 
- * source routines is permitted so long as proper credit is given 
- * to Stephen Satchell, Satchell Evaluations and Chuck Forsberg, 
+ *
+ * Programmers may incorporate any or all code into their programs,
+ * giving proper credit within the source. Publication of the
+ * source routines is permitted so long as proper credit is given
+ * to Stephen Satchell, Satchell Evaluations and Chuck Forsberg,
  * Omen Technology.
  */
 
@@ -84,7 +84,7 @@ next_crc_cii( ch )					/* Compute the character into the crc	*/
 unsigned
 compute_crc_z( n, buf )
 	int		n;
-	char	*buf; 
+	char	*buf;
 	{
 	register unsigned char *s;
 	unsigned val = 0;
@@ -107,7 +107,7 @@ compute_crc_z( n, buf )
 	export	<compute_crc_cii>
 	export	loop1
 ;	int		n;		 /* 14[bp] */
-;	char	*buf;    /* 16[bp] */ 
+;	char	*buf;    /* 16[bp] */
 
 <compute_crc_cii>:
 		call prologue

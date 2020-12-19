@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -35,7 +35,7 @@ char	*userName = 0;
 
 int
 is_valid_filter_list (char *s)
-// this function does a quick and dirty validation of filter lists 
+// this function does a quick and dirty validation of filter lists
 // given on the command line
 {
 	while (*s)
@@ -55,9 +55,9 @@ filter_string (char *s, char *l)
 	char list[100];
 
 	//todo:eliminate arbitrary length restriction
-	strncpy (list, l, sizeof (list)); 
+	strncpy (list, l, sizeof (list));
 
-	// iter through each token in the list and see if it is 
+	// iter through each token in the list and see if it is
 	// equal to 's'
 	tok = strtok (list, delimiters);
 	while (tok)
@@ -66,8 +66,8 @@ filter_string (char *s, char *l)
 		if (strcmp (s, tok) == 0)
 			return 1;
 		tok = strtok (0, delimiters);
-	}	
-	return 0;	
+	}
+	return 0;
 }
 
 int
@@ -82,7 +82,7 @@ filter_number (int i, char *l)
 	return filter_string (buffer, l);
 }
 
-int 
+int
 filter_ps (struct _ps *psp)
 // this function handles all of the filtering for all lists; it returns
 // true if the given process passes at least 1 filter
@@ -90,7 +90,7 @@ filter_ps (struct _ps *psp)
 	// check to see if there are any tests in the first place
 	if (allProcs)
 		return 1;
-	
+
 if(psp->sid == 1) psp->pflags |= _NTO_PF_NOCTTY;	// @@@ Temp until new procs are used
 	if (termProcs && (psp->pflags & (_NTO_PF_NOCTTY | _NTO_PF_SLEADER)) == 0)
 		return 1;
@@ -100,10 +100,10 @@ if(psp->sid == 1) psp->pflags |= _NTO_PF_NOCTTY;	// @@@ Temp until new procs are
 
 	if (userList)
 	{
-		// try to match by user name or uid 
+		// try to match by user name or uid
 		if (filter_number (userEffective ? psp->user : psp->ruser, userList))
 			return 1;
-	
+
 		if (userName && filter_string (userName, userList))
 			return 1;
 	}

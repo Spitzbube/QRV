@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -173,7 +173,7 @@ int main (int argc, char *argv[])
 	{
 		switch(opt)
 		{
-			case '1': 
+			case '1':
 				draft11 	=	TRUE;
 				break;
 
@@ -204,7 +204,7 @@ int main (int argc, char *argv[])
 	onatty = isatty(fileno(stdin));
 
 	first_index = optind;
-	last_index  = argc-2;   
+	last_index  = argc-2;
 
 	num_files = last_index - first_index + 1;
 
@@ -226,7 +226,7 @@ int main (int argc, char *argv[])
 		does TARGET(destination) exist ?
 	*/
 
-	if (stat(target,&statbufdst)==-1) 
+	if (stat(target,&statbufdst)==-1)
 	{
 		directory_target = FALSE;
 		if (errno!=ENOENT)
@@ -234,7 +234,7 @@ int main (int argc, char *argv[])
 			fprintf(stderr,"%s (%s):%s\n",TXT(T_STAT_FAILED),target,strerror(errno));
 			exit(EXIT_FAILURE);
 		} else target_exists = FALSE;
-	} else {	
+	} else {
 		/*
 			TARGET file exists -- is it a directory?
 		*/
@@ -282,13 +282,13 @@ int main (int argc, char *argv[])
 			}
 		}
 
-		/* If we are copying to a directory, build full destination path */ 
+		/* If we are copying to a directory, build full destination path */
 
 		if (directory_target) {
 			char *ptr;
 			tack_point = dest+strlen(dest);
 
-			strcat(dest,"//");		
+			strcat(dest,"//");
 			while ((ptr=strrchr(source,'/')) != NULL) {
 				if (*(ptr+1)) {
 					strcat(dest,ptr+1);
@@ -304,7 +304,7 @@ int main (int argc, char *argv[])
 #endif
 
 		/* does the destination exist? */
-		if (stat(dest,&statbufdst)!=-1) 
+		if (stat(dest,&statbufdst)!=-1)
 		{
 			bool access_ok;
 
@@ -317,13 +317,13 @@ int main (int argc, char *argv[])
 					continue;
 				}
 			}
-			
+
 			access_ok = (access(dest,W_OK)!=-1);
 			if ((interactive && (!draft11 || onatty)) || ((!access_ok)&&(!force_del)&&onatty) ) {
 				if (ask_user(source,purty(dest),access_ok?TXT(T_OVERWRITE):TXT(T_NOWRITEFORCE))
 					== FALSE) continue;
-			} 
-			if (!access_ok) {				
+			}
+			if (!access_ok) {
 				if (unlink(dest)==-1)
 				{
 					fprintf(stderr,TXT(T_CANT_UNLINK),purty(dest),strerror(errno));
@@ -335,7 +335,7 @@ int main (int argc, char *argv[])
 		}
 
 		if (verbose) fprintf(stdout,TXT(T_VERBOSE_MSG),source,purty(dest));
-		
+
 		if (rename(source,dest)==-1) {
 			error = errno;
 		} else {
@@ -372,9 +372,9 @@ int main (int argc, char *argv[])
 						fprintf(stderr,"mv: unlink(%s) : %s\n",purty(dest),strerror(errno));
 						errs++;
 						continue;
-					} 
+					}
 				}
-			
+
 				/* if (tack_point!=NULL) *tack_point = 0; */
 
 				sprintf(arg1,"-pLRD%s%s%s",force_del?"f":"",interactive?"i":"",super_verbose?"V":(verbose?"v":""));
@@ -392,13 +392,13 @@ int main (int argc, char *argv[])
 					errno=0;
 					if (spawnl(P_WAIT,"/bin/rm","rm",arg1,arg2,NULL)) {
 						errs++;
-						if (errno) 
+						if (errno)
 							fprintf(stderr,"mv: error spawning /bin/rm (%s)\n",strerror(errno));
 						else
 							fprintf(stderr,"mv: /bin/rm failed.\n");
 					}
 				} else {
-					if (errno) 
+					if (errno)
 						fprintf(stderr,"mv: error spawning /bin/cp (%s)\n",strerror(errno));
 					else
 						fprintf(stderr,"mv: /bin/cp exited with non-zero status. Original will not be removed.\n");
@@ -421,7 +421,7 @@ char *purty (char *string)
 {
 	static char purtystr[_POSIX_PATH_MAX+1];
 	char *ptr=string, *prty = purtystr;
-		
+
 	/* copy over valid leading // only when not '///' */
 	if (ptr[0]=='/'&&ptr[1]=='/'&&ptr[2]!='/') {
 		*prty++=*ptr++;
@@ -432,5 +432,5 @@ char *purty (char *string)
 	*prty=*ptr;	/* null terminate */
 	return(purtystr);
 }
-	
+
 

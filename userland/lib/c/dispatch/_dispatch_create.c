@@ -2,7 +2,7 @@
 #include <sys/dispatch.h>
 #include "dispatch.h"
 
-// This file is just to keep available an internal function that we 
+// This file is just to keep available an internal function that we
 // told people about.
 
 dispatch_t *

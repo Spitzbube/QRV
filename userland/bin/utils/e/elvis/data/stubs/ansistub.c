@@ -913,7 +913,7 @@ mbstowcs(wchar_t *pwcs, const char *m_byte, size_t length)
  * (including a terminating NUL byte, if appropriate).  Note that there is
  * no way to predict how large the m_byte buffer must be, but you're
  * responsible for making it large enough anyway.
- * 
+ *
  * If m_byte is NULL then it resets its internal shift state and returns 1
  * if that state was complex, or 0 if trivial.
  */

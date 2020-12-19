@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -22,7 +22,7 @@
 /*-
 
 	passwd:	change passwd or create initial passwd entry.
-	
+
 	24,july,91: steve
 	- don't make invalid uid/gid root
 	- more careful in creating home directory
@@ -109,7 +109,7 @@ Revision 1.5  1997/03/07 16:06:43  steve
 #include <shadow.h>
 #include <limits.h>
 #include <unistd.h>
-#include <libgen.h>		
+#include <libgen.h>
 #include <sys/timeb.h>
 #include <sys/stat.h>
 #include <util/stdutil.h>
@@ -592,7 +592,7 @@ int change_passwd(struct passwd * pw) {
 int main(int argc, char **argv) {
 	struct passwd  *p;
 	int             i, ecode;
-	
+
 	init_defaults(basename(argv[0]), "passwd");
 	while ((i=getopt(argc,argv,"c")) != EOF) {
 		switch (i) {

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -26,7 +26,7 @@
 #include <unistd.h>
 #include <errno.h>
 
-/*	
+/*
 	From Tanenbaum's book "Computer Networks",
 	coded in C from pascal. Pg 398 1st edition 1981
 
@@ -51,35 +51,35 @@ static struct block key;
 /*
  Standard DES encryptions tables
 */
-/* 
+/*
 uint8_t InitialTr(uint8_t index) {
-	uint8_t start, row, col; 
+	uint8_t start, row, col;
 
 	col = index % 8;
 	row = index / 8;
 
-	if (row < 4) 
+	if (row < 4)
 		start = 58 + (row * 2);
 	else
-		start = 57 + ((row-4) * 2);  
+		start = 57 + ((row-4) * 2);
 
 	return start + (col * 8);
 }
 */
 const static struct ordering InitialTr = { {
-	58,50,42,34,26,18,10, 2, 
+	58,50,42,34,26,18,10, 2,
 	60,52,44,36,28,20,12, 4,
-	62,54,46,38,30,22,14, 6, 
+	62,54,46,38,30,22,14, 6,
 	64,56,48,40,32,24,16, 8,
-	57,49,41,33,25,17, 9, 1, 
+	57,49,41,33,25,17, 9, 1,
 	59,51,43,35,27,19,11, 3,
-	61,53,45,37,29,21,13, 5, 
+	61,53,45,37,29,21,13, 5,
 	63,55,47,39,31,23,15, 7, }
 };
 
 /*
 uint8_t FinalTr(uint8_t index) {
-	uint8_t row, col; 
+	uint8_t row, col;
 
 	col = (index % 8) / 2;
 	row = index / 8;
@@ -106,7 +106,7 @@ uint8_t swap(uint8_t index) {
 	uint8_t offset, start;
 
 	offset = (index % 32);
-	if (offset < 32) 
+	if (offset < 32)
 		start = 33;
 	else
 		start = 1;
@@ -140,8 +140,8 @@ const static struct ordering KeyTr2 = { {
 	34,53,46,42,50,36,29,32, }
 };
 
-/* 
- These two can be funcitionized as well 
+/*
+ These two can be funcitionized as well
 */
 const static struct ordering etr = { {
 	32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9,
@@ -382,8 +382,8 @@ char *crypt(const char *pw, const char *insalt)
 		result[i] = c = salt[i];
 
 		/* If c was a lower case letter */
-		if ( c > 'Z') {	
-			c -= 6 + 7 + '.';	
+		if ( c > 'Z') {
+			c -= 6 + 7 + '.';
 		}
 		/* If c was an upper case letter */
 		else if ( c > '9') {
@@ -391,7 +391,7 @@ char *crypt(const char *pw, const char *insalt)
 		}
 		/* If c was a digit, '.' or '/'. */
 		else {
-			c -= '.';				
+			c -= '.';
 		}
 
 		/* Now guaranteed that 0 <= c <= 63 */
@@ -433,7 +433,7 @@ char *crypt(const char *pw, const char *insalt)
 		   that is in the right range again */
 
 		/* Force the character >= '.' */
-		c += '.';				
+		c += '.';
 		/* If not in [./0-9] force it upper */
 		if (c > '9') {
 			c += 7;

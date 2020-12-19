@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -110,7 +110,7 @@ int	state = 0;
 		expr++;
 	    }
 	    break;
-	case	2:	
+	case	2:
 	    if (*expr == ESC_CHR)
 		expr++;
 
@@ -125,30 +125,30 @@ int	state = 0;
 			rc = 1;
 		    }
 		}
-	    expr++;	
+	    expr++;
 	    state = 0;
 	    break;
 	default:
 #ifdef DEBUGGING
 	    fprintf(stderr,"ccl_match: state failed %d\n",state);
 #else
-/*  
+/*
     yes, i know, this is analogous to removing your parachute when
-    the plane leaves the ground, but I don't want this module 
-    dragging in any extra libs.  Right now, the only function it 
+    the plane leaves the ground, but I don't want this module
+    dragging in any extra libs.  Right now, the only function it
     invokes is 'strrchr'.
 */
-	    return NULL;    
+	    return NULL;
 #endif
 	}
     }
 }
-	
+
 
 #ifdef __STDC__
 static int amatch(const char *expr, const char *s)
 #else
-static int amatch(expr,s) 
+static int amatch(expr,s)
 register    char *s, *expr;
 #endif
 {
@@ -160,7 +160,7 @@ register    char *s, *expr;
 	case CCL_CHR:
 	    if ((expr = ccl_match(expr,*s)) == NULL) {
 		return 0;
-	    }	
+	    }
 	    s++;
 	    break;
 	case CLS_CHR:
@@ -198,7 +198,7 @@ register char *expr, *s;
 
 	while (*s)
 	    if (amatch(expr,s++)) return 1;
-	return 0; 
+	return 0;
     }
     return amatch(expr,s);
 }
@@ -213,7 +213,7 @@ register    char    *string;
 int flag;
 #endif
 {
-int	negate_flag = 0; 
+int	negate_flag = 0;
 
 	Case_Insensitive = FALSE;
 
@@ -228,7 +228,7 @@ int	negate_flag = 0;
     } else if (negate_flag = (*pattern == NEG_CHR)) {
 	pattern++;
     }
-    return negate_flag == (gmatch(pattern,string) != 0);    
+    return negate_flag == (gmatch(pattern,string) != 0);
 }
 
 #ifdef __STDC__
@@ -240,7 +240,7 @@ register    char    *string;
 int flag;
 #endif
 {
-int	negate_flag = 0; 
+int	negate_flag = 0;
 
 	Case_Insensitive = TRUE;
 
@@ -255,7 +255,7 @@ int	negate_flag = 0;
     } else if (negate_flag = (*pattern == NEG_CHR)) {
 	pattern++;
     }
-    return negate_flag == (gmatch(pattern,string) != 0);    
+    return negate_flag == (gmatch(pattern,string) != 0);
 }
 
 

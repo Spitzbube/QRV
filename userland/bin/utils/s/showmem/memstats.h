@@ -14,7 +14,7 @@ struct bin_stats {
 	unsigned 			nallocs;
 	unsigned 			nfrees;
 	unsigned 			reserved;
-};	
+};
 
 //Arbitrary value?
 #define MAX_BINS	24

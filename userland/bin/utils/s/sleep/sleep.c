@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -45,24 +45,24 @@ Where:
 	code for mingw32
 
 	Revision 1.12  2005/06/03 01:38:00  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.11  2003/08/29 20:29:28  martin
 	Update QSSL Copyright.
-	
+
 	Revision 1.10  1999/07/06 18:00:22  bstecher
 	Wasn't checking proper value to determine error return from alarm() call.
-	
+
 	Revision 1.9  1998/09/25 20:46:27  eric
 	minor error checking tweak
-	
+
 	Revision 1.8  1998/08/19 17:13:07  bstecher
 	*** empty log message ***
 
@@ -93,7 +93,7 @@ Where:
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 #ifdef __MINGW32__
 #include <windows.h>
@@ -125,7 +125,7 @@ char		*argv[];
 
 	errno = 0;	/* cuz entry wont do it for me */
 
-	while ((c=getopt(argc,argv,"")) != -1) 
+	while ((c=getopt(argc,argv,"")) != -1)
 		errflag++;
 
 	if (!errflag && (optind==argc-1)) {
@@ -143,16 +143,16 @@ char		*argv[];
 
 		exit(EXIT_FAILURE);
 	}
-	
+
 	if (nsec==0) exit(EXIT_SUCCESS);
-	
+
 	// setup signal handler:
 	install_sh();
-	
+
 	return do_pause(nsec);
 }
 
-void sigalarm( int sig_number ) 
+void sigalarm( int sig_number )
 {
   #ifndef __MINGW32__ // Unix behaviour:
 	exit( (sig_number==SIGALRM)?EXIT_SUCCESS:EXIT_FAILURE );
@@ -166,7 +166,7 @@ void sigalarm( int sig_number )
 }
 
 void install_sh() {
-  #ifndef __MINGW32__ 
+  #ifndef __MINGW32__
     signal( SIGALRM, sigalarm );
   #else // win32:
     signal(SIGINT, sigalarm); // we catch Ctrl-C signal on win32
@@ -181,5 +181,5 @@ int do_pause(int seconds) {
   #else // we are in __MINGW32__ environ
     Sleep(seconds * 1000); // Win32 function Sleep takes number of milliseconds as argument.
     return EXIT_SUCCESS;
-  #endif	
+  #endif
 }

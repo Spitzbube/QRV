@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -64,7 +64,7 @@ static void _thread_pool_update(thread_pool_t *pool, int w_adj, int n_adj) {
 	pool->waiting += w_adj;
 	props->newthreads += n_adj;
 	realwaiting = (pool->waiting + props->newthreads);
-	if ((realwaiting < (pool->pool_attr.lo_water + props->reserved_threads) ) && 
+	if ((realwaiting < (pool->pool_attr.lo_water + props->reserved_threads) ) &&
 			(pool->created < (pool->pool_attr.maximum + props->reserved_threads))) {
 		if (pool->created < (pool->pool_attr.lo_water + props->reserved_threads))
 			add = (pool->pool_attr.lo_water + props->reserved_threads) - pool->created;
@@ -90,7 +90,7 @@ static void _thread_pool_update(thread_pool_t *pool, int w_adj, int n_adj) {
 	// all is fine, we go on to create the required
 	// number of threads.
 	while (add--) {
-		if(pthread_create(0, pool->pool_attr.attr, _thread_pool_context_thread, 
+		if(pthread_create(0, pool->pool_attr.attr, _thread_pool_context_thread,
        pool) != EOK) {
 			_mutex_lock(&(props->inline_lock));
 			pool->created--;
@@ -137,7 +137,7 @@ int _thread_pool_reserve(thread_pool_t *pool, int wait_count)
 	This unfortunately is not a guarantee of service for this thread,
 	it may still be picked up and used by someone else.
 	*/
-	
+
 	// malloc storage for pcp
 	pcp = malloc(sizeof(*pcp));
 	if (!pcp) {
@@ -161,7 +161,7 @@ int _thread_pool_reserve(thread_pool_t *pool, int wait_count)
 	pool->created++;
 	pool->waiting++;
 	_mutex_unlock(&(props->inline_lock));
-  	ret = pthread_create(&tid, pool->pool_attr.attr, 
+  	ret = pthread_create(&tid, pool->pool_attr.attr,
                        	_thread_pool_reserve_thread, pcp);
   	if(ret != 0) {
     		errno = ret;
@@ -236,7 +236,7 @@ void *_thread_pool_thread(thread_pool_t *pool, void *ctp) {
 		_thread_pool_update(pool, -1, 0);
 
 		if (pool->pool_attr.handler_func(ctp) == -1) {
-			ctp = old_ctp; 
+			ctp = old_ctp;
 			/* Fall thru so we update stats and potential exit */
 
 			/* AM Note @@NYI, We should have a error handler callout so we can notify

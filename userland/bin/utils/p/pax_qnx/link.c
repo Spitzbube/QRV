@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -23,7 +23,7 @@
  *
  * $Revision: 153052 $
  *
- * link.c - functions for handling multiple file links 
+ * link.c - functions for handling multiple file links
  *
  * DESCRIPTION
  *
@@ -34,17 +34,17 @@
  *
  *	Mark H. Colburn, NAPS International (mark@jhereg.mn.org)
  *
- * Sponsored by The USENIX Association for public distribution. 
+ * Sponsored by The USENIX Association for public distribution.
  *
  * Copyright (c) 1989 Mark H. Colburn.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms are permitted
- * provided that the above copyright notice is duplicated in all such 
- * forms and that any documentation, advertising materials, and other 
- * materials related to such distribution and use acknowledge that the 
- * software was developed * by Mark H. Colburn and sponsored by The 
- * USENIX Association. 
+ * provided that the above copyright notice is duplicated in all such
+ * forms and that any documentation, advertising materials, and other
+ * materials related to such distribution and use acknowledge that the
+ * software was developed * by Mark H. Colburn and sponsored by The
+ * USENIX Association.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
@@ -73,10 +73,10 @@
  *
  * Revision 1.2  89/02/12  10:04:38  mark
  * 1.2 release fixes
- * 
+ *
  * Revision 1.1  88/12/23  18:02:12  mark
  * Initial revision
- * 
+ *
  */
 
 #ifndef lint
@@ -93,12 +93,12 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 /* Defines */
 
 /*
- * Address link information base. 
+ * Address link information base.
  */
 #define	LINKHASH(ino)	(linkbase + ((ino) % NEL(linkbase)))
 
 /*
- * Number of array elements. 
+ * Number of array elements.
  */
 #define	NEL(a)		(sizeof(a) / sizeof(*(a)))
 
@@ -109,7 +109,7 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 static Link    *linkbase[256];	/* Unresolved link information */
 
 
-/* linkfrom - find a file to link from 
+/* linkfrom - find a file to link from
  *
  * DESCRIPTION
  *
@@ -126,7 +126,7 @@ static Link    *linkbase[256];	/* Unresolved link information */
  *
  * RETURNS
  *
- * 	Returns a pointer to a link structure, or NULL if unsuccessful. 
+ * 	Returns a pointer to a link structure, or NULL if unsuccessful.
  *
  */
 
@@ -135,7 +135,7 @@ static Link    *linkbase[256];	/* Unresolved link information */
 Link *linkfrom(char *name, Stat *asb)
 
 #else
-    
+
 Link *linkfrom(name, asb)
 char           *name;
 Stat           *asb;
@@ -162,8 +162,8 @@ Stat           *asb;
 	    free((char *) linkp);
 	    *abase = (Link *)NULL;
 	} else if (linkp->l_ino == asb->sb_ino && linkp->l_dev == asb->sb_dev) {
-	    /* 
-	     * check to see if a file with the name "name" exists in the 
+	    /*
+	     * check to see if a file with the name "name" exists in the
 	     * chain of files which we have for this particular link
 	     */
 	    for (path = linkp->l_path; path; path = pathnext) {
@@ -213,7 +213,7 @@ Stat           *asb;
  *
  * RETURNS
  *
- * 	Returns a pointer to a link structure, or NULL if unsuccessful. 
+ * 	Returns a pointer to a link structure, or NULL if unsuccessful.
  *
  */
 
@@ -222,7 +222,7 @@ Stat           *asb;
 Link *islink(char *name, Stat *asb)
 
 #else
-    
+
 Link *islink(name, asb)
 char           *name;
 Stat           *asb;
@@ -236,7 +236,7 @@ Stat           *asb;
 	if (linkp->l_ino == asb->sb_ino && linkp->l_dev == asb->sb_dev) {
 	    if (strcmp(name, linkp->l_name) == 0) {
 		return ((Link *)NULL);
-	    } 
+	    }
 	    return (linkp);
 	} else {
 	    linknext = linkp->l_forw;
@@ -246,7 +246,7 @@ Stat           *asb;
 }
 
 
-/* linkto  - remember a file with outstanding links 
+/* linkto  - remember a file with outstanding links
  *
  * DESCRIPTION
  *
@@ -263,8 +263,8 @@ Stat           *asb;
  *
  * RETURNS
  *
- * 	Returns a pointer to the associated link structure, or NULL when 
- *	linking is not possible. 
+ * 	Returns a pointer to the associated link structure, or NULL when
+ *	linking is not possible.
  *
  */
 
@@ -273,7 +273,7 @@ Stat           *asb;
 Link *linkto(char *name, Stat *asb)
 
 #else
-    
+
 Link *linkto(name, asb)
 char           *name;
 Stat           *asb;
@@ -287,7 +287,7 @@ Stat           *asb;
 
     for (linkp = *(LINKHASH(asb->sb_ino)); linkp; linkp = linknext) {
 	if (linkp->l_ino == asb->sb_ino && linkp->l_dev == asb->sb_dev) {
-	    if ((path = (Path *) mem_get(sizeof(Path))) == (Path *)NULL || 
+	    if ((path = (Path *) mem_get(sizeof(Path))) == (Path *)NULL ||
 		(path->p_name = mem_str(name)) == (char *)NULL) {
 		return((Link *)NULL);
 	    }
@@ -327,7 +327,7 @@ Stat           *asb;
 }
 
 
-/* linkleft - complain about files with unseen links 
+/* linkleft - complain about files with unseen links
  *
  * DESCRIPTION
  *
@@ -342,7 +342,7 @@ Stat           *asb;
 void linkleft(void)
 
 #else
-    
+
 void linkleft()
 
 #endif

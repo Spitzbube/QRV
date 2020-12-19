@@ -17,7 +17,7 @@
    along with this program; see the file COPYING.
    If not, write to the Free Software Foundation,
    59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
-
+
 #include "system.h"
 
 #include <stdio.h>
@@ -107,7 +107,7 @@ static struct option const long_options[] =
   {"help", 0, 0, HELP_OPTION},
   {0, 0, 0, 0}
 };
-
+
 static void try_help (char const *, char const *) __attribute__((noreturn));
 static void
 try_help (char const *reason_msgid, char const *operand)
@@ -187,7 +187,7 @@ GB 1,000,000,000, G 1,073,741,824, and so on for T, P, E, Z, Y."),
 	  _("If a FILE is `-' or missing, read standard input."),
 	  _("Report bugs to <bug-gnu-utils@gnu.org>."));
 }
-
+
 int
 main (int argc, char **argv)
 {
@@ -355,7 +355,7 @@ main (int argc, char **argv)
   exit (exit_status);
   return exit_status;
 }
-
+
 /* Compare the two files already open on `file_desc[0]' and `file_desc[1]',
    using `buffer[0]' and `buffer[1]'.
    Return EXIT_SUCCESS if identical, EXIT_FAILURE if different,
@@ -550,7 +550,7 @@ cmp (void)
 
   return ret;
 }
-
+
 /* Compare two blocks of memory P0 and P1 until they differ,
    and count the number of '\n' occurrences in the common
    part of P0 and P1.
@@ -597,7 +597,7 @@ block_compare_and_count (word const *p0, word const *p1, off_t *count)
   *count += cnt;
   return c0 - (char const *) p0;
 }
-
+
 /* Compare two blocks of memory P0 and P1 until they differ.
    If the blocks are not guaranteed to be different, put sentinels at the ends
    of the blocks before calling this function.
@@ -655,7 +655,7 @@ sprintc (char *buf, unsigned char c)
   *buf++ = c;
   *buf = 0;
 }
-
+
 /* Position file F to ignore_initial[F] bytes from its initial position,
    and yield its new position.  Don't try more than once.  */
 

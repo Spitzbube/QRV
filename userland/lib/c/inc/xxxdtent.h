@@ -78,7 +78,7 @@ FTYPE FNAME(Dtentox)(FTYPE x, long n, int *perr)
 				if (0 <= (errx = dmul(&x, factor)))
 					break;
 		if ( errx==_FINITE && ((x<0) ? -x : x)<FMIN )
-			/* pr44047 -- if fmul denormalizes the value, it still 
+			/* pr44047 -- if fmul denormalizes the value, it still
 			 *   returns with errx==_FINITE.  But, POSIX says
 			 *   on denormalization we need to flag an
 			 *   underflow (e.g. set errno=ERANGE).

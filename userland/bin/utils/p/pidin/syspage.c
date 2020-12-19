@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -69,7 +69,7 @@ vmsg(const char *fmt, va_list args) {
 	unsigned		radix;
 	int				dig;
 	char			buf[64];
-	
+
 	for(; *fmt; ++fmt) {
 		if(*fmt != '%') {
 			one_char(*fmt);
@@ -133,15 +133,15 @@ vmsg(const char *fmt, va_list args) {
 		}
 	}
 }
-				
+
 void
 kprintf(const char *fmt, ...) {
 	va_list args;
-	
+
 	va_start(args, fmt);
 	vmsg(fmt, args);
 	va_end(args);
-}	
+}
 
 static char *string_ptr;
 
@@ -164,16 +164,16 @@ ksprintf(char *buff, const char *fmt, ...) {
 	*string_ptr = '\0';
 	print_char = old_print_char;
 }
-				
+
 void
 crash(const char *fmt, ...) {
 	va_list args;
-	
+
 	va_start(args, fmt);
 	vmsg(fmt, args);
 	va_end(args);
 	for( ;; ) {}
-}	
+}
 
 void
 set_print_char(void (*prt)(int)) {
@@ -344,7 +344,7 @@ print_hwinfo() {
 			kprintf("\n    ");
 			while(base < next) {
 				uint8_t		*p = base;
-	
+
 				kprintf(" %b", *p);
 				base = p + 1;
 			}
@@ -482,7 +482,7 @@ enable_print_syspage(const char *name) {
 	unsigned	i;
 	unsigned	on_bit;
 	unsigned	off_mask;
-	
+
 	if( *name == '~') {
 		++name;
 		on_bit = EXPLICIT_DISABLE;

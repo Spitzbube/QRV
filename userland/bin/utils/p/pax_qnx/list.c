@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -113,7 +113,7 @@ static void pax_entry(char *, Stat *);
 static void print_mode(ushort);
 static long from_oct(int digs, char *where);
 static int 	long_name(char *, off_t);
- 
+
 #else /* !__STDC__ */
 
 static void cpio_entry();
@@ -189,15 +189,15 @@ Stat           *asb;
      * Also, the name and prefix fields may not be NULL terminated.
      */
 
-    if ( hdrbuf[345] ) 
+    if ( hdrbuf[345] )
 	{
         strncpy( name, &hdrbuf[345], 155 );
         name[155] = '\0';   // ensure this is terminated
         if ( name[strlen( name ) - 1] != '/' )
             strcat( name, "/" );
         strncat( name, hdrbuf, 100 );
-    } 
-	else 
+    }
+	else
 	{
         strncpy( name, hdrbuf, 100 );
         name[100]='\0';   // ensure this is terminated
@@ -207,10 +207,10 @@ Stat           *asb;
 	link[100] = '\0';
 
 	/*
-	 * GNU tar archives processing. 
-	 * If the name or link name is longer than 100 GNU tar 
-	 * allocates additional blocks to store it. The first 
-	 * block contains "././@LongLink" string instead of the name. 
+	 * GNU tar archives processing.
+	 * If the name or link name is longer than 100 GNU tar
+	 * allocates additional blocks to store it. The first
+	 * block contains "././@LongLink" string instead of the name.
 	 * The typeflag value is GNUTYPE_LONGNAME or GNUTYPE_LONGLINK.
 	 * The follwing blocks contain the name of file or link.
 	 */
@@ -777,7 +777,7 @@ char           *where;		/* character representation of octal number */
 }
 
 
-/* long_name - read a long (>= 100) file or link name 
+/* long_name - read a long (>= 100) file or link name
  *
  * DESCRIPTION
  *

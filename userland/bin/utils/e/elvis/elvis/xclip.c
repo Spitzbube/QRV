@@ -144,7 +144,7 @@ ELVBOOL	x_clipopen(forwrite)
 				XConvertSelection(x_display,
 					XA_PRIMARY, XA_STRING, x_elvis_cutbuffer,
 					((X11WIN *)windefault->gw)->win, x_now);
-				
+
 				/* Wait for the selection to arrive, or for a
 				 * button press.  Eat any other events.  (The
 				 * button press event gives the user a way to

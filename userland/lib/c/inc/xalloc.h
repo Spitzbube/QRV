@@ -60,7 +60,7 @@ _C_STD_END
 #endif /* _XALLOC */
 
 /*
- * Copyright (c) 1994-2000 by P.J. Plauger.  ALL RIGHTS RESERVED. 
+ * Copyright (c) 1994-2000 by P.J. Plauger.  ALL RIGHTS RESERVED.
  * Consult your license regarding permissions and restrictions.
 V3.05:1296 */
 

@@ -76,7 +76,7 @@ RESULT	ex_global(xinf)
 
 	/* Default command is p, which should NOT be required */
 	if (!xinf->rhs)
-		xinf->rhs = CHARdup(toCHAR("p")); 
+		xinf->rhs = CHARdup(toCHAR("p"));
 
 	/* ":g!" is like ":v" */
 	if (xinf->bang)
@@ -756,7 +756,7 @@ RESULT	ex_z(xinf)
 	  case '^': /* show the window before the current line */
 		line = xinf->from - count * 2 + 1;
 		break;
-		
+
 	  case '=': /* show it in the middle, surrounded by lines of hyphens */
 		count -= 2;
 		line = xinf->from - count / 2;

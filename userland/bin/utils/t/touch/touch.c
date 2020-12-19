@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -93,7 +93,7 @@ main( argc, argv )
 	ttime = time(NULL), explicit = 0;
 
 	mtime = atime = no_create = 0;
-	
+
 	while( ( i = getopt( argc, argv, "acmr:t:" ) ) != -1 ) {
 		switch( i ) {
 			case 'a':	atime = 1;
@@ -181,7 +181,7 @@ main( argc, argv )
 						}
 					close( fd );
 					}
-				}   		
+				}
 			else if( errno == ENOENT  &&  no_create )
 				continue;	/* file doesn't exist && I can't create it */
 			else {
@@ -192,7 +192,7 @@ main( argc, argv )
 
 		if( !atime ) timestamp.actime = statbuf.st_atime;
 		if( !mtime ) timestamp.modtime = statbuf.st_mtime;
-		
+
 		if ( utime( argv[ optind ], &timestamp ) == -1 ) {
 			perror( argv[optind] );
 			exit( EXIT_FAILURE );

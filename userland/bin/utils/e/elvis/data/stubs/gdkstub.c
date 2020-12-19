@@ -5649,7 +5649,7 @@ typedef void (*GdkEventFunc) (GdkEvent *event, gpointer	data);
 
 /* <gdk/gtktypes.h> or <gdk/gdk.h> */
 typedef guint32 GdkWChar;
-	
+
 /* <gdk/gtktypes.h> or <gdk/gdk.h> */
 typedef enum
 {
@@ -6051,7 +6051,7 @@ typedef enum
 typedef enum
 {
 	GDK_FUNC_ALL, GDK_FUNC_RESIZE, GDK_FUNC_MOVE, GDK_FUNC_MINIMIZE,
-	GDK_FUNC_MAXIMIZE, GDK_FUNC_CLOS	  
+	GDK_FUNC_MAXIMIZE, GDK_FUNC_CLOS
 } GdkWMFunction;
 
 /* <gdk/gtktypes.h> or <gdk/gdk.h> */
@@ -6167,7 +6167,7 @@ typedef struct _GdkGeometry {
 typedef struct _GdkImage
 {
 	GdkImageType	type;
-	GdkVisual	*visual; 
+	GdkVisual	*visual;
 	GdkByteOrder	byte_order;
 	guint16		width;
 	guint16		height;
@@ -6322,7 +6322,7 @@ typedef struct _GdkDragContext
 	GList *targets;
 	GdkDragAction actions;
 	GdkDragAction suggested_action;
-	GdkDragAction action; 
+	GdkDragAction action;
 	guint32 start_time;
 } GdkDragContext;
 
@@ -6557,7 +6557,7 @@ typedef struct _GdkICAttr
 
 	GdkFont *preedit_fontset;
 	GdkRectangle preedit_area;
-	GdkRectangle preedit_area_needed; 
+	GdkRectangle preedit_area_needed;
 	GdkColor preedit_foreground;
 	GdkColor preedit_background;
 	GdkPixmap *preedit_pixmap;
@@ -6565,7 +6565,7 @@ typedef struct _GdkICAttr
 
 	GdkFont *status_fontset;
 	GdkRectangle status_area;
-	GdkRectangle status_area_needed; 
+	GdkRectangle status_area_needed;
 	GdkColor status_foreground;
 	GdkColor status_background;
 	GdkPixmap *status_pixmap;

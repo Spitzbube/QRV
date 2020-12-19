@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -634,14 +634,14 @@ section_keep(struct file_entry *fip, int fd, Elf32_Ehdr *ehdr) {
 	if(strtab_size == 0) {
 		return 0; /* empty string table */
 	}
-	
+
 	strtab = malloc(strtab_size);
 	if(strtab == NULL) {
 		return 0;
 	}
 
 	size = 0;
-		
+
 	/* read entire string table */
 	if(lseek(fd, EHost32(fip, shdr.sh_offset), SEEK_SET) == -1 ||
 	  read(fd, strtab, strtab_size) != strtab_size){
@@ -657,7 +657,7 @@ section_keep(struct file_entry *fip, int fd, Elf32_Ehdr *ehdr) {
 	}
 
 	strtab_size = sizeof(init_strtab);
-	
+
 	for(i = 0; i < num; i++) {
 		char				*name;
 		struct name_list	*chk;
@@ -857,7 +857,7 @@ copy_elf(int fd, FILE *dst_fp, struct file_entry *fip) {
 			}
 			/* fall through */
 		case PT_LOAD:
-do_load:			
+do_load:
 			segsize = EHost32(fip, phdr->p_filesz);
 			if(segsize != 0) {
 				unsigned	congruence;
@@ -891,7 +891,7 @@ do_load:
 #endif
 
 					adjusted_off = off;
-					if(!(fip->flags & FILE_FLAGS_STARTUP)) {	
+					if(!(fip->flags & FILE_FLAGS_STARTUP)) {
 						adjusted_off -= sinfo[i].hdr_adjust;
 					}
 					disp = (vaddr - fip->run_offset) & congruence;
@@ -923,7 +923,7 @@ do_load:
 				}
 				phdr->p_offset = ETarget32(fip, off - sinfo[i].hdr_adjust);
 				off += segsize - sinfo[i].hdr_adjust;
-				if(fip->flags & FILE_FLAGS_STARTUP) {	
+				if(fip->flags & FILE_FLAGS_STARTUP) {
 					sinfo[i].off  += sinfo[i].hdr_adjust;
 					sinfo[i].size -= sinfo[i].hdr_adjust;
 					sinfo[i].hdr_adjust = 0;
@@ -949,7 +949,7 @@ do_load:
 //printf( "seg:%u, off:%8.8lx, size:%8.8x, file %s\n", i, EHost32(fip,phdr->p_offset), size, fip->targpath);
 			off = EHost32(fip, phdr->p_offset) + sinfo[i].hdr_adjust + fip->file_offset;
 			padfile(dst_fp, off, fip->hostpath);
-			
+
 			if(lseek(fd, sinfo[i].off + sinfo[i].hdr_adjust, SEEK_SET) == -1) {
 				error_exit("Failed reading program segment %u in %s.\n", i, fip->hostpath);
 			}
@@ -992,7 +992,7 @@ ram_start(struct file_entry *fip) {
 	}
 	return(fip->ram_offset);
 }
-	
+
 static void
 bump_ram(struct file_entry *fip, unsigned size) {
 	ram_start(fip);
@@ -1042,7 +1042,7 @@ add_soname(struct file_entry *fip, char *soname) {
 // we may need to expand the data area with zeros when we lay it down.
 // Return the amount of virtual address space that the executable will
 // use when running.
-// 
+//
 unsigned
 classify_file(struct file_entry *fip) {
 	int					fd;
@@ -1060,7 +1060,7 @@ classify_file(struct file_entry *fip) {
 	Elf32_Phdr			*phdrv, *phdr;
 	Elf32_Phdr			*pad_phdr;
 	struct stat			sbuf;
-	
+
 	fip->size = 0;
 	fip->linker = NULL;
 	if(fip->attr->mode != S_IFREG) return(0);
@@ -1167,7 +1167,7 @@ classify_file(struct file_entry *fip) {
 			if(fip->flags & FILE_FLAGS_STRIP_RELOCS) break;
 			/* fall through */
 		case PT_LOAD:
-do_load:			
+do_load:
 			if(size == 0) break;
 			pad_phdr = NULL;
 			memsize = EHost32(fip, phdr->p_memsz);
@@ -1184,7 +1184,7 @@ do_load:
 					//the elf file and program headers in the text segment
 					//in such a way that it pushes the starting vaddr
 					//back from what we expect. Since it's just the headers
-					//that are in that first bit, we can just leave them 
+					//that are in that first bit, we can just leave them
 					//off.
 					disp = fip->run_offset - vaddr;
 					memsize -= disp;
@@ -1226,7 +1226,7 @@ do_load:
 				vaddr += EHost32(fip, phdr->p_memsz);
 				if(vaddr > vend) vend = vaddr;
 			}
-				
+
 			off += size;
 			break;
 		case PT_DYNAMIC:
@@ -1315,7 +1315,7 @@ do_load:
 		}
 	}
 
-	
+
 	if((fip->flags & FILE_FLAGS_RELOCATED)
 	  || !(fip->flags & FILE_FLAGS_MUST_RELOC)) {
 		off += section_keep(fip, fd, &ehdr);
@@ -1397,7 +1397,7 @@ relocate(struct file_entry *fip, int text_addr, int data_addr, int ehdr_size, ch
 			++fmt;
 			if(skip > 0) {
 				switch(*fmt) {
-				case '[':	
+				case '[':
 				case '(':
 					++skip;
 					break;
@@ -1517,7 +1517,7 @@ relocate(struct file_entry *fip, int text_addr, int data_addr, int ehdr_size, ch
 					case 'M':
 						list = fip->attr->module_list;
 						break;
-					default:	
+					default:
 						list = NULL;
 						error_exit("Unknown repeat variable '%c'\n", *fmt);
 					}
@@ -1596,7 +1596,7 @@ relocate(struct file_entry *fip, int text_addr, int data_addr, int ehdr_size, ch
 //
 // We classify an image filesystem into 3 types based upon how the executables
 // are run.
-// 
+//
 // CPY CODE - Both code and data is copied into ram. The image is probably
 // CPY DATA  in paged or very slow rom/flash.
 //
@@ -1702,13 +1702,13 @@ locate_files(struct file_entry *list, int offset, char *destname) {
 			} else {
 				fip->run_offset = fip->file_offset + image.addr;
 			}
-	
+
 			// For relocatable elf files, invoke the linker to lock it down.
 			if(fip->linker != NULL
 			 && ((fip->flags & FILE_FLAGS_MUST_RELOC)
 			     || !(fip->flags & FILE_FLAGS_EXEC))) {
 				unsigned	data_start;
-				
+
 				data_start = 0;
 				if(!split_image) {
 					//Not a split image
@@ -2057,7 +2057,7 @@ ifs_make_fsys(FILE *dst_fp, struct file_entry *list, char *mountpoint, char *des
 	//
 	// If required, adjust the vaddr to take startup into account
 	//
-	if((booter.vboot_addr != 0) && booter.rsvd_vaddr) { 
+	if((booter.vboot_addr != 0) && booter.rsvd_vaddr) {
 		booter.vboot_addr += bsize + ssize + hsize + dsize;
 	}
 	//
@@ -2188,7 +2188,7 @@ ifs_make_fsys(FILE *dst_fp, struct file_entry *list, char *mountpoint, char *des
 			if(verbose)
 				fprintf(debug_fp, "%8x %6x     ----      --- Startup-header\n",
 							image.addr + bsize, sizeof(shdr));
-				
+
 			if(startup->bootargs) {
 				startup->bootargs->shdr_addr = swap32(target_endian, (split_image ? ram.addr : image.addr) + bsize);
 			}

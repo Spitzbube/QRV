@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -19,7 +19,7 @@
 
 /*
 
- 
+
 
 
 Also copyright P.J. Plauger - see bottom of file for details.
@@ -53,7 +53,7 @@ _STD_BEGIN
 ** Otherwise, return a pointer to the first character not part of the number.
 */
 
-static const char *getnum(const char *strp, int *nump, 
+static const char *getnum(const char *strp, int *nump,
                            const int min, const int max)
 {
   register char c;
@@ -125,7 +125,7 @@ Dstrule *_Getdst(const char *s)
     if (*s == 'J') { // Julian Day Type rule
       (rules[i]).rtype = JTYPE;
       ++s;
-      s = getnum(s, &((rules[i]).day), 1, DAYSPERYEAR);			
+      s = getnum(s, &((rules[i]).day), 1, DAYSPERYEAR);
     } else if (*s == 'M') { // Month type rule
       (rules[i]).rtype = MTYPE;
       ++s;
@@ -147,7 +147,7 @@ Dstrule *_Getdst(const char *s)
 				free(rules);
         return NULL;
 			}
-      s = getnum(s, &((rules[i]).day), 0, DAYSPERWEEK - 1);  
+      s = getnum(s, &((rules[i]).day), 0, DAYSPERWEEK - 1);
 	  } else if (isdigit(*s)) { // Zero based Julian day type rule
       (rules[i]).rtype = ZTYPE;
       s = getnum(s, &((rules[i]).day), 0, DAYSPERYEAR);

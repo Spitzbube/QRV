@@ -1,6 +1,6 @@
 /*
 Copyright 2001, QNX Software Systems Ltd. All Rights Reserved
- 
+
 This source code has been published by QNX Software Systems Ltd. (QSSL).
 However, any use, reproduction, modification, distribution or transfer of
 this software, or any software which includes or is based upon any of this
@@ -19,9 +19,9 @@ information, please email licensing@qnx.com.
 
 COMMENT("object struct _sighandler_info");
 VALUE(SIGSTACK_SIGINFO, offsetof(struct _sighandler_info, siginfo));
-VALUE(SIGSTACK_SIGNO,   offsetof(struct _sighandler_info, siginfo.si_signo)); 
-VALUE(SIGSTACK_SIGCODE, offsetof(struct _sighandler_info, siginfo.si_code)); 
-VALUE(SIGSTACK_SIGVALUE,offsetof(struct _sighandler_info, siginfo.si_value)); 
+VALUE(SIGSTACK_SIGNO,   offsetof(struct _sighandler_info, siginfo.si_signo));
+VALUE(SIGSTACK_SIGCODE, offsetof(struct _sighandler_info, siginfo.si_code));
+VALUE(SIGSTACK_SIGVALUE,offsetof(struct _sighandler_info, siginfo.si_value));
 VALUE(SIGSTACK_HANDLER, offsetof(struct _sighandler_info, handler));
 VALUE(SIGSTACK_CONTEXT, offsetof(struct _sighandler_info, context));
 

@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 
@@ -255,12 +255,12 @@ main(int argc, char *argv[]) {
 		rtc_list();
 		fprintf(stderr, ").\n");
 	}
-	
+
 	if(geteuid()) {
 		error++;
 		fprintf(stderr,"rtc: operation not permitted -- must be root.\n");
 	}
-#ifdef __QNXNTO__                                                               
+#ifdef __QNXNTO__
 	if(ThreadCtl(_NTO_TCTL_IO,NULL) == -1) {
 		perror("Can not obtain I/O privledges");
 		++error;
@@ -340,7 +340,7 @@ main(int argc, char *argv[]) {
 		*/
 		if (local) {
 			p = localtime(&timevar);	/* Break-down into localtime.	*/
-		} else {	
+		} else {
 		    p = gmtime(&timevar);		/* Break-down into UTC time.	*/
 		}
 
@@ -386,12 +386,12 @@ main(int argc, char *argv[]) {
 			printf("timezone = %ld\n",timezone);
 			printf("timevar = mktime(p) = %u\n",timevar);
 			#endif
-		
-			/* 
+
+			/*
 			 *	If hardware time was already in UTC, then we
 			 *	overcompensated and must re-adjust to UTC.
 			 */
-	
+
 			if ( !local )  timevar -= timezone;
 		}
 
@@ -430,7 +430,7 @@ main(int argc, char *argv[]) {
 #endif
 
 				rc = qnx_adj_time(usec, rate, NULL, NULL);
-	
+
 #ifdef VERBOSE_SUPPORTED
 				if (verbose)
 				do {
@@ -438,7 +438,7 @@ main(int argc, char *argv[]) {
 					if (!qnx_adj_time(0,0,&c,&d)) {
 						fprintf(stderr,"%d ns/tick, %d ticks remaining\n",c,d);
 					} else break;
-				} while (d!=0);			
+				} while (d!=0);
 #endif
 
 				}
@@ -447,14 +447,14 @@ main(int argc, char *argv[]) {
 
 			clock_gettime(CLOCK_REALTIME,&cur);
 
-			/* under nto this is more complicated. You can't just specify 
+			/* under nto this is more complicated. You can't just specify
                the total time to be adjusted, rather, you must specify
                an amount per tick and a number of ticks (the product of
                which is the total time). This means that some sort of
                factoring algorithm must be used to produce an nsec
                per-tick amount and a number of ticks which will equal
                the total time required. */
-               
+
 			if((sec = new.tv_sec - cur.tv_sec) >= -maxsec  &&  sec <= maxsec) {
 				struct _clockadjust adj;
 
@@ -463,7 +463,7 @@ main(int argc, char *argv[]) {
 #endif
 				usec  = new.tv_sec*1000000 + new.tv_nsec/1000;
 				usec -= cur.tv_sec*1000000 + cur.tv_nsec/1000;
-    			
+
 				/* we want usec*1000 total ns over 'rate' clock ticks */
 				adj.tick_nsec_inc=1000L*(usec/rate); /* may be up to 'rate' usec of error */
 
@@ -471,7 +471,7 @@ main(int argc, char *argv[]) {
                    is not greater than our allowable threshold, and
                    second, that the per tick amount is not greater
                    than the amount of time in a tick */
-	
+
                 adj.tick_count = rate;
 #ifdef VERBOSE_SUPPORTED
 				if (verbose) {
@@ -482,7 +482,7 @@ main(int argc, char *argv[]) {
 				rc= ClockAdjust(CLOCK_REALTIME,&adj,NULL);
 #ifdef VERBOSE_SUPPORTED
 				if (verbose>1) {
-					do {				
+					do {
 						sleep(1);
 						ClockAdjust(CLOCK_REALTIME,NULL,&adj);
 						printf("rtc adj: tick_count=%ld\n",adj.tick_count);

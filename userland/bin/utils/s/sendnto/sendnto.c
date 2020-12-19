@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -85,7 +85,7 @@ const struct xfer *xfer = &xfers[0];
 #define SWAP16( val ) ( (((val) >> 8) & 0x00ff)	\
 					  | (((val) << 8) & 0xff00) )
 
-long 
+long
 swap32(long val) {
 	return(host_endian != target_endian ? SWAP32(val) : val);
 }
@@ -109,17 +109,17 @@ send_image(FILE *imagefp, int devicefd, void *h, int nbytes) {
 	unsigned long			curr_addr;
 
 	do {
-		// RAW format images place a section of code to jump to 
-		// the start address in front of the standard BINARY header. 
+		// RAW format images place a section of code to jump to
+		// the start address in front of the standard BINARY header.
 		// Scan forward in order to detect the header.
 		hdr = (struct startup_header*) (((char*) h) + scan_idx);
 
-		if(scan_idx > (nbytes - sizeof(struct startup_header))) 
+		if(scan_idx > (nbytes - sizeof(struct startup_header)))
 			return(-1);
 
 		// We assume that images will all start on a 4 byte boundary.
 		scan_idx += 4;
-		
+
 		target_endian = ((hdr->flags1 & STARTUP_HDR_FLAGS1_BIGENDIAN) != 0);
 	} while(swap32(hdr->signature) != STARTUP_HDR_SIGNATURE);
 
@@ -228,7 +228,7 @@ send_elf(FILE *imagefp, int devicefd, void *h, int nbytes) {
 			while(done < memsz) {
 				unsigned	max;
 				unsigned	nbytes;
-		
+
 				if(done >= filesz) {
 					nbytes = memsz - done;
 					if(nbytes > sizeof(data)) nbytes = sizeof(data);
@@ -242,13 +242,13 @@ send_elf(FILE *imagefp, int devicefd, void *h, int nbytes) {
 						return(EXIT_FAILURE);
 					}
 				}
-		
+
 				seq = xfer->data(devicefd, seq, curr_addr, data, nbytes);
-		
+
 				curr_addr += nbytes;
 				sofar += nbytes;
 				done += nbytes;
-		
+
 				if(!quiet  &&  total  &&  (percentage != (sofar*100)/total)) {
 					printf("Percent Complete: %2d%%\r", percentage = (sofar*100)/total);
 					fflush(stdout);
@@ -277,7 +277,7 @@ static int (*send_func[])(FILE *, int, void *, int) = {
 	send_error // must be last entry
 };
 
-int 
+int
 main(int argc, char *argv[]) {
 	int			opt;
 	char		*devicename = NULL;
@@ -366,10 +366,10 @@ main(int argc, char *argv[]) {
 			}
 			break;
 
-		case 'w':	
+		case 'w':
 			{
 				char	*p;
-				
+
 				timeout = strtoul(optarg, &p, 0);
 				if(timeout == 0) timeout = 10;
 				if(*p == ':') ++p;

@@ -5,7 +5,7 @@ tracectrl   ...    Used to change/monitor trace operation.
 */
 
 #ifdef __USAGE
-%C [options*] 
+%C [options*]
 Options:
  -n <node>          Node to query. Default is the current node.
  -i                 Display the current trace parameters.
@@ -14,7 +14,7 @@ Options:
                     critical).
                     Only trace events of an equal or higher severity than
                     'severity' will be saved; all others will be discarded.
-                    This affects all future Trace() calls. 
+                    This affects all future Trace() calls.
  -p <percent full>  Trigger the logging process (e.g. tracelogger) when the
                     trace buffer becomes this full (default is 50%).
                     This option only applies when a logging process (such as
@@ -94,13 +94,13 @@ char hi_water_flag = 0;
                          }
                       break;
 			default:  /* invalid option */
-                      exit(EXIT_FAILURE);	
+                      exit(EXIT_FAILURE);
                       break;
 		    }
 	    }
 
     /* now do the operations */
-    
+
     if ( hi_water_flag )
        ret = update_hi_water(percentage);
     if ( sev_flag )

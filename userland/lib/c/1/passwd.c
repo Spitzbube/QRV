@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -103,7 +103,7 @@ static struct request *dbase_request_init(struct dbase *dbase, int recsize, int 
 	}
 	return req;
 }
-		
+
 static int dbase_chkfile(struct dbase *dbase) {
 	if(!dbase->fp && !(dbase->fp = fopen(dbase->fname, "r"))) {
 		return -1;
@@ -178,7 +178,7 @@ static int dbase_lookup(struct request *request, union id id, int (*compare)(uni
 	if(!compare) {
 		rewind(dbase->fp);
 	}
-		
+
 	(void)dbase_donefile(dbase);
 
 	return status;
@@ -323,7 +323,7 @@ int getpwent_r(struct passwd *pwd, char *buffer, int bufsize, struct passwd **re
 	struct dbase			ldbase_passwd;
 	union id				id;
 	int						saved, rc;
-	
+
 	if (bufsize <= 1) {
 		return NULL;
 	}
@@ -382,7 +382,7 @@ int getpwnam_r(const char *name, struct passwd *pwd, char *buffer, size_t bufsiz
 	struct dbase			ldbase_passwd;
 	union id				id;
 	int						rc, saved;
-	
+
 	if (bufsize <= 1) {
 		return ERANGE;
 	}
@@ -439,11 +439,11 @@ static int parse_grp(struct request *request) {
 	}
 	*l = '\0';
 	i = l - request->buffer;
-	
+
 
 	if(!(p = strchr(l = request->buffer, ':'))) {
 		return EINVAL;
-	}	
+	}
 
 	i += sizeof *mem - (i % (int)(sizeof *mem));
 	max = (request->bufsize - i) / sizeof *mem - 1;
@@ -640,7 +640,7 @@ int setgroups(int gidsetsize, const gid_t *grouplist) {
 #ifndef SHADOW
 #define SHADOW		"/etc/passwd"
 #endif
-#define DPRINTF(x)	
+#define DPRINTF(x)
 
 static int parse_shadow(struct request *request) {
 	char					*fields[SPFIELDS];
@@ -673,12 +673,12 @@ static int parse_shadow(struct request *request) {
 			*cp++ = '\0';
 		}
 	}
-	
+
 	/*
 	 Not all shadow passwords are this big, so fill extra space w/ zeros
 	 Just make sure that we have at least a user and a password field
 	 Ideally:
-		if (i != sizeof fields / sizeof *fields) 
+		if (i != sizeof fields / sizeof *fields)
 	*/
 	if (i < 2) {
 		return(EINVAL);
@@ -746,7 +746,7 @@ struct spwd *getspent_r(struct spwd *result, char *buffer, int buflen) {
 	struct dbase			ldbase_shadow;
 	union id				id;
 	int						saved;
-	
+
 	if (buflen <= 1) {
 		return NULL;
 	}
@@ -796,7 +796,7 @@ struct spwd *getspnam_r(const char *name, struct spwd *result, char *buffer, int
 	struct dbase			ldbase_shadow;
 	union id				id;
 	int						saved;
-	
+
 	if (buflen <= 1) {
 		return NULL;
 	}
@@ -823,7 +823,7 @@ struct spwd *fgetspent(FILE *f) {
 	struct request			request;
 	struct dbase			ldbase_shadow;
 	union id				id;
-	
+
 	if(!shadow_request) {
 		if(!(shadow_request = dbase_request_init(&dbase_shadow, sizeof *lspwd, BUFSIZ + 1))) {
 			errno = ENOMEM;

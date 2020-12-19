@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -70,7 +70,7 @@ chk_strdup(const char *str)
 	return new;
 }
 
-int 
+int
 fwoutput(FILE * fp, int len, const char *str)
 {
 	int				i = 0;
@@ -81,7 +81,7 @@ fwoutput(FILE * fp, int len, const char *str)
 	return i;
 }
 
-int 
+int
 format_data_string(FILE * fp, struct format *fmt, const char *str)
 {
 	int				len = strlen(str);
@@ -105,7 +105,7 @@ format_data_string(FILE * fp, struct format *fmt, const char *str)
 	return 0;
 }
 
-int 
+int
 format_title_string(FILE * fp, struct format *fmt, const char *str)
 {
 	int				len = strlen(str);
@@ -126,7 +126,7 @@ format_title_string(FILE * fp, struct format *fmt, const char *str)
 	return 0;
 }
 
-int 
+int
 format_data_int(FILE * fp, struct format *fmt, int d)
 {
 	char			buffer[20];
@@ -156,7 +156,7 @@ normalize_data_size(uint64_t size, char **symp) {
  	return size;
 }
 
-int 
+int
 format_data_size(FILE * fp, struct format *fmt, uint64_t size)
 {
 	char *sym;
@@ -173,7 +173,7 @@ format_data_size(FILE * fp, struct format *fmt, uint64_t size)
 	return 0;
 }
 
-int 
+int
 format_data_int_hex(FILE * fp, struct format *fmt, int d)
 {
 	char			buffer[20];
@@ -189,7 +189,7 @@ format_data_int_hex(FILE * fp, struct format *fmt, int d)
 	return 0;
 }
 
-int 
+int
 format_data(FILE * fp, struct format *fmt, const char *f,...)
 {
 	char			buffer[80];
@@ -204,7 +204,7 @@ format_data(FILE * fp, struct format *fmt, const char *f,...)
 	return 0;
 }
 
-int 
+int
 format_data_clock(FILE * fp, struct format *fmt, uint64_t nsec)
 {
 	int					n;
@@ -224,7 +224,7 @@ format_data_clock(FILE * fp, struct format *fmt, uint64_t nsec)
 	return 0;
 }
 
-int 
+int
 format_data_time(FILE * fp, struct format *fmt, uint64_t nsec)
 {
 	unsigned					sec = nsec / 1000000000;
@@ -249,7 +249,7 @@ format_data_time(FILE * fp, struct format *fmt, uint64_t nsec)
 }
 
 
-int 
+int
 fill_status(int expectwarn, struct shared_info *i, int *tid, int fd)
 {
 	status.tid = *tid;
@@ -260,7 +260,7 @@ fill_status(int expectwarn, struct shared_info *i, int *tid, int fd)
 		return i->status = &status, *tid = status.tid, 0;
 }
 
-int 
+int
 fill_name(struct shared_info *i, int fd)
 {
 	if (devctl(fd, DCMD_PROC_MAPDEBUG_BASE, &name, sizeof name, 0) != EOK) {
@@ -268,7 +268,7 @@ fill_name(struct shared_info *i, int fd)
 		strcpy(name.info.path, na);	/*
 						 * should be available but proc
 						 * creates the pid before the
-						 * process is fully realized 
+						 * process is fully realized
 						 */
 		if (i->info || !fill_info(i, fd)) {
 			if (i->info->pid == SYSMGR_PID) {
@@ -282,7 +282,7 @@ fill_name(struct shared_info *i, int fd)
 	return 0;
 }
 
-int 
+int
 fill_mem(struct shared_info *i, int fd)
 {
 	int				num;
@@ -303,14 +303,14 @@ fill_mem(struct shared_info *i, int fd)
 	}
 }
 
-int 
+int
 fill_info(struct shared_info *i, int fd)
 {
-	int rc; 
+	int rc;
 	if ( (rc=devctl(fd, DCMD_PROC_INFO, &info, sizeof info, 0)) != EOK) {
-		// DCMD_PROC_INFO will return ESRCH if the process terminated since the time we opened the fd. Don't print an error in that case. 
+		// DCMD_PROC_INFO will return ESRCH if the process terminated since the time we opened the fd. Don't print an error in that case.
 		if (rc!=ESRCH) {
-			char buf[40]; 
+			char buf[40];
 			snprintf(buf, sizeof(buf), "\n Error:%s. from fill_info\n", strerror(rc) );
 			warning_exit(1, 0, buf);
 		}
@@ -366,7 +366,7 @@ int n;
 
 #define BUFINCR 10
 int
-fill_coids(struct shared_info *i, int pid) 
+fill_coids(struct shared_info *i, int pid)
 {
 	struct coid_info	*fdinfobuffer;
 	int		   	bcount, bmax;
@@ -381,10 +381,10 @@ fill_coids(struct shared_info *i, int pid)
 	fdinfobuffer = NULL;
 	bcount = bmax = 0;
 
-	for(fd = 0 ; 
+	for(fd = 0 ;
             (fd = ConnectServerInfo(pid, oldfd = fd, &sinfo)) >= 0 || ((oldfd & _NTO_SIDE_CHANNEL) == 0) ; ++fd) {
 		int binsert;
-		
+
 		// Older versions of proc did not start at the first side channel
 		if(fd < 0 || (((fd ^ oldfd) & _NTO_SIDE_CHANNEL) && fd != _NTO_SIDE_CHANNEL)) {
 			oldfd = _NTO_SIDE_CHANNEL;
@@ -394,7 +394,7 @@ fill_coids(struct shared_info *i, int pid)
 
 		if(bcount >= bmax) {
 			struct coid_info *newfdbuffer;
-			
+
 			newfdbuffer = realloc(fdinfobuffer, (bmax + BUFINCR) * sizeof(*fdinfobuffer));
 			if(newfdbuffer == NULL) {
 				i->coids = fdinfobuffer;
@@ -402,16 +402,16 @@ fill_coids(struct shared_info *i, int pid)
 				return 0;
 			}
 			bmax = bmax + BUFINCR;
-			fdinfobuffer = newfdbuffer;	
+			fdinfobuffer = newfdbuffer;
 		}
-		
+
 		binsert = bcount++;
 
 		memset(&fdinfobuffer[binsert], 0, sizeof(*fdinfobuffer));
 		fdinfobuffer[binsert].fd = fd;
 		fdinfobuffer[binsert].pid = sinfo.pid;
 		fdinfobuffer[binsert].ioflag = -1;
-		
+
 		// If a connection points to itself, it probably isn't a resmgr connection
 		if(sinfo.pid == pid) {
 			continue;
@@ -479,7 +479,7 @@ fill_coids(struct shared_info *i, int pid)
 
 		fdinfobuffer[binsert].name = strdup(path);
 	}
-	
+
 	i->coids = fdinfobuffer;
 	i->num_coids = bcount;
 	return 0;
@@ -528,7 +528,7 @@ int n;
 	return 0;
 }
 
-int 
+int
 fill_tls(struct shared_info *i, int tid, int fd)
 {
 	if (!i->status && fill_status(0, i, &tid, fd)) {
@@ -609,7 +609,7 @@ char *p = buf;
 }
 
 /* Show a list of channels for the process */
-int 
+int
 Channels(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *info)
 {
 int i;
@@ -634,7 +634,7 @@ int i;
 }
 
 /* Show a list of interrupts for the process */
-int 
+int
 Interrupt(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *info)
 {
 int i;
@@ -648,7 +648,7 @@ int i;
 		fprintf( fp, "%d ", info->irqs[i].id );
 		fprintf( fp, "%#16x ", info->irqs[i].vector );
 		fprintf( fp, "%4d ", info->irqs[i].mask_count );
-		fprintf( fp, "%c%c%c ", 
+		fprintf( fp, "%c%c%c ",
 			(info->irqs[i].flags & _NTO_INTR_FLAGS_TRK_MSK) ? 'T':'-',
 			(info->irqs[i].flags & _NTO_INTR_FLAGS_PROCESS) ? 'P':'-',
 			(info->irqs[i].flags & _NTO_INTR_FLAGS_END) ? 'E':'-'
@@ -683,24 +683,24 @@ Registers(FILE* fp, int pid, int *tid, struct format *fmt, int fd, struct shared
 {
 	int i;
 	int nregs;
-	
+
 	if (fill_gprs(info, fd, *tid))
 		return 1;
 
 	nregs = NREGS(info->gprs_size);
 	fprintf(fp,"\n");
 	for (i =0 ; i < nregs ; i++) {
-		fprintf(fp, "%5s:%08x ", 
+		fprintf(fp, "%5s:%08x ",
 			REGNAME(i), GETREG(info->gprs, i));
 		if (!((i+1)%4)) fprintf(fp, "\n");
 	}
 	fprintf(fp,"\n");
-	
+
 	return 0;
 }
 
 /* Show a list of timers for the process */
-int 
+int
 Timers(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *info)
 {
 int i, first;
@@ -727,7 +727,7 @@ static char *clockid_names[] = {
 			fprintf(fp, "\n");
 		}
 		fprintf( fp, "\t%6d %4d %4d %s %c%c%c  %llu/%llu %s",
-			info->timers[i].id, info->timers[i].info.tid, info->timers[i].info.overruns, 
+			info->timers[i].id, info->timers[i].info.tid, info->timers[i].info.overruns,
 			clockid_names[info->timers[i].info.clockid],
 			(info->timers[i].info.flags & _NTO_TI_EXPIRED) ? 'X':'-',
 			(info->timers[i].info.flags & _NTO_TI_ABSOLUTE) ? 'A':'-',
@@ -745,7 +745,7 @@ static char *clockid_names[] = {
 }
 
 /* Show a list of connection ids for the process */
-int 
+int
 Coids(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *info)
 {
 int i, smallfd;
@@ -763,7 +763,7 @@ char flagbuf[3];
 		} else {
 			type = ' ';
 		}
-		
+
 		if(i != 0) {
 			fprintf(fp, "\n");
 		}
@@ -772,7 +772,7 @@ char flagbuf[3];
 		//Differentiate resource manager mount points from file opens
 		if(info->coids[i].ioflag == -1) {
 			//Don't bother with the display of ones with no extra info
-		} else if(info->coids[i].pid == PATHMGR_PID && info->coids[i].size == -1) { 
+		} else if(info->coids[i].pid == PATHMGR_PID && info->coids[i].size == -1) {
 			//In the future, we may want to expose other flags
 			flagbuf[0] = 'M';
 			flagbuf[1] = 'P';
@@ -795,7 +795,7 @@ char flagbuf[3];
 
 
 
-int 
+int
 Arguments(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *info)
 {
 	char			p[64];
@@ -865,8 +865,8 @@ Arguments(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct share
 	return 0;
 }
 
-/* FIXME: This shouldn't be done this way as it implies 
-   knowledge of internal structure.  Neither peterv nor 
+/* FIXME: This shouldn't be done this way as it implies
+   knowledge of internal structure.  Neither peterv nor
    dtdodge has any other answer. */
 #include <dirent.h>
 #define PID_MASK		0xfff
@@ -880,7 +880,7 @@ Arguments(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct share
     pid = ((sync->__owner&0x0fff0000)>>16)
 
 #define MUTEX_GET_OWNERTID(sync, tid) \
-    tid = (sync->__owner&0xffff)                                                
+    tid = (sync->__owner&0xffff)
 
 int
 format_mutex(pid_t mypid, const sync_t *mu, pid_t *pid, int *tid, int *count) {
@@ -938,7 +938,7 @@ format_mutex(pid_t mypid, const sync_t *mu, pid_t *pid, int *tid, int *count) {
 	return errno = ESRCH, retval;
 }
 
-int 
+int
 WhereBlocked(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *info)
 {
 	char			buffer[200];
@@ -1045,7 +1045,7 @@ WhereBlocked(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct sh
 	return 0;
 }
 
-int 
+int
 Environment(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *info)
 {
 	char			p[64];
@@ -1116,7 +1116,7 @@ Environment(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct sha
 	return 0;
 }
 
-int 
+int
 PidTidField(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	char			buf[20];
@@ -1131,7 +1131,7 @@ PidTidField(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct sha
 	return 0;
 }
 
-int 
+int
 State(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	int				num_states = num_thread_states;
@@ -1151,7 +1151,7 @@ State(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_in
 	return 0;
 }
 
-int 
+int
 KerCall(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -1163,7 +1163,7 @@ KerCall(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_
 
 	if ((i->status->flags & _DEBUG_FLAG_IPINVAL) || i->status->state == STATE_READY || i->status->state == STATE_RUNNING)
 		/*
-		 * not at kernel call 
+		 * not at kernel call
 		 */
 		fwoutput(fp, fmt->width, spaces);
 	else {
@@ -1176,7 +1176,7 @@ KerCall(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_
 	return 0;
 }
 
-int 
+int
 LastCPU(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -1190,7 +1190,7 @@ LastCPU(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_
 	return 0;
 }
 
-int 
+int
 Memory(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	struct memobjects *mo;
@@ -1209,7 +1209,7 @@ Memory(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_i
 	return 0;
 }
 
-int 
+int
 MemoryPhys(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	struct memobjects *mo;
@@ -1233,7 +1233,7 @@ MemoryPhys(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shar
 	return 0;
 }
 
-int 
+int
 MemObjectCode(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	struct memobjects *mo;
@@ -1258,7 +1258,7 @@ MemObjectCode(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct s
 	return 0;
 }
 
-int 
+int
 MemObjectData(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	struct memobjects *mo;
@@ -1283,7 +1283,7 @@ MemObjectData(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct s
 	return 0;
 }
 
-int 
+int
 MemObjectMapAddr(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	struct memobjects *mo;
@@ -1382,7 +1382,7 @@ MemObjectFlags(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct 
 	return 0;
 }
 
-int 
+int
 MemObjectOffset(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	struct memobjects *mo;
@@ -1410,7 +1410,7 @@ MemObjectOffset(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct
 	return 0;
 }
 
-int 
+int
 MemObjectOffsetPhys(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	struct memobjects *mo;
@@ -1449,7 +1449,7 @@ MemObjectOffsetPhys(FILE * fp, int pid, int *tid, struct format *fmt, int fd, st
 	return 0;
 }
 
-int 
+int
 Name(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -1464,7 +1464,7 @@ Name(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_inf
 }
 
 
-
+
 #ifndef NO_BACKTRACE_LIB
 static struct {
 	int (*init_accessor)(bt_accessor_t*,bt_acc_type_t,...);
@@ -1492,7 +1492,7 @@ load_backtrace_lib (void)
 	}
 }
 
-int 
+int
 ThreadBacktrace (FILE * fp, int pid, int *tid,
 				 struct format *fmt, int fd, struct shared_info *i)
 {
@@ -1530,8 +1530,8 @@ ThreadBacktrace (FILE * fp, int pid, int *tid,
 }
 #endif
 
-
-int 
+
+int
 ThreadName(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	char threadname[_NTO_THREAD_NAME_MAX];
@@ -1666,20 +1666,20 @@ meminfo (int *tid, struct shared_info *i, int fd, unsigned int stack_base, int d
 		if (m->ino == 0) {
 			continue;
 		}
-		
+
 		if (!(i->meminfo->mapdata[j].ok))
 			continue;
 		mapp=&(i->meminfo->mapdata[j].mapdebug);
 		/*
-		 * is it executable? 
+		 * is it executable?
 		 */
 		if (mapp->info.vaddr == m->vaddr && !(m->flags & MAP_ELF)) {
 			if (m->flags & MAP_STACK) {
 				/*
-				 * mapped as stack 
+				 * mapped as stack
 				 */
 				if (stack_base == 0 ||
-						(stack_base >= m->vaddr && 
+						(stack_base >= m->vaddr &&
 						 stack_base <= m->vaddr + m->size)) {
 					stack_vsize += m->size;
 					if(m->flags & PG_HWMAPPED) {
@@ -1689,19 +1689,19 @@ meminfo (int *tid, struct shared_info *i, int fd, unsigned int stack_base, int d
 			} else if (m->flags & MAP_SYSRAM) {
 				/*
 				 * other mapping that uses memory (could be object mapped
-				 * private) 
+				 * private)
 				 */
 				data_sysram += m->size;
 			}
 			/*
 			 * If anonymous memory, make inode zero so we don't display it
-			 * later on 
+			 * later on
 			 */
 			if (strstr(mapp->info.path, "/dev/zero")) {
 				m->ino = 0;
 			}
 			/*
-			 * not executable, check next 
+			 * not executable, check next
 			 */
 			continue;
 		}
@@ -1712,13 +1712,13 @@ meminfo (int *tid, struct shared_info *i, int fd, unsigned int stack_base, int d
 			goto cleanup;
 		}
 		/*
-		 * If it is base_address, we want to sort this object first later on 
+		 * If it is base_address, we want to sort this object first later on
 		 */
 		if (info.base_address > m->vaddr && info.base_address <= m->vaddr + m->size) {
 			execed = object;
 		}
 		/*
-		 * initialize text 
+		 * initialize text
 		 */
 		memset(object, 0x00, sizeof *object);
 		object->dev = m->dev;
@@ -1731,7 +1731,7 @@ meminfo (int *tid, struct shared_info *i, int fd, unsigned int stack_base, int d
 		object->name = chk_strdup(mapp->info.path);
 
 		/*
-		 * check for matching data 
+		 * check for matching data
 		 */
 		for (k = 0, m2 = mapinfo; k < num; k++, m2++) {
 			if (m->vaddr != m2->vaddr && m2->ino == m->ino && m2->dev == m->dev) {
@@ -1740,7 +1740,7 @@ meminfo (int *tid, struct shared_info *i, int fd, unsigned int stack_base, int d
 				mapp=&(i->meminfo->mapdata[k].mapdebug);
 
                 /*
-				 * lower debug_vaddr is always text, if nessessary, swap 
+				 * lower debug_vaddr is always text, if nessessary, swap
 				 */
 				if ((int) mapp->info.vaddr < (int) object->text.debug_vaddr) {
 					object->data = object->text;
@@ -1759,39 +1759,39 @@ meminfo (int *tid, struct shared_info *i, int fd, unsigned int stack_base, int d
 
 				/*
 				 * If it is base_address, we want to sort this object first
-				 * later on 
+				 * later on
 				 */
 				if (info.base_address > m2->vaddr && info.base_address <= m2->vaddr + m2->size) {
 					execed = object;
 				}
 				/*
-				 * make sure we don't look at this entry again 
+				 * make sure we don't look at this entry again
 				 */
 				m2->ino = 0;
 				break;
 			}
 		}
 		/*
-		 * make sure we don't look at this entry again 
+		 * make sure we don't look at this entry again
 		 */
 		m->ino = 0;
 
 		/*
-		 * add it to the list 
+		 * add it to the list
 		 */
 		*plist = object;
 		plist = &object->next;
 
 		/*
-		 * adjust totals 
+		 * adjust totals
 		 */
 		text_sysram += object->text.size;
 		data_sysram += object->data.size;
 	}
 	// *plist= 0; // null terminate list
-	
+
 	/*
-	 * move execed object to the first 
+	 * move execed object to the first
 	 */
 	for (plist = &list; object = *plist; plist = &object->next) {
 		if (object == execed) {
@@ -1854,7 +1854,7 @@ meminfo (int *tid, struct shared_info *i, int fd, unsigned int stack_base, int d
 
 cleanup:
 	/*
-	 * clean up object list 
+	 * clean up object list
 	 */
 	if (list) {
 		for (object = list; object;) {
@@ -1871,7 +1871,7 @@ cleanup:
 	return retval;
 }
 
-int 
+int
 pid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	if (!i->info && !fill_info(i, fd))
@@ -1881,7 +1881,7 @@ pid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info
 	return 0;
 }
 
-int 
+int
 tid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	if (!i->status && fill_status(0, i, tid, fd))
@@ -1893,7 +1893,7 @@ tid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info
 
 #define NO_MEMINFO_STRING	"---"
 
-int 
+int
 codesize(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	if (!i->status && fill_status(0, i, tid, fd))
@@ -1905,13 +1905,13 @@ codesize(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared
 	if(i->flags & NO_MEMINFO) {
 		fwoutput(fp, fmt->width - (sizeof(NO_MEMINFO_STRING) - 1), spaces);
 		fwoutput(fp, sizeof(NO_MEMINFO_STRING) - 1, NO_MEMINFO_STRING);
-	} else {	
+	} else {
 		format_data_size(fp, fmt, i->text);
 	}
 	return 0;
 }
 
-int 
+int
 datasize(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	if (!i->status && fill_status(0, i, tid, fd))
@@ -1924,13 +1924,13 @@ datasize(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared
 	if(i->flags & NO_MEMINFO) {
 		fwoutput(fp, fmt->width - (sizeof(NO_MEMINFO_STRING) - 1), spaces);
 		fwoutput(fp, sizeof(NO_MEMINFO_STRING) - 1, NO_MEMINFO_STRING);
-	} else {	
+	} else {
 		format_data_size(fp, fmt, i->data);
 	}
 	return 0;
 }
 
-int 
+int
 stacksize(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	unsigned int	size = 0, vsize = 0;
@@ -1951,7 +1951,7 @@ stacksize(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct share
 	if(i->flags & NO_MEMINFO) {
 		fwoutput(fp, fmt->width - (sizeof(NO_MEMINFO_STRING) - 1), spaces);
 		fwoutput(fp, sizeof(NO_MEMINFO_STRING) - 1, NO_MEMINFO_STRING);
-	} else {	
+	} else {
 		size = i->stack;
 		// @@@ for now.
 		vsize = i->status->stksize;
@@ -1979,7 +1979,7 @@ stacksize(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct share
 	return 0;
 }
 
-int 
+int
 long_name(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -1993,7 +1993,7 @@ long_name(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct share
 	return 0;
 }
 
-int 
+int
 Pgrp(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2007,7 +2007,7 @@ Pgrp(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_inf
 	return 0;
 }
 
-int 
+int
 parentpid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2025,7 +2025,7 @@ parentpid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct share
 	return 0;
 }
 
-int 
+int
 Child(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2043,7 +2043,7 @@ Child(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_in
 	return 0;
 }
 
-int 
+int
 Sibling(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2061,7 +2061,7 @@ Sibling(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_
 	return 0;
 }
 
-int 
+int
 Sid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2079,7 +2079,7 @@ Sid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info
 	return 0;
 }
 
-int 
+int
 Uid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2094,7 +2094,7 @@ Uid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info
 	return 0;
 }
 
-int 
+int
 Gid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2109,7 +2109,7 @@ Gid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info
 	return 0;
 }
 
-int 
+int
 EUid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2124,7 +2124,7 @@ EUid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_inf
 	return 0;
 }
 
-int 
+int
 EGid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2139,7 +2139,7 @@ EGid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_inf
 	return 0;
 }
 
-int 
+int
 SUid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2154,7 +2154,7 @@ SUid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_inf
 	return 0;
 }
 
-int 
+int
 SGid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2171,7 +2171,7 @@ SGid(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_inf
 
 #define BITS_SIZE   ((unsigned)sizeof(unsigned)*8)
 
-int 
+int
 SigIgnore(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	unsigned long  bit0 = 0, bit1 = 0, signo;
@@ -2195,7 +2195,7 @@ SigIgnore(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct share
 	return 0;
 }
 
-int 
+int
 SigPending(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	unsigned long  bit0 = 0, bit1 = 0, signo;
@@ -2222,7 +2222,7 @@ SigPending(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shar
 	return 0;
 }
 
-int 
+int
 ProcessUtime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2236,7 +2236,7 @@ ProcessUtime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct sh
 	return 0;
 }
 
-int 
+int
 ProcessStime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2250,7 +2250,7 @@ ProcessStime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct sh
 	return 0;
 }
 
-int 
+int
 ProcessCutime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2264,7 +2264,7 @@ ProcessCutime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct s
 	return 0;
 }
 
-int 
+int
 ProcessCstime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2278,7 +2278,7 @@ ProcessCstime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct s
 	return 0;
 }
 
-int 
+int
 ThreadSUtime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2294,7 +2294,7 @@ ThreadSUtime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct sh
 	return 0;
 }
 
-int 
+int
 ProcessStartTime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2308,7 +2308,7 @@ ProcessStartTime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struc
 	return 0;
 }
 
-int 
+int
 ThreadStartTime(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2372,7 +2372,7 @@ ProcessFlags(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct sh
 	return 0;
 }
 
-int 
+int
 NumThreads(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	assert(i);
@@ -2386,7 +2386,7 @@ NumThreads(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shar
 	return 0;
 }
 
-int 
+int
 priority(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_info *i)
 {
 	char			q;
@@ -2397,8 +2397,8 @@ priority(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared
 	if (!i->status && fill_status(0, i, tid, fd))
 		return 1;
 
-	fmt->width--;				
-							 
+	fmt->width--;
+
 	format_data_int(fp, fmt, i->status->priority);
 	fmt->width++;
 	switch (i->status->policy) {
@@ -2491,10 +2491,10 @@ Rmasks(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_i
 		/*
 		 * Old proc?
 		 *
-		 * We could try _NTO_TCTL_RUNMASK_GET_AND_SET which has 
-		 * been around longer to pull out just the rmask (not 
-		 * the inherit).  Unfortunatley, old versions of proc also 
-		 * didn't allow any _NTO_TCTL_RUNMASK_GET_AND_SET ops 
+		 * We could try _NTO_TCTL_RUNMASK_GET_AND_SET which has
+		 * been around longer to pull out just the rmask (not
+		 * the inherit).  Unfortunatley, old versions of proc also
+		 * didn't allow any _NTO_TCTL_RUNMASK_GET_AND_SET ops
 		 * with O_RDONLY (even if no alter was being performed).
 		 */
 		return 1;

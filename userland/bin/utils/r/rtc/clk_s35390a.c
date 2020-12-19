@@ -36,7 +36,7 @@
 #define S35390_CLOCK_ADJUST			6
 #define S35390_FREE					7
 
-/* 
+/*
  * S35390 real-time data register byte offsets
  */
 #define S35390_YEAR         0   /* 00-99 */
@@ -82,7 +82,7 @@ s35390_i2c_read(uint8_t reg, uint8_t *val, int num)
 		i2c_recv_t recv;
 		uint8_t rbuf[7];
 	} receive;
-	
+
 	int i;
 
 	receive.recv.slave.addr = S35390_I2C_ADDRESS + reg;
@@ -94,7 +94,7 @@ s35390_i2c_read(uint8_t reg, uint8_t *val, int num)
 
 	for (i = 0; i < num; i++)
 		val[i] = receive.rbuf[i];
-		
+
 	return 0;
 }
 
@@ -105,9 +105,9 @@ s35390_i2c_write(uint8_t reg, uint8_t *val, int num)
 		i2c_send_t send;
 		uint8_t sbuf[7];
 	} send;
-	
+
 	int i;
-	
+
 	for (i = 0; i < num; i++)
 		send.sbuf[i] = val[i];
 
@@ -124,7 +124,7 @@ s35390_i2c_write(uint8_t reg, uint8_t *val, int num)
 int
 RTCFUNC(init,s35390)(struct chip_loc *chip, char *argv[])
 {
-    fd = open((argv && argv[0] && argv[0][0])? 
+    fd = open((argv && argv[0] && argv[0][0])?
             argv[0]: S35390_I2C_DEVNAME, O_RDWR);
     if (fd < 0) {
         fprintf(stderr, "Unable to open I2C device\n");
@@ -168,7 +168,7 @@ RTCFUNC(get,s35390)(struct tm *tm, int cent_reg)
     }
 
 	/* no century bit in RTC, so this will have to do for now */
-	if (tm->tm_year < 70) 
+	if (tm->tm_year < 70)
 		tm->tm_year += 100;
 
     return(0);

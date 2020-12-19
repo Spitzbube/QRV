@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -113,7 +113,7 @@ int message_attach(dispatch_t *dpp, message_attr_t *attr, int low, int high,
 					break;
 				}
 			}
-			if(low == high) break;			
+			if(low == high) break;
 		}
 
 		if(low > _PULSE_CODE_MAXAVAIL) {
@@ -140,8 +140,8 @@ int message_attach(dispatch_t *dpp, message_attr_t *attr, int low, int high,
 	vec->handle = handle;
 	vec->func = func;
 	_DPP(dpp)->message_ctrl->num_entries++;
-	
-	if(attr) {		
+
+	if(attr) {
 		if(attr->flags & MSG_FLAG_TYPE_RESMGR) {
 			vec->flags |= _MESSAGE_RESMGR_ENTRY;
 		} else if (attr->flags & MSG_FLAG_TYPE_SELECT) {
@@ -200,7 +200,7 @@ int message_detach(dispatch_t *dpp, int low, int high, int flags) {
 		for(i = 0; i < _DPP(dpp)->message_ctrl->num_elements; vec++, i++) {
 
 			if(vec->flags & _VEC_VALID) {
-				if(((low == vec->lo && high == vec->high) && 
+				if(((low == vec->lo && high == vec->high) &&
 						!(flags ^ (vec->flags & MSG_FLAG_TYPE_PULSE)))
 					|| (flags & (vec->flags & _MESSAGE_DEFAULT_ENTRY))) {
 					vec->flags &= ~_VEC_VALID;
@@ -208,7 +208,7 @@ int message_detach(dispatch_t *dpp, int low, int high, int flags) {
 					pthread_mutex_unlock(&ctrl->mutex);
 					return 0;
 				}
-					
+
 			}
 		}
 		pthread_mutex_unlock(&ctrl->mutex);
@@ -317,10 +317,10 @@ int _message_handler(dispatch_context_t *dctp) {
 	for(i = 0; i < _DPP(ctp->dpp)->message_ctrl->num_elements; vec++, i++) {
 		if(vec->flags & _VEC_VALID) {
 
-			/* Check if we have a match 
+			/* Check if we have a match
 			 Pulse codes are treated as int8 entities, while the message codes
 			 are treated as uint16 entities.  As a result we leave the range
-			 defined as a int16 (in dispatch.h) but cast it to a uint16 when 
+			 defined as a int16 (in dispatch.h) but cast it to a uint16 when
 			 we check the message range.
 			*/
 			if(ctp->rcvid == 0 && (vec->flags & _MESSAGE_PULSE_ENTRY) && code == _PULSE_TYPE && ctp->msg->pulse.subtype == _PULSE_SUBTYPE) {
@@ -337,9 +337,9 @@ int _message_handler(dispatch_context_t *dctp) {
 				return vec->func(ctp, code, 0, vec->handle);
 			} else if (vec->flags & _MESSAGE_DEFAULT_ENTRY) {
 				def_vec = vec;
-			}			
+			}
 		}
-	}		
+	}
 
 	UNLOCK(_DPP(ctp->dpp), mutex);
 

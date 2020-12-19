@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -62,20 +62,20 @@ Options
                 comma and space-delimited 'proclist'.
 -t termlist     Write information for processes whose terminal identifier is
                 given in the comma and space-delimited 'termlist'.
--u usrlist      Write information for processes whose user ID or login 
+-u usrlist      Write information for processes whose user ID or login
                 name is given in the comma and space-delimited 'userlist'.
--U usrlist      Write information for processes whose real user ID or login 
+-U usrlist      Write information for processes whose real user ID or login
                 name is given in the comma and space-delimited 'userlist'.
 
 If a process meets any of the selection criteria its information is displayed.
 
 Output
-If a format is not supplied with the -o option, a default one is used. The 
+If a format is not supplied with the -o option, a default one is used. The
 'format' argument is a comma- or space-delimited list of field names. These
 field names represent information to be displayed about processes and threads.
-The header for a field can be overridden by appending an equals sign and the 
-new header. The rest of the characters in the argument shall be used as the 
-header text. The 'ps' utility automatically determines the width of all 
+The header for a field can be overridden by appending an equals sign and the
+new header. The rest of the characters in the argument shall be used as the
+header text. The 'ps' utility automatically determines the width of all
 columns.
 
 Field Names
@@ -115,13 +115,13 @@ threads  The number of threads for the process.
 stime    The process Start time.
 cmd      The command being executed.
 sz       The size of memory used.
-          
+
 Note: some of the above fields are thread-specific. In such
 cases, the value for the first thread in the process is used.
 The following field names display information about threads
-           
-tid      The thread ID.    
-tflags   The thread flags.      
+
+tid      The thread ID.
+tflags   The thread flags.
 dflags   The thread debug flags.
 tsigblk  The list of signals blocked on the thread.
 cpu      The last cpu the thread ran on.
@@ -132,7 +132,7 @@ psched   The process scheduling algorithm.
 
 
 The comm, args and env fields are the only fields that can
-contain blanks. 
+contain blanks.
 
 NOTE: The default output has changed to match posix. To get
 the old output use the options "-A -o pid,pgid,sid,args"
@@ -148,7 +148,7 @@ Return Values
 const char *delimiters = ", ";
 time_t current_time;
 
-int 
+int
 getArgv (int fd, procfs_info *pInfo, struct _ps *pPs, char *path, size_t pathLength)
 {
 	int i, l, argc = 0;
@@ -167,10 +167,10 @@ getArgv (int fd, procfs_info *pInfo, struct _ps *pPs, char *path, size_t pathLen
 	pathLength--; // leave room for the terminating byte
 	for (i = 0; (i < argc) && (pathLength > 0); i++)
 	{
-		// iterate through argv[0..argc-1] by reading argv[i] and seeking to 
+		// iterate through argv[0..argc-1] by reading argv[i] and seeking to
 		// location argv[i] in the addr space, and then reading the string
 		// at that location in the addr space
-		if (lseek64 (fd, 
+		if (lseek64 (fd,
 			pInfo->initial_stack + (1 + i) * sizeof (void *), SEEK_SET) == -1)
 			return -1;
 		if (read (fd, &argv, sizeof (argv)) < sizeof (argv))
@@ -187,7 +187,7 @@ getArgv (int fd, procfs_info *pInfo, struct _ps *pPs, char *path, size_t pathLen
 
 		// we need to find the end of the string because read() will
 		// read past the '\0'
-		while (*p && l)	
+		while (*p && l)
 		{
 			p++;
 			l--;
@@ -205,7 +205,7 @@ getArgv (int fd, procfs_info *pInfo, struct _ps *pPs, char *path, size_t pathLen
 	return argc;
 }
 
-int 
+int
 getEnv (int fd, procfs_info *pInfo, struct _ps *pPS, int argc, char *env, int envLength)
 {
 	int i, l;
@@ -216,12 +216,12 @@ getEnv (int fd, procfs_info *pInfo, struct _ps *pPS, int argc, char *env, int en
 	envLength--; // leave room for the terminating byte
 	// read the environment for the process; it follows argc and argv on the stack
 	while (1)
-	{	
-		// reading in char **env is the same as reading in char **argv, except that 
+	{
+		// reading in char **env is the same as reading in char **argv, except that
 		// we read until we reach a null-pointer sentinel; also, when reading
-		// from the bottom of the stack, we must skip argc (1 integer), argv (an 
+		// from the bottom of the stack, we must skip argc (1 integer), argv (an
 		// argc number of pointers), and the null pointer sentinel for argv
-		if (lseek64 (fd, pInfo->initial_stack 
+		if (lseek64 (fd, pInfo->initial_stack
 			+ (argc + 2 + i) * sizeof (void *), SEEK_SET) == -1)
 			return -1;
 		if (read (fd, &argv, sizeof (argv)) < sizeof (argv))
@@ -258,9 +258,9 @@ do_ps ()
 // errors are handled by just ignoring them and moving onto the next process
 {
 	int fd;
-	procfs_info info;	
+	procfs_info info;
 	char buffer[512];
-	char comm[512];	
+	char comm[512];
 	char path[1024];
 	char env[1024];
 	int i, argc;
@@ -293,10 +293,10 @@ do_ps ()
 		if (fd < 0)
 			continue;
 
-		// get the basic stats on the process 
+		// get the basic stats on the process
 		if (devctl (fd, DCMD_PROC_INFO, &info, sizeof (info), 0) != EOK)
-			continue; 	
-		
+			continue;
+
 		ps.pid    = info.pid;
 		ps.ppid   = info.parent;
 		ps.pgid   = info.pgrp;
@@ -329,7 +329,7 @@ do_ps ()
 		ps.comm = comm;	ps.comm[0] = 0;
 		ps.args = path;	ps.args[0] = 0;
 		ps.env  = env;	ps.env[0]  = 0;
-		
+
 		argc = -1;
 		if(needArgs)
 			argc = getArgv (fd, &info, &ps, &path[0], sizeof (path));
@@ -342,7 +342,7 @@ do_ps ()
 		if (1) {
 			if (devctl (fd, DCMD_PROC_MAPINFO, 0, 0, &mapCount) != EOK)
 				continue;
-			map = malloc (sizeof (*map) * mapCount); 		
+			map = malloc (sizeof (*map) * mapCount);
 			if (map == 0)
 				continue;
 			if (devctl (fd, DCMD_PROC_MAPINFO, map, sizeof (*map) * mapCount, &mapCount) != EOK)
@@ -350,16 +350,16 @@ do_ps ()
 			ps.vsz = 0;
 			ps.sz = 0;
 			for (i = 0; i < mapCount; i++)
-			{	
+			{
 				// we need to give DCMD_PROC_MAPDEBUG the vaddr of the memory block
 				// whose name we would like
-				mapdebug.debug.vaddr = map[i].vaddr; 
+				mapdebug.debug.vaddr = map[i].vaddr;
 				if (devctl (fd, DCMD_PROC_MAPDEBUG, &mapdebug, sizeof (mapdebug), 0) < 0)
 					continue;
-				ps.vsz += map[i].size; 	
+				ps.vsz += map[i].size;
 				if(map[i].flags & MAP_SYSRAM)
 					ps.sz += map[i].size;
-	
+
 				// process 1 doesn't have any command line args, so we cheat a little
 				// and use the name of its base memory block as its command line
 				if ((ps.pid == 1) && (map[i].flags & MAP_ELF) && (ps.comm[0] == '\0'))
@@ -367,19 +367,19 @@ do_ps ()
 					strcpy (ps.comm, mapdebug.debug.path);
 					strcpy (ps.args, mapdebug.debug.path);
 				}
-				
+
 			}
-			free (map);	
+			free (map);
 		}
 
 		// this code gets info for each thread in the process
 		tcount = 0;    // how many threads we have looked at
 		tinfo.tid = 1; // start at the first thread
-			
+
 		switch (filter_ps (&ps))
 		{
 		case 0:
-			close (fd);	
+			close (fd);
 			continue;
 
 		case -1: // insufficient memory, so quit
@@ -394,7 +394,7 @@ do_ps ()
 		{
 			// there can be holes in thread numbers, so skip missing threads
 			if (devctl (fd, DCMD_PROC_TIDSTATUS, &tinfo, sizeof (tinfo), 0) == EOK)
-			{	
+			{
 				ps.tid 		= tinfo.tid;
 				ps.tflags 	= tinfo.tid_flags;
 				ps.dflags 	= tinfo.flags;
@@ -403,7 +403,7 @@ do_ps ()
 				ps.tsigpend 	= tinfo.sig_pending;
 				ps.tsigblk 	= tinfo.sig_blocked;
 				ps.cpu 		= tinfo.last_cpu;
-				
+
 				print_ps (&ps);
 
 				tcount++;
@@ -414,7 +414,7 @@ do_ps ()
 			}
 			tinfo.tid++;
 		}
-		close (fd);	
+		close (fd);
 	}
 	closedir (dir);
 	return 0;
@@ -434,7 +434,7 @@ static char* resolveUsers(const char *listIn){
 	char *tmp = malloc(BUFFER_SIZE);
 	int dflag = 0;
 	int i;
-	
+
 	if (listOut == NULL || listCopy == NULL)
 		return NULL;
 
@@ -477,7 +477,7 @@ static char* resolveUsers(const char *listIn){
 }
 
 int
-main (int argc, char **argv) 
+main (int argc, char **argv)
 {
 	int c;
 	struct winsize	ws;
@@ -501,8 +501,8 @@ main (int argc, char **argv)
 			break;
 		switch (c)
 		{
-		case 'A': 
-		case 'e': 
+		case 'A':
+		case 'e':
 			// display information about all processes
 			allProcs = 1;
 			break;
@@ -511,15 +511,15 @@ main (int argc, char **argv)
 			// attached to terminals
 			termProcs = 1;
 			break;
-		case 'd': 
+		case 'd':
 			// display information about all processes
 			sessionProcs = 1;
 			break;
-		case 'f': 
+		case 'f':
 			// display full information
 			fullListing = 1;
 			break;
-		case 'l': 
+		case 'l':
 			// display long information
 			longListing = 1;
 			break;
@@ -557,7 +557,7 @@ main (int argc, char **argv)
 			procList = optarg;
 			break;
 		case 't':
-			// display info about processes whose 
+			// display info about processes whose
 			// controlling terminal is in the given list
 			if (!is_valid_filter_list (optarg))
 			{
@@ -578,13 +578,13 @@ main (int argc, char **argv)
 				return -1;
 			}
 			userList = resolveUsers(optarg);
-		
+
 			// get the user's login name so that we
 			// can match it as we search in the user list
 			if (userName == 0)
 				userName = getlogin ();
 			break;
-		case '?':			
+		case '?':
 			displayHelp ("Unrecognized option.\n");
 			return -1;
 		}
@@ -598,7 +598,7 @@ main (int argc, char **argv)
 
 	if (fieldCount == 0)
 	{
-		// These come from the POSIX 1003.1-200x 
+		// These come from the POSIX 1003.1-200x
 		if(longListing)						parse_header("f,s");
 		if(longListing || fullListing) 		parse_header("uid");
 											parse_header("pid");

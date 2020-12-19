@@ -28,23 +28,23 @@
  *
  * Revision 4.1  90/10/29  14:42:19  larry
  * base MUN version
- * 
+ *
  * Revision 3.1.0.4  89/02/16  20:28:36  larry
  * Forgot to set *pathlist to NULL when last changed make_path().
- * 
+ *
  * Revision 3.1.0.3  89/02/13  20:29:55  larry
  * Fixed up cd so that it knew when a node from CDPATH was used and would
  * print a message only when really necessary.
- * 
+ *
  * Revision 3.1.0.2  89/02/13  17:51:22  larry
  * Merged with Eric Gisin's version.
- * 
+ *
  * Revision 3.1.0.1  89/02/13  17:50:58  larry
  * *** empty log message ***
- * 
+ *
  * Revision 3.1  89/02/13  17:49:28  larry
  * *** empty log message ***
- * 
+ *
  */
 
 #ifdef S_ISLNK
@@ -153,10 +153,10 @@ simplify_path(path)
 	int	isrooted;
 	char	*very_start = path;
 	char	*start;
-	
+
 	if (!*path)
 		return;
-#if 0	
+#if 0
 NOTE: The following chunk of code was added as an effort to make
 all our tools mingw.
 #ifdef __MSYS__
@@ -170,7 +170,7 @@ all our tools mingw.
 		}
 		*cur = '\0';
 	}
-	
+
 	/* HACK: we convert /c/ to c:/ */
 	if (path[0] && ISDIRSEP(path[0]) && path[1] && ISDIRSEP(path[2])) {
 		*path = path[1];

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -47,7 +47,7 @@ Options:
                    case if there is only one directory being copied and
                    the destination names a directory that doesn't exist,
                    cp will create the destination directory and then copy
-                   the _contents_ of the source directory into the 
+                   the _contents_ of the source directory into the
                    destination directory. At some point in the future a
                    version of QNX will be released which makes 'unix' the
                    default for this option.
@@ -78,14 +78,14 @@ Where:
  Date/time format is "[UTC] day/month/yr hr:min:sec", 24 hr clock.
  Mode format is [!]<octal num> or <[!][augo]=[rwxs]>[,...]
  (Similar to the form used in the chmod utility.)
-Note: 
+Note:
  Permissions and file dates are preserved by default. Either exporting the
  POSIX_STRICT environment variable or using the -t option will override this.
 #endif
 */
 
 /* neutrino version
-#ifdef __USAGENTO 
+#ifdef __USAGENTO
 %C	- copy files (POSIX)
 
 %C	[options]... source_file target_file
@@ -111,7 +111,7 @@ Options:
                    case if there is only one directory being copied and
                    the destination names a directory that doesn't exist,
                    cp will create the destination directory and then copy
-                   the _contents_ of the source directory into the 
+                   the _contents_ of the source directory into the
                    destination directory.
  -n                Copy only if src is newer than dst or dst doesn't exist.
  -N                Do not descend past device boundaries.
@@ -131,7 +131,7 @@ Options:
  -v | -V           Verbose. -V is extra verbose.
  -W                Wildly verbose (debug)
  -x/-X             Copy only if destination file does/doesn't already exist.
-Note: 
+Note:
  Permissions and file dates are preserved by default. Either exporting the
  POSIX_STRICT environment variable or using the -t option will override this.
 #endif
@@ -377,7 +377,7 @@ struct link_reg *link_list = NULL;
 #ifndef OPTIONS
 #define OPTIONS "fiprR**sDtBVvxXnNcdLl:a:b:g:m:P:u:WOM:A"
 #endif
-#endif 
+#endif
 
 /* options that are valid to be specified from a config file */
 #ifdef CONFIG_FILE
@@ -438,11 +438,11 @@ int16_t		in, out;			/* input and output file descriptors		 */
 int16_t		len;				/* size of read/write buffer for copy		 */
 char		*bptr;				/* copy buffer								 */
 int16_t		errs = 0;			/* # errors encountered in copy operation	 */
-dev_t		source_device;		/* use this to keep track of descending past 
+dev_t		source_device;		/* use this to keep track of descending past
 								   device boundaries						 */
 char		srstring[16];		/* local copy of super-root string			 */
 
-/* stuff to track directory creation & info to set on these directories 
+/* stuff to track directory creation & info to set on these directories
    after they have been copied into */
 int16_t	dirlevel_created = 0;
 mode_t  dir_mode_tab[MAX_LEVELS];
@@ -483,7 +483,7 @@ int16_t inc_errs(char *string)
 	return errs;
 }
 
-void dirlevel_warning(void) 
+void dirlevel_warning(void)
 {
 	inc_errs("dirlevel_warning");
 	fprintf(stderr,"cp: Warning - Levels of directories created exceeds maximum (%ld).\n",MAX_LEVELS);
@@ -567,7 +567,7 @@ int verbose_fchmod ( const int fd, int mode ) {
 	#ifndef __MINGW32__
 	return fchmod(fd,mode);
 	#else
-	return 0; // pretend you changed the mode 
+	return 0; // pretend you changed the mode
 	//TODO: do real change of attributes here. We can at least controll read-only attribute.
 	#endif
 }
@@ -576,7 +576,7 @@ int verbose_fchown ( const int fd, int uid, int gid ) {
 	if (wildly_verbose) fprintf(stderr,"cp: FCHOWN(%d,%d,%d)\n",fd,uid,gid);
 	#ifndef __MINGW32__
 	return fchown(fd,uid,gid);
-	#else 
+	#else
 	return 0; // TODO: we can probably change the owner on a NTFS file system.
 	#endif
 }
@@ -648,8 +648,8 @@ int _statdst(const char *path) {
 	return 0;
 }
 
-char __far *_qnx_fullpath(char *, char *, size_t); 
-		
+char __far *_qnx_fullpath(char *, char *, size_t);
+
 char __far *_qnx_fullpath(char *fullpath, char *path, size_t pathsize) {
 	if (wildly_verbose) fprintf(stderr,"cp: QNX_FULLPATH(fullpath,%s)\n",path);
 #if !defined(__QNXNTO__) && !defined(__MINGW32__)
@@ -674,7 +674,7 @@ int _close(int fildes) {
 	} else return(0);
 }
 
-int parse_options(int argc, char**argv, char *options, char *source) 
+int parse_options(int argc, char**argv, char *options, char *source)
 {
 	int error=0;
 	int opt;
@@ -701,13 +701,13 @@ int parse_options(int argc, char**argv, char *options, char *source)
 
             /* extended options */
 #ifdef SUPPORT_NET_OPTIMIZATION
-			case 'O': 
+			case 'O':
 					/* we don't want to pay any attention to this if
                        we _are_ the agent copy of cp! */
 					if (argv[0][0]!='(')
 						net_optimized       = TRUE;				 break;
 #endif
-			
+
 			case 'A': preserve_atime        = TRUE;              break;
 			case 'B': buf_size				= FALLBACK_BUF_SIZE; break;
 			case 'W': wildly_verbose		= TRUE;
@@ -807,7 +807,7 @@ int create_arglist(char *line, char **simulated_argv, char *source)
 				if (!inside_quote) inside_dblquote=!inside_dblquote;
 				continue;
 			}
-	
+
 			*w = *p;
 			w++;
 		}
@@ -832,7 +832,7 @@ int create_arglist(char *line, char **simulated_argv, char *source)
 		 if (inside_dblquote) {
 			fprintf(stderr,"cp: no ending \" in %s\n",source);
 		 }
-		
+
 		 return -1;
 	}
 
@@ -852,8 +852,8 @@ int parse_envar()
 	num_items=create_arglist(options,&vlist,"envar 'CP_OPT'");
 	if (num_items==-1) return -1;	/* error */
 	if (num_items) return parse_options(num_items, vlist, ENVAR_OPTIONS,"envar 'CP_OPT'");
-	return 0;	
-}	
+	return 0;
+}
 #endif
 
 #ifdef CONFIG_FILE
@@ -878,15 +878,15 @@ int parse_config_file()
 		strncat(options," ",sizeof(options));
 		strncat(options,buf,sizeof(options));
 	}
-	
+
 	fclose(fp);
 
 	num_items=create_arglist(options,&vlist,"file "CONFIGFILENAME);
 	if (num_items==-1) return -1;	/* error */
 
 	if (num_items) return parse_options(num_items, vlist, CONFIG_OPTIONS,"file "CONFIGFILENAME);
-	return 0;	
-}	
+	return 0;
+}
 #endif
 
 
@@ -920,9 +920,9 @@ main (int argc,char **argv, char **arge)
 	cp_timemode		= !strict;
 #ifdef __QNXNTO__
 /* make this the default....too many device boundaries in NTO */
-	ignore_device	= TRUE; 
+	ignore_device	= TRUE;
 #else
-	ignore_device	= strict; 
+	ignore_device	= strict;
 #endif
 	#ifdef OCP
 	standard_recursive = FALSE;
@@ -948,16 +948,16 @@ main (int argc,char **argv, char **arge)
 	if (!strict) {
 		#ifdef CONFIG_FILE
 		/* parse config file options */
-		error+=parse_config_file(); 
+		error+=parse_config_file();
 		#endif
-	
+
 		#ifdef ENVAR
 		/* parse ENVAR options */
 		error+=parse_envar();
 		#endif
 	}
 	#endif
-	
+
 	/* parse command line options */
     error+=parse_options(argc,argv,OPTIONS,NULL);
 
@@ -986,7 +986,7 @@ main (int argc,char **argv, char **arge)
 #endif
 
 	first_index = optind;
-	if (!distribute) last_index  = argc-2;   
+	if (!distribute) last_index  = argc-2;
 	else {
 		/* scan for 'to' keyword seperating destinations from source files */
 		int i;
@@ -999,7 +999,7 @@ main (int argc,char **argv, char **arge)
 		/* if no 'to' found, act like a normal cp */
 		if (last_index==0) {
 			last_index = argc-2;
-			distribute=FALSE;	
+			distribute=FALSE;
 		} else if (last_index==(argc-2)) {
 			fprintf(stderr,TXT(T_NO_DESTINATION));
 			exit(EXIT_FAILURE);
@@ -1010,7 +1010,7 @@ main (int argc,char **argv, char **arge)
 
 	if (distribute) {
 		first_dest = last_index+2;	/* skipping past 'to' */
-		last_dest = argc-1;		
+		last_dest = argc-1;
 	} else {
 		first_dest = argc - 1;
 		last_dest = argc - 1;
@@ -1123,17 +1123,17 @@ main (int argc,char **argv, char **arge)
 		statbufsrc_valid = statbufdst_valid = FALSE;
 		lstatbufsrc_valid = lstatbufdst_valid = FALSE;
 
-		target = argv[dest_index];		
+		target = argv[dest_index];
 		if (target[0]=='/' && target[1]==0) target="/.";
-             
+
 		if (verbose&&distribute) fprintf(stdout,TXT(T_DESTINATION),target);
 
 		if (_statdst(target)==-1) {
 			if (errno!=ENOENT) {
-				if (strlen(target) < PATH_MAX) 
+				if (strlen(target) < PATH_MAX)
 					prerror(twostrpar,TXT(T_STAT_FAILED),target);
-				else { 
-					char buf[SHORT_FILENAME_LEN+4]; 
+				else {
+					char buf[SHORT_FILENAME_LEN+4];
 					shorten_filename(target, buf);
 					prerror(twostrpar,TXT(T_STAT_FAILED),buf);
 				}
@@ -1155,7 +1155,7 @@ main (int argc,char **argv, char **arge)
 
 					if ((source[0]!='-' || source[1]) && (_statsrc(source)!=-1)) {
 
-						if (((S_ISLNK(lstatbufsrc.st_mode) && S_ISDIR(statbufsrc.st_mode)) || 
+						if (((S_ISLNK(lstatbufsrc.st_mode) && S_ISDIR(statbufsrc.st_mode)) ||
 							S_ISDIR(lstatbufsrc.st_mode)) && recursive) {
 							/* POSIX.2 cp algorithim 2.e:  If the directory dest_file
 							 *   does not exist, it will be created with file permission
@@ -1184,13 +1184,13 @@ main (int argc,char **argv, char **arge)
 								 *	The dir_to_dir flag is *not* (!) set? */
 								snprintf(dest, sizeof(dest), "%s/z", target);
 								dest[sizeof(dest)-1] = 0;
-								
+
 								if (qnx_create_path_to(dest)==-1) {
 									prerror(twostrpar,TXT(T_CANT_MAKE_DIRECTORY2),target);
 									exit(EXIT_FAILURE);
 								} else if (verbose) fprintf(stdout,TXT(T_MADE_PATH),target);
 								chmod(target, new_mode);
-								
+
 							}
 							umask(old_mask);
 
@@ -1230,7 +1230,7 @@ main (int argc,char **argv, char **arge)
 				if ((directory_target) && (!dir_to_dir)) {
 					if (create_paths) {
 						snprintf(dest, sizeof(dest), "%s/z", target);
-						dest[sizeof(dest)-1] = 0;						
+						dest[sizeof(dest)-1] = 0;
 
 						if (qnx_create_path_to(dest)==-1) {
 							prerror(twostrpar,TXT(T_CANT_MAKE_DIRECTORY2),target);
@@ -1271,7 +1271,7 @@ main (int argc,char **argv, char **arge)
 			dest_ino   = statbufdst.st_ino;
 			/* fprintf(stderr,"dest_dev = %ld, dest_ino = %ld\n",dest_dev,dest_ino); */
 		}
-	
+
 		for (file=first_index,source_device=-1;(file<=last_index)&&(!abort_flag);file++) {
 			snprintf(source, sizeof(source), "%s", argv[file]);
 			source[sizeof(source)-1] = 0;
@@ -1284,7 +1284,7 @@ main (int argc,char **argv, char **arge)
 					fprintf(stderr,"CP: stdin may only be copied to a file (not a directory)\n");
 					exit(EXIT_FAILURE);
 				}
-					
+
 				while (copy_guy(source,dest, sizeof(dest))==RETRY);
                 break;	/* could be continue, makes no difference */
 			}
@@ -1296,8 +1296,8 @@ main (int argc,char **argv, char **arge)
 					else {
 						if (strlen(source) < PATH_MAX)
 	        						prerror(twostrpar,TXT(T_STAT_FAILED),source);
-					  	else { 
-							char buf[SHORT_FILENAME_LEN+4]; 
+					  	else {
+							char buf[SHORT_FILENAME_LEN+4];
 							shorten_filename(source, buf);
 							prerror(twostrpar,TXT(T_STAT_FAILED),buf);
 						}
@@ -1312,7 +1312,7 @@ main (int argc,char **argv, char **arge)
 					fprintf(stderr,TXT(T_TARGET_MUST_BE_DIR),purty(dest));
 					goto srcloopend;
 				}
-					
+
 				if (!ignore_device)	source_device = statbufsrc.st_dev;
 				if (recursive) {
 					if (levels>0) {
@@ -1330,7 +1330,7 @@ main (int argc,char **argv, char **arge)
 								/* invalidate our stat bufs since we just changed the dest filename */
 								lstatbufdst_valid=statbufdst_valid=FALSE;
                     		}
-	
+
 							if (_statdst(dest)==-1) {
 								if (errno==ENOENT) {
 									if (copy_only_if_exists) {
@@ -1363,18 +1363,18 @@ main (int argc,char **argv, char **arge)
 						}
 					}
 				} else fprintf(stderr,TXT(T_CANTRECURSE),purty(source));
-	
+
 				goto srcloopend;
-			} 
+			}
 
 #ifdef SUPPORT_OLD_OPTIONS
 			if (!patmodule_check(basename(source),&statbufsrc))	goto srcloopend;
 #endif
 
-			/* If we are copying to a directory, build full destination filename*/ 
+			/* If we are copying to a directory, build full destination filename*/
 			if (directory_target) {
 				char *ptr;
-	
+
 				strncat(dest,"//",sizeof(dest));
 				if ((ptr=strrchr(source,'/'))) strncat(dest,ptr+1,sizeof(dest));
 				else strncat(dest,source,sizeof(dest));
@@ -1410,24 +1410,24 @@ main (int argc,char **argv, char **arge)
 					if (special_recursive || S_ISBLK(statbufsrc.st_mode) || S_ISREG(statbufsrc.st_mode))
 						while(copy_guy(source,dest, sizeof(dest))==RETRY);
 					else {
-						fprintf(stderr,twostrparnl,TXT(T_CANT_COPY_NONREG_FILE),source); 
+						fprintf(stderr,twostrparnl,TXT(T_CANT_COPY_NONREG_FILE),source);
 						inc_errs("can't_copy_nonreg_file 2");
 					}
 
 				}
-			}		
+			}
 srcloopend:
 			statbufsrc_valid  = statbufdst_valid = FALSE;
 			lstatbufsrc_valid = lstatbufdst_valid = FALSE;
-		}			
+		}
 		if (preserve_links) clear_links(link_list);
-	}						
+	}
 	return (errs?EXIT_FAILURE:EXIT_SUCCESS);
 }
 
 #ifdef SUPPORT_NET_OPTIMIZATION
 /*------------------------------------------------- expand_to_fullpaths() ---*/
-struct finfo *expand_to_fullpaths(char **argv, int num_files, bool writeflag) 
+struct finfo *expand_to_fullpaths(char **argv, int num_files, bool writeflag)
 {
 	int i, fd;
 	nid_t n;
@@ -1443,7 +1443,7 @@ struct finfo *expand_to_fullpaths(char **argv, int num_files, bool writeflag)
 
 	for (i=0;i<num_files;i++) {
 		if ((fd=full_open(argv[i],fpath,0))==-1) {
-			/* if the dest didn't exist (so we can't get full path), 
+			/* if the dest didn't exist (so we can't get full path),
                create a file there to get the full path, unlink it,
                and continue */
 			if (writeflag && (errno == ENOENT)) {
@@ -1478,11 +1478,11 @@ struct finfo *expand_to_fullpaths(char **argv, int num_files, bool writeflag)
 			break;
 		}
 		statbufsrc_valid = FALSE;	/* for consistency - flag that we've
-									   trashed anything that might have 
+									   trashed anything that might have
 									   been in there previously */
 
 		n = (nid_t) (statbufsrc.st_dev>>16);
-		for (p=root;p;p=p->next) {		
+		for (p=root;p;p=p->next) {
 			if (p->node == n) {
 				if (S_ISDIR(statbufsrc.st_mode)) p->dir_count++;
 				else {
@@ -1490,7 +1490,7 @@ struct finfo *expand_to_fullpaths(char **argv, int num_files, bool writeflag)
 					if (!p->num_bytes) {
 						p->num_bytes = statbufsrc.st_size;
 					}
-				}				
+				}
 				break;
 			}
 		}
@@ -1520,7 +1520,7 @@ struct finfo *expand_to_fullpaths(char **argv, int num_files, bool writeflag)
 	return(root->next);
 }
 #endif
-		
+
 /*--------------------------------------------------------- locate_link() ---*/
 
 /* returns a link registration if there is a match, otherwise returns NULL */
@@ -1554,14 +1554,14 @@ int create_link (struct link_reg *link_entry, char *destpath)
 
 /*-------------------------------------------------------- register_link() ---*/
 /* returns a pointer to the first registration entry in link_list */
-struct link_reg *register_link ( struct link_reg *link_list, struct stat *statbufp, char * destpath) 
+struct link_reg *register_link ( struct link_reg *link_list, struct stat *statbufp, char * destpath)
 {
 	struct link_reg *tmp;
 
 	/* path MUST be the path at the DESTINATION, not the SOURCE. It is this that
 	   a link will be created to, not the source! The dev and ino entries must
 	   be those of the SOURCE, however. PAY ATTENTION! */
-	
+
 	if (link_list==NULL) {
 		if ((link_list = malloc(sizeof(struct link_reg)))==NULL) return(link_list);
 		link_list->next = NULL;
@@ -1588,10 +1588,10 @@ struct link_reg *register_link ( struct link_reg *link_list, struct stat *statbu
 		return(register_link( link_list, statbufp, destpath));
 	}
 	return(link_list);
-}		
+}
 
 /*-------------------------------------------------------- clear_links() ---*/
-void	clear_links (struct link_reg *link_list) 
+void	clear_links (struct link_reg *link_list)
 {
 	while (link_list!=NULL) {
 		if (link_list->count) {
@@ -1626,7 +1626,7 @@ bool try_hard_to_mkdir(char *dest, size_t destsize)
 		/* supposed to set to the same value as src file at this point,
            modified by existing umask, ored with S_IRWXU. YEch. I don't
            see how a test suite could verify this.. ;-) */
-           
+
 		old_mask = umask(~S_IRWXU);
 		if (verbose_mkdir(dest,S_IRWXU)==-1) {
 			int e=errno;
@@ -1661,7 +1661,7 @@ char *purty (char *string)
 {
 	static char purtystr[PATH_MAX+1];
 	char *ptr=string, *prty = purtystr;
-		
+
 	/* copy over valid leading // only when not '///' */
 	if (ptr[0]=='/'&&ptr[1]=='/'&&ptr[2]!='/') {
 		*prty++=*ptr++;
@@ -1672,7 +1672,7 @@ char *purty (char *string)
 	*prty=*ptr;	/* null terminate */
 	return(purtystr);
 }
-	
+
 /*-------------------------------------------------------- removeable --------*/
 
 bool removeable(filename)
@@ -1690,7 +1690,7 @@ char *filename;
     if ((fd=verbose_open(filename,0,0))==-1) {
 		if (ptr!=NULL) *ptr = '/';
 		return(FALSE);
-	} 
+	}
 	if (ptr!=NULL) *ptr = '/';
 
 	disk_get_entry(fd,&dbuf);
@@ -1731,7 +1731,7 @@ char *fname1, *fname2;
 	return(*fname1?0:1);
 }
 
-/*------------------------------------------------ copy_directory_recursive() 
+/*------------------------------------------------ copy_directory_recursive()
 	copies a directory and all its contents. dst must be path to a directory.
 	Called only from main() or recursively from itself.
 -----------------------------------------------------------------------------*/
@@ -1751,12 +1751,12 @@ size_t dstsize;
 	fprintf(stderr,"lstatbufdst_valid = %d\n",lstatbufdst_valid);
 	fprintf(stderr,"dest is a %s file\n",S_ISDIR(lstatbufsrc.st_mode)?"directory":"non-directory");
 #endif
-    
+
 	if (preserve_atime) {
 		dirtimes.actime=lstatbufsrc.st_atime;
 		dirtimes.modtime=lstatbufsrc.st_mtime;
 	}
-	
+
 	if ((dirp=_opendir(src))==NULL) {
    		prerror(twostrpar,TXT(T_CANT_OPEN_DIRECTORY),src);
 		inc_errs("opendir(src)");
@@ -1813,7 +1813,7 @@ size_t dstsize;
 				slashesadded--;
 			} else *(strrchr(src,'/')+1) = (char) 0x00;
 			continue;
-		}			
+		}
 
 
 		if (S_ISDIR(lstatbufsrc.st_mode)) {
@@ -1866,7 +1866,7 @@ size_t dstsize;
 			}
 		} else if (special_recursive || S_ISREG(statbufsrc.st_mode) || S_ISBLK(statbufsrc.st_mode)) {
 #ifdef SUPPORT_OLD_OPTIONS
-			if (patmodule_check(entry->d_name,&statbufsrc))	
+			if (patmodule_check(entry->d_name,&statbufsrc))
 #endif
 			{
 				strcat(dst,"/");
@@ -1918,7 +1918,7 @@ size_t dstsize;
 					break;
 				}
 			}
-	
+
 			/* change file uid, gid on dest directory */
 			if (cp_ownergroup) {
 				if (super_verbose)
@@ -1932,7 +1932,7 @@ size_t dstsize;
 			}
 
 		} while (FALSE);
-	}	
+	}
 
 	if (preserve_atime) {
 		if (wildly_verbose) {
@@ -1943,11 +1943,11 @@ size_t dstsize;
 			inc_errs("utime()");
 		}
 	}
-}	
+}
 
 void change_dir_perms(char *path)
 {
-	int level;	
+	int level;
 
 	if (!(cp_timemode || cp_ownergroup)) return;
 
@@ -1975,7 +1975,7 @@ void change_dir_perms(char *path)
 					break;
 				}
 			}
-	
+
 			/* change file uid, gid on dest directory */
 			if (cp_ownergroup) {
 				if (super_verbose)
@@ -1987,11 +1987,11 @@ void change_dir_perms(char *path)
 				}
 			}
 		} while (FALSE);
-	
+
 		*strrchr(path,'/') = 0;
 	}
 
-	/* restore path */                             
+	/* restore path */
 	for (level=dirlevel_created+1;level;level--) path[strlen(path)] = '/';
 }
 
@@ -2019,16 +2019,16 @@ int16_t open_file(char *filename)
 		ranoutofspace = (errno==ENOSPC);
 		if ((create_paths) && (errno==ENOENT)) {
 			if (verbose) fprintf(stdout,TXT(T_CREATING_PATH_TO),purty(filename));
-			if (qnx_create_path_to(filename)!=-1) {				
+			if (qnx_create_path_to(filename)!=-1) {
 				rc=verbose_open(filename,O_WRONLY|O_CREAT|O_TRUNC,statbufsrc.st_mode);
 				ranoutofspace = (errno==ENOSPC);
-			} 
+			}
 		}
 		if (force_del&&(rc==-1)) prerror(twostrpar,TXT(T_CANT_OPEN_DST),filename);
 		errno=e;
 	}
 	return rc;
-}	
+}
 
 /*----------------------------------------------------- open_dest() -------
  	- open destination file named. Will call open_file.
@@ -2046,14 +2046,14 @@ int16_t open_dest(char *filename,char *source_filename,bool link_flag,bool *skip
 	if (!statbufdst_valid) {
 		fd=_statdst(filename);
 	} else fd=0;
-	
+
 	/* if dest exists now, statbufdst_valid is TRUE. If statbufdst_valid
        is false, errno will have been set at the verbose_stat() call above.
     */
 
 	if ((dont_copy_if_exists || copy_newest) && statbufdst_valid) {
 		if ((statbufsrc.st_mtime<=statbufdst.st_mtime) || dont_copy_if_exists) {
-			if (super_verbose) fprintf(stdout,TXT(T_SKIPPING),purty(filename)); 
+			if (super_verbose) fprintf(stdout,TXT(T_SKIPPING),purty(filename));
 			if (freshly_created!=-1) _close(out);
 			*skipped=TRUE;
 			return(out=-1);
@@ -2080,7 +2080,7 @@ int16_t open_dest(char *filename,char *source_filename,bool link_flag,bool *skip
 		}
 	}
 #endif
-	
+
 	if (link_flag) {
 		if (freshly_created) {
 			_close(out);
@@ -2108,7 +2108,7 @@ else printf("errno = %d (%s) ???\n",errno,strerror(errno));
 			inc_errs("unlink() 2");
 			if (out!=-1) _close(out);
 			return(out=-1);
-		} else return(0);	
+		} else return(0);
 		/* never */
 	}
 
@@ -2121,7 +2121,7 @@ else printf("errno = %d (%s) ???\n",errno,strerror(errno));
 							force_del++;
 							fd=open_file(filename);
 							force_del--;
-						} 
+						}
 					}
 				} else fd = (*skipped=TRUE, /*errs++,*/ -1);
 			} else if (errno==ENOENT) {
@@ -2153,7 +2153,7 @@ else printf("errno = %d (%s) ???\n",errno,strerror(errno));
 					prerror(twostrpar,TXT(T_CANT_OPEN_DST),filename);
 					inc_errs("open_file() 2");
 				} else fd = -1;
-			} 
+			}
 		}
 	} else {
 		fd = out;
@@ -2182,7 +2182,7 @@ struct _timesel __far *fish_qnx_time(void)
 
 // We don't really need this on our win32 host
 
-#if !defined(__QNXNTO__) 
+#if !defined(__QNXNTO__)
 unsigned long fish_secnsec (unsigned long *res)
 {
 	static struct _timesel __far *ptr=NULL;
@@ -2209,7 +2209,7 @@ unsigned long fish_secnsec (unsigned long *res)
 		if (deltansec<0) {
 			result--;
 			deltansec=1000000000L+deltansec;
-		}		
+		}
 
 		/* have a seconds difference in 'result', and a nanoseconds in
                                         'deltansec'
@@ -2218,7 +2218,7 @@ unsigned long fish_secnsec (unsigned long *res)
 
            we must scale this to fit in 16 bits; divide by 15259
 		*/
-           
+
 
 		/* deltansec is now an unsigned, so can be safely shifted */
 		deltansec/=15259;
@@ -2257,7 +2257,7 @@ unsigned long fish_secnsec (unsigned long *res)
 		if (deltansec<0) {
 			result--;
 			deltansec=1000000000L+deltansec;
-		}		
+		}
 
 		/* have a seconds difference in 'result', and a nanoseconds in
                                         'deltansec'
@@ -2266,7 +2266,7 @@ unsigned long fish_secnsec (unsigned long *res)
 
            we must scale this to fit in 16 bits; divide by 15259
 		*/
-           
+
 
 		/* deltansec is now an unsigned, so can be safely shifted */
 		deltansec/=15259;
@@ -2308,7 +2308,7 @@ unsigned long fish_secnsec (unsigned long *res)
 	unsigned long   result;
 
 	ClockCycles((struct _clockcycles*) &resultcycles);
-	
+
 	if (res!=NULL) {
 #ifdef DIAG
 		fprintf(stderr,"result.hi=%lu result.lo=%lu\n",resultcycles.hi,resultcycles.lo);
@@ -2346,7 +2346,7 @@ unsigned long fish_secnsec (unsigned long *res)
 	            delta.hi%=cycpersec;
 			}
 		}
-			
+
 		*res=result;
 	} else {
 		/* will be called with res=NULL to reset */
@@ -2371,7 +2371,7 @@ unsigned long fish_secnsec (unsigned long *res)
 
 #endif // ifdef __MINGW32__
 
-void show_percent(long totalwritten, struct stat *statbufsrc, int lasttime) 
+void show_percent(long totalwritten, struct stat *statbufsrc, int lasttime)
 {
 	static unsigned long otens, oones, odeci, ocenti, last_delta=0L;
 
@@ -2427,26 +2427,26 @@ void show_percent(long totalwritten, struct stat *statbufsrc, int lasttime)
 			remainder/=10L;
 			deltatime/=10L;
 		}
-	
+
 		copied=totalwritten;
 
 		if (totalsize==0) return;
         else {
 			hundreds = remainder/totalsize;
 			remainder-=hundreds*totalsize;
-	
+
 			remainder*=10;
 			tens=remainder/totalsize;
 			remainder-=tens*totalsize;
-	
+
 			remainder*=10;
 			ones=remainder/totalsize;
 			remainder-=ones*totalsize;
-	
+
 			remainder*=10;
 			deci=remainder/totalsize;
 			remainder-=deci*totalsize;
-	
+
 			remainder*=10;
 			centi=remainder/totalsize;
 		}
@@ -2465,7 +2465,7 @@ void show_percent(long totalwritten, struct stat *statbufsrc, int lasttime)
 				copied-=n*deltatime;
 				cps+=n<<bitpos;
 				copied<<=1;
-			}			
+			}
 		}
 
 #ifdef NEVER
@@ -2474,20 +2474,20 @@ fprintf(stderr,"cps=%ld\n",cps);
 
 		n=sprintf(string,"%c%1ld%1ld.%1ld%1ld%% (%ld/%ld %s, %ld %s/s)",hundreds?'1':' ',  tens, ones, deci, centi, totalwritten, totalsize, inbytes?"bytes":"kbytes", cps,inbytes?"bytes":"kb");
 
-		if (lasttime || strncmp(string, last_string, n)) 
+		if (lasttime || strncmp(string, last_string, n))
                 {
 			printf("%s",string);
-			//for (i=n;i<lastn;i++) 
+			//for (i=n;i<lastn;i++)
                          // printf(" ");
-			if (!lasttime) 
-                          for (i=0;i<n;i++) 
+			if (!lasttime)
+                          for (i=0;i<n;i++)
                             printf("\b");
-			  else 
+			  else
                             printf("\n");
 			fflush(stdout);
-			otens=tens; 
-                        oones=ones; 
-                        odeci=deci; 
+			otens=tens;
+                        oones=ones;
+                        odeci=deci;
                         ocenti=centi;
 			snprintf(last_string, sizeof(last_string), "%s", string);
 			last_string[sizeof(last_string)-1] = 0;
@@ -2511,7 +2511,7 @@ bool insert_new_disk(char *disk_pathname,char *prompt_filename,char *errstring)
 				fprintf(stderr,TXT(T_MEDIA_PROMPT),purty(prompt_filename));
 				{
 					char answer[16];
-	
+
 					fflush(stderr);
 					fflush(stdout);
 					if (fgets(answer,sizeof(answer),stdin)==NULL) return(FALSE);
@@ -2581,8 +2581,8 @@ size_t dstsize;
 		}
 	} else {
 		in = out = -1;
-   
-		if (!(special_recursive && S_ISLNK(statbufsrc.st_mode))) 
+
+		if (!(special_recursive && S_ISLNK(statbufsrc.st_mode)))
            in=verbose_open(src,O_RDONLY,0); /* only try when not a symlink */
 
 		if (!statbufsrc_valid) {
@@ -2603,7 +2603,7 @@ size_t dstsize;
 		fprintf(stderr,"opened src. in=%d\n",in);
 		#endif
 
-	}		
+	}
 
 	statbufdst_valid = FALSE;
 
@@ -2648,7 +2648,7 @@ size_t dstsize;
 				goto exit_copy_guy;
 			}
 		}
-		
+
 		lstatbufdst_valid = FALSE;
 
 		if (S_ISFIFO(statbufsrc.st_mode)) {
@@ -2659,7 +2659,7 @@ size_t dstsize;
 				fprintf(stderr,TXT(T_CANT_MKFIFO),purty(dst));
 				inc_errs("mkfifo()");
 				goto exit_copy_guy;
-			}				
+			}
 
 			if ((out = verbose_open(dst, O_RDONLY,0 ))==-1) {
 				inc_errs("_open() 3");
@@ -2685,12 +2685,12 @@ size_t dstsize;
 				fprintf(stderr,TXT(T_CANT_SYMLINK),purty(dst),tmp2pathfull,strerror(errno));
 				inc_errs("symlink()");
 				goto exit_copy_guy;
-			}				
-	
+			}
+
 			out=-1; /* we will not be doing anything with the link */
 
 			goto past_data_copy;
-		}			
+		}
 
 		if (S_ISCHR(lstatbufsrc.st_mode)) {
 			fprintf(stderr,TXT(T_CANTDUPCHARSPECIAL),src);
@@ -2787,11 +2787,11 @@ size_t dstsize;
 			#endif
 			w+=(ww=write(out,bptr+w,r-w));
 			#ifdef DIAG
-			fprintf(stderr,"wrote %d bytes (%d now of %d)\n",ww,w,r); 
+			fprintf(stderr,"wrote %d bytes (%d now of %d)\n",ww,w,r);
 			#endif
 			if (ww==-1) break;
 		} while (w<r);
-	
+
 
 		if (ww==-1) {
 			if (errno == ENOSPC) {
@@ -2899,7 +2899,7 @@ if (wildly_verbose)
 			   the original file, unless -p was specified */
 
 			if (!S_ISLNK(lstatbufdst.st_mode) && (dashp || !( S_ISBLK(statbufdst.st_mode)||S_ISCHR(statbufdst.st_mode)))) {
-								
+
 				utm.actime = statbufsrc.st_atime;
 				utm.modtime= statbufsrc.st_mtime;
 
@@ -2963,7 +2963,7 @@ if (wildly_verbose)
 		}
 
 	}
-	
+
 	/* ignore dev/ino of symlink, even if copied version is not a symlink */
  	if ((errs_in == errs)&&(register_link_on_completion)&&statbufsrc_valid&&!S_ISLNK(statbufsrc.st_mode))
 		link_list = register_link(link_list,&statbufsrc,dst);
@@ -2978,14 +2978,14 @@ if (wildly_verbose) fprintf(stderr,"cp: exit_copy_guy (rc=%d)\n",rc);
 		if (_close(in)==-1) {
 			prerror(twostrpar,TXT(T_CLOSE_ERROR),src);
 			inc_errs("_close()");
-		} 
-	} 
+		}
+	}
 	if (out!=-1) {
 		if (_close(out)==-1) {
 			if (errno==ENOSPC) exit(EXIT_FAILURE);
 			prerror(twostrpar,TXT(T_CLOSE_ERROR),dst);
 			inc_errs("_close()");
-		} 
+		}
 	}
 
 	#ifdef DIAG

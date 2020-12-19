@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -35,21 +35,21 @@
 	added __MINGW32__
 
 	Revision 1.16  2005/06/03 01:37:58  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.15  2003/08/28 20:42:27  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.14  1998/12/02 15:34:11  bstecher
 	added Win32 variant
-	
+
 	Revision 1.13  1998/09/26 16:15:15  bstecher
 	all uses of <util/cpdeps.h> now should use <lib/compat.h>
 
@@ -96,21 +96,21 @@
  * Revision 1.1  1991/08/23  13:59:47  eric
  * Initial revision
  *
-	
+
 	Revision 1.4 Wed Apr 11 09:16:35 1990 ejohnson
 	added support for Mr Bill'
 	s readdir/stat optimization
-	
+
 	Revision 1.3 Wed Mar 21 09:02:47 1990 opr
 	(ej) added check for '..'
-	
+
 	Revision 1.2 Fri Nov 24 11:57:10 1989 ejohnson
 	changed c var from char to int for storing return from getc in
 	prompt routine
-	
+
 	Revision 1.1 Fri Nov 24 11:51:04 1989 ejohnson
 	 *** QRCS - Initial Revision ***
-	
+
 ---------------------------------------------------------------------*/
 
 /*
@@ -242,7 +242,7 @@ by a file operand of dot-dot ("..")
 	 permissions of the file to which it refers.
 
 -R = -r = Recursive. See 1003.2 for details.
-	 
+
 -----------------------------------------------------------------------------
 */
 
@@ -278,7 +278,7 @@ while ((opt = getopt(argc,argv,"fiRr**l:dvV")) != -1) {
 		case 'r':
 		case 'R':	Recursive   =   TRUE;			break;
 		case 'l':	Max_Levels  =	atoi(optarg);	break;
-		case 'd':	Dont_rmdir	=	TRUE;			break;			
+		case 'd':	Dont_rmdir	=	TRUE;			break;
 		case 'v':
 		case 'V':	Verbose 	= 	TRUE;			break;
 
@@ -292,7 +292,7 @@ while ((opt = getopt(argc,argv,"fiRr**l:dvV")) != -1) {
 #endif
 
 first_index = optind;
-last_index  = argc-1;   
+last_index  = argc-1;
 
 num_files = last_index - first_index + 1;
 
@@ -309,7 +309,7 @@ if (num_files<1) {
 #endif
 
 for (index = first_index; index <=last_index ; index++) {
-	/* for each file/directory */	
+	/* for each file/directory */
        if (strlen(argv[index]) <= PATH_MAX) {
                strcpy(Main_path,argv[index]);
                statbuf_valid = FALSE;
@@ -319,8 +319,8 @@ for (index = first_index; index <=last_index ; index++) {
                error++;
        }
 
-}			
-				
+}
+
 return(error?EXIT_FAILURE:EXIT_SUCCESS);
 }
 
@@ -379,7 +379,7 @@ if( last != NULL ) *last = '\0';
 int16_t remove_directory_recursive(path)
 register char *path;
 {
-DIR *dirp;				
+DIR *dirp;
 struct dirent *entry;
 int16_t rc = 0;
 char c;
@@ -520,7 +520,7 @@ if (!errno && !rc) {
 		return(FAILURE_RC);
 	} else return(SUCCESS_RC);
 } else	return(FAILURE_RC);
-}	
+}
 
 
 /*
@@ -551,7 +551,7 @@ if (!statbuf_valid && (lstat(path,&Statbuf)==-1)) {
 	   something OTHER than ENOENT. (See 1003.2 description of
 	   the -f option */
 	if ((!Forced) || (errno!=ENOENT)) {
-		perror(path); 
+		perror(path);
 		return(FAILURE_RC);
 	} else
 		return(SUCCESS_RC);	/* forced, or error was other than ENOENT */
@@ -591,7 +591,7 @@ if (S_ISDIR(Statbuf.st_mode)) {
 				if (Verbose) fprintf(stdout,TXT(T_SKIPPING),path);
 				return(FAILURE_RC);
 			}
-		} else {						
+		} else {
 			fprintf(stderr,TXT(T_NOWRITESKIP),path);
 			/* and skip this file */
 			return(FAILURE_RC);

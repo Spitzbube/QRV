@@ -43,7 +43,7 @@ static lin find_function_last_search;
 
 /* The value find_function returned when it started searching there.  */
 static lin find_function_last_match;
-
+
 /* Print a label for a context diff, with a file name and date or a label.  */
 
 static void
@@ -108,7 +108,7 @@ print_context_script (struct change *script, bool unidiff)
   else
     print_script (script, find_hunk, pr_context_hunk);
 }
-
+
 /* Print a pair of line numbers with a comma, translated for file FILE.
    If the second number is not greater, use the first in place of it.
 
@@ -146,7 +146,7 @@ print_context_function (FILE *out, char const *function)
     continue;
   fwrite (function, 1, i, out);
 }
-
+
 /* Print a portion of an edit script in context format.
    HUNK is the beginning of the portion to be printed.
    The end is marked by a `link' that has been nulled out.
@@ -253,7 +253,7 @@ pr_context_hunk (struct change *hunk)
 	}
     }
 }
-
+
 /* Print a pair of line numbers with a comma, translated for file FILE.
    If the second number is smaller, use the first in place of it.
    If the numbers are equal, print just one number.
@@ -275,7 +275,7 @@ print_unidiff_number_range (struct file_data const *file, lin a, lin b)
   else
     fprintf (outfile, "%ld,%ld", trans_a, trans_b - trans_a + 1);
 }
-
+
 /* Print a portion of an edit script in unidiff format.
    HUNK is the beginning of the portion to be printed.
    The end is marked by a `link' that has been nulled out.
@@ -375,7 +375,7 @@ pr_unidiff_hunk (struct change *hunk)
 	}
     }
 }
-
+
 /* Scan a (forward-ordered) edit script for the first place that more than
    2*CONTEXT unchanged lines appear, and return a pointer
    to the `struct change' for the last change before those lines.  */
@@ -442,7 +442,7 @@ mark_ignorable (struct change *script)
       script = next;
     }
 }
-
+
 /* Find the last function-header line in LINBUF prior to line number LINENUM.
    This is a line containing a match for the regexp in `function_regexp'.
    Return the address of the text, or 0 if no function-header is found.  */

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -92,7 +92,7 @@ void expandbrace(char *dest, char *orig, char *string, unsigned char flags)
 							exit(EXIT_FAILURE);
 						}
 					}
-	
+
 					switch (*scanstart) {
 						case ',':
 							scanstart++;
@@ -103,16 +103,16 @@ void expandbrace(char *dest, char *orig, char *string, unsigned char flags)
 								fprintf(stderr,"Illegal {} construct (bad numerical value) near \"%s\" (%s)\n",orig,origorig);
 								exit(EXIT_FAILURE);
 							}
-	
+
 							if (*scanstart!='}') {
 								fprintf(stderr,"Illegal {} construct at '%c' in \"%s\" (%s)\n",*scanstart,orig,origorig);
 								exit(EXIT_FAILURE);
-							} 
+							}
 						break;
 
 						case '}': break;
 
-						default:							
+						default:
 							/* syntax error */
 							fprintf(stderr,"Illegal {} construct at '%c' in \"%s\" (%s)\n",*scanstart,orig,origorig);
 							exit(EXIT_FAILURE);
@@ -121,7 +121,7 @@ void expandbrace(char *dest, char *orig, char *string, unsigned char flags)
 					/* num2 contains # chars from end to stop 0= go
 	                   to end of string. num1 contains # chars to skip
 	                   at beginning */
-	
+
 	                numchars = end-num2-num1;
 					if (numchars<0) numchars = 0;
 
@@ -130,7 +130,7 @@ void expandbrace(char *dest, char *orig, char *string, unsigned char flags)
 					{
 						char *read=string+(int)num1;
 						int  numtoread=numchars;
-			
+
 						while (numtoread--) {
 							switch(*read) {
 								case '\'':
@@ -147,13 +147,13 @@ void expandbrace(char *dest, char *orig, char *string, unsigned char flags)
 								default:
 									*dest++=*read++;
 							}
-						}				
+						}
 					}
 
 					if (flags&QUOTE) *dest++='\'';
 					*dest = 0;
 					dest--;
-					
+
 				} /* for scope of auto vars */
 			break;
 		}

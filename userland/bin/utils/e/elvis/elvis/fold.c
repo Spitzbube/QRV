@@ -276,7 +276,7 @@ RESULT foldbyrange(from, to, infold, flags)
 			 && markoffset(next->to) >= fromoff)
 			{
 #ifdef DEBUG_FOLD
-				fprintf(stderr, "    skipping %s because !nested and %s is better\n", 
+				fprintf(stderr, "    skipping %s because !nested and %s is better\n",
 					scan->name, next->name);
 #endif
 				/* need to tweak scan, in case we bypassed any

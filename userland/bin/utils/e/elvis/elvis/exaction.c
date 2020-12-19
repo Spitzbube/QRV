@@ -655,7 +655,7 @@ RESULT	ex_lpr(xinf)
 	RESULT	ret;
 	CHAR	*origlp;
 	long	origcols;
-	
+
 	/* if a filename/filter is given on command line, use it */
 	origlp = o_lpout;
 	if (xinf->rhs)
@@ -994,7 +994,7 @@ RESULT	ex_bang(xinf)
 		{
 			origrefresh = o_exrefresh;
 			o_exrefresh = ElvTrue;
-			
+
 			bangcmd = (char *)safealloc((int)CHARlen(xinf->rhs) + 2, sizeof(char));
 			bangcmd[0] = '!';
 			strcpy(bangcmd + 1, tochar8(xinf->rhs));
@@ -1091,7 +1091,7 @@ RESULT	ex_source(xinf)
 		msg(MSG_ERROR, "[s]$1 requires a file name", xinf->cmdname);
 		return RESULT_ERROR;
 	}
-		
+
 	/* if ! appeared after the command name, and the file doesn't exist,
 	 * then do nothing but return with no error.
 	 */
@@ -1107,7 +1107,7 @@ RESULT	ex_source(xinf)
 	/* create a temp buffer */
 	buf = bufalloc(NULL, 0, ElvTrue);
 	assert(buf != NULL);
-	o_filename(buf) = CHARdup(toCHAR(xinf->file[0])); 
+	o_filename(buf) = CHARdup(toCHAR(xinf->file[0]));
 	optflags(o_filename(buf)) |= OPT_FREE;
 
 	/* fill the temp buffer with text read from the file */

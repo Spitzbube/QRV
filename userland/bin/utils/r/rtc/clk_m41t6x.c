@@ -1,31 +1,31 @@
 /*
  * $QNXLicenseC:
- * Copyright 2008, QNX Software Systems. 
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"). You 
- * may not reproduce, modify or distribute this software except in 
- * compliance with the License. You may obtain a copy of the License 
- * at: http://www.apache.org/licenses/LICENSE-2.0 
- * 
- * Unless required by applicable law or agreed to in writing, software 
- * distributed under the License is distributed on an "AS IS" basis, 
+ * Copyright 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
  * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
  *
- * This file may contain contributions from others, either as 
- * contributors under the License or as licensors under other terms.  
- * Please review this entire file for other proprietary rights or license 
- * notices, as well as the QNX Development Suite License Guide at 
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
  * http://licensing.qnx.com/license-guide/ for other information.
  * $
  */
- 
- 
+
+
 #include "rtc.h"
 #include <time.h>
 #include <fcntl.h>
 #include <hw/i2c.h>
 
-/* 
+/*
  * STM M41T6x Serial Access Timekeeper
  */
 #define M41T6x_REGOFFSET    	1       /* register offset for M41T6x */
@@ -52,7 +52,7 @@
 
 /*
  * Century bit convention:
- * CB   CENTURY YEAR     
+ * CB   CENTURY YEAR
  * 00   2000    100
  * 01   2100    200
  * 10   2200    300
@@ -106,7 +106,7 @@ m41t6x_i2c_write(unsigned char reg, unsigned char val[], unsigned char num)
 int
 RTCFUNC(init,m41t6x)(struct chip_loc *chip, char *argv[])
 {
-    fd = open((argv && argv[0] && argv[0][0])? 
+    fd = open((argv && argv[0] && argv[0][0])?
             argv[0]: M41T6x_I2C_DEVNAME, O_RDWR);
     if (fd < 0) {
         fprintf(stderr, "Unable to open I2C device\n");
@@ -130,8 +130,8 @@ RTCFUNC(get,m41t6x)(struct tm *tm, int cent_reg)
     tm->tm_mon  = BCD2BIN(date[M41T6x_MONTH] & M41T6x_MONTH_MASK) - 1;
     tm->tm_year = BCD2BIN(date[M41T6x_YEAR]);
     tm->tm_wday = BCD2BIN(date[M41T6x_DAY] & M41T6x_DAY_MASK) - 1;
-	
-	// Get the Century info and calculate the year value from 1900  
+
+	// Get the Century info and calculate the year value from 1900
 	switch(date[M41T6x_MONTH] & M41T6x_MONTH_CB_MASK)
 	{
 		case 0x00:
@@ -139,17 +139,17 @@ RTCFUNC(get,m41t6x)(struct tm *tm, int cent_reg)
 		    break;
 		case 0x40:
 			tm->tm_year += 200;
-		    break;		
+		    break;
 		case 0x80:
-			tm->tm_year += 300;		
+			tm->tm_year += 300;
 		    break;
 		case 0xC0:
-			tm->tm_year += 400;		
+			tm->tm_year += 400;
 		    break;
 		default:
 		    break;
 	}
-	
+
     return(0);
 }
 

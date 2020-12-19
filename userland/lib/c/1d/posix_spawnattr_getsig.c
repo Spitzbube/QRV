@@ -1,16 +1,16 @@
 /*
- * $QNXLicenseC:  
+ * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
 */
@@ -23,9 +23,9 @@
 
 /*******************************************************************************
  * get/setsigdfault
- * 
+ *
  * behaviour as per POSIX
- * 
+ *
  * Returns:
  * 		EOK on success
  * 		EINVAL for any invalid parameter
@@ -43,9 +43,9 @@ int posix_spawnattr_getsigdefault(const posix_spawnattr_t *_Restrict attrp, sigs
 
 /*******************************************************************************
  * get/setsigmask
- * 
+ *
  * behaviour as per POSIX
- * 
+ *
  * Returns:
  * 		EOK on success
  * 		EINVAL for any invalid parameter
@@ -63,23 +63,23 @@ int posix_spawnattr_getsigmask(const posix_spawnattr_t *_Restrict attrp, sigset_
 
 /*
  * =============================================================================
- * 
+ *
  * 				The following are QNX posix_spawnattr_t extensions
- * 
+ *
  * =============================================================================
 */
 
 /*******************************************************************************
  * get/setsigignore
- * 
+ *
  * Retrieve/specify the set of signals that will/should be ignored by the spawned
  * process.
- * 
+ *
  * Note that this setting only takes effect if the POSIX_SPAWN_SETSIGIGN flag
  * is set.
  * The default value can be retrieved with a call to posix_spawnattr_getsigignore()
  * using an initialized 'posix_spawnattr_t' object.
- * 
+ *
  * Returns:
  * 		EOK on success
  * 		EINVAL if there are any parameter errors

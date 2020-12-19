@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -20,7 +20,7 @@
 
 /*-
  * Band ->  Block0 -> mem0->mem1->mem2...
- *           +->Block1->... 
+ *           +->Block1->...
  *
  * compilation flags:
  * -U NDEBUG     -- extensive checking of list consistency, invalid operations.
@@ -109,8 +109,8 @@ static void __preallocate_all_bands()
 	Band *p;
 	for (i=0; i < *__pnband; i++) {
 		p = __pBands[i];
-		total = 0;	
-		// we overload slurp, by allowing users to specify 
+		total = 0;
+		// we overload slurp, by allowing users to specify
 		// a preallocate amount.
 		while (total < p->slurp) {
 			Block *b;
@@ -180,7 +180,7 @@ checkBlock(Band *bp, Block *b)
 	if (i < b->navail) {
 		panic("too few ListNodes on free list");
 	}
-	
+
 	ptr = (char *)(b+1);
 	for (i = 0; i < bp->nalloc-1; i++, ptr += esize) {
 		lnp = (ListNode *)ptr;
@@ -233,7 +233,7 @@ band_addblk(Band *p)
 	 *	a ssize_t guardian word
 	 */
 
-	ba = __get_barena();		
+	ba = __get_barena();
 	if (ba == NULL)
 		return NULL;
 	b = (Block *)__BARENA_TO_BLOCK(ba);
@@ -254,7 +254,7 @@ band_addblk(Band *p)
 	for (i = 0; i < p->nalloc-1; i++, ptr += p->esize) {
 		((ListNode *)ptr)->ln_next = (ListNode *)(ptr+p->esize);
 		/* ((ListNode *)ptr)->ln_head.d_usize = 0; */
-	}	
+	}
 	if ((ptr + p->esize) > b->bend) {
 		b->bend = ptr+p->esize-1;
 	}
@@ -358,7 +358,7 @@ void *_band_get_aligned(Band *p, size_t alignment, size_t size)
 		assert(alignment >= _MALLOC_ALIGN);
 
 		if (dividend > p->nalloc
-			|| (alignment != _MALLOC_ALIGN 
+			|| (alignment != _MALLOC_ALIGN
       && dividend * esize != alignment)) { /* not an even multiple */
 			errno = EINVAL;
 			return NULL;
@@ -498,7 +498,7 @@ _band_rlse (Block *b, void *x)
 		if (t)
 			t->prev = b;
 		p->alist = b;
-	} 
+	}
 	else
 
 	/*

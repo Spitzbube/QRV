@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -75,7 +75,7 @@ dispatch_context_t *dispatch_context_alloc(dispatch_t *dpp) {
 		ctp->message_context.msg_max_size = _DPP(dpp)->context_size - (offsetof(message_context_t, iov) + _DPP(dpp)->nparts_max * sizeof(ctp->message_context.iov[0]));
 
 		dpp->flags |= _DISPATCH_CONTEXT_ALLOCED;
-		return ctp;	
+		return ctp;
 
 	} else if(_DPP(dpp)->block_type == _DISPATCH_BLOCK_SIGWAIT) {
 		// @@@ for now
@@ -125,7 +125,7 @@ int _dispatch_attach(dispatch_t *dpp, void *ctrl, unsigned attach_type) {
 			case DISPATCH_SIGWAIT:
 				if(dpp->block_type == _DISPATCH_BLOCK_RECEIVE) {
 					errno = EINVAL;
-					return -1; 
+					return -1;
 				}
 				dpp->block_type = _DISPATCH_BLOCK_SIGWAIT;
 				break;
@@ -139,18 +139,18 @@ int _dispatch_attach(dispatch_t *dpp, void *ctrl, unsigned attach_type) {
 		switch(attach_type) {
 			case DISPATCH_SELECT:
 				dpp->flags |= _DISPATCH_ONLY_SELECT;
-				dpp->block_type = _DISPATCH_BLOCK_RECEIVE;	
+				dpp->block_type = _DISPATCH_BLOCK_RECEIVE;
 				break;
 
 			case DISPATCH_RESMGR:
 				dpp->flags |= _DISPATCH_ONLY_RESMGR;
 				/* Fall Through */
 			case DISPATCH_MESSAGE:
-				dpp->block_type = _DISPATCH_BLOCK_RECEIVE;	
+				dpp->block_type = _DISPATCH_BLOCK_RECEIVE;
 				break;
 
 			case DISPATCH_SIGWAIT:
-				dpp->block_type = _DISPATCH_BLOCK_SIGWAIT;	
+				dpp->block_type = _DISPATCH_BLOCK_SIGWAIT;
 				break;
 			default:
 				break;
@@ -163,7 +163,7 @@ int _dispatch_attach(dispatch_t *dpp, void *ctrl, unsigned attach_type) {
 			new_context_size = ((_select_control *) ctrl)->context_size;
 			//new_msg_size = ((select_ctrl_t *) ctrl)->msg_max_size;
 			break;
-				
+
 		case DISPATCH_RESMGR:
 			ctrlptr = (void **)&dpp->resmgr_ctrl;
 			new_context_size = ((_resmgr_control *) ctrl)->context_size;
@@ -203,14 +203,14 @@ int _dispatch_attach(dispatch_t *dpp, void *ctrl, unsigned attach_type) {
 	}
 
 	*ctrlptr = ctrl;
-	dpp->context_size = max(dpp->context_size, new_context_size); 
+	dpp->context_size = max(dpp->context_size, new_context_size);
 	dpp->msg_max_size = max(dpp->msg_max_size, new_msg_size);
 	dpp->nparts_max = max(dpp->nparts_max, ((_resmgr_control *) ctrl)->nparts_max);
 	return 0;
 }
 
-static dispatch_context_t *dispatch_block_receive_all(dispatch_context_t *ctp, 
-                                                      int (*block_func)(int chid, void *msg, 
+static dispatch_context_t *dispatch_block_receive_all(dispatch_context_t *ctp,
+                                                      int (*block_func)(int chid, void *msg,
 													                    int bytes, struct _msg_info *info)) {
 	dispatch_t				*dpp = ((message_context_t *) ctp)->dpp;
 
@@ -222,7 +222,7 @@ static dispatch_context_t *dispatch_block_receive_all(dispatch_context_t *ctp,
 
 	// Set up the select blocking, and rearm any fd's
 	if((dpp->select_ctrl) &&  dpp->select_ctrl->rearm_func && dpp->select_ctrl->rearm_func(ctp)) {
-	
+
 		return ctp;
 	}
 
@@ -269,7 +269,7 @@ dispatch_context_t *dispatch_block_sigwait(dispatch_context_t *ctp) {
 		return NULL;
 	}
 	// Need to stuff vectors with appropriate info
-	return ctp;	
+	return ctp;
 }
 
 dispatch_context_t *dispatch_block(dispatch_context_t *ctp) {
@@ -307,7 +307,7 @@ int dispatch_handler(dispatch_context_t *ctp) {
 
 	/*
 	 * We special-case a few of the more common cases, for speed
-	 */	
+	 */
 #if 0
 	if(dpp->flags & _DISPATCH_ONLY_RESMGR) {
 		return resmgr_handler((resmgr_context_t *)ctp);
@@ -320,11 +320,11 @@ int dispatch_handler(dispatch_context_t *ctp) {
 
 		In the case of a thread pool, a -1 return from the handler function
 		indicates that a reblock should occur (what else can we do?).
-	*/	
+	*/
 	if (!ctp) {
 		return -1;
 	}
-	
+
 	dpp = ((message_context_t *)ctp)->dpp;
 	switch(dpp->block_type) {
 		case _DISPATCH_BLOCK_RECEIVE:
@@ -354,7 +354,7 @@ int dispatch_destroy(dispatch_t *dpp) {
 	if(_DPP(dpp)->chid != -1) {
 		(void)ChannelDestroy(_DPP(dpp)->chid);
 	}
-	
+
 	if(dpp->flags & _DISPATCH_CHANNEL_COIDDEATH) {
 		_dispatch_coiddeath_attached = 0;
 	}
@@ -362,7 +362,7 @@ int dispatch_destroy(dispatch_t *dpp) {
 	/**
 	 We have to go through each of the control structures here and make
 	 sure that we release the resources that each one acquired.  This is
-	 different from what happens in a xxxx_detach() since at that point 
+	 different from what happens in a xxxx_detach() since at that point
 	 we are only cleaning up a single service, not the whole of dispatch.
     **/
 	if(dpp->resmgr_ctrl) {
@@ -414,7 +414,7 @@ int _dispatch_set_contextsize(dispatch_t *dpp, unsigned attach_type) {
 			new_size = _DPP(dpp)->select_ctrl->context_size;
 			//new_msg_size = ((select_ctrl_t *) ctrl)->msg_max_size;
 			break;
-				
+
 		case DISPATCH_RESMGR:
 			new_size = _DPP(dpp)->resmgr_ctrl->context_size;
 			new_msg_size = _DPP(dpp)->resmgr_ctrl->msg_max_size;
@@ -436,7 +436,7 @@ int _dispatch_set_contextsize(dispatch_t *dpp, unsigned attach_type) {
 		return -1;
 	} else {
 		// @@@ Could have channel flags for the chid?!
-		_DPP(dpp)->context_size = max(_DPP(dpp)->context_size, new_size); 
+		_DPP(dpp)->context_size = max(_DPP(dpp)->context_size, new_size);
 		_DPP(dpp)->msg_max_size = max(_DPP(dpp)->msg_max_size, new_msg_size);
 	}
 

@@ -39,17 +39,17 @@
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable 
- * license fees to QNX Software Systems before you may reproduce, 
- * modify or distribute this software, or any work that includes 
- * all or part of this software.   Free development licenses are 
- * available for evaluation and non-commercial purposes.  For more 
- * information visit http://licensing.qnx.com or email 
+ * You must obtain a written license from and pay applicable
+ * license fees to QNX Software Systems before you may reproduce,
+ * modify or distribute this software, or any work that includes
+ * all or part of this software.   Free development licenses are
+ * available for evaluation and non-commercial purposes.  For more
+ * information visit http://licensing.qnx.com or email
  * licensing@qnx.com.
- * 
- * This file may contain contributions from others.  Please review 
- * this entire file for other proprietary rights or license notices, 
- * as well as the QNX Development Suite License Guide at 
+ *
+ * This file may contain contributions from others.  Please review
+ * this entire file for other proprietary rights or license notices,
+ * as well as the QNX Development Suite License Guide at
  * http://licensing.qnx.com/license-guide/ for other information.
  * $
  */
@@ -755,14 +755,14 @@ single_user()
 		return (state_func_t) requested_transition;
 
 	if (!WIFEXITED(status)) {
-		if (WTERMSIG(status) == SIGKILL) { 
-			/* 
-			 *  reboot(8) killed shell? 
+		if (WTERMSIG(status) == SIGKILL) {
+			/*
+			 *  reboot(8) killed shell?
 			 */
 			warning("single user shell terminated.");
 			sleep(STALL_TIMEOUT);
 			_exit(0);
-		} else {	
+		} else {
 			warning("single user shell terminated, restarting");
 			return (state_func_t) single_user;
 		}
@@ -882,7 +882,7 @@ start_session_db()
 	}
 #endif
 	return (0);
-		
+
 }
 
 /*
@@ -1282,7 +1282,7 @@ multi_user()
 	/*
 	 * If the administrator has not set the security level to -1
 	 * to indicate that the kernel should not run multiuser in secure
-	 * mode, and the run script has not set a higher level of security 
+	 * mode, and the run script has not set a higher level of security
 	 * than level 1, then put the kernel into secure mode.
 	 */
 	if (getsecuritylevel() == 0)
@@ -1528,7 +1528,7 @@ msdosfs_root()
 	case 0:
 		if (chdir("/dev") == -1)
 			goto done;
-		(void) execl("/bin/sh", "sh", "./MAKEDEV", "all", NULL); 
+		(void) execl("/bin/sh", "sh", "./MAKEDEV", "all", NULL);
 		goto done;
 
 	case -1:

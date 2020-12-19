@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -55,14 +55,14 @@ int select_attach(void *dpp, select_attr_t *attr, int fd, unsigned flags,
 		ctrl->msg_max_size = max(MSG_MAX_SIZE, sizeof(resmgr_iomsgs_t));
 
 		ctrl->context_size = sizeof(select_context_t) + ctrl->msg_max_size;
-			
+
 		if(_dispatch_attach(dpp, ctrl, DISPATCH_SELECT) == -1) {
 			pthread_mutex_destroy(&ctrl->mutex);
 			free(ctrl);
 			return -1;
 		}
 
-		if((ctrl->coid = message_connect(dpp, MSG_FLAG_SIDE_CHANNEL)) == -1) { 
+		if((ctrl->coid = message_connect(dpp, MSG_FLAG_SIDE_CHANNEL)) == -1) {
 			pthread_mutex_destroy(&ctrl->mutex);
 			free(ctrl);
 			return -1;
@@ -102,9 +102,9 @@ int select_attach(void *dpp, select_attr_t *attr, int fd, unsigned flags,
 
 	vec = _dispatch_vector_find(new_vec, num_elem);
 	/* @@@
-	 If multiple threads were attaching to the vector all concurrently and 
+	 If multiple threads were attaching to the vector all concurrently and
 	 only one of them filled memory then others pre-empted we could end up
-	 with a bad situation.  There is also the possibility for two threads 
+	 with a bad situation.  There is also the possibility for two threads
 	 using the same vector as well.  For now error out if we can't find
 	 a good vector, but we should use some atomic operations to prevent this.
 	*/
@@ -134,10 +134,10 @@ int select_attach(void *dpp, select_attr_t *attr, int fd, unsigned flags,
 	vec->handle = handle;
 	vec->func = func;
 	_DPP(dpp)->select_ctrl->num_entries++;
-	
+
 	pthread_mutex_unlock(&ctrl->mutex);
 
-	// Send magic pulse to arm 
+	// Send magic pulse to arm
 	// @@@ SIGWAIT case
 	(void)MsgSendPulse(ctrl->coid, -1, ctrl->code, -1);
 
@@ -196,7 +196,7 @@ dispatch_context_t *_select_rearm_how(dispatch_context_t *dctp, int fd) {
 			msgi.event.sigev_coid = ctrl->coid;
 			msgi.event.sigev_priority = -1;
 			msgi.flags = ~_VEC_VALID & (vec->flags & _NOTIFY_COND_MASK);
-			msgi.event.sigev_value.sival_int = _SELECT_SIGEV(i,(vec->flags & _SELECT_SN_MASK));	
+			msgi.event.sigev_value.sival_int = _SELECT_SIGEV(i,(vec->flags & _SELECT_SN_MASK));
 
 			if(MsgSend(vec->fd, &msgi, sizeof msgi, &msgo, sizeof msgo) == -1) {
 				/*
@@ -226,7 +226,7 @@ dispatch_context_t *_select_rearm_how(dispatch_context_t *dctp, int fd) {
 	}
 
 	pthread_mutex_unlock(&ctrl->mutex);
-			
+
 	return 0;
 }
 
@@ -256,7 +256,7 @@ int _select_query(select_context_t *ctp, int *fd, unsigned *flags,
 	struct _pulse			*pulse = (struct _pulse *) ctp->msg;
 	unsigned				index = _SELECT_SIGEV_INDEX(pulse->value.sival_int);
 	unsigned				sn = _SELECT_SIGEV_SN((unsigned)pulse->value.sival_int);
-	pthread_mutex_t			*mutex = &_DPP(ctp->dpp)->select_ctrl->mutex; 
+	pthread_mutex_t			*mutex = &_DPP(ctp->dpp)->select_ctrl->mutex;
 	int						i;
 
 	pthread_mutex_lock(mutex);
@@ -268,10 +268,10 @@ int _select_query(select_context_t *ctp, int *fd, unsigned *flags,
 	if(pulse->code == _PULSE_CODE_COIDDEATH) {
 		for(i = 0; i < _DPP(ctp->dpp)->select_ctrl->num_elements; i++, vec++) {
 			if((vec->flags & (_VEC_VALID | _SELECT_SRVEXCEPT)) == (_VEC_VALID | _SELECT_SRVEXCEPT)) {
-				*fd = vec->fd; 
-				*handle = vec->handle;	
+				*fd = vec->fd;
+				*handle = vec->handle;
 				*func = vec->func;
-				if(clear_event) { 
+				if(clear_event) {
 					vec->flags &= ~(_SELECT_ARMED | _SELECT_EVENT);
 				} else {
 					vec->flags |= _SELECT_EVENT;
@@ -293,14 +293,14 @@ int _select_query(select_context_t *ctp, int *fd, unsigned *flags,
 	/*
 	 Once we find and extract a request, unless we have been asked to clear the
 	 request entirely, we clear the ARMED bit but make sure that the EVENT bit
-	 is on so that we don't get multiple notifications.  This avoids thread race 
+	 is on so that we don't get multiple notifications.  This avoids thread race
 	 conditions with the _select_rearm() function (called by dispatch_block_*()).
 	*/
-	if((index < _DPP(ctp->dpp)->select_ctrl->num_elements) && 
+	if((index < _DPP(ctp->dpp)->select_ctrl->num_elements) &&
 	   (vec[index].flags & _VEC_VALID) && sn == (_SELECT_SN_MASK & vec[index].flags)) {
 		*flags = (vec[index].flags & pulse->value.sival_int) & _NOTIFY_COND_MASK;
-		*fd = vec[index].fd; 
-		*handle = vec[index].handle;	
+		*fd = vec[index].fd;
+		*handle = vec[index].handle;
 		*func = vec[index].func;
 		if(clear_event) {
 			vec[index].flags &= ~(_SELECT_ARMED | _SELECT_EVENT);
@@ -324,16 +324,16 @@ int select_query(select_context_t *ctp, int *fd, unsigned *flags,
 
 int select_detach(void *dpp, int fd) {
 	select_vec_t			*vec;
-	pthread_mutex_t			*mutex; 
+	pthread_mutex_t			*mutex;
 	unsigned				num_elements;
 	int						i;
-	
+
 	// Check to see if we've ever attached anything...
 	if(!_DPP(dpp)->select_ctrl) {
 		return -1;
 	}
 
-	mutex = &_DPP(dpp)->select_ctrl->mutex; 
+	mutex = &_DPP(dpp)->select_ctrl->mutex;
 	pthread_mutex_lock(mutex);
 	vec = _DPP(dpp)->select_ctrl->select_vec;
 	num_elements = _DPP(dpp)->select_ctrl->num_elements;
@@ -346,7 +346,7 @@ int select_detach(void *dpp, int fd) {
 			return 0;
 		}
 	}
-		
+
 	pthread_mutex_unlock(mutex);
 	return -1;
 

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -66,7 +66,7 @@ static void fatal_message(char *fmt, ...) {
     va_end(ap);
     fflush(stderr);
 
-    exit(EXIT_FAILURE); 
+    exit(EXIT_FAILURE);
 }
 
 /*
@@ -186,7 +186,7 @@ int main(int argc, char **argv) {
     }
 
     /* Locate the server */
-#ifdef __WATCOMC__ 
+#ifdef __WATCOMC__
     switch (nid) {
       case 0:
 	if ((server = qnx_name_locate(0, cronsrv + 1, 0, 0)) != -1) {
@@ -289,7 +289,7 @@ int main(int argc, char **argv) {
 
     if (action == LIST) {
 	if ((tab = fopen(crontab, "r")) == 0) {
-	    if(errno == ENOENT) 
+	    if(errno == ENOENT)
 		fatal_message("no crontab for %s", pwent->pw_name);
 	    fatal_message("%s: %s", pwent->pw_name, strerror(errno));
 	} else {
@@ -298,7 +298,7 @@ int main(int argc, char **argv) {
 	    fclose(tab);
 	}
     } else {
-	/* drop and store euid/egid, use uid/gid */ 
+	/* drop and store euid/egid, use uid/gid */
 	egid = getegid();
 	euid = geteuid();
 	setegid(getgid());

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -42,14 +42,14 @@ Usage notes:
 	Must run tracelogger utility first to create trace
 	data information (event file). tracelogger outputs
 	trace data to /dev/shmem/tracebuffer.kev by default.
-	traceprinter will parse and print out this trace data.  
+	traceprinter will parse and print out this trace data.
 #endif
 
 #include <lib/compat.h>
 
 #ifdef _NTO_HDR_DIR_
 #define _PLATFORM(x) x
-#define PLATFORM(x) <_PLATFORM(x)sys/platform.h> 
+#define PLATFORM(x) <_PLATFORM(x)sys/platform.h>
 #include PLATFORM(_NTO_HDR_DIR_)
 #endif
 
@@ -120,7 +120,7 @@ static       int   g_verbose;
          ((uint64_t)(l)&0x000000ff00000000LL)>>8 | \
          ((uint64_t)(l)&0x0000ff0000000000LL)>>24| \
          ((uint64_t)(l)&0x00ff000000000000LL)>>40| \
-         ((uint64_t)(l)&0xff00000000000000LL)>>56) 
+         ((uint64_t)(l)&0xff00000000000000LL)>>56)
 
 
 #define CS32(l) \
@@ -2331,11 +2331,11 @@ static int p_th_st(tp_state_t tp_state, void* d, unsigned h, unsigned t, unsigne
 		 "t:0x%08x CPU:%02d THREAD  :%s pid:%d tid:%d ",
 		 t,
 		 _NTO_TRACE_GETCPU(h),
-		 task_state[_NTO_TRACE_GETEVENT(h)], 
+		 task_state[_NTO_TRACE_GETEVENT(h)],
 		 CS32(b_p[0]),
 		 CS32(b_p[1])
 		);
-	// check for wide event 
+	// check for wide event
 	if ( b_s > 2 ) {
 		(void) fprintf
 		(
@@ -2345,8 +2345,8 @@ static int p_th_st(tp_state_t tp_state, void* d, unsigned h, unsigned t, unsigne
 		 CS32(b_p[3])
 		);
 		//following fields are not always present. check for each separately
-		if ( b_s > 4 ) (void) fprintf( g_out_stream, " partition:%d", CS32(b_p[4])); 
-		if ( b_s > 5 ) (void) fprintf( g_out_stream, " sched_flags:0x%08x", CS32(b_p[5])); 
+		if ( b_s > 4 ) (void) fprintf( g_out_stream, " partition:%d", CS32(b_p[4]));
+		if ( b_s > 5 ) (void) fprintf( g_out_stream, " sched_flags:0x%08x", CS32(b_p[5]));
 	}
 	(void) fprintf ( g_out_stream, "\n" );
 	return (0);
@@ -2484,7 +2484,7 @@ static int s_map_name(tp_state_t s, void* d, unsigned h, unsigned t, unsigned* p
 }
 
 /*
- *  APS partition name defined 
+ *  APS partition name defined
  *  (class - _NTO_TRACE_SYSTEM)
  */
 static int s_aps_name(tp_state_t s, void* d, unsigned h, unsigned t, unsigned* p, unsigned l)

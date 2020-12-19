@@ -25,7 +25,7 @@
 static void print_ed_hunk (struct change *);
 static void print_rcs_hunk (struct change *);
 static void pr_forward_ed_hunk (struct change *);
-
+
 /* Print our script as ed commands.  */
 
 void
@@ -78,7 +78,7 @@ print_ed_hunk (struct change *hunk)
       fprintf (outfile, ".\n");
     }
 }
-
+
 /* Print change script in the style of ed commands,
    but print the changes in the order they appear in the input files,
    which means that the commands are not truly useful with ed.  */
@@ -118,7 +118,7 @@ pr_forward_ed_hunk (struct change *hunk)
 
   fprintf (outfile, ".\n");
 }
-
+
 /* Print in a format somewhat like ed commands
    except that each insert command states the number of lines it inserts.
    This format is used for RCS.  */

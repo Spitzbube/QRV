@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -47,9 +47,9 @@
 
 #ifndef ENDIAN
 	#if defined(__LITTLEENDIAN__) || defined(__X86__)
-		#define ENDIAN (0)	
-	#elif defined(__BIGENDIAN__) || defined(__sparc) 
-		#define ENDIAN (1)	
+		#define ENDIAN (0)
+	#elif defined(__BIGENDIAN__) || defined(__sparc)
+		#define ENDIAN (1)
 	#else
 		#error not configured for system
 	#endif
@@ -57,7 +57,7 @@
 
 #define TMS320C6X			0x0099
 #define COFF_VID			0x00c2
-							  
+
 typedef struct {
 	unsigned short		version_id;
 	unsigned short		num_secthdrs;
@@ -101,7 +101,7 @@ unsigned	shnum;
 
 char				tmp_name[9];
 COFF_FHDR			coff_fhdr;
-char				**coff_rawdata;							  
+char				**coff_rawdata;
 
 struct symbol {
 	struct symbol	*next;
@@ -132,7 +132,7 @@ add_symbol(unsigned sect, unsigned off, char *name) {
 
 	#define COMMENT_PREFIX	"comment"
 	#define VALUE_PREFIX	"value"
-	
+
 	if( (p = strstr( name, COMMENT_PREFIX )) != NULL ) {
 		p += sizeof( COMMENT_PREFIX ) - 1;
 		line = strtoul( p, &p, 10 );
@@ -174,7 +174,7 @@ Normal32(unsigned val) {
 		  | ((val << 24) & 0xff000000) );
 }
 
-// WARNING: this routine will reject anything other than a COFF file 
+// WARNING: this routine will reject anything other than a COFF file
 // intended for the TMS320C6x.
 int
 try_coff() {
@@ -182,26 +182,26 @@ try_coff() {
 		if( read( fd, &coff_fhdr, sizeof( COFF_FHDR ) ) != sizeof( COFF_FHDR ) ) {
 			fprintf( stderr, "Could not read COFF header\n" );
 			return( 0 );
-		}													 
-		
-		info.big_endian = 0;		 
-		
+		}
+
+		info.big_endian = 0;
+
 		if ( ( Normal16(coff_fhdr.target_id) != TMS320C6X ) ||
 			  ( Normal16(coff_fhdr.version_id) != COFF_VID ) )
 			return( 0 );
-			
+
 		shnum = Normal16( coff_fhdr.num_secthdrs );
-		
+
 		coff_rawdata = malloc( shnum * sizeof(*coff_rawdata) );
 		if( coff_rawdata == NULL ) {
 			fprintf( stderr, "No memory for raw data pointers\n" );
 			return( 0 );
-		}				
-		
+		}
+
 		memset( coff_rawdata, 0, shnum * sizeof(*coff_rawdata) );
-		
+
 		return 1;
-		
+
 }
 
 static void *
@@ -209,26 +209,26 @@ coff_load_raw(int i) {
 	int				secthdr_fptr;
 	int				sectraw_fptr;
 	COFF_SECTHDR	secthdr;
-	int				raw_size;											  
+	int				raw_size;
 
 	if( coff_rawdata[i] == NULL ) {
 		// calculate the file offset of the section header
-		secthdr_fptr = sizeof(COFF_FHDR) + 
-							Normal16(coff_fhdr.opthdr_size) + 
+		secthdr_fptr = sizeof(COFF_FHDR) +
+							Normal16(coff_fhdr.opthdr_size) +
 							(sizeof(COFF_SECTHDR) * (i-1));
-	
+
 		// seek to the section header
 		if ( lseek( fd, secthdr_fptr, SEEK_SET ) != secthdr_fptr ) {
 			printf("Couldn't seek to section header #%d\n", i);
 			exit(1);
 		}
-	
+
 		// read in the section header
 		if ( read( fd, &secthdr, sizeof(COFF_SECTHDR) ) != sizeof(COFF_SECTHDR) ) {
 			printf( "Couldn't read section header #%d\n", i);
 			exit(1);
 		}
-	
+
 		// allocate memory for the raw data
 		raw_size = Normal32(secthdr.sect_wsize);
 		coff_rawdata[i] = malloc( raw_size );
@@ -236,14 +236,14 @@ coff_load_raw(int i) {
 			printf( "Couldn't allocate memory for raw data of section #%d\n", i);
 			exit(1);
 		}
-	
+
 		// seek to the section's raw data
 		sectraw_fptr = Normal32(secthdr.raw_fptr);
 		if ( lseek( fd, sectraw_fptr, SEEK_SET ) != sectraw_fptr ) {
 			printf("Couldn't seek to raw dadta of section #%d\n", i);
 			exit(1);
 		}
-	
+
 		// read in the section's raw data
 		if ( read( fd, coff_rawdata[i], raw_size ) != raw_size ) {
 			printf( "Couldn't read raw data of section #%d\n", i);
@@ -270,34 +270,34 @@ coff_load_string_table() {
 	if ( lseek( fd, table_fptr, SEEK_SET ) != table_fptr ) {
 		printf("Couldn't seek to the string table\n");
 		exit(1);
-	}								
-	
+	}
+
 	// read in the size of the string table
 	if ( read( fd, &table_size, 4 ) != 4 ) {
 		printf( "Couldn't read string table size\n");
 		exit(1);
 	}
 	table_size = Normal32(table_size);
-	
+
 	// allocate memory for the symbol table
 	table = malloc( table_size );
 	if ( table == NULL) {
 		printf( "Couldn't allocate memory for the string table\n");
 		exit(1);
 	}
-	
+
 	// seek back to the begining of the string table
 	if ( lseek( fd, table_fptr, SEEK_SET ) != table_fptr ) {
 		printf("Couldn't seek to the string table\n");
 		exit(1);
-	}								
+	}
 	// read in the string table
 	if ( read( fd, table, table_size ) != table_size ) {
 		printf( "Couldn't read string table\n");
 		exit(1);
 	}
 	return table;
-}			
+}
 
 static char *
 coff_get_name(COFF_SYMBOL *symbol, char *table) {
@@ -306,9 +306,9 @@ coff_get_name(COFF_SYMBOL *symbol, char *table) {
 		return (table + Normal32(*((unsigned *) &symbol->name[4])));
 	} else {		// get name directly from the symbol table entry
 		memcpy(tmp_name, symbol->name, 8);
-		tmp_name[8] = '\0'; 
+		tmp_name[8] = '\0';
 		return tmp_name;
-	}  
+	}
 }
 
 static COFF_SYMBOL *
@@ -335,7 +335,7 @@ coff_load_symbol_table() {
 		printf( "Couldn't read the symbol table\n");
 		exit(1);
 	}
-	
+
 	return table;
 }
 
@@ -348,7 +348,7 @@ coff_build_symbols() {
 	char			*name;
 	int	 		num = Normal32(coff_fhdr.num_sym_entries);
 	COFF_SYMBOL	*sym;
-	
+
 	for(i = 0; i < num; i++) {
 
 		sym = &syms[i];
@@ -421,16 +421,16 @@ elf_build_symbols() {
 
 	for( i = 0; i < shnum; ++i ) {
 		Elf32_Shdr		*shdr = &elf_shdr[i];
-   	
+
 		if( Normal32( shdr->sh_type ) == SHT_SYMTAB ) {
 			Elf32_Sym	*syms = elf_load_section( i );
 			char 		*strings = elf_load_section( Normal32( shdr->sh_link ) );
 			int			num = Normal32( shdr->sh_size ) / sizeof( *syms );
 			int			i;
-	
+
 			for(i = 0; i < num; i++) {
 				Elf32_Sym			*sym = &syms[i];
-		
+
 				if(Normal16(sym->st_shndx) != SHN_UNDEF) {
 					char	*name = strings + Normal32(sym->st_name);
 

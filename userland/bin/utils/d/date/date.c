@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -19,7 +19,7 @@
 
 
 #ifndef __QNXNTO__
-#define CLOCK_SUPPORTED 
+#define CLOCK_SUPPORTED
 #endif
 
 #ifdef __USAGE
@@ -33,7 +33,7 @@ Options:
    -n node      Read current time from the specified node. (Default: local node)
    -s seconds   Display the string equivalent of this date, supplied as
                 seconds since the start of the epoch. This value is used
-                instead of the system time value for the number of seconds. 
+                instead of the system time value for the number of seconds.
    -t           Display the time as a simple long integer.
    -u           Perform operations using Coordinated Universal Time (UTC)
                 instead of local time.
@@ -108,11 +108,11 @@ Options:
                 of the adjustment.
    -s seconds   Display the string equivalent of this date, supplied as
                 seconds since the start of the epoch. This value is used
-                instead of the system time value for the number of seconds. 
+                instead of the system time value for the number of seconds.
    -t           Display the time as a simple long integer.
    -u           Perform operations using Coordinated Universal Time (UTC)
                 instead of local time.
-   -v           Be verbose. If multiple -v options are specified along 
+   -v           Be verbose. If multiple -v options are specified along
                 with -S, date will not terminate until the slow adjustment
                 period has elapsed.
 
@@ -180,13 +180,13 @@ Where:
 #define BEGIN_EPOCH  (1970)
 
 // mktime() tm_year field is in years since 1900.
-#define MKTIME_BASE_CENTURY (1900L) 
+#define MKTIME_BASE_CENTURY (1900L)
 
 struct attribute {
 	char name[3];
 	unsigned char value;
 } ;
-	
+
 /*
 ---------------------------------------------------------- prototypes -----
 */
@@ -322,12 +322,12 @@ int main (int argc, char *argv[])
 #ifndef __QNXNTO__
 			case 'n':	nid = strtonid(optarg, NULL); break;
 #endif
-			case 'u':	UTC = TRUE; 
+			case 'u':	UTC = TRUE;
 						putenv("TZ=UTC0");
 						break;
 			case 't':   display_seconds_only++; break;
 #ifdef __QNXNTO__
-            case 'S': maxsec = atol(optarg); break; 
+            case 'S': maxsec = atol(optarg); break;
 			case 'v':   verbose++; break;
 #endif
 			case 's':	if (cmd == DATE) {
@@ -367,7 +367,7 @@ int main (int argc, char *argv[])
 		errflg = TRUE;
 		fprintf(stderr,"%s: too many operands\n",cmdname);
 	}
-	
+
 	if(errflg) exit(EXIT_FAILURE);
 
 	if (!dashs) {
@@ -453,7 +453,7 @@ int main (int argc, char *argv[])
 			           in progress, report this fact */
 					clock_getres(CLOCK_REALTIME,&cur);
 					ClockAdjust(CLOCK_REALTIME,NULL,&adj);
-			
+
 					if (adj.tick_count) {
 						printf("date: time undergoing adjustment (%6.6ld usec/sec over %ld.%2.2ld sec)\n",
 			                  ((1000000000L/cur.tv_nsec)*adj.tick_nsec_inc)/1000L,
@@ -469,7 +469,7 @@ int main (int argc, char *argv[])
 #endif
 		exit(0);
 	}
-	
+
 	#ifdef DIAG
 		printf("argc = %d\n",argc);
 		for (c=0;c<argc;c++) printf("argv[%d] = %s\n",c,argv[c]);
@@ -532,12 +532,12 @@ int main (int argc, char *argv[])
 					tim.tm_mday=ctod(argv[1]);
 					if(tim.tm_mday>msize[tim.tm_mon+1] || tim.tm_mday==0) abarf("day");
 				break;
-	
+
 		}
 	} else {
 		int year = tim.tm_year+1900; /* defaults to current year */
 		int year_digits = 4;
-		
+
 		/* third or fourth synopsis, only one operand */
 		if ( (strlen(argv[1])==10)&&(ctod(argv[1]+8)>59)) {
 			/* sys V MMDDhhmmYY If last two digits (as an int) are >59,
@@ -587,13 +587,13 @@ int main (int argc, char *argv[])
 		if(tim.tm_mon>11) abarf("month");
 		if(tim.tm_mday>msize[tim.tm_mon+1] || tim.tm_mday==0) abarf("day");
 	}
-								
+
 
 	#ifdef DIAG
 		printf("DIAG: %s\n",asctime(&tim));
 		printf("DIAG: timezone = %ld\n",timezone);
 	#endif
-	
+
 	/* set isdst to -1 to force mktime to try & figure out whether dst is
        in effect or not. Otherwise we would be inheriting the dst state from
        the current time, which could be quite different from the time that
@@ -606,7 +606,7 @@ int main (int argc, char *argv[])
 	lsec = mktime(&tim);
 	if (lsec == -1)
 		abarf("date");
-	
+
 	if (UTC)
 	{
 		#ifdef DIAG
@@ -657,7 +657,7 @@ int main (int argc, char *argv[])
 			usec -= cur.tv_sec*1000000 + cur.tv_nsec/1000;
 
 			clock_getres(CLOCK_REALTIME,&cur);
-			
+
 			if (verbose>1) printf("date: clock resolution = %ld\n",cur.tv_nsec);
 
 			/* we need to pick a rate which will give us a time interval
@@ -696,7 +696,7 @@ int main (int argc, char *argv[])
                // adj.tick_count = (maxticks*2+minticks)/3;
      adj.tick_count = usec/(adj.tick_nsec_inc/1000);
 			}
-		
+
 			if (verbose) {
 				printf("date: Adjusting clock %ld000 nsec\n",usec);
 				printf("date: (%9.9ld nsec per tick over %ld ticks)\n",adj.tick_nsec_inc,adj.tick_count);
@@ -707,7 +707,7 @@ int main (int argc, char *argv[])
 			if (verbose>1) {
 				clock_getres(CLOCK_REALTIME,&cur);
 				printf("date: clock resolution = %ld\n",cur.tv_nsec);
-				do {				
+				do {
 					sleep(1);
 					ClockAdjust(CLOCK_REALTIME,NULL,&adj);
 					clock_gettime(CLOCK_REALTIME,&cur);
@@ -729,7 +729,7 @@ int main (int argc, char *argv[])
 #ifdef __QNXNTO__
 		logwtmp("|", "date", "");
 		status=clock_settime(CLOCK_REALTIME,&temp);
-#else 
+#else
 		status=setclock(TIMEOFDAY,&temp);
 #endif
 		if (status==-1) {
@@ -806,7 +806,7 @@ void set_background(char *string, unsigned *attribute)
 	} else {
 		printf("%s:Not a valid background attribute ('%s')\n",cmdname,string);
 		exit(EXIT_FAILURE);
-	} 
+	}
 }
 
 void set_foreground(char *string, unsigned *attribute)
@@ -821,7 +821,7 @@ void set_foreground(char *string, unsigned *attribute)
 	} else {
 		printf("%s: Not a valid attribute ('%s')\n",cmdname,string);
 		exit(EXIT_FAILURE);
-	} 
+	}
 }
 
 unsigned parse_attribute(char *string)
@@ -839,12 +839,12 @@ unsigned parse_attribute(char *string)
 
 			while (isspace(*string)) string++;
 			for (tmp=string;!isspace(*tmp) && *tmp;tmp++) ;
-			if (isspace(*tmp)) 
+			if (isspace(*tmp))
 			{
 				*tmp = 0;
 				tmp++;
 			}
-	
+
 			set_foreground(string,&attribute);
 
 			string = tmp;
@@ -854,7 +854,7 @@ unsigned parse_attribute(char *string)
 			string+=3;
 			while (isspace(*string)) string++;
 			for (tmp=string;!isspace(*tmp) && *tmp;tmp++) ;
-			if (isspace(*tmp)) 
+			if (isspace(*tmp))
 			{
 				*tmp = 0;
 				tmp++;
@@ -869,7 +869,7 @@ unsigned parse_attribute(char *string)
 	return (attribute);
 }
 
-void display_clock(char *buf)	
+void display_clock(char *buf)
 {
 	short unsigned int width;
 	short int len, i;
@@ -882,12 +882,12 @@ void display_clock(char *buf)
 
 	len = strlen(buf);
 
-	for (i=0;buf[i];i++)	
+	for (i=0;buf[i];i++)
 	{
 		ptr = MK_FP(0x28, (i + width - len) * 2);
 		*ptr = ((unsigned)buf[i]) | (attribute << 8);
 	}
-	for (i=0;buf[i];i++)	
+	for (i=0;buf[i];i++)
 	{
 		ptr = MK_FP(0x30, (i + width - len) * 2);
 		*ptr = ((unsigned)buf[i]) | (attribute << 8);

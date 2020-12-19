@@ -30,7 +30,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- *	@(#)extern.h	8.2 (Berkeley) 4/20/95 
+ *	@(#)extern.h	8.2 (Berkeley) 4/20/95
  *
  * $FreeBSD: src/usr.bin/mail/extern.h,v 1.8 2002/06/25 05:24:29 mikeh Exp $
  */

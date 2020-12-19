@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -53,7 +53,7 @@ mips_init(int elf_cpu) {
 	if(elf_cpu != EM_MIPS) return 0;
 
 	pfn_topshift = note->cpu_info & MIPS_CPU_FLAG_PFNTOPSHIFT_MASK;
-	
+
 	return 1;
 }
 
@@ -109,7 +109,7 @@ mips_cvt_regset(const void *in, void *out) {
 	#define NATIVE_BIG	0
 #else
 	#error ENDIAN not defined
-#endif	
+#endif
 
 	if(endian_native32(1) != 1) {
 		// cross endian
@@ -124,7 +124,7 @@ mips_cvt_regset(const void *in, void *out) {
 	// and redefine it so that it works properly for the endianness
 	// of the target system, not the host that kdserver is running on.
 	#undef MIPS_REGS_LOW_WORD
-	#define MIPS_REGS_LOW_WORD	big_endian	
+	#define MIPS_REGS_LOW_WORD	big_endian
 
     for(i=0; i < 32; ++i) {
 		gdb->regs[i] = ctx->regs[MIPS_CREG(i)];

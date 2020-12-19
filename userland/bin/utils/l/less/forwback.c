@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,19 +29,19 @@
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice in the documentation and/or other materials provided with 
+ *    notice in the documentation and/or other materials provided with
  *    the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
- * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN 
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -122,7 +122,7 @@ squish_check()
 }
 
 /*
- * Display n lines, scrolling forward, 
+ * Display n lines, scrolling forward,
  * starting at position pos in the input file.
  * "force" means display the n lines even if we hit end of file.
  * "only_last" means display only the last screenful if n > screen size.
@@ -146,15 +146,15 @@ forw(n, pos, force, only_last, nblank)
 	squish_check();
 
 	/*
-	 * do_repaint tells us not to display anything till the end, 
+	 * do_repaint tells us not to display anything till the end,
 	 * then just repaint the entire screen.
-	 * We repaint if we are supposed to display only the last 
+	 * We repaint if we are supposed to display only the last
 	 * screenful and the request is for more than a screenful.
 	 * Also if the request exceeds the forward scroll limit
 	 * (but not if the request is for exactly a screenful, since
 	 * repainting itself involves scrolling forward a screenful).
 	 */
-	do_repaint = (only_last && n > sc_height-1) || 
+	do_repaint = (only_last && n > sc_height-1) ||
 		(forw_scroll >= 0 && n > forw_scroll && n != sc_height-1);
 
 	if (!do_repaint)
@@ -180,7 +180,7 @@ forw(n, pos, force, only_last, nblank)
 		{
 			/*
 			 * This is not contiguous with what is
-			 * currently displayed.  Clear the screen image 
+			 * currently displayed.  Clear the screen image
 			 * (position table) and start a new screen.
 			 */
 			pos_clear();
@@ -206,7 +206,7 @@ forw(n, pos, force, only_last, nblank)
 		if (nblank > 0)
 		{
 			/*
-			 * Still drawing blanks; don't get a line 
+			 * Still drawing blanks; don't get a line
 			 * from the file yet.
 			 * If this is the last blank line, get ready to
 			 * read a line starting at ch_zero() next time.
@@ -215,14 +215,14 @@ forw(n, pos, force, only_last, nblank)
 				pos = ch_zero();
 		} else
 		{
-			/* 
+			/*
 			 * Get the next line from the file.
 			 */
 			pos = forw_line(pos);
 			if (pos == NULL_POSITION)
 			{
 				/*
-				 * End of file: stop here unless the top line 
+				 * End of file: stop here unless the top line
 				 * is still empty, or "force" is true.
 				 * Even if force is true, stop when the last
 				 * line in the file reaches the top of screen.
@@ -252,7 +252,7 @@ forw(n, pos, force, only_last, nblank)
 		 * start the display after the beginning of the file,
 		 * and it is not appropriate to squish in that case.
 		 */
-		if (first_time && pos == NULL_POSITION && !top_scroll && 
+		if (first_time && pos == NULL_POSITION && !top_scroll &&
 #if TAGS
 		    tagoption == NULL &&
 #endif
@@ -401,7 +401,7 @@ backward(n, force, only_last)
 	if (pos == NULL_POSITION && (!force || position(BOTTOM) == 0))
 	{
 		eof_bell();
-		return;   
+		return;
 	}
 	back(n, pos, force, only_last);
 }

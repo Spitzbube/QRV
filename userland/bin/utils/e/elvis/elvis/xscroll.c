@@ -105,7 +105,7 @@ void x_sb_setstate(xw, newstate)
 	/* if there is no scrollbar, then ignore this */
 	if (xw->sb.w == 0)
 		return;
-		
+
 	/* if no change, then do nothing */
 	if (xw->sb.state == newstate)
 		return;

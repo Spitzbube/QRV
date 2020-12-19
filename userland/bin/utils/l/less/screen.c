@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,19 +29,19 @@
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice in the documentation and/or other materials provided with 
+ *    notice in the documentation and/or other materials provided with
  *    the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
- * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN 
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -252,9 +252,9 @@ extern char *tgoto();
 
 /*
  * Change terminal to "raw mode", or restore to "normal" mode.
- * "Raw mode" means 
+ * "Raw mode" means
  *	1. An outstanding read will complete on receipt of a single keystroke.
- *	2. Input is not echoed.  
+ *	2. Input is not echoed.
  *	3. On output, \n is mapped to \r\n.
  *	4. \t is NOT expanded into spaces.
  *	5. Signal-causing characters such as ctrl-C (interrupt),
@@ -274,7 +274,7 @@ raw_mode(on)
 	struct termios s;
 	static struct termios save_term;
 
-	if (on) 
+	if (on)
 	{
 		/*
 		 * Get terminal modes.
@@ -418,7 +418,7 @@ raw_mode(on)
 #endif
 #if MUST_SET_LINE_DISCIPLINE
 		/*
-		 * System's termios is broken; need to explicitly 
+		 * System's termios is broken; need to explicitly
 		 * request TERMIODISC line discipline.
 		 */
 		s.c_line = TERMIODISC;
@@ -717,7 +717,7 @@ scrsize()
 get_clock()
 {
 	clock_t start;
-	
+
 	/*
 	 * Get synchronized at the start of a tick.
 	 */
@@ -753,7 +753,7 @@ delay(msec)
 	int msec;
 {
 	long i;
-	
+
 	while (msec-- > 0)
 	{
 		for (i = 0;  i < msec_loops;  i++)
@@ -854,7 +854,7 @@ static int sz_kfcmdtable = sizeof(kfcmdtable) - 1;
 		put_ecmd(s, EC_RIGHT);
 		put_esc_ecmd(s, EC_W_RIGHT);
 	}
-	
+
 	/* LEFT ARROW */
 	sp = tbuf;
 	if ((s = ltgetstr("kl", &sp)) != NULL)
@@ -862,18 +862,18 @@ static int sz_kfcmdtable = sizeof(kfcmdtable) - 1;
 		put_ecmd(s, EC_LEFT);
 		put_esc_ecmd(s, EC_W_LEFT);
 	}
-	
+
 	/* UP ARROW */
 	sp = tbuf;
-	if ((s = ltgetstr("ku", &sp)) != NULL) 
+	if ((s = ltgetstr("ku", &sp)) != NULL)
 	{
 		put_ecmd(s, EC_UP);
 		put_fcmd(s, A_B_LINE);
 	}
-		
+
 	/* DOWN ARROW */
 	sp = tbuf;
-	if ((s = ltgetstr("kd", &sp)) != NULL) 
+	if ((s = ltgetstr("kd", &sp)) != NULL)
 	{
 		put_ecmd(s, EC_DOWN);
 		put_fcmd(s, A_F_LINE);
@@ -881,35 +881,35 @@ static int sz_kfcmdtable = sizeof(kfcmdtable) - 1;
 
 	/* PAGE UP */
 	sp = tbuf;
-	if ((s = ltgetstr("kP", &sp)) != NULL) 
+	if ((s = ltgetstr("kP", &sp)) != NULL)
 	{
 		put_fcmd(s, A_B_SCREEN);
 	}
 
 	/* PAGE DOWN */
 	sp = tbuf;
-	if ((s = ltgetstr("kN", &sp)) != NULL) 
+	if ((s = ltgetstr("kN", &sp)) != NULL)
 	{
 		put_fcmd(s, A_F_SCREEN);
 	}
-	
+
 	/* HOME */
 	sp = tbuf;
-	if ((s = ltgetstr("kh", &sp)) != NULL) 
+	if ((s = ltgetstr("kh", &sp)) != NULL)
 	{
 		put_ecmd(s, EC_HOME);
 	}
 
 	/* END */
 	sp = tbuf;
-	if ((s = ltgetstr("@7", &sp)) != NULL) 
+	if ((s = ltgetstr("@7", &sp)) != NULL)
 	{
 		put_ecmd(s, EC_END);
 	}
 
 	/* DELETE */
 	sp = tbuf;
-	if ((s = ltgetstr("kD", &sp)) == NULL) 
+	if ((s = ltgetstr("kD", &sp)) == NULL)
 	{
 		/* Use DEL (\177) if no "kD" termcap. */
 		tbuf[1] = '\177';
@@ -918,7 +918,7 @@ static int sz_kfcmdtable = sizeof(kfcmdtable) - 1;
 	}
 	put_ecmd(s, EC_DELETE);
 	put_esc_ecmd(s, EC_W_DELETE);
-		
+
 	/* BACKSPACE */
 	tbuf[0] = ESC;
 	tbuf[1] = erase_char;
@@ -1019,16 +1019,16 @@ get_term()
 	con_out = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	GetConsoleScreenBufferInfo(con_out, &scr);
-	ReadConsoleOutputAttribute(con_out, &curr_attr, 
+	ReadConsoleOutputAttribute(con_out, &curr_attr,
 					1, scr.dwCursorPosition, &nread);
 	sy_bg_color = (curr_attr & BG_COLORS) >> 4; /* normalize */
 	sy_fg_color = curr_attr & FG_COLORS;
 
 	/*
-	 * If we use the default bg colors, for some as-yet-undetermined 
-	 * reason, when you scroll the text colors get messed up in what 
-	 * seems to be a random manner. Portions of text will be in 
-	 * nm_bg_color but the remainder of that line (which was fine 
+	 * If we use the default bg colors, for some as-yet-undetermined
+	 * reason, when you scroll the text colors get messed up in what
+	 * seems to be a random manner. Portions of text will be in
+	 * nm_bg_color but the remainder of that line (which was fine
 	 * before the scroll) will now appear in sy_bg_color. Too strange!
 	 */
 	nm_bg_color = sy_bg_color;
@@ -1126,7 +1126,7 @@ get_term()
 		 * Disable highlighting by default on magic cookie terminals.
 		 * Turning on highlighting might change the displayed width
 		 * of a line, causing the display to get messed up.
-		 * The user can turn it back on with -g, 
+		 * The user can turn it back on with -g,
 		 * but she won't like the results.
 		 */
 		hilite_search = 0;
@@ -1149,7 +1149,7 @@ get_term()
 	sc_e_keypad = ltgetstr("ke", &sp);
 	if (sc_e_keypad == NULL)
 		sc_e_keypad = "";
-		
+
 	sc_init = ltgetstr("ti", &sp);
 	if (sc_init == NULL)
 		sc_init = "";
@@ -1183,7 +1183,7 @@ get_term()
 	if (sc_move == NULL || *sc_move == '\0')
 	{
 		/*
-		 * This is not an error here, because we don't 
+		 * This is not an error here, because we don't
 		 * always need sc_move.
 		 * We need it only if we don't have home or lower-left.
 		 */
@@ -1303,7 +1303,7 @@ cost(t)
 
 /*
  * Return the "best" of the two given termcap strings.
- * The best, if both exist, is the one with the lower 
+ * The best, if both exist, is the one with the lower
  * cost (see cost() function).
  */
 	static char *
@@ -1357,7 +1357,7 @@ tmodes(incap, outcap, instr, outstr, def_instr, def_outstr, spp)
 
 
 /*
- * Below are the functions which perform all the 
+ * Below are the functions which perform all the
  * terminal-specific screen manipulation.
  */
 
@@ -1390,7 +1390,7 @@ initcolor()
 	char *blanks;
 	int row;
 	int col;
-	
+
 	/*
 	 * Create a complete, blank screen using "normal" colors.
 	 */
@@ -1547,7 +1547,7 @@ create_flash()
 	struct videoconfig w;
 	char *blanks;
 	int row, col;
-	
+
 	_getvideoconfig(&w);
 	videopages = w.numvideopages;
 	if (videopages < 2)
@@ -1572,7 +1572,7 @@ create_flash()
 #if MSDOS_COMPILER==BORLANDC
 	register int n;
 
-	whitescreen = (unsigned short *) 
+	whitescreen = (unsigned short *)
 		malloc(sc_width * sc_height * sizeof(short));
 	if (whitescreen == NULL)
 		return;
@@ -1632,7 +1632,7 @@ vbell()
 		create_flash();
 	if (whitescreen == NULL)
 		return;
-	currscreen = (unsigned short *) 
+	currscreen = (unsigned short *)
 		malloc(sc_width * sc_height * sizeof(short));
 	if (currscreen == NULL)
 		return;
@@ -1650,11 +1650,11 @@ vbell()
 		create_flash();
 	if (whitescreen == NULL)
 		return;
-	currscreen = (WORD *) 
+	currscreen = (WORD *)
 		malloc(sc_width * sc_height * sizeof(WORD));
 	if (currscreen == NULL)
 		return;
-	ReadConsoleOutputAttribute(con_out, currscreen, 
+	ReadConsoleOutputAttribute(con_out, currscreen,
 				sc_height * sc_width, TOPLEFT, &nread);
 	WriteConsoleOutputAttribute(con_out, whitescreen,
 				sc_height * sc_width, TOPLEFT, &nread);
@@ -1711,9 +1711,9 @@ clear()
     {
 	DWORD nchars;
 	curr_attr = MAKEATTR(nm_fg_color, nm_bg_color);
-	FillConsoleOutputCharacter(con_out, ' ', 
+	FillConsoleOutputCharacter(con_out, ' ',
 			sc_width * sc_height, TOPLEFT, &nchars);
-	FillConsoleOutputAttribute(con_out, curr_attr, 
+	FillConsoleOutputAttribute(con_out, curr_attr,
 			sc_width * sc_height, TOPLEFT, &nchars);
     }
 #else
@@ -1736,7 +1736,7 @@ clear_eol()
 	short top, left;
 	short bot, right;
 	struct rccoord tpos;
-	
+
 	flush();
 	/*
 	 * Save current state.
@@ -1828,7 +1828,7 @@ so_exit()
 }
 
 /*
- * Begin "underline" (hopefully real underlining, 
+ * Begin "underline" (hopefully real underlining,
  * otherwise whatever the terminal provides).
  */
 	public void
@@ -1913,14 +1913,14 @@ bl_exit()
 }
 
 /*
- * Erase the character to the left of the cursor 
+ * Erase the character to the left of the cursor
  * and move the cursor left.
  */
 	public void
 backspace()
 {
 #if !MSDOS_COMPILER
-	/* 
+	/*
 	 * Erase the previous character by overstriking with a space.
 	 */
 	tputs(sc_backspace, 1, putchr);
@@ -1929,7 +1929,7 @@ backspace()
 #else
 #if MSDOS_COMPILER==MSOFTC
 	struct rccoord tpos;
-	
+
 	flush();
 	tpos = _gettextposition();
 	if (tpos.col <= 1)
@@ -2018,7 +2018,7 @@ win32_kbhit(tty)
 		if (read == 0)
 			return FALSE;
 		ReadConsoleInput(tty, &ip, 1, &read);
- 
+
 		if (ip.EventType == KEY_EVENT &&
 		    ip.Event.KeyEvent.bKeyDown == TRUE &&
 		    ip.Event.KeyEvent.wVirtualScanCode != 0)
@@ -2028,7 +2028,7 @@ win32_kbhit(tty)
 			    ip.Event.KeyEvent.wVirtualKeyCode == VK_CONTROL ||
 			    ip.Event.KeyEvent.wVirtualKeyCode == VK_MENU)
 				continue;
-			
+
 			currentKey.ascii = ip.Event.KeyEvent.uChar.AsciiChar;
 			currentKey.scan = ip.Event.KeyEvent.wVirtualScanCode;
 			keyCount = ip.Event.KeyEvent.wRepeatCount;
@@ -2054,8 +2054,8 @@ WIN32getch(tty)
 	keyCount --;
 	ascii = currentKey.ascii;
 	/*
-	 * On PC's, the extended keys return a 2 byte sequence beginning 
-	 * with '00', so if the ascii code is 00, the next byte will be 
+	 * On PC's, the extended keys return a 2 byte sequence beginning
+	 * with '00', so if the ascii code is 00, the next byte will be
 	 * the lsb of the scan code.
 	 */
 	pending_scancode = (ascii == 0x00);

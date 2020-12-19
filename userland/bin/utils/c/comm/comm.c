@@ -37,10 +37,10 @@ sort utility). With no options, 3 columns are produced:
 	  with minor tweaks to build on QNX6.
 	PR: 19760.
 	CI: seanb
-	
+
 	Revision 1.1  2003/10/27 14:35:53  hsbrown
 	Moving utils back to QNX4 CVS.
-	
+
 	Revision 1.8  1997/02/10 19:41:09  eric
 	removed conditional compilation around historical qnx2-style code
 
@@ -66,7 +66,7 @@ sort utility). With no options, 3 columns are produced:
  * Revision 1.1  1991/09/03  16:25:40  ajedgar
  * Initial revision
  *
-	
+
 ---------------------------------------------------------------------*/
 
 
@@ -148,7 +148,7 @@ main (int argc, char **argv)
 	int i1 = 1, i2 = 2, res;
 	char *fname1, *fname2;
 	char read1, read2;
-	
+
 	res = 0; /* Silence gcc */
 	/*	Parse command line arguments */
 	error = 0;
@@ -291,4 +291,4 @@ open_file (char *fname)
 	}
 	return(fp);
 }
-	
+

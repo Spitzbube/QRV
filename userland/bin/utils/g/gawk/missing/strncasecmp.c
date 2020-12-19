@@ -29,7 +29,7 @@ static char sccsid[] = "@(#)strcasecmp.c	5.6 (Berkeley) 6/27/88";
 #ifdef C
 #undef C
 #endif
-#define C(c) ((u_char)c)  
+#define C(c) ((u_char)c)
 /*
  * This array is designed for mapping upper and lower case letter
  * together for a case independent comparison.  The mappings are

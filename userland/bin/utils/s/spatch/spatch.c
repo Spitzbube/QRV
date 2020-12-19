@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -360,7 +360,7 @@ char argc, *argv[];
 		n = ((argc-optind) >= 2 && (strequal(argv[optind],"file") || strequal(argv[optind],"FILE"))) ? 1 : 0;
 		if( (optind+n+1) < argc )
 			offptr = argv[optind+n+1];
-	
+
 		fn = argv[optind+n];
 #ifdef FSYS_STAT_SUPPORTED
 		if( fsys_stat(fn, &fst) == (-1) ) {
@@ -378,7 +378,7 @@ char argc, *argv[];
 				exit( EXIT_FAILURE );
 				}
 			if( S_ISDIR(stats.st_mode) ) {
-				/* 
+				/*
 				 This will only allow the user to look at the returned
 				 stat information but some people might be interested
 				 in that information.
@@ -404,7 +404,7 @@ char argc, *argv[];
 */
 			}
 #endif
-	
+
 		if( (fd = open(fn, perms)) == -1 ) {
 			term_cur( term_state.num_rows - 1, 0 );
 			term_clear( TERM_CLS_EOL );
@@ -413,12 +413,12 @@ char argc, *argv[];
 			perror( buffer );
 			exit( EXIT_FAILURE );
 			}
-	
+
 #ifdef FSYS_STAT_SUPPORTED
 		if( dn != NULL )
 			build_xblk_list();				/* blocks from the xblock lists */
 #endif
-	
+
 		fstat( fd, &stats );
 		if( block = S_ISBLK(stats.st_mode) )
 		{
@@ -434,7 +434,7 @@ char argc, *argv[];
 			strcpy( filenm, "FILE: " );
 			menu = (browseFLAG) ? restricted_menu : cmds_menu;
 		}
-	
+
 		if( (n = strlen(fn)) < 72 )
 			strcat( filenm, fn );
 		else {
@@ -452,7 +452,7 @@ char argc, *argv[];
 				strcat( filenm, basename(dn) );
 			}
 		}
-	
+
 		if( found ) {
 			term_flush();
 			term_cur( term_state.num_rows - 1, 0 );
@@ -561,7 +561,7 @@ char argc, *argv[];
 		case 'p':
 			check_dirty();
 			inc_offset(&offset,-256);
-			if (compare_offset(offset,file_base)<0) 
+			if (compare_offset(offset,file_base)<0)
 				offset = file_base;
 			get_buffer(buffer, offset);
 			display(buffer, offset);
@@ -588,7 +588,7 @@ void show_error(int error)
 	term_cur(ERRORline,0);
 	term_clear(1);
 	if (error==EOK) return;
-	
+
 	sprintf(errorbuf,"ERROR: %s\n",strerror(errno));
 	term_type(ERRORline,0,errorbuf,0,TERM_INVERSE);
 }
@@ -785,7 +785,7 @@ get_buffer(char *buffer, offset_t offset)
 	dirty = 0;
 
 	buffer_errno=EOK;
-	
+
 //  zzx
 //  fprintf(stderr,"get_buffer(*buf, %d:%d)\n",offset.blk,offset.off);
 
@@ -1061,7 +1061,7 @@ find_pattern() {
 					break;
 					}
 				if((offset.off & 0x100) == 0)
-					{                  
+					{
 					put_addr(PRMTline, 0, offset, ':');
 					term_flush();
 					}
@@ -1180,7 +1180,7 @@ donesave: ;
 		}
 	}
 
-                             
+
 void savemarked( int type, char *descr ) {
 	_offval_t	 l, o, lastreal = lastblk.blk+(lastblk.off / 512L);
 	int		 i;
@@ -1335,7 +1335,7 @@ void link_1(int type, long first, long fsize, long xblk)
 		errmsg( "", "invalid file system (see documentation on 'dinit -r'): file not linked" );
 		return;
 		}
-                          
+
 	rootdir = ENDIAN_DADDR_T(ie->d_inode.i_first_xtnt.xtnt_blk);	/* locate for later use */
 
 	ie += 4;							/* lost+found inode in QNX4FS_ROOT_BLOCK */
@@ -1593,7 +1593,7 @@ void do_copy( int type, long blk, char *buf )
 		if( (fp = fopen(p, (type == APPENDtype) ? "a" : "w")) == NULL )
 			errmsg( p, strerror(errno) );
 		} while( fp == NULL );
-	
+
 	if( blk == 0L )
 		copy_1(fp, mark, emark);
 	else if( blk = prepXblk(blk, buf) ) {
@@ -1756,7 +1756,7 @@ int  compare_offset(offset_t a, offset_t b)
 
 	b_norm.blk = b.blk+b.off/512;
 	b_norm.off = b.off%512;
-       
+
 	/* if a>b, return 1 ;  if a<b, return -1 ;  if a==b, return 0 */
 #if 0
 	fprintf(stderr,"comparing %lld:%lld to %lld:%lld\n",
@@ -1775,7 +1775,7 @@ int  compare_offset(offset_t a, offset_t b)
 	return 0;
 }
 
-void   inc_offset(offset_t *ptr, _offval_t n) 
+void   inc_offset(offset_t *ptr, _offval_t n)
 {
 
 // fprintf(stderr,"incrementing %lld:%lld by %lld\n",(long long)ptr->blk,(long long)ptr->off,(long long)n);
@@ -1798,5 +1798,5 @@ void   inc_offset(offset_t *ptr, _offval_t n)
 }
 
 
-		
+
 

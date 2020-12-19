@@ -222,16 +222,16 @@ main(argc, argv)
 	 * The following is a work around for vhangup interactions
 	 * which cause great problems getting window systems started.
 	 * If the tty line is "-", we do the old style getty presuming
-	 * that the file descriptors are already set up for us. 
+	 * that the file descriptors are already set up for us.
 	 * J. Gettys - MIT Project Athena.
 	 */
 	if (argc <= 2 || strcmp(argv[2], "-") == 0) {
 	    char *tty = ttyname(0);
-	    if (tty == NULL) {	
+	    if (tty == NULL) {
 		    syslog(LOG_ERR, "%s: %s", __progname, strerror(errno));
 		    exit(EXIT_FAILURE);
 	    }
-		
+
 	    strncpy(ttyn, tty, 32);
 	    ttyn[31] = (char)NULL;
 	}
@@ -407,7 +407,7 @@ getname()
 	char *np;
 	unsigned char cs;
 	int ppp_state, ppp_connection;
-	
+
 	/*
 	 * Interrupt may happen if we use CBREAK mode
 	 */

@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,19 +29,19 @@
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice in the documentation and/or other materials provided with 
+ *    notice in the documentation and/or other materials provided with
  *    the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
- * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN 
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -87,7 +87,7 @@ dirfile(dirname, filename)
 	/*
 	 * Construct the full pathname.
 	 */
-	pathname = (char *) calloc(strlen(dirname) + strlen(filename) + 2, 
+	pathname = (char *) calloc(strlen(dirname) + strlen(filename) + 2,
 					sizeof(char));
 	if (pathname == NULL)
 		return (NULL);
@@ -164,7 +164,7 @@ fexpand(s)
 	 (c) == '#' ? old_ifile : NULL_IFILE)
 
 	/*
-	 * Make one pass to see how big a buffer we 
+	 * Make one pass to see how big a buffer we
 	 * need to allocate for the expanded string.
 	 */
 	n = 0;
@@ -254,8 +254,8 @@ fcomplete(s)
 	/*
 	 * But in DOS, we have to glob "s*.*".
 	 * But if the final component of the filename already has
-	 * a dot in it, just do "s*".  
-	 * (Thus, "FILE" is globbed as "FILE*.*", 
+	 * a dot in it, just do "s*".
+	 * (Thus, "FILE" is globbed as "FILE*.*",
 	 *  but "FILE.A" is globbed as "FILE.A*").
 	 */
 	{
@@ -341,8 +341,8 @@ readfd(fd)
 	int ch;
 	char *buf;
 	char *p;
-	
-	/* 
+
+	/*
 	 * Make a guess about how many chars in the string
 	 * and allocate a buffer to hold it.
 	 */
@@ -386,9 +386,9 @@ shellcmd(cmd, s1, s2)
 	char *shell;
 	FILE *fd;
 	int len;
-	
-	len = strlen(cmd) + 
-		(s1 == NULL ? 0 : strlen(s1)) + 
+
+	len = strlen(cmd) +
+		(s1 == NULL ? 0 : strlen(s1)) +
 		(s2 == NULL ? 0 : strlen(s2)) + 1;
 	scmd = (char *) ecalloc(len, sizeof(char));
 	sprintf(scmd, cmd, s1, s2);
@@ -459,7 +459,7 @@ lglob(filename)
 	 * Certain characters will cause problems if passed to the shell,
 	 * so we disallow them.
 	 * {{ This presumes too much knowlege about the shell, but not
-	 *    doing this can cause serious problems.  For example, do 
+	 *    doing this can cause serious problems.  For example, do
 	 *    "!;TAB" when the first file in the dir is named "rm". }}
 	 */
 	for (s = filename;  *s != '\0';  s++)
@@ -491,7 +491,7 @@ lglob(filename)
 }
 
 /*
- * See if we should open a "replacement file" 
+ * See if we should open a "replacement file"
  * instead of the file we're about to open.
  */
 	public char *
@@ -506,7 +506,7 @@ open_altfile(filename, pf, pfd)
 #if HAVE_FILENO
 	int returnfd = 0;
 #endif
-	
+
 	if (secure)
 		return (NULL);
 	ch_ungetchar(-1);
@@ -517,7 +517,7 @@ open_altfile(filename, pf, pfd)
 	if (*lessopen == '|')
 	{
 		/*
-		 * If LESSOPEN starts with a |, it indicates 
+		 * If LESSOPEN starts with a |, it indicates
 		 * a "pipe preprocessor".
 		 */
 #if HAVE_FILENO
@@ -582,7 +582,7 @@ close_altfile(altfilename, filename, pipefd)
 {
 	char *lessclose;
 	FILE *fd;
-	
+
 	if (secure)
 		return;
 	if (pipefd != NULL)
@@ -592,7 +592,7 @@ close_altfile(altfilename, filename, pipefd)
 	fd = shellcmd(lessclose, filename, altfilename);
 	pclose(fd);
 }
-		
+
 #else
 #if MSDOS_COMPILER
 
@@ -609,7 +609,7 @@ close_altfile(altfilename, filename, pipefd)
 					char drive[MAXDRIVE];	\
 					char dir[MAXDIR];	\
 					char fname[MAXFILE];	\
-					char ext[MAXEXT];	
+					char ext[MAXEXT];
 
 #else
 
@@ -621,10 +621,10 @@ close_altfile(altfilename, filename, pipefd)
 					char drive[_MAX_DRIVE];	\
 					char dir[_MAX_DIR];	\
 					char fname[_MAX_FNAME];	\
-					char ext[_MAX_EXT];	
+					char ext[_MAX_EXT];
 
 #endif
-	
+
 	public char *
 lglob(filename)
 	char *filename;
@@ -634,7 +634,7 @@ lglob(filename)
 	register int len;
 	register int n;
 	DECLARE_FIND(fnd,drive,dir,fname,ext)
-	
+
 	filename = fexpand(filename);
 
 	if (secure)
@@ -687,7 +687,7 @@ close_altfile(altfilename, filename)
 	char *filename;
 {
 }
-		
+
 #else
 
 	public char *
@@ -697,7 +697,7 @@ lglob(filename)
 	return (fexpand(filename));
 }
 
-	
+
 	public char *
 open_altfile(filename)
 	char *filename;
@@ -711,7 +711,7 @@ close_altfile(altfilename, filename)
 	char *filename;
 {
 }
-		
+
 #endif
 #endif
 
@@ -747,7 +747,7 @@ bad_file(filename)
 	if (S_ISDIR(statbuf.st_mode))
 	{
 		static char is_dir[] = " is a directory";
-		m = (char *) ecalloc(strlen(filename) + sizeof(is_dir), 
+		m = (char *) ecalloc(strlen(filename) + sizeof(is_dir),
 			sizeof(char));
 		strcpy(m, filename);
 		strcat(m, is_dir);
@@ -756,7 +756,7 @@ bad_file(filename)
 	if (!S_ISREG(statbuf.st_mode))
 	{
 		static char not_reg[] = " is not a regular file";
-		m = (char *) ecalloc(strlen(filename) + sizeof(not_reg), 
+		m = (char *) ecalloc(strlen(filename) + sizeof(not_reg),
 			sizeof(char));
 		strcpy(m, filename);
 		strcat(m, not_reg);

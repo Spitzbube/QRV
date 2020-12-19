@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -220,7 +220,7 @@ gen_file(char *prefix, int revno, int ndigits)
  * A NULL expression means match any pattern, this is used for
  * splitting a fixed section. (ie. csplit X 24 {99}) makes up to
  * 99 sections of 24 lines.
- * 
+ *
  * Opdup makes a copy of an opcode.
  * Opexpr makes an expression opcode from a string.
  * Opnlines makes an nlines opcode from a string.
@@ -430,14 +430,14 @@ one_pass(FILE *f, SplitOp * list)
 	g = gen_file(prefix, fileno++, ndigits);
 	nwritten = 0;
 
-#ifndef NDEBUG 
+#ifndef NDEBUG
 	debug("splitting to '%s'\n", list->argstr);
 #endif
 	while (1) {
 		if (need_input) {
 			if (fgets(bufp, sizeof(bufp - 1), f) == NULL) {
 				fclose(g);
-				break;	
+				break;
 			}
 			need_input = 0;
 		}
@@ -453,7 +453,7 @@ one_pass(FILE *f, SplitOp * list)
 				nwritten += strlen(bufp);
 				need_input = 1;
 			}
-			break;	
+			break;
 		case 1:
 			if (ncopy++ >= list->n) {
 				if (verbose && list->copy) {
@@ -473,7 +473,7 @@ one_pass(FILE *f, SplitOp * list)
 					fputs(bufp, g);
 					nwritten += strlen(bufp);
 				}
-				need_input = 1;	
+				need_input = 1;
 			}
 			break;
 		case 2:
@@ -501,7 +501,7 @@ npass(FILE *f, SplitOp * list)
 	setvbuf(f, 0, _IOFBF, BUFLEN);
 	g = gen_file(prefix, fileno++, ndigits);
 
-#ifndef NDEBUG 
+#ifndef NDEBUG
 	debug("splitting to '%s'\n", list->argstr);
 #endif
 	for (; list && !feof(f); list=list->next) {

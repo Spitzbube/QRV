@@ -118,7 +118,7 @@ int ttyread(buf, len, timeout)
 
 	/* Perform the read. */
 	bytes = read(ttykbd, buf, (unsigned)len);
-	
+
 	/* set the tty back to ordinary raw mode */
 	ioctl(ttykbd, TCSETA, &oldt);
 

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -61,14 +61,14 @@ int     fd = -1;
 int     got_syn;
 
 void sighangup(int i) {
-    i=i; 
+    i=i;
     delete_file();
     signal(SIGHUP, SIG_DFL);
     raise(SIGHUP);
     }
 
 /* QCP receives file names, so command line names don't matter.         */
-#if defined(__WATCOMC__) 
+#if defined(__WATCOMC__)
 #pragma off(unreferenced)
 #endif
 void
@@ -197,7 +197,7 @@ int rcv() {
 			proto_ungetc( c );
 			}
 		    continue;
-			    
+
 		case SOH:                           /* Data frame           */
 #ifdef DIAG
 	fprintf(stderr,"rcv(): got SYN SOH (data frame)\r\n");

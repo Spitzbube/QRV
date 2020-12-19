@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -94,7 +94,7 @@ void
 confstr_cache_attach( void )
 {
 	struct sigevent _confstr_event;
-	
+
 	SIGEV_THREAD_INIT( &_confstr_event, _confstr_invalidate_thread, NULL, NULL );
 
 	(void)procmgr_event_notify(PROCMGR_EVENT_CONFSTR, &_confstr_event );
@@ -112,12 +112,12 @@ size_t confstr(int name, char *buff, size_t len) {
 			/* confstr() returns 0 on error, so bump up this
 			   return code by 1 (return derived from a MsgSend())
 			   to get an error code which makes sense when setting */
-			return sysmgr_confstr_set(_CONF_STICKY, name & ~_CS_SET, buff) +1; 
+			return sysmgr_confstr_set(_CONF_STICKY, name & ~_CS_SET, buff) +1;
 		}
 		errno = EINVAL;
 		return 0;
 	}
-	
+
 	if ( (err = pthread_mutex_lock( &_confstr_list_mutex )) != EOK ) {
 		errno = err;
 		return 0;

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -96,21 +96,21 @@ in the total sum.
 	Since there are many more with this same assumption, and the disk
 	utilities already explicity use the new stat fields, I am going to
 	hit iofunc_stat() in the libc to bring it to match old QNX4 behaviour.
-	
+
 	Revision 1.20  2003/10/13 07:31:17  jgarvey
 	Like "ls", "du" also made assumptions about S_ISBLK st_size units
 	(512-bytes for QNX4, but st_blocksize for QNX6), so use the new
 	field st_blocks which is defined to be in 512-byte units.
-	
+
 	Revision 1.19  2003/08/21 21:43:42  martin
 	Update QSSL Copyright.
-	
+
 	Revision 1.18  1999/08/13 21:26:13  adrianj
 	Added an ignored -r option for POSIX.  -r is already default behavior.
-	
+
 	Revision 1.17  1998/09/15 19:50:53  eric
 	cvs
-	
+
 	Revision 1.16  1998/04/16 20:11:31  eric
 	fixed bug where if last file in a dir was a hard link (links>1),
 	the directory itself would be skipped after the last item was
@@ -169,7 +169,7 @@ in the total sum.
  *
 
 	$Author: sboucher $
-	
+
 ---------------------------------------------------------------------*/
 
 /*--------------------------------------------------------- USAGE MESSAGE ----*/
@@ -225,7 +225,7 @@ int main( int argc, char *argv[] )
 #ifndef __QNXNTO__
 #define EXTENT_OPTION "i"
 #else
-#define EXTENT_OPTION 
+#define EXTENT_OPTION
 #endif
 
 	while( ( i = getopt( argc, argv, "rakpqsx" EXTENT_OPTION ) ) != -1 ) {
@@ -238,7 +238,7 @@ int main( int argc, char *argv[] )
 			case 's':	sflag = TRUE;		break;	/* only total sum for each cmd line file/dir*/
 			case 'x':	span_devices = FALSE;	break;
 			case 'r':	break; /* POSIX.2: specifies default behavior */
-			default:	nerrors++;			break;	
+			default:	nerrors++;			break;
 			}
 		}
 
@@ -304,7 +304,7 @@ unsigned long process(char *name, int root )
 	errno=0;
 	if ( lstat( name, Stat ) == -1 ) {
 		if ( !qflag ) fprintf( stderr, TXT( T_NO_STAT ), name, errno, strerror(errno) );
-		return 0L;	
+		return 0L;
 	}
 
 #ifndef __QNXNTO__
@@ -345,7 +345,7 @@ unsigned long process(char *name, int root )
 			/* avoid backing up to parent directory!! */
 			if ( strcmp( Dirent->d_name, ".." ) == 0 ) continue;
 
-			/* '.' is still making it through here. Is that right? 
+			/* '.' is still making it through here. Is that right?
 			   Yes. We need to count the size allocated for the directory itself. (EJ) */
 
 			/* remove any single trailing / from the name of the directory */
@@ -431,7 +431,7 @@ unsigned long process(char *name, int root )
 					} while( dir[strlen(dir)-1] == '/' );
 				} else {
 				/* else we're processing . and we should count the size of this
-				   directory. note xtnts+60 not 61 because 1st xtent has no overhead 
+				   directory. note xtnts+60 not 61 because 1st xtent has no overhead
                    (is part of dir entry) */
 					dirtotal += (
 									((Stat->st_size+511)/512)
@@ -463,7 +463,7 @@ unsigned long process(char *name, int root )
 						/* show thissize * 512. dirtotal may be up to ULONG_MAX before
 			               being multiplied. Must use floats. */
 						double d;
-			
+
 						d=thissize;
 						d*=512.0;
 						printf( TXT( T_FLOAT ), d, fname );
@@ -476,7 +476,7 @@ unsigned long process(char *name, int root )
 			}
 			errno=0;
 		}
-	
+
 		if (errno) {
 			fprintf(stderr,"du: readdir of %s failed (%s)\n",name,strerror(errno));
 		}
@@ -557,4 +557,4 @@ unsigned long process(char *name, int root )
 	}
 	return( dirtotal );
 }
-	
+

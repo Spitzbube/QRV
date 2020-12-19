@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,19 +29,19 @@
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice in the documentation and/or other materials provided with 
+ *    notice in the documentation and/or other materials provided with
  *    the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
- * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN 
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -124,7 +124,7 @@ static int ch_addbuf();
 /*
  * Get the character pointed to by the read pointer.
  * ch_get() is a macro which is more efficient to call
- * than fch_get (the function), in the usual case 
+ * than fch_get (the function), in the usual case
  * that the block desired is at the head of the chain.
  */
 #define	ch_get()   ((ch_block == ch_bufhead->block && \
@@ -155,10 +155,10 @@ fch_get()
 			goto found;
 		}
 	/*
-	 * Block is not in a buffer.  
-	 * Take the least recently used buffer 
+	 * Block is not in a buffer.
+	 * Take the least recently used buffer
 	 * and read the desired block into it.
-	 * If the LRU buffer has data in it, 
+	 * If the LRU buffer has data in it,
 	 * then maybe allocate a new buffer.
 	 */
 	if (ch_buftail == END_OF_CHAIN || ch_buftail->block != (long)(-1))
@@ -223,7 +223,7 @@ fch_get()
 		n = 1;
 	} else
 	{
-		n = iread(ch_file, &bp->data[bp->datasize], 
+		n = iread(ch_file, &bp->data[bp->datasize],
 			(unsigned int)(LBUFSIZE - bp->datasize));
 	}
 
@@ -303,7 +303,7 @@ fch_get()
 }
 
 /*
- * ch_ungetchar is a rather kludgy and limited way to push 
+ * ch_ungetchar is a rather kludgy and limited way to push
  * a single char onto an input file descriptor.
  */
 	public void
@@ -619,7 +619,7 @@ ch_flush()
 #if 1
 	/*
 	 * This is a kludge to workaround a Linux kernel bug: files in
-	 * /proc have a size of 0 according to fstat() but have readable 
+	 * /proc have a size of 0 according to fstat() but have readable
 	 * data.  They are sometimes, but not always, seekable.
 	 * Force them to be non-seekable here.
 	 */
@@ -651,7 +651,7 @@ ch_addbuf()
 	register struct buf *bp;
 
 	/*
-	 * Allocate and initialize a new buffer and link it 
+	 * Allocate and initialize a new buffer and link it
 	 * onto the tail of the buffer list.
 	 */
 	bp = (struct buf *) calloc(1, sizeof(struct buf));
@@ -716,7 +716,7 @@ ch_init(f, flags)
 		/*
 		 * Allocate and initialize a new filestate.
 		 */
-		thisfile = (struct filestate *) 
+		thisfile = (struct filestate *)
 				calloc(1, sizeof(struct filestate));
 		thisfile->buf_next = thisfile->buf_prev = END_OF_CHAIN;
 		thisfile->buf_block = (long)(-1);
@@ -802,7 +802,7 @@ ch_dump(struct filestate *fs)
 		return;
 	}
 	printf(" file %d, flags %x, fpos %x, fsize %x, blk/off %x/%x\n",
-		fs->file, fs->flags, fs->fpos, 
+		fs->file, fs->flags, fs->fpos,
 		fs->fsize, fs->block, fs->offset);
 	printf(" %d bufs:\n", fs->nbufs);
 	for (bp = fs->buf_next; bp != (struct buf *)fs;  bp = bp->next)

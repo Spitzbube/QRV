@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -209,14 +209,14 @@ int main (int argc,char **argv)
 	}
 
 	first_index = optind;
-	last_index  = argc-2;   
+	last_index  = argc-2;
 	num_files	= last_index - first_index + 1;
 
 	if (num_files<1) {
 		fprintf(stderr,TXT(T_MISSING_OPERANDS));
 		error++;
 	}
-	
+
 	if (force_del && interactive) {
 		fprintf(stderr,TXT(T_NODASHFDASHI));
 		error++;
@@ -260,7 +260,7 @@ int main (int argc,char **argv)
 		/*
 		*	Symbolic links can link to _anything_, whether it exists or not. So
 		*	perform these checks only for hard links
-		*/				
+		*/
 		if (!symbolic && !prefix) {
 
 			/*
@@ -271,10 +271,10 @@ int main (int argc,char **argv)
 			if (stat(source,&statbuf)==-1) {
 				if (errno==ENOENT) prerror("%s %s",TXT(T_ERRMSG_PREFIX),source);
 				else prerror("%s %s",TXT(T_STAT_FAILED),source);
-				error++;	
+				error++;
 				continue;
 			}
-		
+
 #ifdef PROHIBIT_DIRECTORY_HARDLINKS
   			if (S_ISDIR(statbuf.st_mode)) {
 				/* src is a directory - can't do it */
@@ -288,7 +288,7 @@ int main (int argc,char **argv)
 		if (directory_target && !prefix) {
 			char *ptr;
 
-			strcat(dest,"//");		
+			strcat(dest,"//");
 
 			/* catenate basename portion of source to dest */
 			if ((ptr=strrchr(source,'/'))) strcat(dest,ptr+1);
@@ -316,7 +316,7 @@ int main (int argc,char **argv)
 
 		link_guy(source,dest);
 	} /* for each file */
-					
+
 	exit(error?EXIT_FAILURE:EXIT_SUCCESS);
 }
 
@@ -329,7 +329,7 @@ void link_guy (char *src, char *dst)
 	char answer[80];
 
 	/* this is only called with two paths to real files */
-	
+
 	errno = 0;
 
 	/* check for destination file existing and all that stuff */
@@ -348,7 +348,7 @@ void link_guy (char *src, char *dst)
 			/* if the files have the same ino, then they are the same file,
 			   i.e. are already a link to each other! */
 			if (statbufdst.st_ino == statbuf.st_ino) {
-				if (verbose) 
+				if (verbose)
 					fprintf(stderr,"ln: '%s' is already a link to '%s' - skipping\n",
 							purty(dst), src);
 				return;
@@ -394,7 +394,7 @@ void link_guy (char *src, char *dst)
 		else if (force_del){
 			pathmgr_unlink(dst);
 		}
-	  } 
+	  }
     } /* not ignore_exist */
 
 	if (verbose) {
@@ -423,12 +423,12 @@ void link_guy (char *src, char *dst)
 				fprintf(stderr,TXT(T_ON_DIFF_FILSYS),src,purty(dst));
 				break;
 
-			default:			
+			default:
 				prerror(TXT(T_THISORTHAT),src,purty(dst));
 				break;
 		}
 		error++;
-    } 
+    }
 }
 
 
@@ -454,7 +454,7 @@ char *purty (char *string)
 {
 	static char purtystr[BIG_FAT_BUFFER+1];
 	char *ptr=string, *prty = purtystr;
-		
+
 	/* copy over valid leading // only when not '///' */
 	if (ptr[0]=='/'&&ptr[1]=='/'&&ptr[2]!='/') {
 		*prty++=*ptr++;

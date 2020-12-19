@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -31,7 +31,7 @@
 #include <sys/procfs.h>
 
 /*
- * flags for dspinfo 
+ * flags for dspinfo
  */
 #define DONT_RECURSE	0x1
 #define DO_THREADS		0x2
@@ -104,7 +104,7 @@ struct thread_entry_
 
 struct shared_info {
 	/*
-	 * as infomation is gathered it is added here 
+	 * as infomation is gathered it is added here
 	 */
 	procfs_status	*status;
 	procfs_debuginfo *name;
@@ -130,7 +130,7 @@ struct shared_info {
 	} *memobjects;
 	unsigned int	num_memobjects;
 	unsigned int	next_memobject;
-	procfs_irq		*irqs; 
+	procfs_irq		*irqs;
 	int				num_irqs;
 	procfs_timer	*timers;
 	int				num_timers;
@@ -146,7 +146,7 @@ struct shared_info {
 		size_t		size;
 		char		*name;
 	} *coids;
-	int			num_coids;	
+	int			num_coids;
 };
 int				fill_status(int expectwarn, struct shared_info *i, int *tid, int fd);
 int				fill_name(struct shared_info *i, int fd);

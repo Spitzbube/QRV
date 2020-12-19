@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -20,27 +20,27 @@
 
 
 /*- $Id: fields.c 211815 2009-01-25 17:01:08Z rmansfield@qnx.com $
- 
- 
+
+
  description: This module contains routines used to manage the field
  descriptions for sort.  there are two processes - 1: transform the
  user-notation into	a more useful representation 2: given a string & the
  field specifications, generate a list of field positions within the
  string.
- 
- 
+
+
  static char *skip_to_field(char *s, int fieldno)
 
  Given a string and a fieldno, return a pointer to the
  beginning of the fieldno.  Return pointer to end-of-string
  if exhausted before fieldno.
- 
+
  static char *skip_prefix(char *s, int typeflags)
 
  Given a string and typeflags, return pointer to the first
  char we are 'interested' in s.  Return end-of-string if exhausted.
- 
- 
+
+
  compile_fields(char *s, int *fldtab)
 
  -using an internal store of field descriptions,
@@ -149,7 +149,7 @@ static char    *class_names[] = {
 		The first set of strings may be exchanged using 'set_escape_string'
 		function.  If they are set to NULL, no escape character mapping will
 		be attempted (although the octal & hex mapping are maintained).
-		The above string is scanned first, before looking for octal or hex	
+		The above string is scanned first, before looking for octal or hex
 		strings, so putting [xX0-9] in the key string should be used with
 		caution, as it will superseed scanning for the numeric sequences.
 
@@ -198,12 +198,12 @@ char	*p;
 		return -1;
 	return esc_rpl[p-esc_key];
 }
-	
+
 
 int stresc(char *s, char **update)
 {
 int		x;
-int		i = 0;	
+int		i = 0;
 int		c;
 int		ival;
 
@@ -214,12 +214,12 @@ int		ival;
 	}
 	/*	normal character, no escape. */
 	if (c != '\\') {
-		if (update)	
+		if (update)
 			*update = s;
 		return c;
 	}
 	if ((ival=rplexc(c=*s++)) > 0) {
-		if (update)		
+		if (update)
 			*update = s;
 		return ival;
 	}
@@ -229,8 +229,8 @@ int		ival;
 		ival = 0;
 		for (i=0; i < 2 && isxdigit(c=s[i]); i++)
 			ival = add_hex(ival,c <= '9' ? c-'0' : toupper(c)-'A'+10);
-		if (update)	*update = s+i;	
-		return i == 0 ? x : ival;		
+		if (update)	*update = s+i;
+		return i == 0 ? x : ival;
 	}
 	if (isdigit(c) && c < '8'){
 		s--;
@@ -249,7 +249,7 @@ int		ival;
 //#endif
 
 
-int 
+int
 newfs(char *fspec, int unique)
 {
 	int             class_id, i;
@@ -310,7 +310,7 @@ static struct fieldspec fieldtab[MAXFLDS];
 static int      global_flag = 0;
 
 
-int 
+int
 add_flag(int flag)
 {
 	char           *p;
@@ -321,7 +321,7 @@ add_flag(int flag)
 	return (global_flag |= 1 << (p - base));
 }
 
-int 
+int
 get_flags(int fldno)
 {
 	const struct fieldspec *fsp = fieldtab + fldno;
@@ -331,19 +331,19 @@ get_flags(int fldno)
 
 #define	GET_NFIELDS()	nfields
 
-int 
+int
 get_nfields(void)
 {
 	return GET_NFIELDS();
 }
 
-int 
+int
 alloc_field(void)
 {
 	return nfields < MAXFLDS ? nfields++ : -1;
 }
 
-int 
+int
 dealloc_field(void)
 {
 	return nfields ? --nfields : -1;
@@ -556,7 +556,7 @@ draft9_field(char *s)
 	if (debugging) {
 		fprintf(debugging,
 		"field [fno %d, start %d, type%x ... fno %d, end %d, type %x]\n",
-		fs->start[FLD_NO], fs->start[FLD_OFFS], fs->start[FLD_TYP], 
+		fs->start[FLD_NO], fs->start[FLD_OFFS], fs->start[FLD_TYP],
 		fs->end[FLD_NO], fs->end[FLD_OFFS], fs->end[FLD_TYP]);
 	}
 	return t;
@@ -621,7 +621,7 @@ new_field(char *s)
 	if (debugging) {
 		fprintf(debugging,
 		"field [fno %d, start %d, type%x ... fno %d, end %d, type %x]\n",
-		fs->start[FLD_NO], fs->start[FLD_OFFS], fs->start[FLD_TYP], 
+		fs->start[FLD_NO], fs->start[FLD_OFFS], fs->start[FLD_TYP],
 		fs->end[FLD_NO], fs->end[FLD_OFFS], fs->end[FLD_TYP]);
 	}
 	return t;
@@ -668,7 +668,7 @@ old_field(char *f0, char *f1)
 	}
 	if (debugging) {
 		fprintf(debugging, "field [fno %d, start %d, type=%x... fno %d, end %d, type %x]\n",
-			fs->start[FLD_NO], fs->start[FLD_OFFS], fs->start[FLD_TYP], 
+			fs->start[FLD_NO], fs->start[FLD_OFFS], fs->start[FLD_TYP],
 			fs->end[FLD_NO], fs->end[FLD_OFFS], fs->end[FLD_TYP]);
 	}
 	return count;

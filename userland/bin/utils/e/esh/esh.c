@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -95,11 +95,11 @@ Options:
 #ifdef EMBEDDED
 #define MAX_LINELEN		120
 #define MAX_TOKENLEN	400
-#define MAX_TOKENS		200		
+#define MAX_TOKENS		200
 #else
 #define MAX_LINELEN		1200
 #define MAX_TOKENLEN	8000
-#define MAX_TOKENS		800	
+#define MAX_TOKENS		800
 #define MAX_LINES		10
 #define MAX_ALIAS		20
 #endif
@@ -256,10 +256,10 @@ getarg:
 					get_laststat = 1;
 				} else {
 					for(s3 = s1; *s1 && *s1 != term; ++s1)
-					{	
-						// break on ':', '." and others 
+					{
+						// break on ':', '." and others
 						// non-alphanumeric characters PR5778
-						if ( !isalnum(*s1) && *s1 != '_'){ 
+						if ( !isalnum(*s1) && *s1 != '_'){
 							break;
 						}
 					}
@@ -394,7 +394,7 @@ getarg:
 			}
 #ifndef EMBEDDED
 
-		// Pipe. 
+		// Pipe.
 		else if(tokenv[n][0] == '|') {
 #ifdef VARIANT_socketpair
 			if(socketpair(AF_UNIX, SOCK_STREAM, 0, pfds)) {
@@ -439,7 +439,7 @@ getarg:
 					if(fnmatch(pat, dp->d_name, 1) == 0) {
 						int tlen;
 						tlen = strlen(stem)+strlen(dp->d_name)+2; /* 1 for / and 1 for null */
-						if ( (n<MAX_TOKENS)  && 
+						if ( (n<MAX_TOKENS)  &&
 						   (s2+tlen <= (tokenbuf+sizeof(tokenbuf) )) ){
 						    tokenv[n++] = strcpy(s2, stem);
 						    strcat(s2, "/");
@@ -450,7 +450,7 @@ getarg:
 		                                    errno = E2BIG; err=errno;
 						    break;
 						}
-						
+
 					}
 				}
 				closedir(dirp);
@@ -536,7 +536,7 @@ aliascmd(char *cmd, int query) {
 	}
 #endif
 
-	
+
 #ifdef FAT
 
 #ifndef __QNXNTO__
@@ -588,7 +588,7 @@ static int els_col;
 void
 print_els(char *fname, struct stat *sbuf) {
 
-	if(fname[0] == '.'  &&  fname[1] == '/') 
+	if(fname[0] == '.'  &&  fname[1] == '/')
 		fname += 2;
 
 	if(sbuf) {
@@ -597,7 +597,7 @@ print_els(char *fname, struct stat *sbuf) {
 #else
 		printf("%4.4o %6d %6d %8u %s\n",
 #endif
-			sbuf->st_mode & 0xfff, sbuf->st_uid, 
+			sbuf->st_mode & 0xfff, sbuf->st_uid,
 			sbuf->st_gid, sbuf->st_size, fname);
 	} else {
 		char format[8];
@@ -674,7 +674,7 @@ localcmd(void) {
 					printf("%s\n", alias[n]);
 			return(EOK);
 			}
-			
+
 		if((n = aliascmd(argv[1], 1)) == MAX_ALIAS)
 			for(n = 0 ; n < MAX_ALIAS ; ++n)	// Its a new one.
 				if(alias[n] == NULL)
@@ -889,7 +889,7 @@ dump_env:
 
 		if(argv[1]  &&  strcmp(argv[1], "-l") == 0) {
 			verbose = 1;
-			n = 2;	
+			n = 2;
 			}
 
 		if(argv[n] == NULL) {
@@ -991,12 +991,12 @@ dump_env:
 
 		// one arg is copied to stdout.
 		verbose = --n && !strcmp(argv[1], "-v");
-		if(n - verbose == 0) 
+		if(n - verbose == 0)
 			return(EINVAL);
 
 		// If not a directory check for less than 3 args and copy
 		if((stat(argv[n], &sbuf) == -1 || !S_ISDIR(sbuf.st_mode))) {
-			if(n - verbose > 2) 
+			if(n - verbose > 2)
 				return(ENOTDIR);
 			else
 				return ecp(argv[verbose + 1], argv[verbose + 2], verbose);
@@ -1010,7 +1010,7 @@ dump_env:
 			/*
 			 * Use only the filename portion of the from-file, and
 			 * append it to the to-dir.
-			 * 
+			 *
 			 * e.g.:
 			 *   # ecp dir1/dir2/file dir3
 			 *  is equivalent to:
@@ -1036,7 +1036,7 @@ dump_env:
 #ifndef __QNXNTO__
 	if(strcmp(argv[0], "esin") == 0) {
 		struct _psinfo data;
-		
+
 		for(n = 1 ; qnx_psinfo(0, n, &data, 0, 0) != -1 ; n = data.pid + 1)
 			if(data.flags & _PPF_MID)
 				printf("Proxy   %5d\n", data.pid);
@@ -1083,16 +1083,16 @@ dump_env:
 		errno = ENOENT;
 		if(!argv[1])
 			argv[1]=".";
-			
+
 		if(argv[1]  &&  (statvfs(argv[1], &buff)) != -1) {
 			fsblkcnt_t			used;
 
 			if(buff.f_frsize >= 1024) {
-				buff.f_blocks = buff.f_blocks * (buff.f_frsize / 1024); 
-				buff.f_bfree = buff.f_bfree * (buff.f_frsize / 1024); 
+				buff.f_blocks = buff.f_blocks * (buff.f_frsize / 1024);
+				buff.f_bfree = buff.f_bfree * (buff.f_frsize / 1024);
 			} else {
-				buff.f_blocks = buff.f_blocks / (1024 / buff.f_frsize); 
-				buff.f_bfree = buff.f_bfree / (1024 / buff.f_frsize); 
+				buff.f_blocks = buff.f_blocks / (1024 / buff.f_frsize);
+				buff.f_bfree = buff.f_bfree / (1024 / buff.f_frsize);
 			}
 			used = buff.f_blocks - buff.f_bfree;
 
@@ -1187,11 +1187,11 @@ int main(int argc, char *argv[]) {
 
 #ifdef CAN_PRETEND_LOGIN
 	if (!strcmp("login",basename(argv[0]))) {
-		islogin++;                                                             
+		islogin++;
 #ifndef EMBEDDED
 		login = 1;
 #endif
-    }        
+    }
 #endif
 
 	infp = stdin;
@@ -1439,7 +1439,7 @@ doit:
 				inherit.flags |= SPAWN_SETGROUP;
 				inherit.pgroup = SPAWN_NEWPGROUP;
 			}
-			
+
 			if(stackmax) {
 				inherit.flags |= SPAWN_SETSTACKMAX;
 				inherit.stack_max = stackmax;

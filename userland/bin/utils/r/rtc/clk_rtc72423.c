@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 
@@ -24,7 +24,7 @@
 
 
 /*
- * This is the version which deals with the FOX RTC-72423 part. 
+ * This is the version which deals with the FOX RTC-72423 part.
  */
 #include "rtc.h"
 
@@ -62,7 +62,7 @@
  1 seconds 10
  2 minutes 1
  3 minutes 10
- 4 hours 1 
+ 4 hours 1
  5 hours 10 & hour format
  6 day 1
  7 day 10
@@ -71,9 +71,9 @@
  A year 1
  B year 10
  C day of week (we set this up but do not use it)
- D command register 
+ D command register
  E interrup control
- F command register 
+ F command register
 
  */
 
@@ -83,7 +83,7 @@ RTCFUNC(init,rtc72423)(struct chip_loc *chip, char *argv[]) {
 		fprintf(stderr,"rtc: -b baseaddr must be specified for 72423 clock type\n");
 		return(-1);
 	}
-	if(chip->access_type == NONE) 
+	if(chip->access_type == NONE)
 			chip->access_type = IOMAPPED;
 	return(16);
 }
@@ -119,7 +119,7 @@ RTCFUNC(get,rtc72423)(struct tm *tm, int cent_reg) {
 
 	chip_write8(REG_D, 0);				/* HOLD=0 */
 
-	// convert BCD to binary 
+	// convert BCD to binary
 	tm->tm_sec	= BCD2BIN(seconds);
 	tm->tm_min	= BCD2BIN(minutes);
 	tm->tm_hour	= BCD2BIN(hours);

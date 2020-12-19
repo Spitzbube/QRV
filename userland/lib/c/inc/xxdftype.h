@@ -15,7 +15,7 @@
 
   #ifdef __QNX__
 #define FMIN		DBL_MIN
-  #endif  
+  #endif
 
  #if _IS_EMBEDDED
 #define FCPTYPE	double_complex

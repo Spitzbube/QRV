@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -100,7 +100,7 @@ ppc_v2p(uintptr_t vaddr, paddr64_t *paddrp, unsigned *lenp) {
 
 	pgsize = 0x1000;
 	switch(note->cpu_info) {
-	case PPC_FAMILY_booke: 
+	case PPC_FAMILY_booke:
 		pte._bke.paddr = endian_native32(pte._bke.paddr);
 		paddr = (pte._bke.paddr & ~0xfff) | ((paddr64_t)(pte._bke.paddr & 0xfff) << 32);
 		pte._bke.flags = endian_native32(pte._bke.flags);
@@ -122,7 +122,7 @@ ppc_v2p(uintptr_t vaddr, paddr64_t *paddrp, unsigned *lenp) {
 	case PPC_FAMILY_900:
 		paddr = endian_native64(pte._900) & ~(paddr64_t)0xfff;
 		break;
-	default: 
+	default:
 		if(debug_flag > 1) {
 			fprintf(stderr, "Unknown PPC family\n");
 		}

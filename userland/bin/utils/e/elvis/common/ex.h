@@ -20,7 +20,7 @@ typedef enum
 	ELVFNR_SPECIAL  = 16,	/* replace % and # with current/alternate name*/
 	ELVFNR_SPACE    = 32	/* interpret <space> as filename delimiter */
 } ELVFNR;
- 
+
 typedef enum
 {
 	EX_ABBR, EX_ALIAS, EX_ALL, EX_APPEND, EX_ARGS, EX_AT, EX_AUTOCMD,

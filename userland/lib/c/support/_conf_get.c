@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -61,7 +61,7 @@ int _conf_get(const long *list, int name, long *value, char *str) {
 			if(cmd == _CONF_VALUE) {
 				if(item & _CONF_NUM) {
 					long			i;
-					
+
 					if(item & _CONF_FCN) {
 						long		(*func)(int name);
 
@@ -97,10 +97,10 @@ int _conf_get(const long *list, int name, long *value, char *str) {
 					} else {
 						char			*ptr = (char *)num;
 						size_t				len = strlen(ptr) + 1;
-						
-						/* 
+
+						/*
 							PR 12898
-				
+
 							Sanity Check the value, since we're about to pass it
 							unchecked from min() to strncpy().  Proc calls this
 							function from it's static lib, and a super large unsigned
@@ -117,10 +117,10 @@ int _conf_get(const long *list, int name, long *value, char *str) {
 			} else {
 				if(item & _CONF_FCN) {
 					int		(*func)(int name, long *value, char *str);
-	
+
 					if((func = (void *)num)) {
 						int		status;
-						
+
 						if((status = func(name, value, str)) != -1 || cmd == _CONF_LINK) {
 							return status;
 						}

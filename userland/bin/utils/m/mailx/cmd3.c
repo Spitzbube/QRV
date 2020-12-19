@@ -422,7 +422,7 @@ unset(arglist)
 	errs = 0;
 	for (ap = arglist; *ap != NULL; ap++) {
 		if ((vp2 = lookup(*ap)) == NULL) {
-			if (getenv(*ap)) 
+			if (getenv(*ap))
 				unsetenv(*ap);
 			else if (!sourcing) {
 				printf("\"%s\": undefined variable\n", *ap);

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -24,7 +24,7 @@
    find.c      ; main source module for the QNX4 find utility
 
 
-   Please send comments pertaining to this utility to Eric Johnson 
+   Please send comments pertaining to this utility to Eric Johnson
    (eric@qnx.com)
  --------------------------------------------------------------------------
 */
@@ -33,15 +33,15 @@
 /* NOTE: the USAGE MESSAGE is found at the END of this source file */
 
 
-/*--------------------------------------------- FIND CONFIGURATION #DEFINES 
+/*--------------------------------------------- FIND CONFIGURATION #DEFINES
 
  o  Define 'RFIND' if a restricted version is to be made.
     RFIND will eliminate many primaries which are of
     questionable use to the QUICS user and/or might
     pose a security risk.
-    
+
     The primaries which are eliminated if RFIND is defined are:
-    
+
       -spawn       -perm       -exec       -ok       -fls
       -mountdev    -mountpoint -fprint     -fprintf  -fsmanager
       -fprint0     -xdev       -nouser     -nogroup  -links
@@ -74,7 +74,7 @@
 
 
 /* --------------------------------------------------- HEADER INCLUDES ---- */
-    
+
 #include <util/util_limits.h>
 #include "find.h"
 
@@ -104,7 +104,7 @@ static cmd cmds[]={
     { "ftime"     , CREATED_ON        },
   #endif
 
-  #ifndef RFIND                       
+  #ifndef RFIND
     #ifdef EXTENTS_SUPPORTED
       { "extents" , EXTENTS_EQUAL_TO    },
     #endif
@@ -150,7 +150,7 @@ static cmd cmds[]={
   { "regex"   , REGEX               },  { "size"      , SIZE_EQUAL_TO       },
   { "true"    , ALWAYS_TRUE         },  { "type"      , TYPE_EQUAL_TO       },
   { "uid"     , USER_EQUAL_TO       },  { "used"      , USED_EQUAL_TO       },
-  { "user"    , USER_EQUAL_TO       },  { "follow"    , LOGICAL             }, 
+  { "user"    , USER_EQUAL_TO       },  { "follow"    , LOGICAL             },
   { "status"    , STATUS              },
 
   { NULL      , 0                   }
@@ -175,7 +175,7 @@ typedef struct ownership_s {
 
 /*-------------------------------------------------- GLOBAL VARS */
 
-static exprn    *Main_Expr; 
+static exprn    *Main_Expr;
 
 static int      Glob_Argc;
 static char     **Glob_Argv;
@@ -268,7 +268,7 @@ time_t          Daystart_Time;  /* time at which find began processing files.
 /* return s[0] only if s[1] is NUL */
 #define BYNUL(s) ((s[1]==0)?s[0]:0)
 
- 
+
 /* ------------------------------------------------- prototypes --------------*/
 
 extern char *fnmatch2regex(const char *);
@@ -317,7 +317,7 @@ void sigint_handler (int signal)
             if (*Signal_Message) {
                 fprintf(stderr,"find: %s\n",Signal_Message);
                 *Signal_Message = 0;
-            } else {                
+            } else {
                 fprintf(stderr,"find: interrupted by SIGINT.\n");
             }
 
@@ -376,8 +376,8 @@ mode_t get_who (char **stringp)
                      return(-1);
         }
         (*stringp)++;
-    }   
-    return(0xFFFF); 
+    }
+    return(0xFFFF);
 }
 
 int get_op (char **stringp)
@@ -395,7 +395,7 @@ int get_op (char **stringp)
     (*stringp)++;
     return(op);
 }
-    
+
 
 mode_t get_perm (char **stringp)
 {
@@ -406,24 +406,24 @@ mode_t get_perm (char **stringp)
             case 'r': perm |= S_IROTH; break;
             case 'w': perm |= S_IWOTH; break;
             case 'x': perm |= S_IXOTH; break;
-            case 's': perm |= S_ISGID; 
+            case 's': perm |= S_ISGID;
                       perm |= S_ISUID; break;
             default: fprintf(stderr,"parse fail (perm) at '%c'\n",**stringp);
                      Error++;
                      return(0xffff);
         }
         (*stringp)++;
-    }   
+    }
     return(perm);
 }
 
-    
+
 /*-------------------------------------------------- parse_mode(char*) -------*/
 mode_t parse_mode (char *string, mode_t template)
 {
     static mode_t who, perm, mask, whomask;
     static int op;
-    
+
     if (isoctal(*string)) {
         perm = 0;
 
@@ -473,7 +473,7 @@ mode_t parse_mode (char *string, mode_t template)
 }
 
 /* snarfed from dirname utility */
-char *dirname (char *pathname) 
+char *dirname (char *pathname)
 {
     static char buffer[UTIL_PATH_MAX];
     char *src_str, *dst_str=NULL;
@@ -507,7 +507,7 @@ char *dirname (char *pathname)
 
             /* step 4 - if there are no slash characters remaining in string,
              *          string shall be set to a single period character. In
-             *          this case, skip steps 5 through 8. 
+             *          this case, skip steps 5 through 8.
              */
             dst_str = strrchr(src_str,'/');
             if (dst_str==NULL) src_str = ".";
@@ -516,7 +516,7 @@ char *dirname (char *pathname)
                  *          string, they shall be removed.
                  */
                 if (*++dst_str!='/') *dst_str=0;
-                
+
                 /* step 6 - if the remaining string is //, it is implementation
                  *          defined whether steps 7 and 8 are skipped or
                  *          processed.
@@ -528,13 +528,13 @@ step6:          /* entry point for special case of //. In this implementation
                  */
                 if (strcmp(src_str,"//")) {
                     /* step 7 - if there are any trailing slash characters in
-                     *          string, they shall be removed. 
+                     *          string, they shall be removed.
                      */
                     for (;dst_str!=src_str && *--dst_str=='/';*dst_str=0);
 
                     /* step 8 - if the remaining string is empty, string shall
-                     * be set to a single slash character                   
-                     */    
+                     * be set to a single slash character
+                     */
                     if (!*src_str) src_str = "/";
                 }
             }
@@ -699,15 +699,15 @@ void find_fprintf (FILE *fp,
                 sprintf(octal_format,"%%%s%do",left_justify?"-":"",minsize);
                 sprintf(long_long_decimal_format,"%%%s%d" LONG_LONG "ld",left_justify?"-":"",minsize);
                 sprintf(long_long_unsigned_format,"%%%s%d" LONG_LONG "lu",left_justify?"-":"",minsize);
-            } else if (minsize==-1 && precision!=-1) {                              
-                /* precision specified but no minsize */                
+            } else if (minsize==-1 && precision!=-1) {
+                /* precision specified but no minsize */
                 sprintf(string_format,"%%%s.%ds",       left_justify?"-":"",precision);
                 sprintf(decimal_format,"%%%s.%dd",      left_justify?"-":"",precision);
                 sprintf(long_decimal_format,"%%%s.%dld",left_justify?"-":"",precision);
                 sprintf(octal_format,"%%%s.%do",        left_justify?"-":"",precision);
                 sprintf(long_long_decimal_format,"%%%s.%d" LONG_LONG "ld",left_justify?"-":"",precision);
                 sprintf(long_long_unsigned_format,"%%%s.%d" LONG_LONG "lu",left_justify?"-":"",precision);
-            } else {                        
+            } else {
                 /* both minsize and precision specified */
                 sprintf(string_format,"%%%s%d.%ds",       left_justify?"-":"",minsize,precision);
                 sprintf(decimal_format,"%%%s%d.%dd",      left_justify?"-":"",minsize,precision);
@@ -742,9 +742,9 @@ void find_fprintf (FILE *fp,
 						  }
                           break;
                 case 'b': if (S_ISBLK(Statbufm->st_mode)) {
-							sprintf(printf_string,long_long_decimal_format,Statbufm->st_size); 
+							sprintf(printf_string,long_long_decimal_format,Statbufm->st_size);
 						  } else {
-							sprintf(printf_string,long_long_decimal_format,(Statbufm->st_size+511)/512); 
+							sprintf(printf_string,long_long_decimal_format,(Statbufm->st_size+511)/512);
                           }
                           break;
                 case 's': if (S_ISBLK(Statbufm->st_mode)) {
@@ -752,10 +752,10 @@ void find_fprintf (FILE *fp,
 							char scratch[32];
 							d=Statbufm->st_size*512.0;
 							sprintf(scratch,"%.0f",d);
-						
+
 							sprintf(printf_string,string_format,scratch);
 						  } else {
-							sprintf(printf_string,long_long_decimal_format,Statbufm->st_size); 
+							sprintf(printf_string,long_long_decimal_format,Statbufm->st_size);
                           }
                           break;
 
@@ -837,7 +837,7 @@ void find_fprintf (FILE *fp,
 
           default: fprintf(fp,"%c",*readp); break;
         } /* switch */
-        
+
     }
 }
 
@@ -855,7 +855,7 @@ bool match (char *fnm,struct stat *statbuf, struct stat *lstatbuf,exprn *expr)
 
     Filename = fnm;
     Statbufm = statbuf;
-    Statbufl = lstatbuf; 
+    Statbufl = lstatbuf;
 #ifdef EXTENTS_SUPPORTED
     Fsys_Statbufm = fsys_statbuf;
 #endif
@@ -1021,7 +1021,7 @@ bool eval_builtin (exprn *expr)
 	fprintf(stdout,"Filename='%s'\n",Filename);
 #endif
 
-    switch(expr->builtin_fn) {  
+    switch(expr->builtin_fn) {
         case EXACTNAME:
 			#ifdef DIAG
 				fprintf(stdout,"strcmp(%s,find_basename(%s)=%s)\n",(char*)expr->subexpr, Filename,find_basename(Filename));
@@ -1077,7 +1077,7 @@ bool eval_builtin (exprn *expr)
 #ifdef STATUS_SUPPORTED
 		case STATUS:                return (0!=(Statbufm->st_status&*(unsigned char *)expr->subexpr));
 #endif
-        case TYPE_EQUAL_TO:         return ((Statbufm->st_mode&S_IFMT)==(S_IFMT&*((mode_t*)expr->subexpr))); 
+        case TYPE_EQUAL_TO:         return ((Statbufm->st_mode&S_IFMT)==(S_IFMT&*((mode_t*)expr->subexpr)));
         case HAS_PERMS:             return ((Statbufm->st_mode&*(mode_t*)expr->subexpr)==*(mode_t*)expr->subexpr);
 #ifndef RFIND
         case PERMS_EQUAL_TO:        return ((Statbufm->st_mode&S_IPERMS)==(*(mode_t*)expr->subexpr&S_IPERMS) );
@@ -1112,7 +1112,7 @@ bool eval_builtin (exprn *expr)
         case LAST_STATCHG_BEFORE:
         case LAST_STATCHG_AFTER:
 #ifdef CREATION_TIME_SUPPORTED
-        case CREATED_ON: 
+        case CREATED_ON:
         case CREATED_BEFORE:
         case CREATED_AFTER:
 #endif
@@ -1159,7 +1159,7 @@ bool eval_builtin (exprn *expr)
         case LAST_STATCHG_BEFORE_MIN:
         case LAST_STATCHG_AFTER_MIN:
 #ifdef CREATION_TIME_SUPPORTED
-        case CREATED_ON_MIN: 
+        case CREATED_ON_MIN:
         case CREATED_BEFORE_MIN:
         case CREATED_AFTER_MIN:
 #endif
@@ -1191,7 +1191,7 @@ bool eval_builtin (exprn *expr)
             };
             break;
 
-        case USED_EQUAL_TO: 
+        case USED_EQUAL_TO:
         case USED_LESS_THAN:
         case USED_GREATER_THAN:
             {
@@ -1212,8 +1212,8 @@ bool eval_builtin (exprn *expr)
             break;
 
         case SIZE_EQUAL_TO:         return ((Statbufm->st_size+511)/512  == *(long*)expr->subexpr);
-        case SIZE_LESS_THAN:        return ((Statbufm->st_size+511)/512   < *(long*)expr->subexpr); 
-        case SIZE_GREATER_THAN:     return ((Statbufm->st_size+511)/512   > *(long*)expr->subexpr); 
+        case SIZE_LESS_THAN:        return ((Statbufm->st_size+511)/512   < *(long*)expr->subexpr);
+        case SIZE_GREATER_THAN:     return ((Statbufm->st_size+511)/512   > *(long*)expr->subexpr);
         case BYTES_EQUAL_TO:        return (Statbufm->st_size  == *(long*)expr->subexpr);
         case BYTES_LESS_THAN:       return (Statbufm->st_size   < *(long*)expr->subexpr);
         case BYTES_GREATER_THAN:    return (Statbufm->st_size   > *(long*)expr->subexpr);
@@ -1225,12 +1225,12 @@ bool eval_builtin (exprn *expr)
         case LEVEL_EQUAL_TO:        return (Levels == *(long*)expr->subexpr);
         case LEVEL_LESS_THAN:       return (Levels < *(long*)expr->subexpr);
         case LEVEL_GREATER_THAN:    return (Levels > *(long*)expr->subexpr);
-        case GROUP_EQUAL_TO:        return (Statbufm->st_gid   == *(gid_t*)expr->subexpr);  
-        case GROUP_LESS_THAN:       return (Statbufm->st_gid    < *(gid_t*)expr->subexpr);  
-        case GROUP_GREATER_THAN:    return (Statbufm->st_gid    > *(gid_t*)expr->subexpr);  
-        case USER_EQUAL_TO:         return (Statbufm->st_uid   == *(uid_t*)expr->subexpr);  
-        case USER_LESS_THAN:        return (Statbufm->st_uid    < *(uid_t*)expr->subexpr);  
-        case USER_GREATER_THAN:     return (Statbufm->st_uid    > *(uid_t*)expr->subexpr);  
+        case GROUP_EQUAL_TO:        return (Statbufm->st_gid   == *(gid_t*)expr->subexpr);
+        case GROUP_LESS_THAN:       return (Statbufm->st_gid    < *(gid_t*)expr->subexpr);
+        case GROUP_GREATER_THAN:    return (Statbufm->st_gid    > *(gid_t*)expr->subexpr);
+        case USER_EQUAL_TO:         return (Statbufm->st_uid   == *(uid_t*)expr->subexpr);
+        case USER_LESS_THAN:        return (Statbufm->st_uid    < *(uid_t*)expr->subexpr);
+        case USER_GREATER_THAN:     return (Statbufm->st_uid    > *(uid_t*)expr->subexpr);
 #ifndef RFIND
         case INODE_EQUAL_TO:        return (
                                              (Statbufm->st_ino == ((devino_t*)expr->subexpr)->ino) &&
@@ -1246,7 +1246,7 @@ bool eval_builtin (exprn *expr)
         case EXTENTS_LESS_THAN:     return (Fsys_Statbufm->st_num_xtnts < *(_nxtnt_t*)expr->subexpr);
         case EXTENTS_GREATER_THAN:  return (Fsys_Statbufm->st_num_xtnts > *(_nxtnt_t*)expr->subexpr);
 #endif
-        case NOUSER:                return (getpwuid(Statbufm->st_uid)==NULL); 
+        case NOUSER:                return (getpwuid(Statbufm->st_uid)==NULL);
         case NOGROUP:               return (getgrgid(Statbufm->st_gid)==NULL);
 #endif
         case PRUNE:                 return (PruneFlag = TRUE);
@@ -1254,7 +1254,7 @@ bool eval_builtin (exprn *expr)
         case XERR:                  return (Error++,FALSE);
 #ifdef MOUNT_INFO_SUPPORTED
 #ifndef RFIND
-        case MOUNTPOINT:        
+        case MOUNTPOINT:
             /* is the file a mount point? */
             if (qnx_fullpath(IsMountBuf1,Current_Path)==NULL) return FALSE;
             if (fsys_get_mount_dev(IsMountBuf1,IsMountBuf2)==-1) return FALSE;
@@ -1305,9 +1305,9 @@ bool eval_builtin (exprn *expr)
                     if (NULL==(direntp=readdir(dirptr))) break;
                     if (strcmp(direntp->d_name,".") &&
                         strcmp(direntp->d_name,"..")) break;
-                }               
-                closedir(dirptr);               
-            
+                }
+                closedir(dirptr);
+
                 if (direntp==NULL) return TRUE;
             }
             return FALSE;
@@ -1335,7 +1335,7 @@ bool eval_builtin (exprn *expr)
 #endif
 
                 fprintf(fp,"%s %2u %-9s %-9s "FIND_SIZE_FMT" %s %s\n",
-                    str_mode(Statbufm->st_mode), 
+                    str_mode(Statbufm->st_mode),
                     Statbufm->st_nlink,
                     uid(Statbufm->st_uid),
                     gid(Statbufm->st_gid),
@@ -1377,9 +1377,9 @@ bool eval_builtin (exprn *expr)
                 if (expr->builtin_fn==FPRINT) {
                     fp=(FILE *)expr->subexpr;
                 } else fp=stdout;
-            
+
                 fprintf(fp,"%s\n",Current_Path);
-            }       
+            }
             return (TRUE);
 
 #ifndef RFIND
@@ -1392,13 +1392,13 @@ bool eval_builtin (exprn *expr)
                 if (expr->builtin_fn==FPRINT0) {
                     fp=(FILE *)expr->subexpr;
                 } else fp=stdout;
-            
+
                 fprintf(fp,"%s%c",Current_Path,'\000');
-            }       
+            }
             return (TRUE);
 
 #ifndef RFIND
-        case DASHOK:    
+        case DASHOK:
             fflush(stdout); fflush(stderr);
             expandbrace(Command,(char*) expr->subexpr, Current_Path, REPLACE_BRACES|REPLACE_AT|QUOTE);
             fprintf(stderr,"find: Execute '%s' ? ",Command);
@@ -1440,7 +1440,7 @@ bool eval_builtin (exprn *expr)
                     RC = 0;
                 }
             }
-                
+
             return RC;
 
         case FMNEWER:
@@ -1452,7 +1452,7 @@ bool eval_builtin (exprn *expr)
             expandbrace(exist_path,(char*) expr->subexpr, Current_Path, REPLACE_BRACES|REPLACE_AT);
             {
                 RC=0;
-    
+
                 if (-1==(LogicalFlag?stat(exist_path,&statbufs):lstat(exist_path,&statbufs))) {
                     /* if this file is older than the file find is evaluating
                        currently, return true */
@@ -1472,7 +1472,7 @@ bool eval_builtin (exprn *expr)
 #endif
                 }
             }
-                
+
             return RC;
 
         case ERRMSG:
@@ -1535,14 +1535,14 @@ bool eval_builtin (exprn *expr)
             return !RC;
 
         case CHMOD:
-            RC=chmod(Current_Path, 
+            RC=chmod(Current_Path,
                      (Statbufm->st_mode|((mode_t*)expr->subexpr)[0])
                                        &((mode_t*)expr->subexpr)[1]
                     );
             return !RC;
 
 #endif
-            
+
 
 #ifndef RFIND
         case SPAWN:
@@ -1588,7 +1588,7 @@ FILE * FFopen (char *filestring) {
     return fopen(filestring,"w");
 }
 
-void check_argavail (int16_t token) 
+void check_argavail (int16_t token)
 {
     cmd *c;
     char *primitive;
@@ -1611,7 +1611,7 @@ exprn *_parse_expression (int in_ored_subexpr)
     exprn *cur_expr=NULL, *root_expr_of_this_expr = NULL;
     exprn *prev_expr=NULL;
     static int timesin = 0, next_expr_negated = 0;
-    
+
     while ( (Glob_Index<Glob_Argc) && (tok = cmd_match(Glob_Argv[Glob_Index++])) )  {
         /* make the whole thing the user gave be FALSE -or <expression> -
            this is necessary for correct processing of early outs on first
@@ -1673,7 +1673,7 @@ exprn *_parse_expression (int in_ored_subexpr)
                 } else cur_expr->flags &= ~FLAG_NOT;
                 break;
         }
- 
+
         switch(tok) {
             case T_AND: break;
 
@@ -1683,7 +1683,7 @@ exprn *_parse_expression (int in_ored_subexpr)
 timesin=0; /* reset code which prepends -false -or to subexpression */
                 cur_expr->subexpr = _parse_expression(NOT_ORED_SUBEXPR);
                 break;
-                
+
             case T_RIGHT_PARENTHESES:
                 /* end subexpression - return? */
                 Parentheses_Level--;
@@ -1712,7 +1712,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                     exit(EXIT_FAILURE);
                 }
                 break;
-            
+
             case PRINTF:
                 Print_On_Match = FALSE;
             case FMNEWER:
@@ -1751,9 +1751,9 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                         perror(T_Malloc_Failed);
                         exit(EXIT_FAILURE);
                     }
-    
+
                     temp = (mode_t *) cur_expr->subexpr;
-                    
+
                     if ((temp[0] = parse_mode( Glob_Argv[Glob_Index],0))==0xffff)
                     {
                           fprintf(stderr,T_Bad_Perm_Spec,Glob_Argv[Glob_Index]);
@@ -1775,7 +1775,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                     Glob_Index++;
                 }
                 break;
-            
+
 
 #ifdef FNMATCH_REGEX
             case FNMATCH:
@@ -1816,7 +1816,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
 
                     switch(tok) {
 #ifdef FNMATCH_REGEX
-                        case FNMATCH: 
+                        case FNMATCH:
                         case PFNMATCH:
                         case LNAME:
                            pattern=fnmatch2regex(pattern);
@@ -1843,7 +1843,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                         fprintf(stderr,"find: %s (reg expression '%s')\n",pattern,errmsg);
                         exit(EXIT_FAILURE);
                     }
-            
+
                     cur_expr->subexpr=(struct expression*)expr_ptr;
 
                 }
@@ -1862,7 +1862,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                         exit(EXIT_FAILURE);
                     }
                     ptrptr=(char **)cur_expr->subexpr;
-                
+
                     if (NULL==(ptrptr[0] = (char *)FFopen(Glob_Argv[Glob_Index++]))) {
                         fprintf(stderr,"find: -fprintf: can't open %s (%s)\n",Glob_Argv[Glob_Index-1],strerror(errno));
                         exit(EXIT_FAILURE);
@@ -1907,7 +1907,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                     }
 
                     temp = (mode_t *) cur_expr->subexpr;
-                
+
                     switch(BYNUL(Glob_Argv[Glob_Index])) {
                         case 'b':       /* block special file */
                             cur_expr->subexpr = (struct expression*) &Mblk; break;
@@ -1941,9 +1941,9 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                         perror(T_Malloc_Failed);
                         exit(EXIT_FAILURE);
                     }
-    
+
                     temp = (mode_t *) cur_expr->subexpr;
-                    
+
                     /* equal to */
                     if ((*temp = parse_mode( (Glob_Argv[Glob_Index]+((Glob_Argv[Glob_Index][0]=='-')?1:0)),0))==0xffff) {
                         fprintf(stderr,T_Bad_Perm_Spec,Glob_Argv[Glob_Index]);
@@ -1991,12 +1991,12 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
 
                         temp = (devino_t*) cur_expr->subexpr;
                         temp->ino = sbuf.st_ino;
-                        temp->dev = sbuf.st_dev; 
+                        temp->dev = sbuf.st_dev;
 
                         Glob_Argv[Glob_Index][0]=0; /* used as a flag to break */
                     }
                     break;
-                    
+
                 }
                 if (!Glob_Argv[Glob_Index][0]) { /* non-numeric */
                     Glob_Index++;
@@ -2054,7 +2054,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
 
                     /* ctemp now points to ascii number, possibly followed
                        by 'c' if this is a size */
-                
+
                     switch(tok) {
                         case MAXDEPTH: Maxdepth = atol(ctemp); cur_expr->builtin_fn=ALWAYS_TRUE; break;
                         case MINDEPTH: Mindepth = atol(ctemp); cur_expr->builtin_fn=ALWAYS_TRUE; break;
@@ -2120,16 +2120,16 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                             ((devino_t*)temp)->dev = -1L;
                             break;
                     }
-                }               
+                }
                 break;
-                
+
             case GROUP_EQUAL_TO:
                 check_argavail(tok);
                 {
                     long *temp;
                     struct group *grtemp;
                     char *ctemp;
-                
+
                     if (!(cur_expr->subexpr = malloc(sizeof(long)))) {
                         perror(T_Malloc_Failed);
                         exit(EXIT_FAILURE);
@@ -2171,7 +2171,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                     long *temp;
                     struct passwd *pwtemp;
                     char *ctemp;
-                
+
                     if (!(cur_expr->subexpr = malloc(sizeof(long)))) {
                         perror(T_Malloc_Failed);
                         exit(EXIT_FAILURE);
@@ -2214,7 +2214,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                     ownership_t  *temp;
                     char *usertext=NULL;
                     char *grouptext=NULL;
-                
+
                     if (!(cur_expr->subexpr = malloc(sizeof(ownership_t)))) {
                         perror(T_Malloc_Failed);
                         exit(EXIT_FAILURE);
@@ -2249,7 +2249,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                         struct group *grtemp;
 
                         grtemp = getgrnam(grouptext);
-                    
+
                         if (grtemp==NULL) {
                             if (isallnumeric(grouptext)) {
                                 temp->groupid= atol(grouptext);
@@ -2275,7 +2275,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                         } else {
                             temp->userid = pwtemp->pw_uid;
                         }
-                    }                   
+                    }
                 }
                 break;
 
@@ -2343,7 +2343,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                 LogicalFlag = TRUE;
                 cur_expr->builtin_fn = ALWAYS_TRUE;
                 break;
-    
+
             case ALWAYS_TRUE_NOP:
             case PRINT:
             case PRINT0:
@@ -2386,7 +2386,7 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                         strcat(Command,Glob_Argv[Glob_Index]);
                         Glob_Index++;
                     }
-    
+
                     Glob_Index++;
                 }
 
@@ -2396,8 +2396,8 @@ timesin=0; /* reset code which prepends -false -or to subexpression */
                 }
                 strcpy((char *) cur_expr->subexpr,Command);
                 break;
-                
-                
+
+
 #ifndef RFIND
             case SPAWN:
                 check_argavail(tok);
@@ -2465,7 +2465,7 @@ int16_t cmd_match (char *string)
             case '(': return(T_LEFT_PARENTHESES);
             case ')': return(T_RIGHT_PARENTHESES);
             case '!': return(T_NOT);
-        }                               
+        }
     }
     return(HEY_DUDE_THAT_IS_BOGUS_HELLO);
 }
@@ -2474,7 +2474,7 @@ int16_t cmd_match (char *string)
 
 void recurse_dir (char *path)
 {
-    DIR *dirp;              
+    DIR *dirp;
     struct dirent *entry;
 
 //#ifdef __QNXNTO__
@@ -2513,7 +2513,7 @@ if(strcpy(buf, path)) {
     Levels++;
 
     if ((dirp=opendir(path))==NULL) {
-        if ((errno!=EACCES)||Verbose) 
+        if ((errno!=EACCES)||Verbose)
 			fprintf(stderr,"%s (%s): %s\n","find: Can't open directory.",path,sys_errlist[errno]);
         Levels--;
         Error++;
@@ -2551,7 +2551,7 @@ if(strcpy(buf, path)) {
 			if (lstat_optimize(entry, Statbufp)==-1) Statbuf_Valid=FALSE;
 			else Statbuf_Valid=TRUE;
 		}
-			
+
         /* add filename to end of path */
         {
             char *endp;
@@ -2581,7 +2581,7 @@ if(strcpy(buf, path)) {
     Levels--;
 
     return;
-}   
+}
 
 int check_devinos(int Levels, dev_t dev, ino_t ino)
 {
@@ -2597,7 +2597,7 @@ int check_devinos(int Levels, dev_t dev, ino_t ino)
            the tree we are already traversing. Infinite loop! */
         return FALSE;
     }
-    
+
     Devs[Levels+1]=dev;
     Inodes[Levels+1]=ino;
 
@@ -2607,7 +2607,7 @@ int check_devinos(int Levels, dev_t dev, ino_t ino)
 
 /*-------------------------------------------------- process_file (char*) ----*/
 
-void process_file (char *fname) 
+void process_file (char *fname)
 {
     if (!Statbuf_Valid) {
         if (LogicalFlag) {
@@ -2632,7 +2632,7 @@ void process_file (char *fname)
             fname, Device_Id, Statbufp->st_dev);
     }
 #endif
-    
+
     if (XdevFlag && (Device_Id==-1)) Device_Id = Statbufp->st_dev;
 
 #ifdef EXTENTS_SUPPORTED
@@ -2649,7 +2649,7 @@ void process_file (char *fname)
         }
     }
 #endif
-    
+
     /* s'ok, its on my device _or_ don't care (yet) */
     if (S_ISDIR(Statbufp->st_mode) && !PruneFlag) {
         if (!XdevFlag || (Device_Id==Statbufp->st_dev)) {
@@ -2675,21 +2675,21 @@ void process_file (char *fname)
                 }
             }
             PruneFlag=FALSE;
-    
+
             if (DepthFlag==TRUE && Levels>=Mindepth) {
                 /* Statbuf_Valid is no longer relevant - the call to
                    recurse_dir() will have destroyed the stat buffer.
                    So, must stat this file again!! */
                 if (LogicalFlag) {
                     if (stat(fname,Statbufp)==-1) {
-                        if (Verbose) 
+                        if (Verbose)
 							fprintf(stderr,"%s (%s): %s\n",T_Stat_Failed,fname,sys_errlist[errno]);
                         Error++;
                         return;
                     }
                 } else {
                     if (lstat(fname,Statbufp)==-1) {
-                        if (Verbose) 
+                        if (Verbose)
 							fprintf(stderr,"%s (%s): %s\n",T_Stat_Failed,fname,sys_errlist[errno]);
                         Error++;
                         return;
@@ -2702,7 +2702,7 @@ void process_file (char *fname)
                         Fsys_Statbufp->st_num_xtnts = 0;
                     } else {
                         if (fsys_stat(fname,Fsys_Statbufp)==-1) {
-                            if (Verbose) 
+                            if (Verbose)
 								fprintf(stderr,"%s (%s): %s\n",T_Fsys_Stat_Failed,fname,sys_errlist[errno]);
                             Error++;
                             return;
@@ -2746,7 +2746,7 @@ void process_file (char *fname)
         {
             INDENT printf("EXPR @ 0x%x\n",exp);
             INDENT printf("{\n");
-            INDENT printf("  flags      = 0x%x\n",exp->flags);      
+            INDENT printf("  flags      = 0x%x\n",exp->flags);
             INDENT printf("  op         = %d\n",exp->op);
             INDENT printf("  builtin_fn = %d\n",exp->builtin_fn);
             if (exp->builtin_fn)
@@ -2833,8 +2833,8 @@ int main (int argc,char **argv)
 
         /* zero out everything so we are left with the start of the day */
         timeptr->tm_sec=0;
-        timeptr->tm_min=0;      
-        timeptr->tm_hour=0;     
+        timeptr->tm_min=0;
+        timeptr->tm_hour=0;
         timeptr->tm_isdst=-1;
 
         Daystart_Time=mktime(timeptr);
@@ -2900,12 +2900,12 @@ Primary expressions:
                           Changes group ownership of the file currently being
                           evaluated to the group specified. Will evaluate to
                           true if the operation succeeds, false if it fails.
- -chmod <mode>            Changes the file permissions to those indicated 
+ -chmod <mode>            Changes the file permissions to those indicated
                           by <mode>. The mode may be either an octal number
                           or a symbolic mode (see the chmod utility).
  -chown <username>|<userid>[:<groupname>|<groupid>]
                           Changes ownership of the file currently being
-                          evaluated to the user (and optionally, group) 
+                          evaluated to the user (and optionally, group)
                           specified. Will evaluate to true if the operation
                           succeeds, false if it fails.
  -cmin  [+|-]<n>          True when file status was last changed n minutes ago.
@@ -2929,7 +2929,7 @@ Primary expressions:
  -errmsg [text]... ;      Similar to -echo except the output is written to
                           standard error.
  -error                   Sets a flag which will cause find to exit with non-
-                          zero status when the find is finished. Always 
+                          zero status when the find is finished. Always
                           evaluates to false.
  -exec <cmd> [args]... ;  True when exit status of <cmd> is 0.
  -exists <filestring>     True when the file that <filestring> evaluates to
@@ -2940,13 +2940,13 @@ Primary expressions:
  -false                   Always false.
  -fanewer <filestring>    True if the file being evaluated was accessed more
                           recently than the file represented by <filestring>.
- -fcnewer <filestring>    True if the file being evaluated had its status 
+ -fcnewer <filestring>    True if the file being evaluated had its status
                           changed more recently than the file represented by
                           <filestring>.
  -fFnewer <filestring>    True if the file being evaluated was created more
                           recently than the file represented by <filestring>.
  -fls <file>              Similar to -ls, but output is written to the file
-                          represented by <file>. <file> will be 
+                          represented by <file>. <file> will be
                           truncated on startup. Always true.
  -fmin  [+|-]<n>          True when file was created n minutes ago.
  -fmnewer <filestring>    True if the file being evaluated was modified more
@@ -3009,11 +3009,11 @@ Primary expressions:
                           modifiers have no meaning when used in <n> in this
                           context.
  -mmin  [+|-]<n>          True when file data was last modified n minutes ago.
- -mnewer <file>           True if file being evaluated was modified more 
+ -mnewer <file>           True if file being evaluated was modified more
                           recently than <file> was.
  -mount                   Synonym for -xdev.
  -mountdev                True if the file is a block special file for which
-                          there is a filesystem mount point. (i.e. device 
+                          there is a filesystem mount point. (i.e. device
                           contains a mounted QNX filesystem)
  -mountpoint              True if the file is a directory which is the mount
                           point for a QNX filesystem.
@@ -3022,14 +3022,14 @@ Primary expressions:
  -name <fpattern>         True for any file whose basename matches <fpattern>
  -newer <file>            POSIX notation. Synonym for -mnewer.
  -nogroup                 True when the file's group does not exist
- -NOP                     Always true, does nothing. This primitive has the 
-                          side effect of disabling the implicit -print that 
+ -NOP                     Always true, does nothing. This primitive has the
+                          side effect of disabling the implicit -print that
                           occurs when the expression as a whole evaluates to
-                          true. This primitive can be used to benchmark the 
+                          true. This primitive can be used to benchmark the
                           time it takes to do a walk of the filesystem.
                           For example: find / -NOP
  -nouser                  True when the file's owner is not in the passwd file
- -ok <cmd> [args]... ;    True when exit status of <cmd> is 0. False when 
+ -ok <cmd> [args]... ;    True when exit status of <cmd> is 0. False when
                           user says no to the prompt.
  -path <fpattern>        True for any file whose path (as would be printed
                           by -print), matches <fpattern>.
@@ -3058,7 +3058,7 @@ Primary expressions:
                           evaluated matches the extended regular expression
                           specified by <rpattern>. See the 'grep' utility
                           documentation for details on regular expressions.
- -rename <filestring>     Renames the file currently being evaluated to 
+ -rename <filestring>     Renames the file currently being evaluated to
                           <filestring>. Will evaluate to true if the
                           rename() succeeds; false if rename() fails.
  -remove!                 Removes the file currently being evaluated. Will
@@ -3081,7 +3081,7 @@ Primary expressions:
                           the string passed is not a valid username and is
                           numeric, true if the file is owned by the user ID
                           <n>.
- -xdev                    Causes find to skip directories which are on 
+ -xdev                    Causes find to skip directories which are on
                           different devices. Always true. (See Note)
 
 Where:
@@ -3121,7 +3121,7 @@ Where:
 
               %%          Literal percent (%) character.
               %p          the name of the file
-              %f          the basename of the file   
+              %f          the basename of the file
               %h          the dirname of the file
               %P          the name of the file with the name of the
                           file specified on the command line under which
@@ -3153,7 +3153,7 @@ Where:
                               c    locale's appropriate date and time
                                    representation
                               d    day of the month as a decimal number (01-31)
-                              D    date in the format mm/dd/yy 
+                              D    date in the format mm/dd/yy
                               h    abbreviated month name
                               H    hour (24 hr) as a decimal number (00-23)
                               I    hour (12 hr) as a decimal number (01-12)
@@ -3201,7 +3201,7 @@ leading and trailing characters. Such arguments are used by -echo, -errmsg,
 and -spawn. In addition to straight filename insertion, you may also opt
 to insert the filename stripped of a number of characters at the end (strip) or
 the filename less a number of characters at the beginning (skip). The syntax
-for this is 
+for this is
 
     {[<strip>][,<skip>]}
 
@@ -3251,12 +3251,12 @@ Primary expressions:
                           Changes group ownership of the file currently being
                           evaluated to the group specified. Will evaluate to
                           true if the operation succeeds, false if it fails.
- -chmod <mode>            Changes the file permissions to those indicated 
+ -chmod <mode>            Changes the file permissions to those indicated
                           by <mode>. The mode may be either an octal number
                           or a symbolic mode (see the chmod utility).
  -chown <username>|<userid>[:<groupname>|<groupid>]
                           Changes ownership of the file currently being
-                          evaluated to the user (and optionally, group) 
+                          evaluated to the user (and optionally, group)
                           specified. Will evaluate to true if the operation
                           succeeds, false if it fails.
  -cmin  [+|-]<n>          True when file status was last changed n minutes ago.
@@ -3280,7 +3280,7 @@ Primary expressions:
  -errmsg [text]... ;      Similar to -echo except the output is written to
                           standard error.
  -error                   Sets a flag which will cause find to exit with non-
-                          zero status when the find is finished. Always 
+                          zero status when the find is finished. Always
                           evaluates to false.
  -exec <cmd> [args]... ;  True when exit status of <cmd> is 0.
  -exists <filestring>     True when the file that <filestring> evaluates to
@@ -3290,16 +3290,16 @@ Primary expressions:
  -false                   Always false.
  -fanewer <filestring>    True if the file being evaluated was accessed more
                           recently than the file represented by <filestring>.
- -fcnewer <filestring>    True if the file being evaluated had its status 
+ -fcnewer <filestring>    True if the file being evaluated had its status
                           changed more recently than the file represented by
                           <filestring>.
  -fls <file>              Similar to -ls, but output is written to the file
-                          represented by <file>. <file> will be 
+                          represented by <file>. <file> will be
                           truncated on startup. Always true.
  -fmnewer <filestring>    True if the file being evaluated was modified more
                           recently than the file represented by <filestring>.
  -fnewer <filestring>     Synonym for -fmnewer.
- -Fnewer <filestring>     True if the file being evaluated was created more 
+ -Fnewer <filestring>     True if the file being evaluated was created more
                           recently than the file represented by <filestring>.
  -follow                  Treat symbolic links as being the type of the file
                           they point to. If the link points to a directory,
@@ -3352,7 +3352,7 @@ Primary expressions:
                           modifiers have no meaning when used in <n> in this
                           context.
  -mmin  [+|-]<n>          True when file data was last modified n minutes ago.
- -mnewer <file>           True if file being evaluated was modified more 
+ -mnewer <file>           True if file being evaluated was modified more
                           recently than <file> was.
  -mount                   Synonym for -xdev.
  -mtime [+|-]<n>          True when file modification time subtracted from the
@@ -3367,7 +3367,7 @@ Primary expressions:
                           time it takes to do a walk of the filesystem.
                           For example: find / -NOP
  -nouser                  True when the file's owner is not in the passwd file
- -ok <cmd> [args]... ;    True when exit status of <cmd> is 0. False when 
+ -ok <cmd> [args]... ;    True when exit status of <cmd> is 0. False when
                           user says no to the prompt.
  -path <fpattern>        True for any file whose path (as would be printed
                           by -print), matches <fpattern>.
@@ -3396,7 +3396,7 @@ Primary expressions:
                           evaluated matches the extended regular expression
                           specified by <rpattern>. See the 'grep' utility
                           documentation for details on regular expressions.
- -rename <filestring>     Renames the file currently being evaluated to 
+ -rename <filestring>     Renames the file currently being evaluated to
                           <filestring>. Will evaluate to true if the
                           rename() succeeds; false if rename() fails.
  -remove!                 Removes the file currently being evaluated. Will
@@ -3418,7 +3418,7 @@ Primary expressions:
                           the string passed is not a valid username and is
                           numeric, true if the file is owned by the user ID
                           <n>.
- -xdev                    Causes find to skip directories which are on 
+ -xdev                    Causes find to skip directories which are on
                           different devices. Always true. (See Note)
 
 Where:
@@ -3458,7 +3458,7 @@ Where:
 
               %%          Literal percent (%) character.
               %p          the name of the file
-              %f          the basename of the file   
+              %f          the basename of the file
               %h          the dirname of the file
               %P          the name of the file with the name of the
                           file specified on the command line under which
@@ -3489,7 +3489,7 @@ Where:
                               c    locale's appropriate date and time
                                    representation
                               d    day of the month as a decimal number (01-31)
-                              D    date in the format mm/dd/yy 
+                              D    date in the format mm/dd/yy
                               h    abbreviated month name
                               H    hour (24 hr) as a decimal number (00-23)
                               I    hour (12 hr) as a decimal number (01-12)
@@ -3537,7 +3537,7 @@ leading and trailing characters. Such arguments are used by -echo, -errmsg,
 and -spawn. In addition to straight filename insertion, you may also opt
 to insert the filename stripped of a number of characters at the end (strip) or
 the filename less a number of characters at the beginning (skip). The syntax
-for this is 
+for this is
 
     {[<strip>][,<skip>]}
 

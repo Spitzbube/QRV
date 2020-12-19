@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -66,16 +66,16 @@ static void emu_init(void) {
 
 unsigned _math_emulator(unsigned sigcode, void **pdata, void *regs) {
 	static pthread_once_t		emu_once = PTHREAD_ONCE_INIT;
-#ifdef FPEMU_IN_SIGHANDLER_SUPPORT	
+#ifdef FPEMU_IN_SIGHANDLER_SUPPORT
 	sigset_t					oldset, newset;
 
 	sigfillset(&newset);
 	SignalProcmask(0, 0, SIG_SETMASK, &newset, &oldset);
 #endif
 	pthread_once(&emu_once, emu_init);
-#ifdef FPEMU_IN_SIGHANDLER_SUPPORT	
+#ifdef FPEMU_IN_SIGHANDLER_SUPPORT
 	SignalProcmask(0, 0, SIG_SETMASK, &oldset, NULL);
-#endif	
+#endif
 	return (_emulator_callout != _math_emulator) ? _emulator_callout(sigcode, pdata, regs) : sigcode;
 }
 #else

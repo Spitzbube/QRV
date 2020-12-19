@@ -147,7 +147,7 @@ struct sed_cmd {
 };
 
 
-
+
 struct vector *compile_string P_((struct vector *, char *str));
 struct vector *compile_file P_((struct vector *, const char *cmdfile));
 void check_final_program P_((struct vector *));

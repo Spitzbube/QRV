@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -222,13 +222,13 @@ static void swap_procfs_info(procfs_info *info) {
 	swap_32(&info->num_fdcons);
 	swap_32(&info->num_threads);
 	swap_32(&info->num_timers);
-	swap_64(&info->start_time);		 
-	swap_64(&info->utime);			 
-	swap_64(&info->stime);			 
-	swap_64(&info->cutime);			 
-	swap_64(&info->cstime);			 
-	swap_64(&info->canstub);			 
-	swap_64(&info->sigstub);			 
+	swap_64(&info->start_time);
+	swap_64(&info->utime);
+	swap_64(&info->stime);
+	swap_64(&info->cutime);
+	swap_64(&info->cstime);
+	swap_64(&info->canstub);
+	swap_64(&info->sigstub);
 }
 
 static void swap_procfs_status(procfs_status *status) {
@@ -258,8 +258,8 @@ static void swap_procfs_status(procfs_status *status) {
 	swap_16(&status->last_cpu);
 	swap_32(&status->timeout);
 	swap_32(&status->last_chid);
-	swap_64(&status->start_time);		 
-	swap_64(&status->sutime);			 
+	swap_64(&status->start_time);
+	swap_64(&status->sutime);
 }
 
 static void swap_procfs_greg(procfs_greg *greg, int cpu) {
@@ -302,18 +302,18 @@ static void print_sysinfo(procfs_sysinfo *p, int xlat) {
 	if(p->cpuinfo.entry_off + p->cpuinfo.entry_size <= p->total_size) {
 		int							i;
 		char						*strings;
-		p->strings.entry_off = p->strings.entry_off; 
+		p->strings.entry_off = p->strings.entry_off;
 		p->strings.entry_size = p->strings.entry_size;
 		strings = (p->strings.entry_off + p->strings.entry_size <= p->total_size) ?
 					_SYSPAGE_ENTRY(p, strings)->data : 0;
 
 		for(i = 0; strings && i < p->num_cpu; i++) {
 			struct cpuinfo_entry	*c = _SYSPAGE_ENTRY(p, cpuinfo) + i;
-			
+
 			if (xlat) {
 				swap_cpuinfo_entry(c);
 			}
-			
+
 			printf("  cpu %d cpu=%d name=%s speed=%d\n", i + 1, c->cpu, strings ? strings + c->name : "", c->speed);
 			printf("   flags=%#08x", c->flags);
 			if(c->flags & CPU_FLAG_FPU) {
@@ -398,11 +398,11 @@ static void print_sysinfo(procfs_sysinfo *p, int xlat) {
 	}
 	if(p->qtime.entry_off + p->qtime.entry_size <= p->total_size) {
 		struct qtime_entry	*t = _SYSPAGE_ENTRY(p, qtime);
-		
+
 		if (xlat) {
 			swap_qtime_entry(t);
 		}
-		
+
 		printf(" cyc/sec=%llu tod_adj=%llu nsec=%llu inc=%lu\n",
 			t->cycles_per_sec, t->nsec_tod_adjust, t->nsec, t->nsec_inc);
 		printf(" boot=%lu epoch=%lu intr=%ld\n", t->boot_time, t->epoch, t->intr);
@@ -416,12 +416,12 @@ static void print_sysinfo(procfs_sysinfo *p, int xlat) {
 		int				pos;
 
 		pos = 0;
-		
+
 		ent = (struct entry *)_SYSPAGE_ENTRY(p, typed_strings)->data;
 		if (xlat) {
 			swap_32(&ent->type);
 		}
-			
+
 		while(ent->type != _CS_NONE) {
 
 			char			*type, buff[20];
@@ -482,7 +482,7 @@ static void print_sysinfo(procfs_sysinfo *p, int xlat) {
 			}
 			printf(" %s=\"%s\"", type, ent->info);
 			pos += len;
-			
+
 			ent = (struct entry *)((char *)ent + ((offsetof(struct entry, info) +
 						strlen(ent->info) + 1 + 3) & ~3));
 			if (xlat) {
@@ -534,12 +534,12 @@ static void print_info(procfs_info *p) {
 static void print_status(procfs_status *p) {
 	static const char				*sigstrs[] = {
 		"unknown(0)",
-		"SIGHUP",		"SIGINT",		"SIGQUIT",		"SIGILL",		
-		"SIGTRAP",		"SIGABRT",		"SIGEMT",		"SIGFPE",		
-		"SIGKILL",		"SIGBUS",		"SIGSEGV",		"SIGSYS",		
-		"SIGPIPE",		"SIGALRM",		"SIGTERM",		"SIGUSR1",		
-		"SIGUSR2",		"SIGCHLD",		"SIGPWR ",		"SIGWNCH",		
-		"SIGURG",		"SIGPOLL",		"SIGSTOP",		"SIGTSTP",		
+		"SIGHUP",		"SIGINT",		"SIGQUIT",		"SIGILL",
+		"SIGTRAP",		"SIGABRT",		"SIGEMT",		"SIGFPE",
+		"SIGKILL",		"SIGBUS",		"SIGSEGV",		"SIGSYS",
+		"SIGPIPE",		"SIGALRM",		"SIGTERM",		"SIGUSR1",
+		"SIGUSR2",		"SIGCHLD",		"SIGPWR ",		"SIGWNCH",
+		"SIGURG",		"SIGPOLL",		"SIGSTOP",		"SIGTSTP",
 		"SIGCONT",		"SIGTTIN",		"SIGTTOU",		"SIGVTAL",
 		"SIGPROF",		"SIGXCPU",		"SIGXFSZ"
 	};
@@ -744,7 +744,7 @@ static void dsp_file(FILE *fp, char *name) {
 
 	if(ehdr.e_phnum) {
 		Elf32_Phdr				phdr;
-		
+
 		if(ehdr.e_phentsize < sizeof phdr) {
 			fprintf(stderr, "Phdr is too small\n");
 			return;

@@ -73,7 +73,7 @@ RESULT opfilter(from, to, prog)
 	for (mark = *to, p = (CHAR *)safealloc((int)o_blksize, sizeof(CHAR));
 	     (nchars = prgread(p, (int)o_blksize)) > 0;
 	     markaddoffset(&mark, nchars))
-	    
+
 	{
 		bufreplace(&mark, &mark, p, nchars);
 	}

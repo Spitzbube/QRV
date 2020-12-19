@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -35,17 +35,17 @@
  *
  *     Mark H. Colburn, NAPS International (mark@jhereg.mn.org)
  *
- * Sponsored by The USENIX Association for public distribution. 
+ * Sponsored by The USENIX Association for public distribution.
  *
  * Copyright (c) 1989 Mark H. Colburn.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms are permitted
- * provided that the above copyright notice is duplicated in all such 
- * forms and that any documentation, advertising materials, and other 
- * materials related to such distribution and use acknowledge that the 
- * software was developed * by Mark H. Colburn and sponsored by The 
- * USENIX Association. 
+ * provided that the above copyright notice is duplicated in all such
+ * forms and that any documentation, advertising materials, and other
+ * materials related to such distribution and use acknowledge that the
+ * software was developed * by Mark H. Colburn and sponsored by The
+ * USENIX Association.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
@@ -75,10 +75,10 @@
  *
  * Revision 1.2  89/02/12  10:06:11  mark
  * 1.2 release fixes
- * 
+ *
  * Revision 1.1  88/12/23  18:02:39  mark
  * Initial revision
- * 
+ *
  */
 
 #ifndef lint
@@ -99,12 +99,12 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
  * 	Assumes that background processes ignore interrupts and that the
  *	open() or the isatty() will fail for processes which are not
  *	attached to terminals. Returns a file descriptor or -1 if
- *	unsuccessful. 
+ *	unsuccessful.
  *
  * RETURNS
  *
  *	Returns a file descriptor which can be used to read and write
- *	directly to the user's terminal, or -1 on failure.  
+ *	directly to the user's terminal, or -1 on failure.
  *
  * ERRORS
  *
@@ -178,17 +178,17 @@ int open_tty()
  *	a response to the message.  The first "limit" characters of the
  *	user response is stored in "answer".
  *
- *	Nextask ignores spaces and tabs. 
+ *	Nextask ignores spaces and tabs.
  *
  * PARAMETERS
  *
- *	char *msg	- Message to display for user 
- *	char *answer	- Pointer to user's response to question 
+ *	char *msg	- Message to display for user
+ *	char *answer	- Pointer to user's response to question
  *	int limit	- Limit of length for user's response
  *
  * RETURNS
  *
- *	Returns the number of characters in the user response to the 
+ *	Returns the number of characters in the user response to the
  *	calling function.  If an EOF was encountered, a -1 is returned to
  *	the calling function.  If an error occured which causes the read
  *	to return with a value of -1, then the function will return a
@@ -241,18 +241,18 @@ int             limit;		/* limit of length for user's response */
 /* lineget - get a line from a given stream
  *
  * DESCRIPTION
- * 
+ *
  *	Get a line of input for the stream named by "stream".  The data on
  *	the stream is put into the buffer "buf".
  *
  * PARAMETERS
  *
- *	FILE *stream		- Stream to get input from 
+ *	FILE *stream		- Stream to get input from
  *	char *buf		- Buffer to put input into
  *
  * RETURNS
  *
- * 	Returns 0 if successful, -1 at EOF or input exceeds PATH_MAX. 
+ * 	Returns 0 if successful, -1 at EOF or input exceeds PATH_MAX.
  */
 
 #ifdef __STDC__
@@ -287,7 +287,7 @@ char           *buf;		/* buffer to put input into */
 }
 
 
-/* next - Advance to the next archive volume. 
+/* next - Advance to the next archive volume.
  *
  * DESCRIPTION
  *
@@ -297,11 +297,11 @@ char           *buf;		/* buffer to put input into */
  *	little surprising.  Assumes that background processes ignore
  *	interrupts and that the open() or the isatty() will fail for
  *	processes which are not attached to terminals. Returns a file
- *	descriptor or -1 if unsuccessful. 
+ *	descriptor or -1 if unsuccessful.
  *
  * PARAMETERS
  *
- *	int mode	- mode of archive (READ, WRITE, PASS) 
+ *	int mode	- mode of archive (READ, WRITE, PASS)
  */
 
 #ifdef __STDC__
@@ -315,7 +315,7 @@ int             mode;		/* mode of archive (READ, WRITE, PASS) */
 
 #endif
 {
-    char            msg[200];	/* buffer for message display */ 
+    char            msg[200];	/* buffer for message display */
     char            answer[20];	/* buffer for user's answer */
     int             ret;
 

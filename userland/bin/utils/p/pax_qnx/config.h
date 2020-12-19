@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -35,7 +35,7 @@
  *
  *	Mark H. Colburn, NAPS International (mark@jhereg.mn.org)
  *
- * Sponsored by The USENIX Association for public distribution. 
+ * Sponsored by The USENIX Association for public distribution.
  *
  * Copyright (c) 1989 Mark H. Colburn.
  * All rights reserved.
@@ -45,7 +45,7 @@
  * duplicated in all such forms and that any documentation,
  * advertising materials, and other materials related to such
  * distribution and use acknowledge that the software was developed
- * by Mark H. Colburn and sponsored by The USENIX Association. 
+ * by Mark H. Colburn and sponsored by The USENIX Association.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
@@ -59,8 +59,8 @@
 
 /* XENIX_286 (SCO ugh, Xenix system V(?) 286, USG with changes...
  * You will get a warning about DIRSIZ being redefined, ignore it,
- * complain to SCO about include files that are messed up or send 
- * mail to doug@lentni.UUCP, who can provide some patches to fix 
+ * complain to SCO about include files that are messed up or send
+ * mail to doug@lentni.UUCP, who can provide some patches to fix
  * your include files.
  *
  * Defining XENIX_286 will automatically define USG.
@@ -109,7 +109,7 @@
  * PAXDIR - if you do not have directory access routines
  *
  * Define PAXDIR if you do not have Doug Gwyn's dirent package installed
- * as a system library or you wish to use the version supplied with PAX.  
+ * as a system library or you wish to use the version supplied with PAX.
  *
  * NOTE: DO NOT DEFINE THIS IF YOU HAVE BERKELEY DIRECTORY ACCESS ROUTINES.
  */
@@ -119,8 +119,8 @@
  * DIRENT - directory access routines (required)
  *
  * If you have Doug Gwyn's dirent package installed, either as a system
- * library, or are using the paxdir.c and paxdir.h routines which come with 
- * PAX, then define dirent. 
+ * library, or are using the paxdir.c and paxdir.h routines which come with
+ * PAX, then define dirent.
  *
  * NOTE: DO NOT DEFINE THIS IF YOU HAVE BERKELEY DIRECTORY ACCESS ROUTINES.
  */
@@ -128,7 +128,7 @@
 
 /*
  * OFFSET - compiler dependent offset type
- * 
+ *
  * OFFSET is the type which is returned by lseek().  It is different on
  * some systems.  Most define it to be off_t, but some define it to be long.
  */
@@ -160,7 +160,7 @@
  * STRCSPN - use the strcspn function included with pax
  *
  * Some systems do not have the strcspn() function in their C libraries.
- * For those system define STRCSPN and the one provided in regexp.c will 
+ * For those system define STRCSPN and the one provided in regexp.c will
  * be used.
  */
 /*#define STRCSPN*/	/* implementation does not have strcspn() */
@@ -169,7 +169,7 @@
  * STRERROR - use the strerror function included with pax
  *
  * Non-Ansi systems do not have the strerror() function in their C libraries.
- * For those system define STRERROR and the one provided in misc.c will 
+ * For those system define STRERROR and the one provided in misc.c will
  * be used instead.
  */
 /*#define STRERROR*/	/* implementation does not have strerror() */

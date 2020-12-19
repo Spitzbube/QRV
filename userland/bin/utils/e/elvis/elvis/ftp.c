@@ -78,7 +78,7 @@ static void getaccountinfo(site_port, anonymous, wantuser)
 	filename = strchr(localsite, ':');
 	if (filename)
 		*filename = '\0';
-	
+
 	/* if same site as last time, use same info as last time */
 	if (was_anon == anonymous && site && !strcmp(localsite, site)
 	 && (!wantuser || !strcmp(wantuser, user)))
@@ -491,7 +491,7 @@ static ELVBOOL ftpdir(site_port, anonymous, resource)
 		 * absolute directory name.
 		 */
 		new = CHARdup(toCHAR(resource));
-		cp = new + CHARlen(new) - 1; 
+		cp = new + CHARlen(new) - 1;
 		if (*cp == '/')
 			cp--;
 		while (cp > new && *cp != '/')

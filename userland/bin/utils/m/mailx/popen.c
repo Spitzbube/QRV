@@ -367,7 +367,7 @@ wait_child(pid)
 
 	(void)sigemptyset(&nset);
 	(void)sigaddset(&nset, SIGCHLD);
-	(void)sigprocmask(SIG_BLOCK, &nset, &oset);	
+	(void)sigprocmask(SIG_BLOCK, &nset, &oset);
 
 	while (!cp->done)
 		(void)sigsuspend(&oset);
@@ -389,7 +389,7 @@ free_child(pid)
 
 	(void)sigemptyset(&nset);
 	(void)sigaddset(&nset, SIGCHLD);
-	(void)sigprocmask(SIG_BLOCK, &nset, &oset);	
+	(void)sigprocmask(SIG_BLOCK, &nset, &oset);
 
 	if (cp->done)
 		delchild(cp);

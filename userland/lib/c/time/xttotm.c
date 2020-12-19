@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -19,7 +19,7 @@
 
 /*
 
- 
+
 
 
 Also copyright P.J. Plauger - see bottom of file for details.
@@ -58,7 +58,7 @@ int _Daysto(int year, int mon)
 	if (0 < year)	/* correct for leap year: 1801-2099 */
 		days = (year - 1) / 4;
 #else
-	if (0 < year)	
+	if (0 < year)
 		days = ((year - 1) / 4 - ((year-1) / 100)) + (((year-1) + 300) / 400);
 #endif
 	else if (year <= -4)
@@ -79,8 +79,8 @@ static struct tm *adjust_tm(uint64_t secs, struct tm *t)
 	  long i;
 
 	  for (year = days / 365; days < (i = _Daysto(year, 0) + 365L * year); )
-			  --year;	// correct guess and recheck 
-	  days -= i; 
+			  --year;	// correct guess and recheck
+	  days -= i;
 	  t->tm_year = year;
 	  t->tm_yday = days;
   }
@@ -129,13 +129,13 @@ struct tm *_Ttotm(struct tm *t, time_t secsarg, int isdst)
 			tzoff = _Tzoff();
 			secs = lsecsarg + tzoff;
 			t = adjust_tm(secs, t);
-			t->tm_isdst = _Isdst(t, tzoff, tzoffdst); 
-			if (t->tm_isdst > 0) { // 
+			t->tm_isdst = _Isdst(t, tzoff, tzoffdst);
+			if (t->tm_isdst > 0) { //
 				secs = lsecsarg + tzoffdst;
 				t = adjust_tm(secs, t);
 				t->tm_gmtoff = tzoffdst;
 			}
-			else 
+			else
 				t->tm_gmtoff = tzoff;
 			t->tm_zone = tzname[(0 < t->tm_isdst ? 1 : 0)];
 			break;
@@ -157,12 +157,12 @@ struct tm *_Ttotm(struct tm *t, time_t secsarg, int isdst)
 			t->tm_zone = tzname[(0 < t->tm_isdst ? 1 : 0)];
 			if (t->tm_isdst > 0) // dst is on
 				t->tm_gmtoff = tzoffdst;
-			else 
+			else
 				t->tm_gmtoff = tzoff;
 			break;
 		default:
 			break;
-	}	
+	}
  	return(t);
 #else
 	int year;

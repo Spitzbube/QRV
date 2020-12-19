@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -27,24 +27,24 @@
 #include <sys/procmsg.h>
 
 /*
-DESCRIPTION 
-When using the setrlimit() function, if the requested new limit is 
-RLIM_INFINITY the new limit will be "no limit"; otherwise if the 
-requested new limit is RLIM_SAVED_MAX the new limit will be the 
-corresponding saved hard limit; otherwise if the requested new limit is 
-RLIM_SAVED_CUR the new limit will be the corresponding saved soft limit; 
-otherwise the new limit will be the requested value. In addition, if the 
-corresponding saved limit can be represented correctly in an object of 
-type rlim_t then it will be overwritten with the new limit. 
+DESCRIPTION
+When using the setrlimit() function, if the requested new limit is
+RLIM_INFINITY the new limit will be "no limit"; otherwise if the
+requested new limit is RLIM_SAVED_MAX the new limit will be the
+corresponding saved hard limit; otherwise if the requested new limit is
+RLIM_SAVED_CUR the new limit will be the corresponding saved soft limit;
+otherwise the new limit will be the requested value. In addition, if the
+corresponding saved limit can be represented correctly in an object of
+type rlim_t then it will be overwritten with the new limit.
 
-The result of setting a limit to RLIM_SAVED_MAX or RLIM_SAVED_CUR is 
-unspecified unless a previous call to getrlimit() returned that value as 
-the soft or hard limit for the corresponding resource limit. 
+The result of setting a limit to RLIM_SAVED_MAX or RLIM_SAVED_CUR is
+unspecified unless a previous call to getrlimit() returned that value as
+the soft or hard limit for the corresponding resource limit.
 
-The determination of whether a limit can be correctly represented in an 
-object of type rlim_t is implementation-dependent. For example, some 
-implementations permit a limit whose value is greater than RLIM_INFINITY 
-and others do not. 
+The determination of whether a limit can be correctly represented in an
+object of type rlim_t is implementation-dependent. For example, some
+implementations permit a limit whose value is greater than RLIM_INFINITY
+and others do not.
 */
 
 int  setrlimit64(int resource, const struct rlimit64 *rlp) {

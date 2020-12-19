@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -155,11 +155,11 @@ struct utmp *getutline(struct utmp * line)
 }
 
 /*
- This is an undocumented call to replace the line 
+ This is an undocumented call to replace the line
  that you are currently pointing at, or append if
  the buffer is null.
 */
-void _reputline(struct utmp * utmp) 
+void _reputline(struct utmp * utmp)
 {
 	int fd;
 
@@ -187,7 +187,7 @@ void _reputline(struct utmp * utmp)
 void pututline(struct utmp * utmp)
 {
 	(void)getutline(utmp);
-	_reputline(utmp);	
+	_reputline(utmp);
 }
 
 /**** BSD Functions for manipulating utmp type files ****/
@@ -209,7 +209,7 @@ void login(struct utmp *ut) {
 	setutent();
 	ut->ut_type = LOGIN_PROCESS;
 	pututline(ut);
-	endutent();	
+	endutent();
 
 	/* Write out to the wtmp file, appending to the end */
 	utmpname(_PATH_WTMP);
@@ -218,7 +218,7 @@ void login(struct utmp *ut) {
 	while(getutent()) { ; } //Skip to the end of the file
 
 	pututline(ut);
-	endutent(); 
+	endutent();
 
 	ut->ut_type = saved;
 }
@@ -236,12 +236,12 @@ int logout(const char *line) {
 			continue;
 		}
 		memset(ut, 0, sizeof(ut));
-		strncpy(ut->ut_line, line, UT_LINESIZE); 
+		strncpy(ut->ut_line, line, UT_LINESIZE);
 		(void)time(&ut->ut_time);
 		_reputline(ut);
 		gotone++;
 	}
-	endutent();	
+	endutent();
 
 	return gotone;
 }
@@ -261,7 +261,7 @@ void logwtmp(const char *line, const char *name, const char *host) {
 	while(getutent()) { ; } //Skip to the end of the file
 
 	pututline(&ut);
-	endutent(); 
+	endutent();
 }
 
 

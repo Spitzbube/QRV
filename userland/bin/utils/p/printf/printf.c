@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -31,7 +31,7 @@ Where:
 */
 
 /*-
-P1003.2/9,4.49:	printf -- Write formatted output. 
+P1003.2/9,4.49:	printf -- Write formatted output.
 
 Synopsis:
 	printf format [arguments...]
@@ -39,7 +39,7 @@ Synopsis:
 Description:
 
 	printf writes its arguments to standard output according to the
-	format specified as the first parameter.   The arguments are 
+	format specified as the first parameter.   The arguments are
 	character strings, are converted into the internal representation,
 	specified positionally in the format string, and then output using
 	the format string to convert to appropriate types.  The purpose for
@@ -49,17 +49,17 @@ Description:
 	The format-type specifications are:
 		d,i,o,u,x,X,f,eE,g,G,c,s
 
-	The length modifier (ell) is not referenced in the specification.			
-	It is permitted.		
-    	
-		
+	The length modifier (ell) is not referenced in the specification.
+	It is permitted.
+
+
 Bugs:
 	The '%c' format, when confronted with a valid decimal value, should
 	print the ascii character conforming to the modulo of that value
 	from the number of ascii characters....
 
 */
-	
+
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -70,9 +70,9 @@ Bugs:
 #include <util/stdutil.h>
 #include <lib/compat.h>
 
-/*	
+/*
 
-	format spec : 
+	format spec :
 				| char
 				| format_item
 				| format_spec char
@@ -104,11 +104,11 @@ handle_escape(char *esc) {
 	case 'r': 	ch = '\r'; break;
 	case 't': 	ch = '\t'; break;
 	case 'v': 	ch = '\v'; break;
-	case '0':	
+	case '0':
 		ch = strtoul(esc+1, &esc, 8);
 		--esc;
 		break;
-	case 'x':	
+	case 'x':
 		ch = strtoul(esc+1, &esc, 16);
 		--esc;
 		break;
@@ -175,7 +175,7 @@ handle_arg(char *fmt, char *arg) {
 	len += strspn(&fmt[len], "0123456789");	// collect field width
 	if(fmt[len] == '.') {					// collect precision
 		++len;
-		len += strspn(&fmt[len], "0123456789");	
+		len += strspn(&fmt[len], "0123456789");
 	}
 	memcpy(dst, fmt, len);
 	dst += len;
@@ -208,8 +208,8 @@ handle_arg(char *fmt, char *arg) {
 			error_exit("invalid format string");
 		}
 		break;
-		
-	case 'f': 
+
+	case 'f':
 	case 'e':
 	case 'E':
 	case 'g':
@@ -228,7 +228,7 @@ handle_arg(char *fmt, char *arg) {
 		escape_string(arg, new);
 		arg = new;
 		// Fall through
-	case 's': 
+	case 's':
 		//print out a string format
 		printf(built_fmt, arg);
 		break;

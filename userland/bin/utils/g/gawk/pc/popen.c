@@ -100,9 +100,9 @@ char *command;
   i = strlen(command);
   if ( ((fp = fopen(p, "wb")) == NULL) || (fwrite(command, 1, i, fp) < i)
        || (fputc('\n', fp) == EOF)) {
-    cmd = NULL; 
+    cmd = NULL;
   }
-  if (fp) fclose(fp); 
+  if (fp) fclose(fp);
   return(cmd);
 }
 
@@ -150,7 +150,7 @@ os_popen( char *command, char *mode ) {
     char *name;
     int cur;
     pipemode curmode;
-    
+
 #if defined(OS2) && (_MSC_VER != 510)
     if (_osmode == OS2_MODE)
       return(popen(command, mode));

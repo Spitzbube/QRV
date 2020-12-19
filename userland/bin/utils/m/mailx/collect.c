@@ -83,13 +83,13 @@ collect(hp, printheaders)
 	sigset_t nset;
 	int longline, lastlong, rc;	/* So we don't make 2 or more lines
 					   out of a long input line. */
-	
+
 	// quiet some longjump warnings
 	escape = (int)&escape;
 	eofcount = (int)&eofcount;
 	getsub = (char)&getsub;
 	longline = (int)&longline;
-	
+
 	collf = NULL;
 	/*
 	 * Start catching signals from here, but we're still die on interrupts

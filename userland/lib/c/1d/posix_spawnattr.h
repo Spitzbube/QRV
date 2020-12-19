@@ -1,16 +1,16 @@
 /*
- * $QNXLicenseC:  
+ * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
 */
@@ -44,7 +44,7 @@
 
 /*
  * AKEY
- * 
+ *
  * see set_attrp()/get_attrp for description of use
 */
 #define AKEY(_km_)	(0x031759f0 | (_km_))
@@ -52,7 +52,7 @@
 /*
  * GET_ATTRP
  * SET_ATTRP
- * 
+ *
  * These macros wrap the get_attrp()/set_attrp() routines. For set we always use
  * KEY_MASK to enforce 8 byte alignment within this library however the get
  * operation will inspect the lower MIN_KEY_MASK bits of the incoming
@@ -60,7 +60,7 @@
  * for use as the key mask established during a set operation for the object.
  * This allows procmgr to use an alternate alignment constraint when processing
  * the _PROC_POSIX_SPAWN message. All user programs will however be forced to
- * the alignment established by KEY_MASK. 
+ * the alignment established by KEY_MASK.
 */
 #define SET_ATTRP(a, b)		set_attrp((a), (b), KEY_MASK)
 #define GET_ATTRP(a)		get_attrp(*(posix_spawnattr_t *)((unsigned int)(a) & ~MIN_KEY_MASK), \
@@ -72,7 +72,7 @@
 
 /*
  * _posix_spawnattr_partition_t
- * 
+ *
  * This structure is used internally to record the resource partitions a
  * posix_spawnattr_t attributes object has. These partition id's represent the
  * partitions that a spawned process which uses this object will be associated
@@ -86,7 +86,7 @@ typedef struct
 
 /*
  * _posix_spawnattr_t
- * 
+ *
  * Internal representation of the opaque posix_spawnattr_t.
  * A posix_spawnattr_t is simply a 'void *'. The static initializer
  * POSIX_SPAWNATTR_INIT as well as the posix_spawnattr_init() function will
@@ -94,14 +94,14 @@ typedef struct
  * An attributes object initialized this way will have the same effect as
  * NULL for the posix_spawnattr_t parameter to posix_spawn() ... that is to
  * use default attributes.
- * 
+ *
  * Setting non default values for the posix_spawnattr_t object will cause
  * memory to be allocated on the very first _setxxx() call. The address of this
  * allocated memory will be stuffed into the caller provided posix_spawnattr_t
  * object for use in other set calls. This has the effect of making the
  * 'posix_spawnattr_t' object completely opaque to user application as well as
  * requiring only 4 bytes for the 'posix_spawnattr_t' object if default values
- * will be used. 
+ * will be used.
 */
 typedef struct
 {
@@ -127,7 +127,7 @@ typedef struct
 	} sched;
 
 	_posix_spawnattr_partition_t *partition;	// QNX
-	
+
 } _posix_spawnattr_t;
 
 

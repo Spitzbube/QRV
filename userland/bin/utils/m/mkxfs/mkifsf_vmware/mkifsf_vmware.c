@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,17 +33,17 @@
 
 #define BLOCKSIZE 512
 
-char *progname; 
+char *progname;
 
 unsigned
 concat(char *infile, FILE *infp, char *outfile, FILE *outfp)
 {
 	unsigned bytes = 0;
 	char buf[BLOCKSIZE];
-	
+
 	while(!feof(infp)){
 		size_t i;
-	
+
 		i = fread(buf, 1, BLOCKSIZE, infp);
 
 		if(ferror(infp)){
@@ -51,7 +51,7 @@ concat(char *infile, FILE *infp, char *outfile, FILE *outfp)
 				progname, infile, strerror(errno));
 			return 0;
 		}
-		
+
 		if(fwrite(buf, 1, i, outfp) < i){
 			fprintf(stderr, "%s: unable to write to %s: %s\n",
 				progname, outfile, strerror(errno));
@@ -104,7 +104,7 @@ main(int argc, char *argv[])
 			fprintf(stderr, "%s: too many arguments\n", progname);
 			exit(1);
 	}
-	
+
 	if(!concat(stubfile, stubfp, outfile, outfp)){
 		retval = 1;
 		goto cleanup;
@@ -121,11 +121,11 @@ main(int argc, char *argv[])
 	if(blocks > 2872){
 		fprintf(stderr, "%s: warning - output file larger than a regular floppy\n", progname);
 	}
-	
+
 	/* use stubfile as a buffer for padding out the outfile */
 	memset(stubfile, 0, BLOCKSIZE);
 	fwrite(stubfile, 1, blocks * BLOCKSIZE - bytes, outfp);
-	
+
 	fseek(outfp, 0x298, SEEK_SET);
 	fwrite(&blocks, sizeof(blocks), 1, outfp);
 

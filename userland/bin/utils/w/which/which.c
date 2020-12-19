@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -178,42 +178,42 @@ static int stat_executable(char *part, 	struct stat *pstb) {
 static char const *find_first_of(char const *str, char const *what) {
 	if (!str || !what)
 		return 0;
-		
+
 	while (*str) {
 		char const *pivot_what = what;
 		while (*pivot_what) {
 			if (*pivot_what == *str)
 				return str;
 			++pivot_what;
-		} 
+		}
 		++str;
-	} 
-	
+	}
+
 	return 0;
 }
 
 static int stat_executable(char *part, struct stat *pstb) {
 	const char *sep0;
 	const char *sep1; /* list separator */
-	
+
 	int ret = stat(part, pstb);
-	
+
 	if (ret == -1) { /* not found; try with pathext env. var */
 		char buff[PATH_MAX] = {'\0'}; /* temp. file name with appended ext. */
 		int const partlen = strlen(part);
 		int const extmax = PATH_MAX - partlen - 1;
 		char * const bufend = buff + partlen; /* end of buff where ext. is to be copied*/
-		
+
 		if (extmax <= 0)
 			return ret;
-			
+
 		strncpy(buff, part, PATH_MAX - 1);
-		
+
 		sep0 = getenv("PATHEXT");
-		
+
 		if (!sep0)
 			return ret;
-		
+
 		while (ret && *sep0) {
 			sep1 = find_first_of(sep0, ";:");
 			if (!sep1) {
@@ -231,8 +231,8 @@ static int stat_executable(char *part, struct stat *pstb) {
 			}
 			++sep0;
 		}
-	} 
-	
+	}
+
 	return ret;
 }
 #endif
@@ -261,25 +261,25 @@ int which(char *file) {
 	} else {
 	    partlen = strlen(pp);
 	}
-	
+
 	if (*pp == LIST_SEP) // PATH starts with a LIST_SEP
 	    continue;
-	    
+
 	memset(part, 0, sizeof(part));
-	
+
 	maxlen = partlen + filelen + 2; // 2 = 1 for terminating '\0' and 1 for '/' character
-		
+
 	if (maxlen > sizeof(part)) {
 		filetoolongerror();
 	}
 
 	if (*pp) {
 	    strncpy(part, pp, partlen);
-	    strncat(part, "/", 1);		
-	} 
-	
+	    strncat(part, "/", 1);
+	}
+
 	strncat(part, file, filelen);
-	
+
 #ifdef __MINGW32__
     // replace all '\\' with '/'
     strreplacechar(part, '\\', '/');
@@ -352,7 +352,7 @@ int main(int argc, char *argv[]) {
 	  default:  exit(EXIT_FAILURE);
 	}
     }
-    
+
 #ifdef WIN32
 	setmode(fileno(stdout), O_BINARY);
 #endif
@@ -362,17 +362,17 @@ int main(int argc, char *argv[]) {
      * I fixed it by appending LIBPATH with the LD_LIBRARY_PATH.
      * If none exists it will exit with an error.
      */
-    
+
 #ifndef __MINGW32__
 // in mngw env., we do not get special path for the libraries, win32 looks for the libs in current dir and then
-// in the PATH.    
+// in the PATH.
     if (so)
     {
         char *ld_lib = getenv("LD_LIBRARY_PATH");
         int ld_lib_len = 0;
-        
+
 	len = confstr(_CS_LIBPATH,NULL,0); // len - buffer size required for the string and terminating '\0'
-		
+
 	if (ld_lib){
 		ld_lib_len = strlen(ld_lib);
 	}
@@ -380,34 +380,34 @@ int main(int argc, char *argv[]) {
 		fprintf(stderr, "%s:  no PATH set\n", progname);
 		exit(EXIT_FAILURE);
         }
-        lib_path = (char*)malloc(len + ld_lib_len + 2); 
+        lib_path = (char*)malloc(len + ld_lib_len + 2);
 	if (ld_lib) {
 		strncpy(lib_path, ld_lib, ld_lib_len);
 		strncat(lib_path, ":", 1);
 		ld_lib_len++;
 	}
-	if (confstr(_CS_LIBPATH,lib_path+ld_lib_len, len) > len) { 
+	if (confstr(_CS_LIBPATH,lib_path+ld_lib_len, len) > len) {
 			    /* if returned value is larger than our buf size (len)
 			    * we are facing an unusual condition in which someone has changed the _CS_LIBPATH from the time
 			    * we obtained 'len' to the time we obtained the string. We should retry or exit.
-			    * We can not continue. 
+			    * We can not continue.
 			    */
 		    	    /** exit with an error, we tried, but someone keeps changing the value!*/
 			fprintf(stderr, "%s: Could not obtain _CS_LIBPATH\n", progname);
 			exit(EXIT_FAILURE);
 	}
 	lib_path[len + ld_lib_len - 1] = '\0'; // we must terminate it in case of a string longer than expected
-            
+
         PATH = lib_path;
-    }  
-    else { 
+    }
+    else {
         if (getenv("PATH") == 0) {
 	        fprintf(stderr, "%s:  no PATH set\n", progname);
 	        exit(EXIT_FAILURE);
 	    }
-	    
+
 	    len = strlen(getenv("PATH")) + 1;
-	    
+
 	    PATH = (char *) malloc(len);
 	    PATH[len-1] = '\0';
 	    strncpy(PATH, getenv("PATH"), len-1);
@@ -417,7 +417,7 @@ int main(int argc, char *argv[]) {
     if (getenv("PATH"))
 		len = strlen(getenv("PATH"));
 	else
-		len = 0; 
+		len = 0;
 	len += 3; // for ".;\0"
     PATH = malloc(len);
     if (!PATH) {
@@ -432,13 +432,13 @@ int main(int argc, char *argv[]) {
 	}
 	//printf("%s\n%d - %d\n", PATH, len, strlen(PATH));
 #endif // ifndef __MINGW32__
-    
+
     argv = &argv[optind - 1];
     while (*++argv)
 	if (which(*argv) == 0) {
 	    fprintf(stderr, "%s: no %s in %s\n", progname, *argv, PATH);
 	    notfound = 1;
-	}   
+	}
 	free(PATH);
 
     if (notfound)

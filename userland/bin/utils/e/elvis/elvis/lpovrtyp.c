@@ -150,7 +150,7 @@ static void fontch(font, ch)
 	  default:
 		assert(column < o_lpcolumns);
 		bits = colorinfo[font].da.bits;
-	
+
 		if (bits & COLOR_GRAPHIC)
 		{
 			if (ch >= '1' && ch <= '9')

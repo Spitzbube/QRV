@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -76,7 +76,7 @@ int qnx4fs_fsys_stat( char *filename, struct _qnx4fs_fsys_stat *buf )
 	for (;;) {
 		int nbytes, bytesread;
 		qnx4fs_dir_entry_t *ptr;
-		
+
 		/* read a dir entry */
         nbytes=sizeof(direntrybuf);
 		ptr=&direntrybuf;
@@ -89,7 +89,7 @@ int qnx4fs_fsys_stat( char *filename, struct _qnx4fs_fsys_stat *buf )
 			}
 		}
 
-		if (0==strncmp(direntrybuf.d_inode.i_fname,file_name,strlen(file_name)+1)) 
+		if (0==strncmp(direntrybuf.d_inode.i_fname,file_name,strlen(file_name)+1))
 			break;
 	}
 	close(dirfd);
@@ -107,7 +107,7 @@ int qnx4fs_fsys_stat( char *filename, struct _qnx4fs_fsys_stat *buf )
     /* when a match is found, duplicate pertinent fields,
        perform sanity check on fields obtained via stat(), and return */
 	buf->st_first_xtnt = direntrybuf.d_inode.i_first_xtnt;
-	buf->st_num_xtnts = direntrybuf.d_inode.i_num_xtnts;	
+	buf->st_num_xtnts = direntrybuf.d_inode.i_num_xtnts;
 	buf->st_xblk = direntrybuf.d_inode.i_xblk;
 
     /* ftime, status is not returned by stat in neutrino */

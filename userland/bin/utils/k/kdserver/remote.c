@@ -1,33 +1,33 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 
-	
+
 
 /*
  *
  *    The following gdb commands are supported:
- * 
+ *
  * command          function                               Return value
- * 
+ *
  *    g             return the value of the CPU registers  hex data or ENN
  *
  *    mAA..AA,LLLL  Read LLLL bytes at address AA..AA      hex data or ENN
- * 
+ *
  *    k             kill
  *    D				detach
  *    H[c,g]tid     set the current thread                 OK
@@ -40,23 +40,23 @@
  *    q[f,s]ThreadInfo
  *                  return list of thread id's             m<tid> or l
  *
- * All commands and responses are sent with a packet which includes a 
- * checksum.  A packet consists of 
- * 
+ * All commands and responses are sent with a packet which includes a
+ * checksum.  A packet consists of
+ *
  * $<packet info>#<checksum>.
- * 
+ *
  * where
  * <packet info> :: <characters representing the command or response>
  * <checksum>    :: < two hex digits computed as modulo 256 sum of <packetinfo>>
- * 
+ *
  * When a packet is received, it is first acknowledged with either '+' or '-'.
  * '+' indicates a successful transfer.  '-' indicates a failed transfer.
- * 
+ *
  * Example:
- * 
+ *
  * Host:                  Reply:
  * $m0,10#2a               +$00010203040506070809101112131415#42
- * 
+ *
  ****************************************************************************/
 
 
@@ -205,7 +205,7 @@ generic_gdb_expand(char *src, char *dest) {
  * is used by the 'parse' routines to actually perform the conversion.
  *
  * Entry : srcstr	- Pointer to string to convert
- *	   retstr	- Pointer to cell which will contain the address 
+ *	   retstr	- Pointer to cell which will contain the address
  *			  of the first byte not converted
  *			- Pointer to cell to return value
  */
@@ -218,16 +218,16 @@ gethexnum(char *srcstr, char **retstr, unsigned *retvalue) {
 
     while(*str && (((*str >= 'a') && (*str <= 'f')) ||
 		    ((*str >= '0') && (*str <= '9')))) {
-		value = value*16 + (*str <= '9' ? (*str++ -'0') : 
+		value = value*16 + (*str <= '9' ? (*str++ -'0') :
 					(*str++ -'a'+10));
     }
-    
+
     /* Return failure if we are still pointing at the start */
-    
+
     if(str == srcstr) return 0;
-    
+
     /* Set up the return values and return success */
-    
+
     *retvalue = value;
     *retstr = str;
     return 1;
@@ -246,19 +246,19 @@ static int
 parse2hexnum(char *srcstr, unsigned *retvalue1, unsigned *retvalue2) {
     char *str;
     unsigned value1, value2;
-    
+
     if(!gethexnum(srcstr, &str, &value1) || (*str++ != ',') ||
 	  !gethexnum(str, &str, &value2)) {
 		return 0;
     }
-    
+
     *retvalue1 = value1;
     *retvalue2 = value2;
     return 1;
 }
 
 
-/* 
+/*
  * scan for the sequence $<data>#<checksum>
  */
 static int
@@ -270,7 +270,7 @@ getpacket() {
     int	ch;
 	int cs1;
 	int cs2;
-  
+
     for( ;; ) {
 try_again:
 		/* wait around for the start character, ignore all other characters */
@@ -279,11 +279,11 @@ try_again:
 			if(ch == -1) return 0;
 		} while(ch != '$');
 
-try_again2:		
+try_again2:
 		checksum = 0;
 		count = 0;
 		cs1 = cs2 = 0;
-		
+
 		/* now, read until a # or end of buffer is found */
 		for( ;; ) {
 			if(count >= buff_max) goto try_again;
@@ -302,15 +302,15 @@ try_again2:
 
 		scratch[count] = 0;
 		gdb_expand(scratch, inbuf);
-		
+
 		xmitcsum = (chartohex(cs1) << 4) + chartohex(cs2);
 		if(checksum == xmitcsum) break;
 		if(debug_flag) {
 			fprintf(stderr, "bad checksum.  My count = 0x%x, sent=0x%x. buf=%s\n",
 			   checksum,xmitcsum,inbuf);
 		}
-		dbg_write("-", 1);  /* failed checksum */ 
-    } 
+		dbg_write("-", 1);  /* failed checksum */
+    }
 	dbg_write("+", 1);  /* successful transfer */
 	/* if a sequence char is present, reply the sequence ID */
 	if(inbuf[2] == ':') {
@@ -322,13 +322,13 @@ try_again2:
 			if(inbuf[i] == '\0') break;
 			++i;
 		}
-	} 
+	}
     return 1;
 }
 
 
-/* 
- * send the packet in buffer.  The host gets one chance to read it.  
+/*
+ * send the packet in buffer.  The host gets one chance to read it.
  * This routine does not wait for a positive acknowledge.
  */
 static void
@@ -338,15 +338,15 @@ putpacket(void) {
 	unsigned		i;
 
     len = gdb_compress(outbuf, &scratch[1]);
-  
+
     /*  $<packet info>#<checksum>. */
 
     checksum = 0;
-  
+
 	for(i = 1; i <= len; ++i) {
 		checksum += scratch[i];
     }
-	
+
 	scratch[0] = '$';
 	scratch[len + 1] = '#';
     scratch[len + 2] = tohexchar(checksum >> 4);
@@ -355,7 +355,7 @@ putpacket(void) {
 }
 
 
-/* 
+/*
  * convert the memory pointed to by mem into hex, placing result in buf
  * return a pointer to the last char put in buf (null)
  */
@@ -369,7 +369,7 @@ mem2hex(char *mem, char *buf, int count) {
 		*buf++ = tohexchar(ch >> 4);
 		*buf++ = tohexchar(ch);
     }
-    *buf = 0; 
+    *buf = 0;
     return buf;
 }
 
@@ -413,7 +413,7 @@ gdb_read_membytes(void) {
     } else {
 		strcpy(outbuf,"E01");
 		if(debug_flag) fprintf(stderr, "malformed read memory command: %s", inbuf);
-    }     
+    }
 }
 
 
@@ -423,7 +423,7 @@ monitor_kprintf(void) {
 	unsigned	len;
 
 	if(kdp == NULL) {
-		// fill in kdp info 
+		// fill in kdp info
 		struct kdump	kdump;
 
 		core_read_paddr(kdump_paddr, &kdump, sizeof(kdump));
@@ -547,12 +547,12 @@ server() {
 		case '?': // Tell GDB our signal number
 			sprintf(outbuf, "T%02xthread:%X;", note->sig_num, current_tid);
 			break;
-		
+
 		case 'g' : // return the value of the CPU registers
 			cpu->cvt_regset(regset, scratch);
 			mem2hex(scratch, outbuf, cpu->gdb_regset_size);
 			break;
-		  
+
 		case 'm' : // mAA..AA,LLLL  Read LLLL bytes at address AA..AA
 			gdb_read_membytes();
 			break;
@@ -653,8 +653,8 @@ server() {
 			}
 			break;
 
-		} /* switch */ 
-		
+		} /* switch */
+
 		/* reply to the request */
 		putpacket();
     }

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -62,23 +62,23 @@ LANG, LC_ALL, LC_CTYPE, LC_MESSAGES.
 	Make "wc" utility large-file-aware.  Change counts from int/long to
 	off_t (so will resize according to _FILE_OFFSET_BITS compilation) and
 	also allow for this in output formatting (printf).
-	
+
 	Revision 1.10  2003/09/02 18:07:11  martin
 	Update QSSL Copyright.
-	
+
 	Revision 1.9  1999/07/29 18:27:36  spuri
 	- I added support for the '-m' option
-	
+
 	I made the following changes even though they are not bugs:
 	- added return values to all the functions and moved then around to get
 	  rid of warnings about missing declarations and unspecified return types
 	- I fixed the usage to indicate which command line options are Neutrino
 	  specific and that we don't support any environment vars. I also added
 	  a note on the '-m' option.
-	
+
 	Revision 1.8  1998/09/15 17:52:45  steve
 	*** empty log message ***
-	
+
  * Revision 1.7  1995/08/10  21:30:54  waflowers
  * Fix to ignore file size for a FIFO (or pipe).
  * You have to really read the bytes and count them.
@@ -103,7 +103,7 @@ LANG, LC_ALL, LC_CTYPE, LC_MESSAGES.
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 /*********************************************************************/
 /*                                                                   */
@@ -194,14 +194,14 @@ char *name;
 void
 count(fp, name)
 FILE *fp;
-char *name; 
+char *name;
 {
 	register int c;
 	int inword = 0;
 	struct stat sb;
-	
+
 	nc = nl = nw = 0;
-	if (((num_args[0] == 'c') || (num_args[0] == 'm')) && num_args[1] == 0 && 
+	if (((num_args[0] == 'c') || (num_args[0] == 'm')) && num_args[1] == 0 &&
 		fstat(fileno(fp), &sb) == 0 && !S_ISFIFO(sb.st_mode))
 		nc = sb.st_size;
 	else
@@ -209,7 +209,7 @@ char *name;
 	{	++nc;
 		if ( isspace( c ))     /* checks for space, tab, and newline as */
 			inword = 0;        /* word separators */
-		else 	
+		else
 			if ( inword == 0)
 			{	inword = 1;
 				++nw;
@@ -227,7 +227,7 @@ print_hdr()
 
 	for (i=0; i < NUM_FIELDS && num_args[i]; i++)
 	{	switch(num_args[i])
-		{	
+		{
 			case 'c':	printf("%9s", "bytes");		break;
 			case 'm':	printf("%9s", "chars");		break;
 			case 'l':	printf("%9s", "lines");		break;
@@ -243,7 +243,7 @@ int argc;
 char *argv[];
 {
 	register char *filename;
-	FILE *fp, *fopen();	
+	FILE *fp, *fopen();
 	int		 i,
 			 filecount = 0,
 			 status = 0,
@@ -254,21 +254,21 @@ char *argv[];
 			 total_chars = 0;
 
 	while(( i= getopt( argc, argv, "cmlw**ht")) != -1)
-	{	switch (i) 	
+	{	switch (i)
 		{
-			case 'c': 
+			case 'c':
 				if (index < NUM_FIELDS)
 					num_args[index++] = 'c';  /* specifies which order */
 				break;                    /* the options were entered */
-			case 'm': 
+			case 'm':
 				if (index < NUM_FIELDS)
 					num_args[index++] = 'm';  /* specifies which order */
 				break;                    /* the options were entered */
-			case 'l': 
+			case 'l':
 				if (index < NUM_FIELDS)
 					num_args[index++] = 'l';
 				break;
-			case 'w': 
+			case 'w':
 				if (index < NUM_FIELDS)
 					num_args[index++] = 'w';
 				break;
@@ -291,13 +291,13 @@ char *argv[];
 	}
 
 	if( hdr ) print_hdr();
-	if (optind >= argc)     
+	if (optind >= argc)
 		count( stdin, 0 );     /* no filename specified, use stdin */
 	else
 	{
 		for( ; optind < argc; optind++ )    /* count for each filename */
 		{	filename = argv[optind];
-			if (( fp = fopen( filename, "r")) !=0) 
+			if (( fp = fopen( filename, "r")) !=0)
 			{ 	count( fp, filename );
 				fclose(fp);
 				++filecount;
@@ -307,7 +307,7 @@ char *argv[];
 			}
 			else
 			{   fprintf(stderr, "cannot open file '%s'\n", filename);
-				status = 1; 
+				status = 1;
 			}
 		}
 	}

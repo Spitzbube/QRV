@@ -15,11 +15,11 @@
  * http://licensing.qnx.com/license-guide/ for other information.
  *
  */
-/* 
+/*
  * trace.c
  *
  * User land convenience functions for injecting events.  At some point a more
- * efficient method of inject user generated into the kernel tracelog might be 
+ * efficient method of inject user generated into the kernel tracelog might be
  * dreamed up, but for now let's get users away from using the straight kernel call.
  */
 

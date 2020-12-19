@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -35,29 +35,29 @@
 /*
 
 	Regular Expression handling.
-	
+
 	This first section is common to the routines "regcomp.c" and "regexec.c".
 	To avoid polluting namespaces, etc, this was not placed in the standard
 	header, so if you modify the first section, you must ensure that you ref
 	reflect the changes in both files.....
-	The section ends with : --END OF COMMON SECTION-- 
+	The section ends with : --END OF COMMON SECTION--
 
-	The regular expressions are either 'extended' or 'basic'. 
+	The regular expressions are either 'extended' or 'basic'.
 	The expressions are translated into an array of 16-bit unsigned values,
-	representing a non-deterministic finite state machine, with a simple 
+	representing a non-deterministic finite state machine, with a simple
 	addition for allowing 'back-referenced' patterns (\1,\2,...).
 	A simple attempt at optimisation is made for the 'basic' expressions.
 	After compilation, the machine is examined to see if there is a set of
-	characters, one of which is necessary to consider a match.  
+	characters, one of which is necessary to consider a match.
 	If such a set is found ('^.*$' has no such set) then it is used by
 	regexec() to skip impossible strings.  In practice this represents a
 	reduction in execution time of 50-80% on 'normal' expressions.
-	
+
 	The expression may be converted into a Deterministic Finite Automaton
 	by generating a table of states and the transition from each state on each
 	character thus table size is O(|expression|*|alphabet|).  In general, the
-	time to generate such a table is O(|expression| ** 3).  There are well 
-	documented algorithms for both compressing the table, and delaying the 
+	time to generate such a table is O(|expression| ** 3).  There are well
+	documented algorithms for both compressing the table, and delaying the
 	generation of the state table entries until they are 'needed'.
 
 	The machine is the concatenation of a set of simple op-codes.
@@ -75,7 +75,7 @@
 			executed from (IP+1) up to (IP+2) times, then branch to the
 			OPERAND field.
 			Any other OP_CODE will be executed individually (IP+1) to (IP+2)
-			times.	
+			times.
 			If (IP+2) is REG_INFINITY, then it will be
 			executed up to the maximum possible.
 		RE_ENDPAT:
@@ -88,7 +88,7 @@
 		RE_ANY:
 			Any character except nil.
 		RE_CCL:
-			A character class, the operand encodes an index into the 
+			A character class, the operand encodes an index into the
 			"re_classtab" entry in the regex_t.
 			Matches any char in the set.
 		RE_EOLN:
@@ -113,12 +113,12 @@
 		ere_fork(),
 		re_repeat(),
 		re_match()
-	are very recursive.  For relatively simple patterns, this is not a 
+	are very recursive.  For relatively simple patterns, this is not a
 	short coming, however for matches of the form :
 		"(steve|john)*(steve|john)*(steve|john)* ...  stevestevejohn'
 	The execution speed will slow exponentially with the length of the
-	target string. 
-	
+	target string.
+
 */
 
 #define	REG_INFINITY (-1)
@@ -187,14 +187,14 @@ typedef	unsigned char BitEl, *BitVect;
 #ifdef DEBUGGING
 #define	LOCAL
 #else
-#define	LOCAL static 
+#define	LOCAL static
 #endif
 #endif
 
 #include <setjmp.h>
 
 /*    don't allocate in smaller chunks */
-#define    MIN_NINCR      32   
+#define    MIN_NINCR      32
 
 LOCAL	jmp_buf	wherewasi;
 

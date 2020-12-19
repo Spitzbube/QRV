@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -43,13 +43,13 @@
 
 	Revision 1.11  2003/12/08 16:56:18  kewarken
 	added win32 variant
-	
+
 	Revision 1.10  2003/08/21 21:25:19  martin
 	Update QSSL Copyright.
-	
+
 	Revision 1.9  1998/09/15 18:21:47  eric
 	cvs
-	
+
 	Revision 1.8  1997/02/12 16:32:34  eric
 	eliminated nto ifdef
 
@@ -73,7 +73,7 @@
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 /*
  * Filename:	dirname.c
@@ -142,13 +142,13 @@ char	*src_str, *dst_str=NULL;
 	 */
 	src_str = argv[ optind ];
 
-	if ((argc-optind)<1) fprintf(stderr,"dirname: must supply a string\n"); 
+	if ((argc-optind)<1) fprintf(stderr,"dirname: must supply a string\n");
 	else if ((argc-optind)>1) fprintf(stderr,"dirname: too many operands\n");
 
 	if ( inval_usage || ((argc-optind)!=1)) exit(EXIT_FAILURE);
 
 	if (!*src_str) src_str = "X";	/* this will result in . after processing */
-		
+
 	/* step 1 - if string is //, skip steps (2) through (5)
      */
 
@@ -175,7 +175,7 @@ char	*src_str, *dst_str=NULL;
 
 			/* step 4 - if there are no slash characters remaining in string,
              *          string shall be set to a single period character. In
-             *          this case, skip steps 5 through 8. 
+             *          this case, skip steps 5 through 8.
              */
 			dst_str = strrchr(src_str,'/');
 			if (dst_str==NULL) src_str = ".";
@@ -184,7 +184,7 @@ char	*src_str, *dst_str=NULL;
                  *          string, they shall be removed.
                  */
 				if (*++dst_str!='/') *dst_str=0;
-				
+
 				/* step 6 - if the remaining string is //, it is implementation
                  *          defined whether steps 7 and 8 are skipped or
                  *          processed.
@@ -196,13 +196,13 @@ step6:			/* entry point for special case of //. In this implementation
                  */
                 if (strcmp(src_str,"//")) {
 					/* step 7 - if there are any trailing slash characters in
-                     *          string, they shall be removed. 
+                     *          string, they shall be removed.
                      */
 					for (;dst_str!=src_str && *--dst_str=='/';*dst_str=0);
 
 					/* step 8 - if the remaining string is empty, string shall
-                     * be set to a single slash character 					
-                     */    
+                     * be set to a single slash character
+                     */
 					if (!*src_str) src_str = "/";
 				}
 			}

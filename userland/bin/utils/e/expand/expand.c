@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -45,21 +45,21 @@ Where:
 	Stage 1 of the warnings/errors cleanup.
 
 	Revision 1.8  2005/06/03 01:37:45  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.7  2003/08/25 16:00:17  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.6  1994/12/02 14:33:20  steve
 	oops...
-	
+
  * Revision 1.5  1994/11/30  19:14:59  steve
  * logic for scanning the tab string was broken.  It would scan a null pointer
  * for a ',' before exitting set_tabs().
@@ -79,7 +79,7 @@ Where:
  * Revision 1.1  1991/09/04  01:30:21  brianc
  * Initial revision
  *
-	
+
 ---------------------------------------------------------------------*/
 
 #include <stdio.h>

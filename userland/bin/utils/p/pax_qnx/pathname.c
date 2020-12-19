@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -23,7 +23,7 @@
  *
  * $Revision: 153052 $
  *
- * pathname.c - directory/pathname support functions 
+ * pathname.c - directory/pathname support functions
  *
  * DESCRIPTION
  *
@@ -33,17 +33,17 @@
  *
  *	Mark H. Colburn, NAPS International (mark@jhereg.mn.org)
  *
- * Sponsored by The USENIX Association for public distribution. 
+ * Sponsored by The USENIX Association for public distribution.
  *
  * Copyright (c) 1989 Mark H. Colburn.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms are permitted
- * provided that the above copyright notice is duplicated in all such 
- * forms and that any documentation, advertising materials, and other 
- * materials related to such distribution and use acknowledge that the 
- * software was developed * by Mark H. Colburn and sponsored by The 
- * USENIX Association. 
+ * provided that the above copyright notice is duplicated in all such
+ * forms and that any documentation, advertising materials, and other
+ * materials related to such distribution and use acknowledge that the
+ * software was developed * by Mark H. Colburn and sponsored by The
+ * USENIX Association.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
@@ -70,10 +70,10 @@
  *
  * Revision 1.2  89/02/12  10:05:13  mark
  * 1.2 release fixes
- * 
+ *
  * Revision 1.1  88/12/23  18:02:21  mark
  * Initial revision
- * 
+ *
  */
 
 #ifndef lint
@@ -109,7 +109,7 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
  *
  *	Returns a 0 if the creation of the directory succeeded or if the
  *	directory already existed.  If the f_dir_create flag was not set
- *	and the named directory does not exist, or the directory creation 
+ *	and the named directory does not exist, or the directory creation
  *	failed, a -1 will be returned to the calling routine.
  */
 
@@ -151,8 +151,8 @@ char           *name;
  *
  * DESCRIPTION
  *
- * 	Confused by "<symlink>/.." twistiness. Returns the number of final 
- * 	pathname elements (zero for "/" or ".") or -1 if unsuccessful. 
+ * 	Confused by "<symlink>/.." twistiness. Returns the number of final
+ * 	pathname elements (zero for "/" or ".") or -1 if unsuccessful.
  *
  * PARAMETERS
  *
@@ -219,7 +219,7 @@ char           *begin;
 	}
     }
     if (idx == 0) {
-	element[idx++] = absolute ? "" : "."; 
+	element[idx++] = absolute ? "" : ".";
     }
     element[idx] = (char *)NULL;
     name = begin;
@@ -236,7 +236,7 @@ char           *begin;
 }
 
 
-/* dirmake - make a directory  
+/* dirmake - make a directory
  *
  * DESCRIPTION
  *
@@ -249,7 +249,7 @@ char           *begin;
  *
  * RETURNS
  *
- * 	Returns zero if successful, -1 otherwise. 
+ * 	Returns zero if successful, -1 otherwise.
  *
  */
 

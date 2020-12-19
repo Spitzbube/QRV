@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -32,20 +32,20 @@
 
 /*
  This allows you to retreive information from the resource database:
- pid == 0 
+ pid == 0
 	-> Query all free blocks
  pid == -1
 	-> Query all used blocks
  pid == -2
 	-> Query all free & used blocks
- pid > 0 
+ pid > 0
 	-> Query blocks owned by pid
 
- If list == NULL || listcnt == 0 
+ If list == NULL || listcnt == 0
 	-> Return the number of blocks which match the criteria
 
- Otherwise return a maximum of 'listcnt' blocks of data from the offset 
- 'start' (0 based) which match the criteria 'name'. 
+ Otherwise return a maximum of 'listcnt' blocks of data from the offset
+ 'start' (0 based) which match the criteria 'name'.
 
  [message]
  [name]

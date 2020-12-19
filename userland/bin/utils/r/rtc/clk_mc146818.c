@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 
@@ -37,10 +37,10 @@ static	unsigned
 cmos(unsigned i) {
 	unsigned temp;
 
-	_disable();		
+	_disable();
 	chip_write8(0,i);
 	temp = chip_read8(1);
-	_enable();		
+	_enable();
 	return(temp);
 }
 
@@ -50,7 +50,7 @@ cmos_set(unsigned i, unsigned d) {
 	_disable();
 	chip_write8(0,i);
 	chip_write8(1,d);
-	_enable();	
+	_enable();
 }
 
 int
@@ -64,10 +64,10 @@ RTCFUNC(init,mc146818)(struct chip_loc *chip, char *argv[]) {
 #endif
 	}
 #ifdef NEVER
-	if(chip->century_reg == UNSET) 
+	if(chip->century_reg == UNSET)
 			chip->century_reg = 50;
 #endif
-	if(chip->access_type == NONE) 
+	if(chip->access_type == NONE)
 			chip->access_type = IOMAPPED;
 	return(2);
 }
@@ -107,7 +107,7 @@ RTCFUNC(get,mc146818)(struct tm *tm, int cent_reg) {
 			fprintf( stderr, "RTC: cannot read AT clock\n");
 			return(-1);
 		}
-			
+
 		clk_buf[0][0] = cmos(0);		/* seconds	*/
 		clk_buf[0][1] = cmos(2);		/* minutes	*/
 		clk_buf[0][2] = cmos(4);		/* hours	*/
@@ -181,10 +181,10 @@ RTCFUNC(set,mc146818)(struct tm *tm, int cent_reg) {
 	x = cmos(REG_A);
 	x = x & 0xf | 0x20;	/* Set internal ocillator running */
 	cmos_set(REG_A, x);
-	
+
 	x = cmos(REG_B);
 	x |= CLK_HOLD | H2412;	/* Set bit 7 & 1 of Status Register B to a '1',   */
-	cmos_set(REG_B, x);	/* Hold clock updates, clear UIP bit in REG A */ 
+	cmos_set(REG_B, x);	/* Hold clock updates, clear UIP bit in REG A */
 
 	seconds	= tm->tm_sec;
 	minutes	= tm->tm_min;

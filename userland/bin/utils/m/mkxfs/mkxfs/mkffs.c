@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -111,7 +111,7 @@ ffs_sort_t *ffs_entries(struct tree_entry *trp, uint8_t *mountpoint)
 	sort_add->ffs_mtime = no_time ? 0 : time(NULL);
 	sort_add->ffs_ftime = no_time ? 0 : time(NULL);
 
-	// 
+	//
 	//	mode, uid and gid are hard coded for root entry
 	//
 
@@ -134,9 +134,9 @@ ffs_sort_t *ffs_entries(struct tree_entry *trp, uint8_t *mountpoint)
 		sort_add->fip = trp->fip;
 		if (level > 1)
 			sort_add->parent = trp->parent->name;
-		else 
+		else
 			sort_add->parent = NULL;
-		
+
 		if (!(trp->fip->attr->mode & S_IFDIR)){
 			sort_add->host_fullpath = trp->fip->hostpath;
 			sort_add->perms = trp->fip->host_perms;
@@ -153,7 +153,7 @@ ffs_sort_t *ffs_entries(struct tree_entry *trp, uint8_t *mountpoint)
 
 		sort_add->mode = trp->fip->attr->mode | sort_add->perms;
 
-		if(trp->fip->flags & FILE_FLAGS_EXEC) 
+		if(trp->fip->flags & FILE_FLAGS_EXEC)
 			sort_add->perms &= ~S_ISVTX;
 
 		sort_add->level = level;
@@ -168,13 +168,13 @@ ffs_sort_t *ffs_entries(struct tree_entry *trp, uint8_t *mountpoint)
 			sort_add->sibling = trp->sibling->name;
 		else
 			sort_add->sibling = NULL;
-		if (trp->child)		
+		if (trp->child)
 			sort_add->child = trp->child->name;
 		else
 			sort_add->child = NULL;
 		sort_add->prev=sort_hold;
 		sort_hold = sort_add;
-		
+
 
 		if (trp->child){
 			trp = trp->child;
@@ -247,7 +247,7 @@ ffs_sort_t *find_child(ffs_sort_t *sort){
 	//
 
 		for(;;){
-	        if (!(strcmp(child->parent, sort->name))  &&  ((sort->level+1) == child->level)) 
+	        if (!(strcmp(child->parent, sort->name))  &&  ((sort->level+1) == child->level))
 				break;
 			else{
 				if (child->next)
@@ -257,7 +257,7 @@ ffs_sort_t *find_child(ffs_sort_t *sort){
 			}
 		}
 	}
-	else{			
+	else{
 		if (!child)
 			return NULL;
 	}
@@ -278,15 +278,15 @@ ffs_sort_t *find_sibling(ffs_sort_t *sort){
 
 	if (sort->level > 1)
 
-		while((strcmp(sort->parent, sibling->parent)) || 
+		while((strcmp(sort->parent, sibling->parent)) ||
 				(sort->level != sibling->level) || (strcmp(sort->sibling, sibling->name))){
 
 			if (sibling->next)
-				sibling=sibling->next;	
+				sibling=sibling->next;
 			else
 				return NULL;
 	}
-	else 
+	else
 		while((strcmp(sort->sibling, sibling->name)) || (sort->level != sibling->level)){
 			if (sibling->next)
 				sibling=sibling->next;

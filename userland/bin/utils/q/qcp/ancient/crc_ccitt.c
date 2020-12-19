@@ -59,7 +59,7 @@ crctable[256] = {   /* CCITT crc */
 unsigned
 compute_crc_ccitt( n, buf )
 	int		n;
-	char	*buf; 
+	char	*buf;
 	{
 	register unsigned char *s;
 	register unsigned val = 0;
@@ -77,7 +77,7 @@ compute_crc_ccitt( n, buf )
 unsigned
 compute_crc_ccitt( n, buf )
 int		n;		 /* 14[bp] */
-char	*buf;    /* 16[bp] */ 
+char	*buf;    /* 16[bp] */
 {
 	asm("		mov cx,14[bp]	");
 	asm("		mov bx,16[bp]	");
@@ -99,7 +99,7 @@ char	*buf;    /* 16[bp] */
 	asm("		mov bx,#<crctable>	");
 	asm("	w	add bx,ax		");
 
-	asm("	    xchg cx,dx		");		/* (val >> 8) */ 
+	asm("	    xchg cx,dx		");		/* (val >> 8) */
 	asm("	    mov cx,#8		");
 	asm("	w   shr si,cl		");
 	asm("	    xchg dx,cx		");

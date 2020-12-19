@@ -64,13 +64,13 @@ checkend(const char *ptr, const char *end, const char *msg)
 	/*
 	 * Note '\t' and '\r' below aren't
 	 * strictly posix for uudecode.
-	 * posix says '\n' only with no 
+	 * posix says '\n' only with no
 	 * trailing or leading space.
 	 */
 	if (strncmp(ptr, end, n) != 0 ||
 	    strspn(ptr + n, "\n\t\r") != strlen(ptr + n)) {
 		if (msg != NULL)
-			warnx("%s", msg); 
+			warnx("%s", msg);
 		return (1);
 	}
 	return (0);

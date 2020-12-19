@@ -17,7 +17,7 @@
    along with this program; see the file COPYING.
    If not, write to the Free Software Foundation,
    59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
-
+
 #include "system.h"
 
 static char const copyright_string[] =
@@ -145,7 +145,7 @@ struct diff3_block {
   ((linenum)						\
    - D_LOWLINE ((diff), (fromfile))			\
    + D_LOWLINE ((diff), (tofile)))
-
+
 /* Options variables for flags set on command line.  */
 
 /* If nonzero, treat all files as text files, never as binary.  */
@@ -474,7 +474,7 @@ usage (void)
 	  _("If a FILE is `-', read standard input."),
 	  _("Report bugs to <bug-gnu-utils@gnu.org>."));
 }
-
+
 /*
  * Routines that combine the two diffs together into one.  The
  * algorithm used follows:
@@ -934,7 +934,7 @@ compare_line_list (char * const list1[], size_t const lengths1[],
       return 0;
   return 1;
 }
-
+
 /*
  * Routines to input and parse two way diffs.
  */
@@ -1729,7 +1729,7 @@ reverse_diff3_blocklist (struct diff3_block *diff)
 
   return prev;
 }
-
+
 static void
 fatal (char const *msgid)
 {

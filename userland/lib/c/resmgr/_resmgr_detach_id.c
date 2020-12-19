@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -70,11 +70,11 @@ static const resmgr_io_funcs_t ebadf_io_funcs = {
  about the locks and size of the table managed by _resmgr_handle() as well
  as locking the entire data structure for a longer period of time.  It is
  a cheaper solution however then the second block of code, which would require
- additional changes to the _resmgr_handle() code to not shift the found 
+ additional changes to the _resmgr_handle() code to not shift the found
  bindings around to the head of the list.
 
- It still would be better to have this entire operation encapsulated inside 
- of _resmgr_handle() since both implementations rely on _resmgr_io_table.nentries 
+ It still would be better to have this entire operation encapsulated inside
+ of _resmgr_handle() since both implementations rely on _resmgr_io_table.nentries
  being known, at least the code below is honest about breaking the encapsulation.
  This code is _almost_ the same as the code in resmgr_pathname_detach().
 */
@@ -99,7 +99,7 @@ int _resmgr_detach_id(resmgr_context_t *ctp, int id, unsigned flags) {
 	 * like NULL in case 2 threads doing resmgr_detach() at same time.
 	 */
 	int marker;
-	
+
 
 	saved_msgs   = ctp->msg;
 	saved_rcvid  = ctp->rcvid;
@@ -121,8 +121,8 @@ int _resmgr_detach_id(resmgr_context_t *ctp, int id, unsigned flags) {
 	_mutex_lock(&_resmgr_io_table.mutex);
 loop_again:
 
-	for (list = _resmgr_io_table.vector, scoid = 0; 
-		 scoid < _resmgr_io_table.nentries; 
+	for (list = _resmgr_io_table.vector, scoid = 0;
+		 scoid < _resmgr_io_table.nentries;
 		 list++, scoid++) {
 		ctp->info.scoid = scoid | _NTO_SIDE_CHANNEL;
 		for (entry = list->list; entry != NULL; entry = nentry) {
@@ -203,7 +203,7 @@ loop_again:
 						&& (atomic_sub_value(&binding->count, 1) == 1)) {
 						free(binding);
 					}
-					
+
 				}
 				_mutex_lock(&_resmgr_io_table.mutex);
 			}
@@ -247,14 +247,14 @@ loop_again:
 
 /*
  In order for _resmgr_detach_id() to work properly, the _resmgr_handle() code
- has to be modified to not move the link objects around when they are 
+ has to be modified to not move the link objects around when they are
  found, otherwise looping through the objects without knowing the internals
- becomes next to impossible.  
- 
+ becomes next to impossible.
+
  This code encapsulates the table a little bit better than the previous i
- _resmgr_detach_id() code, but still has knowledge about the table through 
- the _resmgr_io_table.nentries.  Since it requires more work (and changes) 
- without gaining any real additional elegance we will stick with the original 
+ _resmgr_detach_id() code, but still has knowledge about the table through
+ the _resmgr_io_table.nentries.  Since it requires more work (and changes)
+ without gaining any real additional elegance we will stick with the original
  detach code until _resmgr_handle() can support this operation internally.
 
 #define _RESMGR_HANDLE_NOMOVE	(int)(((~0u ^ (~0u >> 1)) >> 1) >> 1)
@@ -273,17 +273,17 @@ int _resmgr_detach_id(resmgr_context_t *ctp, int id, unsigned flags) {
 			first = NULL;
 			ctp->info.scoid = scoid | _NTO_SIDE_CHANNEL;
 			ctp->info.coid = -1;
-			while((binding = _resmgr_handle(&ctp->info, NULL, 
-								(ctp->info.coid != -1) ? (_RESMGR_HANDLE_FIND_LOCK | _RESMGR_HANDLE_NOMOVE) 
+			while((binding = _resmgr_handle(&ctp->info, NULL,
+								(ctp->info.coid != -1) ? (_RESMGR_HANDLE_FIND_LOCK | _RESMGR_HANDLE_NOMOVE)
 								                       : (_RESMGR_HANDLE_DISCONNECT_LOCK))) != (void *)-1) {
 				if(binding->id == id && binding->funcs != &ebadf_io_funcs) {
 					/* We don't want to remove this item, we just want to call out on it's
-                       installed close handler if required and then switch the io function 
+                       installed close handler if required and then switch the io function
 					   callout table to the internal EBADF callouts.
 
 					   Doing this rather than just removing the entry means that there is no
-					   need to have any "magic" checks or returns scattered elsewhere in the 
-					   code, we can control all of the errors from the above callouts. 
+					   need to have any "magic" checks or returns scattered elsewhere in the
+					   code, we can control all of the errors from the above callouts.
 					*/
 					if(flags & _RESMGR_DETACH_CLOSE) {
 						_resmgr_close_handler(ctp, binding);
@@ -293,11 +293,11 @@ int _resmgr_detach_id(resmgr_context_t *ctp, int id, unsigned flags) {
 					binding->funcs = &ebadf_io_funcs;
 
 					done++;
-				} 
+				}
 
 				/* Unlock this handle, and fill in the information for the next query */
 				_resmgr_handle(&ctp->info, NULL, _RESMGR_HANDLE_UNLOCK | _RESMGR_HANDLE_NEXT);
-				
+
 				if(first == binding) {		// We've gone through all bindings ?!
 					break;
 				} else if (first == NULL) {

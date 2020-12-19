@@ -13,7 +13,7 @@ typedef enum
 	CLICK_SELRECT,	/* move & start selecting a rectangle */
 	CLICK_CANCEL,	/* cancel the selection; don't move cursor */
 	CLICK_YANK,	/* copy selected text to GUI's clipboard; don't move */
-	CLICK_PASTE,	/* copy text from GUI's clipboard; don't move */ 
+	CLICK_PASTE,	/* copy text from GUI's clipboard; don't move */
 	CLICK_TAG,	/* simulate a <Control-]> keystroke */
 	CLICK_UNTAG	/* simulate a <Control-T> keystroke */
 } CLICK;

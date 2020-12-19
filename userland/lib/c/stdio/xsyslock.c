@@ -92,7 +92,7 @@ static void _Lockfilealloc(FILE *str) {
 	_Rmtx *_Mtx;
 
 	_Mtxlock(&_Flist_mtx);
-	// somebody might have jumped in and grabbed a lock for us before 
+	// somebody might have jumped in and grabbed a lock for us before
 	// we locked, so test str->_Flock again.  Note I'm being
 	// paranoid here since the lock should be allocated before fdopen
 	// returns and so it should only be possible for one thread to be

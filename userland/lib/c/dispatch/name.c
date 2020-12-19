@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -50,7 +50,7 @@ name_attach_t *name_attach(dispatch_t *dpp, const char *path, unsigned flags) {
 	}
 
 	//Don't allow ../ or .. attaches to escape
-	if ((newname = (char *)strstr(path, "..")) && 
+	if ((newname = (char *)strstr(path, "..")) &&
 	    (newname[2] == '/' || newname[2] == '\0')) {
 		errno = EINVAL;
 		return NULL;
@@ -83,35 +83,35 @@ name_attach_t *name_attach(dispatch_t *dpp, const char *path, unsigned flags) {
 
 	//TODO: Make the last thing really an attribute matching us?
 	//TODO: Allow the user to specify a function they want to be called
-    
+
     /* We have to regist with global service manager, this is done by:
 	 *  1) do an empty resmgr_attach() to setup things (in case dpp->chid isn't there)
 	 *  2) send an _IO_CONNECT_OPEN, _IO_CONNECT_EXTRA_RESMGR_LINK, to the
 	 *     manager. (What we really want is _IO_CONENCT_LINK plus
 	 *    _IO_CONNECT_EXTRA_RESMGR_LINK, but PathMgr won't pass it down to GNS
 	 *  3) if 2) faild, there is no local GNS exist, then ONLY IF the attach
-	 *     if for _NAME_FLAG_ATTACH_LOCAL, we will send a _IO_CONNECT_LINK, 
-	 *     _IO_CONNECT_EXTRA_RESMGR_LINK, as if pathmgr_link() did, this will 
+	 *     if for _NAME_FLAG_ATTACH_LOCAL, we will send a _IO_CONNECT_LINK,
+	 *     _IO_CONNECT_EXTRA_RESMGR_LINK, as if pathmgr_link() did, this will
 	 *     regist it with pathmgr. And everything still works in local nodes.
 	 */
 	{
 		unsigned nflag;
 		struct link *linkl;
 		struct _io_resmgr_link_extra extra;
-			
+
 		/* make sure no real attach will happen */
 		nflag = flags & ~_RESMGR_FLAG_FTYPEONLY;
 		if (resmgr_attach(dpp, NULL, NULL, 0, nflag, NULL, NULL, NULL) == -1) {
 			goto failure;
 		}
-			
-		if (!(linkl = _resmgr_link_alloc())) {			
+
+		if (!(linkl = _resmgr_link_alloc())) {
 			goto failure;
 		}
 		linkl->connect_funcs = 0;
 		linkl->io_funcs = 0;
 		linkl->handle = 0;
-		
+
 		extra.nd = ND_LOCAL_NODE;
 		extra.pid = getpid();
 		extra.chid = dpp->chid;
@@ -122,7 +122,7 @@ name_attach_t *name_attach(dispatch_t *dpp, const char *path, unsigned flags) {
 								 SH_DENYNO, _IO_CONNECT_OPEN, 0, 0, _FTYPE_NAME,
 								 _IO_CONNECT_EXTRA_RESMGR_LINK, sizeof extra, &extra,
 								 0, 0, 0);
-		
+
 		if (linkl->link_id == -1 && !(flags & NAME_FLAG_ATTACH_GLOBAL) &&
 			(errno == ENOTSUP || errno == ENOENT || errno == ENOSYS))
 		{
@@ -139,19 +139,19 @@ name_attach_t *name_attach(dispatch_t *dpp, const char *path, unsigned flags) {
 		}
 		linkl->flags &= ~_RESMGR_LINK_HALFOPEN;
 	}
-	
+
 	chid = _DPP(dpp)->chid;
-	
+
 	if (!(attach = malloc(sizeof(*attach)))) {
 		errno = ENOMEM;
 		goto failure;
-	}	
+	}
 	attach->dpp = dpp;
 	attach->chid = chid;
 	attach->mntid = mntid;
-	
+
 	return attach;
-	
+
 failure:
 	if (mntid > 0) {
 		(void)resmgr_detach(dpp, mntid, 0);
@@ -164,7 +164,7 @@ failure:
 
 /*
  Most of the time w/ these function the user wants the
- dpp to be autocreated, so the default is to destroy 
+ dpp to be autocreated, so the default is to destroy
  it when we detach.
 */
 int name_detach(name_attach_t *attach, unsigned flags) {

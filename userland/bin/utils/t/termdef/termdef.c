@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -156,7 +156,7 @@ main(int argc, char **argv)
 
 	if (numoperands) termtype=argv[optind];
 
-	if (numoperands>1) 
+	if (numoperands>1)
 		fprintf(stderr,"termdef: Warning - >1 terminal specified on cmd line. Setting TERM='%s'.\n",termtype);
 
 	if ((termtype==NULL)&&(noexec)&&(!shell_output)) {
@@ -168,8 +168,8 @@ main(int argc, char **argv)
 
 	term_path=getenv(TERMINFO);
 	if ( term_path != NULL )
-		strncpy( dir, term_path, sizeof(dir) - 1); 
-		
+		strncpy( dir, term_path, sizeof(dir) - 1);
+
 	/* put tty into editted mode */
 	{
 		struct termios tios;
@@ -197,19 +197,19 @@ main(int argc, char **argv)
 			termtype=NULL;
 		} else strncpy(name,termtype, sizeof(name) - 1);
 	}
-			
+
 	if (termtype==NULL) {
 		while( flag ) {
 			strncpy(tmp, dir, sizeof(tmp) - 4);
 			fprintf(interactive_out,"Enter terminal type : ");
-			fflush(interactive_out);			
+			fflush(interactive_out);
 			if ( (gets(name) != NULL) && (*name) ) {
 				strcat(tmp, "/");
 				strncat(tmp, name, 1);
 				strcat(tmp, "/");
 				strncat(tmp, name, sizeof(tmp) - strlen(tmp) - 1);
 			}
-			if ( (*name == NULL) || (access( tmp, R_OK ) == -1) ) 
+			if ( (*name == NULL) || (access( tmp, R_OK ) == -1) )
 				print_list();
 			else
 				flag = 0;
@@ -217,7 +217,7 @@ main(int argc, char **argv)
 	}
 
 #ifdef DIAG
-   fprintf(stderr,"setting TERM to %s\n", name ); 
+   fprintf(stderr,"setting TERM to %s\n", name );
 #endif
 
 	if ( setenv( TERM, name, 1 ) != 0 ) {
@@ -235,7 +235,7 @@ main(int argc, char **argv)
 	}
 
 	if (display_result) fprintf(stdout,"%s\n",name);
-	
+
 	fflush(stdout);
 	fflush(stderr);
 
@@ -300,7 +300,7 @@ main(int argc, char **argv)
 				for (i = 0; i < NKEYS; ++i) {
 					if(key[i][0] == 0) continue;
 					if(key[i][prefix] != key[0][prefix]) break;
-				}				
+				}
 				if(i<NKEYS) break;
 			}
 
@@ -310,7 +310,7 @@ main(int argc, char **argv)
 					if(key[i][0] == 0) continue;
 					if(key[i][prefix+1+suffix] != key[0][prefix+1+suffix])
 						break;
-				}				
+				}
 				if (i<NKEYS) break;
 			}
 
@@ -319,7 +319,7 @@ main(int argc, char **argv)
 				tios.c_cc[VSUFFIX+i] = 0;
 			}
 
-			for(i=0;i<prefix;++i)	tios.c_cc[VPREFIX+i] = key[0][i];					
+			for(i=0;i<prefix;++i)	tios.c_cc[VPREFIX+i] = key[0][i];
 			for(i=0;i<NKEYS;++i)	tios.c_cc[key_idx[i]] = key[i][prefix];
 			for(i=0;i<suffix;++i)	tios.c_cc[VSUFFIX+i] = key[0][prefix+1+i];
 
@@ -338,12 +338,12 @@ main(int argc, char **argv)
 				tios.c_iflag |= IXON;			/* enable output flow control */
 				tios.c_iflag |= IXOFF;			/* enable input flow control */
 			}
-				
+
 			if (tcsetattr(STDOUT_FILENO,TCSANOW,&tios)==-1)
 				perror("termdef: unable to set terminal control settings");
 		} else perror("termdef: unable to get/set terminal control settings");
 	}
-		
+
 #ifndef RTERMDEF
 	if (!noexec)	run_cmd(cmd);
 #endif
@@ -360,7 +360,7 @@ void print_list(void)
 		perror("termdef");
 		return;
 	}
-	
+
 	do {
 		dp = readdir ( dirp );
 		if ( dp != NULL )
@@ -383,7 +383,7 @@ void process_name(char *name )
 	strcpy( buf, dir );
 	strcat( buf, "/" );
 	strcat( buf, name );
-	process_dir(buf);					
+	process_dir(buf);
 }
 
 
@@ -424,22 +424,22 @@ void process_dir( char *dirname )
 		#define MAX_ARGV_ITEMS (256)
 		char	**argv;
 		char	*delims= " \t\n";
-	
+
 		if (NULL==(argv=calloc(1024,sizeof(char *)) )) {
 			fprintf(stderr,"termdef: Sorry, insufficient memory\n");
 			return 0;
 		}
-	
+
 		if (NULL==(argv[0] = strtok(sh,delims))) {
 			fprintf(stderr,"termdef: bad command for -c option\n");
 			return 0;
 		}
-	
-	
+
+
 		for (i=1;i<MAX_ARGV_ITEMS && NULL!= (argv[i]=strtok(NULL,delims));i++) {
 			;
 		}
-	
+
 		argv[i] = NULL;
 		execve(sh, argv, environ);
 	    fprintf(stderr,"termdef: failed to exec (%s)\n",strerror(errno));

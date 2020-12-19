@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -21,7 +21,7 @@
 
 #ifdef __USAGE		/* pwd.c */
 %C - print working directory name (POSIX)
-    
+
 %C [-w]
 Options:
  -w    Separate paths with backslashes (\) rather than front (/) (Windows only)
@@ -45,41 +45,41 @@ Note:
 	CI:skittur
 
 	Revision 1.14  2006/04/11 16:16:08  rmansfield
-	
+
 	PR: 23548
 	CI: kewarken
-	
+
 	Stage 1 of the warnings/errors cleanup.
-	
+
 	Revision 1.13  2005/06/03 01:37:57  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.12  2004/04/20 15:03:17  kewarken
 	More fixes for PR:19924.  Make CR echo conditional on tty state.  CR: TF
-	
+
 	Revision 1.11  2004/04/15 15:40:46  kewarken
 	Added -w option for display of windows style paths, made unix style default.
 	CR: TF
-	
+
 	Revision 1.10  2003/08/28 15:49:45  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.9  2002/01/11 20:13:48  bstecher
 	Clean up a warning message.
-	
+
 	Revision 1.8  1999/03/11 23:13:33  cburgess
 	added win32 build target and fixed pwd to cleanup backslashes for make.
-	
+
 	Revision 1.7  1998/09/16 14:48:34  builder
 	gcc cleanup
-	
+
 	Revision 1.6  1997/03/14 18:16:00  eric
 	removed nto ifdefs; corrected qnx4 version to not use
 	print_usage
@@ -103,7 +103,7 @@ Note:
  *
 
 	$Author: CHarris@qnx.com $
-	
+
 ---------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>

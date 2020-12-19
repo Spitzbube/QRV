@@ -332,7 +332,7 @@ RESULT lp(win, top, bottom, force)
 	CHAR	*origdisplay = NULL;
 	char	*out;
 	char	rwa;
-	
+
 	/* convert the value of o_lptype to an LPTYPE pointer */
 	type = findtype(tochar8(o_lptype));
 	if (!type)

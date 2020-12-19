@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -310,7 +310,7 @@ Options:
 #define SETGRENT() setgrent()
 #define SETPWENT() setpwent()
 #else   // __MINGW32__
-#define SETGRENT() 
+#define SETGRENT()
 #define SETPWENT()
 #endif
 
@@ -351,7 +351,7 @@ Options:
 	#include <termios.h>
 	#include <sys/fs_qnx4.h>
 #endif
-	
+
 	#define _BLOCK_SIZE 		QNX4FS_BLOCK_SIZE
 	#define _FILE_BUSY 			QNX4FS_FILE_BUSY
 	#define _FILE_INODE 		QNX4FS_FILE_INODE
@@ -394,8 +394,8 @@ Options:
 #endif
 
 struct small_stat {				/* An abbreviated directory entry			*/
-	ino_t			st_ino;	
-	dev_t			st_dev;	
+	ino_t			st_ino;
+	dev_t			st_dev;
 	off_t			st_size;
 	dev_t			st_rdev;
 	time_t			st_mtime;			/*	Time of last data modification	*/
@@ -408,12 +408,12 @@ struct small_stat {				/* An abbreviated directory entry			*/
 	unsigned char	st_status;
     unsigned char   spare[3];
 	long			fnum_blks;
-	EXTENT_T		st_first_xtnt;	
+	EXTENT_T		st_first_xtnt;
     unsigned char   spare2[3];
 	NEXTENT_T		st_num_xtnts;
-	long			st_xblk;		
+	long			st_xblk;
 	char		   *symlink;			/* contents of symbolic link		*/
-	char			fname[1];		
+	char			fname[1];
 };
 
 void	list			( char *fnames[], uint32_t ctr );
@@ -512,7 +512,7 @@ int     fsys_stat       (char *p, struct STAT *s)
 
 char	*cwd[1] = { "." };
 
-#define IS_DOT( c ) ( c==DOT )	
+#define IS_DOT( c ) ( c==DOT )
 
 uint16_t	px_opts = 0;			/* holds POSIX cmd line option flags		*/
 uint16_t	qx_opts = 0;			/* holds QNX EXT cmd line option flags		*/
@@ -547,7 +547,7 @@ int main ( int argc, char **argv )
 	if (getenv("COLUMNS"))
 		screen_width = atoi(getenv("COLUMNS"));
 	else
-#if defined(__QNXNTO__) 
+#if defined(__QNXNTO__)
 		tcgetsize(fileno(stdout), (int *) 0, &screen_width);
 #elif !defined(__MINGW32__)
 		dev_size(fileno(stdout), -1, -1, (int *) 0, &screen_width);
@@ -562,7 +562,7 @@ int main ( int argc, char **argv )
 	/*
 	 * parse cmd line arguments
 	 */
-	if ( get_args( argc, argv ) == ERR ) 
+	if ( get_args( argc, argv ) == ERR )
 		exit(EXIT_FAILURE);
 
 	/*
@@ -683,7 +683,7 @@ uint32_t	ctr;
 		 */
 		if ( S_ISDIR( statbuf.st_mode ) && !(px_opts & OPT_d ) )
 			++dctr;
-		else 
+		else
 			++fctr;
 
 		len = strlen(fnames[x]);
@@ -708,12 +708,12 @@ uint32_t	ctr;
 	if (count == 0)
 		return;
 
-	/*	
+	/*
 	 *	Sort the list of files/directories
 	 */
 	if ( count > 1 && !( qx_opts & OPT_S ) )
 		sortit( statlist, count );
-	
+
 	if ( dctr )
 		statlistd = ( struct small_stat ** ) my_calloc( dctr * sizeof(struct small_stat *) );
 	if ( fctr )
@@ -729,7 +729,7 @@ uint32_t	ctr;
 	}
 
 	free( statlist );
-			
+
 	columns = get_max_cols( maxlen );
 /*
 	setvbuf( stdout, NULL, _IOFBF, 2048 );
@@ -776,10 +776,10 @@ void make_header ()
 
 	if (px_opts & OPT_s)
 		printf( "%*s ", LEN_NBLKS, "Blks");
-	
+
 	if (qx_opts & OPT_x)
         printf( "%9s %5s %6s %6s %6s %6s ", "Size", "xtnts", "xblk_1", "xsize", "xblk", "status");
-	
+
 	if ( px_opts & OPT_l ) {
 		printf( "t-u--g--o- %2s ", "ln" );
 		if ( (qx_opts & OPT_o) == 0 ) printf( "%-9s ", "Owner" );
@@ -817,14 +817,14 @@ int		lastcolumn;
 		else
 			++fn;
 	}
-	else	
+	else
 #endif
 		fn = st->fname;
 
     if ( px_opts & OPT_i )
         printf( "%*" OFFT_FMT "d ", LEN_INODE, st->st_ino );
 
-    if ( px_opts & OPT_s )	
+    if ( px_opts & OPT_s )
         printf( "%*" OFFT_FMT "u ", LEN_NBLKS, S_ISBLK(st->st_mode) ?
 			   st->st_size : ((st->st_size + _BLOCK_SIZE - 1) / _BLOCK_SIZE));
 
@@ -846,7 +846,7 @@ int		lastcolumn;
                 );
 	}
 
-    if ( px_opts & OPT_l )    { 
+    if ( px_opts & OPT_l )    {
 		/*
 		 *	Print <file mode> and <number of links>
 		 */
@@ -871,7 +871,7 @@ int		lastcolumn;
 			printf("%4d, %3d ", major(st->st_rdev), minor(st->st_rdev));
 		else
 			printf("%9" OFFT_FMT "u ", st->st_size);		/* file size */
-		
+
 		printf("%12s ", get_date_fmt(st));		/* disp mod date */
 	}
 
@@ -889,7 +889,7 @@ int		lastcolumn;
 		printf( "%s", fn );
 	else
 		printf( "%-*s", (screen_width / columns) - xtra_spc, fn );
-	
+
 	//Ensure we free our buffer if we used one for mapping.
 	if (freeflag)
 		free(fn);
@@ -970,7 +970,7 @@ bool	disp_dirname;	/* display the directory name -R */
 			statbuf.st_size=sizeof(DIRENTRY_T)*_DIRBUF*2;
 		}
 		//check_list(statlist,count+1,"[after stat()]");
-		
+
 		// if first char of filename is '.'   .  ..  .kshrc  .plan etc
 		if ( IS_DOT( dir_st->d_name[0] ) )	{
 			if (dir_st->d_name[1]==0) {
@@ -982,11 +982,11 @@ bool	disp_dirname;	/* display the directory name -R */
 				if ( statlist == (struct small_stat ** ) NULL ) 	{
 					no_entries = (stat_p->st_size / sizeof( DIRENTRY_T )) +_DIRBUF;
 
-					statlist = ( struct small_stat ** ) 
+					statlist = ( struct small_stat ** )
 								my_calloc( no_entries * sizeof(struct small_stat *) );
 				}
 			}
-		
+
 			if ( (px_opts & OPT_a) == 0 &&
 			   ( (px_opts & OPT_R) == 0 || !S_ISDIR(stat_p->st_mode) ) )
 				continue;
@@ -1003,7 +1003,7 @@ bool	disp_dirname;	/* display the directory name -R */
 		 */
 		if ( count == no_entries )	{
 			no_entries += _DIRBUF;		/* alloc _DIRBUF entries at a time */
-			statlist = ( struct small_stat ** ) 
+			statlist = ( struct small_stat ** )
 						my_realloc( statlist, no_entries * sizeof(struct small_stat *) );
 			if ( statlist == (struct small_stat ** ) NULL )	{
 				perror( T_OUTMEM );
@@ -1011,7 +1011,7 @@ bool	disp_dirname;	/* display the directory name -R */
 			}
 		}
 		//check_list(statlist,count+1,"[after statlist size check]");
-		
+
 		/*
 		 *	If list directories only
 		 */
@@ -1062,7 +1062,7 @@ bool	disp_dirname;	/* display the directory name -R */
 	 *	-p means list relative file pathnames only ... nothing else !
 	 */
 	if ( !(qx_opts & OPT_p) )		{
-		if ( disp_dirname || ( px_opts & OPT_R ) )	
+		if ( disp_dirname || ( px_opts & OPT_R ) )
 			printf( "\n%s:\n", dirname );
 
 		if ( px_opts & (OPT_l|OPT_s) )
@@ -1077,7 +1077,7 @@ bool	disp_dirname;	/* display the directory name -R */
 		sortit( statlist, count );
 
 	columns = get_max_cols( idx );
-		
+
 	dump_files( statlist, columns, count, dirname );
 
 	/*
@@ -1087,11 +1087,11 @@ bool	disp_dirname;	/* display the directory name -R */
 		idx = 0;
 		p = my_calloc( UTIL_PATH_MAX+1 ); /*better once here than many in the loop */
 		do {
-			d = statlist[ idx++ ];	
+			d = statlist[ idx++ ];
 			if ( S_ISDIR( d->st_mode ) && !( px_opts & OPT_d ) &&
 				!(d->fname[0]=='.' && d->fname[1]==0) &&
 				!(d->fname[0]=='.' && d->fname[1]=='.' && d->fname[2]==0)
-               ) 
+               )
 			{
 				sprintf( p, "%s%s%s", dirname, slash ? "" : "/", d->fname );
 				get_directory ( p, TRUE );
@@ -1130,7 +1130,7 @@ void dump_statlist(struct small_stat **statlist, unsigned int count) {
 		diff = ((unsigned)statlist[i+1])-((unsigned)statlist[i]);
 		fprintf(stdout,"dump_statlist: statlist[%d]=%4p (%d bytes) ->name='%s'\n",
                 i,statlist[i],diff,statlist[i]->fname);
-     	
+
 	}
 }
 
@@ -1150,7 +1150,7 @@ void check_list(struct small_stat **statlist, unsigned int count, char *note)
 				count,memorized,statlist[0]->fname,note?note:"");
 			fprintf(stderr,"check_list: statlist[0]%8p, statlist[count]=%8p, &statlist[count]=%8p\n",
 					statlist[0],statlist[count],&statlist[count]);
-							
+
 		}
 	}
 }
@@ -1165,7 +1165,7 @@ char	 *dirname;
 	uint32_t	c_count, st, ch, step, i;
 	struct small_stat **unique_statlist = NULL;
 
-	
+
 	//Modifications for union file system, only works if sorted
 	//We run the list and adjust the count here if duplicates removed
 	unique_statlist = statlist;
@@ -1196,20 +1196,20 @@ char	 *dirname;
 	strcpy(fullpath, dirname);
 	if (qx_opts & OPT_p) {
 		i = strlen( dirname );
-		if ( i && dirname[i-1] != SLASH ) 
+		if ( i && dirname[i-1] != SLASH )
 			strcat(fullpath, "/");
 	}
 
-	
+
 	while (ch < count) {
-		dump_file_info( unique_statlist[ ch ], columns, fullpath, 
+		dump_file_info( unique_statlist[ ch ], columns, fullpath,
 						   columns > 1 && (c_count + 1 >= columns || ch + step >= count) );
 
 		if (px_opts & OPT_C) {
 			ch += step;					/* Point to next file name			*/
 			if ( (++c_count >= columns) || (ch >= count) ) {
 				c_count = 0;
-				if ( ++st < step ) 
+				if ( ++st < step )
 					ch = st;
 				if ( columns > 1 )
 					putchar( '\n' );
@@ -1281,7 +1281,7 @@ int qcompare(const void *ptr1, const void *ptr2) {
  *	This will sort the list according to the command line sorting criteria.
  */
 void sortit(struct small_stat **v, unsigned n) {
-	
+
 	if (px_opts & OPT_t) {
 		if (px_opts & OPT_u)		compare = compare_atime;
 		else if (px_opts & OPT_c)	compare = compare_ctime;
@@ -1314,7 +1314,7 @@ int get_args ( int margc, char *margv[] )
 
 	while ( ( opt = getopt( margc, margv, CMD_OPTS ) ) != EOF )	{
 		switch( opt )	{
-			case '1':	px_opts |= OPT_1;   
+			case '1':	px_opts |= OPT_1;
 						px_opts &= ~OPT_C;	break;
 			case 'A':	qx_opts |= OPT_A; 	break;
 			case 'C':	px_opts &= ~(OPT_1 | OPT_l);
@@ -1500,7 +1500,7 @@ mode_t 	mode;
 		p = mapped_name;
 		for ( ; *p; p++ )
 			if ( !isprint( *p ) )
-				*p = '?'; 
+				*p = '?';
 	}
 
 	if ( px_opts & OPT_F )	{
@@ -1593,12 +1593,12 @@ void *my_realloc (void *ptr, size_t size)
 	}
 
 	return( p );
-}	
+}
 
 int
 get_max_cols(unsigned maxnamlen)
 {
-	int cols;	
+	int cols;
 
 	if (px_opts & OPT_1) return 1;
 	cols = screen_width / (maxnamlen + FILL_WIDTH + xtra_spc);

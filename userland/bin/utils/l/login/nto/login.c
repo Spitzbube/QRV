@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -19,12 +19,12 @@
 
 /*
  Once upon a time this source was related to the FreeBSD login, but
- since that time it has been quite munged, and cleaned up of 
+ since that time it has been quite munged, and cleaned up of
  extraneous functionality:
 
  I've left the stubs in for functionality that I think that we
  might be interested in the future with (ie user account expiry,
- user denial, PAM authentication), but removed functionality 
+ user denial, PAM authentication), but removed functionality
  that doesn't belong in login (ie display motd).
 
 */
@@ -32,7 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <setjmp.h>				
+#include <setjmp.h>
 #include <signal.h>
 #include <limits.h>
 
@@ -40,7 +40,7 @@
 #include <errno.h>
 #include <grp.h>
 
-#include <syslog.h>					
+#include <syslog.h>
 #include <utmp.h>
 
 #include <pwd.h>
@@ -181,12 +181,12 @@ int main(int argc, char **argv) {
 			break;
 		case 'h':
 			//I need to take the hostname here
-			hostname = optarg;	
+			hostname = optarg;
 			break;
 		case '?':
 		default:
 			fprintf(stderr, "Usage: login [-fpcq] [-t timeout] [[username] [env ...]]\n");
-			exit(EXIT_FAILURE);	
+			exit(EXIT_FAILURE);
 		}
 	}
 	argc -= optind;
@@ -247,7 +247,7 @@ int main(int argc, char **argv) {
 				g_flags |= FL_ROOT_LOGIN;
 			}
 
-			if (g_flags & FL_FORCE_LOGIN && 
+			if (g_flags & FL_FORCE_LOGIN &&
 			    (getuid() == 0 || getuid() == pwd->pw_uid)) {
 				break;
 			} else if (!pwd->pw_passwd || pwd->pw_passwd[0] == '\0') {
@@ -292,7 +292,7 @@ int main(int argc, char **argv) {
 			if (g_flags & FL_ROOT_LOGIN && !(g_flags & FL_ROOT_OK)) {
 				refused(NULL, "NOROOT", 0);
 			}
-			else { 
+			else {
 				break;
 			}
 		}
@@ -318,7 +318,7 @@ int main(int argc, char **argv) {
 
 	/* Set ourselves up in a home directory */
 	if (!*pwd->pw_dir || chdir(pwd->pw_dir) < 0) {
-		if (chdir("/") < 0) 
+		if (chdir("/") < 0)
 			refused("Cannot find root directory", "ROOTDIR", 1);
 		pwd->pw_dir = "/";
 		if (!(g_flags & FL_QUIET_LOGIN) || *pwd->pw_dir)
@@ -352,7 +352,7 @@ int main(int argc, char **argv) {
 	}
 
 	//You can also put host, time, tty authentication in
-	//here as well to see if they match what we want 
+	//here as well to see if they match what we want
 	if (login_access(pwd->pw_name, hostname ? hostname : tty) == 0)
 		refused("Permission denied", "ACCESS", 1);
 #endif
@@ -400,7 +400,7 @@ int main(int argc, char **argv) {
 	 *
 	 * Preserve TERM if it happens to be already set.
 	 * Preserve any flags that live according to the /etc/default/login
-	 * 
+	 *
 	 */
 	if ((term = getenv("TERM")) != NULL)
 		term = strdup(term);
@@ -425,7 +425,7 @@ int main(int argc, char **argv) {
 		exit(1);
 	}
 
-	/* If we have environment to restore do it */ 
+	/* If we have environment to restore do it */
 	if (saved_env) {
 		while (saved_env_len > 0 && strlen(saved_env) != 0) {
 			int env_length;
@@ -433,11 +433,11 @@ int main(int argc, char **argv) {
 			env_length = strlen(saved_env)+1;
 			saved_env_len -= env_length;
 			saved_env += env_length;
-		}	
+		}
 	}
-	/* 
-	 * Add to the environment first from the command line 
-	 * Note that argv, argc have been munged from above 
+	/*
+	 * Add to the environment first from the command line
+	 * Note that argv, argc have been munged from above
 	 */
 	for (cnt = 1; cnt < argc; cnt++) {
 		add_env(argv[cnt]);
@@ -490,7 +490,7 @@ int main(int argc, char **argv) {
 
 
 	closelog();
-	
+
 
 	spaces = 0;
 	cindex = 0;
@@ -516,7 +516,7 @@ int main(int argc, char **argv) {
 	}
 	args[carg] = &shell[cindex];
 	args[carg+1] = 0;
-	
+
 	/*
 		* Login shells have a leading '-' in front of argv[0]
 		* We also need tbuf to be the actual shell path, and args[0]
@@ -528,20 +528,20 @@ int main(int argc, char **argv) {
 	}
 	tbuf[0] = '-';
 	strcpy(tbuf + 1, (term = strrchr(args[0], '/')) ? term + 1 : args[0]);
-	
+
 	args[0] = strdup(tbuf);
 	if (!args[0]){
 		err(1, "strdup");
 	}
-	
+
 	snprintf(tbuf, sizeof(tbuf), "%s", temp);
-	
+
 	execvp(tbuf, args);
 	err(1, "%s", args[0]);
 
 
 
-	
+
 }
 
 int auth_traditional(int flags) {
@@ -586,7 +586,7 @@ int auth_traditional(int flags) {
 	if (op) {
 		if (!p[0] && op[0])
 			qnxp = unixp = ":";
-		if (strcmp(qnxp, op) == 0 || strcmp(unixp, op) == 0) 
+		if (strcmp(qnxp, op) == 0 || strcmp(unixp, op) == 0)
 			rval = 0;
 	}
 
@@ -680,7 +680,7 @@ static int auth_pam() {
 
 /*
  * Allow for authentication style and/or kerberos instance
- * 
+ *
  */
 #define	NBUFSIZ		UT_NAMESIZE + 64
 void getloginname() {
@@ -711,7 +711,7 @@ void getloginname() {
 }
 
 
-/* 
+/*
  This writes out the lastlog, utmp and wtmp information.
  It follows the NetBSD format of writing out a LASTLOG,
  then putting the same information in the UTMP and WTMP
@@ -747,9 +747,9 @@ void dolastlog(int quiet, char *tty, char *hostname) {
 		memset((void *)&ll, 0, sizeof(ll));
 		time(&ll.ll_time);
 		strncpy(ll.ll_line, tty, sizeof(ll.ll_line));
-		if (hostname) 
+		if (hostname)
 			strncpy(ll.ll_host, hostname, sizeof(ll.ll_host));
-	
+
 		write(lastfd, (char *)&ll, sizeof(ll));
 		close(lastfd);
 	}
@@ -759,14 +759,14 @@ void dolastlog(int quiet, char *tty, char *hostname) {
 	utmpname(UTMP_FILE);
 	setutent();
 	utmp.ut_type = LOGIN_PROCESS;
-	pututline(&utmp);	
+	pututline(&utmp);
 	endutent();
 
 	/* Write out the the wtmp file */
 	utmpname(WTMP_FILE);
 	setutent();
 	utmp.ut_type = ACCOUNTING;
-	pututline(&utmp);	
+	pututline(&utmp);
 	endutent();
 #else
 	login(&utmp);
@@ -774,7 +774,7 @@ void dolastlog(int quiet, char *tty, char *hostname) {
 }
 
 /*
- If we have had a bad login, then log a message to 
+ If we have had a bad login, then log a message to
  the syslog if possible.  If no syslog then we just ignore
 */
 void badlogin(char *name) {
@@ -817,7 +817,7 @@ void refused(char *msg, char *rtype, int lout) {
 /*
  Determine if this terminal is OK for root to log in on
  At some point in the future we may want to allow root
- only on some terminals so leave this in. 
+ only on some terminals so leave this in.
  Return 1 ok to log root on this terminal.
 */
 int rootterm(char *ttyn) {

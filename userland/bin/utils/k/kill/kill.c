@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -62,7 +62,7 @@ Where:
  SIGSEGV     SIGSYS      SIGPIPE     SIGALRM     SIGTERM     SIGUSR1
  SIGUSR2     SIGCHLD     SIGPWR      SIGWINCH    SIGURG      SIGPOLL
  SIGSTOP     SIGTSTP     SIGCONT     SIGTTIN     SIGTTOU     SIGVTALRM
- SIGPROF     SIGXCPU     SIGXFSZ 
+ SIGPROF     SIGXCPU     SIGXFSZ
 
 Note:
  kill is also available as a shell builtin.
@@ -71,14 +71,14 @@ Note:
 /*
  * Description:
  *			The kill utility sends a signal to the process(es) specified by
- *			each pid operand.                          
+ *			each pid operand.
  *
  *			For each pid operand, the kill utility performs actions equivalent
  *			to the kill() 3.3.2 Posix 1003.1 function called with the following
  *			arguments.
  *				(1) The value of thie pid operand is used as the pid argument
  *				(2) The sig argument is the value specified by the -signal_name
- *					or -signal_number option, or by SIGTERM, if neither is 
+ *					or -signal_number option, or by SIGTERM, if neither is
  *					specified
  *			Implementations may omit the verson of this utility that is not
  *			built-in.  See Restrictions on Built-in Utilities 2.4 Posix 1003.2
@@ -92,7 +92,7 @@ Note:
  *										addition, the symbolic name SIGNULL
  *										is recognized, and represents the
  *										signal calue 0.  Values of signal_name
- *										are recognized in case-independant 
+ *										are recognized in case-independant
  *										fashion, with or without the SIG prefix.
  *										The corresponding signal is send instead
  *										of SIGTERM.
@@ -103,7 +103,7 @@ Note:
  *			-signal_number				A nonnegative decimal integer,
  *										representing the signal to be used
  *										instead of SIGTERM as teh sig argument
- *										in the effective call to kill().  The  
+ *										in the effective call to kill().  The
  *										correspondence between integer values
  *										and the sig value used is show below
  *										Number			sig Value
@@ -145,7 +145,7 @@ struct sigs {
 	int signo;
 	char *sigstr;
 } signals[] = {
-	{NULL,		"NULL"},	{SIGHUP,	"HUP"},	{SIGINT,	"INT"},  
+	{NULL,		"NULL"},	{SIGHUP,	"HUP"},	{SIGINT,	"INT"},
 	{SIGQUIT,	"QUIT"},	{SIGILL,	"ILL"},	{SIGTRAP,	"TRAP"},
 	{SIGIOT,	"IOT"}, 	{SIGABRT,	"ABRT"},{SIGEMT,	"EMT"},
 	{SIGFPE,	"FPE"},		{SIGKILL,	"KILL"},{SIGBUS,	"BUS"},
@@ -165,11 +165,11 @@ struct sigs {
 #else
 {SIGDEV,	"DEV"},
 #endif
-	{0,			0} 	
+	{0,			0}
 };
 
 int kill_remote(int nid, pid_t pid, int signum);
-	
+
 int main(int argc, char **argv) {
 	char		*pname = basename(argv[0]);
 	int			sigval = -1, i;
@@ -182,7 +182,7 @@ int main(int argc, char **argv) {
 	long		lval;			/* temporary for checking argument ranges */
 	int         err=0;    		/* exit status: errors encountered in processing */
 	int			success=0;      /* exit status: successful signal deliveries */
-	int 		ind=optind;	
+	int 		ind=optind;
 
 	opterr = 0;
 	while (sigval == -1 && (i = getopt(argc, argv, CMDLINE_OPTS)) != -1) {
@@ -273,7 +273,7 @@ int main(int argc, char **argv) {
 			err++;
 			continue;
 		}
-				
+
 		if (kill_remote(nid, (pid_t) lval, sigval) != 0) {
 			fprintf(stderr, "%s: %s (%s)\n", pname, strerror(errno), argv[i]);
 			if (errno==ESRCH) err++; /* if process doesn't exist, exit non-zero */
@@ -308,7 +308,7 @@ kill_remote(nid_t nid, pid_t pid, int signum) {
 		status = kill(pid, signum);
 	} else {
 		pid_t vid;
-	
+
 		if ((vid = qnx_vc_attach(nid, pid, 0, 0)) == -1)
 			return -1;
 
@@ -316,7 +316,7 @@ kill_remote(nid_t nid, pid_t pid, int signum) {
 		qnx_vc_detach(vid);
     }
 
-	return status;	
+	return status;
 }
 #endif
 

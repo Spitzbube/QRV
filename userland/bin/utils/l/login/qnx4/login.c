@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -159,13 +159,13 @@ check_files()
 }
 
 main(int argc, char **argv)
-{               
+{
 	struct passwd *pw;
 	int	retry = 0;
 	int	c;
 	int	i;
 	int	nsecs = LOGIN_TIMEOUT;
-	
+
 	for (i=0; i < MAX_RETRIES; i++) {
 		lname[i] = nbuf+(L_cuserid+1)*i;
 	}
@@ -210,11 +210,11 @@ main(int argc, char **argv)
 		cat_file(ISSUE_FILE);
 	else
 		strncpy(lname[0], argv[optind],L_cuserid);
-		
+
 	signal(SIGALRM,tsig);
 	if (nsecs)
 		alarm(nsecs);
-		
+
 	for (retry=0; retry < MAX_RETRIES; retry++) {
 		pw = chklogin(passwd_stat,lname[retry]);
 		ltimes[retry] = time(NULL);
@@ -300,10 +300,10 @@ login(struct passwd *pw)
 		fprintf(stderr, "login: cannot find session name (%s)\n",
 			strerror(errno));
 		return 1;
-	}		
+	}
 
 	build_env(ENV_SAVE,preserve);
-	
+
 	if (strcmp(pw->pw_passwd, "*") == 0) {
 		if (login_setroot(pw) == -1) {
 			return 1;
@@ -315,7 +315,7 @@ login(struct passwd *pw)
 			fputs("Cannot set home to /, giving up\n", stderr);
 			return 1;
 		}
-	}	
+	}
 	setenv("HOME",pw->pw_dir,1);
 	setenv("LOGNAME",pw->pw_name,1);
 	setenv("SHELL",pw->pw_shell,1);

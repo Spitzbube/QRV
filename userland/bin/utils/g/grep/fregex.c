@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -39,7 +39,7 @@
  *
  *
  * These are elements from the fegex_t structure:
- * fr_dtrans fr_maxst fr_nst fr_fstate - 
+ * fr_dtrans fr_maxst fr_nst fr_fstate -
  *	dtrans is the transition table, which has fr_nst entries.
  *	In state N with input C, the next state in fd_dtrans[N][C].
  * 	fr_maxst entries have been allocated, and fr_fstate is
@@ -288,7 +288,7 @@ build_fail(F)
  * remembering strings.
  */
 
-int 
+int
 fregadd(fregex_t *feg, char *string)
 {
 	int             st;

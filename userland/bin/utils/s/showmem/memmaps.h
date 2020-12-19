@@ -18,7 +18,7 @@
 #define IS_STACK_ALLOCATED(f) 	(((f) & (MAP_STACK | PG_HWMAPPED)) == (MAP_STACK | PG_HWMAPPED))
 
 #define IS_GENERIC_HEAP(f) ((((f) & MAP_PRIVATEANON) == MAP_PRIVATEANON) || \
-                            (((f) & (MAP_PRIVATE | MAP_ANON)) == (MAP_PRIVATE | MAP_ANON))) 
+                            (((f) & (MAP_PRIVATE | MAP_ANON)) == (MAP_PRIVATE | MAP_ANON)))
 
 #define IS_FROM_IFS(f) ((!((f) & MAP_SYSRAM)) && ((f) & PG_HWMAPPED) && ((f) & MAP_PHYS))
 
@@ -39,7 +39,7 @@ enum mem_types {
 struct slib_mapinfo_block;
 
 /**
- * This is a basic memory map block structure, in the future we may use the 
+ * This is a basic memory map block structure, in the future we may use the
  * straight mapinfo structure, but for now not all of its fields are required.
  */
 typedef struct memblock {
@@ -48,7 +48,7 @@ typedef struct memblock {
 	int			type;				//TYPE_* (derivable)
 	int 		flags;				//From mapinfo
 	int 		zero;				//Empty field
-	char		*name;		
+	char		*name;
 } memblock_t;
 
 /**
@@ -70,6 +70,6 @@ typedef struct priv_memblock {
 	uint64_t			vaddr;				//Handy information
 	pthread_t			tid;				//If TYPE_STACK
 	int					shared_index;		//If TYPE_DATA|TYPE_CODE
-} priv_memblock_t;	
+} priv_memblock_t;
 
 

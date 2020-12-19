@@ -52,7 +52,7 @@ static char sccsid[] = "@(#)lex.c	8.2 (Berkeley) 4/20/95";
 const char	*prompt = "& ";
 
 extern const struct cmd cmdtab[];
-extern const char *version;	
+extern const char *version;
 
 /*
  * Set up editing on the given file name.

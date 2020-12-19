@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,7 +33,7 @@
 *	Author:		Peter Graves
 *
 *	Notes:		This test must have the tracelogger available to it in it's
-*				path.  If this is not available the tests will not be 
+*				path.  If this is not available the tests will not be
 *				run.
 *
 *****************************************************************************/
@@ -91,9 +91,9 @@ typedef struct {
 /*--------------------------------------------------------------------------*
  *									GLOBALS 								*
  *--------------------------------------------------------------------------*/
-/* This is a global used by the traceparser callback function to  
+/* This is a global used by the traceparser callback function to
  * tell the main thread that the values it got in the events were
- * correct 
+ * correct
  */
 static int correct_values;
 
@@ -110,7 +110,7 @@ static int correct_values;
 *
 *	Parameters: none
 *
-*	Returns:	-1 on failures, 0 if tracelogger is not found, and 1 when 
+*	Returns:	-1 on failures, 0 if tracelogger is not found, and 1 when
 *				tracelogger has been killed.
 *
 *****************************************************************************/
@@ -139,22 +139,22 @@ int kill_tl()
 				/* This is tracelogger */
 				kill(curpid, SIGINT);
 				/* We should be able to exit here, but we will continue just to make
-			 	 * sure there are no more traceloggers to kill 
+			 	 * sure there are no more traceloggers to kill
 				 */
 				rval=1;
 			}
-				
+
 		}
 	}
 	closedir(mydir);
 	return(rval);
-	
+
 }
 /****************************************************************************
 *
 *						Subroutine parse_cb
 *
-*	Purpose: 	This is a simple parse call back that will just check that 
+*	Purpose: 	This is a simple parse call back that will just check that
 *				the timestamp is not 0
 *
 *	Parameters:	header - event header
@@ -162,7 +162,7 @@ int kill_tl()
 *				event_p - pointer to the event array
 *				length  - length of the event array
 *
-*	Returns:	This function will set the value of correct values. It 
+*	Returns:	This function will set the value of correct values. It
 *				will be set to -1 on failure, and 1 on success.
 *
 *****************************************************************************/
@@ -177,8 +177,8 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 	if (correct_values==0)
 		correct_values=1;
 	return(EOK);
-	
-	
+
+
 }
 
 /****************************************************************************
@@ -191,7 +191,7 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 *	Returns: 	Pid of the tracelogger
 *
 *****************************************************************************/
-int start_logger(void) 
+int start_logger(void)
 {
 	int tlpid,rc;
 	char buf[100];
@@ -234,7 +234,7 @@ int main(int argc, char *argv[])
 
 	/* Kill off the tracelogger if it is running */
 	tlkilled=kill_tl();
-	
+
 	/***********************************************************************/
 
 	/***********************************************************************/
@@ -242,7 +242,7 @@ int main(int argc, char *argv[])
 	 * Make sure that timestamps never show up as 0 in wide mode
 	 */
  	testpntbegin("timestamp is not 0 in wide mode");
-		
+
 	/* We need to start up the tracelogger in daemon mode, 1 itteration.
 	 * We will then start logging, and create some system activity.
 	 */
@@ -254,7 +254,7 @@ int main(int argc, char *argv[])
 	/* Add all classes */
 	rc=TraceEvent(_NTO_TRACE_ADDALLCLASSES);
 	assert(rc!=-1);
-	
+
 	rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 	assert(rc!=-1);
 	/* Make sure there is some system activity going on */
@@ -273,24 +273,24 @@ int main(int argc, char *argv[])
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_THREAD, _NTO_TRACE_THDEAD, _NTO_TRACE_THDESTROY);
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_VTHREAD, _NTO_TRACE_VTHDEAD, _NTO_TRACE_VTHDESTROY);
 
-	/* Since we don't want a bunch of output being displayed in the 
+	/* Since we don't want a bunch of output being displayed in the
 	 * middle of the tests, turn off verbose output.
 	 */
 	traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 	/* Set correct_values to 0, so we can see if the callback actually
-	 * got called. 
+	 * got called.
 	 */
 	correct_values=0;
 	/* And parse the tracebuffer */
 	traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-	
-	if (correct_values==0) 
+
+	if (correct_values==0)
 		testpntfail("Our callback never got called, no events?");
 	else if (correct_values==-1)
 		testpntfail("Wrong parameters in the event");
 	else if (correct_values==1)
 		testpntpass("Got the correct values");
-	else 
+	else
 		testpntfail("This should not happen");
 
 	traceparser_destroy(&tp_state);
@@ -302,7 +302,7 @@ int main(int argc, char *argv[])
 	 * Make sure that timestamps never show up as 0 in fast mode
 	 */
  	testpntbegin("timestamp is not 0 in fast mode");
-		
+
 	/* We need to start up the tracelogger in daemon mode, 1 itteration.
 	 * We will then start logging, and create some system activity.
 	 */
@@ -314,7 +314,7 @@ int main(int argc, char *argv[])
 	/* Add all classes */
 	rc=TraceEvent(_NTO_TRACE_ADDALLCLASSES);
 	assert(rc!=-1);
-	
+
 	rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 	assert(rc!=-1);
 	/* Make sure there is some system activity going on */
@@ -322,7 +322,7 @@ int main(int argc, char *argv[])
 		stat("/proc/", &statbuf);
 
 	}
-	
+
 
 	/* Now, setup the traceparser lib to pull out all the events
 	 */
@@ -335,31 +335,31 @@ int main(int argc, char *argv[])
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_THREAD, _NTO_TRACE_THDEAD, _NTO_TRACE_THDESTROY);
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_VTHREAD, _NTO_TRACE_VTHDEAD, _NTO_TRACE_VTHDESTROY);
 
-	/* Since we don't want a bunch of output being displayed in the 
+	/* Since we don't want a bunch of output being displayed in the
 	 * middle of the tests, turn off verbose output.
 	 */
 	traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 	/* Set correct_values to 0, so we can see if the callback actually
-	 * got called. 
+	 * got called.
 	 */
 	correct_values=0;
 	/* And parse the tracebuffer */
 	traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-	
-	if (correct_values==0) 
+
+	if (correct_values==0)
 		testpntfail("Our callback never got called, no events?");
 	else if (correct_values==-1)
 		testpntfail("Wrong parameters in the event");
 	else if (correct_values==1)
 		testpntpass("Got the correct values");
-	else 
+	else
 		testpntfail("This should not happen");
 
 	traceparser_destroy(&tp_state);
  	testpntend();
 	/***********************************************************************/
 	/* If the tracelogger was killed, restart it */
-	if (tlkilled==1) 
+	if (tlkilled==1)
 		system("reopen /dev/null ; tracelogger -n0 -f /dev/null &");
 
 	teststop(argv[0]);

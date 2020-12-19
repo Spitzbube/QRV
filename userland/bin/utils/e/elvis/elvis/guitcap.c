@@ -42,7 +42,7 @@ extern char	*BC;	/* :bc=: move cursor left */
 					colorinfo[COLOR_FONT_IDLE].bg,\
 					colorinfo[COLOR_FONT_IDLE].da.bits)
 
-/* Structs of this type are used to remember the location and size of each 
+/* Structs of this type are used to remember the location and size of each
  * window.  In the termcap interface, all windows must be as wide as the
  * screen, and the sum of all windows' heights must equal the screen size.
  */
@@ -296,7 +296,7 @@ static long	currentfg;	/* foreground color code */
 static long	currentbg;	/* background color code */
 static int	currentbits;	/* bitmap of other attributes */
 
-static int	viscreen;	/* is terminal switched to edit screen yet? */ 
+static int	viscreen;	/* is terminal switched to edit screen yet? */
 
 /* Change attributes.  The color support assumes your terminal is ANSI-like
  * (which is safe since color() only allows you to set colors for ANSI-like
@@ -395,7 +395,7 @@ static void change(fg, bg, bits)
 		}
 		else
 		{
-			sprintf(ansicolor, "\033[%ld%sm", 
+			sprintf(ansicolor, "\033[%ld%sm",
 					fg + 30, bits & COLOR_BOLD ? ";1" : "");
 			tputs(ansicolor, 1, ttych);
 			currentbits |= (bits & COLOR_BOLD);
@@ -1152,7 +1152,7 @@ static void drawgraphic(gw, fg, bg, bits, text, len)
 		  case '9':	gc = GC_9;	break;
 		  default:	gc = 0;
 		}
-		
+
 		/* did we get a graphic character? */
 		if (gc)
 		{
@@ -1434,7 +1434,7 @@ static void loop()
 		{
 			/* redraw each window; the current one last */
 			for (scan = twins; scan; scan = scan->next)
-			{ 
+			{
 				if (scan != current)
 				{
 					scan->shape = eventdraw((GUIWIN *)scan);
@@ -1515,7 +1515,7 @@ static void loop()
 				afterprg = 0;
 				ttyresume(ElvTrue);
 				for (scan = twins; scan; scan = scan->next)
-				{ 
+				{
 					eventexpose((GUIWIN *)scan, 0, 0,
 					    scan->height - 1, (int)(o_ttycolumns - 1));
 				}
@@ -2186,9 +2186,9 @@ static int ttyprgclose()
 	/* some versions of tcaphelp.c set the title */
 	if (gui->retitle && (win = winofgw((GUIWIN *)current)) != NULL)
 	{
-		title = o_filename(markbuffer(win->cursor)); 
+		title = o_filename(markbuffer(win->cursor));
 		if (!title)
-			title = o_bufname(markbuffer(win->cursor)); 
+			title = o_bufname(markbuffer(win->cursor));
 		(*gui->retitle)((GUIWIN *)current, tochar8(title));
 	}
 #endif

@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -245,12 +245,12 @@ struct gmon_arc_param {
 	u_long           textsize;
 	u_long           hashfraction;
 	char             *name;
-	int              state_flags;	
+	int              state_flags;
 	struct gmon_arc_param *next;
 };
 
 #define GMON_PARAM_FLAGS_THREAD 0x1  // enable thread level arc counting
-#define GMON_PARAM_FLAGS_FROM_TO_ARCS 0x2 //arc format is from(indexed) self(stored) else its the other way around (new style) 
+#define GMON_PARAM_FLAGS_FROM_TO_ARCS 0x2 //arc format is from(indexed) self(stored) else its the other way around (new style)
 
 struct gmonparam {
 	int             state;
@@ -261,7 +261,7 @@ struct gmonparam {
 	void            *ldd_handle;
 	struct gmon_arc_param  arc_param;  // arc info for program.
 };
-	
+
 extern struct gmonparam _gmonparam;
 
 /*
@@ -277,7 +277,7 @@ extern struct gmonparam _gmonparam;
 #define SET_GMON_STATE(x, y) (x = ((x & ~GMON_STATE_MASK) | y))
 
 #define GMON_FLAGS_MASK 0xff00
-#define GET_GMON_FLAGS(x) ((x & GMON_FLAGS_MASK) >> 8) 
+#define GET_GMON_FLAGS(x) ((x & GMON_FLAGS_MASK) >> 8)
 
 
 #endif /* !_SYS_GMON_H_ */

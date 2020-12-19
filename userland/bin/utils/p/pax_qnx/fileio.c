@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -34,17 +34,17 @@
  *
  *	Mark H. Colburn, NAPS International (mark@jhereg.mn.org)
  *
- * Sponsored by The USENIX Association for public distribution. 
+ * Sponsored by The USENIX Association for public distribution.
  *
  * Copyright (c) 1989 Mark H. Colburn.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms are permitted
- * provided that the above copyright notice is duplicated in all such 
- * forms and that any documentation, advertising materials, and other 
- * materials related to such distribution and use acknowledge that the 
- * software was developed * by Mark H. Colburn and sponsored by The 
- * USENIX Association. 
+ * provided that the above copyright notice is duplicated in all such
+ * forms and that any documentation, advertising materials, and other
+ * materials related to such distribution and use acknowledge that the
+ * software was developed * by Mark H. Colburn and sponsored by The
+ * USENIX Association.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
@@ -80,10 +80,10 @@
  *
  * Revision 1.2  89/02/12  10:04:31  mark
  * 1.2 release fixes
- * 
+ *
  * Revision 1.1  88/12/23  18:02:09  mark
  * Initial revision
- * 
+ *
  */
 
 #ifndef lint
@@ -97,7 +97,7 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
 #include "pax.h"
 
 
-/* open_archive -  open an archive file.  
+/* open_archive -  open an archive file.
  *
  * DESCRIPTION
  *
@@ -108,20 +108,20 @@ static char *copyright = "Copyright (c) 1989 Mark H. Colburn.\nAll rights reserv
  *
  * PARAMETERS
  *
- * 	int	mode 	- specifies whether we are reading or writing.   
+ * 	int	mode 	- specifies whether we are reading or writing.
  *
  * RETURNS
  *
- *	Returns a zero if successfull, or -1 if an error occured during 
+ *	Returns a zero if successfull, or -1 if an error occured during
  *	the open.
  */
 
 #ifdef __STDC__
-    
+
 int open_archive(int mode)
 
 #else
-    
+
 int open_archive(mode)
 int             mode;
 
@@ -167,7 +167,7 @@ int             mode;
 void close_archive(void)
 
 #else
-    
+
 void close_archive()
 
 #endif
@@ -198,9 +198,9 @@ void close_archive()
  *
  * RETURNS
  *
- * 	Returns the output file descriptor, 0 if no data is required or -1 
- *	if unsuccessful. Note that UNIX open() will never return 0 because 
- *	the standard input is in use. 
+ * 	Returns the output file descriptor, 0 if no data is required or -1
+ *	if unsuccessful. Note that UNIX open() will never return 0 because
+ *	the standard input is in use.
  */
 
 #ifdef __STDC__
@@ -208,7 +208,7 @@ void close_archive()
 int openout(char *name, Stat *asb, Link *linkp, int ispass)
 
 #else
-    
+
 int openout(name, asb, linkp, ispass)
 char           *name;
 Stat           *asb;
@@ -267,7 +267,7 @@ int             ispass;
 			return (-1);
 		    }
 		} else {
-		    warn(name, 
+		    warn(name,
 			     "Directories are not being created (-d option)");
 		}
 		return(0);
@@ -277,7 +277,7 @@ int             ispass;
 	    }
 	} else {
 	    return(0);
-	} 
+	}
 #endif
     }
     perm = asb->sb_mode & S_IPERM;
@@ -304,7 +304,7 @@ int             ispass;
 	if (mknod(name, (int) asb->sb_mode, (int) asb->sb_rdev) < 0) {
 	    if (errno == ENOENT) {
 		if (f_dir_create) {
-		    if (dirneed(name) < 0 || mknod(name, (int) asb->sb_mode, 
+		    if (dirneed(name) < 0 || mknod(name, (int) asb->sb_mode,
 			   (int) asb->sb_rdev) < 0) {
 			warn(name, strerror());
 			return (-1);
@@ -410,13 +410,13 @@ int             ispass;
 	if ((fd = open(name, CREATE_MODE, (int) perm)) < 0) {
 	    if (errno == ENOENT) {
 		if (f_dir_create) {
-		    if (dirneed(name) < 0 || 
+		    if (dirneed(name) < 0 ||
 			    (fd = open(name, CREATE_MODE, (int) perm)) < 0) {
 			warn(name, strerror());
 			return (-1);
 		    }
 		} else {
-		    /* 
+		    /*
 		     * the file requires a directory which does not exist
 		     * and which the user does not want created, so skip
 		     * the file...
@@ -473,9 +473,9 @@ int             ispass;
  *
  * RETURNS
  *
- * 	Returns a file descriptor, 0 if no data exists, or -1 at EOF. This 
- *	kludge works because standard input is in use, preventing open() from 
- *	returning zero. 
+ * 	Returns a file descriptor, 0 if no data exists, or -1 at EOF. This
+ *	kludge works because standard input is in use, preventing open() from
+ *	returning zero.
  */
 
 #ifdef __STDC__
@@ -483,7 +483,7 @@ int             ispass;
 int openin(char *name, Stat *asb)
 
 #else
-    
+
 int openin(name, asb)
 char           *name;		/* name of file to open */
 Stat           *asb;		/* pointer to stat structure for file */

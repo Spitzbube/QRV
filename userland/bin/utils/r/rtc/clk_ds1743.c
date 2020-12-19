@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 
@@ -72,7 +72,7 @@ RTCFUNC(init,ds1743)(struct chip_loc *chip, char *argv[]) {
 		fprintf(stderr,"rtc: -b baseaddr must be specified for ds1743 clock type\n");
 		return(-1);
 	}
-	if(chip->access_type == NONE) 
+	if(chip->access_type == NONE)
 			chip->access_type = MEMMAPPED;
 	return(DS1743_YEAR+1);
 }
@@ -87,7 +87,7 @@ RTCFUNC(get,ds1743)(struct tm *tm, int cent_reg) {
 	unsigned	mon;
 	unsigned	year;
 	unsigned	reg;
-	
+
 	// Stop the chip from updating
 	chip_write8(DS1743_CONTROL, chip_read8(DS1743_CONTROL) | DS1743_CONTROL_R);
 
@@ -102,7 +102,7 @@ RTCFUNC(get,ds1743)(struct tm *tm, int cent_reg) {
 		chip_write8(DS1743_DAY, reg & ~DS1743_DAY_FT);
 	}
 
-	// convert BCD to binary 
+	// convert BCD to binary
 	sec 	= chip_read8(DS1743_SECONDS) & DS1743_SECONDS_MASK;
 	min 	= chip_read8(DS1743_MINUTES) & DS1743_MINUTES_MASK;
 	hour	= chip_read8(DS1743_HOUR) & DS1743_HOUR_MASK;

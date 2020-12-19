@@ -59,7 +59,7 @@ int _waitfor( __const char *path, int delay_ms, int poll_ms, int (*checkfunc)(__
 		polltimeout = poll_ms * (uint64_t)1000000;
 	}
 
-	/* 
+	/*
 	 * We make the channel fixed since we want to remain at the current
 	 * thread's priority
 	 */

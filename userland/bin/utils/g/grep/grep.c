@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -209,7 +209,7 @@ enum	{
 } pattype;
 
 /* ERROR bit in exit status */
-#define EXIT_ERROR (2)    
+#define EXIT_ERROR (2)
 /* NO_MATCHES bit in exit status */
 #define EXIT_NO_MATCHES (1)
 
@@ -223,7 +223,7 @@ int		retop;
 #ifndef REG_NOOPT
 #define REG_NOOPT 0
 #endif
-int	comp_flags = REG_NOSUB|REG_NOOPT;	
+int	comp_flags = REG_NOSUB|REG_NOOPT;
 
 
 char *mkexact(char *s)
@@ -275,7 +275,7 @@ int	ecode;
 	}
 	switch (pattype) {
 	case	FGREP:
-		if (num_pats+1 >= retop) { 
+		if (num_pats+1 >= retop) {
 			fstrs=realloc(fstrs,sizeof *fstrs * (retop+=REALLOC_CHUNK_SIZE));
 
 			if (fstrs==NULL) {
@@ -360,7 +360,7 @@ char	*umsg = OPT_LIST0;
 
 		case 'f':
 			if (strcmp(optarg,"-")) {
-				if ((fp=fopen(optarg,"r")) == NULL) {			
+				if ((fp=fopen(optarg,"r")) == NULL) {
 					fprintf(stderr,"%s: cannot open '%s' (%s)\n",
 						argv[0], optarg, strerror(errno));
 					exit(EXIT_FAILURE);
@@ -384,12 +384,12 @@ char	*umsg = OPT_LIST0;
 
 		case 'h':
 			nonames = 1;
-			break;			
+			break;
 
 		case 'i':
 			comp_flags |= REG_ICASE;
 			break;
-				
+
 		case 'l':
 			list_name = 1;
 			break;
@@ -397,11 +397,11 @@ char	*umsg = OPT_LIST0;
 		case 'n':
 			print_lineno = 1;
 			break;
-			
+
 		case 's':
 			no_file_error = 1;
 			break;
-			
+
 		case 'q':
 			no_output = 2;
 			break;
@@ -457,10 +457,10 @@ recurse(const char *name, const char *path)
 			}
 			ecode |= EXIT_ERROR;
 		} else {
-			if (!grep(fp,path)) ecode&=~EXIT_NO_MATCHES; 
+			if (!grep(fp,path)) ecode&=~EXIT_NO_MATCHES;
 			fclose(fp);
 		}
-		
+
 	}else{
  		while (pent = readdir(pdir)){
 			char *pathBuffer = NULL;
@@ -480,14 +480,14 @@ recurse(const char *name, const char *path)
 			}
 			ecode &= recurse(name, pathBuffer);
 			free(pathBuffer);
-			
+
 		}
 		closedir (pdir);
 	}
 	return ecode;
 }
-				
-				
+
+
 
 int
 main(argc, argv)
@@ -496,7 +496,7 @@ char	*argv[];
 {
 	int	i;
 
-	int	ecode = EXIT_NO_MATCHES; 
+	int	ecode = EXIT_NO_MATCHES;
 
 	i = get_args(argc,argv);
 	if (i != argc && num_pats == 0)
@@ -525,7 +525,7 @@ char	*argv[];
 					}
 					ecode |= EXIT_ERROR;
 				} else {
-					if (!grep(fp,argv[i])) ecode&=~EXIT_NO_MATCHES; 
+					if (!grep(fp,argv[i])) ecode&=~EXIT_NO_MATCHES;
 					fclose(fp);
 				}
 			}
@@ -586,14 +586,14 @@ char			*fn;
 		lbuf[t] = '\0';
 		if (c == EOF && t == 0) break;
 		if (c == '\n') lno++;
-	
+
 		if ((*match)(lbuf) ^ negate_match) {
 			/*	line was selected.... */
 			if (no_output == 2)
 				return 0;
 			count++;
 			if (no_output)
-				continue;				
+				continue;
 			if (list_name) {
 				printf("%s\n", fn);
 				fflush(stdout);

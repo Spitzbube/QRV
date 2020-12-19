@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -81,7 +81,7 @@ static int compare( const void *p1, const void *p2 ) {
 
 /*
  Returns 0 if the item with the name did not
-already exist in the cursor list, adds the item 
+already exist in the cursor list, adds the item
 to the structure.
  Returns 1 if the item with the name did exist
 in the list, doesn't add the item to the structure
@@ -118,13 +118,13 @@ static int find_with_insert(cursor_t **chead, char *name) {
 		return find_with_insert(&ctarget->next, name);
 	}
 
-	//TODO: Fix this later to make it faster, use the bs results from above 
+	//TODO: Fix this later to make it faster, use the bs results from above
 	for (indx = 0; indx < ctarget->count; indx++) {
 		if (strcmp(name, ctarget->data[indx]) < 0) {
 			break;
 		}
 	}
-	memmove(&ctarget->data[indx+1], &ctarget->data[indx], (ctarget->count - indx) * sizeof(char *)); 
+	memmove(&ctarget->data[indx+1], &ctarget->data[indx], (ctarget->count - indx) * sizeof(char *));
 	ctarget->data[indx] = strdup(name);
 	if (ctarget->data[indx] == NULL) {
 		errno = ENOMEM;
@@ -156,7 +156,7 @@ static void dump_cursor(cursor_t *cursor) {
 
 	indx = 0;
 	while (cursor) {
-		printf("Cursor %d %d items \n", indx++, cursor->count); 
+		printf("Cursor %d %d items \n", indx++, cursor->count);
 		for (i=0; i<cursor->count; i++) {
 			printf(" %s\n", cursor->data[i]);
 		}
@@ -164,7 +164,7 @@ static void dump_cursor(cursor_t *cursor) {
 	}
 }
 #endif
-/*** Exported  Functions ***/ 
+/*** Exported  Functions ***/
 DIR *opendir(const char *path) {
 	DIR							*dirp;
 	struct fcntl_stat {
@@ -203,14 +203,14 @@ DIR *opendir(const char *path) {
 
 
 	if(_connect_fd(0, path, 0, O_RDONLY | O_NONBLOCK | O_CLOEXEC | O_NOCTTY, SH_DENYNO, _IO_CONNECT_COMBINE, 1,
-					_IO_FLAG_RD, 0, 0, sizeof msg, &msg, sizeof buff, &buff, 0, 
+					_IO_FLAG_RD, 0, 0, sizeof msg, &msg, sizeof buff, &buff, 0,
 					&dirp->dd_fd_block.count, &dirp->dd_fd_block.fds) == -1) {
 		goto bad_alloc;
 	}
 
 	//This is only the stat for the first (and prefered) fd
 	if(!S_ISDIR(buff.st_mode)) {
-		dirp->dd_fd_block.count--; 
+		dirp->dd_fd_block.count--;
 		while (dirp->dd_fd_block.fds && dirp->dd_fd_block.count >=0) {
 			close(dirp->dd_fd_block.fds[dirp->dd_fd_block.count--]);
 		}
@@ -279,7 +279,7 @@ do {
 	d = (struct dirent64 *)&dirp->dd_buf[dirp->dd_loc];
 	dirp->dd_loc += d->d_reclen;
 
-} while ((dirp->dd_flags & D_FLAG_FILTER) && 
+} while ((dirp->dd_flags & D_FLAG_FILTER) &&
 		 find_with_insert(&dirp->dd_cursor, d->d_name));
 
 	dirp->dd_pos++;
@@ -349,7 +349,7 @@ int closedir(DIR *dirp) {
 	}
 	if (dirp->dd_cursor) {
 		free_cursor(&dirp->dd_cursor);
-	} 
+	}
 	free(dirp);
 	return ret;
 }
@@ -360,11 +360,11 @@ int closedir(DIR *dirp) {
 static int _dircntl(DIR *dir, int cmd, va_list ap) {
 
 	switch(cmd) {
-	case D_GETFLAG: 
+	case D_GETFLAG:
 		/* This value CANNOT BE NEGATIVE */
 		return dir->dd_flags;
 
-	case D_SETFLAG: 
+	case D_SETFLAG:
 		dir->dd_flags = va_arg(ap, int);
 		return 0;
 
@@ -386,12 +386,12 @@ int dircntl(DIR *dir, int cmd, ...) {
 	return ret;
 }
 
-/* 
- These two functions are particularily gross because in a 
+/*
+ These two functions are particularily gross because in a
  unioned filesystem such as ours, you can't simply get an
- offset for just one entry but you need a combination of 
- entry/server + offset. 
- Two approaches: 
+ offset for just one entry but you need a combination of
+ entry/server + offset.
+ Two approaches:
  1) Maintain a table of server+offset mappings and return
     that mapping to the client as the "value".
  2) Iterate through the directories and maintain a count

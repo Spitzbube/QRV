@@ -777,7 +777,7 @@ char *iofilename(partial, endchar)
 		/* decide whether to append a slash or tab */
 		if (dirperm(match) == DIR_DIRECTORY)
 			endchar = OSDIRDELIM;
-		
+
 		/* append a tab or slash, and return it */
 		match[matchlen] = endchar;
 		match[matchlen + 1] = '\0';

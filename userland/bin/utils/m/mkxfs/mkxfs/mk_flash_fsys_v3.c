@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -77,7 +77,7 @@ static f3s_head_t			extent_prev;
  * NOTE: This function must be updated if the structure of f3s_unit_logi_t
  *       ever changes!!!!!!
  *
- * NOTE: Code adapted (but not copied) from: 
+ * NOTE: Code adapted (but not copied) from:
  *        "Applied Cryptography 2nd Edition" by Bruce Schneier
  */
 /* XXX - This function may need some endianization work */
@@ -153,8 +153,8 @@ static void unit_logi_md5 (f3s_unit_logi_t *unit_logi, uint32_t *md5)
 	GG(d, a, b, c, wpad[0],  9, 0xFCEFA3F8); /* Buf[ 2] */
 	GG(c, d, a, b, 0,       14, 0x676F02D9); /* Buf[ 7] */
 	GG(b, c, d, a, 0,       20, 0x8D2A4C8A); /* Buf[12] */
-                                                    
-	/* Round 3 */                                   
+
+	/* Round 3 */
 	HH(a, b, c, d, 0,        4, 0xFFFA3942); /* Buf[ 5] */
 	HH(d, a, b, c, 0,       11, 0x8771F681); /* Buf[ 8] */
 	HH(c, d, a, b, 0,       16, 0x6D9D6122); /* Buf[11] */
@@ -171,8 +171,8 @@ static void unit_logi_md5 (f3s_unit_logi_t *unit_logi, uint32_t *md5)
 	HH(d, a, b, c, 0,       11, 0xE6DB99E5); /* Buf[12] */
 	HH(c, d, a, b, 0,       16, 0x1FA27CF8); /* Buf[15] */
 	HH(b, c, d, a, wpad[0], 23, 0xC4AC5665); /* Buf[ 2] */
-                                                    
-	/* Round 4 */                                   
+
+	/* Round 4 */
 	II(a, b, c, d, logi[0],  6, 0xF4292244); /* Buf[ 0] */
 	II(d, a, b, c, 0,       10, 0x432AFF97); /* Buf[ 7] */
 	II(c, d, a, b, wlen[0], 15, 0xAB9423A7); /* Buf[14] */
@@ -200,7 +200,7 @@ static void unit_logi_md5 (f3s_unit_logi_t *unit_logi, uint32_t *md5)
 
 
 static block_info_t *init_block(int block_size, uint16_t unit_flags){
-    
+
 	f3s_extptr_t		next;
 	f3s_unit_info_t		unit_info;
 	f3s_unit_logi_t		unit_logi;
@@ -209,13 +209,13 @@ static block_info_t *init_block(int block_size, uint16_t unit_flags){
 	uint16_t			extent_flags;
 	uint8_t				*init_blk_ptr;
 	int					spare;
-	
+
 	if ((unit_flags & F3S_UNIT_MASK) == F3S_UNIT_SPARE) spare = 1;
 	else                                                spare = 0;
-    
+
 	//
 	//	create a memory region to build our block
-	//	
+	//
 
 	if ((init_blk_ptr = (char *) malloc(block_size)) == NULL)
 		mk_flash_exit("memory allocation failed: %s.  %s:%d\n",strerror(errno),
@@ -243,8 +243,8 @@ static block_info_t *init_block(int block_size, uint16_t unit_flags){
 	block_info[block_index]->extent_index    = 0;
 	block_info[block_index]->next            = NULL;
 
-	// 
-	//	every block will contain a unit header information  
+	//
+	//	every block will contain a unit header information
 	//	structure
 	//
 
@@ -306,12 +306,12 @@ static void write_boot_record(block_info_t *block_info, uint16_t spare, ffs_sort
 	f3s_boot_t			boot_record;
 	f3s_extptr_t		root,
 						next;
-	uint32_t			nbytes, 
+	uint32_t			nbytes,
 						namelen,
 						size,
 						position;
 	uint16_t			extent_flags;
-	
+
 	//
 	//	setup the boot record structure
 	//
@@ -333,7 +333,7 @@ static void write_boot_record(block_info_t *block_info, uint16_t spare, ffs_sort
 
 	boot_record.unit_total = 0;
 	boot_record.unit_spare = swap16(target_endian,spare);
-  	
+
 	//
 	//	these two entries are hard coded for now
 	//
@@ -345,17 +345,17 @@ static void write_boot_record(block_info_t *block_info, uint16_t spare, ffs_sort
 	//
 
 	root.logi_unit = swap16(target_endian,F3S_FIRST_LOGI);
-	root.index = swap16(target_endian,F3S_ROOT_INDEX);	
+	root.index = swap16(target_endian,F3S_ROOT_INDEX);
 
 	boot_record.root = root;
 
 	memcpy(blk_buffer_ptr,&boot_record,sizeof(boot_record));
 
 	position = block_info->offset_top;
-	
+
 	lseek(flashimage,position,SEEK_SET);
-	
-	if((nbytes=write(flashimage,blk_buffer_ptr,sizeof(boot_record))) != 
+
+	if((nbytes=write(flashimage,blk_buffer_ptr,sizeof(boot_record))) !=
 			sizeof(boot_record))
 		mk_flash_exit("write failed: %s.  %s:%d\n",strerror(errno), __FILE__, __LINE__);
 
@@ -378,10 +378,10 @@ static void write_boot_record(block_info_t *block_info, uint16_t spare, ffs_sort
 	block_info->offset_top +=  sizeof(boot_record);
 
 	//
-	//	call extent header routine for root structure (dirent)	
+	//	call extent header routine for root structure (dirent)
 	//
 
-	extent_flags = (extent_flags & ~F3S_EXT_SYS) | F3S_EXT_DIR; 
+	extent_flags = (extent_flags & ~F3S_EXT_SYS) | F3S_EXT_DIR;
 
 	//
 	//	calculate the size of the root name (can't assume /)
@@ -406,14 +406,14 @@ static void write_f3s(ffs_sort_t *sort, int block_size){
 
 
 	if ((blk_buffer_ptr = (char *)malloc(0x4000)) == NULL)
-		mk_flash_exit("malloc failed: %s.  %s:%d\n",strerror(errno), __FILE__, __LINE__);	
+		mk_flash_exit("malloc failed: %s.  %s:%d\n",strerror(errno), __FILE__, __LINE__);
 
 	//
 	//	create a temporary file
 	//
 
 	tmp_name = mk_tmpfile();
-	
+
 	if ((flashimage = open(tmp_name,O_BINARY | O_RDWR | O_CREAT | O_TRUNC,
 				S_IWUSR|S_IRUSR|S_IRGRP|S_IROTH)) == -1)
 			mk_flash_exit("create of %s failed: %s.\n",tmp_name,strerror(errno));
@@ -425,15 +425,15 @@ static void write_f3s(ffs_sort_t *sort, int block_size){
 		mk_flash_exit("init_block failed: %s.  %s:%d\n", strerror(errno), __FILE__, __LINE__);
 	}
 
-	
+
 	//
 	// first block requires a boot record
     //
-	
+
 	write_boot_record (block_info, spare_blocks,sort);
-	
+
 	//
-	// write the initialized block to the file.  each entry will be written  
+	// write the initialized block to the file.  each entry will be written
 	// to disk individually.
     //
 	// check if this entry has been written to the file yet
@@ -444,7 +444,7 @@ static void write_f3s(ffs_sort_t *sort, int block_size){
 		if (!(sort->status & FFS_SORT_ENTRY_SET)){
 
 			switch(sort->mode & S_IFMT){
-	
+
 			case S_IFDIR:
 				if(verbose)
 					fprintf(debug_fp,"writing directory entry -> %s\n",sort->name);
@@ -454,22 +454,22 @@ static void write_f3s(ffs_sort_t *sort, int block_size){
 				if(verbose)
 					fprintf(debug_fp,"writing file entry   -> %s ",sort->name);
 				block_info = write_file(sort,block_info);
-				break;	        
+				break;
 			case S_IFLNK:
 				if(verbose)
 					fprintf(debug_fp,"writing link entry   -> %s ",sort->name);
 				block_info = write_lnk(sort,block_info);
-				break;	        
+				break;
 			case S_IFIFO:
 				if(verbose)
 					fprintf(debug_fp,"writing fifo entry -> %s\n",sort->name);
 				block_info = write_dir_entry(sort, block_info);
 				break;
-			} 
+			}
 		}
 
 		//
-		// check for a child, only a directory can have a child  
+		// check for a child, only a directory can have a child
 		//
 
 		if (!sort->child && (sort->mode & (S_IFDIR|S_IFIFO))){
@@ -479,39 +479,39 @@ static void write_f3s(ffs_sort_t *sort, int block_size){
 			//	The extent pointer must refer to an extent that in turn points
 			//	to 0 sized data.
 			//
-			
+
 			if (block_info->available_space < sizeof(f3s_head_t)){
 				block_info = init_block(block_size, unit_flags);
 			}
-			
+
 			if (NULL == block_info){
 				mk_flash_exit("init_block failed: %s.  %s:%d\n",
 						strerror(errno), __FILE__, __LINE__);
 			}
 			child_extent(sort,0,block_info);
-		
-        }      
+
+        }
 
 		if (sort->child && (sort->mode & S_IFDIR)){
 
-			// 
-			//child			
-			//	
+			//
+			//child
+			//
 
 			if ((sort_temp_ptr = find_child(sort)) == NULL)
-				mk_flash_exit("find_child failed: %s.  %s:%d\n", 
+				mk_flash_exit("find_child failed: %s.  %s:%d\n",
 						strerror(errno), __FILE__,__LINE__);
-			
+
 			//
 			//check the mode of our child
 			//
-			
+
 			size_of_entry = sizeof(f3s_dirent_t) + F3S_NAME_ALIGN(strlen(sort_temp_ptr->name)+1) + sizeof(f3s_stat_t);
 			sort_temp_ptr->size_of_entry = size_of_entry;
 
 			if (block_info->available_space < (size_of_entry + sizeof(f3s_head_t)))
 			       block_info = init_block(block_size, unit_flags);
-	
+
 			if (NULL == block_info){
 				mk_flash_exit("init_block failed: %s.  %s:%d\n",
 						strerror(errno), __FILE__, __LINE__);
@@ -520,21 +520,21 @@ static void write_f3s(ffs_sort_t *sort, int block_size){
 			child_extent(sort,sort_temp_ptr->size_of_entry,block_info);
 
 			switch(sort_temp_ptr->mode & S_IFMT){
-			
+
 			case S_IFDIR:
 				if(verbose)
 					fprintf(debug_fp,"writing directory entry -> %s\n",sort_temp_ptr->name);
 
 				block_info = write_dir_entry(sort_temp_ptr, block_info);
 				break;
-						
+
 			case S_IFREG:
 				if(verbose)
 					fprintf(debug_fp,"writing file entry      -> %s ",sort_temp_ptr->name);
 
 				block_info = write_file(sort_temp_ptr,block_info);
 			    break;
-				
+
 			case S_IFLNK:
 				if(verbose)
 					fprintf(debug_fp,"writing link entry      -> %s ",sort_temp_ptr->name);
@@ -548,7 +548,7 @@ static void write_f3s(ffs_sort_t *sort, int block_size){
 				block_info = write_dir_entry(sort_temp_ptr,block_info);
 			    break;
 
-			}			
+			}
        	}
 
 		//
@@ -559,29 +559,29 @@ static void write_f3s(ffs_sort_t *sort, int block_size){
 	     	if ((sort_temp_ptr = find_sibling(sort)) == NULL)
 				mk_flash_exit("find_sibling failed\n");
 
-			size_of_entry = sizeof(f3s_dirent_t) + 
+			size_of_entry = sizeof(f3s_dirent_t) +
 				F3S_NAME_ALIGN(strlen(sort_temp_ptr->name)+1) + sizeof(f3s_stat_t);
-			
+
 			sort_temp_ptr->size_of_entry = size_of_entry;
 			if (block_info->available_space < (size_of_entry + sizeof(f3s_head_t)))
 		        block_info = init_block(block_size, unit_flags);
 
-	
+
 			if (NULL == block_info){
 				mk_flash_exit("init_block failed\n");
 			}
 			sibling_extent(sort,sort_temp_ptr->size_of_entry,block_info);
 
-			
+
 			switch(sort_temp_ptr->mode & S_IFMT){
-				
+
 			case S_IFDIR:
 				if(verbose)
 					fprintf(debug_fp,"writing directory entry -> %s\n",sort_temp_ptr->name);
 
 				block_info = write_dir_entry(sort_temp_ptr, block_info);
 				break;
-						
+
 			case S_IFREG:
 				if(verbose)
 					fprintf(debug_fp,"writing file entry      -> %s ",sort_temp_ptr->name);
@@ -598,14 +598,14 @@ static void write_f3s(ffs_sort_t *sort, int block_size){
 			case S_IFIFO:
 				if (verbose)
 					fprintf(debug_fp,"writing fifo entry      -> %s\n",sort_temp_ptr->name);
-				
+
 				block_info = write_dir_entry(sort_temp_ptr, block_info);
 				break;
 
 			}
 		}
 		sort=sort->next;
-	}	
+	}
 
 	//
 	//	write out the rest of the filesystem.  This includes the spare block(s) and formatting
@@ -613,7 +613,7 @@ static void write_f3s(ffs_sort_t *sort, int block_size){
 	//
 
 	spare_block_alloc(block_info);
-	
+
 	//
 	//	free our malloc buffer
 	//
@@ -639,7 +639,7 @@ static block_info_t *write_dir_entry(ffs_sort_t *sorted_list, block_info_t *bloc
 	first.index = FNULL;
 	next.logi_unit = FNULL;
 	next.index = FNULL;
-		
+
 	//
 	//	setup directory entry
 	//
@@ -687,13 +687,13 @@ static block_info_t *write_dir_entry(ffs_sort_t *sorted_list, block_info_t *bloc
 	if ((nbytes = write(flashimage,blk_buffer_ptr,dir_size)) !=dir_size)
 		mk_flash_exit("write failed: %s.  %s:%d\n",strerror(errno),
 					__FILE__, __LINE__);
-    
+
 	//
 	// updated sorted_list
     //
-	
+
 	sorted_list->status = FFS_SORT_ENTRY_SET;
-	sorted_list->entry_pos = entry_pos; 
+	sorted_list->entry_pos = entry_pos;
 	sorted_list->size_of_entry = dir_size;
 	sorted_list->extent_pos = (block_info->block_index * block_info->block_size) + block_info->offset_bottom;
 
@@ -704,7 +704,7 @@ static block_info_t *write_dir_entry(ffs_sort_t *sorted_list, block_info_t *bloc
 	block_info->offset_top += dir_size;
 	block_info->available_space -= dir_size;
 
-	return block_info;		
+	return block_info;
 }
 
 
@@ -793,15 +793,15 @@ static void child_extent(ffs_sort_t *entry, uint32_t size_child_entry, block_inf
 	//
 	// Setup 'first' pointer to new extent
 	//
-	
-	first.logi_unit = swap16(target_endian,block_info->block_index + 1);	
+
+	first.logi_unit = swap16(target_endian,block_info->block_index + 1);
 	first.index =  swap16(target_endian,block_info->extent_index);
 
 	//
-	// now write the entry to the correct place 
+	// now write the entry to the correct place
     // 'first' entry is 4 bytes offset into the f3s_dirent_t structure
 	//
-	
+
 	pos = entry->entry_pos + sizeof(int);
 
 
@@ -842,15 +842,15 @@ static void sibling_extent(ffs_sort_t *entry, uint32_t size_sib_entry, block_inf
 	// Setup 'next' pointer to new extent
 	//
 
-	dir_next.logi_unit = swap16(target_endian,block_info->block_index + 1);			
+	dir_next.logi_unit = swap16(target_endian,block_info->block_index + 1);
 	dir_next.index =  swap16(target_endian,block_info->extent_index);
 
 	//
-	// now write the entry to the correct place 
-	// 'next' entry is 
+	// now write the entry to the correct place
+	// 'next' entry is
 	//
 
-	pos = entry->extent_pos; 
+	pos = entry->extent_pos;
 
 	lseek(flashimage, pos, SEEK_SET);
 
@@ -862,7 +862,7 @@ static void sibling_extent(ffs_sort_t *entry, uint32_t size_sib_entry, block_inf
 	dir_extent.status[1] &= dir_extent.status[0];
 	dir_extent.status[2] &= dir_extent.status[0];
 	dir_extent.next = dir_next;
-	
+
 	lseek(flashimage, pos, SEEK_SET);
 
 	memcpy(blk_buffer_ptr,&dir_extent, sizeof(dir_extent));
@@ -907,7 +907,7 @@ static block_info_t *write_file(ffs_sort_t *sort, block_info_t *block_info){
 	if ((file_buffer = (char *)malloc(0x4000)) == NULL)
 		mk_flash_exit("malloc failed: %s.  %s:%d\n",strerror(errno),
 				__FILE__, __LINE__);
-	
+
 	//
 	// open the file for read
 	//
@@ -935,7 +935,7 @@ static block_info_t *write_file(ffs_sort_t *sort, block_info_t *block_info){
 
 	prev_extent = 0;
 
-	
+
 	while(!done){
 		read_size = block_info->available_space - sizeof(f3s_head_t);
 		if (read_size > MAX_WRITE)
@@ -972,7 +972,7 @@ static block_info_t *write_file(ffs_sort_t *sort, block_info_t *block_info){
 		}
 		else {
 			file_extent(prev_extent, remain, block_info);
-			
+
 		}
 
 		//
@@ -987,7 +987,7 @@ static block_info_t *write_file(ffs_sort_t *sort, block_info_t *block_info){
 
 		if (remain < read_size)
 			done = 1;
-		
+
 		//
 		//	verbose display of file being written
 		//
@@ -1004,7 +1004,7 @@ static block_info_t *write_file(ffs_sort_t *sort, block_info_t *block_info){
         //
 		//	position and write the content of the file to the image file
 		//
-		
+
 		pos = (block_info->block_index * block_info->block_size) + block_info->offset_top;
 
 		lseek(flashimage,pos,SEEK_SET);
@@ -1032,7 +1032,7 @@ static block_info_t *write_file(ffs_sort_t *sort, block_info_t *block_info){
 
 	if (verbose)
 		fprintf(debug_fp,"\n");
-	
+
 	free(file_buffer);
 	return block_info;
 }
@@ -1078,7 +1078,7 @@ static block_info_t *write_lnk(ffs_sort_t *sort, block_info_t *block_info){
 		unit_flags = ((~F3S_UNIT_MASK | F3S_UNIT_READY) & ~F3S_UNIT_NO_LOGI);
 		block_info = init_block(block_info->block_size, unit_flags);
 	}
-	
+
 	if (NULL == block_info){
 		mk_flash_exit("init_block failed: %s.  %s:%d\n",
 				strerror (errno), __FILE__, __LINE__);
@@ -1094,7 +1094,7 @@ static block_info_t *write_lnk(ffs_sort_t *sort, block_info_t *block_info){
 	//
 	//	position and write the content of the file to the image file
 	//
-		
+
 	pos = (block_info->block_index * block_info->block_size) + block_info->offset_top;
 
 	lseek(flashimage,pos,SEEK_SET);
@@ -1129,18 +1129,18 @@ static void first_file_extent(uint32_t position, uint32_t size_file_entry, block
 	//
 	// Setup extent pointer to new extent
 	//
-	
-	first.logi_unit = swap16(target_endian,block_info->block_index + 1);			
+
+	first.logi_unit = swap16(target_endian,block_info->block_index + 1);
 	first.index = swap16(target_endian,block_info->extent_index);
 
 	//
-	// write the update to the correct place 
+	// write the update to the correct place
 	//
-	
+
 
 	lseek(flashimage, position, SEEK_SET);
 
-	memcpy(blk_buffer_ptr, &first, sizeof(first)); 
+	memcpy(blk_buffer_ptr, &first, sizeof(first));
 
 	if ((nbytes = write(flashimage,blk_buffer_ptr,sizeof(first))) !=sizeof(first))
 		mk_flash_exit("write failed: %s.  %s:%d\n",strerror(errno),
@@ -1166,21 +1166,21 @@ static void file_extent(uint32_t position, uint32_t size_file_entry, block_info_
 	f3s_head_t			dir_extent;
 	uint32_t			nbytes;
 	uint16_t			extent_flags;
-	
-	
+
+
 
 	//
 	// Setup 'next' pointer to new extent
 	//
-	
-	dir_next.logi_unit = swap16(target_endian,block_info->block_index + 1);			
+
+	dir_next.logi_unit = swap16(target_endian,block_info->block_index + 1);
 	dir_next.index =  swap16(target_endian,block_info->extent_index);
 
 	//
-	// now write the entry to the correct place 
-    // 'next' entry is 
+	// now write the entry to the correct place
+    // 'next' entry is
 	//
-	
+
 	lseek(flashimage, position, SEEK_SET);
 
 	if (read(flashimage,&dir_extent,sizeof(dir_extent)) != sizeof(dir_extent))
@@ -1191,7 +1191,7 @@ static void file_extent(uint32_t position, uint32_t size_file_entry, block_info_
 	dir_extent.status[1]  = dir_extent.status[0];
 	dir_extent.status[2]  = dir_extent.status[0];
 	dir_extent.next = dir_next;
-	
+
 	lseek(flashimage, position, SEEK_SET);
 
 	memcpy(blk_buffer_ptr,&dir_extent, sizeof(dir_extent));
@@ -1216,7 +1216,7 @@ static void file_extent(uint32_t position, uint32_t size_file_entry, block_info_
 static void spare_block_alloc(block_info_t *block_info){
 
 	uint16_t		block_count,
-					boot_block_count,	
+					boot_block_count,
 					max_block_count,
 					min_block_count,
 					i,
@@ -1246,7 +1246,7 @@ static void spare_block_alloc(block_info_t *block_info){
 		block_info = block_info->next;
 
 	//
-	// the number of blocks must include the spare block(s) 
+	// the number of blocks must include the spare block(s)
 	// the 1 is because the the block_info->block_index is indexed from 0
 	//
 
@@ -1259,7 +1259,7 @@ static void spare_block_alloc(block_info_t *block_info){
 	if (min_block_count > block_count){
 		unit_flags = ((~F3S_UNIT_MASK | F3S_UNIT_READY) & ~F3S_UNIT_NO_LOGI);
 		for(i=block_count;i<min_block_count;i++){
-			block_info = init_block(block_info->block_size, unit_flags);	
+			block_info = init_block(block_info->block_size, unit_flags);
 			if (NULL == block_info){
 				mk_flash_exit("init_block failed:  %s.  %s:%d\n",
 						strerror(errno), __FILE__, __LINE__);
@@ -1284,7 +1284,7 @@ static void spare_block_alloc(block_info_t *block_info){
 	if (lseek(flashimage,sizeof(f3s_unit_info_t)+sizeof(f3s_unit_logi_t)+offsetof(f3s_boot_t,unit_total),SEEK_SET) == -1)
 		mk_flash_exit("lseek failed: %s.  %s:%d\n",strerror(errno),
 				__FILE__, __LINE__);
-	
+
 	if((nbytes=write(flashimage,blk_buffer_ptr,sizeof(boot_block_count))) != sizeof(boot_block_count))
 		mk_flash_exit("write failed: %s.  %s:%d\n",strerror(errno),
 				__FILE__, __LINE__);
@@ -1303,7 +1303,7 @@ static void spare_block_alloc(block_info_t *block_info){
 		}
 	}
 
-	
+
 	if(verbose){
 		fprintf(stderr,"Filesystem size = %dK\n",(block_info->block_size*block_count)
 			/1024);
@@ -1325,7 +1325,7 @@ ffs_make_fsys_3(FILE *dst_fp, struct file_entry *list, char *mountpoint, char *d
 
 	if (target_endian == -1)
 		target_endian = 0;
-	
+
 	//
 	//	Make sure block size is defined and reasonable (at least 1K)
 	//
@@ -1338,8 +1338,8 @@ ffs_make_fsys_3(FILE *dst_fp, struct file_entry *list, char *mountpoint, char *d
 	sort = ffs_entries(trp, mountpoint);
 
 	write_f3s(sort, block_size);
-		
-	write_image(dst_fp);		
+
+	write_image(dst_fp);
 
 	return 0;
 }

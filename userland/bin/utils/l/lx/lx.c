@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -71,7 +71,7 @@ void f_block_read(int fildes, long block, unsigned nblock, void *buf);
 void f_lstat(const char *path, struct stat *buf);
 void *f_calloc(size_t n, size_t size);
 
-int main(int argc, char **argv) 
+int main(int argc, char **argv)
 {
 	int i;
 
@@ -150,7 +150,7 @@ void show_extents()
 			/* need to get 1st xblk */
 			cur_xblk=misc_fsysstat.st_xblk;
 			num_xblks++;
-			
+
 			if (cur_xblk==0) {
 				fprintf(stderr,"%s: file '%s' has missing extents! (%d) (fatal)\n",Prog,misc_path,curxtnt);
 				exit(EXIT_FAILURE);
@@ -158,8 +158,8 @@ void show_extents()
 
 			f_block_read(Source_fd, cur_xblk, 1L,&cur_xblk_d);
 
-			fprintf(stdout,"XBLK %04d: @%07x:000 %d xtnts; prev@%07x:000 next@%07x:000\n", 
-				num_xblks, 
+			fprintf(stdout,"XBLK %04d: @%07x:000 %d xtnts; prev@%07x:000 next@%07x:000\n",
+				num_xblks,
 				cur_xblk,
 				cur_xblk_d.xblk_num_xtnts,
 				cur_xblk_d.xblk_prev_xblk,
@@ -182,29 +182,29 @@ void show_extents()
 				inode_xlat_table[curxtnt].blk,
 				inode_xlat_table[curxtnt].off*512L);
 		}
-			
+
 		/* if we have not got all our extents */
 		if (curxtnt<misc_fsysstat.st_num_xtnts) {
 			/* get the next extent block */
 			cur_xblk=cur_xblk_d.xblk_next_xblk;
 			num_xblks++;
-				
+
 			if (cur_xblk==0) {
 				fprintf(stdout,"curxtnt=%d\n",curxtnt);
 				fprintf(stderr,"%s: file '%s' has missing extents! (%d) (fatal)\n",Prog,misc_path,curxtnt);
 				exit(EXIT_FAILURE);
 			}
-	
+
 			f_block_read(Source_fd, cur_xblk, 1L,&cur_xblk_d);
 
-			fprintf(stdout,"XBLK %04d: @%07x:000 %d xtnts; prev@%07x:000 next@%07x:000\n", 
-				num_xblks, 
+			fprintf(stdout,"XBLK %04d: @%07x:000 %d xtnts; prev@%07x:000 next@%07x:000\n",
+				num_xblks,
 				cur_xblk,
 				cur_xblk_d.xblk_num_xtnts,
 				cur_xblk_d.xblk_prev_xblk,
 				cur_xblk_d.xblk_next_xblk
 				);
-		} 
+		}
 	}
 
 #ifdef NEVER

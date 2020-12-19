@@ -315,7 +315,7 @@ diag (lin xoff, lin xlim, lin yoff, lin ylim, bool find_minimal,
 	}
     }
 }
-
+
 /* Compare in detail contiguous subsequences of the two files
    which are known, as a whole, to match each other.
 
@@ -383,7 +383,7 @@ compareseq (lin xoff, lin xlim, lin yoff, lin ylim, bool find_minimal)
 	}
     }
 }
-
+
 /* Discard lines from one file that have no matches in the other file.
 
    A line which is discarded will not be considered by the actual
@@ -594,7 +594,7 @@ discard_confusing_lines (struct file_data filevec[])
   free (discarded[0]);
   free (equiv_count[0]);
 }
-
+
 /* Adjust inserts/deletes of identical lines to join changes
    as much as possible.
 
@@ -701,7 +701,7 @@ shift_boundaries (struct file_data filevec[])
 	}
     }
 }
-
+
 /* Cons an additional entry onto the front of an edit script OLD.
    LINE0 and LINE1 are the first affected lines in the two files (origin 0).
    DELETED is the number of lines deleted here from file 0.
@@ -794,7 +794,7 @@ build_script (struct file_data const filevec[])
 
   return script;
 }
-
+
 /* If CHANGES, briefly report that two files differed.
    Return 2 if trouble, CHANGES otherwise.  */
 static int

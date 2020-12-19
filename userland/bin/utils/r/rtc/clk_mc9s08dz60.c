@@ -87,7 +87,7 @@ RTCFUNC(init,mc9s08dz60)(struct chip_loc *chip, char *argv[])
 {
 	uint8_t		ctrl;
 
-    fd = open((argv && argv[0] && argv[0][0])? 
+    fd = open((argv && argv[0] && argv[0][0])?
             argv[0]: MC9S08DZ60_I2C_DEVNAME, O_RDWR);
     if (fd < 0) {
         fprintf(stderr, "Unable to open I2C device\n");
@@ -131,7 +131,7 @@ RTCFUNC(get,mc9s08dz60)(struct tm *tm, int cent_reg)
     tm->tm_wday = BCD2BIN(date[MC9S08DZ60_DAY]   & 0x7) - 1;
 
 	/* no century bit in RTC, so this will have to do for now */
-	if (tm->tm_year < 70) 
+	if (tm->tm_year < 70)
 		tm->tm_year += 100;
 
     return(0);

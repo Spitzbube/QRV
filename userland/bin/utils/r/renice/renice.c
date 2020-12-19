@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,27 +33,27 @@
 	Stage 1 of the warnings/errors cleanup.
 
 	Revision 1.4  2005/06/03 01:37:58  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.3  2003/08/28 20:23:47  martin
 	Update QSSL Copyright notice.
-	
+
 	Revision 1.2  2000/02/14 20:46:44  jbaker
 	fixed memory fault under neutrino 2.
 	Also added some error checking code.
-	
+
 	Re: PR 1957
-	
+
 	Revision 1.1  1998/10/23 01:37:57  dtdodge
 	Initial cvs checkin.
-	
+
  * Revision 1.4  1996/06/05  16:04:36  brianc
  * blat
  *
@@ -68,7 +68,7 @@
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
@@ -139,7 +139,7 @@ AtoI( char *s ) {
 	char	*p;
 	long	I;
 
-	I = strtol( s, &p, 10 ); 
+	I = strtol( s, &p, 10 );
 	if ( ((I == LONG_MAX || I==LONG_MIN)&&errno)  ||  *p ) {
 		fprintf( stderr, "Bad numeric argument '%s'\n", s );
 		exit( EXIT_FAILURE );
@@ -243,21 +243,21 @@ main( argc, argv )
         }
         else
         {
-          if (current==PRIO_PROCESS) add_pid(strtol(argv[ind], NULL, 0)); 
+          if (current==PRIO_PROCESS) add_pid(strtol(argv[ind], NULL, 0));
           else
-            if (current==PRIO_PGRP) break;  
+            if (current==PRIO_PGRP) break;
             else
               if (current==PRIO_USER)
-              { 
+              {
                 if (!(pass=getpwnam( argv[ind])))
                 {
                   I=strtol(argv[ind], &p, 10);
-                  if (((I==LONG_MAX || I==LONG_MIN)&&errno) || *p) 
+                  if (((I==LONG_MAX || I==LONG_MIN)&&errno) || *p)
                   {
                     fprintf(stderr, "No user '%s'\n", argv[ind] );
                   }
                   uid[nuser]=(unsigned)I;
-                }  
+                }
                 else
                 {
                   uid[nuser]=pass->pw_uid;
@@ -274,7 +274,7 @@ main( argc, argv )
   if((dp = opendir("/proc")) == NULL)
     return(errno);
   fd = -1;
-  while((dirp = readdir(dp))) 
+  while((dirp = readdir(dp)))
   {
 
     if(fd != -1)
@@ -286,14 +286,14 @@ main( argc, argv )
       continue;
     if(!look4user(pinfo.uid)  &&  !look4pid(pinfo.pid, pinfo.pgrp))
       continue;
-    for(pstatus.tid = 1 ; ; ++pstatus.tid) 
+    for(pstatus.tid = 1 ; ; ++pstatus.tid)
     {
       if(devctl(fd, DCMD_PROC_TIDSTATUS, &pstatus, sizeof(pstatus), 0) != EOK)
         break;
       param.sched_priority = pstatus.priority - nice_value;
       if (param.sched_priority<PRIO_MIN) param.sched_priority=PRIO_MIN;
       if (param.sched_priority>PRIO_MAX) param.sched_priority=PRIO_MAX;
-      if(SchedSet(pstatus.pid, pstatus.tid, SCHED_NOCHANGE, &param) == -1) 
+      if(SchedSet(pstatus.pid, pstatus.tid, SCHED_NOCHANGE, &param) == -1)
       {
         fprintf(stderr, "SchedSet on pid.tid %d.%d: ", pstatus.pid, pstatus.tid);
         perror( "" );

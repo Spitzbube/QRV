@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -103,7 +103,7 @@ int _select_event(int nfds, fd_set *readfds, fd_set *writefds,
 		if(writefds && FD_ISSET(fd, writefds)) {
 			msgi.flags |= _NOTIFY_COND_OUTPUT;
 		}
-		
+
 		if(exceptfds && FD_ISSET(fd, exceptfds)) {
 			msgi.flags |= _NOTIFY_COND_OBAND;
 			FD_CLR(fd, exceptfds);
@@ -159,18 +159,18 @@ int _select_event(int nfds, fd_set *readfds, fd_set *writefds,
 			}
 		}
 	}
-	
+
 	/* we got 1 or more poll success' */
 	if(pollsuccess) {
 		return pollsuccess;
 	}
-	
+
 	/*
 	 * the timeout is handled in a very hokey way.  Its should be applied
 	 * to the whole routine, but its only applied to the blocking receive
 	 * below.  If the send's above took a measureable amount of
 	 * time, then the timeout could be violated by a significant amount.
-	 * receiving signals with old serial nums also causes a short timeout 
+	 * receiving signals with old serial nums also causes a short timeout
 	 */
 	zero.tv_sec = zero.tv_nsec = 0;
 	while((status = eventwait(ts, &value, arg)) != -1) {
@@ -180,12 +180,12 @@ int _select_event(int nfds, fd_set *readfds, fd_set *writefds,
 				FD_SET(fd, readfds);
 				pollsuccess++;
 			}
-			
+
 			if(value.sival_int & _NOTIFY_COND_OUTPUT) {
 				FD_SET(fd, writefds);
 				pollsuccess++;
 			}
-			
+
 			if(value.sival_int & _NOTIFY_COND_OBAND) {
 				FD_SET(fd, exceptfds);
 				pollsuccess++;

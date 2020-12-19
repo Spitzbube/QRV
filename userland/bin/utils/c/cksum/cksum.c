@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -49,7 +49,7 @@ Note:
   which defines a default option used for cksum. e.g.
 
   To set the default behaviour to be QNX 4.1,
-  
+
   export CKSUM=-o4.1
 
   In the case where multiple options are named, there should be no
@@ -58,7 +58,7 @@ Note:
   Command line options override the behaviour dictated by CKSUM.
 #endif
 
-#ifdef __USAGENTO 
+#ifdef __USAGENTO
 %C	- display file checksums and block counts (POSIX)
 
 %C	[-q | -v] [-o algorithm] [file]...
@@ -156,7 +156,7 @@ static	const unsigned long crctab[] = {
 };
 
 /* table from 1003.2 draft 11 algorithm */
-static const unsigned long crctab2[] = { 
+static const unsigned long crctab2[] = {
 	0x7fffffff,
 	0x77073096,	0xee0e612c,	0x990951ba,	0x076dc419,	0x706af48f,
 	0xe963a535,	0x9e6495a3,	0x0edb8832,	0x79dcb8a4,	0xe0d5e91e,
@@ -212,7 +212,7 @@ static const unsigned long crctab2[] = {
 };
 
 /* corrected table from 1003.2 draft 11 algorithm */
-static const unsigned long crctab2b[] = { 
+static const unsigned long crctab2b[] = {
 	0x7fffffff,
 	0x77073096,	0xee0e612c,	0x990951ba,	0x076dc419,	0x706af48f,
 	0xe963a535,	0x9e6495a3,	0x0edb8832,	0x79dcb8a4,	0xe0d5e91e,
@@ -268,7 +268,7 @@ static const unsigned long crctab2b[] = {
 };
 
 /* table from 1003.2 draft 12 algorithm */
-static const unsigned long crctab3[] = { 
+static const unsigned long crctab3[] = {
 	0x0,
 	0x77073096,	0xee0e612c,	0x990951ba,	0x076dc419,	0x706af48f,
 	0xe963a535,	0x9e6495a3,	0x0edb8832,	0x79dcb8a4,	0xe0d5e91e,
@@ -409,7 +409,7 @@ int main(int argc, char **argv)
 	status |= process_args(argc,argv);
 
 	if (status!=EXIT_SUCCESS) exit(status);
-	
+
 	prg_name = argv[0];		/* Setup program name, in case of error.	*/
 
 	if (verbose) {
@@ -426,14 +426,14 @@ int main(int argc, char **argv)
 		else if (crcfn==memcrc3) {
 			if (crctab==crctab3)
 				fprintf(stdout,"QNX 'cksum -12' (1003.2 Draft 12)\n");
-   			else 
+   			else
 				fprintf(stdout,"QNX 'cksum'     (1003.2-1992 Standard)\n");
 		}
 
 		if (crcprintfn==print1 || crcprintfn==print2) {
-			fprintf(stdout,"%s %s %s\n","Checksum","Blocks","Filename");  
+			fprintf(stdout,"%s %s %s\n","Checksum","Blocks","Filename");
 		} else {
-			fprintf(stdout,"%-10s %10s %s\n","Checksum","Bytes","Filename");  
+			fprintf(stdout,"%-10s %10s %s\n","Checksum","Bytes","Filename");
 		}
 
 		fprintf(stdout,"------------------------------------------\n");
@@ -466,7 +466,7 @@ int main(int argc, char **argv)
 #define OPTIONS "qvo:"
 #endif
 
-int process_args( int argc, char **argv) 
+int process_args( int argc, char **argv)
 {
 	int c, draft12=0, status=EXIT_SUCCESS;
 
@@ -488,7 +488,7 @@ int process_args( int argc, char **argv)
 					  }
 	 				  break;
 
-			case '9': 
+			case '9':
 				if (draft12) {
 					fprintf(stderr,"cksum: unknown option -1\n");
 					draft12=0;
@@ -506,7 +506,7 @@ int process_args( int argc, char **argv)
 					draft12=0;
 					status = EXIT_FAILURE;
 				}
-				
+
 				if (!strcmp(optarg,"1")) {
 					crcfn=sum16;
 					crcendfn=NULL;
@@ -527,7 +527,7 @@ int process_args( int argc, char **argv)
 					crcendfn=NULL;
 					crctable=crctab2b;
 					crcprintfn=printstd;
-				} else if (!strcmp(optarg,"12")) {				
+				} else if (!strcmp(optarg,"12")) {
 					crcfn=memcrc3;
 					crcendfn=finish_crc3;
 					crctable=crctab3;
@@ -566,7 +566,7 @@ int process_args( int argc, char **argv)
 				verbose=0;
 				break;
 
-			default: 
+			default:
 				if (draft12) {
 					fprintf(stderr,"cksum: unknown option -1\n");
 					draft12=0;
@@ -578,7 +578,7 @@ int process_args( int argc, char **argv)
 	return status;
 }
 
-ssize_t do_read(int fildes, void *buf, size_t nbyte) 
+ssize_t do_read(int fildes, void *buf, size_t nbyte)
 {
 	void *writeptr;
 	size_t bytes_read;
@@ -592,7 +592,7 @@ ssize_t do_read(int fildes, void *buf, size_t nbyte)
 		rc=read(fildes, ((char*)buf)+bytes_read, nbyte-bytes_read);
 		if (rc==-1) return -1;
 		bytes_read+=rc;
-	}		
+	}
 
 	return bytes_read;
 }
@@ -692,7 +692,7 @@ unsigned long strncrcb(unsigned char *b,int n,unsigned long s)
 	while (n-- > 0) {
 		/* compute the index to the crc table */
 		i=(s>>24)^((unsigned int)(*b++));
-    
+
 		if (i==0) {
 			/* replace an intermediate zero with the next value from the sequence */
 			i=aux++;
@@ -758,4 +758,4 @@ unsigned long finish_crc3 (off_t tot_len, unsigned long s)
 }
 
 
-	
+

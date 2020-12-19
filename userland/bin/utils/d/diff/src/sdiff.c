@@ -344,7 +344,7 @@ expand_name (char *name, bool is_dir, char const *other_name)
 }
 
 
-
+
 struct line_filter {
   FILE *infile;
   char *bufpos;
@@ -443,7 +443,7 @@ lf_snarf (struct line_filter *lf, char *buffer, size_t bufsize)
     }
 }
 
-
+
 
 int
 main (int argc, char *argv[])
@@ -753,7 +753,7 @@ diffarg (char const *a)
   diffargv[diffargs++] = a;
 }
 
-
+
 
 
 /* Signal handling */
@@ -850,7 +850,7 @@ checksigs (void)
     }
 }
 
-
+
 static void
 give_help (void)
 {
@@ -1114,7 +1114,7 @@ edit (struct line_filter *left, char const *lname, lin lline, lin llen,
     }
 }
 
-
+
 
 /* Alternately reveal bursts of diff output and handle user commands.  */
 static bool
@@ -1203,7 +1203,7 @@ diraccess (char const *dir)
 static int
 temporary_file(void)
 {
-  // Create a temporary file. 
+  // Create a temporary file.
   unsigned int uRetVal;
   char const *tmpdir = getenv (TMPDIR_ENV);
   char const *dir;
@@ -1225,9 +1225,9 @@ temporary_file(void)
     dir = tmpdir;
 
   uRetVal = GetTempFileName (dir,	  // directory for tmp files
-			     fileprefix,  // temp file name prefix 
-			     0,		  // create unique name 
-			     buf);  // buffer for name 
+			     fileprefix,  // temp file name prefix
+			     0,		  // create unique name
+			     buf);  // buffer for name
   if (uRetVal == 0)
     {
       errno = GetLastError ();
@@ -1239,7 +1239,7 @@ temporary_file(void)
   tmpname = xmalloc (strlen (buf) + 1);
   strcpy (tmpname, buf);
   fd = _fileno (file);
-  return fd; 
+  return fd;
 }
 #else
 

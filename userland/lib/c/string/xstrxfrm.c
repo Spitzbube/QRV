@@ -192,7 +192,7 @@ size_t _CStrxfrm(char *sout, size_t size, Xfrm *ps,
 _STD_END
 
 /*
- * Copyright (c) 1994-2007 by P.J. Plauger.  ALL RIGHTS RESERVED. 
+ * Copyright (c) 1994-2007 by P.J. Plauger.  ALL RIGHTS RESERVED.
  * Consult your license regarding permissions and restrictions.
 V5.04:1296 */
 

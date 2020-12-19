@@ -541,7 +541,7 @@ static ELVBOOL chkrestrict(tag)
 			if ((int)strlen(tag->TAGADDR) <= i + 2)
 				continue;
 			for (scan = tag->TAGADDR + 1;
-			     scan[i] && 
+			     scan[i] &&
 				(elvalnum(scan[-1])
 					|| elvalnum(scan[i])
 					|| *scan != *value->value

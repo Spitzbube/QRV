@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -34,8 +34,8 @@ static int compare_field(linedesc *p1, int field1, linedesc *p2, int field2);
 		p1 <  p2 ->   <0
 		p1 >  p2 ->   >0
 	The field flags are checked for the various conditions (ie.
-	nocase, nospace, .....). 
-	If the flags are numeric, 
+	nocase, nospace, .....).
+	If the flags are numeric,
 static	compare_numeric(char *s1, char *s2, int lim1, int lim2)
 	is called.
 	If the flags are "backwards" (special for rob oakley)
@@ -53,7 +53,7 @@ int file_ordered(fdesc *fd)
 
 write_file(FILE *f, linedesc **lines, int nentries)
 	writes a set of lines out to file f.
-	checks the external variable (unique_keys) to "squeeze" identical 
+	checks the external variable (unique_keys) to "squeeze" identical
 	lines.
 
 */
@@ -146,7 +146,7 @@ int	t0,t1;
 int	flags;
 
 	flags = get_flags(f1) | get_flags(f2);
-#ifdef DEBUGGING	
+#ifdef DEBUGGING
 if (debugging) {
 	fprintf(debugging,"comparing fields: [%s] to [%s]\n",STR_FLD(p1,f1),STR_FLD(p2,f2));
 	fprintf(debugging,"lengths = [%d],[%d]\n",STR_FLDLEN(p1,f1),STR_FLDLEN(p2,f2));
@@ -173,7 +173,7 @@ if (debugging) {
 				continue;
 			}
 			if (ispunct(*s2)) {
-				s2++; 
+				s2++;
 				tlen--;
 				continue;
 			}
@@ -224,7 +224,7 @@ if (debugging) {
 
 
 
-/*	
+/*
 	returns a 0 or 1 based on whether the lines should be swapped ,
 	early out for speed.
 */
@@ -277,18 +277,18 @@ int	r;
 		fprintf(stderr,"no room on stack for merge\n");
 		exit(2);
 	}
-	
+
 	for (i=0; i < nfiles; i++) {
 		linetab[i] = INPUT_LINE(filelist[i]);
 	}
 
 	while (1) {
-		for (i=0; i < nfiles && linetab[i] == NULL; i++) 	
+		for (i=0; i < nfiles && linetab[i] == NULL; i++)
 			;
 		if (i == nfiles)	/* all files exhausted */
 			break;
 		t = i;
-		while (++i < nfiles) {			
+		while (++i < nfiles) {
 			if (linetab[i] == NULL)
 				continue;
 			if ((r=fcompare(&linetab[t],&linetab[i])) == 0) {
@@ -301,7 +301,7 @@ int	r;
 					line_free(linetab[i]);
 					linetab[i] = temp;
 					i--;
-				} 
+				}
 			} else if (r > 0) {
 				t = i;
 			}
@@ -324,7 +324,7 @@ int
 file_ordered(fdesc *fd)
 {
 linedesc	*l[2];
-	
+
 	if ((l[0] = INPUT_LINE(fd)) == NULL) {
 		return 1;	/* empty files are ordered? */
 	}
@@ -364,7 +364,7 @@ int	i;
 				line_free(lines[i]);
 				lines[i] = NULL;
 				continue;
-			} 
+			}
 			fwrite(STR_BEGIN(lines[i]),1,lines[i]->len,f);
 			fprintf(f,"\n");
 			line_free(lines[mark]);
@@ -403,7 +403,7 @@ int	j = 0;
 
 	for (i=0; i < lim && isspace(s[i]); i++)
 		;
-	
+
 	while (i < lim && j < 25) {
 		if (isdigit(s[i]) || isspace(s[i]) || s[i] == 'x' || s[i] == 'X') {
          	r[j++] = s[i++];
@@ -446,14 +446,14 @@ void	*temp;
 	for (gap=n/2; gap > 0; gap /= 2) {
 		for (i=gap; i < n; i++) {
 			for (j=i-gap; j >= 0; j -= gap) {
-				if ((*f)(&lines[j],&lines[j+gap]) > 0) 
+				if ((*f)(&lines[j],&lines[j+gap]) > 0)
 					break;
 				memcpy(temp,lines[j], siz);
 				memcpy(lines[j],lines[j+gap],siz);
 				memcpy(lines[j+gap],temp,siz);
 			}
 		}
-	} 
+	}
 }
 
 #endif

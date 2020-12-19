@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -46,22 +46,22 @@ Options:
 	Stage 1 of the warnings/errors cleanup.
 
 	Revision 1.7  2005/06/03 01:38:01  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.6  2003/08/29 21:04:17  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.5  1993/08/04 20:37:13  steve
 	Added a (non-standard) option -f to print strings which are NOT terminated
 	by null or newline.
-	
+
  * Revision 1.4  1993/07/14  20:46:02  root
  * *** empty log message ***
  *
@@ -79,10 +79,10 @@ Options:
  * Revision 1.1  1991/08/27  21:39:02  brianc
  * Initial revision
  *
-	
+
 	Revision 1.1 Wed Mar 14 13:29:22 1990 glen
 	 *** QRCS - Initial Revision ***
-	
+
 ---------------------------------------------------------------------*/
 
 #include <stdio.h>
@@ -95,9 +95,9 @@ Options:
 
 #ifdef __GNUC__
 static char __attribute__ ((unused)) rcsid[] = "$Id: strings.c 153052 2008-08-13 01:17:50Z coreos $";
-#else 
+#else
 static char rcsid[] = "$Id: strings.c 153052 2008-08-13 01:17:50Z coreos $";
-#endif 
+#endif
 
 #define	STRSIZE		10240
 #define TXT(s)				s

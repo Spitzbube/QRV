@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -46,14 +46,14 @@ Options:
 
 	Revision 1.3  2004/04/17 17:00:11  thomasf
 	Clean up language.
-	
+
 	Revision 1.2  2003/09/02 16:29:45  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.1  1998/10/22 03:13:28  dtdodge
-	
+
 	Initial cvs checkin
-	
+
 	Revision 1.8  1996/09/17 14:47:39  steve
 	got rid of silly header files
 
@@ -79,7 +79,7 @@ Options:
  * Revision 1.1  1991/09/04  01:30:21  brianc
  * Initial revision
  *
-	
+
 ---------------------------------------------------------------------*/
 
 
@@ -115,23 +115,23 @@ char *argv[];
 	int				errflg = 0;
 	char            *p;
 
-	while((opt = getopt(argc,argv,"cdf:s:u0123456789")) != -1) {		
+	while((opt = getopt(argc,argv,"cdf:s:u0123456789")) != -1) {
 
 		reprocess:
 
-		switch(opt)	{			
+		switch(opt)	{
 			case 'c':	cflag = 1;					break;
 			case 'd':	dflag = 1;					break;
 			case 'u':	uflag = 1;					break;
 
-			case 'f':	fval = (int) strtoul(optarg,&p,0); 
+			case 'f':	fval = (int) strtoul(optarg,&p,0);
 						if (*p) {
 							fprintf(stderr,"%s: invalid number (-f %s)\n",argv[0],optarg);
 							errflg++;
 						}
 						break;
 
-			case 's':	sval = (int) strtoul(optarg,&p,0); 
+			case 's':	sval = (int) strtoul(optarg,&p,0);
 						if (*p) {
 							fprintf(stderr,"%s: invalid number (-s %s)\n",argv[0],optarg);
 							errflg++;
@@ -146,7 +146,7 @@ char *argv[];
 						}
 						errflg++;
 						break;
-							
+
 		}
 	}
 
@@ -183,7 +183,7 @@ char *argv[];
 	if (optind < argc) {		/* user specd at least an input_file */
 		if (argv[optind][0]!='-' || argv[optind][1]) {
 			fname_in = argv[optind];
-			if ((fp_in = fopen(fname_in,"r")) == 0) {			
+			if ((fp_in = fopen(fname_in,"r")) == 0) {
 				fprintf(stderr,"uniq: unable to open input_file: %s\n",fname_in);
 				exit(EXIT_FAILURE);
 			}
@@ -192,13 +192,13 @@ char *argv[];
 		if (++optind < argc) {	/* user specd an output_file */
 			if (argv[optind][0]!='-' || argv[optind][1]) {
 				fname_out = argv[optind];
-				if (strcmp(fname_in,fname_out) == 0) {				
+				if (strcmp(fname_in,fname_out) == 0) {
 					fprintf(stderr,
 						"uniq: input_file & output_file must be different\n");
 					exit(EXIT_FAILURE);
 				}
 
-				if ((fp_out = fopen(fname_out,"w")) == 0) {				
+				if ((fp_out = fopen(fname_out,"w")) == 0) {
 					fprintf(stderr,
 						"uniq: unable to open output_file: %s\n",fname_out);
 					exit(EXIT_FAILURE);
@@ -206,7 +206,7 @@ char *argv[];
 			}
 
 			/* make sure no garbage at end */
-			if (++optind != argc)	{				
+			if (++optind != argc)	{
 				fprintf(stderr,	"uniq: bad argument: %s\n",argv[optind]);
 				exit(EXIT_FAILURE);
 			}
@@ -378,10 +378,10 @@ int lines_equal(char *p_line1, char *p_line2)
 void
 print_line(char *line1)
 {
-	/* dflag means we don't print lines that *aren't* repeated */		
+	/* dflag means we don't print lines that *aren't* repeated */
 	if (dflag && (rep_count == 1)) return;
 
-	/* uflag means we don't print lines that *are* repeated */		
+	/* uflag means we don't print lines that *are* repeated */
 	if (uflag && (rep_count > 1)) return;
 
 	if (cflag)	fprintf(fp_out,"%4ld %s",rep_count,line1);
@@ -417,7 +417,7 @@ main(int argc,char **argv)
 
 	/*
 	 *	we will swap line1 & line2 as required such that:
-	 *		line1 will always point to the previous line read in, and 
+	 *		line1 will always point to the previous line read in, and
 	 *		line2 will always point to the line just read from the file
 	 */
 	while (fgets(line2,LINE_MAX,fp_in)) {
@@ -441,7 +441,7 @@ main(int argc,char **argv)
 
 	/* have to flush line1 */
 	print_line(line1);
-	
+
 	return(EXIT_SUCCESS);
 
 } /* main */

@@ -85,7 +85,7 @@ extern flagT no_default_output;
 /* Do we need to be pedantically POSIX compliant? */
 extern flagT POSIXLY_CORRECT;
 
-
+
 /* Sed operates a line at a time. */
 struct line {
   char *text;		/* Pointer to line allocated by malloc. */
@@ -177,7 +177,7 @@ static struct line buffer;
 static struct append_queue *append_head = NULL;
 static struct append_queue *append_tail = NULL;
 
-
+
 /* Apply the compiled script to all the named files. */
 countT
 process_files(the_program, argv)
@@ -1050,7 +1050,7 @@ output_line(text, length, nl, fp)
     ck_fflush(fp);
 }
 
-
+
 /* initialize a "struct line" buffer */
 static void
 line_init(buf, initial_size)
@@ -1109,7 +1109,7 @@ line_append(from, to)
 }
 
 
-
+
 static struct append_queue *
 next_append_slot()
 {

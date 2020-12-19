@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -84,7 +84,7 @@ struct ed_data {
 							/* ALL commands should try and operate	*/
 							/* only within laddr1 and laddr2 if they*/
 							/* are specified						*/
-	
+
 	int curln;				/* Current line number					*/
 	int curin;
 	int curcol;
@@ -96,16 +96,16 @@ struct ed_data {
 	int marker2;			/* Second tagged line					*/
 	int left_margin;		/* Margin column numbers				*/
 	int right_margin;
-	
+
 	int screen_row;			/* Line number of top of screen			*/
 	int screen_col;			/* Column number of left edge of screen	*/
 	char cursor_row;		/* Relative (0 -> 22) and				*/
 	char cursor_col;		/* (0 -> 79) co-ordinates of cursor		*/
 	char cmd_cursor_col;
-	
+
 	char cc_reg;			/* Condition code register				*/
 	dev_type;				/* Device type (monochrome or colour	*/
-	
+
 	char opt_a;				/* Editor options						*/
 	char opt_b;
 	char state;
@@ -119,6 +119,6 @@ struct ed_data {
 	char opt_s;
 	char opt_t;
 	char opt_w;
-	
+
 	char curfile[FNAME_SIZE + 1];	/* Current filename				*/
-	} ;							
+	} ;

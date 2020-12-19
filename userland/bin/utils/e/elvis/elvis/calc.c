@@ -572,7 +572,7 @@ _CHAR_ calcsubscript(array, sub, max, chunks)
 					&& elvspace(*cp)
 					&& lt1 == end)
 				{
-					
+
 					break;
 				}
 			}
@@ -609,7 +609,7 @@ _CHAR_ calcsubscript(array, sub, max, chunks)
 	return delim;
 }
 # endif /* FEATURE_ARRAY */
-	
+
 /* This function copies characters up to the next non-alphanumeric character,
  * nul-terminates the copy, and returns the number of characters copied.
  */
@@ -1461,7 +1461,7 @@ static ELVBOOL func(name, arg)
 			if (!end.buffer
 			 || !calcnumber(tmp)
 			 || marksetline(&end, atol(tochar8(tmp))) == NULL)
-			
+
 				goto BadArgs;
 			begin = markdup(&end);
 		}
@@ -2194,7 +2194,7 @@ CHAR *calculate(expr, arg, rule)
 	ops = 0;
 	opstack[ops].first = build = result;
 	*build = '\0';
-	
+
 
 	/* process the expression from left to right... */
 	next_regexp = ElvFalse;
@@ -2428,7 +2428,7 @@ CHAR *calculate(expr, arg, rule)
 			opstack[ops].prec = base + opinfo[i].prec;
 			opstack[++ops].first = ++build;
 			*build = '\0';
-			
+
 			/* increment the precedence base */
 			parstack[base / 20] = opstack[ops].first;
 			base += 20;
@@ -2455,7 +2455,7 @@ CHAR *calculate(expr, arg, rule)
 				expr--;
 			}
 			/* and fall through (for the '.' operator only) */
-			
+
 		  case ']':
 			if (asmsg && base < 20)
 			{
@@ -2465,7 +2465,7 @@ CHAR *calculate(expr, arg, rule)
 			}
 			/* else fall through... */
 #endif /* FEATURE_ARRAY */
-	
+
 		  case ')':
 			/* detect mismatched ')' */
 			if (base == 0)
@@ -2627,7 +2627,7 @@ CHAR *calculate(expr, arg, rule)
 					if (*expr == '\'')
 						build[i++] = *expr++;
 					build[i] = '\0';
-							
+
 					/* convert to number */
 					if (calcbase10(build))
 					{

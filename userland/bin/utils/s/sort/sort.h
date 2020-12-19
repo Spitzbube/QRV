@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -61,7 +61,7 @@
 
 
 /*-
- Important: 
+ Important:
 	the following defines are dependant upon the order of
 	these flags.  You may reorder the string, only if you
 	make the corresponding changes to the bitmap masks.
@@ -117,7 +117,7 @@ struct fieldspec {
 	for a given struct sort_line *p;
 		p->len :
 			the number of bytes in the string.
-	
+
 		p->data.str[p->str_start] :
 			is the first char in the string.
 
@@ -126,7 +126,7 @@ struct fieldspec {
 
 		p->data.str[p->str_start+p->data.stab[fieldno*2+1]] :
 			is the last char of the string in field 'fieldno'
-		
+
 */
 
 typedef	struct sort_line linedesc;
@@ -206,7 +206,7 @@ extern int file_ordered(fdesc *);
 extern int write_file(FILE *, linedesc **, int);
 
 /*	files.c			*/
-extern int ungetline(fdesc *,linedesc *); 
+extern int ungetline(fdesc *,linedesc *);
 extern fdesc *open_fdesc(FILE *, int );
 extern int close_fdesc(fdesc *);
 
@@ -225,7 +225,7 @@ extern int old_field(char *spec0, char *spec1);
 extern int compile_fields(char *, int *);
 extern int global_field();
 
- 
+
 extern int unique_keys;
 extern FILE *verbose;
 extern FILE *debugging;

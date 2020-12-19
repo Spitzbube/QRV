@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -41,7 +41,7 @@
 		The first set of strings may be exchanged using 'set_escape_string'
 		function.  If they are set to NULL, no escape character mapping will
 		be attempted (although the octal & hex mapping are maintained).
-		The above string is scanned first, before looking for octal or hex	
+		The above string is scanned first, before looking for octal or hex
 		strings, so putting [xX0-9] in the key string should be used with
 		caution, as it will superseed scanning for the numeric sequences.
 
@@ -112,7 +112,7 @@ char	*p;
 		return -1;
 	return esc_rpl[p-esc_key];
 }
-	
+
 
 #ifdef	__STDC__
 int stresc(char *s, char **update)
@@ -123,7 +123,7 @@ char	**update;
 #endif
 {
 int		x;
-int		i = 0;	
+int		i = 0;
 int		c;
 int		ival;
 
@@ -134,12 +134,12 @@ int		ival;
 	}
 	/*	normal character, no escape. */
 	if (c != '\\') {
-		if (update)	
+		if (update)
 			*update = s;
 		return c;
 	}
 	if ((ival=rplexc(c=*s++)) > 0) {
-		if (update)		
+		if (update)
 			*update = s;
 		return ival;
 	}
@@ -149,8 +149,8 @@ int		ival;
 		ival = 0;
 		for (i=0; i < 2 && isxdigit(c=s[i]); i++)
 			ival = add_hex(ival,c <= '9' ? c-'0' : toupper(c)-'A'+10);
-		if (update)	*update = s+i;	
-		return i == 0 ? x : ival;		
+		if (update)	*update = s+i;
+		return i == 0 ? x : ival;
 	}
 	if (isdigit(c) && c < '8'){
 		s--;

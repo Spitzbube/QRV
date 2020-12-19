@@ -124,7 +124,7 @@ static long crc32val;
 long
 compute_crc_32( n, buf )
 	int		n;
-	char	*buf; 
+	char	*buf;
 	{
 	while (n--)
 		UPDCRC32( crc32val, *buf++ );
@@ -136,7 +136,7 @@ compute_crc_32( n, buf )
 long
 compute_crc_32( n, buf )
 	int		n;
-	char	*buf; 
+	char	*buf;
 	{
 #asm	{
 	push	bx

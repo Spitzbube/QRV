@@ -298,7 +298,7 @@ CHAR *regsub(re, newp, doit)
 		/* replace the old text with the new text in the buffer */
 		bufreplace(marktmp(cpy, re->buffer, re->startp[0]),
 			marktmp(tmp, re->buffer, re->endp[0]), inst, len);
-	
+
 		/* Adjust the offset of the end of the whole expression
 		 * to compensate for the change in the length of text.
 		 * Also, if this regexp could conceivably match a

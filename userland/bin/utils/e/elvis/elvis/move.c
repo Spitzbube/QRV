@@ -168,9 +168,9 @@ RESULT m_front(win, vinf)
  * The number is given in the "count" field; if no number is given, then either
  * move to the last line, show buffer statistics, or move to matching bracket,
  * respectively.
- * 
+ *
  * Support for #if/#else/#endif derived from Antony Bowesman's contributed code.
- *  When a # is found the next two characters are matched.  If an 'if' is 
+ *  When a # is found the next two characters are matched.  If an 'if' is
  *  found then the search is set forwards.  If an 'en' is found the search
  *  goes backwards.  if an 'el' (For else or elif) the search direction
  *  proceeds in the opposite direction of the last direction used in else
@@ -889,7 +889,7 @@ RESULT m_word(win, vinf)
 	}
 	else if (whitespace && !vinf->oper && scanchar(win->state->cursor) == '\n')
 	{
-		/* tried a plain old "w" command at end of file -- 
+		/* tried a plain old "w" command at end of file --
 		 * move cursor back to starting point and fail.
 		 */
 		marksetoffset(win->state->cursor, span);
@@ -1435,7 +1435,7 @@ RESULT m_fsection(win, vinf)
 	 * then move the cursor to the end of the buffer.  Otherwise a NULL
 	 * cp indicates an error.  A non-NULL cp should cause the cursor to be
 	 * left at the "offset" value.
-	 */ 
+	 */
 
 	if (!cp && vinf->count == 1
 		&& markoffset(win->state->cursor) < o_bufchars(buf) - 2)
@@ -1589,7 +1589,7 @@ RESULT m_z(win, vinf)
 	  case 'L':
 		/* The current line should appear at the bottom of the screen.
 		 * To do this, we'll set the top back a whole screenload's
-		 * number of lines before the cursor line, and the bottom 
+		 * number of lines before the cursor line, and the bottom
 		 * to some point after the current line.  When the window is
 		 * redrawn, the drawing logic will start drawing from the
 		 * computed top, and then scroll the window if necessary to

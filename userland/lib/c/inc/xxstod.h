@@ -26,7 +26,7 @@ FTYPE _Stodx(const CTYPE *s, CTYPE **endptr, long pten, int *perr)
 		if (nlo == 0)
 			x = FLIT(0.0);
 		else
-#ifdef __QNX__ 
+#ifdef __QNX__
 			/* PR44053 - make sure we do the rounding correctly in all cases.
 			 *   the original Dinkum code does all the intermediate calculations
 			 *   with positive numbers, and then switches the sign at the end if
@@ -63,16 +63,16 @@ FTYPE _Stodx(const CTYPE *s, CTYPE **endptr, long pten, int *perr)
 		FNAME(Dscale)(&x, lo[0]);
 		x = FNAME(Dtentox)(x, pten, perr);
 		}
-        
+
 	else if (code == FL_INF)
         {
 #ifdef __QNX__ /* PR44053 */
         x = ( neg ? -FCONST(Inf) : FCONST(Inf) );
 #else
         x = FCONST(Inf);
-#endif        
+#endif
         }
-        
+
 	else if (code == FL_NAN)
         {
 #ifdef __QNX__ /* PR44053 */
@@ -81,10 +81,10 @@ FTYPE _Stodx(const CTYPE *s, CTYPE **endptr, long pten, int *perr)
         x = FCONST(Nan);
 #endif
         }
-             
+
 	else
 		x = 0;	/* code == FL_ERR */
-        
+
 #ifdef __QNX__ /* PR44053 */
 	if (neg && x == FLIT(0.0)) {
 		x = -x;

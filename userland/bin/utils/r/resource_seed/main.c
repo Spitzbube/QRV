@@ -22,7 +22,7 @@
 /*
  * This program creates a DMA channel resource database manager.  This
  * allows drivers to request and reserve DMA channels. This program should
- * be run when the system boots before loading any drivers that need DMA 
+ * be run when the system boots before loading any drivers that need DMA
  * (e.g. audio drivers).
  */
 
@@ -140,7 +140,7 @@ main (int argc, char *argv[])
 
 	/* Now check board we are on */
 	confstr (_CS_MACHINE, buf, BUFF_SIZE);
-	if (strcmp (buf, "EDOSK7780") == 0 
+	if (strcmp (buf, "EDOSK7780") == 0
 		|| strcmp (buf, "SDK_7785") == 0
 		|| strcmp (buf, "Wheat") == 0)
 	{

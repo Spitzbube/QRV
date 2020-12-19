@@ -1,14 +1,14 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
+ *
  * You must obtain a written license from and pay applicable license fees to
  * QNX Software Systems before you may reproduce, modify or distribute this
  * software, or any work that includes all or part of this software.   Free
  * development licenses are available for evaluation and non-commercial
  * purposes.  For more information visit http://licensing.qnx.com or email
  * licensing@qnx.com.
- *  
+ *
  * This file may contain contributions from others.  Please review this entire
  * file for other proprietary rights or license notices, as well as the QNX
  * Development Suite License Guide at http://licensing.qnx.com/license-guide/
@@ -31,7 +31,7 @@
  *  checkpointing at the conclusion of each operation for a restart).
  *
  *  John Garvey, QNX Software Systems Ltd, Nov 2003.
- * 
+ *
  *  Sven Behnsen, Harman Becker, Dec 2003.
  *  added:
  *  - Copy single files and directory trees
@@ -39,7 +39,7 @@
  *  - Checkpointing
  */
 
- 
+
 #include <ctype.h>
 #include <dlfcn.h>
 #include <errno.h>
@@ -116,7 +116,7 @@ typedef struct {
 } buffer_t;
 
 // Format of checkpoint file
-struct qkcp_checkpoint 
+struct qkcp_checkpoint
 {
 	char offset[24];
 	char srcfile[PATH_MAX];
@@ -128,7 +128,7 @@ struct qkcp_checkpoint
 
 // Exchange data between 'READ' thread and 'WRITE' thread
 struct thread_data
-{	
+{
 	int src;
 	blksize_t ssz;
 	int dst;
@@ -172,7 +172,7 @@ char         	copyFile[PATH_MAX];
 char         	copyDstFile[PATH_MAX];
 double       	cpu_freq;
 
-// Progress information 
+// Progress information
 uint64_t     	job_size;            // job size in 1k
 uint64_t     	job_pos;             // job position in 1k
 uint32_t     	job_files;           // job files
@@ -250,7 +250,7 @@ static void set_write_fail_code(int error)
 		qkcp_fail_code = QK_FAIL_FSYSCORRUPT;
 	else if(error == ENOSPC)
 		qkcp_fail_code = QK_FAIL_NOSPACE;
-	else 
+	else
 		qkcp_fail_code = QK_FAIL_WRITING;
 
 }
@@ -267,7 +267,7 @@ extern char	*__progname;
 	fprintf(stderr, "\n");
 	if(ckfile_fd != -1) //close checkpoint file
 		close(ckfile_fd);
-	if(shm_info != NULL) 
+	if(shm_info != NULL)
 		shm_info->status = qkcp_fail_code;
 	exit(qkcp_fail_code);
 }
@@ -355,19 +355,19 @@ int					error;
 }
 
 // The function copysize() will check the disk space by
-// ftruncate() and reserve the disk space for destination 
+// ftruncate() and reserve the disk space for destination
 // file. So it is impossible that the disk space is not
 // enough during writing. Thus, we don't need to call
 // this function in copydata().
 static void check_dspace(char *p)
 {
 	struct statvfs svfs;
-   
+
 	if ((fsys_target.destination_fd == -1 || fstatvfs(fsys_target.destination_fd, &svfs) == -1) && statvfs(p, &svfs)) {
 		perror("statvfs()");
 	} else {
 		if (svfs.f_bfree/2 < 20000) {
-			
+
 			qkcp_fail_code = QK_FAIL_NOSPACE;
 			fprintf(stderr, "No enough disk space!\n");
 		}
@@ -384,7 +384,7 @@ static int shmem_init(void)
 		return (0);
 	}
 
-	snprintf(sfile, 128, "%s%s", (shname[0] != '/') ? "/" : "", shname); 
+	snprintf(sfile, 128, "%s%s", (shname[0] != '/') ? "/" : "", shname);
 
 	fd = shm_open(sfile, O_RDWR, 0);
 	if (fd == -1) {
@@ -399,7 +399,7 @@ static int shmem_init(void)
 
 	shm_info = mmap(0, sizeof(*shm_info), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 	close(fd);
-	
+
 	if (shm_info == MAP_FAILED) {
 		perror("shmem - mmap");
 		shm_info = NULL;
@@ -421,7 +421,7 @@ static void shmem_update()
 }
 
 static void progress_update(void)
-{	
+{
 	static int lphase = 0, sc = 0;
 
 	if (job_size == 0) {
@@ -434,7 +434,7 @@ static void progress_update(void)
 	if ((sc++ > PER) || (job_phase != lphase)) {
 		sc = 0;
 		lphase = job_phase;
-		VERBOSE(1, "qkcp - Phase %d %lld of %lld MB, %4d of %4d files, %lld s. left", 
+		VERBOSE(1, "qkcp - Phase %d %lld of %lld MB, %4d of %4d files, %lld s. left",
 			job_phase, job_pos/1024, job_size/1024, job_pos_files, job_files, t_remaining);
 	}
 
@@ -482,7 +482,7 @@ static __inline__ int copymetadata(int fd, const struct stat *meta)
 	}
 
 	VERBOSE(4, "copymetadata fd=%d status=%d", fd, status);
-  
+
 	return((status == -1) ? errno : EOK);
 }
 
@@ -501,7 +501,7 @@ static __inline__ int copysize(int fd, off_t oldsz, off_t newsz)
 			perror("copysize - ftruncate");
 			return(errno);
 		}
-		
+
 		if (fsys_target.sync_after_grow && fsync(fd)) {
 			perror("copysize - fsync");
 		}
@@ -515,14 +515,14 @@ static int unmake(char *path)
 {
 	int	fd;
 
-	fd = _connect( _NTO_SIDE_CHANNEL, path, S_IFLNK, 
-					O_ACCMODE | fsys_target.sync_after_create, SH_DENYNO, 
+	fd = _connect( _NTO_SIDE_CHANNEL, path, S_IFLNK,
+					O_ACCMODE | fsys_target.sync_after_create, SH_DENYNO,
 					_IO_CONNECT_UNLINK, !0, 0, _FTYPE_ANY,
 					_IO_CONNECT_EXTRA_NONE, 0, NULL, 0, NULL, NULL);
 	if (fd == -1) {
 		return(errno);
 	}
-	
+
 	ConnectDetach(fd);
 	return(EOK);
 }
@@ -539,36 +539,36 @@ static int makedir(char *dir, const struct stat *st)
 		return (EOK);
 	}
 
-	if ((fd = _connect( _NTO_SIDE_CHANNEL, dir, 
+	if ((fd = _connect( _NTO_SIDE_CHANNEL, dir,
 						S_IFDIR | (st->st_mode & ~S_IFMT),
-						O_ACCMODE | O_CREAT | fsys_target.sync_after_create, SH_DENYNO, 
-						_IO_CONNECT_MKNOD, !0, 0, _FTYPE_ANY, 
-						_IO_CONNECT_EXTRA_NONE, 0, NULL, 0,	
+						O_ACCMODE | O_CREAT | fsys_target.sync_after_create, SH_DENYNO,
+						_IO_CONNECT_MKNOD, !0, 0, _FTYPE_ANY,
+						_IO_CONNECT_EXTRA_NONE, 0, NULL, 0,
 						NULL, NULL)) != -1) {
 		ConnectDetach(fd);
 	} else if (errno != EEXIST) {
 		return(errno);
 	}
-	
+
 	msg.stat.type = _IO_STAT;
 	msg.stat.combine_len = sizeof(msg.stat);
 	msg.stat.zero = 0;
- 
-	fd = _connect(0, dir, st->st_mode, O_ACCMODE, SH_DENYNO, 
-				_IO_CONNECT_COMBINE, !0, 0, _FTYPE_ANY, 
-				_IO_CONNECT_EXTRA_NONE, sizeof(msg), 
+
+	fd = _connect(0, dir, st->st_mode, O_ACCMODE, SH_DENYNO,
+				_IO_CONNECT_COMBINE, !0, 0, _FTYPE_ANY,
+				_IO_CONNECT_EXTRA_NONE, sizeof(msg),
 				&msg, sizeof(struct stat), &actual, NULL);
 
 	VERBOSE(3, "makedir - fd=%d dir=%s", fd, dir);
- 
+
 	if (fd == -1)
 		return(errno);
-    
+
 	if (!S_ISDIR(actual.st_mode))
 		error = EEXIST;
 	else
 		error = copymetadata(fd, st);
-		
+
 	close(fd);
 	return(error);
 }
@@ -603,10 +603,10 @@ static int makefile(const char *file, const struct stat *st, struct stat *actual
 	msg.stat.type = _IO_STAT;
 	msg.stat.combine_len = sizeof(msg.stat);
 	msg.stat.zero = 0;
-	result = _connect( 0, file, S_IFREG | (st->st_mode & ~S_IFMT), 
-						O_WRONLY | O_CREAT | O_LARGEFILE | fsys_target.sync_after_create, SH_DENYNO, 
+	result = _connect( 0, file, S_IFREG | (st->st_mode & ~S_IFMT),
+						O_WRONLY | O_CREAT | O_LARGEFILE | fsys_target.sync_after_create, SH_DENYNO,
 						_IO_CONNECT_COMBINE, !0, _IO_FLAG_WR, _FTYPE_ANY,
-						_IO_CONNECT_EXTRA_NONE, sizeof(msg), 
+						_IO_CONNECT_EXTRA_NONE, sizeof(msg),
 						&msg, sizeof(struct stat), actual, NULL);
 
 	VERBOSE(3, "makefile - file=%s result=%d", file, result);
@@ -626,25 +626,25 @@ static int makelink(char *link, const char *from, buffer_t *buffer)
 
 	if ((n = readlink(from, buffer->vaddr, buffer->size)) == -1)
 		return(errno);
-		
+
 	((char *)buffer->vaddr)[n] = '\0';
-	fd = _connect( _NTO_SIDE_CHANNEL, link, S_IFLNK | S_IPERMS, 
+	fd = _connect( _NTO_SIDE_CHANNEL, link, S_IFLNK | S_IPERMS,
 					O_ACCMODE | O_CREAT | fsys_target.sync_after_create, SH_DENYNO, _IO_CONNECT_LINK,
-					!0, 0, _FTYPE_ANY, _IO_CONNECT_EXTRA_SYMLINK, n + 1, 
+					!0, 0, _FTYPE_ANY, _IO_CONNECT_EXTRA_SYMLINK, n + 1,
 					buffer->vaddr, 0, NULL, NULL);
 	if (fd == -1) {
 		if (errno != EEXIST) {
 			return(errno);
 		}
-		
+
 		if (lstat(link, &st) == -1 || !S_ISLNK(st.st_mode) || unmake(link) != EOK) {
 			return(EEXIST);
 		}
-			
-		if ((fd = _connect( _NTO_SIDE_CHANNEL, link, S_IFLNK | S_IPERMS, 
-							O_ACCMODE | O_CREAT | fsys_target.sync_after_create, SH_DENYNO, 
-							_IO_CONNECT_LINK, !0, 0, _FTYPE_ANY, 
-							_IO_CONNECT_EXTRA_SYMLINK, n + 1, 
+
+		if ((fd = _connect( _NTO_SIDE_CHANNEL, link, S_IFLNK | S_IPERMS,
+							O_ACCMODE | O_CREAT | fsys_target.sync_after_create, SH_DENYNO,
+							_IO_CONNECT_LINK, !0, 0, _FTYPE_ANY,
+							_IO_CONNECT_EXTRA_SYMLINK, n + 1,
 							buffer->vaddr, 0, NULL, NULL)) == -1) {
 			return(errno);
 		}
@@ -654,7 +654,7 @@ static int makelink(char *link, const char *from, buffer_t *buffer)
 }
 
 static void * start_read_thread(void * data)
-{	
+{
 	struct thread_data *tdata = (struct thread_data *)data;
 	int                 src = tdata->src;
 	blksize_t           ssz = tdata->ssz;
@@ -675,7 +675,7 @@ static void * start_read_thread(void * data)
 
 			sblks = min((remain + ssz - 1) / ssz, (b = buffer->size / ssz));
 			if(optW) {
-				WILDLY_VERBOSE("DIO read - remain %d, posn %d, ssz %d, sblks %d, b %d \n", 
+				WILDLY_VERBOSE("DIO read - remain %d, posn %d, ssz %d, sblks %d, b %d \n",
 						(int)remain, (int)posn, (int)ssz, sblks, b);
 			}
 
@@ -720,7 +720,7 @@ RETRY:
 
 			if(optW) {
 				WILDLY_VERBOSE("DIO read done - buffer %d size %d sync %d vaddr %p paddr %lld condition %d posn %d sblks %d ssz %d \n",
-					buffer->idx, buffer->size, buffer->sync, buffer->vaddr, 
+					buffer->idx, buffer->size, buffer->sync, buffer->vaddr,
 					buffer->paddr, buffer->condition, (int)buffer->posn, buffer->sblks, (int)ssz);
 			}
 
@@ -733,7 +733,7 @@ RETRY:
 				break;
 			}
 			pthread_mutex_unlock(&buffer->msync);
-			
+
 		} else {
 			perror("pthread_mutex_lock error!");
 			tdata->error = error;
@@ -750,7 +750,7 @@ RETRY:
 }
 
 static buffer_t * get_dio_buffer(void)
-{	
+{
 	static int last = 0;
 
 	if(dio_read_finished) {
@@ -818,7 +818,7 @@ static int copydata(int src, blksize_t ssz, int dst, blksize_t dsz, off_t nbytes
 			if((tdata.error == EOK) && (buffer->condition == 1)) {
 				if(optW) {
 					WILDLY_VERBOSE("DIO write - buffer %d size %d sync %d vaddr %p paddr %lld condition %d posn %d sblks %d ssz %d dblks %d dsz %d\n",
-						buffer->idx, buffer->size, buffer->sync, buffer->vaddr, buffer->paddr, 
+						buffer->idx, buffer->size, buffer->sync, buffer->vaddr, buffer->paddr,
 						buffer->condition, (int)buffer->posn, buffer->sblks, (int)ssz, dblks, (int)dsz);
 				}
 				b = remain < (dblks*dsz) ? remain : dblks*dsz;
@@ -862,15 +862,15 @@ RETRY:
 				}
 
 				copyFileCount += b;
-				
+
 				if (optV > 0) {
 					copyFileCountPrinted += b;
-					if ((copyFileCountPrinted > 1024*1024) || (copyFileCount >= nbytes)) {					    
+					if ((copyFileCountPrinted > 1024*1024) || (copyFileCount >= nbytes)) {
 						int kbsec;
 						copyFileCountPrinted = 0;
 						copyFileTimeNow = ClockCycles();
 						kbsec = (buffer->posn-offset)/(( copyFileTimeNow - copyFileTimeStart ) / cpu_freq);
-						fprintf (stdout, "%6.2f%% (%lld/%lld kbytes) %d kb/s           \r", 
+						fprintf (stdout, "%6.2f%% (%lld/%lld kbytes) %d kb/s           \r",
 							((float)copyFileCount/(float)nbytes)*100,
 							copyFileCount/1024, (uint64_t)nbytes/1024, kbsec);
 						fflush (stdout);
@@ -882,7 +882,7 @@ RETRY:
 					if ((copyCheckpointCount + copyCheckpointCountF) >= optc*1048576) {
 						copyCheckpointCount = copyCheckpointCountF = 0;
 						if(copyFileCount > nbytes)
-							copyFileCount = nbytes; 
+							copyFileCount = nbytes;
 						makeCheckpoint (optf, copyFile, copyFileCount, copyDstFile);
 					}
 				}
@@ -920,7 +920,7 @@ static int copy(const char *from, const struct stat *existing, char *to, off_t o
 		if((optv > 0) || (optV > 0)) {
 			fprintf(stdout, "qkcp: copy %s to %s\n", from, to);
 		}
-		
+
 		if ((src = open(from, O_RDONLY)) != -1) {
 			if ((dst = makefile(to, existing, &replace)) != -1) {
 				if ((error = copysize(dst, replace.st_size, existing->st_size)) == EOK) {
@@ -968,10 +968,10 @@ static int copy(const char *from, const struct stat *existing, char *to, off_t o
 			}
 			copyCheckpointCountF += 300000; // 1 file is "300k worth" for checkpoint purpose
 		}
-	} else {  
+	} else {
 		VERBOSE(1, "qkcp: recovery %s at %d", from, (int)offset);
-		if ((src = open(from, O_RDONLY)) != -1) {  
-			if ((dst = makefile(to, existing, &replace)) != -1) {   
+		if ((src = open(from, O_RDONLY)) != -1) {
+			if ((dst = makefile(to, existing, &replace)) != -1) {
 				strcpy (copyFile,from);
 				strcpy (copyDstFile, to);
 				copyFileCount = offset;
@@ -1053,13 +1053,13 @@ static int preparebuffer(int sz)
 	if (vaddr != MAP_FAILED) {
 		size_t config_len;
 		if (mem_offset64(vaddr, NOFD, bufsz, &paddr, &config_len) != -1) {
-			VERBOSE(1, "Memory needed 0x%x, available 0x%x, vaddr 0x%x, paddr 0x%llx ", 
+			VERBOSE(1, "Memory needed 0x%x, available 0x%x, vaddr 0x%x, paddr 0x%llx ",
 				sz<<1, config_len, (uint32_t)vaddr, paddr);
 			dio_buffer.vaddr = vaddr;
 			dio_buffer.paddr = paddr;
 			dio_buffer2.vaddr = vaddr + sz;
 			dio_buffer2.paddr = paddr + sz;
-			return (0); 
+			return (0);
 		}
 		perror("mem_offset64()");
 	} else {
@@ -1082,10 +1082,10 @@ static int setupbuffer(buffer_t *buffer, int sz, int idx)
 	if(buffer->vaddr != NULL) {
 		return (EOK);
 	}
-	
-	buffer->vaddr = mmap(NULL, buffer->size, 
+
+	buffer->vaddr = mmap(NULL, buffer->size,
 				PROT_READ | PROT_WRITE | PROT_NOCACHE,
-				MAP_ANON | MAP_PHYS | MAP_PRIVATE | MAP_NOX64K, 
+				MAP_ANON | MAP_PHYS | MAP_PRIVATE | MAP_NOX64K,
 				NOFD, 0);
 	if (buffer->vaddr != MAP_FAILED) {
 		if (mem_offset64(buffer->vaddr, NOFD, buffer->size, &buffer->paddr, NULL) != -1) {
@@ -1102,7 +1102,7 @@ static int walker_size(const char *name, const struct stat *st, int type, struct
 {
 	char  target[PATH_MAX];
 	off_t offset = 0;
-   
+
 	if (optr2 > 0) {
 		if (strcmp(recoveryFile, name) != 0) {
 			VERBOSE(4, "walker_size - recovery skipping %s", name);
@@ -1116,7 +1116,7 @@ static int walker_size(const char *name, const struct stat *st, int type, struct
 	}
 
 	switch (type) {
-	case FTW_F:	
+	case FTW_F:
 		snprintf(target, PATH_MAX, "%s%s", Destination, &name[Prefix]);
 		if (S_ISREG(st->st_mode) && XFUNC(x_dll_fname, st, target, PATH_MAX) == EOK) {
 			job_size += rnd1k(st->st_size - offset);
@@ -1128,13 +1128,13 @@ static int walker_size(const char *name, const struct stat *st, int type, struct
 			}
 		}
 		break;
-	case FTW_D:	
+	case FTW_D:
 		job_files++;
 		break;
 	default:
 		break;
 	}
-	
+
 	return(0);
 }
 
@@ -1199,7 +1199,7 @@ static int walker(const char *name, const struct stat *st, int type, struct FTW 
 }
 
 /*
- *  Signal handler thread - graceful stop 
+ *  Signal handler thread - graceful stop
  */
 static sigset_t signal_set;
 static pthread_mutex_t sig_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -1250,14 +1250,14 @@ int main(int argc, char *argv[])
 	int          buffersize = BUFFER_SIZE;
 	pthread_t    sig_thread;
 	char		*cp;
-   
+
 	setvbuf(stdout,NULL,_IOLBF,STDOUT_BUFLEN);
 	setvbuf(stderr,NULL,_IOLBF,STDERR_BUFLEN);
 
 	cpu_freq = SYSPAGE_ENTRY( qtime )->cycles_per_sec;
 	cpu_freq /= 1000;
 
-	// Create signal handling thread 
+	// Create signal handling thread
 	sigemptyset(&signal_set);
 	sigaddset(&signal_set, SIGTERM);
 	sigaddset(&signal_set, SIGINT);
@@ -1271,9 +1271,9 @@ int main(int argc, char *argv[])
 
 	while( ( c = getopt( argc, argv, "b:vVWrsc:f:h:S:O:X:" ) ) !=-1 ) {
 		switch( c )	{
-		// The maximal amount of sectors required at once is defined by 
+		// The maximal amount of sectors required at once is defined by
 		// the maximum sector count supported in the filesystem->driver API
-		// (128 sectors) and any HW consideration for DMA (some PCI 
+		// (128 sectors) and any HW consideration for DMA (some PCI
 		// controllers for instance have only 16-bit auto-accumulators and
 		// hence a 64k limit). In general, the buffer size should stick to
 		// using no more than 64k at one time.
@@ -1290,16 +1290,16 @@ int main(int argc, char *argv[])
 		case 'W':	optW++;
 				break;
 		case 'r':	optr++;
-				break;    
+				break;
 		case 'S':	shm_buff_name = optarg;
 				if(shm_buff_name == NULL) {
 					fatal("Specify <shared buffer name>");
 				}
 				break;
 		case 'O':	shm_buff_off = atoh(optarg);
-				break;                                     
+				break;
 		case 's':	optS++;
-				break;                                         
+				break;
 		case 'f':	optf = optarg;
 				break;
 		case 'h':	shname = optarg;
@@ -1308,7 +1308,7 @@ int main(int argc, char *argv[])
 				break;
 		case 'X':	x_dll_name = optarg;
 				break;
-		default :	break;               
+		default :	break;
 		}
 	}
 
@@ -1340,7 +1340,7 @@ int main(int argc, char *argv[])
 		if ((!optf) || (strlen(optf) == 0)) {
 			fatal("Checkpoint file not specified");
 		}
-		
+
 		result = readCheckpoint (optf);
 		if (result == 0) {
 			VERBOSE(1, "Recovery OK");
@@ -1369,20 +1369,20 @@ int main(int argc, char *argv[])
 
 	if (_fullpath(Source, argv[argc-2], sizeof(Source)) == NULL) {
 		fatal("Invalid source path - %s", strerror(errno));
-	} 
-     
+	}
+
 	if(lstat(Source, &st) == -1) {
 		fatal("lstat(Source) failed - errno %d", errno);
 	}
 
-	//FIXME: hardcode for special source which block size is 0 
+	//FIXME: hardcode for special source which block size is 0
 	if(st.st_blocksize == 0) {
 		st.st_blocksize = 4096;
 	}
 
 	if (_fullpath(Destination, argv[argc-1], sizeof(Destination)) == NULL) {
 		mode_t dir_mode = S_ISDIR(st.st_mode) ? st.st_mode : 0777;
-		strcpy(Destination, argv[argc-1]); 
+		strcpy(Destination, argv[argc-1]);
 		rmtrailslash(Destination);
 		if ((mkdir(Destination, dir_mode))==-1) {
 			if ((result = form_path(Destination, dir_mode)) != EOK) {
@@ -1407,14 +1407,14 @@ int main(int argc, char *argv[])
 	}
 
 	// Initialize the progress information
-	if((optv > 0) || (shm_info != NULL)) { 
+	if((optv > 0) || (shm_info != NULL)) {
 		progress_info = 1;
 
 		job_phase     = P_GET_JOB_SIZE;
-		job_size      = 0; 
+		job_size      = 0;
 		job_files     = 0;
-		job_pos       = 0;  
-		job_pos_files = 0; 
+		job_pos       = 0;
+		job_pos_files = 0;
 		t_remaining   = 0;
 	}
 
@@ -1464,7 +1464,7 @@ int main(int argc, char *argv[])
 			job_phase = P_COPY_DONE;
 			progress_update();
 		}
-		
+
 	} else if (S_ISLNK(st.st_mode)) {
 		// Make Link
 		if (S_ISDIR (d_st.st_mode))
@@ -1476,10 +1476,10 @@ int main(int argc, char *argv[])
 		if (S_ISDIR (d_st.st_mode))
 			snprintf(target, PATH_MAX, "%s/%s", Destination, basename(Source));
 		else
-			strcpy (target, Destination);   
+			strcpy (target, Destination);
 
 		if(progress_info > 0) {
-			// Get job size 
+			// Get job size
 			job_size  = rnd1k(st.st_size);
 			job_files = 1;
 			job_pos_files = 0;
@@ -1489,7 +1489,7 @@ int main(int argc, char *argv[])
 				shm_info->job_time  = job_size/T1_SIZE + job_files/T1_FILE;
 			}
 		}
-	
+
 		// Copy File
 		if (optr > 0) {
 			if (strcmp (Source, recoveryFile) == 0)	{
@@ -1501,7 +1501,7 @@ int main(int argc, char *argv[])
 				}
 				copyFileTimeNow = ClockCycles();
 				if((result = copy(Source, &st, target, recoveryFileOffset)) != 0) {
-					fatal("copy error %d", result); 
+					fatal("copy error %d", result);
 				}
 			}
 		} else {
@@ -1513,10 +1513,10 @@ int main(int argc, char *argv[])
 			}
 			copyFileTimeStart = ClockCycles();
 			if((result = copy(Source, &st, target, 0)) != 0) {
-				fatal("copy error %d", result); 
+				fatal("copy error %d", result);
 			}
 		}
-		if(optf != NULL) { 
+		if(optf != NULL) {
 			makeCheckpoint (optf, copyFile, copyFileCount, copyDstFile);
 		}
 		if(progress_info > 0) {
@@ -1535,11 +1535,11 @@ int main(int argc, char *argv[])
 static unsigned calculate_cksum(unsigned char *buf, int len)
 {
 	unsigned d, cksum = 0x55aa;
-   
+
 	while(len--) {
 		d = cksum & 0x1f;
 		cksum <<= 5;
-		cksum = (cksum ^ 0xb2c5 ^ *buf ^ d); 
+		cksum = (cksum ^ 0xb2c5 ^ *buf ^ d);
 		buf++;
 	}
 	return cksum;
@@ -1575,7 +1575,7 @@ static int readCheckpoint (char *checkpointfile)
 	unsigned cksum;
 	struct stat stbuf;
 	struct qkcp_checkpoint qc;
-  
+
 	if (access(checkpointfile, F_OK)) {
 		VERBOSE(1, "Checkpoint file not found");
 		if ((ckfile_fd = open(checkpointfile, O_RDWR | O_CREAT | O_EXCL, 0600)) == -1) {
@@ -1587,7 +1587,7 @@ static int readCheckpoint (char *checkpointfile)
 		}
 		return (-1);
 	}
- 
+
 	ckfile_fd = open (checkpointfile, O_RDWR);
 	if (ckfile_fd == -1) {
 		if(errno == EBADFSYS) {
@@ -1611,7 +1611,7 @@ static int readCheckpoint (char *checkpointfile)
 	if (cksum != calculate_cksum((unsigned char *)&qc, sizeof(qc)-sizeof(qc.cksum))) {
 		VERBOSE(1, "Checkpoint file corrupt - cksum");
 		return (-3);
-	} 
+	}
 	strcpy(recoveryFile, qc.srcfile);
 	n = sscanf(qc.offset, "%lld", &recoveryFileOffset);
 	if (n != 1) {
@@ -1643,7 +1643,7 @@ static int form_path(char *fullpath, mode_t dir_mode)
 	} else if (fullpath[0] == '/') ptr++;
 
 	SKIP_TO_SLASH(ptr);
-	
+
 	for (;*ptr;) {
 		*ptr = (char)0x00;
 		if (mkdir(fullpath, dir_mode)==-1) {

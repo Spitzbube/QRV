@@ -1,5 +1,5 @@
 /**
- * This file provides the mechanisms for extracting the mapinfo data out 
+ * This file provides the mechanisms for extracting the mapinfo data out
  * of the processes in the system.
  */
 #include <stdio.h>
@@ -33,7 +33,7 @@ static char *get_name(int fd, uint64_t vaddr, procfs_debuginfo *map, int maplen)
 	if(devctl(fd, DCMD_PROC_MAPDEBUG, map, maplen, 0) == -1) {
 		return NULL;
 	}
-	
+
 	return strdup(map->path);
 }
 
@@ -42,7 +42,7 @@ static char *get_name(int fd, uint64_t vaddr, procfs_debuginfo *map, int maplen)
  */
 static int classify_block(procfs_mapinfo *map) {
 	int flags = map->flags;
-	
+
 	if(IS_STACK(flags)) {
 		return TYPE_STACK;
 	} else if(IS_ELF_CODE(flags)) {
@@ -54,11 +54,11 @@ static int classify_block(procfs_mapinfo *map) {
 	} else if(IS_GENERIC_HEAP(flags)) {
 		return TYPE_HEAP;
 	}
-	
-	return TYPE_UNKNOWN;	
+
+	return TYPE_UNKNOWN;
 }
 
-/** 
+/**
  * Locate the corresponding tid that has a stack region mapped in an overlapping
  * area with the specified target mapping.
  */
@@ -66,9 +66,9 @@ static int find_stack_tid(thread_mem_t *tidbases, int len, procfs_mapinfo *targe
 	int i;
 
 	for(i = 0; i < len; i++) {
-		//printf("Checking %llx -> %llx to %llx \n", 
+		//printf("Checking %llx -> %llx to %llx \n",
 		//	tidbases[i].stack_base, tidbases[i].stack_size, target->vaddr);
-		if((target->vaddr >= tidbases[i].stack_base) && 
+		if((target->vaddr >= tidbases[i].stack_base) &&
            (target->vaddr <= (tidbases[i].stack_base + tidbases[i].stack_size))) {
 			//printf("Found %d \n", tidbases[i].tid);
 			return tidbases[i].tid;
@@ -99,28 +99,28 @@ static procfs_mapinfo *find_elf_block(procfs_mapinfo *maps, int maplen, procfs_m
 				return &maps[i];
 			}
 		}
-	} 
+	}
 
 	/* Otherwise we default to what we used to do here */
 	before = mi->vaddr - 1;
 	after = mi->vaddr + mi->size + 1;
-	
+
 	for(i = 0; i < maplen; i++) {
 		if(!IS_ELF_CODE(maps[i].flags) && !IS_ELF_DATA(maps[i].flags)) {
 			continue;
 		}
 		//@@@ Only one of these should be used based on loader knowledge
 		//@@@ We should validate that they come from the same device
-		if(before >= maps[i].vaddr && 
+		if(before >= maps[i].vaddr &&
 		   before <= (maps[i].vaddr + maps[i].size)) {
 			return &maps[i];
 		}
-		if(after >= maps[i].vaddr && 
+		if(after >= maps[i].vaddr &&
 		   after <= (maps[i].vaddr + maps[i].size)) {
 			return &maps[i];
 		}
 	}
-	
+
 	return NULL;
 }
 
@@ -141,23 +141,23 @@ static int find_shared_block(shared_entry_t *root, procfs_mapinfo *mi, char *nam
 		p = &root->memblocks[i];
 		//if(p->dev == mi->dev && p->ino == mi->ino && p->offset == mi->offset) {
 		if(p->dev == mi->dev && p->offset == mi->offset && p->memblock.size == mi->size) {
-			if((p->memblock.name == name) || 
+			if((p->memblock.name == name) ||
 			   (p->memblock.name != NULL && name != NULL && strcmp(p->memblock.name, name) == 0)) {
 				if(verbose > 3) {
-					printf("Shared mapping MATCH vaddr:0x%llx flags:0x%08x (%s)\n", 
+					printf("Shared mapping MATCH vaddr:0x%llx flags:0x%08x (%s)\n",
 							mi->vaddr, mi->flags, (name != NULL) ? name : "??");
 				}
 				return i;
-			}   	
-		} 
+			}
+		}
 	}
 
 	if(verbose > 3) {
-		printf("Shared mapping MISS  vaddr:0x%llx flags:0x%08x (%s)\n", 
+		printf("Shared mapping MISS  vaddr:0x%llx flags:0x%08x (%s)\n",
 				mi->vaddr, mi->flags, (name != NULL) ? name : "??");
 	}
 
-	return -1;	
+	return -1;
 }
 
 static int process_shared_block(shared_entry_t *shares, pid_t pid, procfs_mapinfo *map, char *name) {
@@ -167,10 +167,10 @@ static int process_shared_block(shared_entry_t *shares, pid_t pid, procfs_mapinf
 	block_index = find_shared_block(shares, map, name);
 	if(block_index < 0) {
 		if(shares->block_count >= shares->block_size) {
-			shares->memblocks = realloc(shares->memblocks, 
+			shares->memblocks = realloc(shares->memblocks,
 										(shares->block_size + 10) * sizeof(*shares->memblocks));
 			if(shares->memblocks == NULL) {
-				exit(0);	//BAD 
+				exit(0);	//BAD
 			}
 			shares->block_size += 10;
 		}
@@ -178,9 +178,9 @@ static int process_shared_block(shared_entry_t *shares, pid_t pid, procfs_mapinf
 		block_index = shares->block_count;
 		shares->block_count++;
 
-		block = &shares->memblocks[block_index];										
+		block = &shares->memblocks[block_index];
 		memset(block, 0, sizeof(*block));
-		
+
 		block->memblock.size = map->size;
 		block->memblock.flags = map->flags;
 		block->memblock.type = classify_block(map);
@@ -190,12 +190,12 @@ static int process_shared_block(shared_entry_t *shares, pid_t pid, procfs_mapinf
 		block->ino = map->ino;
 		block->pid = pid;	//First owner
 	} else  {
-		block = &shares->memblocks[block_index];										
+		block = &shares->memblocks[block_index];
 		if(block->pid != pid) {
 			block->pid = 0;		//Multiple owners
 		}
 	}
-	
+
 	return block_index;
 }
 
@@ -207,7 +207,7 @@ static void writemapinfo(int fd, int pid, procfs_mapinfo *mp, int mpsize) {
 	write(fd, buffer, strlen(buffer));
 
 	for(i = 0; i < mpsize; i++) {
-		sprintf(buffer, 
+		sprintf(buffer,
 				" vaddr 0x%08llx size 0x%08llx flags 0x%08x dev 0x%08x offset 0x%08llx ino 0x%08llx \n",
 	 			mp[i].vaddr,
 	 			mp[i].size,
@@ -230,9 +230,9 @@ static void dumpmapinfo(int pid, procfs_mapinfo *mp, int mpsize) {
 
 /**
  * For the specified fd (associated with a pid) extract all of the process memory
- * information.  Sort blocks into private and shared types and map private blocks 
+ * information.  Sort blocks into private and shared types and map private blocks
  * with their appropriate information.
- * @@@ This routine does way too much memory allocation.  It should use a shared 
+ * @@@ This routine does way too much memory allocation.  It should use a shared
  * memory block and grow that block as required to gather the map information.
  */
 static pid_entry_t *get_mem_info(int fd, shared_entry_t *shared_blocks) {
@@ -247,10 +247,10 @@ static pid_entry_t *get_mem_info(int fd, shared_entry_t *shared_blocks) {
 		procfs_debuginfo 			info;
 		char             			buff[_POSIX_PATH_MAX];
 	}				map;
-	int				num, i; 
+	int				num, i;
 	int 			num_threads;
 	thread_mem_t *  thread_bases;
-	
+
 
 	pmb = calloc(1, sizeof(*pmb));
 	if(pmb == NULL) {
@@ -269,26 +269,26 @@ static pid_entry_t *get_mem_info(int fd, shared_entry_t *shared_blocks) {
 	num_threads = procfs_info.info.num_threads;
 	thread_bases = alloca(num_threads * sizeof(*thread_bases));
 
-	// Extract the thread stack bases 
+	// Extract the thread stack bases
 	for (i = 0, procfs_info.status.tid = 1; i < num_threads; i++) {
 		if (devctl(fd, DCMD_PROC_TIDSTATUS, &procfs_info.status, sizeof(procfs_info.status), &num) == -1) {
 			fprintf(stderr, "Can't get thread info");
 			return NULL;
-		} 
+		}
 		thread_bases[i].tid = procfs_info.status.tid;
 		thread_bases[i].stack_base = procfs_info.status.stkbase;
 		thread_bases[i].stack_size = procfs_info.status.stksize;
 		procfs_info.status.tid++;
 	}
 
-	// Extract the process page mappings 
+	// Extract the process page mappings
 	mp = NULL;
 	mpsize = 0;
 	do {
 		if(devctl(fd, DCMD_PROC_PAGEDATA, mp, mpsize, &num) != EOK) {
 			free(pmb);
 			return NULL;
-		}	
+		}
 
 		if(num <= mpsize/sizeof(*mp)) {
 			break;
@@ -308,8 +308,8 @@ static pid_entry_t *get_mem_info(int fd, shared_entry_t *shared_blocks) {
 	if(verbose > 2) {
 		dumpmapinfo(pmb->pid, mp, num);
 	}
-	
-	
+
+
 	// Determine how many blocks are shared, how many are private
 	for(privcnt = 0, i = 0; i < num; i++) {
 		if((mp[i].flags & PG_HWMAPPED) && !IS_SHARED(mp[i].flags) && !IS_ELF_SHARED_DATA(mp[i].flags)) {
@@ -323,14 +323,14 @@ static pid_entry_t *get_mem_info(int fd, shared_entry_t *shared_blocks) {
 
 	for(privcnt = 0, i = 0; i < num; i++) {
 		char *name;
-		
+
 		if(!(mp[i].flags & PG_HWMAPPED)) {
 			continue;
 		}
 
-		// Assume the name of the process is the name of the executable		
+		// Assume the name of the process is the name of the executable
 		name = get_name(fd, mp[i].vaddr, &map.info, sizeof(map));
-		if(pmb->base_addr >= mp[i].vaddr && 
+		if(pmb->base_addr >= mp[i].vaddr &&
 		   pmb->base_addr <= (mp[i].vaddr + mp[i].size-1)) {
 			pmb->name = strdup(name);
 		}
@@ -347,7 +347,7 @@ static pid_entry_t *get_mem_info(int fd, shared_entry_t *shared_blocks) {
 			switch(pmb->memblocks[privcnt].memblock.type) {
 			case TYPE_STACK:
 				pmb->memblocks[privcnt].tid = find_stack_tid(thread_bases, num_threads, &mp[i]);
-				break; 
+				break;
 			case TYPE_CODE:
 			case TYPE_DATA: {
 				procfs_mapinfo *data = find_elf_block(mp, num, &mp[i]);
@@ -356,7 +356,7 @@ static pid_entry_t *get_mem_info(int fd, shared_entry_t *shared_blocks) {
 						procfs_debuginfo            info;
 						char                        buff[_POSIX_PATH_MAX];
 					} elf_block_map;
-							
+
 					if(name) free(name);
 					name = get_name(fd, data->vaddr, &elf_block_map.info, sizeof(elf_block_map));
 					//Jump the queue and process the block now, name should be the same
@@ -365,15 +365,15 @@ static pid_entry_t *get_mem_info(int fd, shared_entry_t *shared_blocks) {
 						pmb->memblocks[privcnt].shared_index = process_shared_block(shared_blocks, pmb->pid, data, name);
 					}
 					pmb->memblocks[privcnt].memblock.name = name;
-				} 
+				}
 				break;
 			}
 			}
-			
+
 			privcnt++;
 		}
 	}
-	
+
 	//Get rid of the extra memory
 	free(mp);
 
@@ -389,29 +389,29 @@ system_entry_t *build_block_list(int *pidlist, int pidnum) {
 	char 			namebuffer[30];
 
 	system = calloc(1, sizeof(*system));
-	
+
 	if ((pidlist == NULL) || (pidnum == 0)) {
 		dp = opendir("/proc");
 		if(dp == NULL) {
 			return NULL;
 		}
-		
+
 		while((dent = readdir(dp)) != NULL) {
-			pid_entry_t *next = NULL;	
-		
+			pid_entry_t *next = NULL;
+
 			if(!isdigit(*dent->d_name)) {
 				continue;
 			}
-			
+
 			sprintf(namebuffer, "/proc/%s", dent->d_name);
 			if((fd = open(namebuffer, O_RDONLY)) == -1) {
 				fprintf(stderr, "Failed to open %s", namebuffer);
 				continue;
 			}
-			
+
 			next = get_mem_info(fd, &system->shared_blocks);
 			close(fd);
-			
+
 			if(next == NULL) {
 				continue;
 			}
@@ -427,7 +427,7 @@ system_entry_t *build_block_list(int *pidlist, int pidnum) {
 		closedir(dp);
 	} else {
 		for (i=0;i<pidnum;i++) {
-			pid_entry_t *next = NULL;	
+			pid_entry_t *next = NULL;
 
 			sprintf(namebuffer, "/proc/%d", pidlist[i]);
 			if ((fd = open(namebuffer, O_RDONLY)) == -1) {
@@ -450,7 +450,7 @@ system_entry_t *build_block_list(int *pidlist, int pidnum) {
 			insert = next;
 		}
 	}
-	
-	return system;	
+
+	return system;
 }
-                 
+

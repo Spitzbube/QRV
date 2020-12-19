@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -64,7 +64,7 @@ int setusercontext(const struct passwd *pwd, uid_t uid, unsigned int flags) {
 
     /* This needs to be done after anything that needs root privs */
     if ((flags & LOGIN_SETUSER) && setuid(uid) != 0) {
-		return -1;	
+		return -1;
     }
 
     /* Finally, set any umask we've found */
@@ -127,7 +127,7 @@ char *save_list(char *fname, int *buflen, int preserve) {
 			value++;
 		}
 
-		//Determine the name of the variable 
+		//Determine the name of the variable
 		entry = line;
 		while (*entry && *entry != '=' && *entry != ' ') { entry++; }
 		*entry = '\0';
@@ -135,17 +135,17 @@ char *save_list(char *fname, int *buflen, int preserve) {
 		entry = (char*)getenv(line);
 
 		//We have the env variable, and we are not preserving the system
-		if (entry && !preserve) { 
+		if (entry && !preserve) {
 			value = entry;
 			entry = line;
-		//We have a default value, but no current env variable  
+		//We have a default value, but no current env variable
 		} else if (value && *value && !entry) {
 			entry = line;
 		} else {
 			value = entry = NULL;
 		}
 
-		if (entry && value) {		
+		if (entry && value) {
 			int len;
 			len = strlen(entry) + strlen(value) + 2;
 			if (!(head = (char*)realloc(head, size + len)))  {
@@ -175,7 +175,7 @@ int main(int argc, char **argv, char **env) {
 		add_env(argv[indx++]);
 	}
 
-	if (!(save_env = save_list(DEFAULT_FILE, &len))) 
+	if (!(save_env = save_list(DEFAULT_FILE, &len)))
 		printf("Nothing to save in the environment \n");
 	else {
 		printf("Length is %d \n", len);
@@ -183,7 +183,7 @@ int main(int argc, char **argv, char **env) {
 			printf("Saving (%d):\n%s\n", strlen(save_env), save_env);
 			len -= strlen(save_env);
 			save_env += strlen(save_env)+1;
-			printf("Len %d \n", len); 
+			printf("Len %d \n", len);
 		}
 	}
 

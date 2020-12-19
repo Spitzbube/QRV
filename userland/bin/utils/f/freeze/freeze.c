@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -238,7 +238,7 @@ char *malloc();
 #endif
 
 	do_melt = 1;
-	
+
 #ifdef MSDOS
 		/* use case-insensitive match: parent may not be command.com */
     } else if(stricmp(cp, "fcat.exe") == 0) {
@@ -478,7 +478,7 @@ char *malloc();
 		}
 # endif
 #endif	/* BSD4_2		Long filenames allowed */
-							 
+
 #ifdef MSDOS
 		if ((cp = rindex(ofname, '.')) == NULL) strcat(ofname, ".F");
 		else {
@@ -526,7 +526,7 @@ char *malloc();
 #ifdef MSDOS
 		if (freopen(ofname, do_melt && image == O_TEXT ? "wt" : "wb",
 		    stdout) == NULL)
-#else		 
+#else
 		if (freopen(ofname, "w", stdout) == NULL)
 #endif
 		{
@@ -725,7 +725,7 @@ struct ftime utimbuf;
 #ifdef _UTIME_H_INCLUDED
 	timep.actime = statbuf.st_atime;
 	timep.modtime= statbuf.st_mtime;
-#else 
+#else
 	timep[0] = statbuf.st_atime;
 	timep[1] = statbuf.st_mtime;
 #endif

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -30,7 +30,7 @@
 /**
  * This function provides one stop shopping for thread name access.
  * The value of newname/newname_len indicates the operation that
- * is performed with regard to setting the name.  
+ * is performed with regard to setting the name.
  *  newname_len > 0  -> Name pointed to newname is set
  *  newname_len = 0  -> Name is cleared (newname may be NULL)
  *  newname_len = -1 -> Name is unchanged (used for name retrieval)
@@ -41,8 +41,8 @@
  *  prevname_len > 0  -> Null terminated name, up to prevname_len -1 is returned
  *  prevname_len <= 0 -> No name information is returned
  **/
-int __getset_thread_name(pid_t pid, pthread_t tid, 
-						 const char *newname, int newname_len, 
+int __getset_thread_name(pid_t pid, pthread_t tid,
+						 const char *newname, int newname_len,
 						 char *prevname, int prevname_len) {
 	int 				ret, islocal, fd;
 	struct _thread_name *tn;
@@ -90,9 +90,9 @@ int __getset_thread_name(pid_t pid, pthread_t tid,
 		if(newname_len > 0) {
 			memcpy(tn->name_buf, newname, newname_len);
 		}
-	
+
 		ret = ThreadCtl_r(_NTO_TCTL_NAME, tn);
-		if(ret == EOK && prevname_len > 0) { 
+		if(ret == EOK && prevname_len > 0) {
 			strncpy(prevname, tn->name_buf, prevname_len - 1);
 			prevname[prevname_len - 1] = '\0';		//Guarantee null return
 		}
@@ -130,7 +130,7 @@ int __getset_thread_name(pid_t pid, pthread_t tid,
 		memcpy(tn->name_buf, newname, newname_len);
 	}
 
-	ret = devctl(fd, DCMD_PROC_THREADCTL, &tctl, sizeof(tctl), NULL); 
+	ret = devctl(fd, DCMD_PROC_THREADCTL, &tctl, sizeof(tctl), NULL);
 
 	if(ret == EOK && prevname_len > 0) {
 		strncpy(prevname, tn->name_buf, prevname_len - 1);

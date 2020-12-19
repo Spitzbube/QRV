@@ -94,7 +94,7 @@ panic(const char *str, ...)
   exit(4);
 }
 
-
+
 /* Store information about files opened with ck_fopen
    so that error messages from ck_fread, ck_fwrite, etc. can print the
    name of the file that had the error */
@@ -156,9 +156,9 @@ ck_fopen(name, mode)
   p->name = ck_strdup(name);
   p->fp = fp;
 #ifdef __MINGW32__
-  // to revert to default windows behaviour (i.e. to not setmode) env. variable "SED_LINEENDING" must 
+  // to revert to default windows behaviour (i.e. to not setmode) env. variable "SED_LINEENDING" must
   // be set to string "WINDOWS"
-  if (!getenv("SED_LINEENDING") || stricmp(getenv("SED_LINEENDING"), "WINDOWS")) 
+  if (!getenv("SED_LINEENDING") || stricmp(getenv("SED_LINEENDING"), "WINDOWS"))
       setmode(fileno(fp), _O_BINARY);
 #endif
   return fp;
@@ -233,7 +233,7 @@ ck_fclose(stream)
   utils_id_s = r.link;
 }
 
-
+
 /* Panic on failing malloc */
 VOID *
 ck_malloc(size)
@@ -302,7 +302,7 @@ ck_free(ptr)
     free(ptr);
 }
 
-
+
 /* Implement a variable sized buffer of 'stuff'.  We don't know what it is,
 nor do we care, as long as it doesn't mind being aligned by malloc. */
 

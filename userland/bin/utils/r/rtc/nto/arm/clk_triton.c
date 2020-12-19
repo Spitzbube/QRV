@@ -1,12 +1,12 @@
 /*
- * $QNXLicenseC:  
+ * $QNXLicenseC:
  * Copyright 2005, QNX Software Systems. All Rights Reserved.
  *
- * This source code may contain confidential information of QNX Software 
- * Systems (QSS) and its licensors.  Any use, reproduction, modification, 
- * disclosure, distribution or transfer of this software, or any software 
- * that includes or is based upon any of this code, is prohibited unless 
- * expressly authorized by QSS by written agreement.  For more information 
+ * This source code may contain confidential information of QNX Software
+ * Systems (QSS) and its licensors.  Any use, reproduction, modification,
+ * disclosure, distribution or transfer of this software, or any software
+ * that includes or is based upon any of this code, is prohibited unless
+ * expressly authorized by QSS by written agreement.  For more information
  * (including whether this source code file has been published) please
  * email licensing@qnx.com. $
 */
@@ -17,7 +17,7 @@
 #include <arm/pxa250.h>
 
 
-/* 
+/*
  * Dallas/Maxim DS1339 Serial RTC
  */
 #define DS1339_SEC			0	/* 00-59 */
@@ -126,16 +126,16 @@ static int i2c_gpio_init(void)
 
 	i2c_gpio_set_data(0);
 	i2c_gpio_pin_dir(1);
-	i2c_gpio_bit_delay(10);	
+	i2c_gpio_bit_delay(10);
 
 	i2c_gpio_pin_dir(0);
-	i2c_gpio_bit_delay(10);	
+	i2c_gpio_bit_delay(10);
 	if (i2c_gpio_get_data() == 0)
 		result = -ENODEV;
 
 	i2c_gpio_set_data(1);
 	i2c_gpio_pin_dir(1);
-	i2c_gpio_bit_delay(10);	
+	i2c_gpio_bit_delay(10);
 
 	return result;
 }
@@ -177,7 +177,7 @@ static int i2c_gpio_write_byte(unsigned char data)
 	for (i = 7; i >= 0; i--)
 		i2c_gpio_write_bit(data & (1 << i));
 
-	if (!i2c_gpio_read_ack()) 
+	if (!i2c_gpio_read_ack())
 		result = -ENODEV;
 
 	return result;
@@ -211,10 +211,10 @@ static int ds1339_read_reg(unsigned char reg)
 
 	if (result == 0) {
 		result = i2c_gpio_read_byte();
-		if (result < 0) 
+		if (result < 0)
 			return result;
 	}
-	else 
+	else
 		return result;
 
 	i2c_gpio_stop();
@@ -278,7 +278,7 @@ RTCFUNC(get,triton)(struct tm *tm, int cent_reg)
 	tm->tm_year = BCD2BIN(date[DS1339_YEAR]);
 	tm->tm_wday = BCD2BIN(date[DS1339_DAY]) - 1;
 
-	if (tm->tm_year < 70) 
+	if (tm->tm_year < 70)
 		tm->tm_year += 100;
 
 	return (0);
@@ -289,7 +289,7 @@ RTCFUNC(set,triton)(struct tm *tm, int cent_reg)
 {
 	unsigned char	reg, date[7];
 
-	date[DS1339_SEC]   = BIN2BCD(tm->tm_sec); 
+	date[DS1339_SEC]   = BIN2BCD(tm->tm_sec);
 	date[DS1339_MIN]   = BIN2BCD(tm->tm_min);
 	date[DS1339_HOUR]  = BIN2BCD(tm->tm_hour);
 	date[DS1339_DATE]  = BIN2BCD(tm->tm_mday);

@@ -13,7 +13,7 @@
  *	\=	if searching, leaves the cursor here
  *	\(	delimits the start of a subexpression
  *	\)	delimits the end of a subexpression
- *	*	repeats the preceding 0 or more times 
+ *	*	repeats the preceding 0 or more times
  *	\+	repeats the preceding 1 or more times
  *	\?	repeats the preceding 0 or 1 times
  *	\{m\}	repeats the preceding m times
@@ -1428,7 +1428,7 @@ regexp *regcomp(exp, cursor)
 					*build++ = (to < 255 ? to : 255);
 				}
 			}
-			
+
 
 			/* take care of "needfirst" - is this the first char? */
 			if (needfirst && peek == M_PLUS && !IS_META(token))
@@ -1466,7 +1466,7 @@ regexp *regcomp(exp, cursor)
 			 * cases where "first" and \| could work together which
 			 * this code doesn't support, so some searches will be
 			 * slower than they otherwise might.
-			 */ 
+			 */
 			needfirst = 0;
 			re->first = 0;
 		}
@@ -1637,7 +1637,7 @@ static int match(re, str, prog, here, bol, endtoken)
 	int		endtoken;/* the \) to stop scanning at */
 {
 	REG int		token;	/* the token pointed to by prog */
-	REG long	nmatched;/* counter, used during closure matching */ 
+	REG long	nmatched;/* counter, used during closure matching */
 	REG int		closure;/* the token denoting the type of closure */
 	int		maxalt;	/* maximum M_ALT(n) to use */
 	long		from;	/* minimum number of matches in closure */
@@ -2147,7 +2147,7 @@ int regexec(re, str, bol)
 		scanfree(&here);
 		return 0;
 	}
-	else 
+	else
 #endif /* FEATURE_LITRE */
 	if (re->bol)
 	{

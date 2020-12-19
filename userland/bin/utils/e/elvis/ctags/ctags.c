@@ -6,7 +6,7 @@
  *
  * 30.04.1995	Michael Beck & Dirk Verworner (beck@informatik.hu-berlin.de)
  *		added support for inline definitions and
- *		function pointers in parameter declaration 
+ *		function pointers in parameter declaration
  */
 
 #include "elvis.h"
@@ -1206,7 +1206,7 @@ void ctags(name)
 		if (gotname && token == BODY && prev != ARGS)
 		{
 			gotname = FALSE;
-			
+
 			/* ignore if in typedef -- better name is coming soon */
 			if (scope == TYPEDEF)
 			{
@@ -1229,7 +1229,7 @@ void ctags(name)
 		if (gotname && prev == ARGS && token == BODY)
 		{
 			gotname = FALSE;
-			
+
 			/* generate a tag, maybe checking -s */
 			maketag(scope, lex_name, lex_lnum, tagseek, use_numbers, "f", NULL);
 		}

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -90,7 +90,7 @@ int main( int argc, char **argv )
       ret = hd_main(argc, argv);
     else
       ret = od_main(argc, argv);
-  return ret; 
+  return ret;
 }
 
 int od_main( int argc, char **argv )
@@ -102,9 +102,9 @@ int od_main( int argc, char **argv )
   set_od_defaults( &opts );
   while( ( optret = getopt( argc, argv, "vA:j:N:t:" ) ) != -1 )
   {
-    switch( optret ) 
+    switch( optret )
     {
-        case 'v': 
+        case 'v':
           opts.verbose=1;
           break;
         case 'A':
@@ -126,12 +126,12 @@ int od_main( int argc, char **argv )
     }
   }
   parse_opts( &opts );
-  
+
   totalfiles=argc-optind;
-  
+
   if (totalfiles==0)
   {
-    read_stdin(opts);    
+    read_stdin(opts);
   }
   else
   {
@@ -144,7 +144,7 @@ int od_main( int argc, char **argv )
       read_files( inputfiles, totalfiles, opts );
       close_list( inputfiles, totalfiles );
   }
-  
+
   free( filelist );
   free( inputfiles );
   return 0;
@@ -159,9 +159,9 @@ int hd_main( int argc, char **argv )
   set_hd_defaults( &opts );
   while( ( optret = getopt( argc, argv, "vA:j:s:n:N:t:8" ) ) != -1 )
   {
-    switch( optret ) 
+    switch( optret )
     {
-        case 'v': 
+        case 'v':
           opts.verbose=1;
           break;
         case 'A':
@@ -186,12 +186,12 @@ int hd_main( int argc, char **argv )
     }
   }
   parse_opts( &opts );
-  
+
   totalfiles=argc-optind;
-  
+
   if (totalfiles==0)
   {
-    read_stdin(opts);    
+    read_stdin(opts);
   }
   else
   {
@@ -204,7 +204,7 @@ int hd_main( int argc, char **argv )
       read_files( inputfiles, totalfiles, opts );
       close_list( inputfiles, totalfiles );
   }
-  
+
   free( filelist );
   free( inputfiles );
   return 0;
@@ -244,11 +244,11 @@ void parse_opts( struct options *opts )
   else
   {
     temp=strlen(opts->s);
-    if (( local=(char *)malloc(temp*sizeof(char))) == NULL ) 
+    if (( local=(char *)malloc(temp*sizeof(char))) == NULL )
     {
       fprintf(stderr, "%s\n", strerror(errno));
       exit(1);
-    }    
+    }
     memcpy(local, opts->s, temp);
     if((local[temp-1]=='b')||(local[temp-1]=='B'))
     {
@@ -256,14 +256,14 @@ void parse_opts( struct options *opts )
       {
         multiplier=512;
         local[temp-1]='\0';
-      } 
-    } 
+      }
+    }
     else
       if((local[temp-1]=='k')||(local[temp-1]=='K'))
       {
         multiplier=1024;
         local[temp-1]='\0';
-      } 
+      }
       else
         if((local[temp-1]=='m')||(local[temp-1]=='M'))
         {
@@ -330,7 +330,7 @@ char **mk_file_list( char **cmdline, int curr_pos, int total_pos )
   char **local_temp=NULL;
   int local_count=0, total_files=0;
   total_files=total_pos-curr_pos;
-  if (( local_temp=(char **)malloc(total_files*sizeof(char*)) ) == NULL ) 
+  if (( local_temp=(char **)malloc(total_files*sizeof(char*)) ) == NULL )
   {
     fprintf(stderr, "%s\n", strerror(errno));
     exit(1);
@@ -338,7 +338,7 @@ char **mk_file_list( char **cmdline, int curr_pos, int total_pos )
   for( local_count = 0; local_count < total_files ; local_count++ )
   {
     local_temp[local_count]=cmdline[curr_pos+local_count];
-  } 
+  }
   return local_temp;
 }
 
@@ -356,7 +356,7 @@ FILE **open_list( char **list, int total_files )
     local_list[local_count]=fopen( list[local_count], "rb" );
     if( local_list[local_count] == NULL )
     {
-      fprintf(stderr, "%s: %s\n", strerror(errno), list[local_count]);  
+      fprintf(stderr, "%s: %s\n", strerror(errno), list[local_count]);
       fcloseall();
       exit(1);
     }
@@ -396,7 +396,7 @@ void read_files( FILE **list, int total_files, struct options opts)
           else
           {
             fprintf(stderr, "attempt to skip past end of combined input\n");
-            exit(1);  
+            exit(1);
           }
       single_input_file=0;
     }
@@ -413,7 +413,7 @@ void read_files( FILE **list, int total_files, struct options opts)
         buf[count+1]='\0';
         count++;
         if (opts.countint) tally--;
-        if (count > 15) 
+        if (count > 15)
         {
           format_out(poff,buf,opts,count);
           poff+=count;
@@ -452,7 +452,7 @@ void read_stdin( struct options opts )
       buf[count+1]='\0';
       count++;
       if (opts.countint) tally--;
-      if (count > 15) 
+      if (count > 15)
       {
         format_out(poff,buf,opts,count);
         poff+=count;
@@ -471,8 +471,8 @@ void read_stdin( struct options opts )
 
 int is_printable( char test )
 {
-  
-  if (test<=32)  
+
+  if (test<=32)
     return 0;
   if (bit8)
   {
@@ -483,7 +483,7 @@ int is_printable( char test )
   else
   {
     if (test>=127)
-      return 0; 
+      return 0;
     return 1;
   }
 }
@@ -534,7 +534,7 @@ int get_blocksize( char type, char next )
                       {
                         fprintf(stderr, "invalid block size '%c' for type '%c'\n", next, type);
                         exit(1);
-                      }  
+                      }
             }
             else
               if( type=='f' )
@@ -580,13 +580,13 @@ void format_out( int off, char *buf, struct options opts , int readbytes)
   if (!is_type(opts.ts[0]))
   {
     fprintf(stderr, "invalid type '%c'\n", (char)opts.ts[0]);
-    exit(1); 
+    exit(1);
   }
- 
+
   if (readbytes)
     if (!memcmp(buf, lastbuff, 16)&&(!opts.verbose))
     {
-      if (flag) 
+      if (flag)
         printf("*\n");
       flag=0;
     }
@@ -597,7 +597,7 @@ void format_out( int off, char *buf, struct options opts , int readbytes)
 
   if (flag)
   {
-    if (readbytes) 
+    if (readbytes)
       memcpy(lastbuff, buf, 16);
     if (strcmp(opts.ab, "n"))
     {
@@ -635,16 +635,16 @@ void format_out( int off, char *buf, struct options opts , int readbytes)
               {
                 if (((unsigned char)buf[(blocksize-temp-1)+adj])==NULL) conv&=0xffffff00;
                 else conv|=(unsigned char)(buf[(blocksize-temp-1)+adj]&0xff);
-              } 
+              }
             }
             current++;
-            if (type=='x') 
+            if (type=='x')
             {
               if (blocksize==1) printf("%2.2x ", (unsigned int)(conv&0xff));
               if (blocksize==2) printf("%4.4x ", (unsigned int)(conv&0xffff));
               if (blocksize==4) printf("%8.8x ", (unsigned int)(conv));
-            } 
-            if (type=='d') 
+            }
+            if (type=='d')
             {
               if (blocksize==1) printf("%3.3d ", (int)(conv&0xff));
               if (blocksize==2) printf("%5.5d ", (int)(conv&0xffff));
@@ -656,7 +656,7 @@ void format_out( int off, char *buf, struct options opts , int readbytes)
               if (blocksize==2) printf("%6.6o ", (unsigned int)(conv&0xffff));
               if (blocksize==4) printf("%11.11o ", (unsigned int)(conv));
             }
-            if (type=='u') 
+            if (type=='u')
             {
               if (blocksize==1) printf("%3.3u ", (unsigned int)(conv&0xff));
               if (blocksize==2) printf("%5.5u ", (unsigned int)(conv&0xffff));
@@ -670,7 +670,7 @@ void format_out( int off, char *buf, struct options opts , int readbytes)
             if (type=='c')
             {
               if ((char)(conv&0xff)=='\\')
-                printf("  \\ ");  
+                printf("  \\ ");
               else
                 if ((char)(conv&0xff)=='\a')
                   printf(" \\a ");
@@ -704,7 +704,7 @@ void format_out( int off, char *buf, struct options opts , int readbytes)
             if (type=='a')
             {
               if (is_printable((char)(conv&0xff))) printf("%3c ", (char)(conv&0x7f));
-              else 
+              else
               {
                 if ((char)(conv&0x7f)<=32)  printf("%3.3s ", names[(int)(conv&0x7f)]);
                 if ((char)(conv&0x7f)==127) printf("%3.3s ", names[33]);
@@ -716,7 +716,7 @@ void format_out( int off, char *buf, struct options opts , int readbytes)
       }
       if (default_flag)
       {
-        if (!strncmp(_pname, "hd", 2)) 
+        if (!strncmp(_pname, "hd", 2))
         {
           //this will work for now.  push the ascii to the end of an incomplete line
           for (temp=0; temp<(16-current) ; temp++)
@@ -751,5 +751,5 @@ void format_out( int off, char *buf, struct options opts , int readbytes)
     else
       printf("\n");
   }
-} 
- 
+}
+

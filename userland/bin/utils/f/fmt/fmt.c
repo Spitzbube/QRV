@@ -63,7 +63,7 @@ int	lineno;			/* Current input line */
 int	mark;			/* Last place we saw a head line */
 
 #ifndef __P
-#define __P(x) x 
+#define __P(x) x
 #endif
 void	fmt __P((FILE *));
 void	leadin __P((void));
@@ -121,7 +121,7 @@ main(argc, argv)
 		fprintf(stderr, "%s: width invalid\n", basename(argv[0]));
 		exit(1);
 	}
-				
+
 	if (optind == argc) {
 		fmt(stdin);
 		oflush();
@@ -138,7 +138,7 @@ main(argc, argv)
 		} else {
 			fmt(fi);
 			fclose(fi);
-		} 
+		}
 		++optind;
 	}
 	oflush();
@@ -187,7 +187,7 @@ fmt(fi)
 		 */
 		while (c != '\n' && c != EOF)
 			c = getc(fi);
-		
+
 		/*
 		 * Expand tabs on the way to canonb.
 		 */
@@ -280,7 +280,7 @@ split(line)
 
 		/*
 		 * Collect a 'word,' allowing it to contain escaped white
-		 * space. 
+		 * space.
 		 */
 		while (*cp && *cp != ' ') {
 			if (*cp == '\\' && isspace(cp[1]))
@@ -291,7 +291,7 @@ split(line)
 
 		/*
 		 * Guarantee a space at end of line. Two spaces after end of
-		 * sentence punctuation. 
+		 * sentence punctuation.
 		 */
 		if (*cp == '\0') {
 			*cp2++ = ' ';
@@ -302,7 +302,7 @@ split(line)
 			*cp2++ = *cp++;
 		*cp2 = '\0';
 		/*
-		 * LIZ@UOM 6/18/85 pack(word); 
+		 * LIZ@UOM 6/18/85 pack(word);
 		 */
 		pack(word, wordl);
 	}
@@ -359,14 +359,14 @@ pack(word,wl)
 	 * length of the line before the word is added; t is now the length
 	 * of the line after the word is added
 	 *	t = strlen(word);
-	 *	if (t+s <= LENGTH) 
+	 *	if (t+s <= LENGTH)
 	 */
 	s = outp - outbuf;
 	t = wl + s;
 	if ((t <= goal_length) ||
 	    ((t <= max_length) && (t - goal_length <= goal_length - s))) {
 		/*
-		 * In like flint! 
+		 * In like flint!
 		 */
 		for (cp = word; *cp; *outp++ = *cp++);
 		return;
@@ -411,7 +411,7 @@ tabulate(line)
 	while (cp >= line && *cp == ' ')
 		cp--;
 	*++cp = '\0';
-	
+
 	/*
 	 * Count the leading blank space and tabulate.
 	 */

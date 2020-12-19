@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -70,11 +70,11 @@ unsigned  min_mem_avail = 1000000;   // units - MB
 unsigned  max_mem_avail;
 unsigned  tot_mem_avail;
 
-unsigned  min_procs = 1000000; 
+unsigned  min_procs = 1000000;
 unsigned  max_procs;
 unsigned  tot_procs;
 
-unsigned  min_threads = 1000000; 
+unsigned  min_threads = 1000000;
 unsigned  max_threads;
 unsigned  tot_threads;
 
@@ -789,7 +789,7 @@ void print_memory (char * suffix)
     char fs[32];
     char ps[32];
 
-    mem_get_info(NOFD, 0, &info); 
+    mem_get_info(NOFD, 0, &info);
     private = SYSPAGE_ENTRY(system_private);
     printf("Memory: %s total, %s avail, page size %s%s\n",
            pr_scale(private->ramsize, rs, sizeof rs),
@@ -928,7 +928,7 @@ void top (char * node, int iterations)
     /* Check for the existence of the node */
     if (node != NULL) {
         DIR *dir;
-        
+
         snprintf(namebuf, sizeof(namebuf), "/net/%s", node);
         dir = opendir(namebuf);
 
@@ -954,7 +954,7 @@ void top (char * node, int iterations)
     /**
      * Need to know how many CPUs there are in order
      * to know which threads are the idle threads.
-     * 
+     *
      * It seems that the idle threads are pid == 1, tid = 1..n
      * where n is the number of CPUs.
      */
@@ -1015,11 +1015,11 @@ void top (char * node, int iterations)
                 max_cpu_idle[i] = max( this_cpu_idle[i], max_cpu_idle[i] );
                 tot_cpu_idle[i] += this_cpu_idle[i];
             }
-      
+
             min_procs = min(this_procs, min_procs);
             max_procs = max(this_procs, max_procs);
             tot_procs+= this_procs;
-      
+
             min_threads = min(this_threads, min_threads);
             max_threads = max(this_threads, max_threads);
             tot_threads+= this_threads;
@@ -1219,7 +1219,7 @@ int main (int ac, char * av[])
         case 'i':
             iterations = strtol(optarg, 0, 10);
         break;
-   
+
         case '?':
         default:
             printf("usage: %s [-i <number>] [-d] [-n <node>]\n", av[0]);

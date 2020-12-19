@@ -179,7 +179,7 @@ compare_names_for_qsort (void const *file1, void const *file2)
   char const *const *f2 = file2;
   return compare_names (*f1, *f2);
 }
-
+
 /* Compare the contents of two directories named in CMP.
    This is a top-level routine; it does everything necessary for diff
    on two directories.

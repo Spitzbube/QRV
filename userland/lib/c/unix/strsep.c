@@ -40,7 +40,7 @@ static const char sccsid[] = "@(#)strsep.c	5.4 (Berkeley) 1/26/91";
 
 /*
  * Get next token from string *stringp, where tokens are nonempty
- * strings separated by characters from delim.  
+ * strings separated by characters from delim.
  *
  * Writes NULs into the string at *stringp to end tokens.
  * delim need not remain constant from call to call.

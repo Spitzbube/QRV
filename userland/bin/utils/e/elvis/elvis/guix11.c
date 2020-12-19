@@ -1462,13 +1462,13 @@ static ELVBOOL focusgw(gw)
 	if (!xw->ismapped)
 	{
 		XMapWindow(x_display, xw->win);
-		
+
 		if (o_autoiconify && windefault && windefault->gw != gw)
 		{
 			XIconifyWindow(x_display, ((X11WIN *)windefault->gw)->win, x_screen);
 		}
 		xw->willraise = ElvTrue;
-		
+
 		/* the rest of the focus change must wait until it is mapped */
 		return ElvTrue;
 	}
@@ -2022,7 +2022,7 @@ static ELVBOOL creategw(name, firstcmd)
 
 	/* allow window manager's "Delete" menu item to work */
 	XSetWMProtocols(x_display, xw->win, &x_wm_delete_window, 1);
-	
+
 	/* make it work as an elvis server window */
 	XChangeProperty(x_display, root, x_elvis_server, XA_WINDOW, 32,
 		PropModeReplace, (unsigned char *)&xw->win, 1);

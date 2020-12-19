@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -39,11 +39,11 @@
   ->Support only getting the pathname back
 */
 
-#define DIR_HOST 0 
-#define DIR_USER 1 
+#define DIR_HOST 0
+#define DIR_USER 1
 static const char *_cfg_locations[] = { "/etc/host_cfg", ".cfg" };
 
-/* 
+/*
  The search from most to least specific goes
  USER_HOST, USER, HOST, GLOBAL, historical
 */
@@ -52,22 +52,22 @@ static int find_historical(char *buffer, int buflen, int oflags, int mode, int f
 static char *append_path(char *buffer, int buflen, int copylen, const char *format, const char *name, ...);
 
 int cfgopen(const char *name, unsigned flags, const char *historical, char *namebuf, int nblen) {
-	char		*home, *cname, buffer[PATH_MAX]; 
+	char		*home, *cname, buffer[PATH_MAX];
 	int			fd, oflags, mode, len;
 	struct stat st;
 
 	if (!name || !*name) {
 		flags &= ~(CFGFILE_MASK);
 	}
-		
+
 	oflags = flags & ~(CFGFILE_MASK);	/* Take away file options */
 	mode   = 0644;						/* rw-r--r-- */
 
-	/* 
+	/*
      If we are opening a file for creation, or for any type
-	 of writing, then we can only specify one of these flags. 
-	 CREAT one could have the APPEND or TRUNC flag on to 
-	 append or truncate the file.  
+	 of writing, then we can only specify one of these flags.
+	 CREAT one could have the APPEND or TRUNC flag on to
+	 append or truncate the file.
 	*/
 	if (flags & CFGFILE_CREAT || (flags & 0x3)) {
 		int bits;
@@ -95,7 +95,7 @@ int cfgopen(const char *name, unsigned flags, const char *historical, char *name
 		cname = getenv("HOSTNAME");
 	}
 
-	if (stat(_cfg_locations[DIR_HOST], &st) < 0) { 
+	if (stat(_cfg_locations[DIR_HOST], &st) < 0) {
 		cname = NULL;
 		if (flags & CFGFILE_USER_NODE) {
 			flags &= ~CFGFILE_USER_NODE;
@@ -159,7 +159,7 @@ int cfgopen(const char *name, unsigned flags, const char *historical, char *name
 			errno = ENAMETOOLONG;
 	}
 
-	return fd;	
+	return fd;
 }
 
 /*
@@ -197,7 +197,7 @@ static int replace_str(char *str, char *item, char *repl, int slen) {
 	int  cplen, ilen, elen;
 
 	ilen = strlen(item);
-	cplen = (repl) ? strlen(repl) : 0; 
+	cplen = (repl) ? strlen(repl) : 0;
 
 	while ((p = strstr(str, item))) {
 		elen = strlen(p+ilen) + 1;
@@ -244,7 +244,7 @@ static int find_historical(char *buffer, int buflen, int oflags, int mode, int f
 }
 
 /*
-Iterate through the given path creating all of the intermediate 
+Iterate through the given path creating all of the intermediate
 directory entries as required with the specified dirmode.
 */
 static int makepath(char *path, int dirmode) {
@@ -281,13 +281,13 @@ static int getfd(char *path, int oflags, int mode, int flags, char *namebuf) {
 
 	// If we create with NOFD, then we don't actually do anything
 	if (flags & CFGFILE_NOFD) {
-		if (flags & CFGFILE_CREAT) { 
+		if (flags & CFGFILE_CREAT) {
 			if (namebuf != NULL) {
 				strcpy(namebuf, path);
 			}
 			return 0;
 		}
-		fd = access(path, (flags & 0x3) ? W_OK : R_OK); 
+		fd = access(path, (flags & 0x3) ? W_OK : R_OK);
 	} else {
 		fd = open(path, oflags, mode);
 	}
@@ -336,20 +336,20 @@ int			len;
 	return(buffer);
 }
 
-#if defined(TEST) 
+#if defined(TEST)
 int main(int argc, char **argv) {
 	char buffer[PATH_MAX];
 	int fd;
 	FILE *fp;
 
 	/* Test the open for reading */
-	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE, NULL, NULL, 0); 
+	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE, NULL, NULL, 0);
 	if (fd != -1) {
 		printf("USER_HOST passed \n");
 	} else {
 		printf("USER_HOST failed \n");
 	}
-	fd = cfgopen("/etc/testcfg", CFGFILE_USER, NULL, NULL, 0); 
+	fd = cfgopen("/etc/testcfg", CFGFILE_USER, NULL, NULL, 0);
 	if (fd != -1) {
 		printf("USER passed \n");
 	} else {
@@ -388,32 +388,32 @@ int main(int argc, char **argv) {
 
 
 	/* Test the preffered opening */
-	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE | CFGFILE_USER, NULL, NULL, 0); 
+	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE | CFGFILE_USER, NULL, NULL, 0);
 	if (fd != -1) {
 		printf("USER_HOST/USER passed \n");
 	} else {
 		printf("USER_HOST/USER failed \n");
 	}
-	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE | CFGFILE_USER | CFGFILE_NODE, NULL, NULL, 0); 
+	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE | CFGFILE_USER | CFGFILE_NODE, NULL, NULL, 0);
 	if (fd != -1) {
 		printf("USER_HOST/USER/HOST passed \n");
 	} else {
 		printf("USER_HOST/USER/HOST failed \n");
 	}
-	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE | CFGFILE_USER | CFGFILE_NODE | CFGFILE_GLOBAL, NULL, NULL, 0); 
+	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE | CFGFILE_USER | CFGFILE_NODE | CFGFILE_GLOBAL, NULL, NULL, 0);
 	if (fd != -1) {
 		printf("USER_HOST/USER/HOST/GLOBAL passed \n");
 	} else {
 		printf("USER_HOST/USER/HOST/GLOBAL failed \n");
 	}
-	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE | CFGFILE_USER | CFGFILE_NODE | CFGFILE_GLOBAL, "/etc/testcfg", NULL, 0); 
+	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE | CFGFILE_USER | CFGFILE_NODE | CFGFILE_GLOBAL, "/etc/testcfg", NULL, 0);
 	if (fd != -1) {
 		printf("USER_HOST/USER/HOST/GLOBAL/HIST passed \n");
 	} else {
 		printf("USER_HOST/USER/HOST/GLOBAL/HIST failed \n");
 	}
 
-	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE | CFGFILE_USER | CFGFILE_NODE | CFGFILE_GLOBAL, "/etc/testcfg.%H:/etc/host_cfg/%N/etc/testcfg", NULL, 0); 
+	fd = cfgopen("/etc/testcfg", CFGFILE_USER_NODE | CFGFILE_USER | CFGFILE_NODE | CFGFILE_GLOBAL, "/etc/testcfg.%H:/etc/host_cfg/%N/etc/testcfg", NULL, 0);
 	if (fd != -1) {
 		printf("USER_HOST/USER/HOST/GLOBAL/HIST+ passed \n");
 	} else {
@@ -421,13 +421,13 @@ int main(int argc, char **argv) {
 	}
 
 	/* Test the creation of files, truncated to zero */
-	fd = cfgopen("/etc/testcfg", CFGFILE_USER | CFGFILE_NODE | CFGFILE_RDWR | CFGFILE_CREAT | CFGFILE_TRUNC, NULL, NULL, 0); 
+	fd = cfgopen("/etc/testcfg", CFGFILE_USER | CFGFILE_NODE | CFGFILE_RDWR | CFGFILE_CREAT | CFGFILE_TRUNC, NULL, NULL, 0);
 	if (fd != -1) {
 		printf("BAD \n");
 	} else {
 		printf("GOOD \n");
 	}
-	fd = cfgopen("/etc/testcfg", CFGFILE_USER | CFGFILE_RDWR | CFGFILE_CREAT | CFGFILE_TRUNC, NULL, NULL, 0); 
+	fd = cfgopen("/etc/testcfg", CFGFILE_USER | CFGFILE_RDWR | CFGFILE_CREAT | CFGFILE_TRUNC, NULL, NULL, 0);
 	if (fd != -1) {
 		printf("User config create passed \n");
 	} else {

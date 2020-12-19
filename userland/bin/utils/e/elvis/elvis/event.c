@@ -121,7 +121,7 @@ static void setcursor(win, offset, clean)
 		/* delete the superfluous text */
 		bufreplace(win->state->cursor, win->state->bottom, NULL, 0L);
 	}
-	
+
 	/* move the cursor, and maybe adjust the edit region too */
 	marksetoffset(win->state->cursor, offset);
 	if (offset < markoffset(win->state->top)
@@ -599,7 +599,7 @@ WATCH(fprintf(stderr, "eventclick(..., row=%d, column=%d, what=%d)\n", row, colu
 		(void)v_tag(win, &vinfbuf);
 		USUAL_SUSPECTS
 		return 0;
-		
+
 	  case CLICK_UNTAG:
 	  	/* simulate a <Control-T> keystroke */
 	  	vinfbuf.command = ELVCTRL('T');

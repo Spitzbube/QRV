@@ -908,7 +908,7 @@ static void indent(w, line, linedelta)
 	{
 		/* copy the source whitespace into the new line */
 		bufpaste(&bline, &from, &to);
-	
+
 		/* if the source line was blank, then delete its whitespace */
 		if (srcblank)
 		{

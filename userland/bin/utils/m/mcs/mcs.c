@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -54,7 +54,7 @@ struct list		{
 }				*strings, *sections;
 
 void process(Elf *elf, int section) {
-	
+
 }
 
 void add_list(struct list **plist, const char *string) {
@@ -75,19 +75,19 @@ void add_list(struct list **plist, const char *string) {
 
 void print(Elf *elf, Elf32_Ehdr *ehdr, struct list *sections, FILE *fp) {
 	struct list			*list;
-			
+
 	for(list = sections; list; list = list->next) {
 		int					section;
 
 		for(section = 0; section < ehdr->e_shnum; section++) {
 			Elf_Scn				*scn;
-				
+
 			if((scn = elf_getscn(elf, section))) {
 				Elf32_Shdr			*shdr;
-				
+
 				if((shdr = elf32_getshdr(scn))) {
 					char			*p;
-				
+
 					if((p = elf_strptr(elf, ehdr->e_shstrndx, shdr->sh_name))) {
 						if(!strcmp(p, list->string)) {
 							Elf_Data			*data;
@@ -277,7 +277,7 @@ int main(int argc, char *argv[]) {
 			fprintf(stderr, "%s: unable to open %s\n", progname, argv[optind]);
 			continue;
 		}
-			
+
 		cmd = ELF_C_READ;
 		if(!(arf = elf_begin(fd, cmd, 0))) {
 			fprintf(stderr, "%s: not a known file format %s\n", progname, argv[optind]);
@@ -327,16 +327,16 @@ int main(int argc, char *argv[]) {
 						}
 						for(section = 0; section < ehdr->e_shnum; section++) {
 							Elf_Scn				*scn;
-				
+
 							if((scn = elf_getscn(elf, section))) {
 								Elf32_Shdr			*shdr;
-				
+
 								if((shdr = elf32_getshdr(scn))) {
 									char			*p;
-				
+
 									if((p = elf_strptr(elf, ehdr->e_shstrndx, shdr->sh_name))) {
 										struct list			*list;
-				
+
 										for(list = sections; list; list = list->next) {
 											if(!strcmp(p, list->string)) {
 												if(shdr->sh_offset < end) {
@@ -373,7 +373,7 @@ int main(int argc, char *argv[]) {
 					}
 				}
 			}
-		
+
 			cmd = elf_next(elf);
 			elf_end(elf);
 		}

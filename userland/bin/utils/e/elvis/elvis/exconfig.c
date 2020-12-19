@@ -417,7 +417,7 @@ RESULT	ex_doalias(xinf)
 				}
 				else if (!elvspace(*str))
 				{
-					args[++i] = str; 
+					args[++i] = str;
 					lens[i] = 1;
 					inword = ElvTrue;
 				}
@@ -637,7 +637,7 @@ RESULT	ex_doalias(xinf)
 						  case ' ':	buildCHAR(&cmd, '+');	break;
 						  default:	buildCHAR(&cmd, *name);
 						}
-					
+
 					}
 				}
 			}
@@ -883,7 +883,7 @@ RESULT	ex_color(xinf)
 		if (!xinf->bang)
 			colorforeign(lhs, xinf->rhs);
 	}
-	else 
+	else
 	{
 		/* both a role and a new color definition - set the colors */
 		i = colorfind(lhs);
@@ -1249,7 +1249,7 @@ RESULT	ex_help(xinf)
 			topic = toCHAR("html");
 		section = "elvisdm.html";
 	}
-	else if (len > 1 && elvalpha(xinf->lhs[0]) 
+	else if (len > 1 && elvalpha(xinf->lhs[0])
 	      && (xinf->lhs[len - 1] == '(' || xinf->lhs[len - 1] == ')'))
 	{
 		/* :help function()  (where function is a name) */
@@ -1757,7 +1757,7 @@ RESULT ex_case(xinf)
 	 */
 	if (xinf->rhs)
 		return exstring(xinf->window, xinf->rhs, NULL);
-	exctlstate.switchcarry = ElvTrue;		
+	exctlstate.switchcarry = ElvTrue;
 	return RESULT_COMPLETE;
 }
 #endif /* FEATURE_CALC */
@@ -1948,7 +1948,7 @@ RESULT	ex_map(xinf)
 			(ELVBOOL)(xinf->command == EX_UNMAP || xinf->command == EX_UNABBR),
 			(ELVBOOL)(xinf->command == EX_BREAK));
 	}
-	else 
+	else
 	{
 		mapinsert(lhs, (int)CHARlen(lhs), rhs, (int)CHARlen(rhs), (CHAR *)0, flags, mode);
 	}

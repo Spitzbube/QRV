@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -162,7 +162,7 @@ static char *tidypath(const char *path, int bufferlen)
 {
 char					*buffer;
 struct _connect_ctrl	ctrl;
-struct _io_connect		msg;		
+struct _io_connect		msg;
 int						fd, error;
 
 	if ((buffer = malloc(bufferlen)) != NULL) {
@@ -363,7 +363,7 @@ static __inline int gettype(struct nftw *state, struct dirent64 *dp, struct stat
 struct dirent_extra_stat	*extra;
 int							embed;
 
-	for (embed = 0, extra = (struct dirent_extra_stat *)_DEXTRA_FIRST(dp); _DEXTRA_VALID(extra, dp); 
+	for (embed = 0, extra = (struct dirent_extra_stat *)_DEXTRA_FIRST(dp); _DEXTRA_VALID(extra, dp);
 			extra = (struct dirent_extra_stat *)_DEXTRA_NEXT(extra)) {
 		if ((embed = ((extra->d_type == _DTYPE_STAT && !(state->flags & FTW_PHYS)) || (extra->d_type == _DTYPE_LSTAT && ((state->flags & FTW_PHYS) || !S_ISLNK(extra->d_stat.st_mode)))) != 0))
 			break;

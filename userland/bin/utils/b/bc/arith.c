@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -42,7 +42,7 @@ int num_compare(numb_t *op1, numb_t *op2)
 
 num_sqrt:	This implimentation of the square-root function, owes
 		to Newtons Method of Successive Approximation:
-			
+
 			Xn+1 = 1/2 * (Xn + y/Xn).
 		A number (y) is given.
 		The number is expanded to the maximum of it's scale or the internal
@@ -68,7 +68,7 @@ num_sqrt:	This implimentation of the square-root function, owes
 
 		It is predicted that the current implimentation occupies > 40 % of it's
 		time in perform memory allocation/normalizaion code.
-	
+
     	Nov 9 1989:	faster version in place. about 35X faster than previous
 			version.
 

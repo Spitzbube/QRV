@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -36,7 +36,7 @@ Note:
  If no options are specified, the uname utility writes the System name,
  as if the -s option had been specified.
 #endif
-	
+
 /*
  * Include declarations:
  */
@@ -71,12 +71,12 @@ int create_mask;
 void setname(char *name) {
 	if(confstr(_CS_SET_HOSTNAME, name, 0) == 0) {
 		fprintf(stderr, "Error setting hostname\n");
-	}		
+	}
 }
 
 /*	Uname writes the current system name to standard output.  When options
- *	are specified, symbols representing one or more system characteristics are 
- *	written to the stdandard output.  
+ *	are specified, symbols representing one or more system characteristics are
+ *	written to the stdandard output.
  */
 int
 main( int argc, char *argv[] )
@@ -101,7 +101,7 @@ main( int argc, char *argv[] )
 			case 'p':	flags |= PROCESSOR;   /* OS release level */
 						break;
 			case 's':	flags |= OSFLAG;    /* OS name - also default */
-						break;            
+						break;
 			case 'v':	flags |= VERSION;   /* OS version */
 						break;
 			case 'S':	setname(optarg);
@@ -111,12 +111,12 @@ main( int argc, char *argv[] )
 						break;
 			}
 
-	if (flags == 0 && !set) 
+	if (flags == 0 && !set)
 		flags |= OSFLAG;
 
 	if ( error )
 		exit(EXIT_FAILURE);
-	
+
 	if(flags) {
 		if (uname(&name)==-1) {
 			perror("uname");

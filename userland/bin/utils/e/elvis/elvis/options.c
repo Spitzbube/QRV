@@ -1427,7 +1427,7 @@ BreakBreak:
 		}
 		else /* non-boolean with a value */
 		{
-			/* if the value is valid & different and we need to 
+			/* if the value is valid & different and we need to
 			 * call a store function, then call it.
 			 */
 			if ((*dom->desc[i].isvalid)(&dom->desc[i], &dom->val[i], value) == 1

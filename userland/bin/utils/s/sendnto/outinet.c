@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -60,7 +60,7 @@ openinet(const char *name, int baud) {
 	} else {
 		serv_name = "telnet";
 	}
-	
+
 	if(isdigit(*serv_name)) {
 		port = htons(strtoul(serv_name, NULL, 0));
 	} else {
@@ -71,7 +71,7 @@ openinet(const char *name, int baud) {
 		}
 		port = service->s_port;
 	}
-	
+
 	h = gethostbyname(name);
 	if(h == NULL) {
 		herror("sendnto");
@@ -79,12 +79,12 @@ openinet(const char *name, int baud) {
 	}
 	memset(&addr, 0, sizeof(addr));
 	memcpy(&addr.sin_addr, h->h_addr, h->h_length);
-#if defined(__QNXNTO__)	
+#if defined(__QNXNTO__)
 	addr.sin_len = h->h_length;
-#endif	
+#endif
 	addr.sin_family = AF_INET;
 	addr.sin_port = port;
-	
+
 	fd = socket(AF_INET, SOCK_STREAM, 0);
 	if(fd == -1) {
 		return -1;

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -36,15 +36,15 @@ Options:
 
 Commands (you may abbreviate to the first 2 characters):
  args      fds            freemem   info     net         rtimers    tree
- dir       files          gdt       irqs     proxies     sessions   users   
- env       flags          gnames    memory   registers   signals    vcs     
+ dir       files          gdt       irqs     proxies     sessions   users
+ env       flags          gnames    memory   registers   signals    vcs
  family    format {fmt}   idt       names    root        times      versions
 
 Note:
  {fmt} is any combination of the following characters:
  a..Arguments    F..Flags       m..Size       R..Root          u..Eff. UID/GID
  b..Blocked      g..Group       n..Name       s..Session ID    U..Real UID/GID
- d..Directory    i..Process ID  P..Mpass      S..Signals       
+ d..Directory    i..Process ID  P..Mpass      S..Signals
  e..Environment  L..Logname     p..Priority   t..CPU time
  f..Family       M..Magic       r..Registers  T..File/Start time
 #endif
@@ -67,7 +67,7 @@ Note:
 
 	Revision 1.3  1999/06/07 21:12:01  steve
 	Attempt #3 to get an initial working setup....
-	
+
 	Revision 1.85  1999/04/20 15:21:29  jun
 	"sin fds" now supports UNIX domain sockets, Routing sockets, as well
 	as INET domain sockets.
@@ -355,7 +355,7 @@ Note:
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 
 #include <unistd.h>
@@ -718,7 +718,7 @@ char *argv[];
 		goto xx;
 	case 'fd':
 		fmtstr = "v:f";
-								/*Get VC also for Server process fd's*/	
+								/*Get VC also for Server process fd's*/
 		skip_mask = _PPF_MID;
 		goto xx;
 	case 'fi':
@@ -783,10 +783,10 @@ char *argv[];
 		if (n) {
 			if(sort_letter)
 				qsort(sort_table, n, sizeof(struct _psinfo *), &cmp);
-	
+
 			for(i = 0 ; i < n ; ++i)
 				(*print_func)((*sort_table)[i]);
-	
+
 		} else {
 			fprintf(stderr,"sin: no process(es) found.\n");
 			}
@@ -1023,10 +1023,10 @@ struct _psinfo *proc;
 		case 'U':
 			printf("%5d %5d", proc->ruid, proc->rgid);
 			break;
-		
-/*Add case for printing VC to a local server supplying fd's. Only a 
-  VC that has an fd open will be printed. */		
-		
+
+/*Add case for printing VC to a local server supplying fd's. Only a
+  VC that has an fd open will be printed. */
+
 		case 'v':
 			if (proc->flags & _PPF_VID){
 				if(qnx_fd_query(vid,proc->pid,0,&fdbuf)!=-1){
@@ -1041,11 +1041,11 @@ struct _psinfo *proc;
 					printf(" %-22s",str_path(0L, psinfo.un.proc.name, 22));
 					}
 				}
-			
-	/*If not a VC, print process name*/		
-			
+
+	/*If not a VC, print process name*/
+
 			else{
-				printf("%-23s ", str_path(0L, proc->un.proc.name, 23));	
+				printf("%-23s ", str_path(0L, proc->un.proc.name, 23));
 				printf("%5d", proc->pid);
 				}
 			break;
@@ -1059,9 +1059,9 @@ struct _psinfo *proc;
 				//if(i%2 == 0)
 				printf("\n");
 				printf("  %2d%c-",fd,(fddata.flags& _FD_CLOSE_ON_EXEC) ? 'C' : ' ');
-				
-			/* If socket info call fails, treat as regular fd*/	
-				
+
+			/* If socket info call fails, treat as regular fd*/
+
 				if (print_socket_info(proc->pid,fd)!=0)
 					printf("%-30s",str_fname(proc->pid,fd));
 				}
@@ -1290,7 +1290,7 @@ int gdt;
 	if(gdt) {
 		if(!hflag)
 			printf(" SEL   BASE     LIMIT  TYPE DESCRIPTION\n");
-		for(i = 1 ; i < nentries ; ++i) 
+		for(i = 1 ; i < nentries ; ++i)
 			if(sp[i].type) {
 				printf("%4.4X %8.8lX  %6.6lX   %2.2X ",
 					i*8,
@@ -1303,18 +1303,18 @@ int gdt;
 					sp[i].limit,
 
 					(unsigned) sp[i].type);
-				
-				if (sp[i].type & 0x10) {		
-					if (sp[i].type & 0x08) {		
+
+				if (sp[i].type & 0x10) {
+					if (sp[i].type & 0x08) {
 						printf(" code ");
-						if (sp[i].type & 0x04) {		
+						if (sp[i].type & 0x04) {
 							printf("(conforming)  ");
 						} else {
 							printf("              ");
 						}
 					} else {
 						printf(" data ");
-						if (sp[i].type & 0x02) {		
+						if (sp[i].type & 0x02) {
 							printf("(read/write)  ");
 						} else {
 							printf("(read-only)   ");
@@ -1345,14 +1345,14 @@ int gdt;
 					case 1 :	printf("Priv 1\n");		break;
 					case 2 :	printf("Priv 2\n");		break;
 					case 3 :	printf("Priv 3\n");		break;
-				}				
+				}
 
 			}
 		}
 	else {
 		if(!hflag)
 			printf("INT  OFF  SEL TYPE\n");
-		for(i = 0 ; i < nentries ; ++i) 
+		for(i = 0 ; i < nentries ; ++i)
 			if(sp[i].type)
 				printf(" %2.2X %6.6X %6.6X  %2.2X\n",
 					i,
@@ -1361,7 +1361,7 @@ int gdt;
 					(unsigned) sp[i].type);
 		}
 	}
-	
+
 
 
 print_irqs() {
@@ -1604,7 +1604,7 @@ print_session() {
 	register struct _psinfo *pp;
 
 	if(!hflag)
-		printf("SID USERID           DEVICE             PID  MEMBERS\n");  
+		printf("SID USERID           DEVICE             PID  MEMBERS\n");
 
 	for(last_sid = 0 ; sp = get_session(last_sid) ; ++last_sid)
 		if((pp = get_proc(sp->pid))  &&  pp->pid == sp->pid)
@@ -1625,7 +1625,7 @@ print_timers() {
 	static char *timer_strs[3] ={ "sleep ", "proxy ", "signal" };
 
 	if(!hflag)
-		printf(" ID   PID PROGRAM                 ACTION          TRIGGER     REPEAT\n");  
+		printf(" ID   PID PROGRAM                 ACTION          TRIGGER     REPEAT\n");
 
 	for(i = 0 ; (i = qnx_timer_query(vid, i, &tbuf)) != -1 ; ++i) {
 		pp = get_proc(tbuf.pid);
@@ -1684,7 +1684,7 @@ int offset;
 			n = 0;
 
 		treeflag = 0;
-		
+
 		if(son)
 			print_tree(son, offset + n);
 
@@ -2103,17 +2103,17 @@ int node_has_tcp(nid_t nid, nid_t max_nodes)
 #ifdef DIAG
 	printf("[%04d] node_has_tcp: detaching VC\n",DELTA);
 #endif
-	
+
 			qnx_vc_detach(vid);
 			break;  /* out of nameloc loop */
 		}
-	}    
+	}
 
 #ifdef DIAG
 	printf("[%04d] node_has_tcp: done\n",DELTA);
 #endif
 
-	return tcp_node_map[nid];	
+	return tcp_node_map[nid];
 }
 
 node(nid_t nid, nid_t max_nodes)
@@ -2163,7 +2163,7 @@ node(nid_t nid, nid_t max_nodes)
 	if(fdk) {
 		if (fdk>999)
 			printf(" %1ld.%ldM", fdk/1000, (fdk%1000)/100);
-		else 
+		else
 			printf(" %3ldk", fdk);
 	} else
 		printf("     ");
@@ -2172,7 +2172,7 @@ node(nid_t nid, nid_t max_nodes)
 #ifdef DIAG
 	printf("\n[%04d] node_has_tcp(%d,..)\n",DELTA,nid);
 #endif
-    if (node_has_tcp(nid,max_nodes)) strcat(buffer,"TCP"); 
+    if (node_has_tcp(nid,max_nodes)) strcat(buffer,"TCP");
 #ifdef DIAG
 	printf("[%04d] node_has_tcp: OK\n",DELTA);
 #endif
@@ -2203,7 +2203,7 @@ node(nid_t nid, nid_t max_nodes)
 	netdata.diskm += megs;
 
 #ifdef DIAG
-	printf("[%04d] node: OK\n",DELTA); 
+	printf("[%04d] node: OK\n",DELTA);
 #endif
 	}
 
@@ -2289,7 +2289,7 @@ get_disk_space(nid_t nid, unsigned long *hdk, unsigned long *fdk, unsigned long 
 	pid_t       holdopen_vid[2], remote_pid[2];
 
 	*hdk=*fdk=*otherstorage=0L;
-	
+
 	/* hdk and fdk are measured in megabytes. otherstorage is a set of
        bit flags 1L<<disk_type which indicate mere presence of these other
        types of devices e.g. tape, cd */
@@ -2359,22 +2359,22 @@ get_disk_space(nid_t nid, unsigned long *hdk, unsigned long *fdk, unsigned long 
 
 		/* only look at stuff under /dev/ */
 		if (!strncmp(tok,"/dev/",5)) {
-    	
+
 	        /* check for alpha only prefix */
 			for (c=5;isalpha(tok[c]);c++);
-	
+
 			/* check for numeric only suffix */
 			for (;tok[c]>='0' && tok[c]<='9';c++);
-	
+
 			if (tok[c]=='=') {
 				char *ptr;
 				pid_t manager_pid;
-	
+
 				tok[c]=0;
-	
-				/* good - all alpha (or null) followed by all numeric. */ 
-			    c++;	
-				
+
+				/* good - all alpha (or null) followed by all numeric. */
+			    c++;
+
 				/* &tok[c] will now be an alias, or a pid,unit pair. If it
 	               is an alias, skip it. */
 				if (ptr=strchr(&tok[c],',')) {
@@ -2389,11 +2389,11 @@ get_disk_space(nid_t nid, unsigned long *hdk, unsigned long *fdk, unsigned long 
 #ifdef DIAG
 	printf("[%04d] get_disk_space: '%s' looks interesting..\n",DELTA,tok);
 #endif
-	
+
 			            /* decide where the result is going */
 						if (strncmp(tok,"/dev/fd",7)) resultptr=hdk;
 						else resultptr=fdk;
-						
+
 						/* only count fd0 plus other devices. Do not count fdN where n!=0 */
 						if (resultptr==hdk || tok[7]=='0' || tok[7]>='A') {
 							/* find the size of that device */
@@ -2402,7 +2402,7 @@ get_disk_space(nid_t nid, unsigned long *hdk, unsigned long *fdk, unsigned long 
 					} /* manager was the remote fsys or remote fsys32 */
 				} /* was an alias prefix */
 			}
-	         
+
 		}
 
 		tok=strtok(NULL, ":");
@@ -2462,7 +2462,7 @@ int fd;
 	qnx_vc_detach(dvid);
 
 	if(info2.tty_name[0] == '\0') {
-		sprintf(buf, "[%s]", info2.driver_type); 
+		sprintf(buf, "[%s]", info2.driver_type);
 		return(str_path(info1.nid, buf, 30));
 		}
 
@@ -2527,7 +2527,7 @@ pid_t id;
 	{
 	pid_t vid;
 	static struct _psinfo data;
-		
+
 	if(lflag ||  (vid = qnx_vc_attach(nid, PROC_PID, sizeof(data), 0)) == -1)
 		return(NULL);
 
@@ -2692,7 +2692,7 @@ debug_read(pid_t vid, struct _psinfo *proc, char *buf, unsigned maxbytes,
 	n = min(maxbytes, 512);		/* Limit to max allowed by the debug msg */
 
 	do {
-		ret = __qnx_debug_xfer(vid, proc->pid, _DEBUG_MEM_RD,	
+		ret = __qnx_debug_xfer(vid, proc->pid, _DEBUG_MEM_RD,
 				   buf, n,
 				   off, seg);
 	} while(ret == -1  &&  errno != EPERM && errno != ESRCH  &&  (n -= 32) >= 64) ;
@@ -2777,10 +2777,10 @@ char *buf;
 
 /* Four functions added to print out the socket information. This includes
    print_socket_info()
-   get_sock_info()	
+   get_sock_info()
    print_sock_info()
    print_state()
-*/	
+*/
 
 
 int print_socket_info(pid, fd,)
@@ -2792,7 +2792,7 @@ int fd;
 	struct _dev_info_entry	info2;
 	struct _socket_fdinfo_reply sock_fdinfo;
 	int remote;
-	
+
 	remote=0;
 	if(fd == -1)
 		return(-1);
@@ -2803,7 +2803,7 @@ int fd;
 
 	if(info1.nid!=getnid())
 		remote=1;
-	
+
 
 	/* If it is on another node we need to use the vid on that end. */
 	if(info1.pid != info1.vid) {
@@ -2828,7 +2828,7 @@ int fd;
 					qnx_vc_detach(dvid);
 				return(0);
 			}
-		
+
 		}
 
 	qnx_vc_detach(dvid);
@@ -2846,14 +2846,14 @@ int get_sock_info(int pid, int fd, int server_pid, struct _socket_fdinfo_reply *
 		struct _socket_fdinfo_reply r;
 	} msg;
 
-	memset (&msg,0,sizeof(msg));	
+	memset (&msg,0,sizeof(msg));
 	msg.s.type = _SOCK_FDINFO;
 	msg.s.pid = pid;
 	msg.s.fd  = fd;
 
 	msg.r.info.sa_family = AF_INET; /* for backward compatible */
 
-	if (Send(server_pid,&msg.s,&msg.r,sizeof(msg.s),sizeof(msg.r))==-1)	
+	if (Send(server_pid,&msg.s,&msg.r,sizeof(msg.s),sizeof(msg.r))==-1)
 		return(-1);
 	if(msg.r.status !=EOK){
 		return(msg.r.status);
@@ -2861,8 +2861,8 @@ int get_sock_info(int pid, int fd, int server_pid, struct _socket_fdinfo_reply *
 	else{
 		memcpy(fdinfo,&msg.r,sizeof(msg.r));
 		}
-	return(msg.r.status);	
-} 
+	return(msg.r.status);
+}
 
 /* Print the state of the connection */
 
@@ -2892,7 +2892,7 @@ void print_state (int state)
 		case 10:printf("TIME_WAIT");
 				break;
 		default:printf(" ");
-	
+
 	}
 }
 
@@ -2927,5 +2927,5 @@ int print_sock_info(struct _socket_fdinfo_reply fdinfo)
 	else
 		printf(" %s ","X");
 
-	return(0);	
+	return(0);
 }

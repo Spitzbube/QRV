@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -30,12 +30,12 @@
 #define PATH_MAX	1024 	/* Should use fpathconf(path, _PC_PATH_MAX) */
 #endif
 
-/* For resolve_func(), _do_exit_fini(), and ldd(), gcc-2.95.3 needs the 
-   'unused' attribute, or else it complains about a static function that 
-   is never used.  Newer gcc's need the 'used' attribute, which tells gcc 
-   that code must be emitted for this function even if it appears to be 
-   unreferenced, otherwise the function gets eliminated since it appears 
-   to be unused.  */ 
+/* For resolve_func(), _do_exit_fini(), and ldd(), gcc-2.95.3 needs the
+   'unused' attribute, or else it complains about a static function that
+   is never used.  Newer gcc's need the 'used' attribute, which tells gcc
+   that code must be emitted for this function even if it appears to be
+   unreferenced, otherwise the function gets eliminated since it appears
+   to be unused.  */
 #ifdef LDD_C_USEAGE_ATTRIBUTE
 #error LDD_C_USEAGE_ATTRIBUTE already defined
 #else
@@ -76,7 +76,7 @@ static char				*_dl_error;
 static char				*_system_libpath;
 
 /* Flag set if we are setuid; we don't search LI_LIBRARY_PATH then */
-static int				_is_setuid;			
+static int				_is_setuid;
 
 /*
  * These are the error strings returned by dlerror()
@@ -107,7 +107,7 @@ static int _trace_loaded_objects;
 
 #ifdef __WATCOMC__
 
-#define __attribute__(x)	
+#define __attribute__(x)
 #pragma disable_message(202);
 
 static int resolve(const list_head_t *this, int mode) { return -1; }
@@ -162,7 +162,7 @@ static void debug_info(void *vaddr, Elf32_Phdr *phdr, int fd, struct object *obj
 	msg.i.path[0] = '\0';
 	SETIOV(iov + 0, &msg.i, offsetof(mem_debug_info_t, i.path));
 	SETIOV(iov + 1, obj->name, strlen(obj->name) + 1);
-	
+
 	(void) MsgSendv(MEMMGR_COID, iov, 2, 0, 0);
 }
 #endif
@@ -203,9 +203,9 @@ static void phdr_walk(uintptr_t phdrp, int num, struct object *obj, intptr_t dat
 				obj->data_offset = phdr->p_vaddr - (obj->text_addr - obj->text_rel);
 				obj->data_size = phdr->p_memsz;
 			} else {
-				obj->text_rel = obj->text_addr ? 
+				obj->text_rel = obj->text_addr ?
 					(obj->text_addr - phdr->p_vaddr) : 0;
-				obj->text_addr = obj->text_addr ? 
+				obj->text_addr = obj->text_addr ?
 					obj->text_addr : phdr->p_vaddr;
 				obj->text_size = phdr->p_memsz;
 			}
@@ -360,7 +360,7 @@ static char * getenv_ne(char * env_str) {
 
 	errno = cur_errno;
 	return(retrn);
-	
+
 }
 
 
@@ -400,7 +400,7 @@ static int load_elf32(struct object *obj, int fd) {
 			}
 		}
 	}
-	// Now we should have a base and proper size; do a MAP_LAZY|MAP_ELF to 
+	// Now we should have a base and proper size; do a MAP_LAZY|MAP_ELF to
 	// get a new base
 	if((new_base = mmap(base, size, PROT_NONE, MAP_ELF|MAP_ANON|MAP_LAZY|MAP_PRIVATE, NOFD, 0)) == MAP_FAILED) {
 		ERROR_NO_MEMORY;
@@ -411,7 +411,7 @@ static int load_elf32(struct object *obj, int fd) {
 	for (n = 0, lseg = 0; n < ehdr.e_phnum; n++, phdr++) {
 		if (phdr->p_type == PT_LOAD) {
 			int		prot = 0;
-	
+
 			prot |= (phdr->p_flags & PF_R) ? PROT_READ : 0;
 			prot |= (phdr->p_flags & PF_W) ? PROT_WRITE : 0;
 			prot |= (phdr->p_flags & PF_X) ? PROT_EXEC : 0;
@@ -419,17 +419,17 @@ static int load_elf32(struct object *obj, int fd) {
 				prot |= PROT_WRITE;
 
 			vaddr = mmap((void *)((phdr->p_vaddr - (uintptr_t)base) + (uintptr_t)new_base),
-					phdr->p_filesz, prot, 
+					phdr->p_filesz, prot,
 					lseg || obj->flags & OBJFLAG_TEXTREL ? MAP_ELF | MAP_PRIVATE | MAP_NOSYNCFILE | MAP_FIXED:
 					MAP_ELF | MAP_SHARED | MAP_NOSYNCFILE | MAP_FIXED, fd, phdr->p_offset);
 
 			if (vaddr == MAP_FAILED) {   // OK, let's do a MAP_ANON...
 				vaddr = mmap((void *)((phdr->p_vaddr - (uintptr_t)base) +
-							(uintptr_t)new_base), phdr->p_memsz,prot | PROT_WRITE, 
+							(uintptr_t)new_base), phdr->p_memsz,prot | PROT_WRITE,
 							MAP_ANON | MAP_ELF | MAP_PRIVATE, NOFD, (phdr->p_vaddr - (off_t)base) + (off_t)new_base);
 
 if(getenv_ne("DL_DEBUG")) {
-		xprintf("load_elf32: mmaped, addr %p %p vaddr %p\n", 
+		xprintf("load_elf32: mmaped, addr %p %p vaddr %p\n",
 			base, (char *)base + phdr->p_vaddr, vaddr);
 }
 				if ((vaddr == MAP_FAILED) || (lseg && (uintptr_t)vaddr != ((phdr->p_vaddr - (uintptr_t)base) + (uintptr_t)new_base))) {
@@ -443,7 +443,7 @@ if(getenv_ne("DL_DEBUG")) {
 					int			bytes, nbytes;
 
 					for(nbytes = 0; nbytes < phdr->p_filesz; nbytes += bytes) {
-						if((bytes = readblock(fd, 1, phdr->p_offset + nbytes, 
+						if((bytes = readblock(fd, 1, phdr->p_offset + nbytes,
 							min(phdr->p_filesz - nbytes, 0x3ff000), (void *)((unsigned) vaddr + nbytes))) == -1 || bytes == 0) {
 							munmap(vaddr, phdr->p_memsz);
 							if(lseg) munmap((void *)obj->text_addr, obj->text_size);
@@ -452,9 +452,9 @@ if(getenv_ne("DL_DEBUG")) {
 						}
 					}
 				}
-				else 			
+				else
 #endif
-				if (lseek(fd, phdr->p_offset, SEEK_SET) == -1 || 
+				if (lseek(fd, phdr->p_offset, SEEK_SET) == -1 ||
 					read(fd, vaddr, phdr->p_filesz) != (phdr->p_filesz)) {
 					munmap(vaddr, phdr->p_memsz);
 					if(lseg) munmap((void *)obj->text_addr, obj->text_size);
@@ -479,8 +479,8 @@ if(getenv_ne("DL_DEBUG")) {
 				}
 				memset((char *)vaddr + phdr->p_filesz, 0x00, phdr->p_memsz - phdr->p_filesz);
 			}
-			
-			if (!lseg) {	
+
+			if (!lseg) {
 				/* vaddr could be adjusted by mmap to be not equal to the required addr */
 				new_base = (void*) (((uintptr_t)vaddr - (uintptr_t)phdr->p_vaddr) + (uintptr_t)base);
 
@@ -497,7 +497,7 @@ if(getenv_ne("DL_DEBUG")) {
 #ifdef TEMP_HACK
 			debug_info(vaddr, phdr, fd, obj);
 #endif
-			lseg ++;	
+			lseg ++;
 		} else if (phdr->p_type == PT_DYNAMIC) {
 			obj->dynamic = (void *)phdr->p_vaddr;
 		}
@@ -531,7 +531,7 @@ if(getenv_ne("DL_DEBUG")) {
 
 
 	if(getenv_ne("DL_DEBUG")) {
-		xprintf("load_elf32: loaded lib at addr %x(text) %x(data)\n", 
+		xprintf("load_elf32: loaded lib at addr %x(text) %x(data)\n",
 			obj->text_addr, obj->text_addr + obj->data_offset);
 	}
 	return 0;
@@ -585,11 +585,11 @@ static int find_file(const char *name, const char *libpath, const char *rpath, c
 	int					fd;
 
 	/*
-	 * Search standard directories in the right order, 
+	 * Search standard directories in the right order,
 	 * see ABI section on the dynamic loader. Order is
 	 * DT_RPATH, LD_LIBRARY_PATH, /usr/lib(_CS_LIBPATH).
-	 */  
-	//PR 7654 and Unix98 say we look at the whole path for a slash character 
+	 */
+	//PR 7654 and Unix98 say we look at the whole path for a slash character
 	for(fd = 0; name[fd] != '/' && name[fd] != '\0'; fd++) { ; }
 
 	if (name[fd] != '/') {
@@ -623,7 +623,7 @@ static struct object *find_object_stat(const list_head_t *list, const char *name
 	struct objlist		*l;
 
 	list_forward(list, l) {
-		if (l->object->name && 
+		if (l->object->name &&
 		   (!name || strcmp(name, l->object->name) == 0) &&
 		   (!st || (st->st_ino == l->object->sinfo.st_ino && st->st_dev == l->object->sinfo.st_dev))) {
 			if(listentry) {
@@ -664,9 +664,9 @@ lookup_linkmap_scope(const char *name, struct object* target_obj, struct object*
 				to->root = &obj_linkmap;
 				list_insert(&obj_linkmap, to);
 				break; /* stop traversing the object list, get new linkmap */
-			} 
-		} 
-	} 
+			}
+		}
+	}
 	if(!list_isempty(&obj_linkmap)) {
 		ns_sym = lookup_global(name, &obj_linkmap, omit, 0, robj);
 	}
@@ -679,7 +679,7 @@ static int load_object(struct object *obj, const char *name, const char *libpath
 	const char 			*fullpath = NULL;
 
 	if(getenv_ne("DL_DEBUG")) {
-		xprintf("load_object: attempt load of %s\n", (name) ? name : ""); 
+		xprintf("load_object: attempt load of %s\n", (name) ? name : "");
 	}
 	if ((fd = find_file(name, libpath, rpath, &fullpath)) == -1) {
 		ERROR_NOT_FOUND;
@@ -695,7 +695,7 @@ static int load_object(struct object *obj, const char *name, const char *libpath
 	}
 
 	if(dupobj != NULL && objectlist != NULL &&
-	   ((*dupobj = find_object_stat(objectlist, NULL, &obj->sinfo, NULL)) != NULL)) {	
+	   ((*dupobj = find_object_stat(objectlist, NULL, &obj->sinfo, NULL)) != NULL)) {
 		if (fullpath != NULL) {
 			_dl_free((char *)fullpath);
 		}
@@ -718,7 +718,7 @@ static int load_object(struct object *obj, const char *name, const char *libpath
 	obj->name = 0;
 #endif
 	dynamic_decode(obj);
-	if(!obj->name) { 
+	if(!obj->name) {
 		obj->name = xstrdup(name_only(name));
 		obj->flags |= OBJFLAG_NOSONAME;
 		obj->_link_map.l_name = (char *)obj->name;
@@ -736,14 +736,14 @@ static int preinit_array(const list_head_t *objs) {
 	unsigned long		vec[50];
 	void			(*func)(void) = NULL;
 	int *p;
-	int i, funcs; 
+	int i, funcs;
 	list_backward(objs, o) {
 		/* ignore DT_PREINIT_ARRAY in shared objects. GNU ld prevents
 		   .preinit_array sections in shared objects so this check isn't
-		   required. 
-		*/ 
+		   required.
+		*/
 		if ((o->object->flags & (OBJFLAG_BEGANPREINIT | OBJFLAG_PREINIT))
-		    || !(o->object->flags & OBJFLAG_EXECUTABLE)) { 
+		    || !(o->object->flags & OBJFLAG_EXECUTABLE)) {
 			continue;
 		}
 		vector_decode(vec, sizeof vec / sizeof *vec, o->object->dynamic, 0);
@@ -774,9 +774,9 @@ static void init(const list_head_t *objs) {
 
 	list_backward(objs, o) {
 		/*
-		 If we started doing the init on an object and then that caused us 
-		 to do another init processing on another object before we finished, 
-		 then we should just skip the "in progress object".  Perhaps we should 
+		 If we started doing the init on an object and then that caused us
+		 to do another init processing on another object before we finished,
+		 then we should just skip the "in progress object".  Perhaps we should
 		 even jump out of the list at this point and not even init other
 		 objects (can't for fpemu however).
 		*/
@@ -804,10 +804,10 @@ static int init_array(const list_head_t *objs) {
 	unsigned long		vec[50];
 	void			(*func)(void) = NULL;
 	int *p;
-	int i, funcs; 
+	int i, funcs;
 	list_backward(objs, o) {
 		vector_decode(vec, sizeof vec / sizeof *vec, o->object->dynamic, 0);
-		if (o->object->flags  
+		if (o->object->flags
 	    	    & (OBJFLAG_BEGANINITARRAY | OBJFLAG_INITARRAY)) {
 			continue;
 		}
@@ -830,7 +830,7 @@ static int init_array(const list_head_t *objs) {
 	return 0;
 }
 
-/* 
+/*
  Do the .fini processing for an object. Note that this takes an
  object pointer as an argument, not the list.
  */
@@ -855,7 +855,7 @@ static int fini_array(struct object *obj) {
 	void			(*func)(void) = NULL;
 	unsigned long		vec[50];
 	int *p;
-	int i, funcs; 
+	int i, funcs;
 
 	vector_decode(vec, sizeof vec / sizeof *vec, obj->dynamic, 0);
 	if (obj->flags & (OBJFLAG_FINIARRAY | OBJFLAG_BEGANFINIARRAY)) {
@@ -876,7 +876,7 @@ static int fini_array(struct object *obj) {
 	return 0;
 }
 
-/* 
+/*
  This function is installed by atexit and called at program exit to do the .fini
  sections of all loaded objects.
  */
@@ -894,7 +894,7 @@ static void LDD_C_USEAGE_ATTRIBUTE _do_exit_fini(void) {
 
 
 /*
- * Return the address of r_debug to avoid the optimizer that may be getting the 
+ * Return the address of r_debug to avoid the optimizer that may be getting the
  * address of r_debug early (before we resolve the lib)
  */
 static volatile struct r_debug * volatile _get_rdebug_addr(void) {
@@ -971,7 +971,7 @@ const Elf32_Sym *sym;
 	...
 	argv2
 	argv1
-	argc  <------ void * frame 
+	argc  <------ void * frame
 
 	On entry to ldd, frame gives the adress of argc on the stack.
 */
@@ -1010,9 +1010,9 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 	 * references to functions defined within the library (and not
 	 * overridable) are permitted.  None of these functions can access
 	 * static data.
-	 * 
+	 *
 	 * We expect the following AT_ values in the aux vector:
-	 * 
+	 *
 	 * AT_BASE		the base address of the interpreter (ehdr)
 	 * AT_DATA		the address of the interpreter's data segment (optional)
 	 * AT_PHDR		the address of the executable's program header
@@ -1032,8 +1032,8 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 	self.text_addr = vec[AT_BASE];
 	phdr_walk(ehdr->e_phoff, ehdr->e_phnum, &self, vec[AT_DATA], NULL);
 	dynamic_decode(&self);
-	self.sinfo.st_dev = vec[AT_INTP_DEVICE];	
-	self.sinfo.st_ino = vec[AT_INTP_INODE];	
+	self.sinfo.st_dev = vec[AT_INTP_DEVICE];
+	self.sinfo.st_ino = vec[AT_INTP_INODE];
 
 	/*
 	 * @@@ the interpreter's name should be in the dynamic section, but
@@ -1050,8 +1050,8 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 	xmemset(&other, 0, sizeof other);
 	phdr_walk(vec[AT_PHDR], vec[AT_PHNUM], &other, -1, &_interp);
 	dynamic_decode(&other);
-	other.sinfo.st_dev = vec[AT_INTP_DEVICE];	
-	other.sinfo.st_ino = vec[AT_INTP_INODE];	
+	other.sinfo.st_dev = vec[AT_INTP_DEVICE];
+	other.sinfo.st_ino = vec[AT_INTP_INODE];
 
 	/*
 	 * setup the object list
@@ -1067,7 +1067,7 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 	other.refcount++;
 
 	/*
-	 * As a first pass, resolve the PLT entries so that 
+	 * As a first pass, resolve the PLT entries so that
 	 * we can at least use open/read to load any dependent libraries.
 	 */
 	list_empty(&bootstrap);
@@ -1075,7 +1075,7 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 	bslist->object = &self;
 	bslist->root = &bootstrap;
 	list_append(&bootstrap, bslist);
-	
+
 	(void) resolve(&bootstrap, RTLD_NOW);
 	self.flags &= ~(OBJFLAG_RESOLVED); /* Bootstrap is done */
 
@@ -1089,7 +1089,7 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 	if(((unsigned) other.dynamic >= (other.text_addr + other.data_offset)) && ((unsigned) other.dynamic < (other.text_addr + other.data_offset + other.data_size))) {
 		_set_dt_debug((void *)other.dynamic);
 	}
-	rd =_get_rdebug_addr(); 
+	rd =_get_rdebug_addr();
 	rd->r_state = RT_ADD;
 	/* set r_ldbase and r_ldsomap */
 	rd->r_ldbase = vec[AT_BASE];
@@ -1101,7 +1101,7 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 	*_tlop = (int)getenv_ne("LD_TLO");
 
 	/* From the sysv x86 ABI:
-     *  AT_LIBPATH - The a_val member of this entry is non-zero if the dynamic 
+     *  AT_LIBPATH - The a_val member of this entry is non-zero if the dynamic
      *  linker should examine LD_LIBRARY_PATH when searching for shared
      *  objects of the process based on the security considerations in the
      *  Shared Object Dependency section in Chapter 5 of the gABI.
@@ -1160,7 +1160,7 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 				if (load_object(obj, needed,
 					libpath, NULL, NULL, NULL)) {
 					error("Could not preload library ", needed);
-				} 
+				}
 				obj->refcount++;
 				obj->flags |= OBJFLAG_LD_PRELOAD; /* mark this object as LD_PRELOAD-ed */
 				l = _alloca(sizeof *l);
@@ -1194,10 +1194,10 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 					} else {
 						obj = _alloca(sizeof *obj);
 						xmemset(obj, 0, sizeof *obj);
-						if (load_object(obj, o->object->strings + 
+						if (load_object(obj, o->object->strings +
 							dyn->d_un.d_val, libpath, o->object->rpath, NULL, NULL)) {
 							error("Could not load library ", o->object->strings + dyn->d_un.d_val);
-						} 
+						}
 					}
 					obj->refcount++;
 					l = _alloca(sizeof *l);
@@ -1216,7 +1216,7 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 	}
 
 	/*
-	 * Now reverse all global relative relocs (i.e. 386_32, 386_PC32...) from the 
+	 * Now reverse all global relative relocs (i.e. 386_32, 386_PC32...) from the
 	 * bootstrapping of libc.so.
 	 */
 
@@ -1232,7 +1232,7 @@ static uintptr_t LDD_C_USEAGE_ATTRIBUTE ldd (void *frame) {
 	if(resolve(&objects, RTLD_NOW) == -1) {
 		// We're in trouble, not all relocations succeeded
 		error("Could not resolve all symbols ", NULL);
-	}		
+	}
 
 	/*
 	 * Incase we didn't load ourselfs, we still need to relocate
@@ -1441,7 +1441,7 @@ void *dlopen(const char *name, int mode) {
 		debug = 1;
 		xprintf("dlopen(\"%s\",%d)\n", name ? name : "NULL", mode);
 	}
-	if((mode & RTLD_NOSHARE) && (mode & (RTLD_WORLD | RTLD_GROUP)) != RTLD_GROUP) { 
+	if((mode & RTLD_NOSHARE) && (mode & (RTLD_WORLD | RTLD_GROUP)) != RTLD_GROUP) {
 		ERROR_BAD_MODE;
 		return 0;
 	}
@@ -1507,7 +1507,7 @@ void *dlopen(const char *name, int mode) {
 
 	LOCK_LIST;
 
-	/* 
+	/*
 	 * Load the dll and tell the load_object() function that we want to
 	 * verify that this dll is unique with respect to the other dll's
 	 * which have been loaded and placed in the _dl_all_objects list.
@@ -1517,7 +1517,7 @@ void *dlopen(const char *name, int mode) {
 
 	_r_debug.r_state = RT_ADD;
 	_dl_debug_state();
-	if (load_object(&stkobj, name, libpath, 0, 
+	if (load_object(&stkobj, name, libpath, 0,
 	                (mode & RTLD_NOSHARE) ? NULL : &obj, &_dl_all_objects) == -1) {
 		_r_debug.r_state = RT_CONSISTENT;
 		_dl_debug_state();
@@ -1615,9 +1615,9 @@ void *dlopen(const char *name, int mode) {
 				l->root = handle;
 				if(first) {
 					// The first global (the executable) goes to the front of the list
-					list_append(handle, l);	
+					list_append(handle, l);
 				} else {
-					list_insert(handle, l);	
+					list_insert(handle, l);
 				}
 				prepended = 1;
 			}
@@ -1653,7 +1653,7 @@ void *dlopen(const char *name, int mode) {
 		list_forward(handle, olist) {
 			const Elf32_Dyn			*dyn;
 
-			/* 
+			/*
 			 We only need to process the DT_NEEDED entries for those new
 			 things which we are being loaded, not all of the previous
 			 entries which are inherited for relocation purposes.
@@ -1668,9 +1668,9 @@ void *dlopen(const char *name, int mode) {
 					struct objlist		*l;
 
 					needed = name_only(olist->object->strings + dyn->d_un.d_val);
-	
+
 					if (!(obj = find_object(&_dl_all_objects, needed, NULL))) {
-	
+
 						/*
 						 * the object has never been loaded so haul it in
 						 */
@@ -1683,7 +1683,7 @@ void *dlopen(const char *name, int mode) {
 						}
 						xmemset(obj, 0, sizeof *obj);
 
-						if (load_object(obj, olist->object->strings + 
+						if (load_object(obj, olist->object->strings +
 							dyn->d_un.d_val, libpath, olist->object->rpath, NULL, NULL)) {
 							// load_object sets _dl_error
 							_dl_free(obj);
@@ -1693,7 +1693,7 @@ void *dlopen(const char *name, int mode) {
 							}
 							_dlclose(handle, _DLCLOSE_FLAG_NOFINI);
 							return 0;
-						} 
+						}
 
 						/*
 						 * place the object at the end of the all list
@@ -1910,8 +1910,8 @@ static Ldd_Eh_Node_t *ldd_eh_head=NULL;
 static Ldd_Eh_Node_t *ldd_eh_tail=NULL;
 
 /* add an event handler to the list */
-static Ldd_Eh_Node_t *ldd_add_event_handler(Ldd_Eh_t eh, void *eh_d_handle, 
-                      unsigned flags) 
+static Ldd_Eh_Node_t *ldd_add_event_handler(Ldd_Eh_t eh, void *eh_d_handle,
+                      unsigned flags)
 {
 	Ldd_Eh_Node_t *node;
 	if (eh == NULL) {
@@ -1919,7 +1919,7 @@ static Ldd_Eh_Node_t *ldd_add_event_handler(Ldd_Eh_t eh, void *eh_d_handle,
 		return(NULL);
 	}
 	node = _dl_alloc(sizeof(Ldd_Eh_Node_t));
-	if (node == NULL) 
+	if (node == NULL)
 		return(NULL);
 	node->eh = eh;
 	node->eh_d_handle = eh_d_handle;
@@ -1951,7 +1951,7 @@ static int ldd_remove_event_handler(Ldd_Eh_Node_t *handle)
 		if (temp == handle)
 			break;
 		temp = temp->eh_next;
-	}	
+	}
 	if (temp == NULL) {
 		/* the handle passed in is not valid */
 		errno = EINVAL;
@@ -1982,7 +1982,7 @@ static int ldd_remove_event_handler(Ldd_Eh_Node_t *handle)
 }
 
 /* run one handler for a given map object*/
-static void ldd_run_one_handler(struct object *obj, Ldd_Eh_t eh, 
+static void ldd_run_one_handler(struct object *obj, Ldd_Eh_t eh,
            void *eh_d_handle, unsigned flags)
 {
 	Ldd_Eh_Data_t ehd;

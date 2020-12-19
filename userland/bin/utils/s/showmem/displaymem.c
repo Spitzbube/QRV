@@ -2,7 +2,7 @@
  * This file is responsible for providing the various types of display
  * feedback to the user about the mappings in the system.
  */
- 
+
 #include <stdio.h>
 #include <string.h>
 #include <sys/neutrino.h>
@@ -21,7 +21,7 @@ struct io_data {
 char *formatValue(long value) {
 	static char data[20];
 	static char endfix;
-	
+
 	if(value > (1024 * 1024)) {
 		value /= (1024 * 1024);
 		endfix = 'M';
@@ -31,8 +31,8 @@ char *formatValue(long value) {
 	} else {
 		endfix = 'b';
 	}
-	
-	sprintf(data, "%ld%c", value, endfix); 	
+
+	sprintf(data, "%ld%c", value, endfix);
 
 	return data;
 }
@@ -59,7 +59,7 @@ static uint64_t dump_totals(FILE *fp, uint64_t *totals, int *isram, int len, int
 	uint64_t 	sum = 0LL;
 	int 		i;
 	char		cs, ce;
-		
+
 	for(i = 0; i < len; i++) {
 		sum += totals[i];
 	}
@@ -67,7 +67,7 @@ static uint64_t dump_totals(FILE *fp, uint64_t *totals, int *isram, int len, int
 	if(fp == NULL) {
 		return sum;
 	}
-	
+
 	//Total | Code | Data | Heap | Stack | Other
 	cs = ce = ' ';
 	fprintf(fp, "%c%8lld%c ", cs, ((accumulate) ? sum : 0LL), ce);
@@ -88,7 +88,7 @@ static uint64_t dump_totals(FILE *fp, uint64_t *totals, int *isram, int len, int
 	} else {
 		fprintf(fp, "%s\n", name);
 	}
-	
+
 	return sum;
 }
 
@@ -96,7 +96,7 @@ static shared_memblock_t *get_shared_block(system_entry_t *system, int index) {
 	if(index < 0 || index >= system->shared_blocks.block_count) {
 		return NULL;
 	}
-	
+
 	return &system->shared_blocks.memblocks[index];
 }
 
@@ -105,15 +105,15 @@ static shared_memblock_t *get_shared_block(system_entry_t *system, int index) {
  * provides the report in a two fold manner:
  * [Process Summary: Total | Code | Data | Heap | Stack | Other]
  * [Per Library:     ----- | XXXX | YYYY | ---- | ----- | -----]
- * 
+ *
  * The Process Summary, for the code/data portion should represent the
  * sum of the library (and executable) components underneath them.  The
  * "billing" of code/data is reported for the first instance of a library
  * or executable but is not billed for future reported processes.
- * 
+ *
  * The Total column is the summary of the Code/Data/Heap/Stack/Other
  * entries
- */ 
+ */
 int walk_process_overview_callback(pid_entry_t *pmb, void *data) {
 	uint64_t		totals[TYPE_MAX];
 	uint64_t		ret;
@@ -125,14 +125,14 @@ int walk_process_overview_callback(pid_entry_t *pmb, void *data) {
 	char 			*unknown = "unknown";
 	char 			*procnto = "procnto";
 	int 			type, i = 0;
-	
+
 	name = pmb->name;
 	if(name == NULL) {
 		name = (pmb->pid == 1) ? procnto : unknown;
 	} else {
 		name = get_basename(name);
 	}
-	
+
 	memset(totals, 0, TYPE_MAX * sizeof(*totals));
 
 	//Add all of the private donations this process has made
@@ -146,7 +146,7 @@ int walk_process_overview_callback(pid_entry_t *pmb, void *data) {
 		type = (mi->memblock.type < TYPE_MAX) ? mi->memblock.type : TYPE_UNKNOWN;
 		totals[type] += mi->memblock.size;
 	}
-	
+
 	//Include the unique shared library components (shared but not really)
 	for(i = 0; i < io->system->shared_blocks.block_count; i++) {
 		smi = &io->system->shared_blocks.memblocks[i];
@@ -161,8 +161,8 @@ int walk_process_overview_callback(pid_entry_t *pmb, void *data) {
 		type = (smi->memblock.type < TYPE_MAX) ? smi->memblock.type : TYPE_UNKNOWN;
 		totals[type] += smi->memblock.size;
 	}
-	
-	//Summarize the total process information 
+
+	//Summarize the total process information
 	if(io->opts->show_process_summary) {
 		ret = dump_totals(io->output, totals, NULL, TYPE_MAX, 1, pmb->pid, name, NULL);
 	} else {
@@ -173,10 +173,10 @@ int walk_process_overview_callback(pid_entry_t *pmb, void *data) {
 	//Show the breakdown of where these values come from
 	for(i = 0; i < pmb->block_count; i++) {
 		mi = &pmb->memblocks[i];
-	
+
 		//Only report on the code/data portions and what they contribute
-		if(mi->memblock.type != TYPE_CODE && 
-		   mi->memblock.type != TYPE_DATA && 
+		if(mi->memblock.type != TYPE_CODE &&
+		   mi->memblock.type != TYPE_DATA &&
   		   mi->memblock.type != TYPE_STACK) {
 			continue;
 		}
@@ -184,7 +184,7 @@ int walk_process_overview_callback(pid_entry_t *pmb, void *data) {
 		//Each iteration of this loop prints only specific detailed types
 		memset(totals, 0, TYPE_MAX * sizeof(*totals));
 		memset(isram, 0, TYPE_MAX * sizeof(*isram));
-		
+
 		//Report both the code and the data sections at the same time
 		if(mi->memblock.type == TYPE_CODE || mi->memblock.type == TYPE_DATA) {
 			totals[mi->memblock.type] = mi->memblock.size;
@@ -195,15 +195,15 @@ int walk_process_overview_callback(pid_entry_t *pmb, void *data) {
 				smi->pid = -1*smi->pid;				//Mark as reported
 				totals[smi->memblock.type] = smi->memblock.size;
 				isram[smi->memblock.type] = IS_RAM_CONSUMING(smi->memblock.flags);
-			} 
-			
+			}
+
 			if(totals[TYPE_CODE] == 0 && totals[TYPE_DATA] == 0) {
 				continue;
 			}
 
-			if(io->opts->show_process_details & PROCESS_DETAIL_LIBRARY) {		
+			if(io->opts->show_process_details & PROCESS_DETAIL_LIBRARY) {
 				dump_totals(io->output, totals, isram, TYPE_MAX, 0, pmb->pid, name, (mi->memblock.name) ? mi->memblock.name : unknown);
-			}		
+			}
 		} else if(mi->memblock.type == TYPE_STACK) {
 			char threadname[20];
 			sprintf(threadname, "thread %d", mi->tid);
@@ -212,11 +212,11 @@ int walk_process_overview_callback(pid_entry_t *pmb, void *data) {
 			//NOTE: This is just a sanity check, should never happen
 			isram[mi->memblock.type] = IS_RAM_CONSUMING(mi->memblock.flags);
 
-			if(io->opts->show_process_details & PROCESS_DETAIL_STACK) {		
+			if(io->opts->show_process_details & PROCESS_DETAIL_STACK) {
 				dump_totals(io->output, totals, isram, TYPE_MAX, 0, pmb->pid, name, threadname);
-			}		
+			}
 		}
-	}		
+	}
 
 	//Show the rest of the shared libraries not reported above??
 	for(i = 0; i < io->system->shared_blocks.block_count; i++) {
@@ -224,21 +224,21 @@ int walk_process_overview_callback(pid_entry_t *pmb, void *data) {
 		if(smi->pid != pmb->pid) {
 			continue;
 		}
-	
-		memset(totals, 0, TYPE_MAX * sizeof(*totals));	
-		memset(isram, 0, TYPE_MAX * sizeof(*isram));	
+
+		memset(totals, 0, TYPE_MAX * sizeof(*totals));
+		memset(isram, 0, TYPE_MAX * sizeof(*isram));
 
 		type = (smi->memblock.type < TYPE_MAX) ? smi->memblock.type : TYPE_UNKNOWN;
 		totals[type] += smi->memblock.size;
 		isram[type] = IS_RAM_CONSUMING(smi->memblock.flags);
 
 		smi->pid = -1*smi->pid;									//Mark as reported
-		
-		if(io->opts->show_process_details & PROCESS_DETAIL_LIBRARY) {		
+
+		if(io->opts->show_process_details & PROCESS_DETAIL_LIBRARY) {
 			dump_totals(io->output, totals, isram, TYPE_MAX, 0, pmb->pid, name, (smi->memblock.name) ? smi->memblock.name : unknown);
 		}
 	}
-		
+
 	return 0;
 }
 
@@ -247,11 +247,11 @@ int walk_slib_overview_callback(shared_memblock_t *smb, void *data) {
 	uint64_t		totals[TYPE_MAX];
 	int				isram[TYPE_MAX];
 	int				type, accumulate;
-	
+
 	//Only report those entries not claimed by others
 	if(smb->pid == 0) {
-		memset(totals, 0, TYPE_MAX * sizeof(*totals));	
-		memset(isram, 0, TYPE_MAX * sizeof(*isram));	
+		memset(totals, 0, TYPE_MAX * sizeof(*totals));
+		memset(isram, 0, TYPE_MAX * sizeof(*isram));
 
 		type = (smb->memblock.type < TYPE_MAX) ? smb->memblock.type : TYPE_UNKNOWN;
 
@@ -266,9 +266,9 @@ int walk_slib_overview_callback(shared_memblock_t *smb, void *data) {
 
 		if(io->opts->show_process_summary) {
 			dump_totals(io->output, totals, isram, TYPE_MAX, accumulate, -1, (smb->memblock.name) ? smb->memblock.name : "unknown", NULL);
-		} 
-	}	
-	
+		}
+	}
+
 	return 0;
 }
 
@@ -302,22 +302,22 @@ static uint64_t get_total_mem(void) {
 
 void display_overview(system_entry_t *root, struct showmem_opts *opts) {
 	struct io_data io;
-	
+
 	memset(&io, 0, sizeof(io));
 	io.output = stdout;
 	io.system = root;
 	io.opts = opts;
-	
+
 	if(opts->show_process_summary) {
 		fprintf(stdout, "Process listing (Total, Code, Data, Heap, Stack, Other)\n");
 	}
-	iterate_processes(root, walk_process_overview_callback, &io);	
-	
+	iterate_processes(root, walk_process_overview_callback, &io);
+
 	if(opts->show_process_summary) {
 		fprintf(stdout, "Shared shared objects (Total, Code, Data, Heap, Stack, Other)\n");
 	}
-	iterate_sharedlibs(root, walk_slib_overview_callback, &io);	
-	
+	iterate_sharedlibs(root, walk_slib_overview_callback, &io);
+
 	if(opts->show_system_summary) {
 		char 		*c;
 		uint64_t 	norm, total;
@@ -337,11 +337,11 @@ void display_overview(system_entry_t *root, struct showmem_opts *opts) {
 	}
 }
 
-void iterate_processes(system_entry_t *root, 
+void iterate_processes(system_entry_t *root,
                        int (* func)(pid_entry_t *block, void *data), void *data) {
 	int ret;
 	pid_entry_t *item;
-	
+
 	for(item = root->pid_list; item != NULL; item = item->next) {
 		ret = func(item, data);
 		if(ret < 0) {
@@ -350,14 +350,14 @@ void iterate_processes(system_entry_t *root,
 	}
 }
 
-void iterate_sharedlibs(system_entry_t *root, 
+void iterate_sharedlibs(system_entry_t *root,
                        int (* func)(shared_memblock_t *block, void *data), void *data) {
 	int i, ret;
-	
+
 	for(i = 0; i < root->shared_blocks.block_count; i++) {
 		ret = func(&root->shared_blocks.memblocks[i], data);
 		if(ret < 0) {
 			break;
 		}
 	}
-}                 
+}

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -21,10 +21,10 @@
 
 
 /* Remember that the entries in this structure are position dependent.
- * So if new entries are being used or entries are being modified, 
+ * So if new entries are being used or entries are being modified,
  * always ensure that the position of a format letter in the structure
  * remains the same as it always has been. Code in other places in pidin
- * attempts to validate that the format letter and the index into the 
+ * attempts to validate that the format letter and the index into the
  * array match are in sync. */
 struct format formats[256] = {
 /* ^@ */	{ -1, 0, 0, 0},
@@ -294,19 +294,19 @@ struct format formats[256] = {
 
 char const		   *const kc_names[] =
 {
-	"nop",	
-	"trace_event",	
-	"ring0",	
+	"nop",
+	"trace_event",
+	"ring0",
 	"???",
 	"???",
 	"???",
 	"???",
-	
+
 	"sys_cpupage_get",
 	"sys_cpupage_set",
 	"???",
 	"???",
-	
+
 	"msg_sendv",
 	"msg_sendvnc",
 	"msg_error",
@@ -322,7 +322,7 @@ char const		   *const kc_names[] =
 	"msg_readiov",
 	"msg_receivepulsev",
 	"msg_verifyevent",
-	
+
 	"signal_kill",
 	"signal_return",
 	"signal_fault",
@@ -332,12 +332,12 @@ char const		   *const kc_names[] =
 	"signal_waitinfo",
 	"???",
 	"???",
-	
+
 	"channel_create",
 	"channel_destroy",
 	"???",
 	"???",
-	
+
 	"connect_attach",
 	"connect_detach",
 	"connect_server_info",
@@ -345,7 +345,7 @@ char const		   *const kc_names[] =
 	"connect_flags",
 	"???",
 	"???",
-	
+
 	"thread_create",
 	"thread_destroy",
 	"thread_destroyall",
@@ -355,7 +355,7 @@ char const		   *const kc_names[] =
 	"thread_ctl",
 	"???",
 	"???",
-	
+
 	"interrupt_attach",
 	"interrupt_detach_func",
 	"interrupt_detach",
@@ -366,13 +366,13 @@ char const		   *const kc_names[] =
 	"???",
 	"???",
 	"???",
-	
+
 	"clock_time",
 	"clock_adjust",
 	"clock_period",
 	"clocl_id",
 	"???",
-	
+
 	"timer_create",
 	"timer_destroy",
 	"timer_settime",
@@ -381,7 +381,7 @@ char const		   *const kc_names[] =
 	"timer_timeout",
 	"???",
 	"???",
-	
+
 	"sync_create",
 	"sync_destroy",
 	"sync_mutex_lock",
@@ -392,13 +392,13 @@ char const		   *const kc_names[] =
 	"sync_sem_wait",
 	"sync_ctl",
 	"sync_mutex_revive",
-	
+
 	"sched_get",
 	"sched_set",
 	"sched_yield",
 	"sched_info",
 	"???",
-	
+
 	"net_cred",
 	"net_vtid",
 	"net_unblock",

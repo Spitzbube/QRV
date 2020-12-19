@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -55,27 +55,27 @@ Note:
 	Stage 1 of the warnings/errors cleanup.
 
 	Revision 1.9  2005/06/03 01:37:45  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.8  2003/11/28 21:27:37  kewarken
 	win32 variant + port
-	
+
 	Revision 1.7  2003/08/25 15:35:06  martin
 	Update QSSL Copyright.
-	
+
 	Revision 1.6  1999/08/09 14:33:43  spuri
 	Added the -n option to suppress the trailing newline.
-	
+
 	Revision 1.5  1998/05/01 16:03:24  eric
 	reorg for gcc, fixed \v
-	
+
 	Revision 1.4  1997/02/12 18:39:06  eric
 	got rid of stdutil.h ifdef
 
@@ -90,7 +90,7 @@ Note:
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 
 /*

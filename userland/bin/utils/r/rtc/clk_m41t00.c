@@ -1,29 +1,29 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 #include "rtc.h"
 #include <time.h>
 #include <fcntl.h>
 #include <hw/i2c.h>
 
-/* 
+/*
  * STM M41T00 Serial Access Timekeeper
  */
 #define M41T00_SEC          0   /* 00-59 */
@@ -96,7 +96,7 @@ m41t00_i2c_write(unsigned char reg, unsigned char val[], unsigned char num)
 int
 RTCFUNC(init,m41t00)(struct chip_loc *chip, char *argv[])
 {
-    fd = open((argv && argv[0] && argv[0][0])? 
+    fd = open((argv && argv[0] && argv[0][0])?
             argv[0]: M41T00_I2C_DEVNAME, O_RDWR);
     if (fd < 0) {
         fprintf(stderr, "Unable to open I2C device\n");
@@ -115,7 +115,7 @@ RTCFUNC(get,m41t00)(struct tm *tm, int cent_reg)
 
     tm->tm_sec  = BCD2BIN(date[M41T00_SEC] & ~M41T00_SEC_ST);
     tm->tm_min  = BCD2BIN(date[M41T00_MIN]);
-    tm->tm_hour = BCD2BIN(date[M41T00_HOUR] & 
+    tm->tm_hour = BCD2BIN(date[M41T00_HOUR] &
                           ~(M41T00_HOUR_CEB|M41T00_HOUR_CB));
     tm->tm_mday = BCD2BIN(date[M41T00_DATE]);
     tm->tm_mon  = BCD2BIN(date[M41T00_MONTH]) - 1;
@@ -125,13 +125,13 @@ RTCFUNC(get,m41t00)(struct tm *tm, int cent_reg)
     if (date[M41T00_HOUR] & M41T00_HOUR_CEB) {
         century = date[M41T00_HOUR] & M41T00_HOUR_CB;
         if (century) {
-            if (tm->tm_year < 70) 
+            if (tm->tm_year < 70)
                 tm->tm_year += 200;
         } else {
             tm->tm_year += 100;
         }
     } else {
-        if(tm->tm_year < 70) 
+        if(tm->tm_year < 70)
             tm->tm_year += 100;
     }
     return(0);

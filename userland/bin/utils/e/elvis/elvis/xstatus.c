@@ -195,7 +195,7 @@ void x_st_status(xw, info, line, column, learn, mode)
 		/* Reset the "recolored" flag */
 		xw->st.recolored = False;
 	}
-		
+
 	/* If we have new text, and it is different from old text, use it */
 	lclear = (int)xw->st.rulerpos;
 	if (!info)

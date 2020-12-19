@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -50,12 +50,12 @@ Options:
  *
  * Description:
  *			The head utility copies its input files to the standard output
- *			ending the output for each file at a designated point.                             
+ *			ending the output for each file at a designated point.
  *			Copying ends at the point in each input file indicated by the -n
  *			option.  The argument number is counted in units of lines or bytes,
  *			according to the options -l and -c.
  *
- * Note:	See POSIX 1003.2 Draft 9 Section 4.60.  
+ * Note:	See POSIX 1003.2 Draft 9 Section 4.60.
  *
  * Args:
  *			-c							The quantity of output is in bytes
@@ -66,7 +66,7 @@ Options:
  *			filename					Name of input file
  *
  */
- 
+
 #ifdef __MINGW32__
 #include <lib/compat.h>
 #endif
@@ -79,7 +79,7 @@ Options:
 #include <sys/stat.h>
 char	buff[ LINE_MAX ];
 
-void head( FILE *fp, off_t offset, unsigned byte_flag)	
+void head( FILE *fp, off_t offset, unsigned byte_flag)
 {
 	off_t	count = 0;
 	int		inchar;
@@ -101,7 +101,7 @@ int main( int argc, char **argv )
 	off_t 	offset;
 	FILE	*fp;
         struct stat s;
-	
+
 	error = byte_offset = line_offset = multiple = 0;
 	offset = 10;	/* default */
 	first  = 1;

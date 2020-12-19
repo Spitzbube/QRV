@@ -197,7 +197,7 @@ static ELVBOOL hlprep(win, buf)
 	 * enough fonts have been set, then recycle the defined ones.  We can
 	 * be sure that the first font has been set because we give it a
 	 * default definition in the drawalloc() function.
-	 */ 
+	 */
 	for (i = hllimit - 1, j = 0; i >= 0; i--)
 	{
 		win->hlinfo[i].font = hlfont[j++];
@@ -1186,7 +1186,7 @@ static void updateimage(win)
 		{
 			/* see how many following rows have the same shift */
 			for (same = 1;
-			     gui->shiftrows && 
+			     gui->shiftrows &&
 			        row + same < di->rows - 1 &&
 				di->newrow[row].shiftright == di->newrow[row + same].shiftright;
 			     same++)
@@ -1208,7 +1208,7 @@ static void updateimage(win)
 							di->newrow[i].shiftright,
 							ncols);
 					}
-					else 
+					else
 					{
 						/* shift left by deleting */
 						delimage(&di->curchar[i * ncols],
@@ -1291,7 +1291,7 @@ static void updateimage(win)
 							di->newrow[row].inschars,
 							ncols - column);
 					}
-					else 
+					else
 					{
 						/* shift left by deleting */
 						delimage(&di->curchar[rowXncols + column],
@@ -1353,7 +1353,7 @@ static void updateimage(win)
 #ifdef SLOPPY_ITALICS
 			/* if the change is in italics, and the preceding
 			 * characters were also italic, then include those
-			 * preceding characters in the redrawn span; otherwise 
+			 * preceding characters in the redrawn span; otherwise
 			 * they would be distorted by the new text.
 			 */
 			i = di->newfont[base];
@@ -1629,7 +1629,7 @@ static void genlastrow(win)
 	}
 
 	/* does the GUI have a status function? */
-	if (!gui->status || !(*gui->status)(win->gw, left, 
+	if (!gui->status || !(*gui->status)(win->gw, left,
 		markline(win->state->cursor),
 		(*win->md->mark2col)(win, win->state->cursor, viiscmd(win)) + 1,
 		maplrnchar(o_modified(markbuffer(win->cursor)) ? '*' : ','),
@@ -1682,7 +1682,7 @@ static void genlastrow(win)
 				markline(win->state->cursor),
 				maplrnchar(o_modified(markbuffer(win->cursor)) ? '*' : ','),
 				(*win->md->mark2col)(win, win->state->cursor, viiscmd(win)) + 1);
-	
+
 			scan = buf;
 			for (i = base + o_columns(win) - 10 - strlen(buf); *scan; i++)
 			{
@@ -1716,7 +1716,7 @@ static void genlastrow(win)
 #ifdef FEATURE_MISC
 /* This function checks to see if we can skip regenerating a window image.
  * If not, then it returns ElvFalse without doing anything...
- * 
+ *
  * But if we can, it updates the bottom row (status line) and moves the cursor
  * to where it should be, and then returns ElvTrue.
  */
@@ -2146,7 +2146,7 @@ static void opentextline(win, text, len)
 				thiscol++;
 			} while (thiscol < win->di->columns && thiscol % 8 != 0);
 			break;
-				
+
 		  case '\r':
 			win->di->opencell -= thiscol;
 			thiscol = 0;
@@ -2320,7 +2320,7 @@ void drawmsg(win, imp, verbose, len)
 		drawexpose(win, (int)(o_lines(win)-1), 0, (int)(o_lines(win)-1), (int)(o_columns(win)-1));
 		win->di->newmsg = ElvTrue;
 	}
-	
+
 	/* non-status messages force us out of DRAW_VISUAL state */
 	if (imp != MSG_STATUS && win->di->logic != DRAW_SCRATCH && win->di->drawstate == DRAW_VISUAL)
 	{

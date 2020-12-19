@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -43,17 +43,17 @@
 #endif
 
 /*
- This function does nothing but package the data into a message to send off to a 
+ This function does nothing but package the data into a message to send off to a
  device that answers the call presented in this message.
- 
+
  The ... arguments are defined as
  [datalen],[special]
 
  [datalen] is the size in bytes of data being passed to the client,
 		   only valid if the _MFLAG_STRUCT flag is set.  Otherwise
 		   it is assumed that data is a null terminated character string.
- [special] is a null terminated character string indicating the 
-		   special device and is only valid if the _MFLAG_SPEC flag 
+ [special] is a null terminated character string indicating the
+		   special device and is only valid if the _MFLAG_SPEC flag
 		   is set.
 */
 int _mount(int mflags, const char *type, const char *dir, int flags, const void *data, ...) {
@@ -66,7 +66,7 @@ int _mount(int mflags, const char *type, const char *dir, int flags, const void 
 	struct _io_connect              msg;
     struct _io_connect_entry        entry;
 
-	// Check for invalid operations or overlapping flags, our mount 
+	// Check for invalid operations or overlapping flags, our mount
 	if (!dir) {
 		errno = EINVAL;
 		return(-1);
@@ -107,7 +107,7 @@ int _mount(int mflags, const char *type, const char *dir, int flags, const void 
 		return(-1);
 	}
 	memset(mount_xtra, 0, extra_len);
-	mount_xtra->flags = flags;	
+	mount_xtra->flags = flags;
 	mount_xtra->nbytes = extra_len;
 	mount_xtra->datalen = datalen;
 
@@ -154,11 +154,11 @@ int _mount(int mflags, const char *type, const char *dir, int flags, const void 
 		ctrl.msg = &msg;
 	}
 
-	//Copy the use data over, would be better as an iov 
+	//Copy the use data over, would be better as an iov
 	//Actually send off the request to a matching manager (we hope)
 	dst = (char *)mount_xtra + sizeof(*mount_xtra);
 
-	memcpy(dst, data, datalen); 
+	memcpy(dst, data, datalen);
 	dst += datalen;
 
 	memcpy(dst, type, strlen(type) + 1);
@@ -209,7 +209,7 @@ int _mount(int mflags, const char *type, const char *dir, int flags, const void 
  call to mount(), this is an over-ride that indicates that we should
  NOT try and get a server connection for the special device.  The
  flag gets turned off for the call to _mount().  Otherwise we will
- stat() the special device, and if successful then turn on the 
+ stat() the special device, and if successful then turn on the
  _MFLAG_OCB for _mount().  This is better than relying on a leading
  slash since it allows us to use relative paths to devices.
 
@@ -228,17 +228,17 @@ int mount(const char *spec, const char *dir, int flags, const char *type, const 
 
 	if (spec) {					//Always include the special device if we have one
 		mflags |= _MFLAG_SPEC;
-		//We want to stat the special device to see if it exists 
+		//We want to stat the special device to see if it exists
 		if (!(flags & _MFLAG_OCB) && stat(spec, &st) != -1) {
 			//TODO: determine a better way to get the size required
 			if (!(fullspec = malloc(PATH_MAX)) ||
 			    !_fullpath(fullspec, spec, PATH_MAX)) {
-				if (fullspec) { 
+				if (fullspec) {
 					free(fullspec);
 				}
 				return -1;
 			}
-			mflags |= _MFLAG_OCB;	
+			mflags |= _MFLAG_OCB;
 		}
 		else {
 			mflags &= ~_MFLAG_OCB;
@@ -246,11 +246,11 @@ int mount(const char *spec, const char *dir, int flags, const char *type, const 
 	}
 
 	if (datalen >= 0) {
-		ret = _mount(mflags | _MFLAG_STRUCT, type, dir, flags, 
+		ret = _mount(mflags | _MFLAG_STRUCT, type, dir, flags,
 						data, datalen, (fullspec) ? fullspec : spec);
 	}
 	else {
-		ret = _mount(mflags, type, dir, flags, 
+		ret = _mount(mflags, type, dir, flags,
 						data, (fullspec) ? fullspec : spec);
 	}
 
@@ -271,10 +271,10 @@ char * mount_parse_generic_args(char *options, int *flags) {
 								  "nosuid", "suid",
 								  "nocreat", "creat",
 								  "noatime", "atime",
-								  "remount", "update", 
-								  "before", 
-								  "after", 
-								  "opaque", 
+								  "remount", "update",
+								  "before",
+								  "after",
+								  "opaque",
 								  "nostat",
 								  "enum", "enumerate",
 								  "implied",
@@ -331,18 +331,18 @@ char * mount_parse_generic_args(char *options, int *flags) {
         case 15:                         //nostat
         *flags |= _MFLAG_OCB; break;
         case 16:                         //enum, enumerate
-        case 17:                         
+        case 17:
         *flags |= _MOUNT_ENUMERATE; break;
         case 18:                         //implied
         *flags |= _MOUNT_IMPLIED; break;
 
         default:
-			if (saved && saved[0]) 
+			if (saved && saved[0])
 				strcat(saved, ",");
 			strcat(saved, value);
         }
 	}
-	if (strlen(saved)) 
+	if (strlen(saved))
 		strcpy(ret, saved);
 	else
 		ret = NULL;

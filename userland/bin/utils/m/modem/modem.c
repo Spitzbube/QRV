@@ -289,7 +289,7 @@ int main( argc, argv )
 		case 'c':
 			strcpy(callcmd, cmd = optarg);
 			break;
-		case 'C': 
+		case 'C':
 			cts_chk = FALSE;
 			break;
 		case 'd':
@@ -650,18 +650,18 @@ restart2:
 			write(modem_fd, &c, 1);
 			if (*remcmd == '\0')
 				break;
-/* 
+/*
 	Since the passwd prompt doesn't end with a space (login prompt does
-   at time of writing), if the passwd is wrong, the following should 
-   cause get_modem() to time out on next passwd prompt (can't change 
+   at time of writing), if the passwd is wrong, the following should
+   cause get_modem() to time out on next passwd prompt (can't change
    it on the fly anyway).
 */
-			term = ' ';  
+			term = ' ';
 			}
-/* 
-   Check for the standard prompts (space stripped of by get_modem()) 
+/*
+   Check for the standard prompts (space stripped of by get_modem())
 */
-		else if(term == ' ' && (buf[strlen(buf)-1] == '#' || buf[strlen(buf)-1] == '$')) { 
+		else if(term == ' ' && (buf[strlen(buf)-1] == '#' || buf[strlen(buf)-1] == '$')) {
 			write(modem_fd, remcmd, strlen(remcmd));
 			write(modem_fd, &c, 1);
 			break;
@@ -961,15 +961,15 @@ int cts() {
 	unsigned msr;
 	int retval;
 
-	
+
 	retval = devctl(modem_fd, DCMD_CHR_LINESTATUS, &msr, sizeof(msr), NULL);
 	if (retval != EOK) {
 		errno = retval;
 		return -1;
 	}
-	
+
 	return (msr & _LINESTATUS_SER_CTS);
-	
+
 #else
 	long bits[2];
 
@@ -990,8 +990,8 @@ sleepms(long msec)
 	timer.tv_sec     = msec/1000L;
 	timer.tv_nsec    = (msec%1000L) * 1000000L;
 
-	/* NYI: 	
-			what if a signal/timeout happens... 
+	/* NYI:
+			what if a signal/timeout happens...
 			should we resleep for the rest?  Probably not.
 	*/
 	nanosleep(&timer, NULL);
@@ -1145,7 +1145,7 @@ again:
 	{
 	struct _pulse proxy_pulse;
 	int retval;
-	
+
 	while ((retval = MsgReceivePulse(chid, &proxy_pulse, sizeof proxy_pulse, NULL)) == -1) {
 		if (errno == ETIMEDOUT) {
 			if(debug_fp) debugmsg("PROX: Timeout resync\n");
@@ -1158,7 +1158,7 @@ again:
 		}
 	}
 	proxy_count-= (proxy_count) ? 1 : 0;
-	
+
 	}
 #else
 	/*
@@ -1238,7 +1238,7 @@ void hold_off_modem(int signo) {
 	close(1);
 	close(2);
 	sigemptyset(&sig_set);
-	sigaddset(&sig_set, SIGUSR2);	
+	sigaddset(&sig_set, SIGUSR2);
 	if (debug_fp) debugmsg("HELD: trigger again to restart.\n");
 	while ((retsig=sigwaitinfo(&sig_set, NULL)) != SIGUSR2) {
 		if (debug_fp) debugmsg("HELD: Still waiting %d\n", retsig);
@@ -1306,7 +1306,7 @@ int dev_arm( int __fd, pid_t __proxy, unsigned __events ) {
 			exit(1);
 		}
 		dev_events &= ~_DEV_EVENT_LOGIN;
-	
+
 	} else {
 		retval = ionotify(__fd, _NOTIFY_ACTION_POLLARM, _NOTIFY_COND_INPUT, &ev);
 	}
@@ -1347,7 +1347,7 @@ unsigned dev_mode( int __fd, unsigned __mask, unsigned __mode ) {
 		} else if (__mask == 0) {
 			go_raw(__fd);
 		}
-	} else { 
+	} else {
 		if (debug_fp) debugmsg("dev_mode misuse for NTO\n");
 		perror("Bad use of emulated dev_mode");
 		exit(1);

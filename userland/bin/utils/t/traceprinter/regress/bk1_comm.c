@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,7 +33,7 @@
 *	Author:		Peter Graves
 *
 *	Notes:		This test must have the tracelogger available to it in it's
-*				path.  If this is not available the tests will not be 
+*				path.  If this is not available the tests will not be
 *				run.
 *
 *****************************************************************************/
@@ -89,19 +89,19 @@ typedef struct {
 /*--------------------------------------------------------------------------*
  *									GLOBALS 								*
  *--------------------------------------------------------------------------*/
-/* This is a global used by the traceparser callback function to  
+/* This is a global used by the traceparser callback function to
  * tell the main thread that the values it got in the events were
- * correct 
+ * correct
  */
 static int correct_values;
 
-/* 
+/*
  * This is used to tell the state thread which state to try to get into.
  */
 unsigned  cur_comm;
 
-/* 
- * This is the thread id of the state thread. This is what we will expect to 
+/*
+ * This is the thread id of the state thread. This is what we will expect to
  * get in the traceparser callback.
  */
 pthread_t exp_thread;
@@ -114,10 +114,10 @@ int chid;
 
 /* This is a list of strings to give names to the various comm events */
 char * comm_str[] = {
-	"SENDMSG", 
-	"SENDPULSE", 
-	"RECMSG", 
-	"RECPULSE", 
+	"SENDMSG",
+	"SENDPULSE",
+	"RECMSG",
+	"RECPULSE",
 	"SPULSEEXE",
 	"SPULSEDIS",
 	"SPULSEDEA",
@@ -130,9 +130,9 @@ char * comm_str[] = {
  */
 int results[3];
 
-struct sigevent myevent; /* This is the event that will be returned by the 
+struct sigevent myevent; /* This is the event that will be returned by the
 						  * isr */
- 
+
 /*--------------------------------------------------------------------------*
  *									ROUTINES								*
  *--------------------------------------------------------------------------*/
@@ -160,7 +160,7 @@ const struct sigevent * isr_handler (void *arg, int id)
 *
 *	Parameters: none
 *
-*	Returns:	-1 on failures, 0 if tracelogger is not found, and 1 when 
+*	Returns:	-1 on failures, 0 if tracelogger is not found, and 1 when
 *				tracelogger has been killed.
 *
 *****************************************************************************/
@@ -189,31 +189,31 @@ int kill_tl()
 				/* This is tracelogger */
 				kill(curpid, SIGINT);
 				/* We should be able to exit here, but we will continue just to make
-			 	 * sure there are no more traceloggers to kill 
+			 	 * sure there are no more traceloggers to kill
 				 */
 				rval=1;
 			}
-				
+
 		}
 	}
 	closedir(mydir);
 	return(rval);
-	
+
 }
 /****************************************************************************
 *
 *						Subroutine msg_thread
 *
 *	Purpose: 	This is a thread that will be used as a target for triggering
-*				all of the message related kernel calls. It will sit recieved 
-*				blocked on a channel created in main, and will just receive 
-*				messages, and if the message indicated it, will turn around 
+*				all of the message related kernel calls. It will sit recieved
+*				blocked on a channel created in main, and will just receive
+*				messages, and if the message indicated it, will turn around
 *				and send a simple message out on the channel to be received.
 *
 *	Parameters:	None
 *
 *	Returns:	Nothing
-*			
+*
 *
 *****************************************************************************/
 void * msg_thread(void * arg)
@@ -229,7 +229,7 @@ void * msg_thread(void * arg)
 			if (cur_comm==_NTO_TRACE_COMM_SPULSE_DIS) {
 				pulse=(struct _pulse *)buf;
 				ConnectDetach(pulse->scoid);
-			} 
+			}
 
 			continue;
 		}
@@ -242,7 +242,7 @@ void * msg_thread(void * arg)
 			rcvid=MsgReceive(chid, buf,sizeof(buf), &info);
 			if (rcvid!=0) {
 				/* If we get a message when expecting a pulse, this should
-				 * be the done message, so just jump down there.. 
+				 * be the done message, so just jump down there..
 				 */
 				goto msg;
 			}
@@ -261,14 +261,14 @@ msg:
 			pthread_exit(0);
 		}
 	}
-	
+
 }
 
 /****************************************************************************
 *
 *						Subroutine parse_cb
 *
-*	Purpose: 	This is a traceparcer callback for all events. It will check 
+*	Purpose: 	This is a traceparcer callback for all events. It will check
 *				the given event length, and parameter values against those
 *				that are currenly pointed to in the global cur_comm
 *
@@ -277,7 +277,7 @@ msg:
 *				event_p - pointer to the event array
 *				length  - length of the event array
 *
-*	Returns:	This function will set the value of correct values. It 
+*	Returns:	This function will set the value of correct values. It
 *				will be set to -1 on failure, and 1 on success.
 *
 *****************************************************************************/
@@ -285,26 +285,26 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 {
 	char buf[100];
 
-	/* This is to handle the case when we may see multiple events in the 
+	/* This is to handle the case when we may see multiple events in the
 	 * trace logger.  If we have seen the correct event, then we can just
-	 * ignore this one.  
+	 * ignore this one.
 	 */
-	if (correct_values==1) 
+	if (correct_values==1)
 		return(EOK);
 	/*
 	 * Now check that the values that we recieved in the callback are the expected values.
 	 */
-	if ((event_p[0]==results[0]) && (event_p[1]==results[1]))  
+	if ((event_p[0]==results[0]) && (event_p[1]==results[1]))
 		correct_values=1;
 	else  {
-		snprintf(buf,sizeof(buf), "Expected: %x and %d  Got: %x and %d", 
+		snprintf(buf,sizeof(buf), "Expected: %x and %d  Got: %x and %d",
 			results[0], results[1], event_p[0], event_p[1]);
 		testnote(buf);
 		correct_values=-1;
 	}
 	return(EOK);
-	
-	
+
+
 }
 
 /****************************************************************************
@@ -317,7 +317,7 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 *	Returns: 	Pid of the tracelogger
 *
 *****************************************************************************/
-int start_logger(void) 
+int start_logger(void)
 {
 	int tlpid,rc;
 	char buf[100];
@@ -366,7 +366,7 @@ int main(int argc, char *argv[])
 	/* Get rid of tracelogger if it is running  */
 	tlkilled=kill_tl();
 
-	
+
 	for (cur_comm=_NTO_TRACE_COMM_SMSG;cur_comm<_NTO_TRACE_COMM_SPULSE_QUN;cur_comm++) {
 		/***********************************************************************/
 
@@ -381,11 +381,11 @@ int main(int argc, char *argv[])
 			testpntsetupxfail("9752");
 		}
 		exp_thread=cur_thread;
-			
+
 		/* We need to start up the tracelogger in daemon mode, 1 itteration.
-		 * we will filter out everything other then comm events, then 
-		 * start logging. 
-		 * We then will trigger a communication event, and flush the trace buffer. 
+		 * we will filter out everything other then comm events, then
+		 * start logging.
+		 * We then will trigger a communication event, and flush the trace buffer.
 		 * This  should create a VERY minimal trace buffer that will be easily parsed
 		 */
 		tlpid=start_logger();
@@ -402,7 +402,7 @@ int main(int argc, char *argv[])
 
 		rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 		assert(rc!=-1);
-		/* then trigger an event. 
+		/* then trigger an event.
 		 */
 		/* We always need a chid */
 		switch (cur_comm) {
@@ -438,12 +438,12 @@ int main(int argc, char *argv[])
 				ConnectServerInfo(getpid(), coid, &info);
 				results[0]=info.scoid;
 				results[1]=info.pid;
-				
+
 				MsgSendPulse(coid, 10, -11, 12);
 				break;
 			case _NTO_TRACE_COMM_SPULSE_EXE:
-				/* To get an exe, we need to have an interrupt handler 
-				 * return a pulse 
+				/* To get an exe, we need to have an interrupt handler
+				 * return a pulse
 	 			 */
 				/* in the case of a pulse, we have to pull out the scoid here */
 				ConnectServerInfo(getpid(), coid, &info);
@@ -455,12 +455,12 @@ int main(int argc, char *argv[])
 				/*Install our interrupt handler */
 				/* Get io privity */
 				ThreadCtl( _NTO_TCTL_IO, 0 );
-	 
-				/* Now, add our interrupt handler. 
+
+				/* Now, add our interrupt handler.
 				 */
 				iid=InterruptAttach(SYSPAGE_ENTRY(qtime)->intr, isr_handler,NULL, 0, 0);
 				assert(iid!=-1);
-				
+
 				/* Wait for some interrupts to happen */
 				delay(300);
 
@@ -474,7 +474,7 @@ int main(int argc, char *argv[])
 				results[1]=info.pid;
 				/* For the disconnect pulse, just disconnect from the channel */
 				ConnectDetach(coid);
-				delay(100); 
+				delay(100);
 				break;
 			case _NTO_TRACE_COMM_SPULSE_DEA:
 				ConnectServerInfo(getpid(), coid, &info);
@@ -501,41 +501,41 @@ int main(int argc, char *argv[])
 				results[1]=info.pid;
 				break;
 
-				
+
 		}
 		/* Give stuff a chance to sync up */
 		sleep(1);
-		
+
 		/* flush the trace buffer and wait for the tracelogger to exit*/
-		rc=TraceEvent(_NTO_TRACE_FLUSHBUFFER);	
+		rc=TraceEvent(_NTO_TRACE_FLUSHBUFFER);
 		rc=waitpid(tlpid, &status, 0);
 		assert(tlpid==rc);
-	
-		/* Now, setup the traceparser lib to pull out the comm events, 
-		 * and make sure our event shows up 
+
+		/* Now, setup the traceparser lib to pull out the comm events,
+		 * and make sure our event shows up
 		 */
 		tp_state=traceparser_init(NULL);
 		assert(tp_state!=NULL);
 		traceparser_cs(tp_state, NULL, parse_cb, _NTO_TRACE_COMM, cur_comm);
-	
-		/* Since we don't want a bunch of output being displayed in the 
+
+		/* Since we don't want a bunch of output being displayed in the
 		 * middle of the tests, turn off verbose output.
 		 */
 		traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 		/* Set correct_values to 0, so we can see if the callback actually
-		 * got called. 
+		 * got called.
 		 */
 		correct_values=0;
 		/* And parse the tracebuffer */
 		traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-		
-		if (correct_values==0) 
+
+		if (correct_values==0)
 			testpntfail("Our callback never got called, no events?");
-		else if (correct_values==-1) 
+		else if (correct_values==-1)
 			testpntfail("Got the wrong comm events");
 		else if (correct_values==1)
 			testpntpass("Got the correct values");
-		else 
+		else
 			testpntfail("This should not happen");
 
 		/* Clean up after ourselves */
@@ -545,11 +545,11 @@ int main(int argc, char *argv[])
 		/***********************************************************************/
 		/* This is similar to above, but we will all the whole comm class, not just
 		 * an event.  This should make no difference, but there are 2 paths for the
-		 * the addition, and there have been some problems with the 2 paths 
+		 * the addition, and there have been some problems with the 2 paths
 		 *
 		 */
 		/***********************************************************************/
-	
+
 		/***********************************************************************/
 		/*
 		 * Make sure that if we trigger a communication event, that it gets
@@ -559,11 +559,11 @@ int main(int argc, char *argv[])
 	 	testpntbegin(message);
 
 		exp_thread=cur_thread;
-			
+
 		/* We need to start up the tracelogger in daemon mode, 1 itteration.
-		 * we will filter out everything other then comm events, then 
-		 * start logging. 
-		 * We then will trigger a communication event, and flush the trace buffer. 
+		 * we will filter out everything other then comm events, then
+		 * start logging.
+		 * We then will trigger a communication event, and flush the trace buffer.
 		 * This  should create a VERY minimal trace buffer that will be easily parsed
 		 */
 		tlpid=start_logger();
@@ -580,7 +580,7 @@ int main(int argc, char *argv[])
 
 		rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 		assert(rc!=-1);
-		/* then trigger an event. 
+		/* then trigger an event.
 		 */
 		/* We always need a coid */
 		coid = ConnectAttach(0, getpid(), chid, _NTO_SIDE_CHANNEL, 0);
@@ -598,8 +598,8 @@ int main(int argc, char *argv[])
 				MsgSendPulse(coid, 10, -11, 12);
 				break;
 			case _NTO_TRACE_COMM_SPULSE_EXE:
-				/* To get an exe, we need to have an interrupt handler 
-				 * return a pulse 
+				/* To get an exe, we need to have an interrupt handler
+				 * return a pulse
 	 			 */
 				memset(&myevent, 0, sizeof(myevent));
 				SIGEV_PULSE_INIT( &myevent, coid, 10, -11, 0 );
@@ -607,12 +607,12 @@ int main(int argc, char *argv[])
 				/*Install our interrupt handler */
 				/* Get io privity */
 				ThreadCtl( _NTO_TCTL_IO, 0 );
-	 
-				/* Now, add our interrupt handler. 
+
+				/* Now, add our interrupt handler.
 				 */
 				iid=InterruptAttach(SYSPAGE_ENTRY(qtime)->intr, isr_handler,NULL, 0, 0);
 				assert(iid!=-1);
-				
+
 				/* Wait for some interrupts to happen */
 				delay(300);
 
@@ -649,41 +649,41 @@ int main(int argc, char *argv[])
 				results[1]=info.pid;
 				break;
 
-				
+
 		}
 		/* Give stuff a chance to sync up */
 		sleep(1);
-		
+
 		/* flush the trace buffer and wait for the tracelogger to exit*/
-		rc=TraceEvent(_NTO_TRACE_FLUSHBUFFER);	
+		rc=TraceEvent(_NTO_TRACE_FLUSHBUFFER);
 		rc=waitpid(tlpid, &status, 0);
 		assert(tlpid==rc);
-	
-		/* Now, setup the traceparser lib to pull out the comm events, 
-		 * and make sure our event shows up 
+
+		/* Now, setup the traceparser lib to pull out the comm events,
+		 * and make sure our event shows up
 		 */
 		tp_state=traceparser_init(NULL);
 		assert(tp_state!=NULL);
 		traceparser_cs(tp_state, NULL, parse_cb, _NTO_TRACE_COMM, cur_comm);
-	
-		/* Since we don't want a bunch of output being displayed in the 
+
+		/* Since we don't want a bunch of output being displayed in the
 		 * middle of the tests, turn off verbose output.
 		 */
 		traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 		/* Set correct_values to 0, so we can see if the callback actually
-		 * got called. 
+		 * got called.
 		 */
 		correct_values=0;
 		/* And parse the tracebuffer */
 		traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-		
-		if (correct_values==0) 
+
+		if (correct_values==0)
 			testpntfail("Our callback never got called, no events?");
-		else if (correct_values==-1) 
+		else if (correct_values==-1)
 			testpntfail("Got the wrong comm events");
 		else if (correct_values==1)
 			testpntpass("Got the correct values");
-		else 
+		else
 			testpntfail("This should not happen");
 
 		/* Clean up after ourselves */
@@ -698,7 +698,7 @@ int main(int argc, char *argv[])
 		ChannelDestroy(chid);
 	}
 	/* If the tracelogger was running when we started, we should restart it again */
-	if (tlkilled==1) 
+	if (tlkilled==1)
 		system("reopen /dev/null ; tracelogger -n 0 -f /dev/null &");
 	teststop(argv[0]);
 	return 0;

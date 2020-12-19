@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -36,7 +36,7 @@ Options:
                        time.
  -r root               Search the default paths in this directory before the
                        default.
- -s section            Do not strip the named section from ELF executable 
+ -s section            Do not strip the named section from ELF executable
                        when creating an IFS image.
  -v                    Operate verbosely.
  -a suffix             Append suffix to symbol files generated via [+keeplinked]
@@ -52,7 +52,7 @@ Options:
  -l inputline   Prefix a line to the input-file.
  -n             No timestamps. Allows for binary identical images.  One 'n'
                 will strip timestamps from files which vary from run to run.
-                More than one will strip ALL time information which is 
+                More than one will strip ALL time information which is
                 necessary on Windows NTFS with daylight savings time.
  -v             Operate verbosely.
 %-mketfs
@@ -65,7 +65,7 @@ Options:
  -l inputline   Prefix a line to the input-file.
  -n             No timestamps. Allows for binary identical images.  One 'n'
                 will strip timestamps from files which vary from run to run.
-                More than one will strip ALL time information which is 
+                More than one will strip ALL time information which is
                 necessary on Windows NTFS with daylight savings time.
  -v             Operate verbosely.
 %-mkifs
@@ -78,11 +78,11 @@ Options:
  -l input       Prefix a line to the input-file.
  -n             No timestamps. Allows for binary identical images.  One 'n'
                 will strip timestamps from files which vary from run to run.
-                More than one will strip ALL time information which is 
+                More than one will strip ALL time information which is
                 necessary on Windows NTFS with daylight savings time.
  -p             Do not strip PhAB resource information. (experimental)
  -r root        Search the default paths in this directory before the default.
- -s section     Do not strip the named section from ELF executable 
+ -s section     Do not strip the named section from ELF executable
                 when creating an IFS image.
  -v             Operate verbosely.
 #endif
@@ -235,7 +235,7 @@ void
 set_cpu(const char *name, int overwrite) {
 	char		*new;
 	unsigned	n;
-	
+
 	setenv("PROCESSOR", name, overwrite);
 	n = strlen(name);
 	if(n > 2
@@ -246,7 +246,7 @@ set_cpu(const char *name, int overwrite) {
 		 memcpy(new, name, n);
 		 name = new;
 		 new[n] = '\0';
-	} 
+	}
 	setenv("CPU_BASE", name, overwrite);
 }
 
@@ -280,7 +280,7 @@ die(int signum) {
 	rm_tmpfiles();
 	_exit(1);
 }
-	
+
 
 static void
 add_data(char *string) {
@@ -316,7 +316,7 @@ set_target_name(struct file_entry *fip) {
 	s = d = tbuf;
 	s = SKIP_DRIVE(d);		// Strip off any driver letter
 	while(*s != '\0') {
-		if (IS_DIRSEP(*s)) *s = '/'; // Switch to forward slashes 
+		if (IS_DIRSEP(*s)) *s = '/'; // Switch to forward slashes
 		// Strip the silly '.' out of stuff like /prefix/./path on the target.
 		if(s[0] == '/' && s[1] == '.'  && (IS_DIRSEP(s[2]) || s[2] == '\0')) {
 			s += 2;
@@ -459,7 +459,7 @@ rgetenv(char *string) {
 unsigned long
 getsize(char *str, char **dst) {
 	unsigned long v;
-	
+
 	v = strtoul(str, &str, 0);
 	switch(*str) {
 	case 'G':
@@ -514,10 +514,10 @@ mk_tmpfile() {
  * The hack in find_file() to make sure that paths are done correctly breaks
  * win32 in the situation where a temporary file is created in the current
  * working directory.  ie. find_file() fails to find the created temporary file.
- * The solution (for now) is to make sure there is a '.\' in front of the 
+ * The solution (for now) is to make sure there is a '.\' in front of the
  * temporary filename.  The other solution may be to figure out why find_file()
  * doesn't work in this case.  It's all just so UGLY!! :-)
- */		
+ */
 #if defined(__WIN32__) || defined(__NT__)
 	if(tmpname[0] != '\\' && strchr(tmpname,'\\')){ /* is there a pathsep char in it? */
 		if( !(tmpname = strdup(tmpname)) )
@@ -554,7 +554,7 @@ decode_attr(int report_err, struct attr_types *atp, char *name, int *ivalp, char
 
 	if(name[1] == '\0')
 		error_exit("Malformed attribute.\n");
-		
+
 	if( name[0] == '?' ) {
 		++name;
 		conditional = 1;
@@ -645,22 +645,22 @@ tokenize(char *input, char *space, char term) {
 		token->v[n] = s2;		// Save pointer to start of token
 		quoting = 0;
 		while(*s1  &&  (quoting  ||  !strchr(space, *s1))) {
-            
+
         		if(len>=TOKENLEN)
             			error_exit("Arguments too long.\n");
 
-			if(*s1 == '\\'  &&  
+			if(*s1 == '\\'  &&
 					(*(s1 + 1) == '\\' ||
-			    	 *(s1 + 1) == '\n' || 
-			    	 *(s1 + 1) == '$'  || 
-			    	 *(s1 + 1) == term || 
+			    	 *(s1 + 1) == '\n' ||
+			    	 *(s1 + 1) == '$'  ||
+			    	 *(s1 + 1) == term ||
 					 *(s1 + 1) == '"')) {
 		                len++;
 				if((*s2++ = *++s1) == '\n') {
 					len--;
 					--s2;	// Eat escaped newline.
 				}
-					
+
 			// Handle env vars
 			} else if(!quoting  &&  *s1 == '$'  &&  *(s1 + 1)) {
 				char *s3, delim = '\0', *delim_p;
@@ -753,7 +753,7 @@ add_attr(struct attr_file_entry *attrp) {
 }
 
 /* Determine if a directory has already been added to the file_entry_list */
-struct file_entry * 
+struct file_entry *
 dir_in_file_list(char *hostpath, char *targpath) {
 	struct file_entry *tmp_entry;
 
@@ -772,7 +772,7 @@ dir_in_file_list(char *hostpath, char *targpath) {
 void
 push_stack(struct inode_stack *is, ino_t inode) {
 	if (!is->inodes || is->count >= is->size) {
-		is->size += STACK_GROW;	
+		is->size += STACK_GROW;
 		is->inodes = (ino_t*)realloc(is->inodes, is->size*sizeof(ino_t));
 		if(is->inodes == NULL) {
 			error_exit("No memory for directory cycle detection stack.\n");
@@ -782,7 +782,7 @@ push_stack(struct inode_stack *is, ino_t inode) {
 	is->count++;
 }
 
-int 
+int
 inode_in_stack(struct inode_stack *is, ino_t inode) {
 //Windows, inodes?  who knows what they look like
 #if !defined(__WIN32__) && !defined(__NT__)
@@ -796,7 +796,7 @@ inode_in_stack(struct inode_stack *is, ino_t inode) {
 	return(0);
 }
 
-void 
+void
 pop_stack (struct inode_stack *is) {
 	if (is->inodes && is->count > 0)
 		is->count--;
@@ -820,7 +820,7 @@ find_file(char *search, char *hbuf, struct stat *sbuf, char *host, int optional)
 
 	/*
 	 * The path wars...  If and only if there is a DIRSEP character anywhere
-	 * in the host filename (ie: under qnx 'blah/blah' has a '/'), then the current 
+	 * in the host filename (ie: under qnx 'blah/blah' has a '/'), then the current
 	 * working directory ('./') is searched first.
 	 */
 	if(!IS_ABSPATH(host)) {
@@ -967,7 +967,7 @@ add_file(struct file_entry **list, char *host, char *target,
 	orig_host = host;
 	//
 	// Look for a filter to run on the file.
-	// TF Ammended: Don't filter links and directories, 
+	// TF Ammended: Don't filter links and directories,
 	//              filter should be set to null in any case
 	//
 	if(!S_ISDIR(attrp->mode) && attrp->mode != S_IFLNK && attrp->filter) {
@@ -1149,8 +1149,8 @@ parse_boot(FILE *src_fp) {
 			error_exit("Missing command.\n");
 		s = tokenize(s, " \t\r", '\n');
 
-		/* 
-		// Try and match an existing attribute 
+		/*
+		// Try and match an existing attribute
 		for(list = attr_file_list; list; list = list->next)
 			if(memcmp(&attr, &list->attr, sizeof(attr)) == 0)
 				break;
@@ -1291,8 +1291,8 @@ waitfor_reopen:
 				n += fwrite(tokenv[i], 1, strlen(tokenv[i]), dst_fp) + 1;
 				putc(' ', dst_fp);
 			}
-			if ((tokenc > 1) && tokenv[i]) { 
-				n += fwrite(tokenv[i], 1, strlen(tokenv[i]), dst_fp) + 1; 
+			if ((tokenc > 1) && tokenv[i]) {
+				n += fwrite(tokenv[i], 1, strlen(tokenv[i]), dst_fp) + 1;
 				putc('\n', dst_fp);
 			}
 			n += 1;
@@ -1302,7 +1302,7 @@ waitfor_reopen:
 			if(argc != 3) {
 				error_exit("Missing filenames for procmgr_link command.\n");
 			}
-				
+
 			size = n = offsetof(union script_cmd, procmgr_symlink.src_dest);
 			i = envc+1;
 			size += strlen(tokenv[i+0]) + 1;
@@ -1342,18 +1342,18 @@ waitfor_reopen:
 		//
 		// Handle an external command
 		//
-	
+
 		// Insert argv[0] value between file name & remainder of args
 		for(i = tokenc; i > envc; --i) tokenv[i] = tokenv[i-1];
 		tokenv[envc+1] = (attrp->argv0 != NULL) ? attrp->argv0 : basename(tokenv[envc]);
 		++tokenc;
-	
+
 		// Append global env vars to end of tokenv (do not duplicate any on cmd)
 		for(i = 0 ; i < globenvc ; ++i) {
 			if(env_lookup(globenvv[i], envc, tokenv) == NULL)
 				tokenv[tokenc++] = globenvv[i];
 		}
-	
+
 		// Stuff the header and calculate the size of the entry
 		cmd.external.flags = flags;
 		cmd.external.cpu = attrp->cpu;
@@ -1366,11 +1366,11 @@ waitfor_reopen:
 		for(i = 0 ; i < tokenc ; ++i)
 			size += strlen(tokenv[i]) + 1;
 		size = RUP(size, 4);			// 32bit align
-	
+
 		cmd.hdr.size_lo = size & 0xff;
 		cmd.hdr.size_hi = size >> 8;
 		fwrite(&cmd, 1, n, dst_fp);
-	
+
 		// Put out the args then env vars and null pad to 32 bit align
 		for(i = envc ; i < tokenc ; ++i) {
 			n += fprintf(dst_fp, "%s%c", tokenv[i], '\0');
@@ -1461,14 +1461,14 @@ collect_dir(char *host, char *target, struct attr_file_entry *attrp, int callind
 	char			*st;
 	unsigned		len;
 
-	struct attr_file_entry my_attr;				
+	struct attr_file_entry my_attr;
 	struct attr_file_list *list;
 	static struct inode_stack  inode_list;
 
 	/*
-	  Create a new attribute structure for us only when we 
+	  Create a new attribute structure for us only when we
 	  have a directory or a link entry (since we will need
-	  to change the mode attribute from a REG->DIR/LNK).  
+	  to change the mode attribute from a REG->DIR/LNK).
 	*/
 	stat(host, &sbuf);
 	lstat(host, &lsbuf);
@@ -1501,8 +1501,8 @@ collect_dir(char *host, char *target, struct attr_file_entry *attrp, int callind
 	add_file(&file_list, host, target, &list->attr, &sbuf);
 
 	//We don't recurse down links if we add them
-	if (S_ISLNK(my_attr.mode)) 
-		return;		
+	if (S_ISLNK(my_attr.mode))
+		return;
 
 	//Now continue processing the directory contents
 	len = strlen(host);
@@ -1540,7 +1540,7 @@ collect_dir(char *host, char *target, struct attr_file_entry *attrp, int callind
 
 			list = add_attr(&my_attr);
 			add_file(&file_list, host, target, &list->attr, &sbuf);
-		}		
+		}
 		else if (S_ISDIR(sbuf.st_mode)) {
 			if (inode_in_stack(&inode_list, sbuf.st_ino)) {
 				if (verbose)
@@ -1579,23 +1579,23 @@ collect_dir(char *host, char *target, struct attr_file_entry *attrp, int callind
   hostfile
     file                  - src in MKIFS_PATH/file , dst in /prefix/basename(file)
     /file                 - src in /file           , dst in /prefix/basename(file)
-  
+
   hostdir
     dir                   - src in MKIFS_PATH/dir  , dst in /prefix/path...
     /dir                  - src in /dir            , dst in /path...
-  
+
   targetfile = hostfile
     file1      file2      - src in MKIFS_PATH/file2, dst in /prefix/file1
     file1      /file2     - src in MKIFS_PATH/file2, dst in /file1
     /file1     file2      - src in /file2          , dst in /prefix/file1
     /file1     /file2     - src in /file2          , dst in /file1
-  
+
   targetdir = hostdir
     dir1       dir2       - src in MKIFS_PATH/dir2, dst in /prefix/dir1/path...
     dir1       /dir2      - src in MKIFS_PATH/dir2, dst in /dir1/path...
     /dir1      dir2       - src in /dir2          , dst in /prefix/dir1/path...
     /dir1      /dir2      - src in /dir2          , dst in /dir1/path...
-  
+
   targetfile = {....}
     file                  - src inline             , dst in prefix/file
     /file                 - src inline             , dst in /file
@@ -1727,7 +1727,7 @@ parse_file_name(int tokenc, char *tokenv[], struct attr_file_entry *attrp) {
 
 		if(script_fp == NULL) {
 			flags |= FILE_FLAGS_SCRIPT;
-	
+
 			host = mk_tmpfile();
 			script_fp = fopen(host, "wb");
 			if(script_fp == NULL) {
@@ -1736,7 +1736,7 @@ parse_file_name(int tokenc, char *tokenv[], struct attr_file_entry *attrp) {
 		} else {
 			host = NULL;
 		}
-	
+
 		src_fp = fopen(src_file, "r");
 		if(src_fp == NULL)
 			error_exit("Unable to open '%s': %s.\n", host, strerror(errno));
@@ -1829,7 +1829,7 @@ parse_one_file(char *s) {
 		}
 
 		list = add_attr(&attr);
-		
+
 		parse_file_name(token->c, token->v, &list->attr);
 
 		if(strcmp(attr.cd, file_attr.cd) != 0)
@@ -1860,7 +1860,7 @@ add_tree(struct tree_entry *parent, struct file_entry *fip) {
 	char				*pp, *np;
 	char				 name[PATH_MAX + 1];
 
-	/* 
+	/*
 	   The root of the tree will have a targetpath of ""
 	   This is implied so don't bother with it.
 	*/
@@ -1898,10 +1898,10 @@ add_tree(struct tree_entry *parent, struct file_entry *fip) {
 			trp->flags = 0;
 			strcpy(trp->name, name);
 			prev->sibling = trp;
-        	
+
 			/* Create dummy directory entry which will get
-			   filled in later.   This is required because 
-			   files may come before their directory entries 
+			   filled in later.   This is required because
+			   files may come before their directory entries
 			   if the list gets shuffled */
 			if(file.attr == NULL) {
 				file.attr = &attr;
@@ -1923,8 +1923,8 @@ add_tree(struct tree_entry *parent, struct file_entry *fip) {
 		parent = trp;
 		if(*pp) ++pp;
 	}
-	/*After going through and making the path, set the last 
-	  tree pointer to our file pointer.  This will guarantee 
+	/*After going through and making the path, set the last
+	  tree pointer to our file pointer.  This will guarantee
 	  that we get the proper attributes. Root is an exception */
 	trp->fip = fip;
 }
@@ -2066,7 +2066,7 @@ main(int argc, char *argv[]) {
 			qnx_target = getenv("QSSL_TARGET");
 		}
 		if ( qnx_target ) {
-			if ( qnx_target[0] == '\"' ) { 
+			if ( qnx_target[0] == '\"' ) {
 				qnx_target++;
 				if ( (p = strrchr( qnx_target, '\"')) ) {
 					*p = '\0';
@@ -2097,7 +2097,7 @@ main(int argc, char *argv[]) {
 		setenv("MKIFS_PATH",
 	       // If there is something in sbin, and also somewhere else
 	       // we probably want the sbin version so look there first
-	       "${_ROOTDIR_}/${PROCESSOR}/sbin"   
+	       "${_ROOTDIR_}/${PROCESSOR}/sbin"
 	       PATHSEP_STR "${_ROOTDIR_}/${PROCESSOR}/usr/sbin"
 
 	       PATHSEP_STR "${_ROOTDIR_}/${PROCESSOR}/boot/sys"
@@ -2107,12 +2107,12 @@ main(int argc, char *argv[]) {
 	       PATHSEP_STR "${_ROOTDIR_}/${PROCESSOR}/lib"
 	       PATHSEP_STR "${_ROOTDIR_}/${PROCESSOR}/lib/dll"
 	       PATHSEP_STR "${_ROOTDIR_}/${PROCESSOR}/usr/lib"
-	       
+
 	       // Feel free to get rid of this if /usr/photon/bin goes away
 	       PATHSEP_STR "${_ROOTDIR_}/${PROCESSOR}/usr/photon/bin"
 
 
-	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/sbin"   
+	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/sbin"
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/usr/sbin"
 
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/boot/sys"
@@ -2122,7 +2122,7 @@ main(int argc, char *argv[]) {
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/lib"
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/lib/dll"
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/usr/lib"
-	       
+
 	       // Feel free to get rid of this if /usr/photon/bin goes away
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/usr/photon/bin"
 	       , 0 );
@@ -2130,7 +2130,7 @@ main(int argc, char *argv[]) {
 		setenv("MKIFS_PATH",
 	       // If there is something in sbin, and also somewhere else
 	       // we probably want the sbin version so look there first
-	       "${QNX_TARGET}/${PROCESSOR}/sbin"   
+	       "${QNX_TARGET}/${PROCESSOR}/sbin"
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/usr/sbin"
 
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/boot/sys"
@@ -2140,7 +2140,7 @@ main(int argc, char *argv[]) {
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/lib"
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/lib/dll"
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/usr/lib"
-	       
+
 	       // Feel free to get rid of this if /usr/photon/bin goes away
 	       PATHSEP_STR "${QNX_TARGET}/${PROCESSOR}/usr/photon/bin"
 	       , 0 );

@@ -6431,9 +6431,9 @@ typedef int register_t ;
 /* <sys/types.h> */
 /* For GCC 2.7 and later, we can use specific type-size attributes.  */
 # define __intN_t(N, MODE) \
-  typedef int int##N##_t 
+  typedef int int##N##_t
 # define __u_intN_t(N, MODE) \
-  typedef unsigned int u_int##N##_t 
+  typedef unsigned int u_int##N##_t
 
 /* <sys/types.h> */
 __intN_t (8, __QI__)
@@ -6500,9 +6500,9 @@ __intN_t (64, __DI__)
 /* <sys/types.h> */
 /* For GCC 2.7 and later, we can use specific type-size attributes.  */
 # define __intN_t(N, MODE) \
-  typedef int int##N##_t 
+  typedef int int##N##_t
 # define __u_intN_t(N, MODE) \
-  typedef unsigned int u_int##N##_t 
+  typedef unsigned int u_int##N##_t
 
 /* <sys/types.h> */
 __u_intN_t (8, __QI__)

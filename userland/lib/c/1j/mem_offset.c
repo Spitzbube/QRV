@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -23,7 +23,7 @@
 #include <sys/memmsg.h>
 
 
-static int 
+static int
 _mem_offset64(const void *addr, size_t len, off64_t *off, size_t *contig_len, int *fd, int subtype) {
 	mem_offset_t					msg;
 
@@ -48,13 +48,13 @@ _mem_offset64(const void *addr, size_t len, off64_t *off, size_t *contig_len, in
 }
 
 
-int 
+int
 posix_mem_offset64(const void *addr, size_t len, off64_t *off, size_t *contig_len, int *fd) {
 	return _mem_offset64(addr, len, off, contig_len, fd, _MEM_OFFSET_FD);
 }
 
 
-int 
+int
 posix_mem_offset(const void *addr, size_t len, off_t *off, size_t *contig_len, int *fd) {
 	int					ret;
 	off64_t				offset;
@@ -73,7 +73,7 @@ posix_mem_offset(const void *addr, size_t len, off_t *off, size_t *contig_len, i
 
 /* This was 1003.1j D5 and posix_mem_offset should be used instead */
 
-int 
+int
 (mem_offset64)(const void *addr, int fd, size_t len, off64_t *off, size_t *contig_len) {
 	if(fd != NOFD) {
 		/* 2.00 only supported NOFD */
@@ -84,7 +84,7 @@ int
 }
 
 
-int 
+int
 (mem_offset)(const void *addr, int fd, size_t len, off_t *off, size_t *contig_len) {
 	int					ret;
 	off64_t				offset;

@@ -72,7 +72,7 @@ printf("'shell' got value 0x%08lx\n", (long)shell);
 #endif
 /* a bit of paranoia caused by some misbehaving programs */
 #ifdef __GNUC__
-asm("moveml d1-d7/a0-a7,_savearea");	
+asm("moveml d1-d7/a0-a7,_savearea");
 		ret = (*shell)(command);
 asm("moveml _savearea,d1-d7/a0-a7");
 		return (ret);

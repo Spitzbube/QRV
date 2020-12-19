@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -93,8 +93,8 @@ static int _connect_io(struct _connect_ctrl const * ctrl, int fd, const char *pr
 
 	/*
 	 If our entries don't match, then try and resolve it to a link to find a match
-	 by sending an COMBINE_CLOSE message to the handler to see if it will 
-	 resolve into a bigger linke.  If we do find a match (later on as we recursed 
+	 by sending an COMBINE_CLOSE message to the handler to see if it will
+	 resolve into a bigger linke.  If we do find a match (later on as we recursed
 	 through the entries in the process) then actually sent the message that
 	 we originally were supposed to send. See rename() to see how this is used.
 
@@ -106,9 +106,9 @@ static int _connect_io(struct _connect_ctrl const * ctrl, int fd, const char *pr
 	//We don't want to test the entries, or we have a matching entry ... send original message
 	if(!(ctrl->flags & FLAG_TEST_ENTRY)) {
 		ret = 1;
-	} else if (ent->pid == entry->pid && 
-	           ent->chid == entry->chid && 
-	           ND_NODE_CMP(ent->nd, entry->nd) == 0 && 
+	} else if (ent->pid == entry->pid &&
+	           ent->chid == entry->chid &&
+	           ND_NODE_CMP(ent->nd, entry->nd) == 0 &&
 	           ((ctrl->flags & FLAG_TEST_NPC_ONLY) || ent->handle == entry->handle)) {
 		ret = 1;
 	} else {
@@ -133,12 +133,12 @@ static int _connect_io(struct _connect_ctrl const * ctrl, int fd, const char *pr
 		case _IO_CONNECT_COMBINE_CLOSE:
 			break;
 
-		/* 
+		/*
 		 These have specific resmgr helpers, that return specific
 		 errno's in the case of failure.
 		*/
 		case _IO_CONNECT_LINK:
-			tryagain |= (errno == ENXIO) ? 1 : 0; 
+			tryagain |= (errno == ENXIO) ? 1 : 0;
 			break;
 		default:
 			break;
@@ -171,7 +171,7 @@ static int _connect_io(struct _connect_ctrl const * ctrl, int fd, const char *pr
 			//Every other error is disregarded
 			errno = (ctrl->flags & FLAG_TEST_ENTRY) ? ENXIO : saved_errno;
 
-		//If we return anything other than a link here, it is an error 
+		//If we return anything other than a link here, it is an error
 		} else if ((ret & (_IO_CONNECT_RET_FLAG | _IO_CONNECT_RET_TYPE_MASK)) !=
 		                  (_IO_CONNECT_RET_FLAG | _IO_CONNECT_RET_LINK)) {
 			//If we want to error on a collision and we get a collision, return EEXIST
@@ -217,7 +217,7 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 		//Do we want any particular type of server connections, otherwise use what we got
 		ftype = msg->file_type;
 		if(ctrl->status & _IO_CONNECT_RET_FLAG) {
-			if ((ftype == _FTYPE_ANY) && 
+			if ((ftype == _FTYPE_ANY) &&
 			    (ctrl->status & _IO_CONNECT_RET_TYPE_MASK) == _IO_CONNECT_RET_FTYPE) {
 					ftype = msg->file_type = ctrl->reply->ftype.file_type;
 					ctrl->nd = entry->nd;
@@ -283,7 +283,7 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 					return -1;
 				}
 				memcpy(save, path, path_skip);
-				memcpy(save + path_skip, buff, path_len); 
+				memcpy(save + path_skip, buff, path_len);
 
 				if (ctrl->flags & FLAG_REUSE_BUFFER) {
 					msg->reply_max -= num * sizeof *entry;
@@ -292,7 +292,7 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 				}
 				else {
 					if (!(save_entry = entry = CTRL_ALLOC(ctrl->flags, num * sizeof(*entry)))) {
-						CTRL_FREE(ctrl->flags, save); 
+						CTRL_FREE(ctrl->flags, save);
 						errno = ENOMEM;
 						return -1;
 					}
@@ -303,9 +303,9 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 				msg->entry_max--;
 				for(; cnt > 0; entry++, cnt--) {
 					/*
-					 If this is a FTYPE_ALL/FTYPE_MATCHED, skip this entry, this is 
-					 here since you might return an FTYPE_MATCHED at one of the 
-					 earlier iterations.  A better solution would be to switch on 
+					 If this is a FTYPE_ALL/FTYPE_MATCHED, skip this entry, this is
+					 here since you might return an FTYPE_MATCHED at one of the
+					 earlier iterations.  A better solution would be to switch on
 					 msg->file_type below rather than ftype, then remove this test.
 					*/
 					if (msg->file_type == (unsigned)_FTYPE_ALL) {
@@ -313,7 +313,7 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 					}
 
 					//Check to see if this entry/manager provides the type of service we want
-					if ((msg->file_type == _FTYPE_ANY) || 
+					if ((msg->file_type == _FTYPE_ANY) ||
 					    (entry->file_type == (unsigned)_FTYPE_ALL) || (msg->file_type == entry->file_type)) {
 						int								pad_len;
 						int								save_errno;
@@ -324,11 +324,11 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 
 						/*
 						 We stuff the path piecewise whenever we have a skip component.
-						 In order to do this we shift the path insert point forward 
+						 In order to do this we shift the path insert point forward
 						 before we recurse and then move it back and stuff the path
 						 after we recurse.
-						 We expect that the component that we are stuffing will always 
-						 begin with a / and doesn't terminate with a slash. 
+						 We expect that the component that we are stuffing will always
+						 begin with a / and doesn't terminate with a slash.
 						*/
 						pad_len = entry->prefix_len;
 						pad_len -= (save[path_skip + pad_len -1] == '/') ? 1 : 0;
@@ -348,13 +348,13 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 							}
 						}
 
-						//We want to continue cycling if we have an array, and we have space 
+						//We want to continue cycling if we have an array, and we have space
 						//in the array to store fd's, otherwise we break out and return the fd
 						if (fd != -1 && ctrl->fds) {
 							continue;
 						}
 
-						//We had an error, try it again with another manager or exit if the 
+						//We had an error, try it again with another manager or exit if the
 						//manager says they handle us but want to return an error (ie ejected cdrom)
 						if(fd == -1 && msg->file_type != (unsigned)_FTYPE_MATCHED) {
 							switch(errno) {
@@ -375,7 +375,7 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 								continue;
 							}
 						}
-						
+
 						break;
 					}
 				}
@@ -391,7 +391,7 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 
 			/*
 			 Otherwise we are a link to somewhere, but there are no specific
-			 entries (ie managers) for us to query, but we have a new path 
+			 entries (ie managers) for us to query, but we have a new path
 			 (ie symlink) for us to query and traverse, looking for handlers.
 
 			 Proc always receives a request which is relative to the chroot
@@ -426,7 +426,7 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 					postoffset = chrootlen - path_skip;
 				}
 
-				fd = _connect_request(ctrl, path + preoffset, path_skip - preoffset, 
+				fd = _connect_request(ctrl, path + preoffset, path_skip - preoffset,
 										buff + postoffset, 0, &_connect_proc_entry, buff, 0);
 
 				if(savedpath && fd != -1) {
@@ -455,9 +455,9 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 			msg->file_type = (unsigned)_FTYPE_MATCHED;
 			ConnectDetach_r(fd);
 			if(		(msg->subtype == _IO_CONNECT_OPEN &&
-					msg->extra_len == 0) || 
+					msg->extra_len == 0) ||
 					((msg->subtype == _IO_CONNECT_COMBINE ||
-					msg->subtype == _IO_CONNECT_COMBINE_CLOSE) && 
+					msg->subtype == _IO_CONNECT_COMBINE_CLOSE) &&
 					reply->path_len)) {
 				register struct _server_info		*info = buffer;
 
@@ -469,7 +469,7 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 
 						SETIOV(siov + 0, next, reply->path_len);
 						if(msg->extra_len) {
-							next->combine_len |= _IO_COMBINE_FLAG;	
+							next->combine_len |= _IO_COMBINE_FLAG;
 							SETIOV(siov + 1, ctrl->extra, msg->extra_len);
 							sparts++;
 						}
@@ -522,10 +522,10 @@ static int _connect_request(struct _connect_ctrl *ctrl, const char *prefix, unsi
 			if (ctrl->response_len) {
 				int b;
 
-				b = min(sizeof(*ctrl->reply), ctrl->response_len);  
-				memmove(ctrl->response, ctrl->reply, b); 
+				b = min(sizeof(*ctrl->reply), ctrl->response_len);
+				memmove(ctrl->response, ctrl->reply, b);
 				if (ctrl->response_len > b) {
-					memmove(((char*)ctrl->response) + b, buffer, ctrl->response_len - b); 
+					memmove(((char*)ctrl->response) + b, buffer, ctrl->response_len - b);
 				}
 
 				ctrl->response_len = 0;
@@ -546,7 +546,7 @@ copy_path:
 				//path[path_skip] != '\0' && !(ctrl->flags & FLAG_NO_PREFIX)
 				if (cplen != 1 && !(ctrl->flags & FLAG_NO_PREFIX)) {
 					insert = &ctrl->path[ctrl->pathlen];
-					cplen++;							//For the extra slash we insert 
+					cplen++;							//For the extra slash we insert
 				} else {
 					insert = NULL;						//Marker for below
 				}
@@ -579,7 +579,7 @@ int _connect_ctrl(struct _connect_ctrl *ctrl, const char *path, unsigned respons
 	int								save_ftype, save_ioflag;
 #define MIN_FILLER_SIZE (sizeof(struct _io_connect_entry) * 3 * SYMLOOP_MAX + PATH_MAX + 1)
 	struct {
-		struct _io_connect_link_reply	reply;	
+		struct _io_connect_link_reply	reply;
 		char							filler[MIN_FILLER_SIZE];
 	}								*buffer;
 	int								oflag, freebuffer;
@@ -614,24 +614,24 @@ onemoretime:
 	msg->file_type = save_ftype;
 	msg->ioflag = save_ioflag;
 
-	/* 
+	/*
 	 This is where the first response will go from the client. In the
-	 case of multiple fd's only the first reply is permanently recorded, 
-	 all others are ignored 
+	 case of multiple fd's only the first reply is permanently recorded,
+	 all others are ignored
 	*/
 	response_len = (response) ? response_len : 0;
 	ctrl->response_len = response_len;
 	ctrl->response = response;
 
-	/* TODO: Make the allocation, re-use and buffer sizes 
+	/* TODO: Make the allocation, re-use and buffer sizes
 	         all user configurable somehow. */
 
-	/* 
+	/*
 	 Decide which type of allocation policy we want to
 	 use: malloc/free on the heap, alloc/xxx on the stack
 
 	 If we think that we have space on the stack (guesstimate
-	 32 symlinks with 32 servers with 1K path == 32 * 2K == 64K) 
+	 32 symlinks with 32 servers with 1K path == 32 * 2K == 64K)
 	 then go with stack allocation?
 	*/
 	ctrl->flags |= FLAG_STACK_ALLOC;
@@ -639,18 +639,18 @@ onemoretime:
 		ctrl->flags &= ~FLAG_STACK_ALLOC;
 	}
 
-	/* 
+	/*
 	 Decide if we are going to re-use the allocated
 	 buffer or if we are just going to allocate new
 	 buffers as we go along.
 	*/
 	ctrl->flags |= FLAG_REUSE_BUFFER;
-	
-	/* 
+
+	/*
 	 We only need to allocate a copy if we are going to  be iterating
 	 over multiple fds, otherwise just make response the same as the
-	 reply buffer (unless the reply buffer won't hold our minimum size) 
-	 This saves us from double allocating when we don't have to. 
+	 reply buffer (unless the reply buffer won't hold our minimum size)
+	 This saves us from double allocating when we don't have to.
 	*/
 	if (ctrl->fds || (ctrl->flags & FLAG_MALLOC_FDS) || response_len < sizeof(*buffer)) {
 		freebuffer = 1;
@@ -669,7 +669,7 @@ onemoretime:
 	ctrl->reply->link.eflag = 0;
 
 	/*
-	 Always send a connect message.  When we allow a user 
+	 Always send a connect message.  When we allow a user
 	 configurable buffer, set the entry_max accordingly.
 	*/
 	msg->type = _IO_CONNECT;
@@ -680,7 +680,7 @@ onemoretime:
 
 	save_errno = errno;
 	errno = EOK;
-	
+
 	if((fd = _connect_request(ctrl, 0, 0, path, 0,
 							  (ctrl->entry && (ctrl->flags & FLAG_NO_RETRY)) ? ctrl->entry : &_connect_proc_entry,
 							  buffer->filler, 0)) != -1) {
@@ -694,7 +694,7 @@ onemoretime:
 			(void)procmgr_session(ND_LOCAL_NODE, getpid(), fd, PROCMGR_SESSION_TCSETSID);
 		}
 
-		//Unfortunately path = "" is both a valid return (internally) but an 
+		//Unfortunately path = "" is both a valid return (internally) but an
 		//error condition (externally) so we resort to munging the path here
 		if (ctrl->path && ctrl->pathsize > 1 && ctrl->path[0] == '\0') {
 			ctrl->path[0] = '/';

@@ -305,7 +305,7 @@ void colorparse(descr, fgref,bgref, likeref, bitsref)
 			if (!word)
 				word = build;
 			goto Continue;
-		}	
+		}
 
 		/* Whitespace. If after other whitespace, then ignore */
 		if (!build)
@@ -745,7 +745,7 @@ void colorset(fontcode, descr, explicit)
 		like = newlike ? NULL : oldlike;
 		bits = oldbits & ~newbits;
 		break;
-	  
+
 	  default:
 		if (fontcode==COLOR_FONT_NORMAL)
 		{
@@ -831,7 +831,7 @@ void colorset(fontcode, descr, explicit)
 		(void)auperform(windefault, ElvFalse, NULL, AU_BGCHANGED,
 			toCHAR(colorinfo[fontcode].da.bg_rgb[0] +
 			       colorinfo[fontcode].da.bg_rgb[1] +
-			       colorinfo[fontcode].da.bg_rgb[2]>=384 ? "light" 
+			       colorinfo[fontcode].da.bg_rgb[2]>=384 ? "light"
 								     : "dark"));
 #endif
 }
@@ -1082,7 +1082,7 @@ CHAR *colorcomplete(win, from, to, nameonly)
 		toCHAR("like "),
 		toCHAR("on "),
 		toCHAR("underlined ")};
-	
+
 
 	/* just to keep the compiler happy */
 	firstmatch = common = 0;
@@ -1246,7 +1246,7 @@ CHAR *colorcomplete(win, from, to, nameonly)
 			if (!CHARcmp(role, colorinfo[i].name))
 				break;
 		safefree(role);
-		
+
 		/* if not found, or has no settings, then just beep */
 		if (i >= colornpermanent || !colorinfo[i].descr)
 		{

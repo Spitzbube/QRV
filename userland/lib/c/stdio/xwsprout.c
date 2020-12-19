@@ -21,7 +21,7 @@ void *_Wsprout(void *pa, const wchar_t *buf, size_t request)
 _STD_END
 
 /*
- * Copyright (c) 1994-2000 by P.J. Plauger.  ALL RIGHTS RESERVED. 
+ * Copyright (c) 1994-2000 by P.J. Plauger.  ALL RIGHTS RESERVED.
  * Consult your license regarding permissions and restrictions.
 V3.05:1296 */
 

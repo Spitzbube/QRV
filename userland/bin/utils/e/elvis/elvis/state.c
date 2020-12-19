@@ -132,7 +132,7 @@ void statestratum(win, bufname, prompt, enter)
 		if (wincount(buf) == 0
 		 && o_bufchars(buf) > 2
 		 && scanchar(marktmp(tmp, buf, o_bufchars(buf) - 1)) == '\n'
-		 && scanchar(marktmp(tmp, buf, o_bufchars(buf) - 2)) == prompt 
+		 && scanchar(marktmp(tmp, buf, o_bufchars(buf) - 2)) == prompt
 		 && scanchar(marktmp(tmp, buf, o_bufchars(buf) - 3)) == '\n')
 		{
 			markaddoffset(mark, -1);

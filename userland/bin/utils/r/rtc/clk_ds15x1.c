@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 
@@ -49,9 +49,9 @@ RTCFUNC(init,ds15x1)(struct chip_loc *chip, char *argv[]) {
 		fprintf(stderr,"rtc: -b baseaddr must be specified for ds15x1 clock type\n");
 		return (-1);
 	}
-	if(chip->century_reg == UNSET) 
+	if(chip->century_reg == UNSET)
 		chip->century_reg = 0x07;
-	if(chip->access_type == NONE) 
+	if(chip->access_type == NONE)
 		chip->access_type = MEMMAPPED;
 	return (16);
 }
@@ -78,7 +78,7 @@ RTCFUNC(get,ds15x1)(struct tm *tm, int cent_reg) {
 	}
 
 	chip_write8(DS15x1_CONTROLB, ctrlb & ~TRANSFER_ENABLE);
-	
+
 	/* convert BCD to binary */
 	sec  = chip_read8(0);
 	min  = chip_read8(1);

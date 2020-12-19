@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -53,17 +53,17 @@
  *     Mark H. Colburn, NAPS International (mark@jhereg.mn.org)
  *
  *
- * Sponsored by The USENIX Association for public distribution. 
+ * Sponsored by The USENIX Association for public distribution.
  *
  * Copyright (c) 1989 Mark H. Colburn.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms are permitted
- * provided that the above copyright notice is duplicated in all such 
- * forms and that any documentation, advertising materials, and other 
- * materials related to such distribution and use acknowledge that the 
- * software was developed * by Mark H. Colburn and sponsored by The 
- * USENIX Association. 
+ * provided that the above copyright notice is duplicated in all such
+ * forms and that any documentation, advertising materials, and other
+ * materials related to such distribution and use acknowledge that the
+ * software was developed * by Mark H. Colburn and sponsored by The
+ * USENIX Association.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
  * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
@@ -111,10 +111,10 @@
  *
  * Revision 1.2  89/02/12  10:05:17  mark
  * 1.2 release fixes
- * 
+ *
  * Revision 1.1  88/12/23  18:02:23  mark
  * Initial revision
- * 
+ *
  */
 
 #ifndef lint
@@ -203,7 +203,7 @@ static OFFSET   pax_optsize();
  * PARAMETERS
  *
  *	int argc	- count of user supplied arguments
- *	char **argv	- user supplied arguments 
+ *	char **argv	- user supplied arguments
  *
  * RETURNS
  *
@@ -259,14 +259,14 @@ char          **argv;
  *
  * PARAMETERS
  *
- *    int ac		- A count of arguments in av.  Should be passed argc 
+ *    int ac		- A count of arguments in av.  Should be passed argc
  *			  from main
- *    char **av		- A pointer to an argument list.  Should be passed 
+ *    char **av		- A pointer to an argument list.  Should be passed
  *			  argv from main
  *
  * RETURNS
  *
- *    Normally returns 0.  If an error occurs, -1 is returned 
+ *    Normally returns 0.  If an error occurs, -1 is returned
  *    and state is set to reflect the error.
  *
  */
@@ -351,7 +351,7 @@ char          **av;		/* arguments */
 	    } else {
 		f_list = 0;
 		f_extract = 1;
-	    } 
+	    }
 	    msgfile=stderr;
 	    break;
 	case 's':
@@ -381,7 +381,7 @@ char          **av;		/* arguments */
 	    } else {
 		f_list = 0;
 		f_create = 1;
-	    } 
+	    }
 	    msgfile=stderr;
 	    break;
 	case 'x':
@@ -411,27 +411,27 @@ char          **av;		/* arguments */
 		open_archive(AR_READ);
 		get_archive_type();
 		read_archive();
-    } 
+    }
 	else if (f_create) {
 		if( f_append && ( access( ar_file, F_OK ) == 0 ) ) {
 			open_archive( AR_APPEND );
 			get_archive_type();
 			append_archive();
 		} else {
-		
+
 			if (optind >= n_argc) {
 		    	names_from_stdin++;		/* args from stdin */
 			}
 			open_archive(AR_WRITE);
 			create_archive();
 		}
-    } 
+    }
 /*
 	else if (f_append) {
 		open_archive(AR_APPEND);
 		get_archive_type();
 		append_archive();
-    } 
+    }
 */
 	else if (f_pass && optind < n_argc) {
 		dirname = n_argv[--n_argc];
@@ -445,7 +445,7 @@ char          **av;		/* arguments */
 	    	names_from_stdin++;		/* args from stdin */
 		}
 		pass(dirname);
-    } 
+    }
 	else {
 		usage();
     }
@@ -458,13 +458,13 @@ char          **av;		/* arguments */
  *
  * DESCRIPTION
  *
- * 	reads the first block of the archive and determines the archive 
- *	type from the data.  If the archive type cannot be determined, 
+ * 	reads the first block of the archive and determines the archive
+ *	type from the data.  If the archive type cannot be determined,
  *	processing stops, and a 1 is returned to the caller.  If verbose
  *	mode is on, then the archive type will be printed on the standard
  *	error device as it is determined.
  *
- * FIXME 
+ * FIXME
  *
  *	be able to understand TAR and CPIO magic numbers
  */
@@ -502,7 +502,7 @@ void get_archive_type()
  *
  * DESCRIPTION
  *
- * 	Recognizes suffixes for blocks (512-bytes), k-bytes and megabytes.  
+ * 	Recognizes suffixes for blocks (512-bytes), k-bytes and megabytes.
  * 	Also handles simple expressions containing '+' for addition.
  *
  * PARAMETERS
@@ -511,7 +511,7 @@ void get_archive_type()
  *
  * RETURNS
  *
- *    Normally returns the value represented by the expression in the 
+ *    Normally returns the value represented by the expression in the
  *    the string.
  *
  * ERRORS

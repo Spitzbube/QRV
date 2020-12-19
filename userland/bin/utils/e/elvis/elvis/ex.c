@@ -91,7 +91,7 @@ static char *cname(int i);
  * the commands with the same two letters are grouped together, and those
  * groups are then divided into 3-letter groups, and so on.  This allows
  * the command list to be searched faster.
- * 
+ *
  * The comment at the start of each line below gives the shortest abbreviation.
  * HOWEVER, YOU CAN'T SIMPLY SORT THOSE ABBREVIATIONS to produce the correct
  * order for the commands.  Consider the change/chdir/calculate commands, for
@@ -1603,7 +1603,7 @@ ELVBOOL exaddfilearg(file, nfiles, filename, rules)
 	{
 		/* expand any environment variables */
 		filename = tochar8(calculate(toCHAR(filename), NULL,
-			 (ELVFNR)(((rules & ELVFNR_DOLLAR) ? CALC_DOLLAR : 0) | 
+			 (ELVFNR)(((rules & ELVFNR_DOLLAR) ? CALC_DOLLAR : 0) |
 				  ((rules & ELVFNR_PAREN) ? CALC_PAREN : 0))));
 		if (!filename)
 			return ElvFalse;
@@ -1897,7 +1897,7 @@ static ELVBOOL parsefileargs(refp, xinf, flags)
 			}
 
 			/* build an expression which reads from a program */
-			expr = NULL; 
+			expr = NULL;
 			buildstr(&expr, "shell(\"");
 			scannext(refp);
 			for (; *refp && **refp && **refp != '|' && **refp != '\n' && **refp != '`'; scannext(refp))
@@ -2554,7 +2554,7 @@ static RESULT parse(win, refp, xinf)
 		}
 
 		/* create the "fromaddr" mark -- start of "from" line */
-		xinf->fromaddr = markalloc(markbuffer(&xinf->defaddr), 
+		xinf->fromaddr = markalloc(markbuffer(&xinf->defaddr),
 			lowline(bufbufinfo(markbuffer(&xinf->defaddr)), xinf->from));
 
 		/* create the "toaddr" mark -- end of "to" line.  If that's

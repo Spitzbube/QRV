@@ -14,7 +14,7 @@
    You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
-
+
 /* Written by Randy Smith */
 
 #include "system.h"
@@ -137,7 +137,7 @@ struct diff3_block {
  */
 #define	ALLOCATE(number, type)	\
   (type *) xmalloc ((number) * sizeof (type))
-
+
 /* Options variables for flags set on command line.  */
 
 /* If nonzero, treat all files as text files, never as binary.  */
@@ -447,7 +447,7 @@ usage ()
   --help  Output this help.\n\n");
   printf ("If a FILE is `-', read standard input.\n");
 }
-
+
 /*
  * Routines that combine the two diffs together into one.  The
  * algorithm used follows:
@@ -928,7 +928,7 @@ compare_line_list (list1, lengths1, list2, lengths2, nl)
       return 0;
   return 1;
 }
-
+
 /*
  * Routines to input and parse two way diffs.
  */
@@ -1729,7 +1729,7 @@ reverse_diff3_blocklist (diff)
 
   return prev;
 }
-
+
 static size_t
 myread (fd, ptr, size)
      int fd;
@@ -1741,7 +1741,7 @@ myread (fd, ptr, size)
     perror_with_exit ("read failed");
   return result;
 }
-
+
 static VOID *
 xmalloc (size)
      size_t size;
@@ -1762,7 +1762,7 @@ xrealloc (ptr, size)
     fatal ("memory exhausted");
   return result;
 }
-
+
 static void
 fatal (string)
      char const *string;

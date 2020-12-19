@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -145,7 +145,7 @@ static int check(struct variable *p, int type, const char *variable, const char 
 	}
 	return 0;
 }
-	
+
 int main(int argc, char *argv[]) {
 	int						c;
 	char					*spec = 0;
@@ -185,7 +185,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	if(argc - optind <= 0) {
-		fprintf(stderr, "%s: Must specify a variable.\n", progname); 
+		fprintf(stderr, "%s: Must specify a variable.\n", progname);
 		return EXIT_FAILURE;
 	}
 	variable = argv[optind++];
@@ -193,23 +193,23 @@ int main(int argc, char *argv[]) {
 		arg = argv[optind++];
 	}
 	if(argc - optind > 0) {
-		fprintf(stderr, "%s: Too many arguments.\n", progname); 
+		fprintf(stderr, "%s: Too many arguments.\n", progname);
 		return EXIT_FAILURE;
 	}
 #ifdef _CS_SET
 	if(setconf && !arg) {
-		fprintf(stderr, "%s: Must specify variable and value.\n", progname); 
+		fprintf(stderr, "%s: Must specify variable and value.\n", progname);
 		return EXIT_FAILURE;
 	}
 #else
 	if(setconf) {
-		fprintf(stderr, "%s: Unable to set on this OS.\n", progname); 
+		fprintf(stderr, "%s: Unable to set on this OS.\n", progname);
 		return EXIT_FAILURE;
 	}
 #define _CS_SET		0
 #endif
 	if(setconf && geteuid() != 0) {
-		fprintf(stderr, "%s: Must be root to set variables.\n", progname); 
+		fprintf(stderr, "%s: Must be root to set variables.\n", progname);
 		return EXIT_FAILURE;
 	}
 

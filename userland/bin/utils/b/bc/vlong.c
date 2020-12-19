@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -144,9 +144,9 @@ int ltov(long val, digit_t *v, int n)
 }
 /*
  * int    vl_addv(digit_t *dest, digit_t *src, int len)
- * 
+ *
  * adds "src" to "dest" in dest. returns: amount of carry if any.
- * 
+ *
  */
 
 
@@ -178,7 +178,7 @@ int vl_subv(digit_t *dest, digit_t *src, int len)
 
 
 
-int 
+int
 vl_mulv(digit_t *prod, digit_t  *op1, digit_t *op2, int len1, int len2)
 {
 	int             i, j;
@@ -282,7 +282,7 @@ int vl_divv(digit_t *quo, digit_t *u, digit_t *v, int u_len, int v_len)
 		/*
 		 * The value of qx, is either correct, or too large by
 		 * 1.(Proof is in Knuth.)
-		 * 
+		 *
 		 * We simply scale the divisor by qx, and subtract it from the
 		 * dividend.  If it causes a borrow (ie, was too large), then
 		 * qx is decremented and the divisor is added back into the

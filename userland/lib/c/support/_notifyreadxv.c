@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -27,14 +27,14 @@
 
 /*
  * This one funcion does notify and/or read
- * 
+ *
  *	fd			The fd to send to.
  *	action		Notify action (if 0 and event==NULL don't do notify)
  *	flags		Notify flags
- *	event		Notify event (if 0 and event==NULL don't do notify) 
+ *	event		Notify event (if 0 and event==NULL don't do notify)
  *	iov			Read iov (Start at 2nd element, 1st element used my function)
  *	nparts		Number of parts (including 1st unused part)
- *	xtype		Extra type passed to read	
+ *	xtype		Extra type passed to read
  *	xdata		Extra data returned from read
  *	xdatalen	Extra data returned from read
  *	nbytes		Number of bytes to read (If 0, calculate from iov)

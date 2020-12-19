@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -130,9 +130,9 @@ pnpbios_t		*handle;
 	handle = 0;
 	for(p = bios; p < bios + 0x10000; p += 16) {
 		struct pnpbios_header		*hdr = (struct pnpbios_header *)p;
-		
+
 		if(!memcmp(hdr->signature, "$PnP", 4)) {
-			int32_t				i;                 
+			int32_t				i;
 			uint8_t				cksum;
 
 			cksum = 0;
@@ -240,11 +240,11 @@ uint16_t			args[] = {
 	handle->node_size = buffer.node_size;
 
 	if(pnum_nodes) {
-		*pnum_nodes = buffer.num_nodes;	
+		*pnum_nodes = buffer.num_nodes;
 		}
 
 	if(pnode_size) {
-		*pnode_size = buffer.node_size;	
+		*pnode_size = buffer.node_size;
 		}
 
 	return (ret);
@@ -288,7 +288,7 @@ uint16_t args[] = {
 	ret = call(handle, GET_DEVICE_NODE, &buffer->stub, size, sizeof args / sizeof *args, args);
 
 	if(pnode) {
-		*pnode = buffer->node;	
+		*pnode = buffer->node;
 		}
 
 	if(devnode) {
@@ -421,7 +421,7 @@ rsrc_alloc_t	ralloc;
 	ralloc.flags = type | RSRCDBMGR_FLAG_NOREMOVE;
 	if (verbose)
 		fprintf (stderr, "Seed Start %llx - End %llx - Flags %x\n", ralloc.start, ralloc.end, ralloc.flags);
-	
+
 	if (rsrcdbmgr_create (&ralloc, 1) == -1) {
 		if (verbose) {
 			perror ("Unable to seed resource");
@@ -600,7 +600,7 @@ pnpbios_node_t	*dev;
 		fprintf (stderr, "Can't locate PNP nodes\n");
 		return (0);
 		}
-		
+
 	if(!(dev = malloc(size + 0x100))) {
 		fprintf (stderr, "No memory\n");
 		return (0);
@@ -662,7 +662,7 @@ pnpbios_node_t	*dev;
 							}
 						}
 					break;
-					
+
 				case 0x05:		// DMA format
 					break;
 
@@ -679,14 +679,14 @@ pnpbios_node_t	*dev;
 					end = start + (p [2] ? p [2] - 1 : 0);
 					alloc_resource (&start, &end, RSRCDBMGR_IO_PORT);
 					break;
-	
+
 				case 0x85:		// 32-bit memory
 					start = end = 0;
 					start = *(uint32_t *) &p [1];
 					end = start;
 //					fprintf (stderr, "Memory %llx\n", start);
 					break;
-	
+
 				case 0x86:		// 32-bit Fixed location memory
 					start = end = 0;
 					start = *(uint32_t *) &p [1];
@@ -858,9 +858,9 @@ int32_t		c;
 //	start = LOW_PORT;
 //	end = HIGH_PORT;
 //	alloc_resource (&start, &end, RSRCDBMGR_IO_PORT);
-//	start = end = 14;	
+//	start = end = 14;
 //	alloc_resource (&start, &end, RSRCDBMGR_IRQ);
-//	start = end = 15;	
+//	start = end = 15;
 //	alloc_resource (&start, &end, RSRCDBMGR_IRQ);
 
 	return (0);

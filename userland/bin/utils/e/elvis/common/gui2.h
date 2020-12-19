@@ -1,7 +1,7 @@
 /* gui2.h */
 /* Copyright 1995 by Steve Kirkendall */
 
-/* Herbert: 
+/* Herbert:
  * two more GUI's (by Lee).
  */
 

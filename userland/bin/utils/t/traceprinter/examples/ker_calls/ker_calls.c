@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 	 * - get optional kernel call number
 	 */
 	while((arg_var=getopt(argc, argv,"n:"))!=(-1)) {
-		switch(arg_var) 
+		switch(arg_var)
 		{
 			case 'n': /* get kernel call number */
 				call_num = strtoul(optarg, NULL, 10);
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 
 				return (-1);
 		}
-	}			
+	}
 
 	/*
 	 * Just in case, turn off all filters, since we
@@ -98,7 +98,7 @@ int main(int argc, char **argv)
 
 	/*
 	 * Set wide emitting mode for all classes and
-	 * their events. 
+	 * their events.
 	 */
 	TRACE_EVENT(argv[0], TraceEvent(_NTO_TRACE_SETALLCLASSESWIDE));
 

@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -19,16 +19,16 @@
 
 /*
 
- 
+
 
 
 Also copyright P.J. Plauger - see bottom of file for details.
 */
 
 /*
-** This source code contains portions of a file 
-** that is in the public domain, so clarified as 
-** of 1996-06-05 by Arthur David Olson 
+** This source code contains portions of a file
+** that is in the public domain, so clarified as
+** of 1996-06-05 by Arthur David Olson
 ** (arthur_david_olson@nih.gov).
 */
 
@@ -74,7 +74,7 @@ int _Isdst(const struct tm *t)
 #ifdef __QNX__
 	Dstrule *rules;
 	int  dst_state;
-	
+
 	if ((rules = _Getrules(&dst_state)) == NULL)
 		return dst_state;
 #else
@@ -109,7 +109,7 @@ int _Isdst(const struct tm *t)
     int START = 0, END = 1;
 		long seconds[2]; // in secs, from beginning of year
 		int leapyear;
-		int i,j;	
+		int i,j;
 		int d, m1, yy0, yy1, yy2, dow;
 		long currsecs; // seconds from beginning of year for current time
 
@@ -118,7 +118,7 @@ int _Isdst(const struct tm *t)
 		leapyear = ISLEAP(t->tm_year+1900);
    	for (i=0; i < 2; i++) {
 			switch ((rules[i]).rtype) {
-				case JTYPE: // Julian day type 
+				case JTYPE: // Julian day type
           seconds[i] = ((rules[i]).day - 1) * SECSPERDAY;
           if (leapyear && (rules[i]).day >= 60)
             seconds[i] += SECSPERDAY;
@@ -136,7 +136,7 @@ int _Isdst(const struct tm *t)
           */
           m1 = ((rules[i]).mon + 9) % 12 + 1;
           yy0 = ((rules[i]).mon <= 2) ? (t->tm_year - 1) : t->tm_year;
-					yy0 += 1900; // normalise year 
+					yy0 += 1900; // normalise year
           yy1 = yy0 / 100;
           yy2 = yy0 % 100;
           dow = ((26 * m1 - 2) / 10 +
@@ -166,7 +166,7 @@ int _Isdst(const struct tm *t)
 			}
 			seconds[i] += (rules[i]).secs;
 		}
-		// check to see if start > end 
+		// check to see if start > end
 		if (seconds[START] > seconds[END])
 			south=1; // in southern hemisphere
 		currsecs = 0;

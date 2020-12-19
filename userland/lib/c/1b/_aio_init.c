@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -44,12 +44,12 @@ struct _aio_context {
 static int _aio_wakeup(struct aiocb *aiocbp) {
 	struct sigevent *ev = &aiocbp->aio_sigevent;
 	int flag, ret = EOK;
-	
+
 	/* let's see if there is an suspend waiting us */
 	flag = atomic_set_value(&aiocbp->_aio_flag, _AIO_FLAG_DONE);
 	if (flag & _AIO_FLAG_SUSPEND) {
 		struct _aio_waiter *w;
-		
+
 		_mutex_lock(&_aio_cb->cb_mutex);
 		if ((w = aiocbp->_aio_suspend) != NULL) {
 			atomic_clr(&aiocbp->_aio_flag, _AIO_FLAG_SUSPEND);
@@ -64,21 +64,21 @@ static int _aio_wakeup(struct aiocb *aiocbp) {
 		/* shall it be a wakeup even if there is an suspend ? */
 		return ret;
 	}
-		
+
 	switch (SIGEV_GET_TYPE(ev)) {
 	  case SIGEV_SIGNAL:
 	  case SIGEV_SIGNAL_CODE:
 	  case SIGEV_SIGNAL_THREAD:
-		ret = SignalKill_r(0, getpid(), 0, ev->sigev_signo, SI_ASYNCIO, 
+		ret = SignalKill_r(0, getpid(), 0, ev->sigev_signo, SI_ASYNCIO,
 						   ev->sigev_value.sival_int);
 		break;
 	  case SIGEV_PULSE:
-		ret = MsgSendPulse_r(ev->sigev_coid, ev->sigev_priority, 
+		ret = MsgSendPulse_r(ev->sigev_coid, ev->sigev_priority,
 							 ev->sigev_code, ev->sigev_value.sival_int);
 		break;
 	  case SIGEV_THREAD:
 		ret = pthread_create(NULL, ev->sigev_notify_attributes,
-							 (void *)ev->sigev_notify_function, 
+							 (void *)ev->sigev_notify_function,
 							 ev->sigev_value.sival_ptr);
 		break;
 	  case SIGEV_NONE:
@@ -91,13 +91,13 @@ static int _aio_wakeup(struct aiocb *aiocbp) {
 		ret = EOPNOTSUPP;
 		break;
 	}
-	
+
 	if (ret != EOK) {
 		/* what if the io operation itself failed ? */
 		aiocbp->_aio_result = (unsigned)-1;
 		aiocbp->_aio_error = ret;
 	}
-	
+
 	return ret;
 }
 
@@ -130,8 +130,8 @@ static struct _aio_context *_aio_block(struct _aio_context *ctp)
 				return NULL;
 			}
 		}
-		
-		/* 
+
+		/*
 		 * If there is an empty priority list entry, remove it;
 		 */
 		if ((curr = plist->head) == NULL) {
@@ -145,8 +145,8 @@ static struct _aio_context *_aio_block(struct _aio_context *ctp)
 			}
 			continue;
 		}
-		
-		/* 
+
+		/*
 		 * Put request on to process queue
 		 */
 		if ((plist->head = curr->_aio_next) == NULL)
@@ -154,7 +154,7 @@ static struct _aio_context *_aio_block(struct _aio_context *ctp)
 		curr->_aio_next = NULL;
 		curr->_aio_plist = NULL;
 		atomic_set(&curr->_aio_flag, _AIO_FLAG_IN_PROGRESS);
-		
+
 		/* check if another thread already handling this fd */
 		for (cp = _aio_cb->ct_list; cp; cp = cp->next) {
 			if (!cp->curr_list)
@@ -183,7 +183,7 @@ static struct _aio_context *_aio_block(struct _aio_context *ctp)
 static void _aio_unblock(struct _aio_context *ctp)
 {
 	struct _aio_context *cp;
-	
+
 	_mutex_lock(&_aio_cb->cb_mutex);
 	for (cp = _aio_cb->ct_list; cp; cp = cp->next)
 	  if (cp->tid != ctp->tid)
@@ -205,8 +205,8 @@ static int _aio_handler(struct _aio_context *ctp)
 
 	if (!ctp)
 	  return -1;
-	
-	while ((curr = ctp->curr_list) != NULL) 
+
+	while ((curr = ctp->curr_list) != NULL)
 	{
 		/* see if we need to change sched_param */
 		if (ctp->policy != curr->_aio_policy || memcmp(&ctp->param, &curr->_aio_param, sizeof(ctp->param)))
@@ -232,7 +232,7 @@ static int _aio_handler(struct _aio_context *ctp)
 			lmsg.i.zero = 0;
 			SETIOV(iov + niov, &lmsg, sizeof(lmsg));
 			niov++;
-			
+
 			if (curr->_aio_iotype == _AIO_OPCODE_READ) {
 				msg.rmsg.i.type = _IO_READ;
 				msg.rmsg.i.combine_len = sizeof(msg.rmsg);
@@ -264,12 +264,12 @@ static int _aio_handler(struct _aio_context *ctp)
 		  default:
 			break;
 		}
-		
+
 		_mutex_lock(&_aio_cb->cb_mutex);
 		ctp->curr_list = curr->_aio_next;
 		curr->_aio_next = NULL;
 		_mutex_unlock(&_aio_cb->cb_mutex);
-		
+
 		if (curr->_aio_result == -1U) {
 			curr->_aio_error = errno;
 		} else {
@@ -288,13 +288,13 @@ static struct _aio_context *_aio_context_alloc(struct _aio_control_block *handle
 	int                 policy;
 	struct sched_param  param;
 	pthread_t           tid;
-	
+
 	tid = pthread_self();
 
 	if ((errno = pthread_getschedparam(tid, &policy, &param)) != EOK) {
 		return NULL;
 	}
-	
+
 	_mutex_lock(&cbp->cb_mutex);
 	if ((ctp = cbp->ct_free) == NULL && ((ctp = malloc(sizeof(*ctp))) == NULL)) {
 		_mutex_unlock(&cbp->cb_mutex);
@@ -304,7 +304,7 @@ static struct _aio_context *_aio_context_alloc(struct _aio_control_block *handle
 	ctp->next = cbp->ct_list;
 	cbp->ct_list = ctp;
 	_mutex_unlock(&cbp->cb_mutex);
-	
+
 	ctp->curr_list = NULL;
 	ctp->tid = tid;
 	ctp->policy = policy;
@@ -332,7 +332,7 @@ static void _aio_context_free(struct _aio_context *ctp)
 	cp->next = cbp->ct_free;
 	cbp->ct_free = cp;
 	_mutex_unlock(&cbp->cb_mutex);
-	
+
 	/* in case there are still aiocbp on us */
 	while ((curr = curr_list)) {
 		curr_list = curr->_aio_next;
@@ -364,13 +364,13 @@ int _aio_init(thread_pool_attr_t *pool_attr)
 	struct _aio_prio_list *plist;
 	sigset_t set, oset;
 	int i;
-	  
+
 	_mutex_lock(&_aio_init_mutex);
 	if (_aio_cb) {
 		_mutex_unlock(&_aio_init_mutex);
 		return 0;
 	}
-	
+
 	if ((cb = malloc(sizeof(*_aio_cb))) == NULL) {
 		_mutex_unlock(&_aio_init_mutex);
 		return -1;
@@ -378,7 +378,7 @@ int _aio_init(thread_pool_attr_t *pool_attr)
 	memset(cb, 0, sizeof(*cb));
 	pthread_mutex_init(&cb->cb_mutex, 0);
 	(void)pthread_cond_init(&cb->cb_cond, 0);
-	
+
 	if (pool_attr == NULL) {
 		pool_attr = &default_pool_attr;
 	} else {
@@ -400,7 +400,7 @@ int _aio_init(thread_pool_attr_t *pool_attr)
 		cb->cb_plist_free = plist;
 	}
 	cb->cb_nfree = _AIO_PRIO_LIST_LOW;
-	
+
 	/* prepare the context */
 	cb->ct_free = NULL;
 	for (i = 0; i < pool_attr->maximum; i++) {
@@ -410,7 +410,7 @@ int _aio_init(thread_pool_attr_t *pool_attr)
 		ctp->next = cb->ct_free;
 		cb->ct_free = ctp;
 	}
-	
+
 	cb->tp = thread_pool_create(pool_attr, 0);
 	if (cb->tp == NULL) {
 		goto err_ret;
@@ -430,19 +430,19 @@ int _aio_init(thread_pool_attr_t *pool_attr)
 	pthread_sigmask(SIG_SETMASK, &oset, NULL);
 	_mutex_unlock(&_aio_init_mutex);
 	return 0;
-		
+
 err_ret:
 	_mutex_lock(&cb->cb_mutex);
-	
+
 	if (cb->tp) {
 		(void)thread_pool_destroy(cb->tp);
 	}
-	
+
 	while ((plist = cb->cb_plist_free)) {
 		cb->cb_plist_free = plist->next;
 		free(plist);
 	}
-	
+
 	while ((ctp = cb->ct_free)) {
 		cb->ct_free = ctp->next;
 		free(ctp);
@@ -450,7 +450,7 @@ err_ret:
 
 	pthread_cond_destroy(&cb->cb_cond);
 	pthread_mutex_destroy(&cb->cb_mutex);
-	
+
 	free(cb);
 	_mutex_unlock(&_aio_init_mutex);
 	return -1;
@@ -460,13 +460,13 @@ err_ret:
 int _aio_insert_prio(struct aiocb *aiocbp)
 {
 	struct _aio_prio_list *plist, **pplist;
-	
-	for (pplist = &_aio_cb->cb_plist, plist = *pplist; plist; 
+
+	for (pplist = &_aio_cb->cb_plist, plist = *pplist; plist;
 		 pplist = &plist->next, plist = *pplist) {
 		if (plist->priority <= aiocbp->_aio_param.__sched_priority)
 		  break;
 	}
-	
+
 	if (!plist || plist->priority != aiocbp->_aio_param.__sched_priority) {
 		if ((plist = _aio_cb->cb_plist_free) == NULL) {
 			if ((plist = (struct _aio_prio_list *)malloc(sizeof(*plist))) == NULL)
@@ -478,14 +478,14 @@ int _aio_insert_prio(struct aiocb *aiocbp)
 			_aio_cb->cb_plist_free = plist->next;
 			_aio_cb->cb_nfree--;
 		}
-		
+
 		plist->head = NULL;
 		plist->tail = &plist->head;
 		plist->priority = aiocbp->_aio_param.__sched_priority;
 		plist->next = *pplist;
 		*pplist = plist;
 	}
-	
+
 	aiocbp->_aio_plist = (void *)plist;
 	aiocbp->_aio_next = NULL;
 	*plist->tail = aiocbp;
@@ -524,31 +524,31 @@ int _aio_insert(struct aiocb *aiocbp)
 	return 0;
 }
 
-int _aio_destroy() 
+int _aio_destroy()
 {
 	struct _aio_control_block *cb;
 	struct _aio_context *ctp;
 	struct _aio_prio_list *plist;
 	thread_pool_t       *tp;
-	
+
 	cb = _aio_cb;
 	if ((tp = (thread_pool_t *)_smp_xchg((unsigned *)&_aio_cb->tp, 0)) == 0)
 	  return 0;
 
 	/* kill every thread */
-	if (thread_pool_destroy(tp) != 0) 
+	if (thread_pool_destroy(tp) != 0)
 	  return -1;
 
 	while ((plist = cb->cb_plist)) {
 		cb->cb_plist = plist->next;
 		free(plist);
 	}
-	
+
 	while ((plist = cb->cb_plist_free)) {
 		cb->cb_plist_free = plist->next;
 		free(plist);
 	}
-	
+
 	while ((ctp = cb->ct_free)) {
 		cb->ct_free = ctp->next;
 		free(ctp);

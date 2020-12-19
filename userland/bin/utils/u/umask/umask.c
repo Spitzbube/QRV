@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -50,13 +50,13 @@ Note:
 
 	Revision 1.8  2003/09/02 16:21:33  martin
 	Update QSSL Copyright.
-	
+
 	Revision 1.7  1998/11/25 23:06:26  eric
 	now accommodates gcc
-	
+
 	Revision 1.6  1998/09/15 19:00:31  peterv
 	cvs
-	
+
 	Revision 1.5  1997/02/18 21:45:35  steve
 	*** empty log message ***
 
@@ -76,7 +76,7 @@ Note:
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 /*
  * Include declarations:
@@ -117,13 +117,13 @@ Note:
  */
 int create_mask;
 
-/* 
+/*
  *	The umask utility sets the file mode creation mask of the invoking
  *	process to the value specified by teh mask operand. The mask affects
  *	the initial value of the file permission bits of subsequently
  *	created files.
- *	If the mask operand is not specified, the umask utiltity writes to 
- *	standard output the value of the invoking process's file mode 
+ *	If the mask operand is not specified, the umask utiltity writes to
+ *	standard output the value of the invoking process's file mode
  *	creation mask.
  */
 #define DISP_DISPLAY 1		/* when set in flags, display, don't set */
@@ -164,7 +164,7 @@ char *mode;
 	i = strlen( mode )-1;
 	while ( i >= 0){
 		if ( mode[i] >='0' && mode[i]<'8'){
-			value += (mode[i] -'0') * factor;	
+			value += (mode[i] -'0') * factor;
 			factor *= 8;
 			}
 		else
@@ -188,7 +188,7 @@ int	A, B, C;
 		case MP_SETUID:	A = S_ISUID; B = S_ISGID; C = 0;		break;
 		default:												break;
 	}
-	
+
 	if ( op == MP_SET || op ==MP_ASSIGN){
 		if ( who & MP_USER ) 	*cur_mode |= A;
 		if ( who & MP_GROUP )	*cur_mode |= B;
@@ -254,7 +254,7 @@ int		cur_mode, who, op, perm;
 				default:		report_error(EXIT_FAILURE,"Invalid Mode Specification\n");	break;
 				}
 			}
-	
+
 		if (!exit_loop) report_error(EXIT_FAILURE,"Invalid Mode Specification\n");
 
 
@@ -276,7 +276,7 @@ int		cur_mode, who, op, perm;
 				case 'x':	process_perm( MP_EXECUTE, who, op, &cur_mode, creat_mask );
 							i++;
 							break;
-#ifdef SETUID_ALLOWED	
+#ifdef SETUID_ALLOWED
 				/* not allowed for umask, but allowed in chmod */
 				case 's':	process_perm( MP_SETUID, who, op, &cur_mode, creat_mask );
 							i++;
@@ -290,7 +290,7 @@ int		cur_mode, who, op, perm;
 				}
 			}
 		}
-	
+
 	/*
 	 * Mode Spec Parsing Completed.  Return final mode integer value
 	 */
@@ -334,9 +334,9 @@ char *argv[];
 	   the user has selected -s, -w, -x in combination with -o or -s, which
 	   is not legal syntax. Error msg. */
 
-	if	(error || 
+	if	(error ||
 			((flag&DISP_OCTAL) && (flag&DISP_SYMBOL)) ||
-			(argc>2) || 
+			(argc>2) ||
 			(flag && !(flag&DISP_DISPLAY))
 		)
 	{
@@ -393,7 +393,7 @@ char *argv[];
 			dadspid=getppid();
 
 			qnx_psinfo(PROC_PID,dadspid,&psdata,0,0);
-	
+
 			if (psdata.pid!=dadspid || psdata.pid==PROC_PID || psdata.flags & _PPF_VID) {
 				fprintf(stderr,"umask failed: parent does not exist or is running on another node.\n");
 			} else {
@@ -417,7 +417,7 @@ char *argv[];
 			fprintf(stdout,",o=");
 			if ( create_mask & 07)  print_mode(create_mask);
 			fprintf(stdout,"\n");
-		}	
+		}
 	}
 
 	return EXIT_SUCCESS;

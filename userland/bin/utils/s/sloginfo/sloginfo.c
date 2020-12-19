@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -107,16 +107,16 @@ int main(int argc, char *argv[]) {
 
 	// Get an fd to a slog file or live events
     if (optind < argc)
-        
+
         fname = argv[optind];
 
     if ((fd = open(fname, O_RDONLY|O_BINARY|O_NONBLOCK)) == -1)
 	{
 		fprintf(stderr, "Unable to open %s : %s\n", fname, strerror(errno));
 		exit(1);
-	} 
+	}
 	residual = 0;
-    
+
 	if (!Msecs)
 		printf("Time             Sev Major Minor Args\n");
 	else
@@ -149,8 +149,8 @@ int main(int argc, char *argv[]) {
                 {
                     fprintf(stderr, "error setting non-blocking flags\n");
                     return EXIT_FAILURE;
-                }  
-				
+                }
+
                 continue;
 			}
             else
@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
 			    fprintf(stderr, "Unable to read %s - %s\n", fname, strerror(errno));
 			    exit(EXIT_FAILURE);
             }
-            
+
 		}
 		n += residual * sizeof(int);
 

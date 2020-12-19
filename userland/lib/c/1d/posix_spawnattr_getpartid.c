@@ -1,16 +1,16 @@
 /*
- * $QNXLicenseC:  
+ * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
 */
@@ -22,18 +22,18 @@
 
 /*
  * =============================================================================
- * 
+ *
  * 				The following are QNX posix_spawnattr_t extensions
- * 
+ *
  * =============================================================================
 */
 
 /*******************************************************************************
  * getpartid
- * 
+ *
  * Retrieve the partition identifiers currently set in the 'posix_spawnattr_t'
  * object
- * 
+ *
  * The caller must provide the storage for partlist_info_t's to be returned. The
  * <num> pointer is initialized by the caller with the number of 'partlist_info_t'
  * elements <plist_info> has space for.
@@ -45,21 +45,21 @@
  * 		  allocated by the caller and as specified by <*num>, then <*num> entries
  * 		  will be filled in and <*num> will be set to negative of the number of
  * 		  entries remaining that would not fit.
- * 
+ *
  * 		  For example, if the caller provides space for 4 entries and hence
  * 		  sets <*num> == 4 and there are 6 entries in the _posix_spawnattr_t
  * 		  object, then 4 entries will be placed into the structure and <*num>
  * 		  will be set to -2. If the caller sets <*num> == 0, then they can easly
  * 		  find out how many entries there are and allocate enough space to
  * 		  retrieve all of the entries.
- * 
+ *
  * Note that the caller can distinguish partition id types with the PART_TYPE()
  * macro defined in part.h
- * 
+ *
  * Returns:
  * 		EOK on success
  * 		EINVAL if there are any parameter errors
- * 
+ *
 */
 int posix_spawnattr_getpartid(const posix_spawnattr_t *_Restrict attrp, int *num, partlist_info_t plist_info[])
 {

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -58,7 +58,7 @@ check_signature(int fd) {
 
 	if(strncmp(sig.name, SWAP_SIG, 8) == 0) {
 		return 0;
-	}	
+	}
 	return -1;
 }
 
@@ -265,7 +265,7 @@ main(int argc, char *argv[]) {
 				fprintf(stderr, "Swapfile %s is executable, use -f to force\n", name);
 				exit(1);
 			}
-		} 
+		}
 
 		if((i = open(name, O_RDWR)) == -1 && !create) {
 			fprintf(stderr, "Swapfile %s cannot be opened; specify -c to create one\n", name);
@@ -282,17 +282,17 @@ main(int argc, char *argv[]) {
 				exit(1);
 			}
 			lseek(i, 0, SEEK_SET);
-		} 
+		}
 
 		if(i == -1) {		//Create must have been specified to go through here
 			umask(S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH|S_IXOTH);
-			
+
 			/* No access */
 			if((i = open(name, O_RDWR|O_CREAT, 0000)) == -1) {
 				fprintf(stderr, "Swapfile %s cannot be created\n", name);
 				exit(1);
 			}
-			
+
 			if((space = check_space(name, size, min_free)) == 0) {
 				fprintf(stderr, "Filesystem has insufficient free space (%u requested)\n", size);
 				unlink(name);

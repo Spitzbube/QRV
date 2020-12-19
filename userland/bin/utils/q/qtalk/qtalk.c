@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -313,7 +313,7 @@ struct envstruct {
 	int			hangup_on_switch;
 	int			quiet;
 
-#ifdef FORCE_ALLOWED	
+#ifdef FORCE_ALLOWED
 	unsigned			force;
 #endif
 };
@@ -395,8 +395,8 @@ void a_abrt(int err, char *fn, int fd)
     if (kbd!=-1 && fd!=kbd) dev_mode(kbd, okbd_mode, _DEV_MODES);
 #ifdef TERM_TYPE_SUPPORTED
 	if (old_terminal_type!=-1 && old_terminal_type!=current_env.terminal_type) {
-		struct _console_ctrl *cc;		
-		
+		struct _console_ctrl *cc;
+
 #ifdef TERM_TYPE_DEBUG
 	{
 		char *op, *np;
@@ -424,7 +424,7 @@ void a_abrt(int err, char *fn, int fd)
 			}
 			console_close(cc);
 		}
-	}		
+	}
 #endif
 
 	if (mdm!=-1 && fd!=mdm) {
@@ -462,7 +462,7 @@ void a_exit(int rc)
 
 #ifdef TERM_TYPE_SUPPORTED
 		if (old_terminal_type!=-1 && old_terminal_type!=current_env.terminal_type) {
-			struct _console_ctrl *cc;		
+			struct _console_ctrl *cc;
 
 #ifdef TERM_TYPE_DEBUG
 	{
@@ -481,7 +481,7 @@ void a_exit(int rc)
 
 	}
 #endif
-			
+
 			if ((cc=console_open(kbd,O_RDWR))!=NULL) {
 				console_protocol(cc, 0, old_terminal_type);
 				if (old_terminal_type==_CON_PROT_ANSI) {
@@ -490,7 +490,7 @@ void a_exit(int rc)
 				}
 				console_close(cc);
 			}
-		}		
+		}
 #endif
 
 		/* restore old baud if we have changed it */
@@ -516,7 +516,7 @@ void a_exit(int rc)
 
 ssize_t a_read(int fildes, void *buf, size_t nbyte)
 {
-	ssize_t rc;	
+	ssize_t rc;
 
 	if ((rc = read(fildes,buf,nbyte))==-1) {
 		switch (errno) {
@@ -527,7 +527,7 @@ ssize_t a_read(int fildes, void *buf, size_t nbyte)
 			default:		/* Old MacDonald bought the farm... */
 				a_abrt(errno,"read",fildes);
 		}
-	}	
+	}
 	return rc;
 }
 
@@ -550,7 +550,7 @@ ssize_t a_write(int fildes, const void *buf, size_t nbyte)
 	return rc;
 }
 
-void emit_string ( int fd, char *string) 
+void emit_string ( int fd, char *string)
 {
 #ifdef __QNXNTO__
 /* zzx fcntl to block for IO */
@@ -581,7 +581,7 @@ void emit_string ( int fd, char *string)
 						if (n) a_write( fd, &n, 1);
 					} else if (*(string+1)<'8' && *(string+1)>='0') {
 						/* octal */
-		
+
 						for (n=0,digits=0;digits<3 && *(string+1)<'8' && *(string+1)>='0';digits++) {
 							n=n*8;
 							n+=(*(string+1)-'0');
@@ -616,7 +616,7 @@ int a_dev_ischars(int fd)
 	if ((rc = dev_ischars(fd))==-1)
 #endif
 		a_abrt(errno,"dev_ischars",fd);
-	return rc;                      
+	return rc;
 }
 
 
@@ -625,7 +625,7 @@ int a_dev_arm(int fd, pid_t proxy, unsigned events)
 {
 	int rc;
 
-	if ((rc = dev_arm(fd,proxy,events))==-1) 
+	if ((rc = dev_arm(fd,proxy,events))==-1)
 		a_abrt(errno,"dev_arm",fd);
 
 	return rc;
@@ -637,7 +637,7 @@ unsigned a_dev_mode(int fd, unsigned mode, unsigned mask)
 {
 	unsigned rc;
 
-	if ((rc = dev_mode(fd,mode,mask))==-1) 
+	if ((rc = dev_mode(fd,mode,mask))==-1)
 		a_abrt(errno,"dev_mode",fd);
 	return rc;
 }
@@ -661,11 +661,11 @@ int a_dev_read(int fd, void *buf, unsigned n, unsigned min, unsigned time,
 }
 #endif
 
-/* 
+/*
 	This function should have a timeout around the tcdrain() call..
 	if we call tcdrain() and we're paged we could get stuck here forever
 */
-int a_tcdrain(int fildes)				
+int a_tcdrain(int fildes)
 {
 	int rc;
 
@@ -680,7 +680,7 @@ int a_tcdrain(int fildes)
 	return rc;
 }
 
-/* end of IO cover fns ------------------------------------------------ */				
+/* end of IO cover fns ------------------------------------------------ */
 
 /* Modem pool functions - set_pool(name) to initialize, get_poolmember(env)
    to return device names one at a time to try. Names returned in
@@ -691,7 +691,7 @@ char *skip_white(char *pointer)
 {
 	while(isspace(*pointer) && (*pointer)) pointer++;
 	return pointer;
-}	
+}
 
 char *skip_alpha(char *pointer)
 {
@@ -710,7 +710,7 @@ char *skip_alpha(char *pointer)
 			if (*pointer) pointer++;
 			continue;
 		}
-		
+
 		switch (*pointer) {
 			case '\r':
 			case '\t':
@@ -726,7 +726,7 @@ char *skip_alpha(char *pointer)
 	}
 
 	return pointer;
-}	
+}
 
 void clean_quotes(char *pointer)
 {
@@ -734,7 +734,7 @@ void clean_quotes(char *pointer)
     char *r, *w;
 
 	if (pointer==NULL || *pointer!=',') return;
-	
+
 	r=w=pointer;
 	diag fprintf(stderr,"DIAG: cleaning quotes from '%s'\r\n",r); fflush(stderr);
 
@@ -755,7 +755,7 @@ void clean_quotes(char *pointer)
 					w++;
 				}
 				continue;
-			} 
+			}
 		}
 		if (*r=='\\' && !inside_quote) {
 			/* if not inside single quotes, allow \octal */
@@ -773,9 +773,9 @@ void clean_quotes(char *pointer)
 					w++;
 				}
 				continue;
-			} 
+			}
 		}
-						
+
 		if (inside_quote) {
 			if (*r == '\'') {
 				inside_quote = 0;
@@ -802,7 +802,7 @@ void clean_quotes(char *pointer)
 			if (*r) r++;
 			continue;
 		}
-		
+
 		switch (*r) {
 			case '"':	inside_dblquote = 1; break;
 			case '\'':	inside_quote = 1; break;
@@ -815,7 +815,7 @@ void clean_quotes(char *pointer)
 	*w=0;
 
 	diag	fprintf(stderr,"DIAG: cleaned verssion = '%s'\r\n",pointer); fflush(stderr);
-}	
+}
 
 int name_match(char *string,char *name)
 {
@@ -829,7 +829,7 @@ int name_match(char *string,char *name)
 	else return 0;
 }
 
-	
+
 int set_pool(char *buffer)
 {
 	int	name_found;
@@ -842,7 +842,7 @@ int set_pool(char *buffer)
 	}
 
 	working_on[level] = buffer;
-	
+
 	if (strchr(buffer,'/')) {
 		/* a single device name, has to be, don't bother looking it up. Note that this may
            contain an init string - will be dealt with later */
@@ -857,14 +857,14 @@ int set_pool(char *buffer)
 		fprintf(stderr,"qtalk: Can't open modem pool file '%s'\r\n",MODEM_POOL_DIR);
 		return -1;
 	}
-			
+
 	/* name_found will be 2 when we have found the name and are scanning forward
        past synonymous pool names for the actual pool definition; it will be
        1 when we have the actual definition, 0 if we haven't hit the name at all
        yet */
 
 	name_found = 0;
-	
+
 	while (name_found!=1) {
 		temp = fgets( namebuffer[level], NAMEBUFFER_LENGTH, poolfile[level] );
 		if (temp == NULL) {
@@ -914,7 +914,7 @@ void close_pool(void)
 
 	if (level) {
 		level--;
-	
+
 		if (poolfile[level]!=NULL) {
 			fclose(poolfile[level]);
 		}
@@ -1009,7 +1009,7 @@ char *_get_poolmember(struct envstruct *env)
 	if (nameptr[level-1][0]) {
 		nameptr[level-1][0] = (char) 0x00;
 		nameptr[level-1]++;
-	} 
+	}
 
 	/* advance nameptr to the next entry in the line, for the next time this routine is
        called */
@@ -1048,7 +1048,7 @@ char *get_name( char *prompt )
 	name[0] = '\0';
 
 #ifdef __QNXNTO__
-	/* 
+	/*
          Turn on O_NONBLOCK while we prompt the user for input,
          this is likely not just a Neutrino requirement.
 	*/
@@ -1117,13 +1117,13 @@ void mdm_handler( char *bp, int size
 		/* reset protocol init sequence stuff! */
 		if (numzmhdr) {
 			/* this means that we were holding off output of this
-               data from a previous call - must write out the 
+               data from a previous call - must write out the
                difference now since the data is not contained
                in our current chunk of data */
 			put_console(zmodemsequence,numzmhdr);
 			numzmhdr = 0;
 		}
-		
+
 		if (numsyns) {	/* numsyns can only be 1 or 0 */
 			put_console(syns,1);
 			numsyns=0;
@@ -1141,7 +1141,7 @@ void mdm_handler( char *bp, int size
 	for(n = 0; n < size; ++n) {
 		/* Respond to zmodem header sequence */
 
-		if (current_env.protocol_strings[PROTOCOL_ZMODEM][RX_PROTOCOL][0] 
+		if (current_env.protocol_strings[PROTOCOL_ZMODEM][RX_PROTOCOL][0]
 			&& *p == zmodemsequence[numzmhdr])
 		{
 			if (numzmhdr==0) header_index = n;
@@ -1196,22 +1196,22 @@ void mdm_handler( char *bp, int size
 				sighandler(SIGUSR1);
 
 				/* this means that we were holding off output of this
-                   data from a previous call - must write out the 
+                   data from a previous call - must write out the
                    difference now since the data is not contained
                    in our current chunk of data */
 				// sighandler(SIGUSR1) will have reset numzmhdr to 0!!
 				// put_console(zmodemsequence,numzmhdr-n);
 			}
 			numzmhdr = 0;
-		}		
+		}
 
 		/* Respond to 2 consecutively received SYN characters */
-		if (current_env.protocol_strings[PROTOCOL_QCP][RX_PROTOCOL][0] 
+		if (current_env.protocol_strings[PROTOCOL_QCP][RX_PROTOCOL][0]
 			&& *p == SYN)
 		{
 			if(++numsyns == 2 ) {
 				/*	After 2 in a row, invoke QCP. */
-		
+
 				xfer++;
 #ifdef __QNXNTO__
 				/* neutrino - flush any waiting data on the fd (O_NONBLK is set) */
@@ -1232,7 +1232,7 @@ void mdm_handler( char *bp, int size
 					a_read(mdm,bp,n>BUFFER_SIZE?BUFFER_SIZE:n);
 				}
 #endif
-		
+
 				old_mode();
 				system( current_env.protocol_strings[PROTOCOL_QCP][RX_PROTOCOL] );
 				new_mode();
@@ -1500,7 +1500,7 @@ int select_modem(struct envstruct *env)
 
 		for (poolentry=0;poolentry<MAX_POOLS;poolentry++) {
 			if (env->pools[poolentry])
-				fprintf(stderr," %s",env->pools[poolentry]);		
+				fprintf(stderr," %s",env->pools[poolentry]);
 		}
 		fprintf(stderr,".\r\n");
 	}
@@ -1533,7 +1533,7 @@ diag perror("fcntl");
 			/* have BUFFER_SIZE to play with */
 			a_read(mdm,buf,n>BUFFER_SIZE?BUFFER_SIZE:n);
 		}
-#else 
+#else
 		/* neutrino - flush any waiting data on the fd (O_NONBLK is set) */
 		do {
 			n=a_read(mdm,buf,BUFFER_SIZE);
@@ -1544,7 +1544,7 @@ diag perror("fcntl");
 
 #ifdef TERM_TYPE_SUPPORTED
 		if (old_terminal_type!=-1 && old_terminal_type!=current_env.terminal_type) {
-			struct _console_ctrl *cc;		
+			struct _console_ctrl *cc;
 
 #ifdef TERM_TYPE_DEBUG
 	{
@@ -1563,7 +1563,7 @@ diag perror("fcntl");
 
 	}
 #endif
-			
+
 			if ((cc=console_open(kbd,O_RDWR))!=NULL) {
 				console_protocol(cc, 0, old_terminal_type);
 				if (old_terminal_type==_CON_PROT_ANSI) {
@@ -1573,7 +1573,7 @@ diag perror("fcntl");
 				}
 				console_close(cc);
 			}
-		}		
+		}
 #endif
 
 		/* restore old baud if we have changed it */
@@ -1591,7 +1591,7 @@ diag perror("fcntl");
 				tcsetattr(mdm,TCSANOW,&mdm_tios);
 			}
 		}
-		
+
 #ifndef __QNXNTO__
 		/* detach old proxies */
 		if ( qnx_proxy_rem_detach( mdm_entry.nid, vmproxy ) == -1 ) {
@@ -1609,7 +1609,7 @@ diag perror("fcntl");
 	}
 
 	/* set mdm to the new modem fd */
-		
+
 	mdm = newfd;
 
 	//Use the recursive version since we can control the buffer size.
@@ -1691,7 +1691,7 @@ fprintf(stderr, "\r\n"); fflush(stderr) ; sleep(1);
 					case 8: mdm_tios.c_cflag|=CS8; break;
 				}
 			}
-			
+
 			if (tcsetattr(mdm,TCSANOW,&mdm_tios)==-1) {
 				if (env->baud) {
 					fprintf(stderr,"qtalk: unable to change baud to %ld - %s\n",env->baud,strerror(errno));
@@ -1701,7 +1701,7 @@ fprintf(stderr, "\r\n"); fflush(stderr) ; sleep(1);
 				if (env->parity||env->stopbits||env->databits) {
 					fprintf(stderr,"qtalk: unable to change tty control(parity/stopbits/databits)\n");
 					mdm_tios.c_cflag = ocflag;
-				}			
+				}
 
 				tcsetattr(mdm,TCSANOW,&mdm_tios);
 				/* we've restored it now (if possible), so don't bother later on exit */
@@ -1715,7 +1715,7 @@ fprintf(stderr, "\r\n"); fflush(stderr) ; sleep(1);
 
 #ifdef TERM_TYPE_SUPPORTED
 	if (env->terminal_type!=-1) {
-		struct _console_ctrl *cc;		
+		struct _console_ctrl *cc;
 
 #ifdef TERM_TYPE_DEBUG
 	{
@@ -1730,7 +1730,7 @@ fprintf(stderr, "\r\n"); fflush(stderr) ; sleep(1);
 
 	}
 #endif
-		
+
 		if ((cc=console_open(kbd,O_RDWR))!=NULL) {
 			old_terminal_type = console_protocol(cc, 0, env->terminal_type);
 			if (old_terminal_type==-1) {
@@ -1746,7 +1746,7 @@ fprintf(stderr, "\r\n"); fflush(stderr) ; sleep(1);
 		} else {
 			env->terminal_type=old_terminal_type=-1;
 		}
-	}		
+	}
 #endif
 
 	/* write initstring, if there is one */
@@ -1771,7 +1771,7 @@ fprintf(stderr, "\r\n"); fflush(stderr) ; sleep(1);
 		/* read and discard any pending modem data */
 #ifdef __QNXNTO__
 	    fcntl(mdm,F_SETFL,O_NONBLOCK);
-		
+
 		/* neutrino - flush any waiting data on the fd (O_NONBLK is set) */
 		do {
 			n=a_read(mdm,buf,BUFFER_SIZE);
@@ -1878,7 +1878,7 @@ int dial_system( char *system, int doconnect )
                If the line started with white space, line will start
                with a null and thus we will also continue */
 			if ( strcmp( line, system ) != 0 ) continue;
-                            	
+
 			diag fprintf(stderr,"DIAG: found system '%s'\r\n",system); fflush(stderr);
 
 			/* hang up if we're supposed to hang up on a system switch */
@@ -1899,7 +1899,7 @@ int dial_system( char *system, int doconnect )
 			strcpy(current_env.systemname,system);
 
 			diag fprintf(stderr,"DIAG: systemname='%s', dialstring='%s'\r\n",current_env.systemname,current_env.dialstring); fflush(stderr);
-            
+
 			/* build the command line into an argv-like array */
 			simulated_argc=1;
 			for (n=0;n<SIMULATED_ARGV_MAXITEMS;n++) simulated_argv[n] = NULL;
@@ -1907,7 +1907,7 @@ int dial_system( char *system, int doconnect )
 
 			while ((p=fgets(line,LINE_LENGTH,fp))!=NULL) {
 				int inside_quote = 0, inside_dblquote = 0;
-				
+
 				n = strlen( p );
 				if(n<1) break;
 
@@ -1918,7 +1918,7 @@ int dial_system( char *system, int doconnect )
 				line[n - 1] = '\0';
 
 				diag fprintf(stderr,"DIAG: argvizing line '%s'\r\n",line); fflush(stderr);
-								
+
 				inside_quote = inside_dblquote = 0;
 				for (;*p;p++) {
 					char *w;
@@ -1982,9 +1982,9 @@ int dial_system( char *system, int doconnect )
 
 	if ( strcmp( system, "?" ) == 0 ) return 1;
 
-	if (doconnect) 
+	if (doconnect)
 		fprintf( stderr, "Unable to dial '%s': no dialing entry\r\n", system );
-	
+
 	return -1;
 }
 
@@ -2036,30 +2036,30 @@ info:
 		printf( "\r\nQtalk %s\r\n",VERSION);
 		printf( "-------------------------------------------------------------------------------\r\n");
 		printf( "Modem         : %-.62s\r\n",current_env.device);
-	
+
 		if (current_env.systemname[0] && strcmp(current_env.systemname,"defaults"))
 			printf( "System        : %-.62s\r\n",current_env.systemname);
-	
+
 		printf( "Local echo    : %-9s       Logging       : %-9s\r\n"
 				,current_env.local_echo?"enabled":"disabled",
 				log_file!=-1?"enabled":"disabled");
-	
+
 		printf( "Top bit       : %-9s       Xfer protocol : %-9s\r\n",
 				current_env.strip_parity?"stripped":"displayed",
 	            (current_env.protocol==PROTOCOL_QCP)?"qcp":(current_env.protocol==PROTOCOL_ZMODEM)?"zmodem":"other");
-	
+
 		printf( "Command char  : 0x%02x",current_env.cmd_char);
 		if (current_env.cmd_char>0 && current_env.cmd_char<('z'-'a'+1))	printf(" (^%c) ",'a'+current_env.cmd_char-1);
 		else printf("      ");
 		printf( "      Delete char   : 0x%02x",current_env.del_char);
 		if (current_env.del_char>0 && current_env.del_char<('z'-'a'+1))	printf(" (^%c)",'a'+current_env.del_char-1);
 		printf("\r\n");
-	
+
 #ifdef TERM_TYPE_SUPPORTED
 		if (current_env.terminal_type == -1)
 			printf("Terminal type : <not set>\r\n");
 		else if (current_env.terminal_type == _CON_PROT_QNX4) {
-			if (current_env.qnxs) 
+			if (current_env.qnxs)
 				printf("Terminal type : qnxs\r\n");
 			else printf("Terminal type : qnx\r\n");
 		} else if (current_env.terminal_type == _CON_PROT_ANSI) {
@@ -2091,7 +2091,7 @@ info:
 again:
 	printf( "\r\nCommand(?): ");
 	fflush( stdout );
-	
+
 	do {
 		if (-1==(rc=read( kbd, &c, 1 ))) {
 		#ifdef DEBUG
@@ -2118,7 +2118,7 @@ again:
 					break;
 
 		case 'C':   printf( "Current command character is 0x%x",current_env.cmd_char);
-					if (current_env.cmd_char>0 && current_env.cmd_char<('z'-'a'+1)) 
+					if (current_env.cmd_char>0 && current_env.cmd_char<('z'-'a'+1))
 						printf(" (^%c)",'a'+current_env.cmd_char-1);
 					printf("\r\n");
 					p=get_name("New command character? (in hex or use ^char) ");
@@ -2134,19 +2134,19 @@ again:
 								current_env.cmd_char = *p - 'a' + 1;
 
 								printf( "New command character is 0x%x",current_env.cmd_char);
-								if (current_env.cmd_char>0 && current_env.cmd_char<('z'-'a'+1)) 
+								if (current_env.cmd_char>0 && current_env.cmd_char<('z'-'a'+1))
 									printf(" (^%c)",'a'+current_env.cmd_char-1);
 								printf("\r\n");
 							}
 						} else if(isdigit(*p)) {
-							long n;      
+							long n;
 
 							n = strtol(p,NULL,16);
 							if (n>0 && n<128) {
 								current_env.cmd_char = (unsigned char) n;
 
 								printf( "New command character is 0x%x",current_env.cmd_char);
-								if (current_env.cmd_char>0 && current_env.cmd_char<('z'-'a'+1)) 
+								if (current_env.cmd_char>0 && current_env.cmd_char<('z'-'a'+1))
 									printf(" (^%c)",'a'+current_env.cmd_char-1);
 								printf("\r\n");
 							} else printf("Unable to change command char - must be 0<x<0x80\r\n");
@@ -2156,7 +2156,7 @@ again:
                     break;
 
 		case 'D':   printf( "Current delete character is 0x%x",current_env.del_char);
-					if (current_env.del_char>0 && current_env.del_char<('z'-'a'+1)) 
+					if (current_env.del_char>0 && current_env.del_char<('z'-'a'+1))
 						printf(" (^%c)",'a'+current_env.del_char-1);
 					printf("\r\n");
 					p=get_name("New delete character? (in hex or use ^char) ");
@@ -2172,7 +2172,7 @@ again:
 								current_env.del_char = *p - 'a' + 1;
 
 								printf( "New delete character is 0x%x",current_env.del_char);
-								if (current_env.del_char>0 && current_env.del_char<('z'-'a'+1)) 
+								if (current_env.del_char>0 && current_env.del_char<('z'-'a'+1))
 									printf(" (^%c)",'a'+current_env.del_char-1);
 								printf("\r\n");
 							}
@@ -2184,7 +2184,7 @@ again:
 								current_env.del_char = (unsigned char) n;
 
 								printf( "New delete character is 0x%x",current_env.del_char);
-								if (current_env.del_char>0 && current_env.del_char<('z'-'a'+1)) 
+								if (current_env.del_char>0 && current_env.del_char<('z'-'a'+1))
 									printf(" (^%c)",'a'+current_env.del_char-1);
 								printf("\r\n");
 							} else printf("Unable to change delete char - must be 0<x<0x80\r\n");
@@ -2222,7 +2222,7 @@ again:
 					}
 					break;
 
-		case 'o':	
+		case 'o':
 					{
 					int i=-1,j=-1;
 
@@ -2294,12 +2294,12 @@ again:
 			if (current_env.terminal_type == -1)
 				printf("Current terminal type is not set.\r\n");
 			else if (current_env.terminal_type == _CON_PROT_QNX4) {
-				if (current_env.qnxs) 
+				if (current_env.qnxs)
 					printf("Current terminal type is 'qnxs'.\r\n");
 				else
 					printf("Current terminal type is 'qnx'.\r\n");
 			} else if (current_env.terminal_type == _CON_PROT_ANSI) {
-				if (current_env.pc) 
+				if (current_env.pc)
 					printf("Current terminal type is 'pcansi'.\r\n");
 				else
 					printf("Current terminal type is 'ansi'.\r\n");
@@ -2330,7 +2330,7 @@ again:
 			}
 
 			if (old_terminal_type!=-1) {
-				struct _console_ctrl *cc;		
+				struct _console_ctrl *cc;
 
 #ifdef TERM_TYPE_DEBUG
 	{
@@ -2349,7 +2349,7 @@ again:
 
 	}
 #endif
-				
+
 				if ((cc=console_open(kbd,O_RDWR))!=NULL) {
 					console_protocol(cc, 0, old_terminal_type);
 					if (old_terminal_type==_CON_PROT_ANSI) {
@@ -2358,11 +2358,11 @@ again:
 					}
 					console_close(cc);
 				}
-			}		
+			}
 
 			{
-				struct _console_ctrl *cc;		
-				
+				struct _console_ctrl *cc;
+
 #ifdef TERM_TYPE_DEBUG
 	{
 		char *np;
@@ -2386,14 +2386,14 @@ again:
 						if (current_env.terminal_type==_CON_PROT_QNX4) {
 							if (current_env.qnxs)
 								printf("Terminal type set to 'qnxs'.\r\n");
-							else 
+							else
 								printf("Terminal type set to 'qnx'.\r\n");
 						} else {
 							if (current_env.pc) {
 								fflush(stdout); fflush(stderr);
 								a_write(kbd,INIT_PCANSI,sizeof(INIT_PCANSI)-1);
 								printf("Terminal type set to 'pcansi'.\r\n");
-							} else {		
+							} else {
 								fflush(stdout); fflush(stderr);
 								a_write(kbd,INIT_LATIN,sizeof(INIT_LATIN)-1);
 								printf("Terminal type set to 'ansi'.\r\n");
@@ -2405,7 +2405,7 @@ again:
 					fprintf(stderr,"qtalk: can't set term type - console_open() %s\n",strerror(errno));
 					current_env.terminal_type=old_terminal_type=-1;
 				}
-			}		
+			}
 			break;
 #endif
 
@@ -2461,7 +2461,7 @@ void mdm_write( int upload_flag )
 	char	c, kick_seen;
 	char    *name;
 
-	name=get_name("Upload file? "); 
+	name=get_name("Upload file? ");
 
 	if (strlen(name)<1) return;
 
@@ -2536,7 +2536,7 @@ end:
 	close( fd );
 }
 
-void dup_env(struct envstruct *to, struct envstruct *from) 
+void dup_env(struct envstruct *to, struct envstruct *from)
 {
 	int n;
 
@@ -2564,7 +2564,7 @@ void clear_pools (struct envstruct *env)
 	}
 }
 
-int add_pool(struct envstruct *env, char *new_pool) 
+int add_pool(struct envstruct *env, char *new_pool)
 {
 	int n;
 
@@ -2575,12 +2575,12 @@ int add_pool(struct envstruct *env, char *new_pool)
 	} else {
 		env->pools[n] = malloc(strlen(new_pool)+1);
 		strcpy(env->pools[n],new_pool);
-	}		
-	
+	}
+
 	return 0;
 }
 
-int parse_options(int argc, char **argv, struct envstruct *env) 
+int parse_options(int argc, char **argv, struct envstruct *env)
 {
 	int opt, error=0, pool_specd=0;
 	char *p;
@@ -2663,7 +2663,7 @@ diag { fprintf(stderr, "-m option, dev %s\n", optarg); fflush(stderr); }
 								fprintf(stderr,"qtalk -o: Unknown protocol (%s)\r\n",optarg);
 								fprintf(stderr,"qtalk -o: 'use qtalk' for list of valid protocols\n");
 							    error++;
-								break;				
+								break;
 							}
 
 							strcpy( env->protocol_strings[n][i], p);
@@ -2688,7 +2688,7 @@ diag { fprintf(stderr, "-m option, dev %s\n", optarg); fflush(stderr); }
 									case 'm': env->parity=MARK_PARITY; break;
 									case 's': env->parity=SPACE_PARITY; break;
 									default:
-										fprintf(stderr,"qtalk -b: invalid specification (%s)\n",optarg); 
+										fprintf(stderr,"qtalk -b: invalid specification (%s)\n",optarg);
 										break;
 								}
 							}
@@ -2712,7 +2712,7 @@ diag { fprintf(stderr, "-m option, dev %s\n", optarg); fflush(stderr); }
 
 #ifdef TERM_TYPE_SUPPORTED
 			case 'T':   if (!strcmp("qnx",optarg)) {
-							env->terminal_type = _CON_PROT_QNX4; 
+							env->terminal_type = _CON_PROT_QNX4;
 							env->qnxs = 0;
 							env->pc = 0;
 						} else if (!strcmp("qnxs",optarg)) {
@@ -2730,13 +2730,13 @@ diag { fprintf(stderr, "-m option, dev %s\n", optarg); fflush(stderr); }
 						} else fprintf(stderr,"qtalk: invalid terminal type -T %s\r\n",optarg);
 						break;
 #endif
-					
+
 			default:	error++;							break;
 		}
 	}
 	diag fprintf(stderr,"DIAG; opt=%c(%x) before return\r\n",opt, opt); fflush(stderr);
 	diag fprintf(stderr,"DIAG: parse_options optind = %d\r\n", optind); fflush(stderr);
-	
+
 	return error?-1:0;
 }
 
@@ -2750,12 +2750,12 @@ int main( int argc, char *argv[] )
 
 	signal( SIGUSR1, &sighandler);
 
-	/**** determine name of the personal dialling directory - 
+	/**** determine name of the personal dialling directory -
      ****
      **** $HOME/.qtalk      used if $HOME envar exists
      ****
      **** cuserid()/.qtalk  used if $HOME envar does not exist
-     **** 
+     ****
      **** If cuserid() fails, no personal dialling directory will be
      **** checked for.
      ****/
@@ -2775,7 +2775,7 @@ int main( int argc, char *argv[] )
 		strcat(personal_dialdir,".qtalk");
 		/* Note that we do not care about existence of this file at startup,
            user is free to create it for use while qtalk is running. */
-	} 
+	}
 
 	/**** set startup defaults, put into the start_env environment. */
 
@@ -2819,7 +2819,7 @@ int main( int argc, char *argv[] )
 #endif
 	start_env.hangup_on_switch		= 0;
 
-	#ifdef FORCE_ALLOWED	
+	#ifdef FORCE_ALLOWED
 		start_env.force				= 0;
 	#endif
 
@@ -2898,30 +2898,30 @@ printf("Starting...\n");
 
 		printf( "-------------------------------------------------------------------------------\r\n");
 		printf( "Modem         : %-.62s\r\n",current_env.device);
-	
+
 		if (current_env.systemname[0] && strcmp(current_env.systemname,"defaults"))
 			printf( "System        : %-.62s\r\n",current_env.systemname);
-	
+
 		printf( "Local echo    : %-9s       Logging       : %-9s\r\n"
 				,current_env.local_echo?"enabled":"disabled",
 				log_file!=-1?"enabled":"disabled");
-	
+
 		printf( "Top bit       : %-9s       Xfer protocol : %-9s\r\n",
 				current_env.strip_parity?"stripped":"displayed",
 	            (current_env.protocol==PROTOCOL_QCP)?"qcp":(current_env.protocol==PROTOCOL_ZMODEM)?"zmodem":"other");
-	
+
 		printf( "Command char  : 0x%02x",current_env.cmd_char);
 		if (current_env.cmd_char>0 && current_env.cmd_char<('z'-'a'+1))	printf(" (^%c) ",'a'+current_env.cmd_char-1);
 		else printf("      ");
 		printf( "      Delete char   : 0x%02x",current_env.del_char);
 		if (current_env.del_char>0 && current_env.del_char<('z'-'a'+1))	printf(" (^%c)",'a'+current_env.del_char-1);
 		printf("\r\n");
-	
+
 #ifdef TERM_TYPE_SUPPORTED
 		if (current_env.terminal_type == -1)
 			printf("Terminal type : <not set>\r\n");
 		else if (current_env.terminal_type == _CON_PROT_QNX4) {
-			if (current_env.qnxs) 
+			if (current_env.qnxs)
 				printf("Terminal type : qnxs\r\n");
 			else printf("Terminal type : qnx\r\n");
 		} else if (current_env.terminal_type == _CON_PROT_ANSI) {
@@ -2949,7 +2949,7 @@ printf("Starting...\n");
 			while(!armed) {
 				n = a_dev_read( mdm, &buf[0], BUFFER_SIZE, 1, 0, 0, vmproxy, &armed);
 				strncpy(buf2,buf,n+1);
-				buf2[n+1]=0;	
+				buf2[n+1]=0;
 				if (n==-1) perror("dev_read(mdm...)");
 				mdm_handler( &buf[0], n, &armed );
 			}
@@ -2996,7 +2996,7 @@ printf("Starting...\n");
 	return 0;
 }
 
-#ifdef __QNXNTO__ 
+#ifdef __QNXNTO__
 #if _NTO_VERSION < 110
 
 #include <signal.h>
@@ -3037,7 +3037,7 @@ int system (char *cmd)
 	sigaction(SIGQUIT, &sa, &savequit);
 	sigaction(SIGWINCH, &sa, &savewinch);
 // comment out because of NTO bug which sets action to kill as side-effect?
-  	sigaddset(&sa.sa_mask, SIGCHLD); 
+  	sigaddset(&sa.sa_mask, SIGCHLD);
 	sigprocmask(SIG_BLOCK, &sa.sa_mask, &inherit.sigmask);
 
 	// Inialize inheritance structure for spawn.

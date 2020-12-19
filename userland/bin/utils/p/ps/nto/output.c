@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -47,7 +47,7 @@ enum FieldNames
 	TIME,
 	TTY,
 	COMM,
-	ARGS,	
+	ARGS,
 			// the fields below are not required for POSIX-compliance
 	TTY_TTY,
 	UID,
@@ -128,7 +128,7 @@ char *varNames[]=
 	"dflags"
 };
 
-// defaultFieldName stores the default header for each field 
+// defaultFieldName stores the default header for each field
 char *defaultFieldName[]=
 {
 	"RUSER",
@@ -248,11 +248,11 @@ char *format_umask (int umask, char *buffer)
 
 	// the umask represents the permissions that are
 	// turned off
-	umask = ~umask;	
+	umask = ~umask;
 	for (i = 0; i < 3; i++)
 	{	// iter through each group of 3 bits,
 		// starting at the left-most bits
-		u = (umask >> ((2 - i) * 3)) & 0x7;	
+		u = (umask >> ((2 - i) * 3)) & 0x7;
 
 		*buffer++ = s[i];
 		*buffer++ = '=';
@@ -292,7 +292,7 @@ char *format_size (int i, char *buffer)
 	i /= 1024; // display the size in K
 	suffix = "K";
 #else
-/*	this code picks the best scale with which to 
+/*	this code picks the best scale with which to
 	represent the number without losing precision
 */
 	if ((i < 1024) || (i % 1024))
@@ -501,14 +501,14 @@ print_ps (struct _ps *psp)
 			field = buffer;
 			break;
 		}
-		case SIGQUEUE:			
+		case SIGQUEUE:
 			field = format_signal (&psp->sigqueue, buffer);
 			break;
 		case THREADS:
 			field = itoa (psp->threads, buffer, 10);
 			break;
 		case TID:
-			field = itoa (psp->tid, buffer, 10);		
+			field = itoa (psp->tid, buffer, 10);
 			break;
 		case TFLAGS:
 			sprintf (buffer, "0x%x", psp->tflags);
@@ -559,7 +559,7 @@ print_ps (struct _ps *psp)
 		}
 		width += len;
 	}
-	printf ("\n");	
+	printf ("\n");
 }
 
 int
@@ -601,7 +601,7 @@ parse_header (char *header)
 		if (fieldid == -1)
 			return -1;
 
-		// store the field name in our layout 
+		// store the field name in our layout
 		headerFormat[fieldCount] = fieldid;
 
 		switch(fieldid) {
@@ -636,19 +636,19 @@ parse_header (char *header)
 		// does the user want to use a new header?
 		l = strlen (varNames[fieldid]);
 		delim = header[l];
-		if (delim == '=') 
+		if (delim == '=')
 		{	// yup - the user wants to override the header
 			fieldName[fieldCount] = header + l + 1;
 
 			// find the new length of the field
 			// anything right-justified should stay right justified
 			if (fieldWidth[fieldCount] < 0)
-				fieldWidth[fieldCount] = 
-					-max (strlen (fieldName[fieldCount]), 
+				fieldWidth[fieldCount] =
+					-max (strlen (fieldName[fieldCount]),
 						-defaultFieldWidth[fieldid]);
 			else
-				fieldWidth[fieldCount] = 
-					max (strlen (fieldName[fieldCount]), 
+				fieldWidth[fieldCount] =
+					max (strlen (fieldName[fieldCount]),
 						defaultFieldWidth[fieldid]);
 			fieldCount++;
 			break;	// the header is the rest of the argument so
@@ -661,7 +661,7 @@ parse_header (char *header)
 			fieldName[fieldCount] = defaultFieldName[fieldid];
 			fieldWidth[fieldCount] = defaultFieldWidth[fieldid];
 			fieldCount++;
-		
+
 			// if there was no delimiter (ie. we reached the end of the
 			// string), then we are done
 			if (delim == '\0')

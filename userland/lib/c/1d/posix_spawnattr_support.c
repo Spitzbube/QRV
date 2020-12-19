@@ -1,16 +1,16 @@
 /*
- * $QNXLicenseC:  
+ * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
 */
@@ -23,7 +23,7 @@
 
 /*
  * default_posix_spawnattr_t
- * 
+ *
  * The default 'posix_spawnattr_t' object will be used in the following cases...
  * 	1.	to return default value for any _getxxx() for which a user 'posix_spawnattr_t'
  * 		object has not yet been created. A user object will only be created
@@ -32,9 +32,9 @@
  * 		have default values.
  * 	2.	to provide the 'posix_spawnattr_t' values in a posix_spawn() call if
  * 		the 'attrp' argument is NULL
- * 
+ *
  * Note re __attribute__((aligned(8))) for _default_posix_spawnattr_t
- * 
+ *
  * We need this variable to be 8 byte aligned for the same reason we expect
  * any allocated posix_spawnattr_t memory within libc to be 8 byte aligned
  * (see KEY_MASK). The WATCOM (x86 only) compiler will does not understand the
@@ -78,19 +78,19 @@ posix_spawnattr_t default_posix_spawnattr_t = ((unsigned)0);
 
 /*
  * =============================================================================
- * 
+ *
  * 							Internal Support Routines
- * 
+ *
  * =============================================================================
 */
 
 /*******************************************************************************
  * posix_spawnattr_t_once_init
- * 
+ *
  * Called from posix_spawn() only once, this routine will initialize the
  * default_posix_spawnattr_t object to a properly keyed value as this is not
  * possible to do at link time
- * 
+ *
  * All functions within this file will use _default_posix_spawnattr_t to return
  * default values. Only when posix_spawn() is first called with either an <attrp>
  * of NULL or an <attrp> which has never had any _setxxx() operations made on it
@@ -104,10 +104,10 @@ void posix_spawnattr_t_once_init(void)
 /*******************************************************************************
  * get_attrp
  * set_attrp
- * 
+ *
  * These 2 routine translate between a real allocated '_posix_spawnattr_t *' and
  * the token stored in the 'posix_spawnattr_t *'.
- * 
+ *
  * A valid, initialized 'posix_spawnattr_t' object has 2 possible values.
  * 		- NULL
  * 		- a valid, allocated address
@@ -115,11 +115,11 @@ void posix_spawnattr_t_once_init(void)
  * uninitialized 'posix_spawnattr_t' objects from being used. The example is
  * an automatic 'posix_spawnattr_t' which contains stack garbage. It is non NULL
  * but does not represent valid, allocated memory.
- * 
+ *
  * Because we know that allocated memory is always aligned on given boundary
  * we use a key that will always turn a properly allocated memory address into
  * a token which always has the lower 3 bits set (8 byte alignment). This works
- * for all bogus values that do not have 7 as the LSB 
+ * for all bogus values that do not have 7 as the LSB
 */
 
 _posix_spawnattr_t *get_attrp(unsigned int x, unsigned key_mask)
@@ -130,17 +130,17 @@ _posix_spawnattr_t *get_attrp(unsigned int x, unsigned key_mask)
 
 /*******************************************************************************
  * valid_attrp
- * 
+ *
  * Return true (!0) or FALSE (0) depending on whether <attrp> represents a valid
  * initialized 'posix_spawnattr_t' object.
- * 
+ *
  * A valid object is as follows
  * 	- <attrp> is non NULL
  * 	- <*attrp> is NULL or represents allocated memory
- * 
+ *
  * In order to differentiate between allocated memory and a non 0 value, any
  * memory actually allocated will be translated. The get_attrp() and set_attrp()
- * routines will be used to translate back and forth 
+ * routines will be used to translate back and forth
 */
 unsigned valid_attrp(const posix_spawnattr_t *_Restrict attrp)
 {
@@ -154,14 +154,14 @@ unsigned valid_attrp(const posix_spawnattr_t *_Restrict attrp)
 
 /*******************************************************************************
  * _posix_spawnattr_t_realloc
- * 
+ *
  * If <attrp> == NULL, this function will allocate and initialize to default
  * values, memory for an internal '_posix_spawnattr_t' structure of <size> bytes.
  * If <attrp> != NULL, this function will reallocate the memory pointed to by
  * <attrp> to <size> bytes.
  * If <size> == 0 and <attrp> == NULL, then <size> it will be set to the default
  * (ie. sizeof(*attrp))
- * 
+ *
  * Note:
  * The intent of this function is to grow the _posix_spawnattr_t and although it
  * is possible to release the memory for the <attrp> (or resize it to something
@@ -169,7 +169,7 @@ unsigned valid_attrp(const posix_spawnattr_t *_Restrict attrp)
  * a <size> < sizeof(_posix_spawnattr_t) (the API for this internal function does
  * not prevent this), it is currently considered an error to do so and the caller
  * is responsible for any side effects.
- * 
+ *
  * Returns a pointer to the _posix_spawnattr_t structure or NULL if memory could
  * not be allocated.
 */

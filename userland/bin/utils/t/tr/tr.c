@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -60,7 +60,7 @@ Note:
                the size of string1. [x*n] is not allowed in string1.
 #endif
 
-/* 
+/*
 	Current points of concern:
 
 		o	Internationalization
@@ -83,34 +83,34 @@ Note:
 	Added include lib/compat.h
 
 	Revision 1.16  2005/06/03 01:38:02  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.15  2005/06/02 14:25:39  dsarrazin
 	Add support for the ASCII escape chars. (\n, \r, \t, and the like).  This
 	brings us more in-line with POSIX, and corrects a JCI PR.
-	
+
 	PR 24740
-	
+
 	Revision 1.14  2003/09/02 14:59:26  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.13  2000/12/21 18:14:41  seanb
 	- exit status should be <2^7.
-	
+
 	Revision 1.12  2000/12/21 15:06:24  seanb
 	- Incorrect use of tempnam() (neutrino specific code) causing -r option
 	  to fail out erroneously.
-	
+
 	Revision 1.11  1998/10/22 14:49:03  bstecher
 	*** empty log message ***
-	
+
 	Revision 1.10  1998/10/22 14:35:45  eric
 	*** empty log message ***
 
@@ -146,34 +146,34 @@ Note:
  * Revision 1.1  1991/09/04  01:30:21  brianc
  * Initial revision
  *
-	
+
 	Revision 1.8 Thu Apr  5 12:42:45 1990 opr
 	Bug fix in processing of ring buffer during multi-character
 	collation element (token) recognition.
-	
+
 	Revision 1.7 Wed Mar 21 09:04:14 1990 ejohnson
 	Small changes for watcom
-	
+
 	Revision 1.6 Wed Mar  7 14:08:37 1990 ejohnson
 	Added prototypes in conditional section. Looks for ANSI.
 	Under CI compile it -AS -Za -DANSI tr.c psx_getoptS.obj
-	
+
 	Revision 1.5 Tue Mar  6 16:17:27 1990 ejohnson
 	changed to use cdefs.h type definitions
-	
+
 	Revision 1.4 Wed Jan 10 12:44:45 1990 ejohnson
 	Added support for xlation to and from user-declared multi-
 	character collating symbols via [.collating_symbol.]
 	This involved a change from pascal character strings to
 	pascal word-length token strings.
-	
+
 	Also the syntax for multiples of collating elements [x*n] now
 	also will accept multi-char collating symbols. e.g.
 	[[.cs.]*8]
-	
+
 	Revision 1.3 Wed Nov 29 14:42:44 1989 ejohnson
 	added class support for the following:
-	
+
 	[:alpha:]		- set of all alphabetic characters
 	[:upper:]		- set of all uppercase characters
 	[:lower:]		- set of all lowercase characters
@@ -185,17 +185,17 @@ Note:
 	[:punct:]		- set of all punctuation characters
 	[:print:]		- set of all printable characters
 	[:cntrl:]		- set of all control characters
-	
+
 	These will be expanded in regular ASCII collating sequence (for now).
-	
-	
+
+
 	Revision 1.2 Wed Nov 29 11:16:00 1989 ejohnson
 	basic working tr, less multi-char collation, less classes, less
 	equivalence classes.
-	
+
 	Revision 1.1 Tue Aug  1 11:12:02 1989 ejohnson
 	 *** QRCS - Initial Revision ***
-	
+
 ---------------------------------------------------------------------*/
 
 /*
@@ -298,7 +298,7 @@ typedef struct Spascalstring {
 } pascalstring;
 
 typedef struct Ssymbolstring {
-	uint16_t len; 
+	uint16_t len;
 	uint16_t max;
 	uint16_t *sym;				/* sym points to WORD data - symbols */
 } symbolstring;
@@ -328,7 +328,7 @@ typedef struct Ssymbolstring {
 
 uint16_t top_symbol;					/*	number of the highest symbol present in
 								   		symbol[] */
-									
+
 pascalstring symbol[MAX_SYMBOLS];	/*	allow basic 256 character symbols
 							   			plus another 256 multi-character
 										collating symbols defined in the
@@ -363,14 +363,14 @@ octalorliteral(pascalstring *string,uint16_t *index)
 	If the first character is not an octal digit, this fn returns that
 	character ('literal'). If it is an octal digit, this fn will convert
 	that plus up to two more octal digits as an octal number and will
-	return the byte equivalent of that number. 
+	return the byte equivalent of that number.
 
 	e.g. "66fred" would return (char) 0x36
 
 	a pointer to index is passed so the calling fn can resume parsing
 	from the point AFTER the octal digits.
 
-	Up to three characters are read. 
+	Up to three characters are read.
 
 ----------------------------------------------------------------------------
 */
@@ -488,7 +488,7 @@ uint16_t octalordecimal (pascalstring *string,uint16_t *index)
 col_el_parse(pascalstring *string,uint16_t *index)
 
     string->data[*index] is supposed to point just past a starting [. --
-	the start of a collating sequence definition encountered during 
+	the start of a collating sequence definition encountered during
     higher level parsing. This fn will convert the remainder of the
     collating sequence to a symbol (word-length handle). A new
 	symbol may be added in the process to the symbol table if no
@@ -496,7 +496,7 @@ col_el_parse(pascalstring *string,uint16_t *index)
 	just past the end of the closing .].
 
 	Returns:
-	
+
 		>0 = symbol equivalent to the collating element passed.
 		-1 = Error in syntax or in creation of a new symbol.
 ----------------------------------------------------------------------------
@@ -511,7 +511,7 @@ int16_t col_el_parse (pascalstring *string,uint16_t *index)
 	/* remember location of element start */
 	string_start = &(string->dat[*index]);
 	start_index = *index;
-	
+
 	/* skip ahead to corresponding .] */
 	for (openbrackets=1;openbrackets && (*index<string->len);(*index)++) {
 		if (string->dat[*index] == ']')	openbrackets--;
@@ -521,7 +521,7 @@ int16_t col_el_parse (pascalstring *string,uint16_t *index)
 		fprintf(stderr,"%s (%s)\n",TXT(T_MISSING_BRACKET),string->dat);
 		return(-1);
 	}
-		
+
 	if (string->dat[*index-2]!='.') {
 		fprintf(stderr,"%s (%s)\n",TXT(T_EXPECTING_DOTBRACKET),string->dat);
 	    return(-1);
@@ -545,7 +545,7 @@ int16_t col_el_parse (pascalstring *string,uint16_t *index)
 				start_index--;
 			} else buffer[bufind++] = string->dat[start_index];
 		}
-	
+
 		/* if symbol is already present, this
 		   will return that symbol, otherwise it
 		   will create the new symbol and return
@@ -571,7 +571,7 @@ expandbuffer(symbolstring *dest, int size)
 ----------------------------------------------------------------------------
 */
 void expandbuffer(symbolstring *dest, int size)
-{	
+{
 	int16_t i;
 	uint16_t *oldsym;
 	if (size < dest->max){
@@ -606,19 +606,19 @@ int16_t expand_range (	pascalstring *orig,
 						int16_t max)
 {
 
-	Expands the form c1-c2 or x*n to their strings of symbols.  Cut out of 
+	Expands the form c1-c2 or x*n to their strings of symbols.  Cut out of
 original strnexpand function when adding support for c1-c2 without brackets to
 avoid redundant code.
 
 If xn_allowed is TRUE, attempts to resolve x*n form as well
 
-If open_bracket is TRUE, then the expression legally must resolve to 
+If open_bracket is TRUE, then the expression legally must resolve to
 c1-c2 or x*n forms, or an error message is output and CANT_EXPAND is returned.
 
 If open_bracket is FALSE, then no error messages will be output, and the
 return value indicates success or failure of the function, allowing
 normal processing of the character string where neither form exists.
-	
+
 Returns:
 
 	SUCCESS_RC on success
@@ -655,7 +655,7 @@ int16_t expand_range (	pascalstring *orig,
 				return(CANT_EXPAND);
 			}
 		}
-			
+
 		switch(orig->dat[(*oind)]) {
 			case '-':		/* char range [c-c] */
 				if ((c2=(int16_t)orig->dat[++(*oind)]) == '\\') {
@@ -701,14 +701,14 @@ int16_t expand_range (	pascalstring *orig,
 							if (dest->max - dest->len < REALLOC_THRESHOLD) expandbuffer(dest, dest->max*2);
 							dest->sym[dest->len++] = i;
 						}
-					}else{ 
+					}else{
 						for (i=(uint16_t)c1;i>=(uint16_t)c2;i--){
 							if (dest->max - dest->len < REALLOC_THRESHOLD) expandbuffer(dest, dest->max*2);
 							dest->sym[dest->len++] = i;
 						}
 					}
-				}								
-					
+				}
+
 #ifdef OLD
 				(*oind)++;
 #endif
@@ -804,12 +804,12 @@ IF xn_allowed is TRUE:
 				as octal if there is a leading '0', otherwise decimal
 				will be assumed.
 
-For x*0 or x* to work, strnexpand must be called with 
+For x*0 or x* to work, strnexpand must be called with
 length_difference set to the difference in length between the two strings
 if NO occurrances of x were inserted. i.e. when processing string1, xn_allowed
 should be FALSE. Then process string2 once with xn_allowed TRUE but
 length_difference 0 (so that x* results in 0 chars). Then process string2
-again, with xn_allowed TRUE, and length_difference set to the difference in 
+again, with xn_allowed TRUE, and length_difference set to the difference in
 length between string1 and the result of the first pass on string2.
 
 Returns:
@@ -898,7 +898,7 @@ int16_t strnexpand (pascalstring *orig,
 									break;
 								}	/* fall through on error */
 
-							case 'd':		/* digit */								
+							case 'd':		/* digit */
 								if (!strncmp(&orig->dat[oind],"digit",5)) {
 									oind+=5;
 									for (i=0;i<256;i++)
@@ -1010,19 +1010,19 @@ int16_t strnexpand (pascalstring *orig,
 						}
                         			break; /* [. collating element */
 					default:	/* [x*n] || [c1-c2] */
-						if ( (i=expand_range (orig, dest, &oind, xn_allowed, 
+						if ( (i=expand_range (orig, dest, &oind, xn_allowed,
 						TRUE, length_difference, &xsplat, max)) != SUCCESS_RC)
 							return i;
-		
+
 						if (orig->dat[oind] != ']') {
 							/* Error */
 							fprintf(stderr,"%s (%s)\n",TXT(T_MISSING_BRACKET),orig->dat);
 							return(CANT_EXPAND);
 						} else oind++;
-		
+
 						break;	/* default case */
 
-				} /* switch expansions startin with [ */	
+				} /* switch expansions startin with [ */
 				break; /* case [... */
 
 			default:	/* not \anything, nor [anything; might still be c1-c2*/
@@ -1045,7 +1045,7 @@ int16_t strnexpand (pascalstring *orig,
 
 
 			dest->len++;
-			break;	
+			break;
 		} /* SWITCH 1 */
 	}	/* WHILE */
 
@@ -1057,7 +1057,7 @@ int16_t strnexpand (pascalstring *orig,
 
 
 
-	
+
 /*
 ------------------------------------------------------------- main ---------
 
@@ -1142,13 +1142,13 @@ main (int argc,char **argv)
 				exit(EXIT_FAILURE);
 			}
 			if (strnexpand(&cstring1,&sstring1,512,FALSE,0)==CANT_EXPAND) err++;
-	
+
 			#ifdef DIAG
 				else {
 					fprintf(stderr,"cstring1 = ");
 					fwrite(cstring1.dat,cstring1.len,1,stderr);
 					fprintf(stderr,"\n");
-				
+
 					/* Can't do this anymore (symbols, not chars)
 						fprintf(stderr,"\npstring1 = ");
 						fwrite(pstring1.dat,pstring1.len,1,stderr);
@@ -1165,22 +1165,22 @@ main (int argc,char **argv)
 		   complement here so string2 can be expanded to the right
 		   length (if necessary)
 		*/
-	
+
 		if (complement) {
 			int8_t  comp[257];
 			int16_t i;
-	
+
 			/* set comp all true */
 			for (i=0;i<256;i++) comp[i] = (int8_t) 1;
-	
+
 			/* knock down items in comp covered by sstring1's symbols.
 			   Make use of the fact that symbol #s < 256 are the same
 			   as the character they represent. */
-	
+
 			for (i=0;i<sstring1.len;i++) {
 				if (sstring1.sym[i]<256) comp[sstring1.sym[i]] = (int8_t) 0;
 			}
-	
+
 			/* build new sstring1 from comp */
 			for (sstring1.len=i=0;i<256;i++){
 				if (sstring1.max - sstring1.len < REALLOC_THRESHOLD) expandbuffer(&sstring1, sstring1.max*2);
@@ -1189,12 +1189,12 @@ main (int argc,char **argv)
 				}
 			}
 		}
-	
+
 		if (cstring2.dat) {
 			cstring2.len = strlen(cstring2.dat);
 			sstring2.max = cstring2.len + REALLOC_THRESHOLD + REALLOC_THRESHOLD + 1;
 			sstring2.sym = malloc(sstring2.max * sizeof(sstring2.sym));
-			
+
 			if (sstring2.sym == NULL){
 				exit (EXIT_FAILURE);
 			}
@@ -1213,8 +1213,8 @@ PASS_STRING2_AGAIN:
 						diff = sstring1.len - sstring2.len;
 						if (diff>0) goto PASS_STRING2_AGAIN;
 					}
-					/* fall through */					
-				default:					
+					/* fall through */
+				default:
 					for (;sstring2.len<=sstring1.len;sstring2.len++){
 						if (sstring2.max - sstring2.len < REALLOC_THRESHOLD) expandbuffer(&sstring2, sstring2.max*2);
 						sstring2.sym[sstring2.len] = sstring2.sym[sstring2.len-1];
@@ -1270,7 +1270,7 @@ PASS_STRING2_AGAIN:
 		#ifdef DIAG
 			fprintf(stderr,"INPUT FILE = %s\n",filename);
 		#endif
-	
+
 #ifndef __QNXNTO__
 		tmpnam(outfilename);
 #else
@@ -1279,7 +1279,7 @@ PASS_STRING2_AGAIN:
 			fprintf(stderr, "Unable to create tmpfile\n");
 			exit(EXIT_FAILURE);
 		}
-		
+
 #endif
 
 		output_fp = fopen(outfilename,"w+");
@@ -1296,7 +1296,7 @@ PASS_STRING2_AGAIN:
 		#endif
 	} else {
     	input_fp  = stdin;
-		output_fp = stdout;	
+		output_fp = stdout;
 	}
 
 	/* set buffer to 4k to improve net throughput */
@@ -1327,12 +1327,12 @@ PASS_STRING2_AGAIN:
 								fprintf(stderr,TXT(T_WRITE_ERROR));
 								exit(READWRITE_ERR_RC);
 							}
-	
+
 							last_output = s;
 						}
 						break;
 					default: break;
-				}				
+				}
 			}
 		} else {
 #ifdef DIAG
@@ -1342,7 +1342,7 @@ PASS_STRING2_AGAIN:
 						was,was,action[was],xlat[was],xlat[was]);
 			}
 #endif
-					
+
 			/* no multi-character collating elements defined - can use
                quick and dirty approach */
 			for (errflag=0;( (s=getc(input_fp)) !=EOF) && (!errflag);) {
@@ -1362,15 +1362,15 @@ PASS_STRING2_AGAIN:
 								fprintf(stderr,TXT(T_WRITE_ERROR));
 								exit(READWRITE_ERR_RC);
 							}
-	
+
 							last_output = s;
 						}
 						break;
 					default: break;
-				}				
+				}
 			}
-			if (!feof(input_fp)) {	
-				perror("tr: getc");		
+			if (!feof(input_fp)) {
+				perror("tr: getc");
 				errflag++;
 			}
 		}
@@ -1447,7 +1447,7 @@ int16_t find_symbol (int16_t length,uint8_t *pointer)
 }
 
 
-/* 
+/*
 ------------ create multi-character symbol -----
 returns -1 on failure, symbol # on success
 */
@@ -1548,18 +1548,18 @@ int16_t get_symbol ()
 
 	/* damnation. The user has specified multi-character collating elements
 		(symbols). We will have to buffer our input ourselves in a ring
-		buffer. ELEMENT() is an expensive macro which makes the ring 
+		buffer. ELEMENT() is an expensive macro which makes the ring
     	buffer look flat. */
 
 	/* macro for flattening the ring */
 	#define ELEMENT(n) ring[(ring_index+n)%INPUT_RING_SIZE]
-	
+
 	#ifdef DIAG
 		printf("Filling input buffer\n");
 		printf("ring_index = %d, ring_size = %d, nomoredata = %s\n",ring_index, ring_size, nomoredata?"TRUE":"FALSE");
 	#endif
 
-	/* fill the input buffer */	
+	/* fill the input buffer */
 	{
 		int fill_index = ring_size; /* start filling from end */
 
@@ -1571,7 +1571,7 @@ int16_t get_symbol ()
 					errflag++;
 				} else nomoredata++;
 			} else {
-				ELEMENT(fill_index++) = (uint8_t) i; 
+				ELEMENT(fill_index++) = (uint8_t) i;
 				ring_size++;
 			}
 		}
@@ -1587,7 +1587,7 @@ int16_t get_symbol ()
 		printf("Checking for matches amongst symbols\n");
 	#endif
 
-	/* check for matches amongst symbols */		
+	/* check for matches amongst symbols */
 	{
 		int16_t bestlen,sym,ci;
 
@@ -1613,13 +1613,13 @@ int16_t get_symbol ()
 			/* only compare if we have enough chars in the buffer */
 			if (symbol[sym].len <= ring_size) {
 				for (ci=0;
-					 (ci<symbol[sym].len) && 
+					 (ci<symbol[sym].len) &&
 					 (symbol[sym].dat[ci]==ELEMENT(ci) );
 					 ci++);
-		
+
 				/* wasn't a full match */
 				if (ci!=symbol[sym].len) continue;
-		
+
 				if (ci>bestlen) {
 					bestlen = ci;
 					bestsym = sym;

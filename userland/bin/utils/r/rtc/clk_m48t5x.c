@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 
@@ -34,11 +34,11 @@ static	unsigned
 rdcmos(unsigned i) {
 	unsigned temp;
 
-	_disable();		
+	_disable();
 	chip_write8(0, i & 0xff);			// Low 8 bits of addr
 	chip_write8(1, (i >> 8) & 0xff);	// High 8 bits
  	temp = chip_read8(3);				// Read data
-	_enable();		
+	_enable();
 	return(temp);
 }
 
@@ -51,7 +51,7 @@ wrcmos(unsigned i, unsigned d) {
 	chip_write8(0, i & 0xff);			// Low 8 bits of addr
 	chip_write8(1, (i >> 8) & 0xff);	// High 8 bits
  	chip_write8(3, d);					// Write data
-	_enable();	
+	_enable();
 }
 
 #define M48T5X_TIME_REGS 0x1ff0
@@ -62,9 +62,9 @@ RTCFUNC(init,m48t5x)(struct chip_loc *chip, char *argv[]) {
 		fprintf(stderr,"rtc: -b baseaddr must be specified for m48t5x clock type\n");
 		return(-1);
 	}
-	if(chip->century_reg == UNSET) 
+	if(chip->century_reg == UNSET)
 			chip->century_reg = -1;
-	if(chip->access_type == NONE) 
+	if(chip->access_type == NONE)
 			chip->access_type = MEMMAPPED;
 	return(4);
 }

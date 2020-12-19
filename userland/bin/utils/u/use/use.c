@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -140,7 +140,7 @@ int						nl = DEFAULT_LINES; /* used at top to hold info obtained
                                     use it later on to set numlines to. */
 pid_t					more_pid=-1;
 int						exit_val = EXIT_SUCCESS; /* one failure causes
-											return value to be EXIT_FAILURE */												
+											return value to be EXIT_FAILURE */
 extern pid_t            _my_pid;
 
 static struct stat statbuf;
@@ -196,7 +196,7 @@ map_fn(const char *filename, const struct stat *buf, int flags)
 {
 	if(flags == FTW_F){ /* S_ISDIR(buf->st_mode)) */
 		if(use_guy(filename) > 0) {
-			printf("\n"); 
+			printf("\n");
 		} else exit_val = EXIT_FAILURE;
 	}
 	return 0;
@@ -227,7 +227,7 @@ static int
 add_name(char *name){
 	struct name_list *nl = name_list.next;
 	struct name_list *new_name;
-	
+
 	while(nl){
 		if(strcmp(name, nl->name) == 0)
 			return 1;
@@ -268,7 +268,7 @@ add_solibs(procfs_info *i, int fd)
 			return 0;
 		}
 	}
-	
+
 	for (m = mapinfo, j = num; j--; m++) {
 		if (m->ino == 0) {
 			continue;
@@ -277,7 +277,7 @@ add_solibs(procfs_info *i, int fd)
 		if (devctl(fd, DCMD_PROC_MAPDEBUG, &map, sizeof map, 0) != EOK) {
 			continue;
 		}
-		
+
 		/* Skip if not executable. */
 		if (map.info.vaddr == m->vaddr && !(m->flags & MAP_ELF))
 			continue;
@@ -320,7 +320,7 @@ pretend_to_be_pidin()
 			close(fd);
 			continue;
 		}
-		
+
 		if (devctl(fd, DCMD_PROC_MAPDEBUG_BASE, &name, sizeof name, 0) != EOK) {
 			name.info.vaddr = 0;
 			if (info.pid == SYSMGR_PID) {
@@ -339,7 +339,7 @@ pretend_to_be_pidin()
 	{
 		struct name_list *nl = name_list.next;
 		while(nl){
-			if ( (use_guy(nl->name)) < 1) 
+			if ( (use_guy(nl->name)) < 1)
 				exit_val = EXIT_FAILURE;
 			nl = nl->next;
 		}
@@ -460,7 +460,7 @@ int main(int argc, char **argv)
 	if(filelist){
 		char tmp[TMPBUF];
 		FILE *fp = fopen(filelist, "r");
-		
+
 		if(!fp){
 			fprintf(stderr, "Unable to open %s for reading: %s",
 					filelist, strerror(errno));
@@ -502,7 +502,7 @@ setup_paging()
 		nl = 0;
 #endif
 #endif
-		if (nl==0) 
+		if (nl==0)
 			nl=DEFAULT_LINES;
 	}
 
@@ -589,7 +589,7 @@ use_guy(const char *argv)
 	seteuid(getuid());
 #endif
 	switch(infoflag) {
-	case 1:	
+	case 1:
 		// "use -i"
 		if (-1==elf_getsecinfo(fp,"QNX_info",&nbytes,NULL) || nbytes == 0) {
 			fprintf(stderr,"No info available in %s.\n", fname);
@@ -597,7 +597,7 @@ use_guy(const char *argv)
 		}
 		allflag = 1;	/* Force RAW */
 		break;
-	case 2:	
+	case 2:
 		// "use -s"
 		if (-1==elf_getsecinfo(fp,".ident",&nbytes,NULL) || nbytes == 0) {
 			fprintf(stderr,"No info available in %s.\n", fname);
@@ -614,14 +614,14 @@ use_guy(const char *argv)
 				bad_lmf(fname,fp,numlines);
 				goto exit_use_guy;
 			}
-		
+
 			if(hdr.rec_type != _LMF_DEFINITION_REC){
 				bad_lmf(fname,fp,numlines);
 				goto exit_use_guy;
 			}
-		
+
 			fseek(fp, (long) hdr.data_nbytes, SEEK_CUR);
-		
+
 			while(fread(&hdr, 1, sizeof(hdr), fp) == sizeof(hdr)) {
 				switch(hdr.rec_type) {
 				case _LMF_RESOURCE_REC:
@@ -634,10 +634,10 @@ use_guy(const char *argv)
 						fseek(fp, (long) hdr.data_nbytes, SEEK_CUR);
 						continue;
 						}
-		
+
 					nbytes = hdr.data_nbytes;
 					break;
-		
+
 				case _LMF_COMMENT_REC:
 				case _LMF_DATA_REC:
 				case _LMF_FIXUP_SEG_REC:
@@ -654,7 +654,7 @@ use_guy(const char *argv)
 					bad_lmf(fname,fp,numlines);
 					goto exit_use_guy;
 				}
-		
+
 				break;
 			}
 			goto exit_use_guy;
@@ -698,7 +698,7 @@ open_help(char *cmd, int filedes)
 
 	old = dup(filedes);
 	dup2(fds[1], filedes);
-		
+
 #if defined(__SOLARIS__) || defined(__LINUX__)
 	switch(fork()) {
 	case -1:
@@ -783,7 +783,7 @@ void print_data( FILE *fp, char *full_fname, long nbytes )
 				}
 
 				signal(SIGPIPE, leave);
-				
+
 				for (j=0; j < nlines; j++) {
 					write(pfiled[1], lines[j], strlen(lines[j]));
 					write(pfiled[1], "\n", 1);
@@ -810,7 +810,7 @@ void print_data( FILE *fp, char *full_fname, long nbytes )
 #endif
 			}
 			i = -1;
-		} 
+		}
 		i++;
 		nbytes--;
 	}
@@ -905,12 +905,12 @@ void print_data( FILE *fp, char *full_fname, long nbytes )
 					close(pfiled[0]);
 					//parent
 					break;
-				}				
+				}
 
 				fclose(fp);
 				p = &lines[i][3];
 				while(*p == ' ') ++p;
-				
+
 				if(p[0] == '%' && p[1] == 'C'){
 					char *buf = malloc(strlen(full_fname) + strlen(lines[i]));
 					if(!buf){
@@ -1046,7 +1046,7 @@ exec_searchenv( const char *name, const char *env_var, char *buffer ) {
 	buffer[0] = '\0';
 }
 
-#if defined(__NT__) || defined(__MINGW32__) 
+#if defined(__NT__) || defined(__MINGW32__)
 
 int raw(int fd)
 {

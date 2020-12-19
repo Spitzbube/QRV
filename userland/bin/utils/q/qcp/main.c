@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -80,7 +80,7 @@
 
 #ifdef __QNXNTO__
 #include <devctl.h>
-#define MAX_TTY_NAME TTY_NAME_MAX 
+#define MAX_TTY_NAME TTY_NAME_MAX
 #define _DEV_ECHO       0x0001
 #define _DEV_EDIT       0x0002
 #define _DEV_ISIG       0x0004
@@ -300,7 +300,7 @@ fprintf(stderr,"reading...\r\n");
 					break;
 					}
 				else {
-#ifdef DIAG 
+#ifdef DIAG
 fprintf(stderr,"read_mdm got %d chars [0x%02x 0x%02x 0x%02x...]\r\n",i,buf[0],buf[1],buf[2]);
 #endif
 					buf += i; nchars -= i; n += i;
@@ -359,7 +359,7 @@ putmsg( signed char *fmt, ... ) {
 
 #ifndef DIAG
 	if ( quiet  ||  use_stdin ) return;
-#else 
+#else
 fprintf(stderr,"putmsg() about to do a vprintf... quiet=%d, use_stdin=%d\r\n",quiet,use_stdin);
 #endif
 	va_start( arglist, fmt );
@@ -412,14 +412,14 @@ int abort_check() {
 
 	#ifdef __QNXNTO__
         fcntl(0,F_SETFL,O_NONBLOCK);
-     
+
         /* neutrino - flush any waiting data on the fd (O_NONBLK is set) */
         do {
             n=read(0,&buf,sizeof(buf));
         } while (n!=0 && n!=-1);
 
         fcntl(0,F_SETFL,0);
-	#else 
+	#else
 		while( dev_ischars(0) ) read( 0, &c, 1 );
 	#endif
 
@@ -430,15 +430,15 @@ int abort_check() {
 		{
 		int n; char buf[16];
         fcntl(0,F_SETFL,O_NONBLOCK);
-     
+
         /* neutrino - flush any waiting data on the fd (O_NONBLK is set) */
         do {
             n=read(0,&buf,sizeof(buf));
         } while (n!=0 && n!=-1);
-     
+
         fcntl(0,F_SETFL,0);
 		}
-	#else 
+	#else
 		while( dev_ischars(0) ) read( 0, &c, 1 );
 	#endif
 		printf( "\n" );

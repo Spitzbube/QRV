@@ -3,7 +3,7 @@
 /*
  * Copyright (c) Christos Zoulas 2003.
  * All Rights Reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -13,7 +13,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- *  
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -77,7 +77,7 @@ getu16(int swap, uint16_t value)
 
 		retval.c[0] = tmpval.c[1];
 		retval.c[1] = tmpval.c[0];
-		
+
 		return retval.ui;
 	} else
 		return value;
@@ -98,7 +98,7 @@ getu32(int swap, uint32_t value)
 		retval.c[1] = tmpval.c[2];
 		retval.c[2] = tmpval.c[1];
 		retval.c[3] = tmpval.c[0];
-		
+
 		return retval.ui;
 	} else
 		return value;
@@ -123,7 +123,7 @@ getu64(int swap, uint64_t value)
 		retval.c[5] = tmpval.c[2];
 		retval.c[6] = tmpval.c[1];
 		retval.c[7] = tmpval.c[0];
-		
+
 		return retval.ui;
 	} else
 		return value;
@@ -404,7 +404,7 @@ donote(struct magic_set *ms, unsigned char *nbuf, size_t offset, size_t size,
 			break;
 		default:
 			if (file_printf(ms, "<unknown>") == -1)
-				return size; 
+				return size;
 		}
 		if (file_printf(ms, " %d.%d.%d", getu32(swap, desc[1]),
 		    getu32(swap, desc[2]), getu32(swap, desc[3])) == -1)
@@ -471,25 +471,25 @@ donote(struct magic_set *ms, unsigned char *nbuf, size_t offset, size_t size,
 		 * Contents is __FreeBSD_version, whose relation to OS
 		 * versions is defined by a huge table in the Porter's
 		 * Handbook.  This is the general scheme:
-		 * 
+		 *
 		 * Releases:
 		 * 	Mmp000 (before 4.10)
 		 * 	Mmi0p0 (before 5.0)
 		 * 	Mmm0p0
-		 * 
+		 *
 		 * Development branches:
 		 * 	Mmpxxx (before 4.6)
 		 * 	Mmp1xx (before 4.10)
 		 * 	Mmi1xx (before 5.0)
 		 * 	M000xx (pre-M.0)
 		 * 	Mmm1xx
-		 * 
+		 *
 		 * M = major version
 		 * m = minor version
 		 * i = minor version increment (491000 -> 4.10)
 		 * p = patchlevel
 		 * x = revision
-		 * 
+		 *
 		 * The first release of FreeBSD to use ELF by default
 		 * was version 3.0.
 		 */
@@ -578,7 +578,7 @@ core:
 	if ((namesz == 4 && strncmp((char *)&nbuf[noff], "CORE", 4) == 0) ||
 	    (namesz == 5 && strcmp((char *)&nbuf[noff], "CORE") == 0)) {
 		os_style = OS_STYLE_SVR4;
-	} 
+	}
 
 	if ((namesz == 8 && strcmp((char *)&nbuf[noff], "FreeBSD") == 0)) {
 		os_style = OS_STYLE_FREEBSD;
@@ -611,7 +611,7 @@ core:
 			if (file_printf(ms, ", from '%.31s'",
 			    &nbuf[doff + 0x7c]) == -1)
 				return size;
-			
+
 			/*
 			 * Extract the signal number.  It is at
 			 * offset 0x08.
@@ -807,7 +807,7 @@ dophn_exec(struct magic_set *ms, int class, int swap, int fd, off_t off,
 		file_badread(ms);
 		return -1;
 	}
-	
+
 	if (size != xph_sizeof) {
 		if (file_printf(ms, ", corrupted program header size") == -1)
 		    return -1;
@@ -854,7 +854,7 @@ dophn_exec(struct magic_set *ms, int class, int swap, int fd, off_t off,
 			break;
 		case PT_NOTE:
 			if ((align = xph_align) & 0x80000000) {
-				if (file_printf(ms, 
+				if (file_printf(ms,
 				    ", invalid note alignment 0x%lx",
 				    (unsigned long)align) == -1)
 					return -1;
@@ -953,7 +953,7 @@ file_tryelf(struct magic_set *ms, int fd, const unsigned char *buf,
 #ifdef ELFCORE
 			if (dophn_core(ms, class, swap, fd,
 			    (off_t)getu32(swap, elfhdr.e_phoff),
-			    getu16(swap, elfhdr.e_phnum), 
+			    getu16(swap, elfhdr.e_phnum),
 			    (size_t)getu16(swap, elfhdr.e_phentsize),
 			    fsize, &flags) == -1)
 				return -1;
@@ -964,7 +964,7 @@ file_tryelf(struct magic_set *ms, int fd, const unsigned char *buf,
 			if (getu16(swap, elfhdr.e_type) == ET_EXEC) {
 				if (dophn_exec(ms, class, swap,
 				    fd, (off_t)getu32(swap, elfhdr.e_phoff),
-				    getu16(swap, elfhdr.e_phnum), 
+				    getu16(swap, elfhdr.e_phnum),
 				    (size_t)getu16(swap, elfhdr.e_phentsize),
 				    fsize, &flags)
 				    == -1)
@@ -994,7 +994,7 @@ file_tryelf(struct magic_set *ms, int fd, const unsigned char *buf,
 #ifdef ELFCORE
 			if (dophn_core(ms, class, swap, fd,
 			    (off_t)elf_getu64(swap, elfhdr.e_phoff),
-			    getu16(swap, elfhdr.e_phnum), 
+			    getu16(swap, elfhdr.e_phnum),
 			    (size_t)getu16(swap, elfhdr.e_phentsize),
 			    fsize, &flags) == -1)
 				return -1;
@@ -1005,7 +1005,7 @@ file_tryelf(struct magic_set *ms, int fd, const unsigned char *buf,
 			if (getu16(swap, elfhdr.e_type) == ET_EXEC) {
 				if (dophn_exec(ms, class, swap, fd,
 				    (off_t)elf_getu64(swap, elfhdr.e_phoff),
-				    getu16(swap, elfhdr.e_phnum), 
+				    getu16(swap, elfhdr.e_phnum),
 				    (size_t)getu16(swap, elfhdr.e_phentsize),
 				    fsize, &flags) == -1)
 					return -1;

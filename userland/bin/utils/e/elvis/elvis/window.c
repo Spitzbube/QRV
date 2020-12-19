@@ -207,7 +207,7 @@ WINDOW winalloc(gw, gvals, buf, rows, columns)
 
 	/* there is initially no matching parenthesis */
 #ifdef FEATURE_TEXTOBJ
-	newp->matchend = 
+	newp->matchend =
 #endif
 	newp->match = -4;
 
@@ -439,7 +439,7 @@ void winchgbuf(win, buf, force)
 		win->seltop = win->selbottom = NULL;
 	}
 
-	/* release the old buffer, and discard it if that's okay */ 
+	/* release the old buffer, and discard it if that's okay */
 	if (bufunload(markbuffer(win->cursor), ElvFalse, ElvFalse) || force)
 	{
 		/* good!  now switch buffers */

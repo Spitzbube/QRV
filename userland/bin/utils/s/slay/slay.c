@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -35,33 +35,33 @@
 	PR: 21836, 44029
 	CI: rmansfield
 	Implemented ttymatch() for NTO to support -t option.
-	
+
 	Revision 1.30  2006/09/06 17:42:53  sberthiaume
-	
+
 	PR:41198
 	CI:thomasf
-	
+
 	fixed slay so that it would find processes from non-stripped binaries generated on Windows systems.
-	
+
 	Revision 1.29  2006/04/11 16:16:22  rmansfield
-	
+
 	PR: 23548
 	CI: kewarken
-	
+
 	Stage 1 of the warnings/errors cleanup.
-	
+
 	Revision 1.28  2006/03/02 16:08:11  seanb
-	
+
 	slay across nodes on different domains got busted with the
 	fix for PR 29117.
 	PR:29840
 	CI:cburgess
-	
+
 	Revision 1.27  2006/01/23 18:38:09  seanb
 	- Don't assume qnet is using /net as a mountpoint.
 	PR: 29117
 	CI: rcraig
-	
+
 	Revision 1.26  2006/01/05 20:45:06  jgarvey
 	PR/28890
 	Re-design of this.  Now by default the given process will be matched by
@@ -69,14 +69,14 @@
 	("-m name" or "-m pid").  This should be abckwards-compatable yet still
 	allow scripts to explicitly identify a process (to runmask/priority it).
 	CI: sboucher
-	
+
 	Revision 1.25  2005/12/23 22:11:20  jgarvey
 	PR/28890
 	Allow operands to "slay" to be either process names or pids.
 	Precedence is given to names (in the unlikely case of having both
 	a process with a fully numeric pathname and that pid slot used).
 	CI: seanb
-	
+
 	Revision 1.24  2005/12/08 16:41:09  seanb
 	- 64 bit paranioa.  The masks themselves are in natively
 	  sized masks (unsigned).  Always take 32 bits per -R to
@@ -84,33 +84,33 @@
 	  bit machines with > 32 cores.
 	CI:rcraig
 	PR:28499
-	
+
 	Revision 1.23  2005/11/16 19:06:45  seanb
 	- Update to new _NTO_TCTL_RUNMASK_GET_AND_SET_INHERIT
 	  semantics after changes for PR 28083.
 	PR:28083
 	CI:rcraig
-	
+
 	Revision 1.22  2005/11/16 17:11:35  seanb
 	- Update to new _NTO_TCTL_RUNMASK_GET_AND_SET_INHERIT
 	  semantics after changes for PR 28083.
 	PR:28083
 	CI:rcraig
-	
+
 	Revision 1.21  2005/11/08 18:30:44  sboucher
 	CR636 add rcsid IQ
-	
+
 	Revision 1.20  2005/10/17 19:43:42  seanb
 	- -P without -T now affects all threads.
 	- PR 27817.
 	- CI: rcraig.
-	
+
 	Revision 1.19  2005/10/17 16:39:38  seanb
 	- Raise a STOP if the inherit mask is being
 	  altered for every thread in a process so that
 	  none are missed.
 	- Change came out of code review for PR 27716.
-	
+
 	Revision 1.18  2005/10/17 14:17:58  seanb
 	- -[CR] without -T now sets runmask of all threads in a
 	  process.
@@ -118,82 +118,82 @@
 	  conjunction with -[CR].
 	- PR 27716.
 	- CI: pending rcraig.
-	
+
 	Revision 1.17  2005/09/30 16:24:33  seanb
 	- Check return from open() correctly.
 	- use SCHED_NOCHANGE to preserve policy rather
 	  than pulling it out of procfs.
 	- PR 27546
 	- Code review: cburgess
-	
+
 	Revision 1.16  2005/09/28 22:46:43  seanb
 	- Buffer management issues.
 	  - Overrun with -n
 	  - -n and -C didn't mix.
 	- PR 27526
 	- Code review: rcraig
-	
+
 	Revision 1.15  2005/06/03 01:38:00  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.14  2003/11/17 18:19:51  cburgess
 	fix for PR17667 - slay (REGRESSION): can't set priorities with slay
-	
+
 	need to set tid=1 in setprio_remote - can't use tid=0
-	
+
 	Revision 1.13  2003/08/29 20:27:51  martin
 	Update QSSL Copyright.
-	
+
 	Revision 1.12  2003/06/06 20:26:30  cburgess
 	tid should have been initialized to 0
-	
+
 	Revision 1.11  2003/05/27 13:26:30  cburgess
 	updated a little to reports errors better
-	
+
 	Revision 1.10  2003/02/07 16:10:12  cburgess
 	add selecting thread, and setting cpu/runmask
-	
+
 	Revision 1.9  2001/12/14 15:34:23  kewarken
 	fix for PR:9633 - slay -P not working.  It was calling sched_setscheduler
-	
+
 	Revision 1.8  2001/11/15 16:51:53  kewarken
 	PR:9140 - slay will now set priorities properly.
 	Also fixed bug where 'slay -#' didn't work
-	
+
 	Revision 1.7  2001/07/09 19:38:56  kewarken
 	fixed option parsing bug (p.r.5750)
-	
+
 	Revision 1.6.2.1  2001/07/09 19:36:33  kewarken
 	fixed option parsing bug (p.r. 5750)
-	
+
 	Revision 1.6  2001/04/25 16:32:01  xtang
 	Oops, the change to support cross network slay break the local case
 	(causing SIGSEGV on local case). Fixed.
-	
+
 	Revision 1.5  2001/04/20 19:49:52  xtang
 	kill_remote() now working.
-	
+
 	Revision 1.4  2000/04/10 13:22:40  thomasf
 	Fixed problem with NTO setprio returning the old priority instead
 	of a -1/0 value as was expected.
-	
+
 	Revision 1.3  1999/01/04 19:45:15  peterv
 	Made priority range testing be done by kernel.
-	
+
 	Revision 1.2  1998/10/25 02:48:47  dtdodge
 	Added network support. At least I think I did based upon how it is supposed
 	to work....
-	
+
 	Revision 1.1  1998/10/25 02:29:20  dtdodge
 	Initial cvs checkin.
-	
+
 	Revision 1.8  1997/07/22 14:10:29  eric
 	added new -p option which prints pids to stdout.
 	Process name match with slay is exact;
@@ -228,7 +228,7 @@
  * Revision 1.1  1991/08/16  17:11:48  brianc
  * Initial revision
  *
-	
+
 ---------------------------------------------------------------------*/
 
 #include <stdio.h>
@@ -399,7 +399,7 @@ char	*argv[];
 					memset(runmask, 0x00, rsize *
 					    sizeof(*runmask));
 				}
-				
+
 				val = strtoul(optarg, NULL, 0);
 				if (i == 'C') {
 					if (val < rmax)
@@ -407,7 +407,7 @@ char	*argv[];
 				}
 				else if (rdone < rsize) {
 					/* i == 'R' */
-					
+
 					/*
 					 * Always take 32 bits worth of mask
 					 * per -R.  This assumes __INT_BITS__
@@ -452,7 +452,7 @@ char	*argv[];
 					if (strlen(ttynambuf) + strlen(optarg) >= sizeof(ttynambuf)) {
 						fprintf(stderr, "slay: %s: ttyname too long\n", optarg);
 						exit(0);
-					}	
+					}
 					strncat( ttynambuf, optarg, sizeof(ttynambuf) - strlen(ttynambuf) - 1);
 					break;
 			case 'u':	sigptr = lookup("CONT");break;
@@ -500,7 +500,7 @@ char	*argv[];
 	}
 #endif
 
-	if(sigptr == NULL  &&  prio == -1 
+	if(sigptr == NULL  &&  prio == -1
 #ifdef __QNXNTO__
 	&& runmask == NULL
 #endif
@@ -509,7 +509,7 @@ char	*argv[];
 
 	for( ; optind < argc; optind++ ) {
 		memset( pids, 0, sizeof( pids ) );
-		npids = find( node, argv[optind] );     	
+		npids = find( node, argv[optind] );
 
 		if(npids == 0  &&  !quiet) {
 			if(!force) {
@@ -751,7 +751,7 @@ int setprio_remote(node_t node, pid_t pid, int tid, int prio) {
 			ret = -1;
 		}
 	}
-	
+
 	close(fd);
 	return ret;
 }
@@ -807,7 +807,7 @@ int setrunmask_remote(node_t node, pid_t pid, int tid, int *runmask, int inherit
 		else
 			memset(imaskp, 0x00, rsize_char);
 	}
-		
+
 	/*
 	 * _NTO_TCTL_RUNMASK* always needs O_RDWR so we can't fall
 	 * back to O_RDONLY like in setprio_remote().
@@ -1041,7 +1041,7 @@ int	kill_remote ( node_t node, pid_t pid, int signum ) {
 	}
 	qnx_vc_detach( vid );
 
-	return( status );	
+	return( status );
 	}
 
 
@@ -1064,7 +1064,7 @@ char *ttymatch ( pid_t proc_pid, int sid ) {
 
 	if (qnx_sid_query(proc_pid, sid, &sid_data) != -1)
 		return(sid_data.tty_name);
-	
+
 	return(NULL);
 	}
 
@@ -1076,14 +1076,14 @@ tail ( name )
 char *name;
 	{
 	register char *p;
-	
+
 	p = name + strlen(name);
 	while(p > name  &&  *p != '/' && *p != '\\' )	--p;
 
 	return( (*p == '/' || *p == '\\') ? p + 1 : p );
 	}
-	
-	
+
+
 struct sig_entry *
 lookup(signame)
 char *signame;

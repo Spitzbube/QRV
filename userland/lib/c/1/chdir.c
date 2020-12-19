@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -37,7 +37,7 @@ extern int __dir_keep_symlink; /* _init_libc() */
 #endif
 int chdir(const char *path) {
 	struct _connect_ctrl			ctrl;
-	struct _io_connect				msg;		
+	struct _io_connect				msg;
 	int								fd;
 	int								euid;
 	/* Should use fpathconf(path, _PC_PATH_MAX) */
@@ -78,7 +78,7 @@ int chdir(const char *path) {
 		return -1;
 	}
 
-	/* Need to permission check the last component to verify 
+	/* Need to permission check the last component to verify
 	   that we have execute permission on this last component */
 	if ((euid = geteuid()) == 0) {
 		; //OK
@@ -106,7 +106,7 @@ int chdir(const char *path) {
 				break;
 			}
 		}
-	
+
 		//If no matching group id's then we are an 'other'
 		if (glsize >= 0 && !(r.st_mode & S_IXGRP)) {
 			errno = EACCES;

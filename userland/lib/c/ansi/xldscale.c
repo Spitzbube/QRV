@@ -63,7 +63,7 @@ short _LDscale(long double *px, long lexp)
 			if ((xexp = (short)-xexp) != 0)
 				{	/* scale by bits */
 				psx = (ps[_L4] << (16 - xexp)) | (psx != 0 ? 1 : 0);
-				ps[_L4] = ps[_L4] >> xexp 
+				ps[_L4] = ps[_L4] >> xexp
 					| ps[_L3] << (16 - xexp);
 				ps[_L3] = ps[_L3] >> xexp
 					| ps[_L2] << (16 - xexp);

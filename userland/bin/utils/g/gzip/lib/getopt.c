@@ -19,7 +19,7 @@
    You should have received a copy of the GNU General Public License along
    with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
-
+
 #ifndef _LIBC
 # include <config.h>
 #endif
@@ -104,11 +104,11 @@ int optopt = '?';
 
 static struct _getopt_data getopt_data;
 
-
+
 #if defined HAVE_DECL_GETENV && !HAVE_DECL_GETENV
 extern char *getenv ();
 #endif
-
+
 #ifdef _LIBC
 /* Stored original parameters.
    XXX This is no good solution.  We should rather copy the args so
@@ -292,7 +292,7 @@ _getopt_initialize (int argc, char **argv, const char *optstring,
 
   return optstring;
 }
-
+
 /* Scan elements of ARGV (whose length is ARGC) for option characters
    given in OPTSTRING.
 
@@ -1119,7 +1119,7 @@ getopt (int argc, char *const *argv, const char *optstring)
 			   POSIXLY_CORRECT);
 }
 
-
+
 #ifdef TEST
 
 /* Compile with -DTEST to make an executable for use in testing

@@ -22,14 +22,14 @@ int (fprintf)(FILE *_Restrict str, const char *_Restrict fmt, ...)
     _Lockfileatomic(str);
 #else
     _Lockfileatomic(stdout);
-#endif    
+#endif
 	ans = _Printf(&prout, str, fmt, ap);
 #ifdef __QNX__
     // fix a bug in the Dinkum code
     _Unlockfileatomic(str);
 #else
     _Unlockfileatomic(stdout);
-#endif    
+#endif
 	va_end(ap);
 	return (ans);
 	}

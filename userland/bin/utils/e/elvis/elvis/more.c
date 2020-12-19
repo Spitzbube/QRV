@@ -7,7 +7,7 @@
  * message.  For the sake of uniformity, this is implemented as a special
  * key processing state, applied to a buffer which just happens to contain
  * the "Hit.." message.
- * 
+ *
  * Any single character causes this edit mode to exit, so that editing can
  * resume on the real edit buffer.
  *

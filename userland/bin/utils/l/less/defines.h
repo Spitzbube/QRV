@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -32,7 +32,7 @@
  * If you edit defines.h by hand, do "touch stamp-h" before you run make
  * so config.status doesn't overwrite your changes.
  */
-
+
 /* User preferences.  */
 
 /*
@@ -65,7 +65,7 @@
 #define	CMD_HISTORY	1
 
 /*
- * HILITE_SEARCH is 1 if you wish to have search targets to be 
+ * HILITE_SEARCH is 1 if you wish to have search targets to be
  * displayed in standout mode.
  */
 #define	HILITE_SEARCH	1
@@ -84,7 +84,7 @@
 #define	TAGS		(!SECURE)
 
 /*
- * USERFILE is 1 if you wish to allow a .less file to specify 
+ * USERFILE is 1 if you wish to allow a .less file to specify
  * user-defined key bindings.
  */
 #define	USERFILE	(!SECURE)
@@ -121,15 +121,15 @@
 #define	ONLY_RETURN	0
 
 /*
- * LESSKEYFILE is the filename of the default lesskey output file 
+ * LESSKEYFILE is the filename of the default lesskey output file
  * (in the HOME directory).
- * DEF_LESSKEYINFILE is the filename of the default lesskey input 
+ * DEF_LESSKEYINFILE is the filename of the default lesskey input
  * (in the HOME directory).
  */
 #define	LESSKEYFILE		".less"
 #define	DEF_LESSKEYINFILE	".lesskey"
 
-
+
 /* Settings always true on Unix.  */
 
 /*
@@ -173,7 +173,7 @@
  */
 #define	HAVE_SHELL	1
 
-/* 
+/*
  * HAVE_DUP is 1 if your system has the dup() call.
  */
 #define	HAVE_DUP	1
@@ -189,7 +189,7 @@
 #define	TERMBUF_SIZE	2048	/* Termcap buffer for tgetent */
 #define	TERMSBUF_SIZE	1024	/* Buffer to hold termcap strings */
 #define	TAGLINE_SIZE	512	/* Max size of line in tags file */
-
+
 /* Settings automatically determined by configure.  */
 
 /* Define to `long' if <sys/types.h> doesn't define.  */
@@ -235,7 +235,7 @@
 #define HAVE_FILENO 1
 
 /* Define HAVE_ERRNO if you have the errno variable */
-/* Define MUST_DEFINE_ERRNO if you have errno but it is not define 
+/* Define MUST_DEFINE_ERRNO if you have errno but it is not define
  * in errno.h */
 #define HAVE_ERRNO 1
 /* #undef MUST_DEFINE_ERRNO */

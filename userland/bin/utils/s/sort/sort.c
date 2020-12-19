@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -155,14 +155,14 @@ static int      maxlines = SORT_MAX_RUN;
 /*
  * the following routines manage a 'run'. the run is stored as a table of
  * pointers to lines.
- * 
+ *
  * the table is allocated by init_run(), which will also empty the table if
  * required.
- * 
+ *
  * add_run puts the next line onto the table.
- * 
+ *
  * flush_run writes the entire run to a temporary file.
- * 
+ *
  */
 
 
@@ -227,7 +227,7 @@ static int      ntemp = 0;
  * Since fopen() requires a memory allocation (for buffer space), we *allways*
  * have one temp file open in case a run consumes all memory and we would not
  * be able to open a file to store the run in.
- * 
+ *
  */
 
 static char    *n_curtemp = NULL;
@@ -586,8 +586,8 @@ catch(int sig)
 
 /*
  * need a version of getopt which can deal with the sort parameters:
- * 
- * 
+ *
+ *
  */
 /*
  * -X is a nill op, used by the "stuffer".....
@@ -599,7 +599,7 @@ int             (*action) (int, char **);
 /* Sort doesn't use the standard getopt, but has a few variables
  * that conflicts with the getopt variables.  Just rename them to
  * keep gcc happy.
- */ 
+ */
 #define optind sort_optind
 #define optarg sort_optarg
 #define opterr sort_opterr
@@ -726,7 +726,7 @@ sort_options(int argc, char **argv)
 					}
 				} else {
 /* The following line will destroy the output file. 1003.2 _requires_ that
-   the output file may be one of the input files. 
+   the output file may be one of the input files.
 
     					close(creat(optarg, 0666));
 */
@@ -788,7 +788,7 @@ sort_options(int argc, char **argv)
 					fprintf(stderr,"%s: Number of Lines per Run missing, '-L' argument ignored\n",
 						argv[0]);
 					break;
-				} 
+				}
 				maxlines = (int) strtol(optarg, NULL, 0);
 				if (maxlines < 2) {
 					fprintf(stderr, TXT(T_NUMLINES));
@@ -858,7 +858,7 @@ static void setup_catch() {
 #else // we are in __MINGW32__
 static void setup_catch() {
     int sig;
-    
+
     for (sig = 0; catchsigs[sig]; sig++) {
         signal(catchsigs[sig], catch);
     }
@@ -869,13 +869,13 @@ int
 main(int argc, char **argv)
 {
 	int             c;
-	
+
 	_pname = basename(argv[0]);
-	
+
 #ifdef __MINGW32__
 	outfile = stdout;
 #endif
-	
+
 	setup_catch();
 
 	opterr = 0;		/* defeat auto-err messages */

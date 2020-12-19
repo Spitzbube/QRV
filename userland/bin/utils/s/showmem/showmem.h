@@ -12,8 +12,8 @@
 #define PROCESS_DETAIL_HEAP    	0x4
 struct showmem_opts {
 	int show_system_summary;
-	int show_process_summary;	
-	int show_process_details;	//Flags 
+	int show_process_summary;
+	int show_process_details;	//Flags
 };
 
 extern int debugfd;
@@ -26,8 +26,8 @@ typedef struct pid_entry {
 	struct pid_entry 	*next;			//Next process block
 	pid_t				pid;			//The pid of this process
 	uint64_t			base_addr;		//Base address of process
-	
-	int					block_count;	//Number of memory blocks 
+
+	int					block_count;	//Number of memory blocks
 	priv_memblock_t		*memblocks;		//Array of block_count
 	char				*name;			//The name of this process
 } pid_entry_t;
@@ -38,7 +38,7 @@ typedef struct pid_entry {
 typedef struct shared_entry {
 	int							block_count;
 	int							block_size;
-	shared_memblock_t			*memblocks;		
+	shared_memblock_t			*memblocks;
 } shared_entry_t;
 
 /**
@@ -53,10 +53,10 @@ typedef struct system_entry {
 /* Initialize the options structure */
 system_entry_t *build_block_list(int *pidlist, int pidnum);
 
-void iterate_processes(system_entry_t *root, 
+void iterate_processes(system_entry_t *root,
                        int (* func)(pid_entry_t *block, void *data), void *data);
-void iterate_sharedlibs(system_entry_t *root, 
+void iterate_sharedlibs(system_entry_t *root,
                        int (* func)(shared_memblock_t *block, void *data), void *data);
 
 void display_overview(system_entry_t *root, struct showmem_opts *opts);
-                       
+

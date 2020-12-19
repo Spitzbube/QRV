@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -36,33 +36,33 @@
 
 	Revision 1.14  2003/08/21 20:09:56  martin
 	Update QSSL Copyright.
-	
+
 	Revision 1.13  2002/07/23 18:09:34  marcind
 	Re: PR 11137 Fixed the error msg so it is more friendly.
-	
+
 	Revision 1.12  2002/02/22 17:14:41  kewarken
 	fix for PR:10241 where chmod -R chokes on broken links.  Shouts out to the
 	Big CB - he may be down under but he ain't down and out y'all.  Word to the.
 	1337 h4X0r5 in Kiwi land yo.
-	
+
 	Revision 1.11  2001/07/13 13:48:57  kewarken
 	fixed option parsing bug
-	
+
 	Revision 1.10  2000/09/08 14:39:02  jbaker
 	fixed pr 2710
 	now parses '-rwx' type arguments properly
-	
+
 	Revision 1.9  1999/09/07 22:36:01  dagibbs
 	Fix pr 1590.
 	  chmod -R a+rw dir/
 	would get wrong perms for files in dir/, worked ok if used as
 	  chmod -R a+rw dir
-	
+
 	Added some comments about odd style/variable choices and dead routines.
-	
+
 	Revision 1.8  1998/09/15 18:10:52  eric
 	cvs checkin
-	
+
 	Revision 1.7  1997/04/02 19:02:53  eric
 	added -v option
 
@@ -85,7 +85,7 @@
  *
 
 	$Author: rmansfield $
-	
+
 ---------------------------------------------------------------------*/
 #include <stdio.h>
 #include <sys/types.h>
@@ -122,7 +122,7 @@ int    verbose=0;
 int    posix_strict;
 
 /* name of the program */
-char *prog; 
+char *prog;
 
 #define RLINK_NEVER_FOLLOW		0
 #define RLINK_MAIN_FOLLOW		1
@@ -161,11 +161,11 @@ int main(int argc, char *argv[])
 	opterr = 0;
 
 	while((!break_out) && ( i= getopt( argc, argv, "R**HLPv")) != -1)
-	{ 	switch (i) 	
-		{	case 'R': rflag++;                 
-					  break;                   
-			case 'v': verbose++;                 
-					  break;                   
+	{ 	switch (i)
+		{	case 'R': rflag++;
+					  break;
+			case 'v': verbose++;
+					  break;
 			case 'H': rtype = RLINK_MAIN_FOLLOW;
 					  break;
 			case 'L': rtype = RLINK_ALWAYS_FOLLOW;
@@ -176,20 +176,20 @@ int main(int argc, char *argv[])
 					  {
 						case 'r':
 						case 'w':
-						case 'x': 
-						case 's': 
+						case 'x':
+						case 's':
 							optind--;
-							break_out = 1; 
+							break_out = 1;
 							break;
-						case 't': 
-						case 'X': 
-						case 'u': 
-						case 'g': 
-						case 'o': 
+						case 't':
+						case 'X':
+						case 'u':
+						case 'g':
+						case 'o':
 							if(!posix_strict)
 							{
 								optind--;
-								break_out = 1; 
+								break_out = 1;
 								break;
 							}
 						default: error++;
@@ -211,17 +211,17 @@ int main(int argc, char *argv[])
 
 	mode_str = argv[optind++];   /* mode value */
 
-	for( ; optind < argc; optind++ ) 
-	{	
+	for( ; optind < argc; optind++ )
+	{
 	 	if (strlen(argv[optind]) > _POSIX_PATH_MAX)
 		{
 			error++;
 			fprintf(stderr, "%s: %s\n", argv[optind], strerror(ENAMETOOLONG));
 			continue;
 		}
-		strncpy(main_path, argv[optind], _POSIX_PATH_MAX); 
-		if ( ( ( rtype ? stat(main_path, &statbuf) : lstat(main_path, &statbuf ) ) == -1 ) )  	
-		{ 		
+		strncpy(main_path, argv[optind], _POSIX_PATH_MAX);
+		if ( ( ( rtype ? stat(main_path, &statbuf) : lstat(main_path, &statbuf ) ) == -1 ) )
+		{
 			perror(main_path);
 			error++;
 			continue;
@@ -233,7 +233,7 @@ int main(int argc, char *argv[])
 			if (change_file(main_path,mode,mode_str,rtype)==ERR)
 				error++;
 		}
-	}				
+	}
 	if (error)
 		exit(ERR);
 	else
@@ -244,7 +244,7 @@ int parse(char *mode_str, int cur_mode, int create_mask)
 {
 	int len,i;
 	int mode;
-	
+
 	len = i = 0;
 	if (isoctal(*mode_str) )        /* parse mode */
 	{
@@ -267,7 +267,7 @@ int parse(char *mode_str, int cur_mode, int create_mask)
 		return(mode);
 	}
 }
-	
+
 
 /* this is never called -- so why is it here? - dagibbs */
 void buildpath( char *path, int mode )
@@ -357,7 +357,7 @@ int		cur_mode, who, op, perm;
 				default:		report_error(1,"Invalid Mode Specification\n");	break;
 				}
 			}
-	
+
 		if (!exit_loop) report_error(1,"Invalid Mode Specification\n");
 
 
@@ -419,7 +419,7 @@ int		cur_mode, who, op, perm;
 				}
 			}
 		}
-	
+
 	/*
 	 * Mode Spec Parsing Completed.  Return final mode integer value
 	 */
@@ -428,7 +428,7 @@ int		cur_mode, who, op, perm;
 
 
 
-void process_perm( int perm, int who, int op,int *cur_mode, int creat_mask, 
+void process_perm( int perm, int who, int op,int *cur_mode, int creat_mask,
                    int initial_val )
 {
 int	A, B, C;
@@ -458,7 +458,7 @@ int	A, B, C;
 
 		default:		A = 0;       B = 0;       C = 0;		break;
 		}
-	
+
 	if ( op == MP_SET || op == MP_ASSIGN){
 		if ( who & MP_USER )
 			*cur_mode |= A;
@@ -472,7 +472,7 @@ int	A, B, C;
 				*cur_mode |= C&~creat_mask;
 		}
 	}
-	else{ 
+	else{
 		if ( who & MP_USER )
 			*cur_mode &= ~A;
 		if ( who & MP_GROUP )
@@ -483,16 +483,16 @@ int	A, B, C;
 		{
 			*cur_mode &= ~(A|B|C);
 		}
-	} 
-} 
+	}
+}
 
 
 int octnum(char c)
 {
 	if (sum>=512) return(FALSE);   /* bounds checking, highest 7777 octal */
 
-	if( isoctal(c) )    
-	{	sum *= 8;                  
+	if( isoctal(c) )
+	{	sum *= 8;
 		sum += ( c - '0');
 	}
 	else
@@ -500,9 +500,9 @@ int octnum(char c)
 		return(FALSE);
 	}
 	return(TRUE);
-}       
+}
 
-/*       
+/*
  *	Change the mode of the file specified by path.
  *  If must recurse ( -R option on command line ) and file is a directory,
  *	recurse thru the tree
@@ -525,8 +525,8 @@ int change_file (char *path,int mode,char *mode_str,int rtype)
 	}
 
     /* why mix path & main_path -- can the be different? -dagibbs */
-	if  ( ( rtype ? stat(main_path, &statbuf) : lstat(main_path, &statbuf ) ) == -1 )  	
-	{ 	
+	if  ( ( rtype ? stat(main_path, &statbuf) : lstat(main_path, &statbuf ) ) == -1 )
+	{
 		perror(main_path);
 		return( ERR );
 	}
@@ -535,25 +535,25 @@ int change_file (char *path,int mode,char *mode_str,int rtype)
 	 * if path is a directory and -R specified
 	 */
 	if(rtype == RLINK_MAIN_FOLLOW) rtype = RLINK_NEVER_FOLLOW;
-	if ( S_ISDIR(statbuf.st_mode) && rflag )	
+	if ( S_ISDIR(statbuf.st_mode) && rflag )
 		return( change_directory_recursive(path,mode,mode_str,rtype));
 
 
-	if ( status == -1 )	
+	if ( status == -1 )
 	{ 	report_error(NOERR, T_CANT_CHANGE);
 		perror(path);
 		return( ERR );
-	} 
+	}
 	return( NOERR );
 }
 /*
  *   If the -R option is specified  it will recursively change the file mode bits.
- * 	 For each file operand that names a directory, this function changes the file 
+ * 	 For each file operand that names a directory, this function changes the file
  *   mode bits of the directory and all the files in the file hierarchy below it.
  */
 int change_directory_recursive ( char *path,int mode,char *mode_str,int rtype )
 {
-	DIR    *dirp;				
+	DIR    *dirp;
 	struct dirent *entry;
 	static struct stat statbuf;
 	int    rc = 0;
@@ -568,14 +568,14 @@ int change_directory_recursive ( char *path,int mode,char *mode_str,int rtype )
 	errno = 0;
 	create_mask = umask(0);
 
-	while (errno=0, entry = readdir( dirp ) )	
+	while (errno=0, entry = readdir( dirp ) )
 	{	if (!entry->d_name[0]) {
 			continue;
 		}
 		if ( entry->d_name[0] == '.' )	{
-			if ( !entry->d_name[1] ) 
+			if ( !entry->d_name[1] )
 				continue;
-			if ( ( entry->d_name[1] == '.' ) && ( !entry->d_name[2] ) ) 
+			if ( ( entry->d_name[1] == '.' ) && ( !entry->d_name[2] ) )
 				continue;
 		}
 
@@ -593,8 +593,8 @@ int change_directory_recursive ( char *path,int mode,char *mode_str,int rtype )
 			strcat( path, entry->d_name );
 
             /* main_path and path are the same thing, so why change names? */
-			if ( ( stat(main_path, &statbuf) == -1 ) )  	
-			{ 	
+			if ( ( stat(main_path, &statbuf) == -1 ) )
+			{
 				perror(main_path);
 				/* remove filename from path */
 				*(strrchr(path, '/')) = '\0';
@@ -603,22 +603,22 @@ int change_directory_recursive ( char *path,int mode,char *mode_str,int rtype )
 
 			mode = parse(mode_str, statbuf.st_mode, create_mask);
 
-			/* 
-			 * 	change that file  - rc end up non-zero if an error occurred 
+			/*
+			 * 	change that file  - rc end up non-zero if an error occurred
 			 *	changing something in this directory
 			 */
 			rc |= change_file( path,mode,mode_str,rtype );
-	
+
 			/* remove filename from path */
 			*( strrchr( path, '/' ) ) = (char) NULL;
-		} 
+		}
 		else {
 
 			strcat( path,entry->d_name );
 
             /* main_path and path are the same thing, so why change names? */
-			if ( ( stat(main_path, &statbuf) == -1 ) )  	
-			{ 	
+			if ( ( stat(main_path, &statbuf) == -1 ) )
+			{
 				perror(main_path);
 				continue;
 			}
@@ -626,7 +626,7 @@ int change_directory_recursive ( char *path,int mode,char *mode_str,int rtype )
 			mode = parse(mode_str, statbuf.st_mode, create_mask);
 
 			/*
-			 * change that file  - rc end up non-zero if an error occurred 
+			 * change that file  - rc end up non-zero if an error occurred
 			 * changing something in this directory
 			 */
 			rc |= change_file( path,mode,mode_str,rtype );
@@ -648,9 +648,9 @@ int change_directory_recursive ( char *path,int mode,char *mode_str,int rtype )
 
 	if ( !errno && !rc )
 		return( NOERR );
-	else 
+	else
 		return( ERR );
-}	
+}
 
 void report_error ( int estat, char *fmt )
 {

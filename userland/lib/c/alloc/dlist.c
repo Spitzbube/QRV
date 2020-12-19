@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -65,7 +65,7 @@ static void delmem(Flink *this)
 {
 	Arena	*ac;
 
-	ac = (Arena *)this -1; 
+	ac = (Arena *)this -1;
 	_malloc_stats.m_overhead -= TOTAL_ARENA_OVERHEAD();
 
 	donecore((Arena *)((char *)ac-MA_PADDING), ac->a_size);
@@ -139,7 +139,7 @@ static void __flist_queue_fifo(Flink *f, Flink *l)
 fq_fptr_t __flist_queue_funcptr=__flist_queue_fifo;
 
 #ifndef NDEBUG
-# define VERIFY_ARENA(ptr) _check_arena(ptr,1) 
+# define VERIFY_ARENA(ptr) _check_arena(ptr,1)
 # define VERIFY_LIST() _check_list(1)
 #else
 # define VERIFY_ARENA(ptr) ((_malloc_check_on) ? _check_arena(ptr,0) : 0)
@@ -210,7 +210,7 @@ _check_arena (void *ptr, int force)
 static int parse_str(char *str, Band ***bc_conf, unsigned *bc_num)
 {
 	int num_found = 0;
-	char *ind;	
+	char *ind;
 	int i,j,value;
 	int is_bad=0;
 	unsigned size=0;
@@ -225,20 +225,20 @@ static int parse_str(char *str, Band ***bc_conf, unsigned *bc_num)
 	num_found = atoi(ind);
 	if (num_found < 0)
 		return(-1);
-	// string format is 
+	// string format is
 	// N:s1,n1,p1:s2,n2,p2:s3,n3,p3: ... :sN,nN,pN
-	// no spaces are acceptable.. only valid chars are 
+	// no spaces are acceptable.. only valid chars are
 	// digits, ':' and ','. Position is important
 	// parsing is simple and strict
 	// sizes are assumed to be provided in ascending order
 	// further validation is done by the allocator
-	// if this function doesnt like the string, it ignores 
+	// if this function doesnt like the string, it ignores
 	// it completely.
 	// s = size, n = number , p = prealloc number
 	// all must be specified.. a number of zero is acceptable for
 	// prealloc
 	while (isdigit(*ind)) ind++; // skip forward all the digits
-	if (*ind != ':') { 
+	if (*ind != ':') {
 		return(-1);
 	}
 	psize = (num_found * sizeof(Band *));
@@ -252,10 +252,10 @@ static int parse_str(char *str, Band ***bc_conf, unsigned *bc_num)
 	*bc_conf = (Band **)((char *)addr + asize);
 	_malloc_stats.m_heapsize += size;
 	for (i=0; i < num_found; i++) {
-		if (is_bad)	
+		if (is_bad)
 			break;
 		ind++;
-		(lband)[i].nbpe = atoi(ind);	
+		(lband)[i].nbpe = atoi(ind);
 		for (j=0; j < i; j++) {
 			if ((lband)[i].nbpe < (lband)[j].nbpe) {
 				is_bad=1;
@@ -272,7 +272,7 @@ static int parse_str(char *str, Band ***bc_conf, unsigned *bc_num)
 			is_bad=1;
 			break;
 		}
-		(lband)[i].nalloc = atoi(ind);	
+		(lband)[i].nalloc = atoi(ind);
 		if ((lband)[i].nalloc < 0) {
 			is_bad=1;
 			break;
@@ -287,12 +287,12 @@ static int parse_str(char *str, Band ***bc_conf, unsigned *bc_num)
 			is_bad=1;
 			break;
 		}
-		value = atoi(ind);	
+		value = atoi(ind);
 		if (value < 0) {
 			is_bad=1;
 			break;
 		}
-		(lband)[i].slurp = (unsigned)value;	
+		(lband)[i].slurp = (unsigned)value;
 		while (isdigit(*ind)) ind++; // skip forward all the digits
 		if (i < (num_found-1)) { // must be a colon now
 			if (*ind != ':') {
@@ -405,7 +405,7 @@ static void get_environ_vars()
   char *p;
   /* if the user does not malloc-ed memory returned from an mmap
      call initialised to zero, they can set this environment variable
-     to a non-zero value. Upon unmap memory is zero-ed by default by the 
+     to a non-zero value. Upon unmap memory is zero-ed by default by the
      kernel anyway. To change this behaviour, one can set the procnto flag
      -m~i */
 
@@ -601,7 +601,7 @@ static void delmem_precache(Flink *this)
 	Arena	*ac;
 	Arena	*ap, *an;
 
-	ac = (Arena *)this -1; 
+	ac = (Arena *)this -1;
 #ifndef NDEBUG
 	assert(DH_LEN(this) == ac->a_size - TOTAL_ARENA_OVERHEAD());
 	for (ap = __arenas.a_next; ap != &__arenas; ap = ap->a_next) {
@@ -645,14 +645,14 @@ static void delmem_precache(Flink *this)
 static void cache_delmem(Flink *this)
 {
 	//Arena	*ac;
-	//ac = (Arena *)this-1; 
+	//ac = (Arena *)this-1;
 	delmem_precache(this);
 	_malloc_stats.m_freemem -= this->f_size;
 	delmem(this);
 }
 
 /* New way!
- * We don't even pretend to be optimal for non-word alignments 
+ * We don't even pretend to be optimal for non-word alignments
  */
 void *
 _list_memalign(size_t alignment, ssize_t n_bytes)
@@ -725,7 +725,7 @@ _list_memalign(size_t alignment, ssize_t n_bytes)
 				cur2->f_size = fit.over;
 				_malloc_stats.m_freemem += cur2->f_size;
 				_malloc_stats.m_blocks++;
-				// if the bin has changed, move the free block to the 
+				// if the bin has changed, move the free block to the
 				// correct bin
 				{
 					int newbin;
@@ -786,7 +786,7 @@ _list_memalign(size_t alignment, ssize_t n_bytes)
 				_malloc_stats.m_freemem += over;
 				_malloc_stats.m_blocks++;
 			}
-		} else if (over >= (_min_free_list_size + _MIN_FSIZE())) { 
+		} else if (over >= (_min_free_list_size + _MIN_FSIZE())) {
 			Dhead *dh;
 			long d;
 
@@ -911,7 +911,7 @@ _list_release(Dhead *dh)
 	 	*/
 		ft = HEAD_TO_DT(this);
 		DT_SET(ft,this->f_size);
-	
+
 		if (_malloc_check_on) {
 			if (!DT_ISBUSY(dt) || !DH_ISBUSY(neighbour)) {
 				panic("free -- corrupt heap");
@@ -939,7 +939,7 @@ _list_release(Dhead *dh)
 			//
 			return; // done
 		}
-	} 
+	}
 	// the only reason we could be here is
 	// a) previous was not free
 

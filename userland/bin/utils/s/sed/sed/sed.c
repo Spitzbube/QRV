@@ -35,7 +35,7 @@
 
 #ifdef __MINGW32__
 #include <fcntl.h>
-#endif 
+#endif
 
 #ifdef HAVE_MMAP
 # ifdef HAVE_UNISTD_H
@@ -147,9 +147,9 @@ main(argc, argv)
 #endif /*STUB_FROM_RX_LIBRARY_USAGE*/
 
 #ifdef __MINGW32__
-  // to revert to default windows behaviour (i.e. to not setmode) env. variable "SED_LINEENDING" must 
+  // to revert to default windows behaviour (i.e. to not setmode) env. variable "SED_LINEENDING" must
   // be set to string "WINDOWS"
-  if (!getenv("SED_LINEENDING") || stricmp(getenv("SED_LINEENDING"), "WINDOWS")) 
+  if (!getenv("SED_LINEENDING") || stricmp(getenv("SED_LINEENDING"), "WINDOWS"))
   {
     _fmode = _O_BINARY;
     setmode(fileno(stdout), _O_BINARY);
@@ -211,7 +211,7 @@ to the extent permitted by law.\n\
   return 0;
 }
 
-
+
 /* Attempt to mmap() a file.  On failure, just return a zero,
    otherwise set *base and *len and return non-zero.  */
 flagT

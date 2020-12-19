@@ -183,7 +183,7 @@ fold(int width) {
 }
 
 /*
- * calculate the column position 
+ * calculate the column position
  */
 static int
 new_column_position (int col, int ch) {

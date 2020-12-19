@@ -10,6 +10,7 @@ LDFLAGS = -z max-page-size=4096
 OBJECTS = entry.o \
           trampoline.o \
           start.o \
+          dbg_uart.o \
           main.o
 
 kernel: $(OBJECTS) kernel.ld

@@ -45,7 +45,7 @@ static struct msg *msg_chain;
 /* Tail of the chain of queues messages.  */
 
 static struct msg **msg_chain_end = &msg_chain;
-
+
 /* Use when a system call returns non-zero status.
    NAME should normally be the file name.  */
 
@@ -75,7 +75,7 @@ fatal (char const *msgid)
   error (EXIT_TROUBLE, 0, "%s", _(msgid));
   abort ();
 }
-
+
 /* Like printf, except if -l in effect then save the message and print later.
    This is used for things like "Only in ...".  */
 
@@ -144,7 +144,7 @@ print_message_queue (void)
       m = next;
     }
 }
-
+
 /* Call before outputting the results of comparing files NAME0 and NAME1
    to set up OUTFILE, the stdio stream for the output to go to.
 
@@ -304,7 +304,7 @@ finish_output (void)
 
   outfile = 0;
 }
-
+
 /* Compare two lines (typically one from each input file)
    according to the command line options.
    For efficiency, this is invoked only when the lines do not match exactly
@@ -441,7 +441,7 @@ lines_differ (char const *s1, char const *s2)
 
   return 1;
 }
-
+
 /* Find the consecutive changes at the start of the script START.
    Return the last link before the first gap.  */
 
@@ -456,7 +456,7 @@ find_reverse_change (struct change *start)
 {
   return start;
 }
-
+
 /* Divide SCRIPT into pieces by calling HUNKFUN and
    print each piece with PRINTFUN.
    Both functions take one arg, an edit script.
@@ -498,7 +498,7 @@ print_script (struct change *script,
       end->link = next;
     }
 }
-
+
 /* Print the text of a single line LINE,
    flagging it with the characters in LINE_FLAG (which say whether
    the line is inserted, deleted, changed, etc.).  */
@@ -581,7 +581,7 @@ output_1_line (char const *base, char const *limit, char const *flag_format,
 }
 
 char const change_letter[] = { 0, 'd', 'a', 'c' };
-
+
 /* Translate an internal line number (an index into diff's table of lines)
    into an actual line number in the input file.
    The internal line number is I.  FILE points to the data on the file.
@@ -628,7 +628,7 @@ print_number_range (char sepchar, struct file_data *file, lin a, lin b)
   else
     fprintf (outfile, "%ld", trans_b);
 }
-
+
 /* Look at a hunk of edit script and report the range of lines in each file
    that it applies to.  HUNK is the start of the hunk, which is a chain
    of `struct change'.  The first and last line numbers of file 0 are stored in
@@ -705,7 +705,7 @@ analyze_hunk (struct change *hunk,
 
   return (show_from ? OLD : UNCHANGED) | (show_to ? NEW : UNCHANGED);
 }
-
+
 /* Concatenate three strings, returning a newly malloc'd string.  */
 
 char *
@@ -736,7 +736,7 @@ dir_file_pathname (char const *dir, char const *file)
   bool omit_slash = !*base || base[strlen (base) - 1] == '/';
   return concat (dir, "/" + omit_slash, file);
 }
-
+
 void
 debug_script (struct change *sp)
 {

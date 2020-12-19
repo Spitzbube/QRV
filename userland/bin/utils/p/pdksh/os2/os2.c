@@ -47,7 +47,7 @@ quoted_strcpy(char *targ, char* src)
 {
     int seen_space = 0;
     char *s = src, *t = targ;
-    
+
     while (*s) {
 	if ((*s == ' ') || (*s == '\"')) {
 	    seen_space = 1;
@@ -61,7 +61,7 @@ quoted_strcpy(char *targ, char* src)
     while (*src) {
 	if (*src == '\"') {
 	    *targ++ = '\\';
-	} 
+	}
 	*targ++ = *src++;
     }
     if (seen_space) {
@@ -71,7 +71,7 @@ quoted_strcpy(char *targ, char* src)
     return t;
 }
 
-static int 
+static int
 newsession(int type, int mode, char *cmd, char **args, char **env)
 {
   STARTDATA sd;
@@ -182,7 +182,7 @@ int ksh_execve(char *cmd, char **args, char **env, int flags)
   {
     if (apptype & FAPPTYP_DOS)
       return newsession(isfullscreen() ? SSF_TYPE_VDM :
-                                         SSF_TYPE_WINDOWEDVDM, 
+                                         SSF_TYPE_WINDOWEDVDM,
 			P_WAIT, path, args, env);
 
     if ((apptype & FAPPTYP_WINDOWSREAL) ||
@@ -195,10 +195,10 @@ int ksh_execve(char *cmd, char **args, char **env, int flags)
     if ( (apptype & FAPPTYP_EXETYPE) == FAPPTYP_WINDOWAPI ) {
       printf(""); /* kludge to prevent PM apps from core dumping */
       /* Start new session if interactive and not a part of a pipe. */
-      return newsession(SSF_TYPE_PM, 
+      return newsession(SSF_TYPE_PM,
 			( (flags & XINTACT) && (flags & XPIPE)
 				 /* _isterm(0) && _isterm(1) && _isterm(2) */
-			  ? P_NOWAIT 
+			  ? P_NOWAIT
 			  : P_WAIT),
 			path, args, env);
     }
@@ -206,10 +206,10 @@ int ksh_execve(char *cmd, char **args, char **env, int flags)
     if ( (apptype & FAPPTYP_EXETYPE) == FAPPTYP_NOTWINDOWCOMPAT ||
          (apptype & FAPPTYP_EXETYPE) == FAPPTYP_NOTSPEC )
       if ( !isfullscreen() )
-        return newsession(SSF_TYPE_FULLSCREEN, 
+        return newsession(SSF_TYPE_FULLSCREEN,
 			( (flags & XINTACT) && (flags & XPIPE)
 				 /* _isterm(0) && _isterm(1) && _isterm(2) */
-			  ? P_NOWAIT 
+			  ? P_NOWAIT
 			  : P_WAIT),
 			path, args, env);
   }
@@ -229,7 +229,7 @@ int ksh_execve(char *cmd, char **args, char **env, int flags)
 	      }
 	  }
       }
-      
+
       if ( (rc = spawnve(P_OVERLAY | (do_quote ? P_QUOTE : 0),
 			 path, args, env)) != -1 )
 	  exit(rc);

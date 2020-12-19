@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 #include "rtc.h"
@@ -24,7 +24,7 @@
 #include <fcntl.h>
 #include <hw/i2c.h>
 
-/* 
+/*
  * Dallas/Maxim DS3232 Serial RTC
  */
 #define DS3232_SEC          0   /* 00-59 */
@@ -84,7 +84,7 @@ ds3232_i2c_write(unsigned char reg, unsigned char val[], unsigned char num)
 int
 RTCFUNC(init,ds3232)(struct chip_loc *chip, char *argv[])
 {
-    fd = open((argv && argv[0] && argv[0][0])? 
+    fd = open((argv && argv[0] && argv[0][0])?
             argv[0]: DS3232_I2C_DEVNAME, O_RDWR);
     if (fd < 0) {
         fprintf(stderr, "Unable to open I2C device\n");
@@ -104,16 +104,16 @@ RTCFUNC(get,ds3232)(struct tm *tm, int cent_reg)
     tm->tm_min  = BCD2BIN(date[DS3232_MIN] & 0x7f);
 
 	if ((date[DS3232_HOUR] & 0x40)) {
-		/* the rtc is in 12 hour mode */ 
+		/* the rtc is in 12 hour mode */
 		int hour = BCD2BIN(date[DS3232_HOUR] & 0x1f);
 
-		if ((date[DS3232_HOUR] & 0x20))  
+		if ((date[DS3232_HOUR] & 0x20))
 			tm->tm_hour = (hour == 12) ? 12 : hour + 12; /* pm */
 		else
 			tm->tm_hour = (hour == 12) ? 0 : hour;  	 /* am */
 
-	} else { 
-		/* rejoice! the rtc is in 24 hour mode */ 
+	} else {
+		/* rejoice! the rtc is in 24 hour mode */
      	tm->tm_hour = BCD2BIN(date[DS3232_HOUR] & 0x3f);
 	}
 
@@ -121,7 +121,7 @@ RTCFUNC(get,ds3232)(struct tm *tm, int cent_reg)
     tm->tm_mon  = BCD2BIN(date[DS3232_MONTH] & 0x1f) - 1;
     tm->tm_year = BCD2BIN(date[DS3232_YEAR] & 0xff);
 
-	if ((date[DS3232_MONTH] & 0x80))  
+	if ((date[DS3232_MONTH] & 0x80))
 		tm->tm_year += 100;
 
     tm->tm_wday = BCD2BIN(date[DS3232_DAY] & 0x7) - 1;
@@ -134,12 +134,12 @@ RTCFUNC(set,ds3232)(struct tm *tm, int cent_reg)
 {
     unsigned char   date[7];
 
-	/* 
-	 * Note: this function will set the clock incorrectly after 2099 
-	 * And it sets the clock in 24 hour mode 
+	/*
+	 * Note: this function will set the clock incorrectly after 2099
+	 * And it sets the clock in 24 hour mode
 	 */
 
-    date[DS3232_SEC]   = BIN2BCD(tm->tm_sec); 
+    date[DS3232_SEC]   = BIN2BCD(tm->tm_sec);
     date[DS3232_MIN]   = BIN2BCD(tm->tm_min);
     date[DS3232_HOUR]  = BIN2BCD(tm->tm_hour);
     date[DS3232_DATE]  = BIN2BCD(tm->tm_mday);
@@ -147,7 +147,7 @@ RTCFUNC(set,ds3232)(struct tm *tm, int cent_reg)
     date[DS3232_YEAR]  = BIN2BCD(tm->tm_year % 100);
     date[DS3232_DAY]   = BIN2BCD(tm->tm_wday + 1);
 
-	if (tm->tm_year >= 100) 
+	if (tm->tm_year >= 100)
 	 	date[DS3232_MONTH]|= 0x80;
 
     ds3232_i2c_write(DS3232_SEC, date, 7);

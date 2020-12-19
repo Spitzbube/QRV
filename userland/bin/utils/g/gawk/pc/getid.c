@@ -5,7 +5,7 @@
 # include <os2.h>
 # if _MSC_VER == 510
 #  define DosGetPID DosGetPid
-# endif 
+# endif
 #else
 # include <process.h>
 #endif

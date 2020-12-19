@@ -691,7 +691,7 @@ void lowfree(bufinfo)
 	{
 		blk->super2.buf[i] = 0;
 	}
-	
+
 	/* Unlock the superblock for writing, and then flush it to disk.
 	 * Flushing it is important because we're about to free the blocks
 	 * from this buffer, and those blocks are likely to be reallocated

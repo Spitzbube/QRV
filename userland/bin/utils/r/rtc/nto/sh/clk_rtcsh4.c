@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 
@@ -55,7 +55,7 @@ RTCFUNC(init,rtcsh4)(struct chip_loc *chip, char *argv[]) {
 	if(chip->phys == NIL_PADDR) {
 		chip->phys = P4_TO_A7(SH_MMR_RTC_R64CNT);
 	}
-	if(chip->access_type == NONE) 
+	if(chip->access_type == NONE)
 			chip->access_type = IOMAPPED;
 	return(64);
 }
@@ -68,7 +68,7 @@ RTCFUNC(get,rtcsh4)(struct tm *tm, int cent_reg) {
 		// clear carry bit
 		chip_write8(14,0);
 
-		// convert BCD to binary 
+		// convert BCD to binary
 		tm->tm_sec 	= BCD2BIN(chip_read8(1));		// seconds
 		tm->tm_min 	= BCD2BIN(chip_read8(2));		// minutes
 		tm->tm_hour	= BCD2BIN(chip_read8(3));		// hours
@@ -86,7 +86,7 @@ RTCFUNC(get,rtcsh4)(struct tm *tm, int cent_reg) {
 
 int
 RTCFUNC(set,rtcsh4)(struct tm *tm, int cent_reg) {
-	
+
 	// Stop clock, reset frequency
 	chip_write8(15, SH_RTC_RCR1_RESET | SH_RTC_RCR1_RTCEN);
 

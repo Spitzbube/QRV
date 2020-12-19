@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -66,7 +66,7 @@ Where:
                     'home',   'end',    'rub',    'can',
                     'sf1',    'sf2',    'sf3',    'sf4'.
 Examples:
- stty 
+ stty
  stty  </dev/ser1
  stty baud=1200 bits=8 stopb=1 par=none <//2/dev/ser1
 #endif
@@ -115,7 +115,7 @@ Where:
                     'home',   'end',    'rub',    'can',
                     'sf1',    'sf2',    'sf3',    'sf4'.
 Examples:
- stty 
+ stty
  stty  </dev/ser1
  stty baud=1200 bits=8 stopb=1 par=none <//2/dev/ser1
 #endif
@@ -389,74 +389,74 @@ struct keyword {
 	{"stop",      1, _TCC,    VSTOP,     0},
 	{"min",       1, _TCC,    VMIN,      0},
 	{"time",      1, _TCC,    VTIME,     0},
-	{"parenb",    0, _TCTRL,  PARENB,    PARENB}, 
-	{"parodd",    0, _TCTRL,  PARODD,    PARODD}, 
+	{"parenb",    0, _TCTRL,  PARENB,    PARENB},
+	{"parodd",    0, _TCTRL,  PARODD,    PARODD},
 	{"cs5",       0, _TCTRL,  CS5,       (CS5|CS6|CS7|CS8)},
-	{"cs6",       0, _TCTRL,  CS6,       (CS5|CS6|CS7|CS8)},    
-	{"cs7",       0, _TCTRL,  CS7,       (CS5|CS6|CS7|CS8)},    
-	{"cs8",       0, _TCTRL,  CS8,       (CS5|CS6|CS7|CS8)},    
-	{"hupcl",     0, _TCTRL,  HUPCL,     HUPCL},  
-	{"hup",       0, _TCTRL,  HUPCL,     HUPCL},  
-	{"cstopb",    0, _TCTRL,  CSTOPB,    CSTOPB}, 
-	{"cread",     0, _TCTRL,  CREAD,     CREAD},  
-	{"clocal",    0, _TCTRL,  CLOCAL,    CLOCAL}, 
+	{"cs6",       0, _TCTRL,  CS6,       (CS5|CS6|CS7|CS8)},
+	{"cs7",       0, _TCTRL,  CS7,       (CS5|CS6|CS7|CS8)},
+	{"cs8",       0, _TCTRL,  CS8,       (CS5|CS6|CS7|CS8)},
+	{"hupcl",     0, _TCTRL,  HUPCL,     HUPCL},
+	{"hup",       0, _TCTRL,  HUPCL,     HUPCL},
+	{"cstopb",    0, _TCTRL,  CSTOPB,    CSTOPB},
+	{"cread",     0, _TCTRL,  CREAD,     CREAD},
+	{"clocal",    0, _TCTRL,  CLOCAL,    CLOCAL},
 	{"evenp",     0, _TCTRL,  (PARENB|CS7),        (PARENB|PARODD|CS5|CS6|CS7|CS8)},
 	{"parity",    0, _TCTRL,  (PARENB|CS7),        (PARENB|PARODD|CS5|CS6|CS7|CS8)},
 	{"oddp",      0, _TCTRL,  (PARENB|CS7|PARODD), (PARENB|PARODD|CS5|CS6|CS7|CS8)},
-	{"ignbrk",    0, _TINP,   IGNBRK,    IGNBRK}, 
-	{"brkint",    0, _TINP,   BRKINT,    BRKINT}, 
-	{"ignpar",    0, _TINP,   IGNPAR,    IGNPAR}, 
-	{"parmrk",    0, _TINP,   PARMRK,    PARMRK}, 
-	{"inpck",     0, _TINP,   INPCK,     INPCK},  
-	{"istrip",    0, _TINP,   ISTRIP,    ISTRIP}, 
-	{"inlcr",     0, _TINP,   INLCR,     INLCR},  
-	{"igncr",     0, _TINP,   IGNCR,     IGNCR},  
-	{"icrnl",     0, _TINP,   ICRNL,     ICRNL},  
-	{"ixon",      0, _TINP,   IXON,      IXON},   
-	{"ixoff",     0, _TINP,   IXOFF,     IXOFF},  
+	{"ignbrk",    0, _TINP,   IGNBRK,    IGNBRK},
+	{"brkint",    0, _TINP,   BRKINT,    BRKINT},
+	{"ignpar",    0, _TINP,   IGNPAR,    IGNPAR},
+	{"parmrk",    0, _TINP,   PARMRK,    PARMRK},
+	{"inpck",     0, _TINP,   INPCK,     INPCK},
+	{"istrip",    0, _TINP,   ISTRIP,    ISTRIP},
+	{"inlcr",     0, _TINP,   INLCR,     INLCR},
+	{"igncr",     0, _TINP,   IGNCR,     IGNCR},
+	{"icrnl",     0, _TINP,   ICRNL,     ICRNL},
+	{"ixon",      0, _TINP,   IXON,      IXON},
+	{"ixoff",     0, _TINP,   IXOFF,     IXOFF},
 #ifdef IMAXBEL
-	{"imaxbel",   0, _TINP,   IMAXBEL,   IMAXBEL},  
+	{"imaxbel",   0, _TINP,   IMAXBEL,   IMAXBEL},
 #endif
 	{"nl",        0, _TINP,   ICRNL,     ICRNL},
-	{"opost",     0, _TOUT,   OPOST,     OPOST},  
+	{"opost",     0, _TOUT,   OPOST,     OPOST},
 #ifdef ONLCR
-	{"onlcr",     0, _TOUT,   ONLCR,     ONLCR},  
+	{"onlcr",     0, _TOUT,   ONLCR,     ONLCR},
 #endif
-	{"isig",      0, _TLOC,   ISIG,      ISIG},   
-	{"icanon",    0, _TLOC,   ICANON,    ICANON}, 
-	{"iexten",    0, _TLOC,   IEXTEN,    IEXTEN}, 
-	{"echo",      0, _TLOC,   ECHO,      ECHO},   
-	{"echoe",     0, _TLOC,   ECHOE,     ECHOE},  
-	{"echok",     0, _TLOC,   ECHOK,     ECHOK},  
+	{"isig",      0, _TLOC,   ISIG,      ISIG},
+	{"icanon",    0, _TLOC,   ICANON,    ICANON},
+	{"iexten",    0, _TLOC,   IEXTEN,    IEXTEN},
+	{"echo",      0, _TLOC,   ECHO,      ECHO},
+	{"echoe",     0, _TLOC,   ECHOE,     ECHOE},
+	{"echok",     0, _TLOC,   ECHOK,     ECHOK},
 #ifdef ECHOKE
-	{"echoke",    0, _TLOC,   ECHOKE,    ECHOKE},  
+	{"echoke",    0, _TLOC,   ECHOKE,    ECHOKE},
 #endif
-	{"echonl",    0, _TLOC,   ECHONL,    ECHONL}, 
+	{"echonl",    0, _TLOC,   ECHONL,    ECHONL},
 #ifdef ECHOCTL
-	{"echoctl",   0, _TLOC,   ECHOCTL,   ECHOCTL},  
+	{"echoctl",   0, _TLOC,   ECHOCTL,   ECHOCTL},
 #endif
-	{"noflsh",    0, _TLOC,   NOFLSH,    NOFLSH}, 
+	{"noflsh",    0, _TLOC,   NOFLSH,    NOFLSH},
 #ifdef TOSTOP
-	{"tostop",    0, _TLOC,   TOSTOP,    TOSTOP},  
+	{"tostop",    0, _TLOC,   TOSTOP,    TOSTOP},
 #endif
 	{"ek",        0, _TEK,    0,         0},
 	{"ispeed",    1, _TISPD,  0,         0},
-	{"ospeed",    1, _TOSPD,  0,         0},      
+	{"ospeed",    1, _TOSPD,  0,         0},
 
 	/*
 	 * QNX extensions
 	 */
 
-	{"b",         1, _TBAUD,  0,         0},     
-	{"baud",      1, _TBAUD,  0,         0},     
-	{"par",       1, _TPAR,   0,         0},     
-	{"stopb",     1, _TSTOP,  0,         0},     
-	{"bits",      1, _TBITS,  0,         0},     
-	{"parstk",    0, _TCTRL,  PARSTK,    PARSTK}, 
-	{"ihflow",    0, _TCTRL,  IHFLOW,    IHFLOW},     
-	{"ohflow",    0, _TCTRL,  OHFLOW,    OHFLOW},     
-	{"osflow",    0, _TINP,   IXON,      IXON},   
-	{"isflow",    0, _TINP,   IXOFF,     IXOFF},  
+	{"b",         1, _TBAUD,  0,         0},
+	{"baud",      1, _TBAUD,  0,         0},
+	{"par",       1, _TPAR,   0,         0},
+	{"stopb",     1, _TSTOP,  0,         0},
+	{"bits",      1, _TBITS,  0,         0},
+	{"parstk",    0, _TCTRL,  PARSTK,    PARSTK},
+	{"ihflow",    0, _TCTRL,  IHFLOW,    IHFLOW},
+	{"ohflow",    0, _TCTRL,  OHFLOW,    OHFLOW},
+	{"osflow",    0, _TINP,   IXON,      IXON},
+	{"isflow",    0, _TINP,   IXOFF,     IXOFF},
 	{"pr1",       1, _TCC,    VPREFIX,   0},
 	{"pr2",       1, _TCC,    VPREFIX+1, 0},
 	{"pr3",       1, _TCC,    VPREFIX+2, 0},
@@ -857,7 +857,7 @@ char *argv[];
 	int iexten_changed = 0;
 #ifdef __QNXNTO__
 	struct _ttyinfo info;
-#else 
+#else
 	struct _console_ctrl *cc;
 	struct _dev_info_entry dinfo;
 #endif
@@ -1207,7 +1207,7 @@ tterm:
 							continue;
 						if(keys[i][prefix] != keys[KUP][prefix])
 							break;
-					}				
+					}
 					if(i < NKEYS)
 						break;
 				}
@@ -1220,7 +1220,7 @@ tterm:
 							continue;
 						if(keys[i][prefix+1+suffix] != keys[KUP][prefix+1+suffix])
 							break;
-					}				
+					}
 					if(i < NKEYS)
 						break;
 				}
@@ -1230,13 +1230,13 @@ tterm:
 					tios.c_cc[VSUFFIX+i] = 0;
 				}
 				for(i = 0; i < prefix; ++i) {
-					tios.c_cc[VPREFIX+i] = keys[KUP][i];					
+					tios.c_cc[VPREFIX+i] = keys[KUP][i];
 				}
 				for(i = 0; i < NKEYS; ++i) {
 					tios.c_cc[key_idx[i]] = keys[i][prefix];
 				}
 				for(i = 0; i < suffix; ++i) {
-					tios.c_cc[VSUFFIX+i] = keys[KUP][prefix+1+i];					
+					tios.c_cc[VSUFFIX+i] = keys[KUP][prefix+1+i];
 				}
 				close( fd );
 				changed = 1;
@@ -1422,7 +1422,7 @@ tterm:
 	if(no_arg  ||  a_flag  ||  g_flag) {
 		count = 0;
 		if(g_flag == 0) {
-#ifdef __QNXNTO__                                                             
+#ifdef __QNXNTO__
 			char *p;
 
 			devctl(0, DCMD_CHR_TTYINFO, &info, sizeof info, 0);

@@ -1,16 +1,16 @@
 /*
- * $QNXLicenseC:  
+ * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
 */
@@ -23,18 +23,18 @@
 
 /*
  * =============================================================================
- * 
+ *
  * 			The following are QNX posix_spawn_file_actions_t extensions
- * 
+ *
  * =============================================================================
 */
 
 /*******************************************************************************
  * getactions
- * 
+ *
  * Retrieve the file actions currently set in the 'posix_spawn_file_actions_t'
  * object
- * 
+ *
  * The caller must provide the storage for _posix_spawn_file_actions_t's to be
  * returned. The <num> pointer is initialized by the caller with the number of
  * '_posix_spawn_file_actions_t' elements <fact_list> has space for.
@@ -46,14 +46,14 @@
  * 		  allocated by the caller and as specified by <*num>, then <*num> entries
  * 		  will be filled in and <*num> will be set to negative of the number of
  * 		  entries remaining that would not fit.
- * 
+ *
  * 		  For example, if the caller provides space for 4 entries and hence
  * 		  sets <*num> == 4 and there are 6 entries in the posix_spawn_file_actions_t
  * 		  object, then 4 entries will be placed into the structure and <*num>
  * 		  will be set to -2. If the caller sets <*num> == 0, then they can easly
  * 		  find out how many entries there are and allocate enough space to
  * 		  retrieve all of the entries.
- * 
+ *
  * Returns:
  * 		EOK on success
  * 		EINVAL if there are any parameter errors

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -28,7 +28,7 @@
  Since we don't use the baud rate in this file
  we should be ok ... =;-(
 */
-//#include <sys/termio.h>		
+//#include <sys/termio.h>
 /*
  In turn includes <sys/termio.h> which includes
  the files as stated above, resolving conflicts?
@@ -42,7 +42,7 @@
 #include <errno.h>
 
 #include <fcntl.h>
-#include <devctl.h>				
+#include <devctl.h>
 
 #include <sys/iomsg.h>			/* For devctl messages */
 #include <sys/dcmd_chr.h>		/* For char devctls */
@@ -92,15 +92,15 @@ int ioctl(int fd, int cmd, ...) {
 	data = va_arg(vl, void *);
 	va_end(vl);
 
-	/* 
+	/*
      These calls have significantly different inputs or outputs
      that we have to manipulate (or re-direct entirely)
 	*/
-	switch ((unsigned)cmd) {	
+	switch ((unsigned)cmd) {
 	/**** These calls map to fcntl's ****/
 
 	//Set/Clear FD_CLOEXEC state
-	case FIOCLEX:	
+	case FIOCLEX:
 		return(fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) | FD_CLOEXEC));
 	case FIONCLEX:
 		return(fcntl(fd, F_SETFD, fcntl(fd, F_GETFD) & ~FD_CLOEXEC));
@@ -172,21 +172,21 @@ int ioctl(int fd, int cmd, ...) {
 	case TCSETA: {
 		ptermio = (struct termio *)data;
 		if (tcgetattr(fd, &ltermios) == -1)
-			return(-1);		
+			return(-1);
 		termio2termios(ptermio, &ltermios);
 		return(tcsetattr(fd, TCSANOW, &ltermios));
 	}
 	case TCSETAW: {
 		ptermio = (struct termio *)data;
 		if (tcgetattr(fd, &ltermios) == -1)
-			return(-1);		
+			return(-1);
 		termio2termios(ptermio, &ltermios);
 		return(tcsetattr(fd, TCSADRAIN, &ltermios));
 	}
 	case TCSETAF: {
 		ptermio = (struct termio *)data;
 		if (tcgetattr(fd, &ltermios) == -1)
-			return(-1);		
+			return(-1);
 		termio2termios(ptermio, &ltermios);
 		return(tcsetattr(fd, TCSAFLUSH, &ltermios));
 	}
@@ -198,7 +198,7 @@ int ioctl(int fd, int cmd, ...) {
 			return(-1);
 		termios2sgttyb(&ltermios, psgttyb);
 		return(EOK);
-	}	
+	}
 	case TIOCSETP: {
 		struct sgttyb *psgttyb = (struct sgttyb *)data;
 		if (tcgetattr(fd, &ltermios) == -1)
@@ -229,7 +229,7 @@ int ioctl(int fd, int cmd, ...) {
 		tchars2termios(ptchars, &ltermios);
 		return(tcsetattr(fd, TCSANOW, &ltermios));
 	}
-	
+
 	//Terminal state in an ltchars structure
 	case TIOCGLTC: {
 		struct ltchars *pltchars = (struct ltchars *)data;
@@ -270,7 +270,7 @@ int ioctl(int fd, int cmd, ...) {
 		return(tcsetattr(fd, TCSANOW, &ltermios));
 	}
 
-	//Set the HUPCL flag 
+	//Set the HUPCL flag
 	case TIOCHPCL: {
 		if (tcgetattr(fd, &ltermios) != -1) {
 			ltermios.c_cflag |= HUPCL;
@@ -281,13 +281,13 @@ int ioctl(int fd, int cmd, ...) {
 	/**** These calls map to devctl's, but need serious data munging ****/
 
 	//Inject a character into the stream
-	case TIOCSTI: {	
+	case TIOCSTI: {
 		return(tcinject(fd, (char*)data, sizeof(char)));
 	}
 
 	//Send a break for a period of time
 	case TCSBRK: {
-		int *duration = (int *) data;				//Duration is measured in ms 
+		int *duration = (int *) data;				//Duration is measured in ms
 		return(tcsendbreak(fd, *duration));
 		//tempint = (((*duration) ? *duration : 300) << 16) | _SERCTL_BRK_CHG | _SERCTL_BRK;
 		//return(devctl(fd, DCMD_CHR_SERCTL, &tempint, sizeof(tempint), &ret));
@@ -297,34 +297,34 @@ int ioctl(int fd, int cmd, ...) {
 	//Clear the state of the modem by ~AND'ing in the int argument
 	case TIOCMBIC: {
 		int tmpmodem;
-		if (_devctl(fd, DCMD_CHR_LINESTATUS, &tmpmodem, sizeof(tmpmodem), _DEVCTL_FLAG_NOTTY) == -1) 
+		if (_devctl(fd, DCMD_CHR_LINESTATUS, &tmpmodem, sizeof(tmpmodem), _DEVCTL_FLAG_NOTTY) == -1)
 			return(-1);
 		tmpmodem &= ~(*((int*)data));
 		tempint = 0;
 		modem2serctl(&tmpmodem, &tempint);
-		return(_devctl(fd, DCMD_CHR_SERCTL, &tempint, sizeof(tempint), _DEVCTL_FLAG_NOTTY)); 
+		return(_devctl(fd, DCMD_CHR_SERCTL, &tempint, sizeof(tempint), _DEVCTL_FLAG_NOTTY));
 	}
 	//Set the state of the modem by OR'ing in the int argument
 	case TIOCMBIS: {
 		int tmpmodem;
-		if (_devctl(fd, DCMD_CHR_LINESTATUS, &tmpmodem, sizeof(tmpmodem), _DEVCTL_FLAG_NOTTY) == -1) 
+		if (_devctl(fd, DCMD_CHR_LINESTATUS, &tmpmodem, sizeof(tmpmodem), _DEVCTL_FLAG_NOTTY) == -1)
 			return(-1);
-		tmpmodem |= *((int*)data);		
+		tmpmodem |= *((int*)data);
 		tempint = 0;
 		modem2serctl(&tmpmodem, &tempint);
-		return(_devctl(fd, DCMD_CHR_SERCTL, &tempint, sizeof(tempint), _DEVCTL_FLAG_NOTTY)); 
+		return(_devctl(fd, DCMD_CHR_SERCTL, &tempint, sizeof(tempint), _DEVCTL_FLAG_NOTTY));
 	}
 
 	//Set the state of the modem lines
 	case TIOCMSET: {
 		tempint = 0;
 		modem2serctl((int*)data, &tempint);
-		return(_devctl(fd, DCMD_CHR_SERCTL, &tempint, sizeof(tempint), _DEVCTL_FLAG_NOTTY)); 
+		return(_devctl(fd, DCMD_CHR_SERCTL, &tempint, sizeof(tempint), _DEVCTL_FLAG_NOTTY));
 	}
 
 	//Set/Clear DTR lines
 	case TIOCCDTR: {
-		int status; 
+		int status;
 		if (_devctl(fd, DCMD_CHR_LINESTATUS, &status, sizeof(status), _DEVCTL_FLAG_NOTTY) == -1)
 			return(-1);
 		if (status & _LINESTATUS_SER_DTR) {
@@ -334,7 +334,7 @@ int ioctl(int fd, int cmd, ...) {
 		return(EOK);
 	}
 	case TIOCSDTR: {
-		int status; 
+		int status;
 		if (_devctl(fd, DCMD_CHR_LINESTATUS, &status, sizeof(status), _DEVCTL_FLAG_NOTTY) == -1)
 			return(-1);
 		if (!(status & _LINESTATUS_SER_DTR)) {
@@ -358,7 +358,7 @@ int ioctl(int fd, int cmd, ...) {
 #undef SIOCGIFCONF
 #define SIOCGIFCONF   _IOWR('i', 38, struct ifconf)
 #endif
-	/* 
+	/*
 	 Generic handling for all but SIOCGIFCONF networking IOCTL's
 	*/
 	if ((unsigned)cmd == SIOCGIFCONF || (unsigned)cmd == NOSIOCGIFCONF) {
@@ -380,16 +380,16 @@ int ioctl(int fd, int cmd, ...) {
 		return MsgSendv(fd, wiov, 2, riov, 3);
 	}
 
-	/* 
+	/*
 	 These calls require their command types to be translated
 	*/
 	switch ((unsigned)cmd) {
-	case TCGETS:								//Not on NetBSD 
+	case TCGETS:								//Not on NetBSD
 		SETNEWNUM(cmd, TIOCGETA);  match = 1;
 		break;
 
 	case TCSETS:								//Not on NetBSD
-		SETNEWNUM(cmd, TIOCSETA);  match = 1; 
+		SETNEWNUM(cmd, TIOCSETA);  match = 1;
 		break;
 
 	case TCSETSW:								//Not on NetBSD
@@ -405,15 +405,15 @@ int ioctl(int fd, int cmd, ...) {
 		break;
 
 	case TIOCGETPGRP:							//Not on Sun
-		SETNEWNUM(cmd, TIOCGPGRP);  match = 1; 
+		SETNEWNUM(cmd, TIOCGPGRP);  match = 1;
 		break;
 
-	case TIOCSTOP: 
-	case TIOCSTART:							
+	case TIOCSTOP:
+	case TIOCSTART:
 		//These functions pass in void but we need to pass an int so ...
 		data = &tempint;
 		tempint = (cmd == TIOCSTOP) ? TCOOFF : TIOCSTART;
-		cmd = _IOW(_DCMD_CHR,TCXONC,int);		//Create new command  
+		cmd = _IOW(_DCMD_CHR,TCXONC,int);		//Create new command
 	case TCXONC:								//Not on NetBSD
 		//Assume incoming data already looks like:
 		//data = 0= suspend output = TCOOFF, 1= restart output = TCOON
@@ -421,7 +421,7 @@ int ioctl(int fd, int cmd, ...) {
 		SETNEWNUM(cmd, TCXONC);  match = 1;
 		break;
 
-	case TIOCFLUSH: 
+	case TIOCFLUSH:
 		//Need to re-map 0 -> 2, FREAD -> 0, FWRITE -> 1
 		switch (*((int*)data)) {
 			case 0:      *((int*)data) = TCIOFLUSH; break;
@@ -430,7 +430,7 @@ int ioctl(int fd, int cmd, ...) {
 			default: break;
 		}
 		/* Fall Through */
-	case TCFLSH:								//Not on NetBSD 
+	case TCFLSH:								//Not on NetBSD
 		//Assume input data looks like:
 		//data = 0 = flush in, 1 = flush output, 2 = flush both
 		SETNEWNUM(cmd, TIOCFLUSH); match = 1;
@@ -444,7 +444,7 @@ int ioctl(int fd, int cmd, ...) {
 	return(_devctl(fd, cmd, data, IOCPARM_LEN((unsigned)cmd), _DEVCTL_FLAG_NOTTY));
 	/*
 	 Returns different things for different commands:
-	 - GETPRGRP returns pid_t 
+	 - GETPRGRP returns pid_t
 	 - FIOREAD returns number of chars in input queue
 	 - TIOCOUTQ returns number of chars in output queue
 	 - 0 for all other cases
@@ -535,12 +535,12 @@ int ioctl(int fd, int cmd, ...) {
 
  Modem status control variables
 
-TIOCM_LE   Line Enable.			
-TIOCM_DTR  Data Terminal Ready.	
-TIOCM_RTS  Request To Send.	
-TIOCM_ST   Secondary Transmit.	
+TIOCM_LE   Line Enable.
+TIOCM_DTR  Data Terminal Ready.
+TIOCM_RTS  Request To Send.
+TIOCM_ST   Secondary Transmit.
 TIOCM_SR   Secondary Receive.
-TIOCM_CTS  Clear To Send.	
+TIOCM_CTS  Clear To Send.
 TIOCM_CAR  Carrier Detect.
 TIOCM_CD   Carier Detect (synonym).
 TIOCM_RNG  Ring Indication.
@@ -604,9 +604,9 @@ static void termios2termio(struct termios * termios,
 }
 
 /*
- We really need a definitive reference on how to map 
+ We really need a definitive reference on how to map
  these two structures back and forth.  Linux doesn't
- really even bother, 
+ really even bother,
 */
 static void termios2sgttyb(struct termios *termios,
 					struct sgttyb *sgttyb) {
@@ -634,33 +634,33 @@ static void termios2sgttyb(struct termios *termios,
 	sgttyb->sg_kill  = termios->c_cc[VKILL];
 	sgttyb->sg_flags = 0;
 
-	if ((termios->c_iflag & IXOFF)) 
+	if ((termios->c_iflag & IXOFF))
 		sgttyb->sg_flags |= TANDEM;
 
-	if ((termios->c_lflag & ICANON)) 
+	if ((termios->c_lflag & ICANON))
 		sgttyb->sg_flags |= CBREAK;
 
 	if ((termios->c_iflag & IUCLC) && (termios->c_oflag & OLCUC))
 		sgttyb->sg_flags |= LCASE;
 
-	if ((termios->c_lflag & ECHO)) 
+	if ((termios->c_lflag & ECHO))
 		sgttyb->sg_flags |= ECHO;
 
-	if (!(termios->c_oflag & OPOST)) 
+	if (!(termios->c_oflag & OPOST))
 		sgttyb->sg_flags |= RAW;
 
-	if ((termios->c_iflag & ICRNL) && (termios->c_oflag & ONLCR)) 
+	if ((termios->c_iflag & ICRNL) && (termios->c_oflag & ONLCR))
 		sgttyb->sg_flags |= CRMOD;
 
-	if ((termios->c_cflag & PARENB)) 
+	if ((termios->c_cflag & PARENB))
 		sgttyb->sg_flags |= (termios->c_cflag & PARODD) ? ODDP : EVENP;
-	else 
+	else
 		sgttyb->sg_flags |= ANYP;
 
 	//Manage delay values ...
 }
 
-static void sgttyb2termios(struct sgttyb *sgttyb, 
+static void sgttyb2termios(struct sgttyb *sgttyb,
                     struct termios *termios) {
 	termios->c_ispeed = get_bauds( sgttyb->sg_ispeed );
 	termios->c_ospeed = get_bauds( sgttyb->sg_ospeed );
@@ -695,9 +695,9 @@ static void sgttyb2termios(struct sgttyb *sgttyb,
 		termios->c_iflag &= ~IXOFF;
 
 	if ((sgttyb->sg_flags & CBREAK))
-		termios->c_lflag |= ICANON; 
-	else 
-		termios->c_lflag &= ~ICANON; 
+		termios->c_lflag |= ICANON;
+	else
+		termios->c_lflag &= ~ICANON;
 
 	if ((sgttyb->sg_flags & LCASE)) {
 		termios->c_iflag |= IUCLC;
@@ -727,21 +727,21 @@ static void sgttyb2termios(struct sgttyb *sgttyb,
 		termios->c_oflag &= ~ONLCR;
 	}
 
-	if (sgttyb->sg_flags & ODDP) { 
+	if (sgttyb->sg_flags & ODDP) {
 		termios->c_cflag |= PARENB | PARODD;
 	}
-	else if (sgttyb->sg_flags & EVENP) { 
-		termios->c_cflag &= ~PARODD; 
-		termios->c_cflag |= PARENB; 
+	else if (sgttyb->sg_flags & EVENP) {
+		termios->c_cflag &= ~PARODD;
+		termios->c_cflag |= PARENB;
 	}
 	else {
 		termios->c_cflag &= ~PARENB;
 	}
-	
+
 	//Manage delay values ...
 }
 
-static void termios2tchars(struct termios *termios, 
+static void termios2tchars(struct termios *termios,
                     struct tchars *tchars) {
 	tchars->t_intrc = termios->c_cc[VINTR];
 	tchars->t_quitc = termios->c_cc[VQUIT];
@@ -752,7 +752,7 @@ static void termios2tchars(struct termios *termios,
 	//Local flag mapping, no variable
 }
 
-static void tchars2termios(struct tchars *tchars, 
+static void tchars2termios(struct tchars *tchars,
                     struct termios *termios)  {
 	termios->c_cc[VINTR] =	tchars->t_intrc;
 	termios->c_cc[VQUIT] =	tchars->t_quitc;
@@ -763,7 +763,7 @@ static void tchars2termios(struct tchars *tchars,
 	//Local flag mapping, no variable
 }
 
-static void termios2ltchars(struct termios *termios, 
+static void termios2ltchars(struct termios *termios,
                     struct ltchars *ltchars) {
 	ltchars->t_suspc = termios->c_cc[VSUSP];
 	ltchars->t_dsuspc = termios->c_cc[VDSUSP];
@@ -773,7 +773,7 @@ static void termios2ltchars(struct termios *termios,
 	ltchars->t_lnextc = termios->c_cc[VLNEXT];
 }
 
-static void ltchars2termios(struct ltchars *ltchars, 
+static void ltchars2termios(struct ltchars *ltchars,
                     struct termios *termios)  {
 	termios->c_cc[VSUSP] =	ltchars->t_suspc;
 	termios->c_cc[VDSUSP] =	ltchars->t_dsuspc;

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -118,7 +118,7 @@ main(int argc, char **argv) {
 			case 'l': what = (int) 'l'; break;
 			case 'b': what = (int) 'b'; break;
 			case 'f': follow = 1; break;
-			case 'c': what = (int) 'c'; 
+			case 'c': what = (int) 'c';
 			case 'n':
 #if _FILE_OFFSET_BITS - 0 == 64
 				count = strtoll(optarg, &p, 10);
@@ -126,9 +126,9 @@ main(int argc, char **argv) {
 				count = strtol(optarg, &p, 10);
 #endif
 				if (errno == EINVAL || *p != '\0') {
-					if (what == 'c') 
+					if (what == 'c')
 						message("%s: invalid number of bytes", optarg);
-					else 
+					else
 						message("%s: invalid number of lines", optarg);
 					return 1;
 				}
@@ -260,7 +260,7 @@ skip(FILE *fp, char *name, int what, off_t goal) {
                 if( length(fp) < goal )
                   (void) fseeko(fp, 0, SEEK_SET);
 		return show(fp);
-                   
+
 	case 'l':
 		for (consumed = 1; consumed < goal;) {
 			char c = (char) 0;

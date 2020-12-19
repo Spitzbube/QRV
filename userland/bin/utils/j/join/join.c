@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -38,7 +38,7 @@ Options:
               fields specified in <list>.  Each element of <list> has the
               form <file>.<field> where <file> is a file number (either 1 or
               2) and <field> is a field number.  Elements of list are
-              separated with a ','or ' ' character. 
+              separated with a ','or ' ' character.
               For example: -o 1.2,2.2,2.3 or -o 1.2 2.2 2.3
               The "join" field is not printed unless specifically listed.
  -t  char     Use character <char> as the field separator.  Every occurence
@@ -66,21 +66,21 @@ Options:
 	Stage 1 of the warnings/errors cleanup.
 
 	Revision 1.18  2005/06/03 01:37:48  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.17  2003/08/25 21:22:21  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.16  1998/09/19 14:52:03  bstecher
 	made compile cleanly
-	
+
 	Revision 1.15  1998/09/19 14:44:38  eric
 	*** empty log message ***
 
@@ -125,7 +125,7 @@ Options:
  * Revision 1.2  1991/12/04  20:13:03  ajedgar
  * Modified usage message...
  *
-	
+
 ---------------------------------------------------------------------*/
 
 
@@ -456,7 +456,7 @@ int main (int argc, char *argv[])
 		if (fp1!=NULL && fp2!=NULL) {
 			match = compare(Buf1, Join1, Buf2, Join2);
 		} else match=0;
-	
+
 		if (match == 0 && fp1 != NULL && fp2 != NULL) {
 			match1 = match2 = TRUE;
 
@@ -464,7 +464,7 @@ int main (int argc, char *argv[])
 			 *	If there's a match and subsequent lines containing matching
 			 *  fields are not already being cached to a temporary file and
 			 *  that same temporary file is not currently being used for
-			 *  input then enable caching (rewind & truncate the temp file). 
+			 *  input then enable caching (rewind & truncate the temp file).
 			 */
 			DBG(fprintf(stderr, "compare: start caching?\n"));
 			if (saved_position == 0 && fp2 != fptmp && compare(Buf2, Join2, SaveBuf2, Join2) == 0) {
@@ -552,7 +552,7 @@ int compare (char *buf1, int field1, char *buf2, int field2)
 	p2 = getfield(buf2, field2, &l2);
 
 
-	DBG(fprintf(stderr, "compare: \"%-*s\" (%2d)  \"%-*s\" (%2d)  ", 
+	DBG(fprintf(stderr, "compare: \"%-*s\" (%2d)  \"%-*s\" (%2d)  ",
 		l1, p1, l1, l2, p2, l2));
 
 	for ( ; l1 && l2 && *p1 == *p2; ++p1, ++p2, --l1, --l2)
@@ -564,7 +564,7 @@ int compare (char *buf1, int field1, char *buf2, int field2)
 		rc = -1;
 	else if (l2 == 0)
 		rc = 1;
-	else 
+	else
 		rc = (*p1 - *p2) < 0 ? -1 : 1;
 
 	DBG(fprintf(stderr, "match=%d\n", rc));

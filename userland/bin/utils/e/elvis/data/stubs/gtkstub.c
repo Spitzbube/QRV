@@ -42,7 +42,7 @@ typedef struct _GtkAccelEntry
 	GtkAccelGroup *accel_group;
 	guint accelerator_key;
 	GdkModifierType accelerator_mods;
-	 
+
 	GtkAccelFlags accel_flags;
 	GtkObject *object;
 	guint signal_id;
@@ -271,7 +271,7 @@ gboolean gtk_accel_label_refetch(GtkAccelLabel *accel_label)
 typedef struct _GtkAdjustment
 {
 	GtkData data;
-	 
+
 	gfloat lower;
 	gfloat upper;
 	gfloat value;
@@ -386,11 +386,11 @@ typedef struct _GtkArgInfo
 {
 	GtkType class_type;
 	gchar *name;
-	 
+
 	GtkType type;
 	guint arg_flags;
 	gchar *full_name;
-	 
+
 	 /* private fields */
 	guint arg_id;
 	guint seq_id;
@@ -605,12 +605,12 @@ void gtk_aspect_frame_set(GtkAspectFrame *aspect_frame, gfloat xalign, gfloat ya
 
 /* <gtk/gtkbbox.h> */
 #define GTK_IS_BUTTON_BOX_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), GTK_TYPE_BUTTON_BOX))
-	 
+
 
 
 /* <gtk/gtkbbox.h> */
 #define GTK_BUTTONBOX_DEFAULT -1
-	
+
 
 /* <gtk/gtkbbox.h> */
 typedef struct _GtkButtonBox
@@ -766,7 +766,7 @@ typedef struct _GtkBindingEntry
  */
 	guint keyval;
 	guint modifiers;
-	 
+
 	GtkBindingSet *binding_set;
 	guint destroyed : 1;
 	guint in_emission : 1;
@@ -915,7 +915,7 @@ GtkType gtk_bin_get_type(void)
 typedef struct _GtkBox
 {
 	GtkContainer container;
-	 
+
 	GList *children;
 	gint16 spacing;
 	guint homogeneous : 1;
@@ -1032,7 +1032,7 @@ typedef struct _GtkButton
 typedef struct _GtkButtonClass
 {
 	GtkBinClass parent_class;
-	 
+
 	void (* pressed) (GtkButton *button);
 	void (* released) (GtkButton *button);
 	void (* clicked) (GtkButton *button);
@@ -1128,22 +1128,22 @@ typedef enum
 typedef struct _GtkCalendar
 {
 	GtkWidget widget;
-	 
+
 	GtkStyle *header_style;
 	GtkStyle *label_style;
-	 
+
 	gint month;
 	gint year;
 	gint selected_day;
-	 
+
 	gint day_month[6][7];
 	gint day[6][7];
-	 
+
 	gint num_marked_dates;
 	gint marked_date[31];
 	GtkCalendarDisplayOptions display_flags;
 	GdkColor marked_date_color[31];
-	 
+
 	GdkGC *gc;
 	GdkGC *xor_gc;
 
@@ -1152,7 +1152,7 @@ typedef struct _GtkCalendar
 
 	gint highlight_row;
 	gint highlight_col;
-	 
+
 	gpointer private_data;
 	gchar grow_space [32];
 } GtkCalendar;
@@ -1162,7 +1162,7 @@ typedef struct _GtkCalendar
 typedef struct _GtkCalendarClass
 {
 	GtkWidgetClass parent_class;
-	 
+
 	 /* Signal handlers */
 	void (* month_changed) (GtkCalendar *calendar);
 	void (* day_selected) (GtkCalendar *calendar);
@@ -1171,7 +1171,7 @@ typedef struct _GtkCalendarClass
 	void (* next_month) (GtkCalendar *calendar);
 	void (* prev_year) (GtkCalendar *calendar);
 	void (* next_year) (GtkCalendar *calendar);
-	 
+
 } GtkCalendarClass;
 
 
@@ -1324,7 +1324,7 @@ void _gtk_check_button_get_props(GtkCheckButton *check_button, gint *indicator_s
 typedef struct _GtkCheckMenuItem
 {
 	GtkMenuItem menu_item;
-	 
+
 	guint active : 1;
 	guint always_show_toggle : 1;
 } GtkCheckMenuItem;
@@ -1334,7 +1334,7 @@ typedef struct _GtkCheckMenuItem
 typedef struct _GtkCheckMenuItemClass
 {
 	GtkMenuItemClass parent_class;
-	 
+
 	void (* toggled) (GtkCheckMenuItem *check_menu_item);
 	void (* draw_indicator) (GtkCheckMenuItem *check_menu_item, GdkRectangle *area);
 } GtkCheckMenuItemClass;
@@ -1387,7 +1387,7 @@ enum {
 	GTK_CLIST_USE_DRAG_ICONS = 1 << 8,
 	GTK_CLIST_DRAW_DRAG_LINE = 1 << 9,
 	GTK_CLIST_DRAW_DRAG_RECT = 1 << 10
-}; 
+};
 
 /* cell types */
 
@@ -1526,58 +1526,58 @@ typedef struct _GtkCListDestInfo
 typedef struct _GtkCList
 {
 	GtkContainer container;
-	 
+
 	guint16 flags;
-	 
+
 	 /* mem chunks */
 	GMemChunk *row_mem_chunk;
 	GMemChunk *cell_mem_chunk;
 
 	guint freeze_count;
-	 
+
 	 /* allocation rectangle after the conatiner_border_width
  * and the width of the shadow border */
 	GdkRectangle internal_allocation;
-	 
+
 	 /* rows */
 	gint rows;
 	gint row_center_offset;
 	gint row_height;
 	GList *row_list;
 	GList *row_list_end;
-	 
+
 	 /* columns */
 	gint columns;
 	GdkRectangle column_title_area;
 	GdkWindow *title_window;
-	 
+
 	 /* dynamicly allocated array of column structures */
 	GtkCListColumn *column;
-	 
+
 	 /* the scrolling window and its height and width to
  * make things a little speedier */
 	GdkWindow *clist_window;
 	gint clist_window_width;
 	gint clist_window_height;
-	 
+
 	 /* offsets for scrolling */
 	gint hoffset;
 	gint voffset;
-	 
+
 	 /* border shadow style */
 	GtkShadowType shadow_type;
-	 
+
 	 /* the list's selection mode (gtkenums.h) */
 	GtkSelectionMode selection_mode;
-	 
+
 	 /* list of selected rows */
 	GList *selection;
 	GList *selection_end;
-	 
+
 	GList *undo_selection;
 	GList *undo_unselection;
 	gint undo_anchor;
-	 
+
 	 /* mouse buttons */
 	guint8 button_actions[5];
 
@@ -1589,30 +1589,30 @@ typedef struct _GtkCList
 	 /* scroll adjustments */
 	GtkAdjustment *hadjustment;
 	GtkAdjustment *vadjustment;
-	 
+
 	 /* xor GC for the vertical drag line */
 	GdkGC *xor_gc;
-	 
+
 	 /* gc for drawing unselected cells */
 	GdkGC *fg_gc;
 	GdkGC *bg_gc;
-	 
+
 	 /* cursor used to indicate dragging */
 	GdkCursor *cursor_drag;
-	 
+
 	 /* the current x-pixel location of the xor-drag line */
 	gint x_drag;
-	 
+
 	 /* focus handling */
 	gint focus_row;
-	 
+
 	 /* dragging the selection */
 	gint anchor;
 	GtkStateType anchor_state;
 	gint drag_pos;
 	gint htimer;
 	gint vtimer;
-	 
+
 	GtkSortType sort_type;
 	GtkCListCompareFunc compare;
 	gint sort_column;
@@ -1623,7 +1623,7 @@ typedef struct _GtkCList
 typedef struct _GtkCListClass
 {
 	GtkContainerClass parent_class;
-	 
+
 	void (*set_scroll_adjustments) (GtkCList *clist, GtkAdjustment *hadjustment, GtkAdjustment *vadjustment);
 	void (*refresh) (GtkCList *clist);
 	void (*select_row) (GtkCList *clist, gint row, gint column, GdkEvent *event);
@@ -1662,16 +1662,16 @@ typedef struct _GtkCListColumn
 {
 	gchar *title;
 	GdkRectangle area;
-	 
+
 	GtkWidget *button;
 	GdkWindow *window;
-	 
+
 	gint width;
 	gint min_width;
 	gint max_width;
 	GtkJustification justification;
-	 
-	guint visible : 1;  
+
+	guint visible : 1;
 	guint width_set : 1;
 	guint resizeable : 1;
 	guint auto_resize : 1;
@@ -1684,15 +1684,15 @@ typedef struct _GtkCListRow
 {
 	GtkCell *cell;
 	GtkStateType state;
-	 
+
 	GdkColor foreground;
 	GdkColor background;
-	 
+
 	GtkStyle *style;
 
 	gpointer data;
 	GtkDestroyNotify destroy;
-	 
+
 	guint fg_set : 1;
 	guint bg_set : 1;
 	guint selectable : 1;
@@ -1704,10 +1704,10 @@ typedef struct _GtkCListRow
 typedef struct _GtkCellText
 {
 	GtkCellType type;
-	 
+
 	gint16 vertical;
 	gint16 horizontal;
-	 
+
 	GtkStyle *style;
 
 	gchar *text;
@@ -1718,10 +1718,10 @@ typedef struct _GtkCellText
 typedef struct _GtkCellPixmap
 {
 	GtkCellType type;
-	 
+
 	gint16 vertical;
 	gint16 horizontal;
-	 
+
 	GtkStyle *style;
 
 	GdkPixmap *pixmap;
@@ -1733,10 +1733,10 @@ typedef struct _GtkCellPixmap
 typedef struct _GtkCellPixText
 {
 	GtkCellType type;
-	 
+
 	gint16 vertical;
 	gint16 horizontal;
-	 
+
 	GtkStyle *style;
 
 	gchar *text;
@@ -1750,10 +1750,10 @@ typedef struct _GtkCellPixText
 typedef struct _GtkCellWidget
 {
 	GtkCellType type;
-	 
+
 	gint16 vertical;
 	gint16 horizontal;
-	 
+
 	GtkStyle *style;
 
 	GtkWidget *widget;
@@ -1764,27 +1764,27 @@ typedef struct _GtkCellWidget
 typedef struct _GtkCell
 {
 	GtkCellType type;
-	 
+
 	gint16 vertical;
 	gint16 horizontal;
-	 
+
 	GtkStyle *style;
 
 	union {
 	gchar *text;
-	 
+
 	struct {
 	GdkPixmap *pixmap;
 	GdkBitmap *mask;
 	} pm;
-	 
+
 	struct {
 	gchar *text;
 	guint8 spacing;
 	GdkPixmap *pixmap;
 	GdkBitmap *mask;
 	} pt;
-	 
+
 	GtkWidget *widget;
 	} u;
 } GtkCell;
@@ -1896,7 +1896,7 @@ void gtk_clist_column_titles_hide(GtkCList *clist)
 {
 }
 
-/* set the column title to be a active title (responds to button presses, 
+/* set the column title to be a active title (responds to button presses,
  * prelights, and grabs keyboard focus), or passive where it acts as just
  * a title
  */
@@ -2625,14 +2625,14 @@ void gtk_combo_disable_activate(GtkCombo* combo)
 typedef struct _GtkContainer
 {
 	GtkWidget widget;
-	 
+
 	GtkWidget *focus_child;
-	 
+
 	guint border_width : 16;
 	guint need_resize : 1;
 	guint resize_mode : 2;
 	guint reallocate_redraws : 1;
-	 
+
 	 /* The list of children that requested a resize
  */
 	GSList *resize_widgets;
@@ -2643,7 +2643,7 @@ typedef struct _GtkContainer
 typedef struct _GtkContainerClass
 {
 	GtkWidgetClass parent_class;
-	 
+
 	guint n_child_args;
 
 	void (* add) (GtkContainer *container, GtkWidget *widget);
@@ -2774,7 +2774,7 @@ GtkType gtk_container_child_type(GtkContainer *container)
 void gtk_container_add_child_arg_type(const gchar *arg_name, GtkType arg_type, guint arg_flags, guint arg_id)
 {
 }
-	 
+
 /* Allocate a GtkArg array of size nargs that hold the
  * names and types of the args that can be used with
  * gtk_container_child_getv/gtk_container_child_setv.
@@ -2826,7 +2826,7 @@ void gtk_container_addv(GtkContainer *container, GtkWidget *widget, guint n_args
 void gtk_container_child_set(GtkContainer *container, GtkWidget *child, const gchar *first_arg_name, ...)
 {
 }
-	 
+
 
 /* Non-public methods */
 
@@ -2971,9 +2971,9 @@ typedef gboolean(*GtkCTreeCompareDragFunc) (GtkCTree *ctree, GtkCTreeNode *sourc
 typedef struct _GtkCTree
 {
 	GtkCList clist;
-	 
+
 	GdkGC *lines_gc;
-	 
+
 	gint tree_indent;
 	gint tree_spacing;
 	gint tree_column;
@@ -2990,7 +2990,7 @@ typedef struct _GtkCTree
 typedef struct _GtkCTreeClass
 {
 	GtkCListClass parent_class;
-	 
+
 	void (*tree_select_row) (GtkCTree *ctree, GtkCTreeNode *row, gint column);
 	void (*tree_unselect_row) (GtkCTree *ctree, GtkCTreeNode *row, gint column);
 	void (*tree_expand) (GtkCTree *ctree, GtkCTreeNode *node);
@@ -3004,18 +3004,18 @@ typedef struct _GtkCTreeClass
 typedef struct _GtkCTreeRow
 {
 	GtkCListRow row;
-	 
+
 	GtkCTreeNode *parent;
 	GtkCTreeNode *sibling;
 	GtkCTreeNode *children;
-	 
+
 	GdkPixmap *pixmap_closed;
 	GdkBitmap *mask_closed;
 	GdkPixmap *pixmap_opened;
 	GdkBitmap *mask_opened;
-	 
+
 	guint16 level;
-	 
+
 	guint is_leaf : 1;
 	guint expanded : 1;
 } GtkCTreeRow;
@@ -3604,7 +3604,7 @@ typedef enum {
 	GTK_DEST_DEFAULT_ALL = 0x07
 } GtkDestDefaults;
 
-/* Flags for the GtkTargetEntry on the destination side 
+/* Flags for the GtkTargetEntry on the destination side
  */
 
 /* <gtk/gtkdnd.h> */
@@ -3819,7 +3819,7 @@ typedef struct _GtkEditable
 	guint visible : 1;
 	GdkIC *ic;
 	GdkICAttr *ic_attr;
-	 
+
 	gchar *clipboard_text;
 } GtkEditable;
 
@@ -3828,7 +3828,7 @@ typedef struct _GtkEditable
 typedef struct _GtkEditableClass
 {
 	GtkWidgetClass parent_class;
-	 
+
 	 /* Signals for notification/filtering of changes */
 	void (* changed) (GtkEditable *editable);
 	void (* insert_text) (GtkEditable *editable, const gchar *text, gint length, gint *position);
@@ -4068,7 +4068,7 @@ typedef enum
 } GtkAttachOptions;
 
 /* <gtk/gtkenums.h> Button box styles */
-typedef enum 
+typedef enum
 {
 	GTK_BUTTONBOX_DEFAULT_STYLE,
 	GTK_BUTTONBOX_SPREAD,
@@ -4084,7 +4084,7 @@ typedef enum
 	GTK_CURVE_TYPE_SPLINE,  /* spline interpolation */
 	GTK_CURVE_TYPE_FREE  /* free form curve */
 } GtkCurveType;
-	
+
 /* <gtk/gtkenums.h> Focus movement types */
 typedef enum
 {
@@ -4456,7 +4456,7 @@ GtkWidget* gtk_event_box_new(void)
 
 /* <gtk/gtkfeatures.h> */
 #define GTK_HAVE_SIGNAL_INIT 1-0-2
-	 
+
 /* Gtk+ 1.1.0 version tag.
  * - new gtk_rc_set_image_loader () to install custom image loaders for rc
  * files.
@@ -4586,14 +4586,14 @@ typedef struct _GtkFileSelection
 	GtkWidget *fileop_entry;
 	gchar *fileop_file;
 	gpointer cmpl_state;
-	 
+
 	GtkWidget *fileop_c_dir;
 	GtkWidget *fileop_del_file;
 	GtkWidget *fileop_ren_file;
-	 
+
 	GtkWidget *button_area;
 	GtkWidget *action_area;
-	 
+
 } GtkFileSelection;
 
 
@@ -4798,7 +4798,7 @@ typedef struct _GtkFontFilter
 typedef struct _GtkFontSelection
 {
 	GtkNotebook notebook;
-	 
+
 	 /* These are on the font page. */
 	GtkWidget *main_vbox;
 	GtkWidget *font_label;
@@ -4813,35 +4813,35 @@ typedef struct _GtkFontSelection
 	GtkWidget *filter_button;
 	GtkWidget *preview_entry;
 	GtkWidget *message_label;
-	 
+
 	 /* These are on the font info page. */
 	GtkWidget *info_vbox;
 	GtkWidget *info_clist;
 	GtkWidget *requested_font_name;
 	GtkWidget *actual_font_name;
-	 
+
 	 /* These are on the filter page. */
 	GtkWidget *filter_vbox;
 	GtkWidget *type_bitmaps_button;
 	GtkWidget *type_scalable_button;
 	GtkWidget *type_scaled_bitmaps_button;
 	GtkWidget *filter_clists[GTK_NUM_FONT_PROPERTIES];
-	 
+
 	GdkFont *font;
 	gint font_index;
 	gint style;
 	GtkFontMetricType metric;
 	 /* The size is either in pixels or deci-points, depending on the metric. */
 	gint size;
-	 
+
 	 /* This is the last size explicitly selected. When the user selects different
 	fonts we try to find the nearest size to this. */
 	gint selected_size;
-	 
+
 	 /* These are the current property settings. They are indexes into the
 	strings in the GtkFontSelInfo properties array. */
 	guint16 property_values[GTK_NUM_STYLE_PROPERTIES];
-	 
+
 	 /* These are the base and user font filters. */
 	GtkFontFilter filters[GTK_NUM_FONT_FILTERS];
 } GtkFontSelection;
@@ -4860,16 +4860,16 @@ typedef struct _GtkFontSelectionClass
 typedef struct _GtkFontSelectionDialog
 {
 	GtkWindow window;
-	 
+
 	GtkWidget *fontsel;
-	 
+
 	GtkWidget *main_vbox;
 	GtkWidget *action_area;
 	GtkWidget *ok_button;
 	 /* The 'Apply' button is not shown by default but you can show/hide it. */
 	GtkWidget *apply_button;
 	GtkWidget *cancel_button;
-	 
+
 	 /* If the user changes the width of the dialog, we turn auto-shrink off. */
 	gint dialog_width;
 	gboolean auto_resize;
@@ -4971,7 +4971,7 @@ GdkFont* gtk_font_selection_dialog_get_font(GtkFontSelectionDialog *fsd)
 
 /* This sets the currently displayed font. It should be a valid X Logical
 	Font Description font name (anything else will be ignored), e.g.
-	"-adobe-courier-bold-o-normal--25-*-*-*-*-*-*-*" 
+	"-adobe-courier-bold-o-normal--25-*-*-*-*-*-*-*"
 	It returns TRUE on success. */
 
 /* <gtk/gtkfontsel.h> */
@@ -5045,7 +5045,7 @@ void gtk_font_selection_dialog_set_preview_text(GtkFontSelectionDialog *fsd, con
 typedef struct _GtkFrame
 {
 	GtkBin bin;
-	 
+
 	gchar *label;
 	gint16 shadow_type;
 	gint16 label_width;
@@ -5179,7 +5179,7 @@ typedef struct _GtkHandleBox
 	guint shrink_on_detach : 1;
 
 	gint snap_edge : 3; /* -1 == unset */
-	 
+
 	 /* Variables used during a drag
  */
 	gint deskoff_x, deskoff_y; /* Offset between root relative coordinates
@@ -5618,7 +5618,7 @@ typedef struct _GtkInputDialog
 
 	GtkWidget *close_button;
 	GtkWidget *save_button;
-	 
+
 	GtkWidget *axis_items[GDK_AXIS_LAST];
 	guint32 current_device;
 
@@ -5742,7 +5742,7 @@ typedef struct _GtkItemFactory
 
 	GtkTranslateFunc translate_func;
 	gpointer translate_data;
-	GtkDestroyNotify translate_notify;  
+	GtkDestroyNotify translate_notify;
 } GtkItemFactory;
 
 
@@ -5818,7 +5818,7 @@ GtkItemFactory* gtk_item_factory_new(GtkType container_type, const gchar *path, 
 void gtk_item_factory_construct(GtkItemFactory *ifactory, GtkType container_type, const gchar *path, GtkAccelGroup *accel_group)
 {
 }
-	 
+
 /* These functions operate on GtkItemFactoryClass basis.
  */
 
@@ -5841,7 +5841,7 @@ void gtk_item_factory_parse_rc_scanner(GScanner *scanner)
 void gtk_item_factory_add_foreign(GtkWidget *accel_widget, const gchar *full_path, GtkAccelGroup *accel_group, guint keyval, GdkModifierType modifiers)
 {
 }
-	 
+
 
 /* <gtk/gtkitemfactory.h> */
 GtkItemFactory* gtk_item_factory_from_widget(GtkWidget *widget)
@@ -6149,7 +6149,7 @@ typedef struct _GtkLayout
 
 	GtkAdjustment *hadjustment;
 	GtkAdjustment *vadjustment;
-	 
+
 	GdkWindow *bin_window;
 
 	GdkVisibilityState visibility;
@@ -6184,13 +6184,13 @@ GtkWidget* gtk_layout_new(GtkAdjustment *hadjustment, GtkAdjustment *vadjustment
 void gtk_layout_put(GtkLayout *layout, GtkWidget *widget, gint x, gint y)
 {
 }
-	 
+
 
 /* <gtk/gtklayout.h> */
 void gtk_layout_move(GtkLayout *layout, GtkWidget *widget, gint x, gint y)
 {
 }
-	 
+
 
 /* <gtk/gtklayout.h> */
 void gtk_layout_set_size(GtkLayout *layout, guint width, guint height)
@@ -6739,7 +6739,7 @@ guint gtk_key_snooper_install(GtkKeySnoopFunc snooper, gpointer func_data)
 void gtk_key_snooper_remove(guint snooper_handler_id)
 {
 }
-	 
+
 
 /* <gtk/gtkmain.h> */
 GdkEvent* gtk_get_current_event(void)
@@ -7074,10 +7074,10 @@ typedef void(*GtkMenuDetachFunc) (GtkWidget *attach_widget, GtkMenu *menu)
 typedef struct _GtkMenu
 {
 	GtkMenuShell menu_shell;
-	 
+
 	GtkWidget *parent_menu_item;
 	GtkWidget *old_active_menu_item;
-	 
+
 	GtkAccelGroup *accel_group;
 	GtkMenuPositionFunc position_func;
 	gpointer position_func_data;
@@ -7262,13 +7262,13 @@ void gtk_menu_reorder_child(GtkMenu *menu, GtkWidget *child, gint position)
 typedef struct _GtkMenuItem
 {
 	GtkItem item;
-	 
+
 	GtkWidget *submenu;
-	 
+
 	guint accelerator_signal;
 	guint16 toggle_size;
 	guint16 accelerator_width;
-	 
+
 	guint show_toggle_indicator : 1;
 	guint show_submenu_indicator : 1;
 	guint submenu_placement : 1;
@@ -7282,16 +7282,16 @@ typedef struct _GtkMenuItem
 typedef struct _GtkMenuItemClass
 {
 	GtkItemClass parent_class;
-	 
+
 	guint toggle_size;
 	 /* If the following flag is true, then we should always hide
- * the menu when the MenuItem is activated. Otherwise, the 
+ * the menu when the MenuItem is activated. Otherwise, the
  * it is up to the caller. For instance, when navigating
  * a menu with the keyboard, <Space> doesn't hide, but
  * <Return> does.
  */
 	guint hide_on_activate : 1;
-	 
+
 	void (* activate) (GtkMenuItem *menu_item);
 	void (* activate_item) (GtkMenuItem *menu_item);
 } GtkMenuItemClass;
@@ -7374,11 +7374,11 @@ void gtk_menu_item_right_justify(GtkMenuItem *menu_item)
 typedef struct _GtkMenuShell
 {
 	GtkContainer container;
-	 
+
 	GList *children;
 	GtkWidget *active_menu_item;
 	GtkWidget *parent_menu_shell;
-	 
+
 	guint active : 1;
 	guint have_grab : 1;
 	guint have_xgrab : 1;
@@ -7386,7 +7386,7 @@ typedef struct _GtkMenuShell
 	guint ignore_leave : 1;
 	guint menu_flag : 1;
 	guint ignore_enter : 1;
-	 
+
 	guint32 activate_time;
 } GtkMenuShell;
 
@@ -7395,9 +7395,9 @@ typedef struct _GtkMenuShell
 typedef struct _GtkMenuShellClass
 {
 	GtkContainerClass parent_class;
-	 
+
 	guint submenu_placement : 1;
-	 
+
 	void (*deactivate) (GtkMenuShell *menu_shell);
 	void (*selection_done) (GtkMenuShell *menu_shell);
 
@@ -7469,10 +7469,10 @@ void gtk_menu_shell_activate_item(GtkMenuShell *menu_shell, GtkWidget *menu_item
 typedef struct _GtkMisc
 {
 	GtkWidget widget;
-	 
+
 	gfloat xalign;
 	gfloat yalign;
-	 
+
 	guint16 xpad;
 	guint16 ypad;
 } GtkMisc;
@@ -7527,20 +7527,20 @@ void gtk_misc_set_padding(GtkMisc *misc, gint xpad, gint ypad)
 typedef struct _GtkNotebook
 {
 	GtkContainer container;
-	 
+
 	GtkNotebookPage *cur_page;
 	GList *children;
 	GList *first_tab;
 	GList *focus_tab;
-	 
+
 	GtkWidget *menu;
 	GdkWindow *panel;
-	 
+
 	guint32 timer;
-	 
+
 	guint16 tab_hborder;
 	guint16 tab_vborder;
-	 
+
 	guint show_tabs : 1;
 	guint homogeneous : 1;
 	guint show_border : 1;
@@ -7559,7 +7559,7 @@ typedef struct _GtkNotebook
 typedef struct _GtkNotebookClass
 {
 	GtkContainerClass parent_class;
-	 
+
 	void (* switch_page) (GtkNotebook *notebook, GtkNotebookPage *page, guint page_num);
 } GtkNotebookClass;
 
@@ -7877,7 +7877,7 @@ typedef enum
 	GTK_ARG_CONSTRUCT_ONLY = 1 << 3,
 	GTK_ARG_CHILD_ARG = 1 << 4,
 	GTK_ARG_MASK = 0x1f,
-	 
+
 	 /* aliases
  */
 	GTK_ARG_READWRITE = GTK_ARG_READABLE | GTK_ARG_WRITABLE
@@ -7889,20 +7889,20 @@ typedef struct _GtkObject
 {
 	 /* GtkTypeObject related fields: */
 	GtkObjectClass *klass;
-	 
-	 
+
+
 	 /* 32 bits of flags. GtkObject only uses 4 of these bits and
  * GtkWidget uses the rest. This is done because structs are
  * aligned on 4 or 8 byte boundaries. If a new bitfield were
  * used in GtkWidget much space would be wasted.
  */
 	guint32 flags;
-	 
+
 	 /* reference count.
  * refer to the file docs/refcounting.txt on this issue.
  */
 	guint ref_count;
-	 
+
 	 /* A list of keyed data pointers, used for e.g. the list of signal
  * handlers or an object's user_data.
  */
@@ -7922,26 +7922,26 @@ typedef struct _GtkObjectClass
 {
 	 /* GtkTypeClass fields: */
 	GtkType type;
-	 
-	 
+
+
 	 /* The signals this object class handles. "signals" is an
  * array of signal ID's.
  */
 	guint *signals;
-	 
+
 	 /* The number of signals listed in "signals".
  */
 	guint nsignals;
-	 
+
 	 /* The number of arguments per class.
  */
 	guint n_args;
 	GSList *construct_args;
-	 
+
 	 /* Non overridable class methods to set and get per class arguments */
 	void (*set_arg) (GtkObject *object, GtkArg *arg, guint arg_id);
 	void (*get_arg) (GtkObject *object, GtkArg *arg, guint arg_id);
-	 
+
 	 /* The functions that will end an objects life time. In one way ore
  * another all three of them are defined for all objects. If an
  * object class overrides one of the methods in order to perform class
@@ -7952,7 +7952,7 @@ typedef struct _GtkObjectClass
  */
 	void (* shutdown) (GtkObject *object);
 	void (* destroy) (GtkObject *object);
-	 
+
 	void (* finalize) (GtkObject *object);
 } GtkObjectClass;
 
@@ -8239,10 +8239,10 @@ void gtk_trace_referencing(GtkObject *object, const gchar *func, guint dummy, gu
 typedef struct _GtkOptionMenu
 {
 	GtkButton button;
-	 
+
 	GtkWidget *menu;
 	GtkWidget *menu_item;
-	 
+
 	guint16 width;
 	guint16 height;
 } GtkOptionMenu;
@@ -8351,13 +8351,13 @@ typedef enum
 typedef struct _GtkPackerChild
 {
 	GtkWidget *widget;
-	 
+
 	GtkAnchorType anchor;
 	GtkSideType side;
 	GtkPackerOptions options;
-	 
+
 	guint use_default : 1;
-	 
+
 	guint border_width : 16;
 	guint pad_x : 16;
 	guint pad_y : 16;
@@ -8370,11 +8370,11 @@ typedef struct _GtkPackerChild
 typedef struct _GtkPacker
 {
 	GtkContainer parent;
-	 
+
 	GList *children;
-	 
+
 	guint spacing;
-	 
+
 	guint default_border_width : 16;
 	guint default_pad_x : 16;
 	guint default_pad_y : 16;
@@ -8463,10 +8463,10 @@ void gtk_packer_set_default_ipad(GtkPacker *packer, guint i_pad_x, guint i_pad_y
 typedef struct _GtkPaned
 {
 	GtkContainer container;
-	 
+
 	GtkWidget *child1;
 	GtkWidget *child2;
-	 
+
 	GdkWindow *handle;
 	GdkRectangle groove_rectangle;
 	GdkGC *xor_gc;
@@ -8480,14 +8480,14 @@ typedef struct _GtkPaned
 	gint last_allocation;
 	gint min_position;
 	gint max_position;
-	 
+
 	guint position_set : 1;
 	guint in_drag : 1;
 	guint child1_shrink : 1;
 	guint child1_resize : 1;
 	guint child2_shrink : 1;
 	guint child2_resize : 1;
-	 
+
 	gint16 handle_xpos;
 	gint16 handle_ypos;
 } GtkPaned;
@@ -8586,7 +8586,7 @@ gint _gtk_paned_get_gutter_size(GtkPaned *paned)
 typedef struct _GtkPixmap
 {
 	GtkMisc misc;
-	 
+
 	GdkPixmap *pixmap;
 	GdkBitmap *mask;
 
@@ -9133,7 +9133,7 @@ gfloat gtk_progress_get_percentage_from_value(GtkProgress *progress, gfloat valu
 typedef struct _GtkRadioButton
 {
 	GtkCheckButton check_button;
-	 
+
 	GSList *group;
 } GtkRadioButton;
 
@@ -9203,7 +9203,7 @@ void gtk_radio_button_set_group(GtkRadioButton *radio_button, GSList *group)
 typedef struct _GtkRadioMenuItem
 {
 	GtkCheckMenuItem check_menu_item;
-	 
+
 	GSList *group;
 } GtkRadioMenuItem;
 
@@ -9609,7 +9609,7 @@ guint gtk_rc_parse_state(GScanner *scanner, GtkStateType *state)
 guint gtk_rc_parse_priority(GScanner *scanner, GtkPathPriorityType *priority)
 {
 }
-	 
+
 
 /* <gtk/gtkruler.h> */
 #define GTK_TYPE_RULER (gtk_ruler_get_type ())
@@ -9733,7 +9733,7 @@ typedef struct _GtkScaleClass
 
 	gint slider_length;
 	gint value_spacing;
-	 
+
 	void (* draw_value) (GtkScale *scale);
 } GtkScaleClass;
 
@@ -9846,7 +9846,7 @@ typedef struct _GtkScrolledWindow
 typedef struct _GtkScrolledWindowClass
 {
 	GtkBinClass parent_class;
-	 
+
 	gint scrollbar_spacing;
 } GtkScrolledWindowClass;
 
@@ -10077,8 +10077,8 @@ GtkType gtk_separator_get_type(void)
 
 /* <gtk/gtksignal.h> */
 #define GTK_SIGNAL_OFFSET(struct, field) (GTK_STRUCT_OFFSET (struct, field))
-	 
-	 
+
+
 
 /* <gtk/gtksignal.h> */
 typedef void(*GtkSignalMarshal) (GtkObject *object, gpointer data, guint nparams, GtkArg *args, GtkType *arg_types, GtkType return_type)
@@ -10256,7 +10256,7 @@ void gtk_signal_remove_emission_hook(guint signal_id, guint hook_id)
 
 /* Report internal information about a signal. The caller has the
  * responsibility to invoke a subsequent g_free (returned_data); but
- * must not modify data pointed to by the members of GtkSignalQuery 
+ * must not modify data pointed to by the members of GtkSignalQuery
  */
 
 /* <gtk/gtksignal.h> */
@@ -10312,7 +10312,7 @@ void gtk_signal_handlers_destroy(GtkObject *object)
 void gtk_signal_set_funcs(GtkSignalMarshal marshal_func, GtkSignalDestroy destroy_func)
 {
 }
-	 
+
 
 /* <gtk/gtksocket.h> */
 #define GTK_SOCKET(obj) GTK_CHECK_CAST (obj, gtk_socket_get_type (), GtkSocket)
@@ -10334,7 +10334,7 @@ typedef struct _GtkSocket
 	guint16 request_height;
 	guint16 current_width;
 	guint16 current_height;
-	 
+
 	GdkWindow *plug_window;
 	guint same_app : 1;
 	guint focus_in : 1;
@@ -10410,20 +10410,20 @@ typedef enum
 typedef struct _GtkSpinButton
 {
 	GtkEntry entry;
-	 
+
 	GtkAdjustment *adjustment;
-	 
+
 	GdkWindow *panel;
 	GtkShadowType shadow_type;
-	 
+
 	guint32 timer;
 	guint32 ev_time;
-	 
+
 	gfloat climb_rate;
 	gfloat timer_step;
-	 
+
 	GtkSpinButtonUpdatePolicy update_policy;
-	 
+
 	guint in_child : 2;
 	guint click_child : 2;
 	guint button : 2;
@@ -10638,11 +10638,11 @@ typedef struct _GtkStyle
 	GdkColor mid[5];
 	GdkColor text[5];
 	GdkColor base[5];
-	 
+
 	GdkColor black;
 	GdkColor white;
 	GdkFont *font;
-	 
+
 	GdkGC *fg_gc[5];
 	GdkGC *bg_gc[5];
 	GdkGC *light_gc[5];
@@ -10652,21 +10652,21 @@ typedef struct _GtkStyle
 	GdkGC *base_gc[5];
 	GdkGC *black_gc;
 	GdkGC *white_gc;
-	 
+
 	GdkPixmap *bg_pixmap[5];
-	 
+
 	 /* private */
-	 
+
 	gint ref_count;
 	gint attach_count;
-	 
+
 	gint depth;
 	GdkColormap *colormap;
-	 
+
 	GtkThemeEngine *engine;
-	 
+
 	gpointer engine_data;
-	 
+
 	GtkRcStyle *rc_style; /* the Rc style from which this style
  * was created
  */
@@ -10679,7 +10679,7 @@ typedef struct _GtkStyleClass
 {
 	gint xthickness;
 	gint ythickness;
-	 
+
 	void (*draw_hline) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, gint x1, gint x2, gint y);
 	void (*draw_vline) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, gint y1, gint y2, gint x);
 	void (*draw_shadow) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, gint x, gint y, gint width, gint height);
@@ -10694,7 +10694,7 @@ typedef struct _GtkStyleClass
 	void (*draw_option) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, gint x, gint y, gint width, gint height);
 	void (*draw_cross) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, gint x, gint y, gint width, gint height);
 	void (*draw_ramp) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, GtkArrowType arrow_type, gint x, gint y, gint width, gint height);
-	void (*draw_tab) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, gint x, gint y, gint width, gint height); 
+	void (*draw_tab) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, gint x, gint y, gint width, gint height);
 	void (*draw_shadow_gap) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, gint x, gint y, gint width, gint height, GtkPositionType gap_side, gint gap_x, gint gap_width);
 	void (*draw_box_gap) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, gint x, gint y, gint width, gint height, GtkPositionType gap_side, gint gap_x, gint gap_width);
 	void (*draw_extension) (GtkStyle *style, GdkWindow *window, GtkStateType state_type, GtkShadowType shadow_type, GdkRectangle *area, GtkWidget *widget, gchar *detail, gint x, gint y, gint width, gint height, GtkPositionType gap_side);
@@ -10993,7 +10993,7 @@ gint gtk_style_get_prop_experimental(GtkStyle *style, const gchar *name, gint de
 typedef struct _GtkTable
 {
 	GtkContainer container;
-	 
+
 	GList *children;
 	GtkTableRowCol *rows;
 	GtkTableRowCol *cols;
@@ -11273,7 +11273,7 @@ typedef struct _GtkText
 
 	 /* Timer used for auto-scrolling off ends */
 	gint timer;
-	 
+
 	guint button;  /* currently pressed mouse button */
 	GdkGC *bg_gc;  /* gc for drawing background pixmap */
 } GtkText;
@@ -11376,8 +11376,8 @@ typedef struct _GtkThemeEngine
  * the token it expected but didn't get.
  */
 	guint (*parse_rc_style) (GScanner *scanner, GtkRcStyle *rc_style);
-	 
-	 /* Combine RC style data from src into dest. If 
+
+	 /* Combine RC style data from src into dest. If
  * dest->engine_data is NULL, it should be initialized to default
  * values.
  */
@@ -11394,13 +11394,13 @@ typedef struct _GtkThemeEngine
 
 	 /* If style needs to initialize for a particular colormap/depth
  * combination, do it here. style->colormap/style->depth will have
- * been set at this point, and style itself initialized for 
+ * been set at this point, and style itself initialized for
  * the colormap
  */
 	void (*realize_style) (GtkStyle *new_style);
 
 	 /* If style needs to clean up for a particular colormap/depth
- * combination, do it here. 
+ * combination, do it here.
  */
 	void (*unrealize_style) (GtkStyle *new_style);
 
@@ -11509,7 +11509,7 @@ void gtk_tips_query_set_caller(GtkTipsQuery *tips_query, GtkWidget *caller)
 void gtk_tips_query_set_labels(GtkTipsQuery *tips_query, const gchar *label_inactive, const gchar *label_no_tip)
 {
 }
-	 
+
 
 /* <gtk/gtktogglebutton.h> */
 #define GTK_TYPE_TOGGLE_BUTTON (gtk_toggle_button_get_type ())
@@ -11535,7 +11535,7 @@ typedef struct _GtkToggleButton
 
 	guint active : 1;
 	guint draw_indicator : 1;
-	 
+
 	GdkWindow *event_window;
 } GtkToggleButton;
 
@@ -11909,7 +11909,7 @@ void gtk_tooltips_force_window(GtkTooltips *tooltips)
 
 
 /* <gtk/gtktree.h> */
-typedef enum 
+typedef enum
 {
 	GTK_TREE_VIEW_LINE,  /* default view mode */
 	GTK_TREE_VIEW_ITEM
@@ -11920,9 +11920,9 @@ typedef enum
 typedef struct _GtkTree
 {
 	GtkContainer container;
-	 
+
 	GList *children;
-	 
+
 	GtkTree* root_tree; /* owner of selection list */
 	GtkWidget* tree_owner;
 	GList *selection;
@@ -11939,7 +11939,7 @@ typedef struct _GtkTree
 typedef struct _GtkTreeClass
 {
 	GtkContainerClass parent_class;
-	 
+
 	void (* selection_changed) (GtkTree *tree);
 	void (* select_child) (GtkTree *tree, GtkWidget *child);
 	void (* unselect_child) (GtkTree *tree, GtkWidget *child);
@@ -12015,7 +12015,7 @@ void gtk_tree_set_selection_mode(GtkTree *tree, GtkSelectionMode mode)
 /* <gtk/gtktree.h> */
 void gtk_tree_set_view_mode(GtkTree *tree, GtkTreeViewMode mode)
 {
-} 
+}
 
 /* <gtk/gtktree.h> */
 void gtk_tree_set_view_lines(GtkTree *tree, guint flag)
@@ -12500,7 +12500,7 @@ typedef enum
 {
 	GTK_TYPE_INVALID,
 	GTK_TYPE_NONE,
-	 
+
 	 /* flat types */
 	GTK_TYPE_CHAR,
 	GTK_TYPE_UCHAR,
@@ -12516,14 +12516,14 @@ typedef enum
 	GTK_TYPE_FLAGS,
 	GTK_TYPE_BOXED,
 	GTK_TYPE_POINTER,
-	 
+
 	 /* structured types */
 	GTK_TYPE_SIGNAL,
 	GTK_TYPE_ARGS,
 	GTK_TYPE_CALLBACK,
 	GTK_TYPE_C_CALLBACK,
 	GTK_TYPE_FOREIGN,
-	 
+
 	 /* base type node of the object system */
 	GTK_TYPE_OBJECT
 } GtkFundamentalType;
@@ -12705,7 +12705,7 @@ typedef struct _GtkArg
 {
 	GtkType type;
 	gchar *name;
-	 
+
 	 /* this union only defines the required storage types for
  * the possibile values, thus there is no gint enum_data field,
  * because that would just be a mere alias for gint int_data.
@@ -12726,7 +12726,7 @@ typedef struct _GtkArg
 	gchar *string_data;
 	gpointer pointer_data;
 	GtkObject *object_data;
-	 
+
 	 /* structured values */
 	struct {
 	GtkSignalFunc f;
@@ -13441,7 +13441,7 @@ typedef enum
 	GTK_PARENT_SENSITIVE = 1 << 10,
 	GTK_CAN_FOCUS = 1 << 11,
 	GTK_HAS_FOCUS = 1 << 12,
-	
+
 	 /* widget is allowed to receive the default via gtk_widget_grab_default
  * and will reserve space to draw the default if possible */
 	GTK_CAN_DEFAULT = 1 << 13,
@@ -13455,7 +13455,7 @@ typedef enum
 	GTK_COMPOSITE_CHILD = 1 << 17,
 	GTK_NO_REPARENT = 1 << 18,
 	GTK_APP_PAINTABLE = 1 << 19,
-	
+
 	 /* the widget when focused will receive the default action and have
  * HAS_DEFAULT set even if there is a different widget set as default */
 	GTK_RECEIVES_DEFAULT = 1 << 20
@@ -13552,7 +13552,7 @@ typedef enum
 
 /* <gtk/gtkwidget.h> */
 #define GTK_WIDGET_RECEIVES_DEFAULT(wid) ((GTK_WIDGET_FLAGS (wid) & GTK_RECEIVES_DEFAULT) != 0)
-	 
+
 /* Macros for setting and clearing widget flags.
  */
 
@@ -13561,9 +13561,9 @@ typedef enum
 
 /* <gtk/gtkwidget.h> */
 #define GTK_WIDGET_UNSET_FLAGS(wid,flag) G_STMT_START{ (GTK_WIDGET_FLAGS (wid) &= ~(flag)); }G_STMT_END
-	 
-	 
-	 
+
+
+
 
 /* <gtk/gtkwidget.h> */
 typedef void(*GtkCallback) (GtkWidget *widget, gpointer data)
@@ -13596,7 +13596,7 @@ typedef struct _GtkAllocation
 } GtkAllocation;
 
 /* The contents of a selection are returned in a GtkSelectionData
-	structure. selection/target identify the request. 
+	structure. selection/target identify the request.
 	type specifies the type of the return; if length < 0, and
 	the data should be ignored. This structure has object semantics -
 	no fields should be modified directly, they should not be created
@@ -13632,19 +13632,19 @@ typedef struct _GtkWidget
  * GtkObject pointer.
  */
 	GtkObject object;
-	 
+
 	 /* 16 bits of internally used private flags.
  * this will be packed into the same 4 byte alignment frame that
  * state and saved_state go. we therefore don't waste any new
  * space on this.
  */
 	guint16 private_flags;
-	 
+
 	 /* The state of the widget. There are actually only
  * 5 widget states (defined in "gtkenums.h").
  */
 	guint8 state;
-	 
+
 	 /* The saved state of the widget. When a widgets state
  * is changed to GTK_STATE_INSENSITIVE via
  * "gtk_widget_set_state" or "gtk_widget_set_sensitive"
@@ -13652,7 +13652,7 @@ typedef struct _GtkWidget
  * will be restored once the widget gets sensitive again.
  */
 	guint8 saved_state;
-	 
+
 	 /* The widgets name. If the widget does not have a name
  * (the name is NULL), then its name (as returned by
  * "gtk_widget_get_name") is its classes name.
@@ -13660,28 +13660,28 @@ typedef struct _GtkWidget
  * the style to use for a widget.
  */
 	gchar *name;
-	 
+
 	 /* The style for the widget. The style contains the
  * colors the widget should be drawn in for each state
  * along with graphics contexts used to draw with and
  * the font to use for text.
  */
 	GtkStyle *style;
-	 
+
 	 /* The widgets desired size.
  */
 	GtkRequisition requisition;
-	 
+
 	 /* The widgets allocated size.
  */
 	GtkAllocation allocation;
-	 
+
 	 /* The widgets window or its parent window if it does
  * not have a window. (Which will be indicated by the
  * GTK_NO_WINDOW flag being set).
  */
 	GdkWindow *window;
-	 
+
 	 /* The widgets parent.
  */
 	GtkWidget *parent;
@@ -13698,7 +13698,7 @@ typedef struct _GtkWidgetClass
  * pointer.
  */
 	GtkObjectClass parent_class;
-	 
+
 	 /* The signal to emit when a widget of this class is activated,
  * gtk_widget_activate() handles the emission.
  * Implementation of this signal is optional.
@@ -13711,7 +13711,7 @@ typedef struct _GtkWidgetClass
  * Implementation of this signal is optional.
  */
 	guint set_scroll_adjustments_signal;
-	 
+
 	 /* basics */
 	void (* show) (GtkWidget *widget);
 	void (* show_all) (GtkWidget *widget);
@@ -13729,14 +13729,14 @@ typedef struct _GtkWidgetClass
 	void (* state_changed) (GtkWidget *widget, GtkStateType previous_state);
 	void (* parent_set) (GtkWidget *widget, GtkWidget *previous_parent);
 	void (* style_set) (GtkWidget *widget, GtkStyle *previous_style);
-	 
+
 	 /* accelerators */
 	gint (* add_accelerator) (GtkWidget *widget, guint accel_signal_id, GtkAccelGroup *accel_group, guint accel_key, GdkModifierType accel_mods, GtkAccelFlags accel_flags);
 	void (* remove_accelerator) (GtkWidget *widget, GtkAccelGroup *accel_group, guint accel_key, GdkModifierType accel_mods);
 
 	 /* explicit focus */
 	void (* grab_focus) (GtkWidget *widget);
-	 
+
 	 /* events */
 	gint (* event) (GtkWidget *widget, GdkEvent *event);
 	gint (* button_press_event) (GtkWidget *widget, GdkEventButton *event);
@@ -13779,7 +13779,7 @@ typedef struct _GtkWidgetClass
 	gboolean (* drag_motion) (GtkWidget *widget, GdkDragContext *context, gint x, gint y, guint time);
 	gboolean (* drag_drop) (GtkWidget *widget, GdkDragContext *context, gint x, gint y, guint time);
 	void (* drag_data_received) (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *selection_data, guint info, guint time);
-	 
+
 	 /* action signals */
 	void (* debug_msg) (GtkWidget *widget, const gchar *string);
 
@@ -14025,7 +14025,7 @@ gboolean gtk_widget_activate(GtkWidget *widget)
 gboolean gtk_widget_set_scroll_adjustments(GtkWidget *widget, GtkAdjustment *hadjustment, GtkAdjustment *vadjustment)
 {
 }
-	 
+
 
 /* <gtk/gtkwidget.h> */
 void gtk_widget_reparent(GtkWidget *widget, GtkWidget *new_parent)
@@ -14235,7 +14235,7 @@ void gtk_widget_set_composite_name(GtkWidget *widget, const gchar *name)
 gchar* gtk_widget_get_composite_name(GtkWidget *widget)
 {
 }
-	 
+
 /* Descend recursively and set rc-style on all widgets without user styles */
 
 /* <gtk/gtkwidget.h> */
@@ -14393,7 +14393,7 @@ typedef struct _GtkWindow
 	 /* The following flag is initially TRUE when a window is mapped.
  * and will be set to FALSE after it is first positioned.
  * It is also temporarily reset when the window's size changes.
- * 
+ *
  * When TRUE, we move the window to the position the app set.
  */
 	guint use_uposition : 1;
@@ -14402,7 +14402,7 @@ typedef struct _GtkWindow
 	 /* Set if the window, or any descendent of it, has the focus
  */
 	guint window_has_focus : 1;
-	 
+
 	 /* Set if !window_has_focus, but events are being sent to the
  * window because the pointer is in it. (Typically, no window
  * manager is running.

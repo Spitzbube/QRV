@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -35,7 +35,7 @@
  * for freeing the memory.
  *
  */
- 
+
 int procfs_get_process_mapinfo(
     int procfs_util_fd,			/* fd of an open file in /proc */
     procfs_mapinfo ** procfs_util_mapinfo_pp); /* storage returned here */
@@ -45,7 +45,7 @@ int procfs_get_process_mapinfo(
  * Caller has to supply a buffer for count elements. If the process has
  * more than count mapinfo structures, the API will return erraneous info.
  */
-int procfs_get_process_mapinfo_lowmem(FILE *fp, int fd, 
+int procfs_get_process_mapinfo_lowmem(FILE *fp, int fd,
     procfs_mapinfo *mapinfo_pp, int count);
 
 enum MEM_TYPE {
@@ -131,7 +131,7 @@ void procfs_for_each_pid(
  * low mem version of above function.
  */
 void procfs_for_each_pid_lowmem(
-     void (*f)(char *, int), 
+     void (*f)(char *, int),
      DIR *dir);			/* opendir(/proc) return value */
 #endif
 

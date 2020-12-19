@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -25,7 +25,7 @@
 %C	[-v] -t type "type specific options, check mount_'type'"
 Options:
  -p        Mount partitions on this device as block special files in /dev.
-           (Works only with block special files which contain partitions 
+           (Works only with block special files which contain partitions
            such as /dev/hd0.)
  -P        Mount partitions as per '-p', but skip DOS Extended (t5) partitions.
  -t        Type of filesystem. (defaults to "qnx4" or "nfs" if ':' or '@' used)
@@ -67,7 +67,7 @@ Flags:
 
 	Revision 1.3  1999/06/07 21:11:47  steve
 	Attempt #3 to get an initial working setup....
-	
+
 	Revision 1.27  1999/04/08 20:07:09  jclarke
 	ÿ¡ÿ©ÿ¡ÿ©ÿ¡fixed bug caused by goto statement in function install_extended_partitions()
 
@@ -173,7 +173,7 @@ Flags:
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
@@ -609,10 +609,10 @@ long	 base_offset,
 		for(i=0;i<4;i++)
 		{
 			if(partition->os_type == 0)
-			{	
+			{
 				++partition;
            	continue;
-      	} 
+      	}
 
       	if((partition->os_type == 5)||(partition->os_type == 15))
 			{
@@ -620,7 +620,7 @@ long	 base_offset,
 				++partition;
 				continue;
 			}
-      
+
 
 			if(ext_offset + partition->part_size > base_offset + base_size)
 			{
@@ -646,7 +646,7 @@ weird2:
 				"mount -p", ext_num, special, strerror(errno));
 				exit(EXIT_FAILURE);
 			}
-			
+
 			++partition;
 		}
 

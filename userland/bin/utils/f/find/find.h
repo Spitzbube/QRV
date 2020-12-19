@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -105,7 +105,7 @@ typedef struct expression exprn;
 };
 #endif
 /*
-	SAMPLE STRUCTURE LAYOUT FOR TWO CASES 
+	SAMPLE STRUCTURE LAYOUT FOR TWO CASES
 	-------------------------------------
 
 	-name *.c -o -user ejohnson -group tech
@@ -126,7 +126,7 @@ typedef struct expression exprn;
 				next = NULL
 
 	next = NULL
-	
+
 
 	(-name *.c -o -user ejohnson) -group tech
 
@@ -151,7 +151,7 @@ typedef struct expression exprn;
 */
 
 
-/* -> builtin expr numbers 
+/* -> builtin expr numbers
 	zzx_BEFORE = (zzx_AFTER = zzx_ON + 1) + 1), ALWAYS, cuz the code
 	relies on this relationship between these types of expr numbers
 */
@@ -262,9 +262,9 @@ typedef struct expression exprn;
 #define FPRINT0                 94
 #define ILNAME                  95
 #define IFNMATCH                96
-#define IPATH                   97 
-#define IREGEX                  98 
-#define LNAME                   99 
+#define IPATH                   97
+#define IREGEX                  98
+#define LNAME                   99
 #define NOLEAF                  100
 #define PRINT0                  101
 #define XTYPE                   102
@@ -295,5 +295,5 @@ typedef struct expression exprn;
 #define ALWAYS_TRUE_NOP			202
 
 
-#endif 
+#endif
 

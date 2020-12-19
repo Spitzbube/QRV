@@ -138,7 +138,7 @@ typedef unsigned long long guint64; /* 64-bit unsigned integer (system dep.) */
 /* <glib/glib.h>  offset of a field within a struct */
 #define G_STRUCT_OFFSET(struct_type, member) ...
 
-/* <glib/glib.h>  pointer to field, given a base pointer and field offset */ 
+/* <glib/glib.h>  pointer to field, given a base pointer and field offset */
 #define G_STRUCT_MEMBER_P(struct_p, struct_offset)   \
     ((gpointer) ((gchar*) (struct_p) + (gulong) (struct_offset)))
 
@@ -254,7 +254,7 @@ typedef gint32	GTime;
 #define G_BIG_ENDIAN    4321
 
 /* <glib/glib.h> compare to G_BYTE_ORDER */
-#define G_PDP_ENDIAN    3412		/* unused, need specific PDP check */	
+#define G_PDP_ENDIAN    3412		/* unused, need specific PDP check */
 
 
 /* <glib/glib.h> convert big-endian to little-endian or vice-versa */
@@ -458,7 +458,7 @@ typedef enum
   /* log flags */
   G_LOG_FLAG_RECURSION		= 1 << 0,
   G_LOG_FLAG_FATAL		= 1 << 1,
-  
+
   /* GLib log levels */
   G_LOG_LEVEL_ERROR		= 1 << 2,	/* always fatal */
   G_LOG_LEVEL_CRITICAL		= 1 << 3,
@@ -466,7 +466,7 @@ typedef enum
   G_LOG_LEVEL_MESSAGE		= 1 << 5,
   G_LOG_LEVEL_INFO		= 1 << 6,
   G_LOG_LEVEL_DEBUG		= 1 << 7,
-  
+
   G_LOG_LEVEL_MASK		= ~(G_LOG_FLAG_RECURSION | G_LOG_FLAG_FATAL)
 } GLogLevelFlags;
 
@@ -2168,7 +2168,7 @@ typedef enum
 typedef enum
 {
   G_TOKEN_EOF			=   0,
-  
+
   G_TOKEN_LEFT_PAREN		= '(',
   G_TOKEN_RIGHT_PAREN		= ')',
   G_TOKEN_LEFT_CURLY		= '{',
@@ -2177,11 +2177,11 @@ typedef enum
   G_TOKEN_RIGHT_BRACE		= ']',
   G_TOKEN_EQUAL_SIGN		= '=',
   G_TOKEN_COMMA			= ',',
-  
+
   G_TOKEN_NONE			= 256,
-  
+
   G_TOKEN_ERROR,
-  
+
   G_TOKEN_CHAR,
   G_TOKEN_BINARY,
   G_TOKEN_OCTAL,
@@ -2189,11 +2189,11 @@ typedef enum
   G_TOKEN_HEX,
   G_TOKEN_FLOAT,
   G_TOKEN_STRING,
-  
+
   G_TOKEN_SYMBOL,
   G_TOKEN_IDENTIFIER,
   G_TOKEN_IDENTIFIER_NULL,
-  
+
   G_TOKEN_COMMENT_SINGLE,
   G_TOKEN_COMMENT_MULTI,
   G_TOKEN_LAST
@@ -2224,11 +2224,11 @@ typedef struct	_GScannerConfig
   gchar		*cset_identifier_first;
   gchar		*cset_identifier_nth;
   gchar		*cpair_comment_single;		/* default: "#\n" */
-  
+
   /* Should symbol lookup work case sensitive?
    */
   guint		case_sensitive : 1;
-  
+
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
@@ -2260,31 +2260,31 @@ typedef struct	_GScanner
   /* unused fields */
   gpointer		user_data;
   guint			max_parse_errors;
-  
+
   /* g_scanner_error() increments this field */
   guint			parse_errors;
-  
+
   /* name of input stream, featured by the default message handler */
   const gchar		*input_name;
-  
+
   /* data pointer for derived structures */
   gpointer		derived_data;
-  
+
   /* link into the scanner configuration */
   GScannerConfig	*config;
-  
+
   /* fields filled in after g_scanner_get_next_token() */
   GTokenType		token;
   GTokenValue		value;
   guint			line;
   guint			position;
-  
+
   /* fields filled in after g_scanner_peek_next_token() */
   GTokenType		next_token;
   GTokenValue		next_value;
   guint			next_line;
   guint			next_position;
-  
+
   /* to be considered private */
   GHashTable		*symbol_table;
   gint			input_fd;
@@ -2292,7 +2292,7 @@ typedef struct	_GScanner
   const gchar		*text_end;
   gchar			*buffer;
   guint			scope_id;
-  
+
   /* handler function for _warn and _error */
   GScannerMsgFunc	msg_handler;
 } GScanner;
@@ -2424,7 +2424,7 @@ typedef struct _GCompletion
 {
   GList* items;
   GCompletionFunc func;
-  
+
   gchar* prefix;
   GList* cache;
 } GCompletion;
@@ -2528,16 +2528,16 @@ typedef struct _GDate
   guint julian_days : 32; /* julian days representation - we use a
                            *  bitfield hoping that 64 bit platforms
                            *  will pack this whole struct in one big
-                           *  int 
+                           *  int
                            */
 
   guint julian : 1;    /* julian is valid */
   guint dmy    : 1;    /* dmy is valid */
 
   /* DMY representation */
-  guint day    : 6;  
-  guint month  : 4; 
-  guint year   : 16; 
+  guint day    : 6;
+  guint month  : 4;
+  guint year   : 16;
 } GDate;
 
 
@@ -2637,7 +2637,7 @@ guint g_date_sunday_week_of_year(GDate *date)
 }
 
 /* <glib/glib.h> */
-void g_date_clear (GDate *date, 
+void g_date_clear (GDate *date,
 
 /* <glib/glib.h> */
 void g_date_set_parse(GDate *date, const gchar *str)

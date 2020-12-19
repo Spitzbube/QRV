@@ -469,7 +469,7 @@ char *yytext;
 #line 1 "scan.l"
 #define INITIAL 0
 #line 2 "scan.l"
-   
+
 /*
  * Scanner for bc, pretty straightforward, but doesn't support bc's
  * number of type "100 200 300" to be "100200300"
@@ -793,7 +793,7 @@ YY_RULE_SETUP
 case 9:
 YY_RULE_SETUP
 #line 47 "scan.l"
-{    return yylval.i_val =OBASE;     } 
+{    return yylval.i_val =OBASE;     }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
@@ -948,7 +948,7 @@ YY_RULE_SETUP
 case 40:
 YY_RULE_SETUP
 #line 81 "scan.l"
-{    
+{
 		int c;
 		int    len=0;        /* remove initial '"' character */
 		    while ((c=input()) != EOF) {
@@ -980,7 +980,7 @@ YY_RULE_SETUP
 		        case    1:
 		            if (c == '/')
 		                state = 99;
-		            else 
+		            else
 		                state = c == '*';
 		        }
 		    }
@@ -2034,7 +2034,7 @@ map_escape(c)
 {
 	int        x = c;
 	int        state = 0;
-	int        ival = 0;    
+	int        ival = 0;
 	int        count = 0;
 
 	while (c != EOF) {
@@ -2048,7 +2048,7 @@ map_escape(c)
 		    default:
 		        return c;
 		    }
-		    break;            
+		    break;
 		case    1:
 		    switch (c) {            /* check for std escape sequences */
 		    case    'n':    return '\n';
@@ -2100,7 +2100,7 @@ map_escape(c)
 		            return c;
 		        }
 		        unput(c);
-		        return ival;    
+		        return ival;
 		    }
 		    break;
 		default:

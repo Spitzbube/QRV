@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,15 +33,15 @@ Options:
  -o        Use "ntomulti-objcopy" to manipulate ELF loadfile (overrides '-l').
  -s string Take usage message from #ifdef <string> section in C source
            file (default: __USAGE). Multiple -s options may be specified,
-           in which case it will try to locate usage sections in the 
+           in which case it will try to locate usage sections in the
            order specified until it successfully finds one.
  -t        Prints DATE timezone as UTC value instead of machine dependent
-           string. 
+           string.
  loadfile  The name of an executable program.
  newmsg    A text file or a C source file containing a usage message.
 Note:
  A newmsg filename of '-' may be used to indicate standard input.
-#endif  	
+#endif
 
 #include <lib/compat.h>
 
@@ -62,7 +62,7 @@ Note:
 #include <limits.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <sys/timeb.h> 
+#include <sys/timeb.h>
 
 #if defined(__QNXNTO__)
 	#include <utime.h>
@@ -85,7 +85,7 @@ Note:
 #elif defined(__MINGW32__)
 	/* tmpnam from libcompat returns filenames in length up to MAX_PATH */
 	#undef L_tmpnam
-	#define L_tmpnam MAX_PATH 
+	#define L_tmpnam MAX_PATH
 #else
 	#error not configured for OS
 #endif
@@ -103,7 +103,7 @@ Note:
 #define MAX_LINE  1024
 
 /* number of -s options that will be accepted */
-#define MAX_USAGE_STRINGS (16)		
+#define MAX_USAGE_STRINGS (16)
 
 #if defined(__BIGENDIAN__)
 #define NATIVE_ENDIAN	ELFDATA2MSB
@@ -139,7 +139,7 @@ struct import {
 	char					*id;
 	char					*value;
 }						*list;
-	
+
 struct _lmf_header		hdr;
 struct _lmf_resource	res;
 char					buf[MAX_LINE], buf2[MAX_LINE];
@@ -265,10 +265,10 @@ long offset;
 
 		while((i = fread(buff, 1, sizeof(buff), stdin)) > 0)
 			fwrite_check(buff, 1, i, fpw);
-			
+
 		endofrecord = ftell(fpw);
 
-		/* now go back and put in our record size - what we really wrote! 
+		/* now go back and put in our record size - what we really wrote!
            zzx - I suspect the data_nbytes is not inclusive of hdr, therefore
            our value is too big (since it includes the hdr) and needs to be
            adjusted by sizeof(hdr)  EJ */
@@ -382,12 +382,12 @@ int spawnvp(int mode, const char *path, char * const args[])
 	}
 	else //parent
 	{
-		do 
+		do
 		{
 			wpid = waitpid(pid, &status, 0);
 		} while (WIFEXITED(status) == 0);
 	}
-	return(status);	
+	return(status);
 }
 #endif
 
@@ -442,8 +442,8 @@ static int add_import(const char *id, const char *value, unsigned flags) {
 
 	return 1;
 }
-	
-		
+
+
 static int read_import_file(char *fname) {
 	FILE				*fp;
 	int					line;
@@ -488,7 +488,7 @@ static int read_import_file(char *fname) {
 		}
 		while(*p && isspace(*p)) {
 			p++;
-		}		
+		}
 
 		// Check for '=' assignment operator
 		value = p;
@@ -504,7 +504,7 @@ static int read_import_file(char *fname) {
 			// Skip the white space
 			while(*p && isspace(*p)) {
 				p++;
-			}		
+			}
 
 			if(!*p) {
 				fprintf(stderr, "Missing content after '=', line %d, file %s.\n", line, fname);
@@ -535,7 +535,7 @@ static int read_import_file(char *fname) {
 			}
 			fprintf(stderr, "Mismatch on line %d, file %s.\n", line, fname);
 			continue;
-			
+
 		}
 	}
 	fclose(fp);
@@ -568,7 +568,7 @@ int main(int argc, char *argv[])
 	int				num_usage_strings=0;
 	char				*usage_string[MAX_USAGE_STRINGS];
 	char			use_utc_timezone=0;
-    struct timeb timebuf; 
+    struct timeb timebuf;
 	unsigned			flags;
 	struct files {
 		struct files			*next;
@@ -664,7 +664,7 @@ int main(int argc, char *argv[])
 			if((cp = strrchr(cp, '.'))  &&  ext_check(cp) == 0)
 				cflag = 1;
 			else cp=argv[optind+1];
-		} 
+		}
 		modify = 1;
 	}
 
@@ -692,7 +692,7 @@ int main(int argc, char *argv[])
 		}
 #endif
 
-		if (! use_utc_timezone ) {		
+		if (! use_utc_timezone ) {
 			if(fstat(fileno(fp), &statbuf) != -1 && strftime(buf, sizeof buf, "%Y-%m-%d%Z-%H:%M:%S", localtime(&statbuf.st_mtime))) {
 				add_import("DATE", buf, 0);
 			}
@@ -713,7 +713,7 @@ int main(int argc, char *argv[])
 				add_import("DATE", buf, 0);
 		}
 
-		for(p = files; p; p = p->next) {	
+		for(p = files; p; p = p->next) {
 			if(read_import_file(p->fname) == -1) {
 				fprintf(stderr, "Unable to process %s\n", p->fname);
 				exit(EXIT_FAILURE);
@@ -724,14 +724,14 @@ int main(int argc, char *argv[])
 	/* determine type of load file: check for valid LMF or ELF file */
 	{
 		Elf32_Ehdr ehdr;
-		int cross_endian; 	
+		int cross_endian;
 
 		if (1==fread(&ehdr,sizeof(ehdr),1,fp)) {
 			/* check ELF header fields */
-			if (ehdr.e_ident[0]==0x7f &&			
+			if (ehdr.e_ident[0]==0x7f &&
 				ehdr.e_ident[1]=='E' &&
 				ehdr.e_ident[2]=='L' &&
-				ehdr.e_ident[3]=='F') 
+				ehdr.e_ident[3]=='F')
 			{
 				/* it's a ELF file */
 				if (ehdr.e_ident[4]!=ELFCLASS32) {
@@ -753,22 +753,22 @@ int main(int argc, char *argv[])
 					ehdr.e_machine = SWAP16(ehdr.e_machine);
 
 				switch(ehdr.e_machine) {
-				case EM_386: 
+				case EM_386:
 					objcopy="ntox86-objcopy";
 					break;
-				case EM_ARM: 
-					objcopy="ntoarm-objcopy"; 
+				case EM_ARM:
+					objcopy="ntoarm-objcopy";
 					break;
 				case EM_MIPS:
 					objcopy="ntomips-objcopy";
 					break;
-				case EM_PPC: 
-					objcopy="ntoppc-objcopy"; 
+				case EM_PPC:
+					objcopy="ntoppc-objcopy";
 					break;
-				case EM_SH:  
-					objcopy="ntosh-objcopy"; 
+				case EM_SH:
+					objcopy="ntosh-objcopy";
 					break;
-				default: 
+				default:
 					fprintf(stderr, "ELF file has unknown architecture.\n");
 					exit(EXIT_FAILURE);
 				}
@@ -794,7 +794,7 @@ int main(int argc, char *argv[])
 			}
 
 			if(cflag) {
-				for (usage_string_idx=0;usage_string_idx<num_usage_strings;usage_string_idx++) 
+				for (usage_string_idx=0;usage_string_idx<num_usage_strings;usage_string_idx++)
 				{
 					if (usage_string_idx!=0) {
 						if (fseek(stdin,0L,SEEK_SET)) {
@@ -804,7 +804,7 @@ int main(int argc, char *argv[])
 							break;
 						}
 					}
-	
+
 					while(fgets(buf, MAX_LINE, stdin)) {
 						bptr = strtok(buf,delim);
 						if (bptr!=NULL && strcmp(bptr,"#ifdef")==0) {
@@ -815,16 +815,16 @@ int main(int argc, char *argv[])
 							}
 						}
 					}
-		
+
 					if (gotit) break;
 				}
-	
+
 				if (usage_string_idx==num_usage_strings) {
 					//fprintf(stderr,"usage_string_idx=%d, num_usage_strings=%d\n",
 					//		usage_string_idx, num_usage_strings);
 					exit(EXIT_FAILURE);
 				}
-	
+
 				while(fgets(buf, MAX_LINE, stdin)) {
 					buf[strcspn(buf,"\r\n")]=0;
 					bptr = buf+strspn(buf,delim);
@@ -866,7 +866,7 @@ int main(int argc, char *argv[])
 			struct import	*p;
 			FILE			*fp;
 
-			
+
 			make_tmpfname(import_fname);
 			if(!(fp = fopen(import_fname, "wb"))) {
 				fprintf(stderr, "Unable to create temp file(%s).\nSource file %s not changed.\n", import_fname, fname);
@@ -900,7 +900,7 @@ int main(int argc, char *argv[])
 
 			if(use_objcopy && objcopy)
 			    *argp++ = objcopy;
-			else	
+			else
 			{
 			    *argp++ = "ldrel";
 			    *argp++ = "-r";
@@ -968,7 +968,7 @@ int main(int argc, char *argv[])
 			if(ret == -1) {
 				errno = reterr;
 				if (use_objcopy) {
-					perror("spawn ntomulti-objcopy"); 
+					perror("spawn ntomulti-objcopy");
 				} else {
 					perror("spawn ldrel");
 				}

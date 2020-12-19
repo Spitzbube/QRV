@@ -1,16 +1,16 @@
 /*
- * $QNXLicenseC:  
+ * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
 */
@@ -23,7 +23,7 @@
 
 /*
  * pathtype_t
- * 
+ *
  * This type is used by the posix_spawnattr_addpartition() function when
  * parsing the partition path name. See pathtype()
 */
@@ -44,36 +44,36 @@ static int pathtype(const char *fullpath, pathtype_t *type, char **name);
 
 /*******************************************************************************
  * addpartid
- * 
+ *
  * Specify a resource partition that the spawned process should be associated
  * with by its partition identifier. If an ID is specified for a non-existent
  * partition, it will not be known until the posix_spawn() call is made.
- * 
+ *
  * Note that 2 additional forms for this call (addmempartid and addschedpartid)
  * are implemented as macros in spawn.h
- * 
+ *
  * Note that partition association only takes effect if the corresponding
  * POSIX_SPAWN_SETMPART or POSIX_SPAWN_SETSPART flag is set. Setting one of
  * these flags without providing a partition of that type may give unintended
  * results. Please consult the Adaptive Partitioning Guide for the inheritance
  * rules as they apply to partition association.
- * 
+ *
  * Returns:
  * 		EOK on success
  * 		EINVAL for any invalid parameter
  * 		ENOMEM if the partition id could not be added to attributes object
- * 
+ *
  *		Note that if this function fails and the <partition_name> provided is a
  *		group name, then it is unspecified how many of the pseudo partitions
  * 		within the group name are added to the attributes object pointed to by
  * 		<attrp>. It is suggested that the attributes object be destroyed and a
  * 		new attributes object be initialized in this situation
- * 
+ *
  * 		Also note that some partition association errors may not be reported
  * 		until the posix_spawn() call is made.
- * 
+ *
  * Add the partition identified by <part_id> 'posix_spawnattr_t' object <attrp>.
- * 
+ *
  * Returns:
  * 		EOK on success
  * 		EINVAL for any invalid parameter
@@ -128,7 +128,7 @@ int posix_spawnattr_addpartid(posix_spawnattr_t *_Restrict attrp, part_id_t part
 		partition_attr->part.i[partition_attr->part.num_entries].id = part_id;
 		partition_attr->part.i[partition_attr->part.num_entries].flags = part_flags;
 		++partition_attr->part.num_entries;
-	
+
 		/* reset posix_spawnattr_t object pointer */
 		SET_ATTRP(attrp, _attrp);
 		return EOK;
@@ -137,36 +137,36 @@ int posix_spawnattr_addpartid(posix_spawnattr_t *_Restrict attrp, part_id_t part
 
 /*******************************************************************************
  * addpartition
- * 
+ *
  * Specify a resource partition that the spawned process should be associated
  * with. This is the most convenient form of adding partition associations as it
  * accepts a partition name rather than an ID. Partition names can either be
  * group names, pseudo partitions or real partitions and will always be resolved
  * to a correct 'real' partition otherwise an error will be returned.
- * 
+ *
  * Note that if <partition_path> does not refer to a real partition then the
  * <part_flags> argument will apply to all resolved 'real' partitions refered to
  * by the group name or pseudo partition. This may result in an error if the flag
  * does not apply to the partition type (as reported by the PART_TYPE() macro
  * defined in part.h).
- * 
+ *
  * Note that partition association only takes effect if the corresponding
  * POSIX_SPAWN_SETMPART or POSIX_SPAWN_SETSPART flag is set. Setting one of
  * these flags without providing a partition of that type may give unintended
  * results. Please consult the Adaptive Partitioning Guide for the inheritance
  * rules as they apply to partition association.
- * 
+ *
  * Returns:
  * 		EOK on success
  * 		EINVAL for any invalid parameter
  * 		ENOMEM if the partition id could not be added to attributes object
- * 
+ *
  *		Note that if this function fails and the <partition_name> provided is a
  *		group name, then it is unspecified how many of the pseudo partitions
  * 		within the group name are added to the attributes object pointed to by
  * 		<attrp>. It is suggested that the attributes object be destroyed and a
  * 		new attributes object be initialized in this situation
- * 
+ *
  * 		Also note that some partition association errors may not be reported
  * 		until the posix_spawn() call is made.
 */
@@ -179,7 +179,7 @@ int posix_spawnattr_addpartition(posix_spawnattr_t *_Restrict attrp, const char 
 	if (!valid_attrp(attrp)) return EINVAL;
 	if ((partition_path == NULL) || (*partition_path == '\0')) return EINVAL;
 	if ((r = pathtype((char *)partition_path, &type, &dont_care)) != EOK) return r;
-	
+
 	switch(type)
 	{
 		case pathtype_t_MEM:	// a memory partition
@@ -243,15 +243,15 @@ int posix_spawnattr_addpartition(posix_spawnattr_t *_Restrict attrp, const char 
 
 /*
  * =============================================================================
- * 
+ *
  * 							Internal Support Routines
- * 
+ *
  * =============================================================================
 */
 
 /*******************************************************************************
  * get_part_id
- * 
+ *
  * Return the partition identifier for the named partition
  * Returns the part_id_t or part_id_t_INVALID if unsuccessful.
 */
@@ -278,7 +278,7 @@ static part_id_t get_part_id(const char *part_name)
 
 /*******************************************************************************
  * pathtype
- * 
+ *
  * Given a full partition path, determine the path type (memory/sched/etc) and
  * return a pointer to the name suffix (ie. the portion of the name after
  * "/partition/mem/" or "/partition/sched/") if possible
@@ -290,7 +290,7 @@ static int pathtype(const char *fullpath, pathtype_t *type, char **name)
 	if ((*name = (char *)strstr(fullpath, "/partition")) != NULL)
 	{
 		part_id_t  id = get_part_id(fullpath);
-		
+
 		switch(PART_TYPE(id))
 		{
 			case parttype_MEM:

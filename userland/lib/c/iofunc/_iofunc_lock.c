@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -27,7 +27,7 @@
 #include <sys/iofunc.h>
 #include "iofunc.h"
 
-/* 
+/*
  Internal Generic Lock Functions.
  For a good reference on file locking see:
  Stevens, Advanced Programming in the Unix Environment, 12.3 - Record Locking
@@ -52,8 +52,8 @@ static iofunc_lock_list_t *_iofunc_lock_alloc() {
 }
 
 /*
- *  _iofunc_blocked_free - returns a blocked item to the free list 
- *  _iofunc_lock_free - returns a lock item to the free list 
+ *  _iofunc_blocked_free - returns a blocked item to the free list
+ *  _iofunc_lock_free - returns a lock item to the free list
  *                    - If there are any pending items, they are
  *                      send an ENOENT (?EINTR?) to tell them that
  *                      they have been stranded!
@@ -81,7 +81,7 @@ void _iofunc_lock_free(iofunc_lock_list_t *lockp) {
 }
 
 /*
- *  _iofunc_lock_add - routine to add item to the lock list.  Always add the 
+ *  _iofunc_lock_add - routine to add item to the lock list.  Always add the
  *  lock after the pointer, unless the pointer points to NULL?
  */
 static int _iofunc_lock_add (iofunc_lock_list_t **cl, int scoid, int type, off64_t start, off64_t end) {
@@ -118,7 +118,7 @@ static int _iofunc_lock_add (iofunc_lock_list_t **cl, int scoid, int type, off64
 }
 
 /*
- * Actually do the reply to the client described by the blocked pointer, and 
+ * Actually do the reply to the client described by the blocked pointer, and
  * then afterward we have replied free the blocked strucuture.
  */
 static void _iofunc_lock_unblock(iofunc_lock_list_t *list, struct _iofunc_lock_blocked *blocked) {
@@ -127,9 +127,9 @@ static void _iofunc_lock_unblock(iofunc_lock_list_t *list, struct _iofunc_lock_b
 	struct iovec				iov[2];
 
 	//Some initial sanity checking ...
-	if (MsgInfo(blocked->rcvid, &info) == EOK && blocked->pflock && 
+	if (MsgInfo(blocked->rcvid, &info) == EOK && blocked->pflock &&
 		blocked->pflock->l_sysid == info.scoid) {
-		
+
 		SETIOV(&iov[0], &reply, sizeof(reply));
 		SETIOV(&iov[1], blocked->pflock, sizeof(*blocked->pflock));
 
@@ -214,7 +214,7 @@ static void reblock_pending_locks(struct _iofunc_lock_blocked **blocked_list, io
  *  differs from the lock type, so don't bother checking for this.
  *  Otherwise the request could just be merged with the lock.
  */
-static iofunc_lock_list_t *locksplit(iofunc_lock_list_t **head, iofunc_lock_list_t *cl, 
+static iofunc_lock_list_t *locksplit(iofunc_lock_list_t **head, iofunc_lock_list_t *cl,
 										int scoid, int type, off64_t start, off64_t end) {
 	struct _iofunc_lock_blocked *pending;
 
@@ -266,7 +266,7 @@ static iofunc_lock_list_t *locksplit(iofunc_lock_list_t **head, iofunc_lock_list
 	else {
 		if (_iofunc_lock_add(&cl, cl->scoid, type, start, end) != EOK) {
 			return NULL;
-		}	
+		}
 		cl->end = start -1;
 	}
 
@@ -305,7 +305,7 @@ int _iofunc_unlock_scoid (iofunc_lock_list_t **plist, int scoid, off64_t start, 
         }
 
 		/*
-		 The strategy here is that we will strip all 
+		 The strategy here is that we will strip all
 		 of the pending locks off of anything that
 		 is changing size, and then after we have
 		 iterated through the list we will go back and
@@ -352,7 +352,7 @@ int _iofunc_unlock_scoid (iofunc_lock_list_t **plist, int scoid, off64_t start, 
          *  Move ending point down.
          *  Continue looking for locks covered by upper limit of unlock range.
          */
-        else { 
+        else {
 			cl->end = start - 1;
 		}
 	}
@@ -366,7 +366,7 @@ int _iofunc_unlock_scoid (iofunc_lock_list_t **plist, int scoid, off64_t start, 
 
 int _iofunc_unlock (resmgr_context_t *ctp, iofunc_lock_list_t **plist, off64_t start, off64_t end) {
 	return _iofunc_unlock_scoid (plist, ctp->info.scoid, start, end);
-} 
+}
 
 
 /*
@@ -411,7 +411,7 @@ static int _iofunc_lock_scoid(iofunc_lock_list_t **plist, int scoid, int type, o
          *  If more locks in range, skip to next.
          *  Otherwise stop scan.
          */
-        if(cl->scoid == scoid  &&  
+        if(cl->scoid == scoid  &&
 		   OVERLAP(start, end, cl->start, cl->end)) {
 			break;
         }
@@ -451,8 +451,8 @@ static int _iofunc_lock_scoid(iofunc_lock_list_t **plist, int scoid, int type, o
         cl = cl->next;
 	}
 
-/* 
- This compaction is not required, though it might optimize things 
+/*
+ This compaction is not required, though it might optimize things
  slightly if we were to join blocks together. (Check boundary
  conditions as well as overlap)
 */
@@ -499,7 +499,7 @@ static int _iofunc_lock_scoid(iofunc_lock_list_t **plist, int scoid, int type, o
                 cl->next = nl->next;
                 _iofunc_lock_free(nl);
             }
-		} 
+		}
 		else {
             cl = nl;
 		}
@@ -525,14 +525,14 @@ int _iofunc_lock(resmgr_context_t *ctp, iofunc_lock_list_t **plist, int type, of
  */
 iofunc_lock_list_t *_iofunc_lock_find(iofunc_lock_list_t *list, int scoid, int type, off64_t start, off64_t end) {
    	iofunc_lock_list_t *tmp;
-	
+
 	if (type == F_UNLCK) {
 		return NULL;
 	}
 
 	tmp = list;
 	while (tmp) {
-		if ((scoid != tmp->scoid) && 
+		if ((scoid != tmp->scoid) &&
 		    OVERLAP(start, end, tmp->start, tmp->end)) {
 			//!(tmp->type == type && type == F_RDLCK)
 			if (tmp->type != type || type != F_RDLCK) {

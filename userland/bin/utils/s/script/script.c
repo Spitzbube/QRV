@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -58,11 +58,11 @@
 static char __attribute__ ((unused)) copyright[] =
 "@(#) Copyright (c) 1980, 1992, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n";
-#else 
+#else
 static char copyright[] =
 "@(#) Copyright (c) 1980, 1992, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n";
-#endif 
+#endif
 #endif /* not lint */
 
 #ifndef lint
@@ -71,7 +71,7 @@ static char sccsid[] = "@(#)script.c	8.1 (Berkeley) 6/6/93";
 #endif
 #ifdef __GNUC__
 static char __attribute__ ((unused)) rcsid[] = "$OpenBSD: script.c,v 1.12 2000/04/16 20:28:54 espie Exp $";
-#else 
+#else
 static char copyright[] =
 "@(#) Copyright (c) 1980, 1992, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n";
@@ -271,7 +271,7 @@ dooutput()
 			char		*end;
 			char		*curr;
 			time_t		curr_time;
-			
+
 			end = &obuf[cc];
 			start = obuf;
 			for(curr = start; curr < end; ++curr) {

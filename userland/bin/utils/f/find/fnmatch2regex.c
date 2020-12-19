@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -25,7 +25,7 @@
 
 /*
 This routine takes a pointer to a string containing a shell-style
-pattern (bracket expressions, *, ?) and converts it to a Basic 
+pattern (bracket expressions, *, ?) and converts it to a Basic
 Regular Expression which can be subsequently regcomp()ed.
 
 
@@ -35,7 +35,7 @@ to be called with the FNM_PATHNAME flag.
 
 char *fnmatch2regex(const char *pattern)
 {
-	/* pattern will be 
+	/* pattern will be
 
        [ bracket_expr ]
 
@@ -44,10 +44,10 @@ char *fnmatch2regex(const char *pattern)
 
        ?
 
-         This will be replaced by a single period (.) 
+         This will be replaced by a single period (.)
 
        *
-  
+
          This will be replaced by a single period (.) followed by a splat (*)
 
 	*/
@@ -58,13 +58,13 @@ char *fnmatch2regex(const char *pattern)
 	/* the absolute worst case would be for a result which was double
        the original string + 2 chars for preceding ^ and trailing $ */
 	if (NULL==(buffer=malloc(3+2*strlen(pattern)))) return NULL;
-	
+
 	r=pattern;
 	w=buffer;
 
 	*w++='^';
 
-	for (;*r;r++) {		
+	for (;*r;r++) {
 		switch(*r) {
 
 			/* FIRST SECTION - FNMATCH SPECIAL CHARACTERS */
@@ -82,10 +82,10 @@ char *fnmatch2regex(const char *pattern)
 				}
 
 				if (*r) *w++=*r;
-				else r--;             /* point r back before NUL so that        
+				else r--;             /* point r back before NUL so that
 		                               the for() loop will exit after r++ */
-				                      
-					
+
+
 				break;
 
 			case '?':   /* match single character */

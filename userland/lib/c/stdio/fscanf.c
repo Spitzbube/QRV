@@ -19,14 +19,14 @@ int (fscanf)(FILE *_Restrict str, const char *_Restrict fmt, ...)
 	_Lockfileatomic(str);
 #else
     _Lockfileatomic(stdin);
-#endif    
+#endif
 	ans = _Scanf(&scin, str, fmt, ap, 0);
 #ifdef __QNX__
     // fix a bug in the Dinkum code
 	_Unlockfileatomic(str);
 #else
     _Unlockfileatomic(stdin);
-#endif    
+#endif
 	va_end(ap);
 	return (ans);
 	}

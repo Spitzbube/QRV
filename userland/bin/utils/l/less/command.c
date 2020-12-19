@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,19 +29,19 @@
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice in the documentation and/or other materials provided with 
+ *    notice in the documentation and/or other materials provided with
  *    the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
- * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
- * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN 
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -279,7 +279,7 @@ mca_char(c)
 		 * Entering digits of a number.
 		 * Terminated by a non-digit.
 		 */
-		if ((c < '0' || c > '9') && 
+		if ((c < '0' || c > '9') &&
 		  editchar(c, EC_PEEK|EC_NOHISTORY|EC_NOCOMPLETE) == A_INVALID)
 		{
 			/*
@@ -348,7 +348,7 @@ mca_char(c)
 	case A_B_SEARCH:
 		/*
 		 * Special case for search commands.
-		 * Certain characters as the first char of 
+		 * Certain characters as the first char of
 		 * the pattern have special meaning:
 		 *	!  Toggle the NO_MATCH flag
 		 *	*  Toggle the PAST_EOF flag
@@ -444,7 +444,7 @@ make_display()
 			/*
 			 * {{ Maybe this should be:
 			 *    jump_loc(ch_zero(), jump_sline);
-			 *    but this behavior seems rather unexpected 
+			 *    but this behavior seems rather unexpected
 			 *    on the first screen. }}
 			 */
 			jump_loc(ch_zero(), 1);
@@ -471,7 +471,7 @@ prompt()
 	if (ungotp != NULL && ungotp > ungot)
 	{
 		/*
-		 * No prompt necessary if commands are from 
+		 * No prompt necessary if commands are from
 		 * ungotten chars rather than from the user.
 		 */
 		return;
@@ -485,8 +485,8 @@ prompt()
 	/*
 	 * If the -E flag is set and we've hit EOF on the last file, quit.
 	 */
-	if (quit_at_eof == OPT_ONPLUS && hit_eof && 
-	    !(ch_getflags() & CH_HELPFILE) && 
+	if (quit_at_eof == OPT_ONPLUS && hit_eof &&
+	    !(ch_getflags() & CH_HELPFILE) &&
 	    next_ifile(curr_ifile) == NULL_IFILE)
 		quit(QUIT_OK);
 #if 0 /* This doesn't work well because some "te"s clear the screen. */
@@ -566,7 +566,7 @@ getcc()
 		/*
 		 * We have "/string" but no newline.  Add the \n.
 		 */
-		return ('\n'); 
+		return ('\n');
 
 	default:
 		/*
@@ -628,7 +628,7 @@ multi_search(pattern, n)
 	if (search_type & SRCH_FIRST_FILE)
 	{
 		/*
-		 * Start at the first (or last) file 
+		 * Start at the first (or last) file
 		 * in the command line list.
 		 */
 		if (search_type & SRCH_FORW)
@@ -733,7 +733,7 @@ commands()
 			if (quitting)
 				quit(QUIT_SAVED_STATUS);
 		}
-			
+
 		/*
 		 * Display prompt and accept a character.
 		 */
@@ -791,7 +791,7 @@ commands()
 				 * We're in a multichar command.
 				 * Add the character to the command buffer
 				 * and display it on the screen.
-				 * If the user backspaces past the start 
+				 * If the user backspaces past the start
 				 * of the line, abort the command.
 				 */
 				if (cmd_char(c) == CC_QUIT || len_cmdbuf() == 0)
@@ -910,7 +910,7 @@ commands()
 			cmd_exec();
 			backward(number, 1, 0);
 			break;
-		
+
 		case A_FF_SCREEN:
 			/*
 			 * Force forward one screen.
@@ -935,8 +935,8 @@ commands()
 				forward(1, 0, 0);
 			ignore_eoi = 0;
 			/*
-			 * This gets us back in "F mode" after processing 
-			 * a non-abort signal (e.g. window-change).  
+			 * This gets us back in "F mode" after processing
+			 * a non-abort signal (e.g. window-change).
 			 */
 			if (sigs && !ABORT_SIGS())
 				newaction = A_F_FOREVER;
@@ -944,7 +944,7 @@ commands()
 
 		case A_F_SCROLL:
 			/*
-			 * Forward N lines 
+			 * Forward N lines
 			 * (default same as last 'd' or 'u' command).
 			 */
 			if (number > 0)
@@ -955,7 +955,7 @@ commands()
 
 		case A_B_SCROLL:
 			/*
-			 * Forward N lines 
+			 * Forward N lines
 			 * (default same as last 'd' or 'u' command).
 			 */
 			if (number > 0)
@@ -1049,7 +1049,7 @@ commands()
 			/*
 			 * Exit.
 			 */
-			if (curr_ifile != NULL_IFILE && 
+			if (curr_ifile != NULL_IFILE &&
 			    ch_getflags() & CH_HELPFILE)
 			{
 				/*
@@ -1102,7 +1102,7 @@ commands()
 			 */
 			DO_SEARCH();
 			break;
-		
+
 		case A_T_AGAIN_SEARCH:
 			/*
 			 * Repeat previous search, multiple files.
@@ -1122,8 +1122,8 @@ commands()
 			break;
 
 		case A_T_REVERSE_SEARCH:
-			/* 
-			 * Repeat previous search, 
+			/*
+			 * Repeat previous search,
 			 * multiple files in reverse direction.
 			 */
 			save_search_type = search_type;
@@ -1164,7 +1164,7 @@ commands()
 			error("Command not available", NULL_PARG);
 			break;
 #endif
-			
+
 		case A_VISUAL:
 			/*
 			 * Invoke an editor on the input file.
@@ -1184,7 +1184,7 @@ commands()
 			}
 			if (curr_altfilename != NULL)
 			{
-				error("Cannot edit file processed with LESSOPEN", 
+				error("Cannot edit file processed with LESSOPEN",
 					NULL_PARG);
 				break;
 			}
@@ -1218,7 +1218,7 @@ commands()
 				number = 1;
 			if (edit_next(number))
 			{
-				if (quit_at_eof && hit_eof && 
+				if (quit_at_eof && hit_eof &&
 				    !(ch_getflags() & CH_HELPFILE))
 					quit(QUIT_OK);
 				parg.p_string = (number > 1) ? "(N-th) " : "";
@@ -1312,7 +1312,7 @@ commands()
 			 */
 			start_mca(A_GOMARK, "goto mark: ", (void*)NULL);
 			c = getcc();
-			if (c == erase_char || c == kill_char || 
+			if (c == erase_char || c == kill_char ||
 			    c == '\n' || c == '\r')
 				break;
 			gomark(c);

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -47,13 +47,13 @@ Options:
 	Make "cmp" utility large-file-aware.  Change counts from int/long to
 	off_t (so will resize according to _FILE_OFFSET_BITS compilation) and
 	also allow for this in output formatting (printf).
-	
+
 	Revision 1.10  2003/08/21 20:20:42  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.9  1998/09/15 18:14:46  eric
 	cvs
-	
+
 	Revision 1.8  1996/08/22 18:44:49  eric
 	removed inclusion of <stdutil.h> which was superfluous, and
 	removed the need_usage() code.
@@ -79,7 +79,7 @@ Options:
  * Revision 1.1  1991/09/04  01:30:21  brianc
  * Initial revision
  *
-	
+
 ---------------------------------------------------------------------*/
 
 /*
@@ -236,7 +236,7 @@ int main( int argc, char *argv[] )
 			for(f1=file1buf,f2=file2buf ; *f1 == *f2 ; f1++,f2++,char_count++) {
 				if(*f1 == '\n' || *f2 == '\n') line_count++;
 			}
-			
+
 			if ( show_long == TRUE ) {
 				if ( silent == FALSE )
 					fprintf( stdout, S_DASH_L_FORMAT, char_count, c1, c2 );
@@ -251,13 +251,13 @@ int main( int argc, char *argv[] )
 		if((fd1_nread == 0) && (fd2_nread==0)) {
 			break;
 		}
-		
+
 		char_count+=min(fd1_nread, fd2_nread);
 		for(i=0 ; i < min(fd1_nread,fd2_nread) ; i++) {
 			if((file1buf[i] == '\n') || (file2buf[i] == '\n'))
 				line_count++;
 		}
 	} /* for */
-		
+
 	return ( differ ? FILES_DIFFER_RC : FILES_ARE_IDENTICAL_RC );
 }	/* main() */

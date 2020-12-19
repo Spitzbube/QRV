@@ -50,7 +50,7 @@ typedef struct sainfo_s
 } sainfo_t;
 
 sainfo_t *allocated;
-	
+
 /* inspect the list of allocated memory */
 void safeinspect()
 {

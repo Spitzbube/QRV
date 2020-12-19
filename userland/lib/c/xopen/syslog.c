@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -169,7 +169,7 @@ vsyslog(pri, fmt, ap)
 		pri |= LogFacility;
 
 	/* Build the message. */
-	
+
 	/*
  	 * Although it's tempting, we can't ignore the possibility of
 	 * overflowing the buffer when assembling the "fixed" portion
@@ -180,9 +180,9 @@ vsyslog(pri, fmt, ap)
 	 */
 	(void)time(&now);
 
-	p = tbuf;  
+	p = tbuf;
 	tbuf_left = TBUF_LEN;
-	
+
 #define	DEC()	\
 	do {					\
 		if (prlen >= tbuf_left)		\
@@ -225,8 +225,8 @@ vsyslog(pri, fmt, ap)
 		}
 	}
 
-	/* 
-	 * We wouldn't need this if printf handled %m, or if 
+	/*
+	 * We wouldn't need this if printf handled %m, or if
 	 * strerror() had been invented before syslog().
 	 */
 	for (t = fmt_cpy, fmt_left = FMT_LEN; (ch = *fmt); ++fmt) {
@@ -284,7 +284,7 @@ vsyslog(pri, fmt, ap)
 	if (LogStat & LOG_CONS &&
 	    (fd = open(_PATH_CONSOLE, O_WRONLY, 0)) >= 0) {
 		struct iovec iov[2];
-		
+
 		p = strchr(tbuf, '>') + 1;
 		iov[0].iov_base = p;
 		iov[0].iov_len = cnt - (p - tbuf);

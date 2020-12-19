@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -53,7 +53,7 @@
 int host_endian;
 int target_endian;
 
-long 
+long
 swap32(long val) {
 
 	return(host_endian != target_endian ? SWAP32(val) : val);
@@ -130,7 +130,7 @@ struct filehdr {
  *	If F_80286 is set, then the code has to be run on an 80286 chip.
  *	And if neither are set, then the code can run on an 8086, 80186, or
  *	80286 chip.
- *	
+ *
  */
 
 #define F_80186		010000
@@ -340,7 +340,7 @@ main(int argc, char *argv[]) {
 	target_endian = ((shdr.flags1 & STARTUP_HDR_FLAGS1_BIGENDIAN) != 0);
 
 	memset(&hdr, 0, sizeof(hdr));
-	
+
 	if(argc > 3) {
 		hdr.file.f_magic = swap16(strtoul(argv[argc-3], NULL, 0));
 	} else {

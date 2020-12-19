@@ -938,7 +938,7 @@ int yydebug;			/*  nonzero means print parse trace	*/
 #ifdef __GNUC__
 YYPARSE_RETURN_TYPE yyparse (void);
 #endif
-
+
 #if __GNUC__ > 1		/* GNU C and GNU C++ define this.  */
 #define __yy_memcpy(TO,FROM,COUNT)	__builtin_memcpy(TO,FROM,COUNT)
 #else				/* not GNU C or C++ */
@@ -977,7 +977,7 @@ __yy_memcpy (char *to, char *from, int count)
 
 #endif
 #endif
-
+
 #line 196 "/usr/share/bison.simple"
 
 /* The user can define YYPARSE_PARAM as the name of an argument to be passed
@@ -1291,7 +1291,7 @@ case 1:
     break;}
 case 2:
 #line 159 "./awk.y"
-{ 
+{
 			if (yyvsp[0].nodeval != NULL)
 				yyval.nodeval = yyvsp[0].nodeval;
 			else
@@ -1743,7 +1743,7 @@ case 60:
 case 61:
 #line 546 "./awk.y"
 {
-		yyval.nodeval = node(yyvsp[-3].nodeval, Node_K_if, 
+		yyval.nodeval = node(yyvsp[-3].nodeval, Node_K_if,
 			node(yyvsp[0].nodeval, Node_if_branches, (NODE *) NULL));
 	  ;
     break;}
@@ -2195,7 +2195,7 @@ case 161:
 }
    /* the action file gets copied in in place of this dollarsign */
 #line 498 "/usr/share/bison.simple"
-
+
   yyvsp -= yylen;
   yyssp -= yylen;
 #ifdef YYLSP_NEEDED
@@ -2981,7 +2981,7 @@ retry:
 		return lasttok = c;
 
 	case ')':
-	case '(':	
+	case '(':
 	case ';':
 	case '{':
 	case ',':
@@ -3493,7 +3493,7 @@ NODE *subn;
  * mkrangenode:
  * This allocates a Node_line_range node with defined condpair and
  * zeroes the trigger word to avoid the temptation of assuming that calling
- * 'node( foo, Node_line_range, 0)' will properly initialize 'triggered'. 
+ * 'node( foo, Node_line_range, 0)' will properly initialize 'triggered'.
  * Otherwise like node().
  */
 
@@ -3583,7 +3583,7 @@ NODE *func;
 /*
  * install:
  * Install a name in the symbol table, even if it is already there.
- * Caller must check against redefinition if that is desired. 
+ * Caller must check against redefinition if that is desired.
  */
 
 NODE *
@@ -3658,7 +3658,7 @@ NODE *list, *new;
  * func_install:
  * check if name is already installed;  if so, it had better have Null value,
  * in which case def is added as the value. Otherwise, install name with def
- * as value. 
+ * as value.
  */
 
 static void
@@ -3673,7 +3673,7 @@ NODE *def;
 	for (n = params->rnode; n != NULL; n = n->rnode) {
 		if (strcmp(n->param, params->param) == 0)
 			fatal("function `%s': can't use function name as parameter name",
-					params->param); 
+					params->param);
 	}
 
 	pop_params(params->rnode);

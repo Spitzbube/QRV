@@ -162,18 +162,18 @@ int ttyread(buf, len, timeout)
 			 */
 			i = 1;
 		}
-	
+
 		/* react accordingly... */
 		switch (i)
 		{
 		  case -1:
 			/* probably SIGWINCH */
 			return -1;
-	
+
 		  case 0:
 			/* timeout or EOF */
 			return 0;
-	
+
 		  default:
 			/* characters available */
 			return read(ttykbd, buf, len);

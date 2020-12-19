@@ -1,16 +1,16 @@
 /*
- * $QNXLicenseC:  
+ * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
 */
@@ -23,18 +23,18 @@
 
 /*
  * =============================================================================
- * 
+ *
  * 			The following are NON PUBLIC QNX posix_spawnattr_t extensions
  * 				used by proc to parse a _PROC_POSIX_SPAWN message
  * 					(DO NOT DOCUMENT in library reference guide)
- * 
+ *
  * =============================================================================
 */
 
 
 /*******************************************************************************
  * posix_spawnattr_endswap
- * 
+ *
  * Do an endian swap on the '_posix_spawnattr_t' pointed to by <p>.
  * This is an internal routine used by procmgr_pspawn()
  * Perhaps it should only compile when procnto is being built ?
@@ -83,10 +83,10 @@ void posix_spawnattr_endswap(void *p)
 /*******************************************************************************
  * get_attrp
  * set_attrp
- * 
+ *
  * These 2 routine translate between a real allocated '_posix_spawnattr_t *' and
  * the token stored in the 'posix_spawnattr_t *'.
- * 
+ *
  * A valid, initialized 'posix_spawnattr_t' object has 2 possible values.
  * 		- NULL
  * 		- a valid, allocated address
@@ -94,11 +94,11 @@ void posix_spawnattr_endswap(void *p)
  * uninitialized 'posix_spawnattr_t' objects from being used. The example is
  * an automatic 'posix_spawnattr_t' which contains stack garbage. It is non NULL
  * but does not represent valid, allocated memory.
- * 
+ *
  * Because we know that allocated memory is always aligned on given boundary
  * we use a key that will always turn a properly allocated memory address into
  * a token which always has the lower 3 bits set (8 byte alignment). This works
- * for all bogus values that do not have 7 as the LSB 
+ * for all bogus values that do not have 7 as the LSB
 */
 void set_attrp(posix_spawnattr_t *pp, void *_p, unsigned key_mask)
 {

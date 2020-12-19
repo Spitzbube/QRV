@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -209,12 +209,12 @@ static char *reformat(const char *s) {
 		}
 		return tzbuf;
 	}
-  if(tmp != s) 
+  if(tmp != s)
     strcpy(p, "040102+0:103102-0");
 #endif
 	return tzbuf;
 }
-	
+
 
 #else
 static char *reformat(const char *s)
@@ -237,7 +237,7 @@ static char *reformat(const char *s)
 		tzbuf[10] = tzbuf[11], tzbuf[11] = *s++;
 
 	if (isalpha(*s))
-		{ 
+		{
 		tzbuf[14] = ':';
 		for (i = 5; i <= 7; ++i)
 			if (isalpha(*s))
@@ -291,7 +291,7 @@ static int learnzone(void)
 	if ((s = reformat(tz)))
 		if ((tzone = (char *)malloc(strlen(s) + 1)) != 0)
 			strcpy(tzone, s);
-	
+
 	if (tzone == 0)
 		tzone = (char *)defzone;
 

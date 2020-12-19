@@ -862,7 +862,7 @@ static void init(argc, argv)
 			toCHAR(colorinfo[COLOR_FONT_NORMAL].da.bg_rgb[0] +
 			       colorinfo[COLOR_FONT_NORMAL].da.bg_rgb[1] +
 			       colorinfo[COLOR_FONT_NORMAL].da.bg_rgb[2]>=384
-					? "light" 
+					? "light"
 					: "dark"));
 # if 0
 	else

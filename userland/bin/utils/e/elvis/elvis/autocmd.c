@@ -421,7 +421,7 @@ RESULT ex_auevent(xinf)
 	EXINFO *xinf;
 {
 	CHAR	*scan, *word;
-	int	i, len, col; 
+	int	i, len, col;
 	CHAR	spc[1];
 
 	/* were we given any words? */

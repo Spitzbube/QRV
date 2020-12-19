@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -52,7 +52,7 @@ int _vfcntl(int fd, int cmd, va_list ap) {
 		if((fd2 = va_arg(ap, int)) < 0 || (fd2 & _NTO_SIDE_CHANNEL)) {
 			errno = EINVAL;
 			return -1;
-		}		
+		}
 		if((fd2 = ConnectAttach(info.nd, info.pid, info.chid, fd2, _NTO_COF_CLOEXEC)) == -1) {
 			return -1;
 		}
@@ -76,7 +76,7 @@ int _vfcntl(int fd, int cmd, va_list ap) {
 
 	case F_SETFD:
 		return ConnectFlags(0, fd, ~0, va_arg(ap, int));
-		
+
 	case F_GETFL:
 		if(_devctl(fd, DCMD_ALL_GETFLAGS, &arg, sizeof arg, 0) == -1) {
 			return -1;
@@ -92,11 +92,11 @@ int _vfcntl(int fd, int cmd, va_list ap) {
 			return -1;
 		}
 		return pid;
-		
+
 	case F_SETOWN:
 		pid = va_arg(ap, pid_t);
 		return _devctl(fd, DCMD_ALL_SETOWN, &pid, sizeof pid, _DEVCTL_FLAG_NORETVAL);
-		
+
 	case F_ALLOCSP64:
 	case F_FREESP64: {
 		flock64_t				*area = va_arg(ap, flock64_t *);
@@ -138,7 +138,7 @@ common:
 		iov[3] = iov[1];
 		SETIOV(iov + 2, &msg.lock.o, sizeof msg.lock.o);
 		return MsgSendv(fd, iov + 0, 2, iov + 2, (cmd == F_GETLK || cmd == F_GETLK64) ? 2 : 1);
-		
+
 	default:
 		break;
 	}

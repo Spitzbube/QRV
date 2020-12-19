@@ -1,16 +1,16 @@
 /*
- * $QNXLicenseC:  
+ * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
 */
@@ -25,31 +25,31 @@
  * attribute init/destroy
 
  * behaviour as per POSIX with the following implementation defined behaviour
- * 
+ *
  * POSIX says results are undefined when re-initializing an already initialized
  * 'posix_spawnattr_t' object. Our implementation does not support the
  * re-initialization of a 'posix_spawnattr_t' object without an intervening
  * destuction of the object. Repeated calls to posix_spawnattr_init() with the
  * same 'posix_spawnattr_t' object without an intervening posix_spawnattr_destroy()
- * on the object could result in a memory leak. 
- * 
+ * on the object could result in a memory leak.
+ *
  * posix_spawnattr_destroy() will render the 'posix_spawnattr_t' unusable. Before
  * the object can be reused, it must be initialized with posix_spawnattr_init().
  * This includes calling posix_spawnattr_destroy() on an already destroyed object.
- * 
+ *
  * Note that POSIX says results are undefined when using a 'posix_spawnattr_t'
  * object after it has been destroyed. Our implementation will cause all get/set
  * operations as well as posix_spawn() to return EINVAL when attempting to
  * reference a destroyed atributes object.
- * 
+ *
  * Returns:
  * 		EOK on success
  * 		EINVAL for any invalid parameter
- * 
- * 
- * 
- * Implementation Note: (not necessary for interface documentation) 
- * 
+ *
+ *
+ *
+ * Implementation Note: (not necessary for interface documentation)
+ *
  * init will initialize a 'posix_spawnattr_t' structure by setting <*attrp> == NULL.
  * This value indicates the use of default values for posix_spawn() the same way
  * passing NULL for the 'posix_spawnattr_t' parameter specifies the use of default

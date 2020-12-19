@@ -4,7 +4,7 @@
  * Copyright (c) Ian F. Darwin 1986-1995.
  * Software written by Ian F. Darwin and others;
  * maintained 1995-present by Christos Zoulas and others.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -14,7 +14,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- *  
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -132,7 +132,7 @@ match(struct magic_set *ms, struct magic *magic, uint32_t nmagic,
 		if (flush) {
 			if (magic[magindex].reln == '!')
 				flush = 0;
-		} else {	
+		} else {
 			switch (magiccheck(ms, &magic[magindex])) {
 			case -1:
 				return -1;
@@ -144,7 +144,7 @@ match(struct magic_set *ms, struct magic *magic, uint32_t nmagic,
 			}
 		}
 		if (flush) {
-			/* 
+			/*
 			 * main entry didn't match,
 			 * flush its continuations
 			 */
@@ -203,7 +203,7 @@ match(struct magic_set *ms, struct magic *magic, uint32_t nmagic,
 			    cont_level);
 			if (flush && magic[magindex].reln != '!')
 				continue;
-				
+
 			switch (flush ? 1 : magiccheck(ms, &magic[magindex])) {
 			case -1:
 				return -1;
@@ -265,7 +265,7 @@ match(struct magic_set *ms, struct magic *magic, uint32_t nmagic,
 			returnval = 1;
 		if ((ms->flags & MAGIC_CONTINUE) == 0 && printed_something) {
 			return 1; /* don't keep searching */
-		}			
+		}
 	}
 	return returnval;  /* This is hit if -k is set or there is no match */
 }
@@ -582,7 +582,7 @@ mconvert(struct magic_set *ms, struct magic *m)
 	case FILE_BESTRING16:
 	case FILE_LESTRING16: {
 		size_t len;
-		
+
 		/* Null terminate and eat *trailing* return */
 		p->s[sizeof(p->s) - 1] = '\0';
 		len = strlen(p->s);
@@ -713,7 +713,7 @@ mcopy(struct magic_set *ms, union VALUETYPE *p, int type, int indir,
 			}
 			if (lines)
 				last = (const char *)s + nbytes;
-			
+
 			ms->search.s = buf;
 			ms->search.s_len = last - buf;
 			ms->search.offset = offset;
@@ -726,10 +726,10 @@ mcopy(struct magic_set *ms, union VALUETYPE *p, int type, int indir,
 			const unsigned char *esrc = s + nbytes;
 			char *dst = p->s;
 			char *edst = &p->s[sizeof(p->s) - 1];
-			
+
 			if (type == FILE_BESTRING16)
 				src++;
-			
+
 			/* check for pointer overflow */
 			if (src < s) {
 				file_magerror(ms, "invalid offset %zu in mcopy()",
@@ -1275,14 +1275,14 @@ mget(struct magic_set *ms, const unsigned char *s,
 		if (nbytes < (offset + 1)) /* should alway be true */
 			return 0;
 		break;
-		
+
 	case FILE_SHORT:
 	case FILE_BESHORT:
 	case FILE_LESHORT:
 		if (nbytes < (offset + 2))
 			return 0;
 		break;
-		
+
 	case FILE_LONG:
 	case FILE_BELONG:
 	case FILE_LELONG:
@@ -1298,7 +1298,7 @@ mget(struct magic_set *ms, const unsigned char *s,
 		if (nbytes < (offset + 4))
 			return 0;
 		break;
-		
+
 	case FILE_STRING:
 	case FILE_PSTRING:
 	case FILE_SEARCH:
@@ -1343,7 +1343,7 @@ file_strncmp(const char *s1, const char *s2, size_t len, uint32_t flags)
 	if (0L == flags) { /* normal string: do it fast */
 		while (len-- > 0)
 			if ((v = *b++ - *a++) != '\0')
-				break; 
+				break;
 	}
 	else { /* combine the others */
 		while (len-- > 0) {
@@ -1357,8 +1357,8 @@ file_strncmp(const char *s1, const char *s2, size_t len, uint32_t flags)
 				if ((v = toupper(*b++) - *a++) != '\0')
 					break;
 			}
-			else if ((flags & STRING_COMPACT_BLANK) && 
-			    isspace(*a)) { 
+			else if ((flags & STRING_COMPACT_BLANK) &&
+			    isspace(*a)) {
 				a++;
 				if (isspace(*b++)) {
 					while (isspace(*b))
@@ -1638,7 +1638,7 @@ print_sep(struct magic_set *ms, int firstline)
 	if (firstline)
 		return 0;
 	/*
-	 * we found another match 
+	 * we found another match
 	 * put a newline and '-' to do some simple formatting
 	 */
 	return file_printf(ms, "\n- ");

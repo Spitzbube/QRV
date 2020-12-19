@@ -66,7 +66,7 @@ void	usage __P((void));
 
 #ifdef __QNXNTO__
 char *getlogin(){
-	return "root"; // 
+	return "root"; //
 }
 #endif
 

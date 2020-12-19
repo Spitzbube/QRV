@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -31,7 +31,7 @@ int aio_cancel(int fd, struct aiocb *aiocbp)
 	struct aiocb *ap, **app;
 	struct _aio_prio_list *plist, **pplist;
 	struct _server_info sinfo;
-	
+
 	if (!_aio_cb && _aio_init(NULL)) {
 		return -1;
 	}
@@ -77,10 +77,10 @@ int aio_cancel(int fd, struct aiocb *aiocbp)
 				}
 				break;
 			}
-			
+
 			if (flag & _AIO_FLAG_SUSPEND) {
 				struct _aio_waiter *w = aiocbp->_aio_suspend;
-				
+
 				aiocbp->_aio_suspend = NULL;
 				if (w && atomic_sub_value(&w->w_count, 1) == 0) {
 					  pthread_cond_signal(&w->w_cond);
@@ -140,13 +140,13 @@ int aio_cancel(int fd, struct aiocb *aiocbp)
 		}
 	}
 	_mutex_unlock(&_aio_cb->cb_mutex);
-	
-	if (nprogress) 
+
+	if (nprogress)
 	  return AIO_NOTCANCELED;
-	
+
 	if (!ncancled) {
 		if (ndone) {
-			/* all affected operations have completed */ 
+			/* all affected operations have completed */
 			return AIO_ALLDONE;
 		} else {
 			/* no operations matched the supplied fd, POSIX required to check

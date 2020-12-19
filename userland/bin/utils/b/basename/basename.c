@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -44,12 +44,12 @@ Note:
 	PR25328
 
 	Revision 1.10  2003/08/21 16:46:36  martin
-	
+
 	Update QSSL Copyright Notice.
-	
+
 	Revision 1.9  1998/09/15 20:14:50  eric
 	cvs
-	
+
 	Revision 1.8  1997/02/07 21:10:20  eric
 	changed reference to stdutil.h to specify <util/stdutil.h> to
 	eliminate the need for the include directory assumption in
@@ -78,7 +78,7 @@ Note:
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 /*
  *
@@ -122,7 +122,7 @@ int main( int argc, char *argv[] )
                                    will not be uninitialized */
     char *dst_str;
 	char *sfx_str = NULL;		/* initialization req'd, NULL = not specified */
-	
+
 	while(( i= getopt( argc, argv, "")) != -1)
 		if ( i== '?')
 			inval_usage = TRUE;
@@ -131,7 +131,7 @@ int main( int argc, char *argv[] )
 	 */
 	switch(argc-optind) {
 		case 2:		sfx_str = argv[optind+1];	/* fall thru */
-		case 1:		src_str = argv[optind];	
+		case 1:		src_str = argv[optind];
 					break;
 		default:	fprintf(stderr,"basename: invalid number of operands\n");
 					inval_usage++;
@@ -141,7 +141,7 @@ int main( int argc, char *argv[] )
 	if ( inval_usage ) exit(EXIT_FAILURE);
 
 	/* step 1 - if string is //, it is implementation defined whether steps
-     *          2 through 5 are skipped or processed. 
+     *          2 through 5 are skipped or processed.
      *
      * We shall process.
 	 */
@@ -180,7 +180,7 @@ int main( int argc, char *argv[] )
 		#ifdef DEBUG
 		printf("step 4 : src_str = %s, dst_str = %s\n",src_str,dst_str);
 		#endif
-		/* step 5 - if the suffix operand is present, is not identical to 
+		/* step 5 - if the suffix operand is present, is not identical to
          *          the characters remaining in string, and is identical to a
          *          suffic of the characters remaining in the string, the suffix
          *          shall be removed from string. Otherwise, string shall

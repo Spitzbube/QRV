@@ -40,7 +40,7 @@ enum changes
   /* Both deletes and inserts: a hunk containing both old and new lines.  */
   CHANGED
 };
-
+
 /* Variables for command line options */
 
 #ifndef GDIFF_MAIN
@@ -200,7 +200,7 @@ XTERN char *program_name;
 
 /* The strftime format to use for time strings.  */
 XTERN char const *time_format;
-
+
 /* The result of comparison is an "edit script": a chain of `struct change'.
    Each `struct change' represents one place where some lines are deleted
    and some are inserted.
@@ -221,7 +221,7 @@ struct change
   lin line1;			/* Line number of 1st inserted line.  */
   bool ignore;			/* Flag used in context.c.  */
 };
-
+
 /* Structures that describe the input files.  */
 
 /* Data on one input file being compared.  */
@@ -307,11 +307,11 @@ struct comparison
 /* Describe the two files currently being compared.  */
 
 XTERN struct file_data files[2];
-
+
 /* Stdio stream to output diffs to.  */
 
 XTERN FILE *outfile;
-
+
 /* Declare various functions.  */
 
 /* analyze.c */

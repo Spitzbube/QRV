@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -107,7 +107,7 @@ char *getnword(char *, int);
 
 #define MAXCHAR 256
 #define LINELEN 256
-#define FILELEN PATH_MAX 
+#define FILELEN PATH_MAX
 #define NORMLEN 60	/* allows for 80 encoded chars per line */
 
 #define SEQMAX 'z'
@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
 	}
 
 	curarg = argv[1];
-	
+
 	while (curarg[0] == '-') {
 		if (((curarg[1] == 'd') || (curarg[1] == 'D')) &&
 		    (curarg[2] == '\0')) {
@@ -247,14 +247,14 @@ int main(int argc, char *argv[])
 			if (strlen(source) + strlen(curarg) >= sizeof(ifnamebuf)) {
 				errno = ENAMETOOLONG;
 				err(2, "%s%s", source, curarg);
-			}	
+			}
 			strncpy(ifnamebuf, source, sizeof(ifnamebuf) - 1);
 			strncat(ifnamebuf, curarg, sizeof(ifnamebuf) - strlen(source) - 1);
 		} else {
 			if (strlen(curarg) >= sizeof(ifnamebuf)) {
 				errno = ENAMETOOLONG;
 				err(2, "%s", curarg);
-			}	
+			}
 			strncpy(ifnamebuf, curarg, sizeof(ifnamebuf) - 1);
 		}
 		ifname = ifnamebuf;
@@ -374,7 +374,7 @@ doit(char *fname)
 			continue;
 		/* remove newline */
 		*p = '\0'; /* may already be '\0' */
-		
+
 		if (uudecode && (pflag
 		    /*
 		     * The next line is for Posix.  It can go away
@@ -502,7 +502,7 @@ int decode(void)
 		if (n >= 0) goto decod;
 
 /* uue checks only, uudecode always breaks or goes to decode */
- 
+
 /*
  * end of uuencoded file ?
  */
@@ -605,7 +605,7 @@ decod:		rlen = cdlen[n];
 			return 1;
 		}
 	}
-	if (uudecode && 
+	if (uudecode &&
 	    (fgets(buf, sizeof(buf), in) == NULL ||
 	     checkend(buf, "end", NULL) != 0)) {
 		warnx("%s: no \"end\" line.", ifname);
@@ -644,7 +644,7 @@ void getfile(register char *buf)
 	else {
 		if (freopen(ifname, "r", in) == in) {
 			numl = 0;
-			if (debug) 
+			if (debug)
 				uuformat("Reading next section from: %s\n", ifname);
 		} else {
 			uuformat("uud: Freopen abort: %s\n", ifname);
@@ -686,7 +686,7 @@ void getfile(register char *buf)
 
 #ifdef NEVER
 /*
- * Printf style formatting. (Borrowed from MicroEmacs by Dave Conroy.) 
+ * Printf style formatting. (Borrowed from MicroEmacs by Dave Conroy.)
  * A lot smaller than the full fledged printf.
  */
 /* VARARGS1 */

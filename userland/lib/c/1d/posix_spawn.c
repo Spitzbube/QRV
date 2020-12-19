@@ -1,16 +1,16 @@
 /*
- * $QNXLicenseC:  
+ * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
 */
@@ -26,11 +26,11 @@ pthread_once_t once = PTHREAD_ONCE_INIT;
 
 /*
  * posix_spawn
- * 
+ *
  * <path> must be the full path to the executable otherwise ENOENT will be
  * returned. Use posix_spawnp() if you want to embark on a search for the
  * executable to spawn.
- * 
+ *
  * Returns:
  * 		EOK		- on success
  * 		EIO		- an internal error occurred in the library
@@ -46,9 +46,9 @@ pthread_once_t once = PTHREAD_ONCE_INIT;
  *
  * The following error codes can be returned when Adaptive Partitioning modules
  * are include in the image
- * 
+ *
  * 		EACCES	- the spawned program does not have permission to associate
- * 				  with the specified partitions 
+ * 				  with the specified partitions
  * 		ENOMEM	- the 'posix_spawnattr_t' object specifies a memory partition
  * 				  that does not exist.
  * 				- the new process was unable to associate with 1 or more memory
@@ -62,7 +62,7 @@ pthread_once_t once = PTHREAD_ONCE_INIT;
  * 				  This typically occurs when you create a group name partition
  * 				  with more than one scheduler pseudo partition and then an attempt
  * 				  to spawn a process and associate with that group name partition.
- * 		
+ *
 */
 
 /*
@@ -149,7 +149,7 @@ again:
 		msg.i.filact_obytes = 0;
 		for (i=0; i<_factp->num_entries; i++) {
 			if (_factp->action[i].type == posix_file_action_type_OPEN) {
-				++factp_open_iovs; 
+				++factp_open_iovs;
 				if ((iov = realloc(iov, ++num_iovs * sizeof(*iov))) == NULL) return ENOMEM;
 				SETIOV(&iov[2 + factp_open_iovs], _factp->action[i]._type.open, _factp->action[i]._type.open->size);
 				msg.i.filact_obytes += _factp->action[i]._type.open->size;
@@ -165,14 +165,14 @@ again:
 	}
 
 	msg.i.argenv_bytes = msg.i.nargv = msg.i.narge = 0;
-	
+
 	/* process argv[] */
 	if(argv) {
 		for(arg = argv; *arg; msg.i.argenv_bytes += (strlen(*arg++) + 1), msg.i.nargv++) {
 			/* nothing to do */
 		}
 	}
-	
+
 	/* process envp[] */
 	if(envp == NULL) envp = environ;
 	if(envp) {
@@ -183,13 +183,13 @@ again:
 
 	coid = PROCMGR_COID;
 
-	if(msg.i.subtype == _PROC_SPAWN_REMOTE) 
+	if(msg.i.subtype == _PROC_SPAWN_REMOTE)
 	{
 		spawn_remote_t *premote;
 		unsigned len = (msg.i.argenv_bytes + sizeof(int))&~(sizeof(int) - 1);
 free(iov);
 return ENOSYS;	// FIX ME - not handled yet
-#if 0		
+#if 0
 		if(!(dst = data = malloc(len + SPAWN_REMOTE_MSGBUF_SIZE))) {
 			return ENOMEM;
 		}

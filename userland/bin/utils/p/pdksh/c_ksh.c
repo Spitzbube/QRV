@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -352,7 +352,7 @@ c_print(wp)
 		while ((c = *s++) != '\0') {
 			Xcheck(xs, xp);
 #ifdef OS2
-			if ((flags & PO_FSLASH) && c == '\\') 
+			if ((flags & PO_FSLASH) && c == '\\')
 				if (*s == '\\')
 					*s++;
 				else
@@ -625,7 +625,7 @@ c_typeset(wp)
  		local = 1;
  		break;
  	}
- 
+
 	fieldstr = basestr = (char *) 0;
 	builtin_opt.flags |= GF_PLUSOPT;
 	/* at&t ksh seems to have 0-9 as options, which are multiplied
@@ -721,7 +721,7 @@ c_typeset(wp)
 		return 1;
 	}
 	if (wp[builtin_opt.optind]) {
-		/* Take care of exclusions.  
+		/* Take care of exclusions.
 		 * At this point, flags in fset are cleared in fclr and vise
 		 * versa.  This property should be preserved.
 		 */
@@ -841,19 +841,19 @@ c_typeset(wp)
 				shprintf("-x ");
 			    if ((vp->flag&RDONLY))
 				shprintf("-r ");
-			    if ((vp->flag&TRACE)) 
+			    if ((vp->flag&TRACE))
 				shprintf("-t ");
-			    if ((vp->flag&LJUST)) 
+			    if ((vp->flag&LJUST))
 				shprintf("-L%d ", vp->u2.field);
-			    if ((vp->flag&RJUST)) 
+			    if ((vp->flag&RJUST))
 				shprintf("-R%d ", vp->u2.field);
-			    if ((vp->flag&ZEROFIL)) 
+			    if ((vp->flag&ZEROFIL))
 				shprintf("-Z ");
-			    if ((vp->flag&LCASEV)) 
+			    if ((vp->flag&LCASEV))
 				shprintf("-l ");
-			    if ((vp->flag&UCASEV_AL)) 
+			    if ((vp->flag&UCASEV_AL))
 				shprintf("-u ");
-			    if ((vp->flag&INT_U)) 
+			    if ((vp->flag&INT_U))
 				shprintf("-U ");
 			    shprintf("%s\n", vp->name);
 			    if (vp->flag&ARRAY)
@@ -890,7 +890,7 @@ c_typeset(wp)
 	}
 	return 0;
 }
-	
+
 int
 c_alias(wp)
 	char **wp;
@@ -955,7 +955,7 @@ c_alias(wp)
 		return c_unalias((char **) args);
 	}
 
-	
+
 	if (*wp == NULL) {
 		struct tbl *ap, **p;
 

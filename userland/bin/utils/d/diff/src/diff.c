@@ -137,7 +137,7 @@ exclude_options (void)
 {
   return EXCLUDE_WILDCARDS | (ignore_file_name_case ? FNM_CASEFOLD : 0);
 }
-
+
 static char const shortopts[] =
 "0123456789abBcC:dD:eEfF:hHiI:lL:nNpPqrsS:tTuU:vwW:x:X:y";
 
@@ -963,7 +963,7 @@ specify_style (enum output_style style)
       output_style = style;
     }
 }
-
+
 static char const *
 filetype (struct stat const *st)
 {
@@ -1005,7 +1005,7 @@ filetype (struct stat const *st)
 
   return _("weird file");
 }
-
+
 /* Set the last-modified time of *ST to be the current time.  */
 
 static void
@@ -1034,7 +1034,7 @@ set_mtime_to_now (struct stat *st)
 
   time (&st->st_mtime);
 }
-
+
 /* Compare two files (or dirs) with parent comparison PARENT
    and names NAME0 and NAME1.
    (If PARENT is 0, then the first name is just NAME0, etc.)

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -25,12 +25,12 @@
 static long year_sec[15] = {
 	31622400L, 63158400L, 94694400L, 126230400L, 157852800L, 189388800L,
 	220924800L, 252460800L, 284083200L, 315619200L, 347155200L, 378691200L,
-	410313600L, 441849600L, 473385600L 
+	410313600L, 441849600L, 473385600L
 	} ;
 
 static long month_sec[11] = {
 	2678400L, 5097600L, 7776000L, 10368000L, 13046400L, 15638400L,
-	18316800L, 20995200L, 23587200L, 26265600L, 28857600L 
+	18316800L, 20995200L, 23587200L, 26265600L, 28857600L
 	} ;
 
 static long sec_per_day		= 86400L;

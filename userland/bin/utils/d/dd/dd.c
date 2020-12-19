@@ -34,7 +34,7 @@ Options:
    if=FILE         Read from FILE instead of stdin.
    of=FILE         Write to FILE instead of stdout.  Unless conv=notrunc
                    is given, truncate the file to the size specified by
-                   seek= (0 bytes if seek= isn't given). 
+                   seek= (0 bytes if seek= isn't given).
    ibs=BYTES       Read BYTES bytes at a time.
    obs=BYTES       Write BYTES bytes at a time.
    bs=BYTES        Override ibs and obs.
@@ -59,7 +59,7 @@ Options:
                    Unlike the Unix dd, this works when an odd
                    number of bytes are read.
      noerror       Continue after read errors.
-     notrunc       Don't truncate the output file. 
+     notrunc       Don't truncate the output file.
      sync          Pad every input block to size of ibs with
                    trailing NULs.
 #endif
@@ -369,7 +369,7 @@ main (argc, argv)
     }
   else
     output_file = "standard output";
-  
+
 #ifdef _POSIX_VERSION
   sigaction (SIGINT, NULL, &sigact);
   if (sigact.sa_handler != SIG_IGN)
@@ -472,7 +472,7 @@ swab_buffer (buf, nread)
   if (char_is_saved)
     {
       *--bufstart = saved_char;
-      *nread++; 
+      *nread++;
       char_is_saved = 0;
     }
 
@@ -678,7 +678,7 @@ copy_simple (buf, nread)
 	nfree = nread;
 
       bcopy (start, obuf + oc, nfree);
-	    
+
       nread -= nfree;		/* Update the number of bytes left to copy. */
       start += nfree;
       oc += nfree;

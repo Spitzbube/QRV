@@ -29,7 +29,7 @@ char *tmpnam(buf)
 
 	if (!buf) {
 		size_t blen;
-		
+
 		blen = strlen (tmpdir) + sizeof(pattern);
 		if (NULL == (buf = malloc(blen)))
 			return NULL;

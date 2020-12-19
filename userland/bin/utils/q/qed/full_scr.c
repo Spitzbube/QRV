@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -178,17 +178,17 @@ cmd_input( char *buffer)
 
 	for(;;)
 		switch(c = mgetchar()) {
-	
+
 		case CMD_CHAR:
 			p = buffer;
 			while((c = mgetchar()) != '\r'  &&  c != '\n')
 				if(p < &buffer[LINE_LENGTH - 2]  &&  c != CMD_CHAR)
 					*p++ = c;
-	
+
 			*p++ = '\n';
 			*p = '\0';
 			return(buffer);
-	
+
 		case RECALL_CHAR:
 			recall_line('f', firstp->textp);
 			firstp->lflags |= DIRTY_FLAG;
@@ -215,10 +215,10 @@ cmd_input( char *buffer)
 				}
 			else
 				strcpy(buffer, opt.opt_n ? "zcla\n" : "zcl.+1|zchl\n");
-	
+
 			change_state(TEXT);
 			return(buffer);
-	
+
 		case EOF:
 			return(0);
 

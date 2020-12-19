@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -32,17 +32,17 @@ static int parse_envvar_str(char *str, char *token, char ***value);
 
 /*
  * posix_spawnp
- * 
+ *
  * the only difference between posix_spawnp() and posix_spawn() is that
  * posix_spawnp() accepts the name of an executable without its full path
  * having been specified. Therefore, all this function needs to do is to locate
  * <file> and then prefix it with its location (as required). posix_spawn() can
  * then be called to do the work.
- * 
+ *
  * Returns:
  * 		ENOENT	- the <file> argument could not be found in any of the 'PATH'
  * 				  environment variable locations
- * 
+ *
  * See posix_spawn() for additional errors that can be returned
 */
 
@@ -62,7 +62,7 @@ int posix_spawnp(pid_t *_Restrict pid,
 #else	/* (__GNUC__ == 2 && __GNUC_MINOR__ >= 9) || defined(__cplusplus) */
 				 char *const argv[_Restrict],
 				 char *const envp[_Restrict])
-#endif	/* (__GNUC__ == 2 && __GNUC_MINOR__ >= 9) || defined(__cplusplus) */		 
+#endif	/* (__GNUC__ == 2 && __GNUC_MINOR__ >= 9) || defined(__cplusplus) */
 {
 	if ((file == NULL) || (*file == '\0')) return EINVAL;
 	if (*file == '/') {
@@ -80,7 +80,7 @@ int posix_spawnp(pid_t *_Restrict pid,
 		if ((envvar_str = find_envvar(environ, "PATH")) == NULL) return ENOENT;
 		/* make a copy of the environment variable string so the original is not destroyed */
 		if ((envvar_str = strdup(envvar_str)) == NULL) return ENOMEM;
-		
+
 		if ((num_paths = parse_envvar_str(envvar_str, ":", &env_path)) <= 0) {
 			free(envvar_str);
 			return ENOENT;
@@ -126,7 +126,7 @@ int posix_spawnp(pid_t *_Restrict pid,
 /*
  * Given an environment pointer <envp>, search for the environment variable
  * <envvar> and if found, return a pointer to it. If not found, return NULL
- * 
+ *
  * ex. If looking for <envvar> "PATH", and "PATH=./:/foo", then a pointer to
  * 		"./:/foo" will be returned
 */
@@ -149,7 +149,7 @@ static char *find_envvar(char *const envp[], char *const envvar)
  * the strings is dynamically allocated and the string pointers are placed into
  * the <value> array. <str> is modified by substituting <token> for '\0'
  * The number of individual string tokens found for <str> is returned.
- * 
+ *
  * If >0 is returned, the caller is repsonisble for freeing <value>.
  * If <=0 is returned, no memory will have been allocated
 */

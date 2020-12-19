@@ -202,9 +202,9 @@ glob(pattern, flags, errfunc, pglob)
 	else
 	    c = glob0(patbuf, pglob);
 
-	/* 
-	 If the glob fails, then take a crack at freeing 
-	 anything we might have allocated up to that point.  
+	/*
+	 If the glob fails, then take a crack at freeing
+	 anything we might have allocated up to that point.
 	*/
 	if(c != 0) {
 		globfree(pglob);
@@ -362,8 +362,8 @@ globtilde(pattern, patbuf, patbuf_len, pglob)
 	if (*pattern != TILDE || !(pglob->gl_flags & GLOB_TILDE))
 		return pattern;
 
-	/* 
-	 * Copy up to the end of the string or / 
+	/*
+	 * Copy up to the end of the string or /
 	 */
 	eb = &patbuf[patbuf_len - 1];
 	for (p = pattern + 1, h = (char *) patbuf;
@@ -430,7 +430,7 @@ glob0(pattern, pglob)
 	int c, err, oldpathc;
 	Char *bufnext, patbuf[MAXPATHLEN+1];
 
-	qpatnext = globtilde(pattern, patbuf, sizeof(patbuf) / sizeof(Char), 
+	qpatnext = globtilde(pattern, patbuf, sizeof(patbuf) / sizeof(Char),
 	    pglob);
 	oldpathc = pglob->gl_pathc;
 	bufnext = patbuf;

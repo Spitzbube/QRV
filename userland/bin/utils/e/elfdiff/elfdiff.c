@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -52,7 +52,7 @@ Options:\n\
  -h		Handle unsorted .rel.dyn sections\n"
 
 int handle_rel_dyn=0;
- 
+
 int main(int argc, char *argv[]) {
   int opt=0, i=0;
   int verbose = 1, no_default_sections = 0, first = 1;
@@ -85,12 +85,12 @@ int main(int argc, char *argv[]) {
         exit(1);
         break;
     }
-  }  
+  }
 
   if ((argc-optind) != 2) {
     if (verbose) fprintf(stderr, "%s", USAGE);
     free(section_list);
-    exit(1);  
+    exit(1);
   }
 
   if (verbose > 2) verbose = 2;
@@ -133,7 +133,7 @@ int binary_diff(int fd1, int fd2, char *sections, int verbose) {
     kind1 = elf_kind(elf1);
     elf_end(elf1);
   } else {
-    if (verbose) fprintf(stderr, "elfdiff: Error reading ELF information from first input file.\n");  
+    if (verbose) fprintf(stderr, "elfdiff: Error reading ELF information from first input file.\n");
     return ED_NOELF1;
   }
 
@@ -141,11 +141,11 @@ int binary_diff(int fd1, int fd2, char *sections, int verbose) {
     kind2 = elf_kind(elf2);
     elf_end(elf2);
   } else {
-    if (verbose) fprintf(stderr, "elfdiff: Error reading ELF information from second input file.\n");  
+    if (verbose) fprintf(stderr, "elfdiff: Error reading ELF information from second input file.\n");
     return ED_NOELF2;
   }
 
-  if ((kind1 == ELF_K_ELF) && (kind2 == ELF_K_ELF)){ 
+  if ((kind1 == ELF_K_ELF) && (kind2 == ELF_K_ELF)){
     return elf_diff (fd1, fd2, sections, verbose);
   } else if ((kind1 == ELF_K_AR) && (kind2 == ELF_K_AR)) {
     return ar_diff (fd1, fd2, sections, verbose);
@@ -169,7 +169,7 @@ typedef struct _seg {
 int phdr_diff( Elf *elf[2], int verbose ) {
   int i = 0, j = 0;
   int k[2] = {0,0};
-  int hasdyn[2] = {0,0}; 
+  int hasdyn[2] = {0,0};
   Elf32_Dyn *dyn;
   Elf_Scn *scn[2];
   seg dynseg[2] = {{0,0},{0,0}};
@@ -220,7 +220,7 @@ int phdr_diff( Elf *elf[2], int verbose ) {
           return ED_IOFAIL;
         }
       }
-    
+
       for (i=0;i<2;i++) {
         dyn=(Elf32_Dyn*)buf[i];
         while (dyn->d_tag!=DT_NULL) {
@@ -250,7 +250,7 @@ int phdr_diff( Elf *elf[2], int verbose ) {
           if (verbose) fprintf(stderr, "elfdiff: Read error in input file %d.\n", i);
           return ED_IOFAIL;
         }
-        if (elf[i]->xlat) swap_32(&numchains[1]); 
+        if (elf[i]->xlat) swap_32(&numchains[1]);
 	symseg[i].size = numchains[1] * sizeof(Elf32_Sym);
       }
 
@@ -272,7 +272,7 @@ int phdr_diff( Elf *elf[2], int verbose ) {
 		}
 	}
 	k[0]=0; k[1]=0;
-  } 
+  }
 
   while (!retval) {
     for (i=0;i<2;i++) {
@@ -305,7 +305,7 @@ int phdr_diff( Elf *elf[2], int verbose ) {
   	      size[1]=size[0];
   	      size[0]=t;
         }
-      } 
+      }
 
       for (i=0;i<2;i++) {
         buf[i]=(char*)malloc(size[i]*sizeof(char));
@@ -347,7 +347,7 @@ int phdr_diff( Elf *elf[2], int verbose ) {
 	for (i=0;i<2;i++) {
         	buf[i]=(char*)malloc(reldynseg[i].size*sizeof(char));
       	}
-	      
+
 	for (i=0;i<2;i++) {
         	if (lseek(elf[i]->e_fd, reldynseg[i].offset, SEEK_SET) == -1 ) {
 	          if (verbose) fprintf(stderr, "elfdiff: Seek error in input file %d.\n", i);
@@ -373,7 +373,7 @@ int phdr_diff( Elf *elf[2], int verbose ) {
 	        free(buf[i]);
 	}
       }
-    } 
+    }
 
     offset[0] = offset[1] = 0;
     size[0] = size[1] = 0;
@@ -601,7 +601,7 @@ int elf_diff(int fd1, int fd2, char *sections, int verbose) {
   if (verbose) {
     if (retval) {
       fprintf(stderr, "elfdiff: Files do not match\n");
-    } else { 
+    } else {
       printf("elfdiff: Files match.\n");
     }
   }
@@ -626,7 +626,7 @@ int ar_diff(int fd1, int fd2, char *sections, int verbose) {
     return ED_ELFFAIL;
   }
 
-  if (arf[0]->e_numsyms != arf[1]->e_numsyms) { 
+  if (arf[0]->e_numsyms != arf[1]->e_numsyms) {
     retval = ED_HDRFAIL;
   } else {
 
@@ -673,7 +673,7 @@ int ar_diff(int fd1, int fd2, char *sections, int verbose) {
   for (i=0;i<2;i++) {
     elf_end(arf[i]);
   }
- 
+
   if (verbose) {
     if (retval) {
       fprintf(stderr, "elfdiff: Files do not match\n");

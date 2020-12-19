@@ -52,7 +52,7 @@ extern flagT rx_testing;
 extern flagT no_default_output;
 extern flagT use_extended_syntax_p;
 
-
+
 #define YMAP_LENGTH		256 /*XXX shouldn't this be (UCHAR_MAX+1)?*/
 #define VECTOR_ALLOC_INCREMENT	40
 
@@ -85,7 +85,7 @@ struct error_info {
   countT string_expr_count;
 };
 
-
+
 static struct vector *compile_program P_((struct vector *));
 static struct vector *new_vector
 	P_((struct error_info *errinfo, struct vector *old_vector));
@@ -106,7 +106,7 @@ static countT in_integer P_((int ch));
 static void savchar P_((int ch));
 static void bad_prog P_((const char *why));
 
-
+
 /* Where we are in the processing of the input. */
 static struct prog_info prog;
 static struct error_info cur_input;
@@ -137,7 +137,7 @@ static const char NO_COMMAND[] = "Missing command";
 static const char UNTERM_S_CMD[] = "Unterminated `s' command";
 static const char UNTERM_Y_CMD[] = "Unterminated `y' command";
 
-
+
 /* This structure tracks files opened by the 'r', 'w', and 's///w' commands
    so that they may all be closed cleanly at normal program termination.  */
 struct fp_list {
@@ -344,7 +344,7 @@ read_text(buf, leadin_ch)
   pending_text = NULL;
 }
 
-
+
 /* Read a program (or a subprogram within '{' '}' pairs) in and store
    the compiled form in *'vector'.  Return a pointer to the new vector.  */
 static struct vector *
@@ -948,7 +948,7 @@ mark_subst_opts(cmd)
       }
 }
 
-
+
 /* Read the next character from the program.  Return EOF if there isn't
    anything to read.  Keep cur_input.line up to date, so error messages
    can be meaningful. */

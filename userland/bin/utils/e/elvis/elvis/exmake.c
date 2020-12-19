@@ -189,7 +189,7 @@ static ELVBOOL parse_errmsg()
 			{
 				errdesc = CHARdup(toCHAR("unknown error"));
 			}
-			
+
 			/* back up one character, if possible */
 			if (cp)
 			{

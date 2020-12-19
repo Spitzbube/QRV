@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -99,17 +99,17 @@ static struct shorthand {
 		"rc", 0, "rc"
 	},							// remote connections
 	 {
-		"pmem", "%a %b %N %p %J %c %d %m", 
+		"pmem", "%a %b %N %p %J %c %d %m",
 	},							// memory (process only)
 	 {
 		"net", 0, "net"
 	},							// node info on network
 	 {
-		"memory", "%a %b %N %p %J     %c %d %m", 
+		"memory", "%a %b %N %p %J     %c %d %m",
 		"            %M @%> %? %< %="
 	},							// memory
 	 {
-		"mapinfo", "%a %b %N %p %J     %c %d %m", 
+		"mapinfo", "%a %b %N %p %J     %c %d %m",
 		"             %: @%> %; %< %=  %@"
 	},							// mapinfo
 	 {
@@ -156,7 +156,7 @@ static void validate_formats();
 
 void dspsys(const char *type, const char *argv);
 
-int 
+int
 main(int argc, char *argv[])
 {
 	int				c;
@@ -240,7 +240,7 @@ main(int argc, char *argv[])
 		case 'p':
 			flags = DONT_RECURSE;
 			/*
-			 * fall through 
+			 * fall through
 			 */
 		case 'P':
 			if(*optarg >= '0' && *optarg <= '9') {
@@ -328,7 +328,7 @@ main(int argc, char *argv[])
 int find_netdir(char *node, char *buf, size_t bufsize, int flag)
 {
 	int len, fd;
-	
+
 	if (*node == 0) {
 		*buf = '/';
 		*(buf + 1) = 0;
@@ -337,7 +337,7 @@ int find_netdir(char *node, char *buf, size_t bufsize, int flag)
 		  len = netmgr_ndtostr(ND2S_DIR_SHOW | ND2S_NAME_HIDE, ND_LOCAL_NODE, buf, bufsize);
 		return len;
 	}
-	
+
 	if (*node == '/') {
 		len = snprintf(buf, bufsize, "%s/", node);
 	} else {
@@ -346,19 +346,19 @@ int find_netdir(char *node, char *buf, size_t bufsize, int flag)
 		len--;
 		len += snprintf(&buf[len], bufsize - len, "%s/", node);
 	}
-	
+
 	if (flag) {
 		char *netmgr;
 		netmgr_ndtostr_t msg;
-		
+
 		if (!(netmgr = alloca(len + 12)))
 		  return -1;
 
 		sprintf(netmgr, "%s/dev/netmgr", buf);
-		
+
 		if ((fd = open(netmgr, O_RDONLY)) == -1)
 		  return -1;
-		
+
 		msg.i.hdr.type = _IO_MSG;
 		msg.i.hdr.combine_len = sizeof msg.i;
 		msg.i.hdr.mgrid = _IOMGR_NETMGR;
@@ -376,14 +376,14 @@ int find_netdir(char *node, char *buf, size_t bufsize, int flag)
 
 char* tail(char *name) {
 	register char *p;
-	
+
 	p = name + strlen(name);
 	while(p > name  &&  *p != '/' && *p != '\\' )	--p;
 
 	return( (*p == '/' || *p == '\\') ? p + 1 : p );
 }
 
-void 
+void
 dsprc(DIR *dp)
 {
 	int  len, fd, coid, nd;
@@ -396,11 +396,11 @@ dsprc(DIR *dp)
 	strcat(noderoot, "dev/netmgr");
 	if ((fd = open(noderoot, O_RDONLY)) == -1)
 	  error_exit(1, "can't open %s: %s\n", noderoot, strerror(errno));
-	
+
 	if (ConnectServerInfo(0, fd, &qinfo) == -1)
 	  error_exit(1, "can't find server info for %s: %s\n", noderoot, strerror(errno));
 	close(fd);
-	
+
 	printf(" From             Pid         Arguments\n");
 	for (coid = 0; (coid = ConnectServerInfo(qinfo.pid, coid, &sinfo)) >= 0; coid++)
 	{
@@ -411,13 +411,13 @@ dsprc(DIR *dp)
 			(len = netmgr_ndtostr(ND2S_DIR_SHOW | ND2S_NAME_SHOW | ND2S_LOCAL_STR | ND2S_QOS_HIDE,
 								  nd, noderoot, PATH_MAX)) == -1)
 		  continue;
-		
+
 		nodename[16] = 0;
 		netmgr_ndtostr(ND2S_DIR_HIDE | ND2S_LOCAL_STR, nd, nodename, 15);
 		snprintf(&noderoot[len - 1], PATH_MAX - len, "proc/%d/as", sinfo.pid);
 		if ((fd = open(noderoot, O_RDWR)) == -1)
 		  continue;
-		
+
 		printf("%-15s   %-10d  ", nodename, sinfo.pid);
 		piddspinfo(fd, 0, sinfo.pid, 0, "%A", 0);
 		close(fd);
@@ -441,7 +441,7 @@ struct sched_query			query;
 		char						notify[32], security[16];
 		APS_INIT_DATA(&aps_info);
 		APS_INIT_DATA(&aps_pinfo);
-		
+
 
 			if (SchedCtl(SCHED_APS_QUERY_PARMS, &aps_info, sizeof(aps_info)))
 				error_exit(!0, "Unable to query APS - %s\n", strerror(errno));
@@ -449,9 +449,9 @@ struct sched_query			query;
 				error_exit(!0, "Unable to query APS statistics - %s\n", strerror(ENOMEM));
 
 			aps_pstats=(sched_aps_partition_stats*)calloc(aps_info.num_partitions, sizeof(sched_aps_partition_stats));
-			if (!aps_pstats) error_exit(!0, "Unable to allocate memory\n", strerror(ENOMEM)); 
-			
-			APS_INIT_DATA(&aps_pstats[0]); 
+			if (!aps_pstats) error_exit(!0, "Unable to allocate memory\n", strerror(ENOMEM));
+
+			APS_INIT_DATA(&aps_pstats[0]);
 			aps_pstats->id = APS_SYSTEM_PARTITION_ID;
 			if (SchedCtl(SCHED_APS_PARTITION_STATS, aps_pstats, aps_info.num_partitions * sizeof(sched_aps_partition_stats)))
 				error_exit(!0, "Unable to query APS statistics - %s\n", strerror(errno));
@@ -490,19 +490,19 @@ struct sched_query			query;
 }
 
 
-int confstr_get(int fd, int name, unsigned int *value, char *str) 
+int confstr_get(int fd, int name, unsigned int *value, char *str)
 {
 	/* Copied from confstr lib file with added fd allowing
 	 * retrieval of information from existing connection. */
 	sys_conf_t		msg;
 	iov_t			iov[2];
-	
+
 	msg.i.type = _SYS_CONF;
 	msg.i.subtype = _SYS_SUB_GET;
 	msg.i.cmd = _CONF_STR;
 	msg.i.name = name;
 	msg.i.value = *value;
-	
+
 	SETIOV(iov + 0, &msg.o, sizeof(msg.o));
 	SETIOV(iov + 1, str, *value);
 
@@ -510,7 +510,7 @@ int confstr_get(int fd, int name, unsigned int *value, char *str)
 		return(-1);
 	}
 	*value = msg.o.value;
-	
+
 	return (msg.o.match);
 }
 
@@ -527,11 +527,11 @@ int do_process(char * node, pid_t pid, process_entry * pe_p)
 {
 	int fd;
 	char buff[512];
-	
+
 	if (pe_p == NULL) {
 		return NULL;
 	}
-	
+
 	pe_p->n_threads = 0;
 
 	if (node == 0 || node[0] == 0) {
@@ -550,7 +550,7 @@ int do_process(char * node, pid_t pid, process_entry * pe_p)
 			close(fd);
 			return 0;
 		} else {
-			
+
 			for (lasttid = tid = 1; ; lasttid = ++tid) {
 				thread_entry te_p;
 				memset(&te_p, 0, sizeof(thread_entry));
@@ -594,7 +594,7 @@ int get_node_procs (char * node, proc_info_t *tree_p)
 		snprintf(fname, sizeof(fname), "/net/%s/proc", node);
 		dir = opendir(fname);
 	}
-	
+
 	if (dir == NULL) {
 		fprintf(stderr, "Unable to open %s\n", fname);
 		return 0;
@@ -654,11 +654,11 @@ dspsys(const char *type, const char *argv)
 	DIR                     *dp;
 	struct dirent           *dent;
 	proc_info_t procinfo;
-	
+
 	dp = 0;
 	dent = 0;
 	n = ".";
-	
+
 	switch(*type) {
 	  case 's':
 	  case 'n':
@@ -666,22 +666,22 @@ dspsys(const char *type, const char *argv)
 			/* 'pidin net' show info for everyone in /net */
 			if ((i = find_netdir("", nodepath, PATH_MAX, 1)) == -1)
 			  error_exit(1, "can't find node %s: %s\n", node, strerror(errno));
-			
+
 			/* make sure the network manager is running, otherwise, we jsut
 			 * got a "/"
 			 */
 			if ((fd = open("/dev/netmgr", O_RDONLY)) == -1)
 			  error_exit(1, "Network manager is not running.\n");
 			close(fd);
-			
+
 			if ((dp = opendir(nodepath)) == NULL)
 			  error_exit(1, "can't opendir %s: %s\n", nodepath, strerror(errno));
-			
+
 			if (!(dent = readdir(dp))) {
 				closedir(dp);
 				return;
 			}
-			
+
 			n = dent->d_name;
 			printf(" ND    Node             CPU      Release FreeMem       BootTime\n");
 		} else {
@@ -707,7 +707,7 @@ dspsys(const char *type, const char *argv)
 	  default:
 		error_exit(1, "invalid option\n");
 	}
-	
+
 	do {
 		snprintf(buffer, PATH_MAX, "%s%s/proc", nodepath, n);
 		if (dent) {
@@ -715,7 +715,7 @@ dspsys(const char *type, const char *argv)
 			  dent->d_name[15] = 0;
 			printf(" %-4d  %-15s ", (int)dent->d_ino, dent->d_name);
 		}
-		
+
 		if ((fd = open64(buffer, O_RDONLY)) == -1) {
 			if (dp) {
 				printf("%s\n", strerror(errno));
@@ -737,13 +737,13 @@ dspsys(const char *type, const char *argv)
 		total = get_total_mem(sysinfo);
 		boot_time = _SYSPAGE_ENTRY(sysinfo, qtime)->boot_time;
 
-		
+
 		if (dent) {
 			printf("%2d ", sysinfo->num_cpu);
 		} else {
 			printf("CPU:");
 		}
-		
+
 
 		switch(sysinfo->type) {
 		  case SYSPAGE_X86:
@@ -765,12 +765,12 @@ dspsys(const char *type, const char *argv)
 			printf("Unknown(%d) ", sysinfo->type);
 			break;
 		}
-		
+
 		size = PATH_MAX;
 		if (confstr_get(fd,_CS_RELEASE,&size, buffer) == -1) {
 			error_exit(1, "couldn't retrieve release info for %s: %s\n", buffer, strerror(errno));
 		}
-		
+
 		if (dent) {
 			printf("   %-8s",buffer);
 		} else {
@@ -793,8 +793,8 @@ dspsys(const char *type, const char *argv)
 			printf("FreeMem:%u%sb/%u%sb ", size, size_sym, (unsigned)total, total_sym);
 			printf("BootTime:%s", buffer);
 		}
-		
-		printf("\n");		
+
+		printf("\n");
 
 		if (dent){
 			if(get_node_procs(dent->d_name, &procinfo)){
@@ -807,7 +807,7 @@ dspsys(const char *type, const char *argv)
 		}
 
 		if (dent) {
-			
+
 			for(i = 1, cpu = _SYSPAGE_ENTRY(sysinfo, cpuinfo); i <= sysinfo->num_cpu; i++, cpu++) {
 				char cpubuf[20];
 				char fmt[20];
@@ -858,11 +858,11 @@ dspsys(const char *type, const char *argv)
 
 		free(sysinfo);
 		close(fd);
-next:			
+next:
 		if (dent && (dent = readdir(dp)))
 		  n = dent->d_name;
 	} while (dent);
-	
+
 	if (dp)
 	  closedir(dp);
 }
@@ -874,32 +874,32 @@ typedef struct sortentry{
 	pid_t key;
 } sortentry_t;
 
-static int 
+static int
 sortkey(const void *a, const void *b)
 {
 	const sortentry_t *as = (const sortentry_t *)a;
 	const sortentry_t *bs = (const sortentry_t *)b;
-	
+
 	return(as->key - bs->key );
 }
 
 
-static int 
-sortpid(const void *a, const void *b) 
+static int
+sortpid(const void *a, const void *b)
 {
 	const sortentry_t *as = (const sortentry_t *)a;
 	const sortentry_t *bs = (const sortentry_t *)b;
-	
+
 	return(as->pid - bs->pid);
 }
 
 
 
-static int 
-getinfo(char *procname, struct shared_info *info_p) 
+static int
+getinfo(char *procname, struct shared_info *info_p)
 {
 	int ret, fd;
-	
+
 	if ((fd = open64(procname, O_RDONLY)) == -1) {
 		if(errno != ENOENT) {
 			warning_exit(1, 0, "couldn't open %s: %s\n", procname, strerror(errno));
@@ -916,7 +916,7 @@ getinfo(char *procname, struct shared_info *info_p)
 
 
 
-static int * 
+static int *
 getpidlist(char *nodepath, const char *fmt)
 {
 
@@ -930,17 +930,17 @@ getpidlist(char *nodepath, const char *fmt)
 	sortentry_t		*sort_list;
 	int				pidsort = 0;
 	char 			keyid = 'a';
-	
+
 	snprintf(buf, 50, "%sproc", nodepath);
 	if (!(dir = opendir(buf))) {
 		error_exit(1, "couldn't open %s: %s\n", buf, strerror(errno));
 	}
 
-	/* Find number of entries. */	
+	/* Find number of entries. */
 	while (dirent = readdir(dir)) {
 		entries++;
 	}
-	
+
 	/* Add one entry for terminator value. */
 	pid_list = malloc(sizeof(pid_t)*(entries + 1));
 
@@ -948,14 +948,14 @@ getpidlist(char *nodepath, const char *fmt)
 		closedir(dir);
 		return(NULL);
 	}
-	
+
 	sort_list = (sortentry_t *)malloc(sizeof(sortentry_t)*(entries));
 	if (sort_list == NULL) {
 		free(pid_list);
 		closedir(dir);
 		return(NULL);
 	}
-	
+
 	rewinddir(dir);
 
 	if (fmt != NULL) {
@@ -966,24 +966,24 @@ getpidlist(char *nodepath, const char *fmt)
 			keyid = *(firstid+1);
 		}
 	}
-	
+
 	while (dirent = readdir(dir)) {
 		pid_list[cur] = atoi(dirent->d_name);
-		
+
 		/* Only analyze numeric entries.  0 indicates all ASCII... */
 		/* Potential problem here with numeric + ASCII, but these
 		* should never occur in the proc dir. */
 		if (pid_list[cur] != 0) {
 			struct shared_info info;
-			
+
 			snprintf(buf, 50, "%sproc/%d/as", nodepath, pid_list[cur]);
 			if (getinfo(buf, &info) == 0) {
 				sort_list[cur].pid = pid_list[cur];
-				
+
 				/* Bit of a nuisance having to fill all of these in, but
 				 * there aren't really many that are likely to be useful
 				 * for grouping other than sessions and process groups. */
-				 
+
 				switch(keyid) {
 				case 'L':
 					/* Session ID. */
@@ -998,25 +998,25 @@ getpidlist(char *nodepath, const char *fmt)
 					sort_list[cur].key = info.info->pid;
 					pidsort = 1;
 					break;
-				}						
+				}
 				/* Include pid in list to be displayed... */
 				cur++;
 			}
-			
+
 			if (cur >= entries) {
 				/* Fall out if more entries found than allocated.
 				 * No need to produce error since the output is only a sample
 				 * at a given point in time anyway.
-				 */	
+				 */
 				break;
 			}
 		}
 	}
 	closedir(dir);
-	
+
 	/* Sort on primary key. */
 	qsort (sort_list, cur, sizeof(sortentry_t), sortkey);
-	
+
 	/* Now perform secondary sort based on pid (if necessary). */
 	if (!pidsort) {
 		i = 0;
@@ -1030,13 +1030,13 @@ getpidlist(char *nodepath, const char *fmt)
 			i+=ns;
 		}
 	}
-	
-	
-	/* Copy sorted pids int pidlist for return to caller. */	
+
+
+	/* Copy sorted pids int pidlist for return to caller. */
 	for (i = 0; i < cur; i++) {
 		pid_list[i] = sort_list[i].pid;
 	}
-	
+
 	/* End of array = 0. */
 	pid_list[cur] = 0;
 	free (sort_list);
@@ -1048,7 +1048,7 @@ getpidlist(char *nodepath, const char *fmt)
 
 
 
-void 
+void
 dspinfo(pid_t pid, char *pidname, int flags, const char *fmt, const char *mi_fmt)
 {
 	char			buffer[50], nodepath[50];
@@ -1088,8 +1088,8 @@ dspinfo(pid_t pid, char *pidname, int flags, const char *fmt, const char *mi_fmt
 		free(pid_list);
 		return;
 	}
-	
-	
+
+
 	/* Sorted list unavailable (e.g. no memory...). Get unsorted entries. */
 	if (!(dir = opendir(buffer)))
 		error_exit(1, "couldn't open %s: %s\n", buffer, strerror(errno));
@@ -1110,7 +1110,7 @@ dspinfo(pid_t pid, char *pidname, int flags, const char *fmt, const char *mi_fmt
 	closedir(dir);
 }
 
-void 
+void
 piddspinfo(int fd, char *pidname, pid_t pid, int flags, const char *fmt, const char *mf)
 {
 	int				tid, lasttid;
@@ -1136,7 +1136,7 @@ piddspinfo(int fd, char *pidname, pid_t pid, int flags, const char *fmt, const c
 	info.flags = 0;
 	info.gprs = 0;
 	info.meminfo = 0;
-	
+
 	if (fill_info(&info, fd)) {
 		return;
 	}
@@ -1192,7 +1192,7 @@ piddspinfo(int fd, char *pidname, pid_t pid, int flags, const char *fmt, const c
 				continue;
 			}
 			/* if we can do it as a zombie or this isn't a zombie ... */
-			if (!(format->flags & ZOMBIE_INVALID) || 
+			if (!(format->flags & ZOMBIE_INVALID) ||
 			    !(info.info->flags & _NTO_PF_ZOMBIE)) {
 				if (format->print(stdout, pid, &tid, format, fd, &info))
 					break;
@@ -1350,8 +1350,8 @@ get_format(FILE * fp, const char **f)
 static void validate_formats()
 {
 	/* very simple check to validate the formats array
-	* instead of trying to validate every entry, we check the format letter 'z' 
-  * and verify that its position is correct in the table. Since 'z' is 
+	* instead of trying to validate every entry, we check the format letter 'z'
+  * and verify that its position is correct in the table. Since 'z' is
   * the last entry used entry in the table, we assume that if this one is
   * correct, all previous are too */
 
@@ -1370,7 +1370,7 @@ lookup_shorthand(const char *f)
 	for (len =0; f[len] && isalnum(f[len]); len++ );
 	for (match = 0, s = shorthands; s->handle; s++) {
 		if (!strnicmp(s->handle, f, len)) {
-			if (match) {			
+			if (match) {
 				match = 0;
 				break;
 			}
@@ -1380,7 +1380,7 @@ lookup_shorthand(const char *f)
 	return match;
 }
 
-void 
+void
 error_exit(int printmsg, const char *fmt,...)
 {
 	extern char	*__progname;
@@ -1396,7 +1396,7 @@ error_exit(int printmsg, const char *fmt,...)
 	exit(EXIT_FAILURE);
 }
 
-void 
+void
 warning_exit(int printmsg, int expectwarn, const char *fmt,...)
 {
 	if (printmsg) {

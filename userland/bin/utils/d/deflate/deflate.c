@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 	int			type;
 	int			opt;
 	int			error;
-	
+
 #ifdef __MINGW32__
 	__progname = argv[0];
 #endif
@@ -285,19 +285,19 @@ int process_file(const char *infile, const char *outfile, int inflate, int type,
 		error = lstat(infile, &st);
 		if ( error == -1 ) {
 			error = errno;
-			goto done; 
+			goto done;
 		}
 		if (!S_ISREG(st.st_mode)) {
 			/* return without error to bypass compression of symbolic links */
-			if (verbose) fprintf(stderr, "%s: Bypassing compresson of non-regular file: %s\n", __progname, infile);  	
+			if (verbose) fprintf(stderr, "%s: Bypassing compresson of non-regular file: %s\n", __progname, infile);
 			error = EOK;
-			goto done;			
-		} 
-		
+			goto done;
+		}
+
 		infd = open(infile, O_RDONLY | O_BINARY);
 		if (infd == -1) return (errno);
 		file = infile;
-	} 
+	}
 	/* Don't compress the file twice */
 	xfer = read(infd, &hdr, sizeof(hdr));
 	if (xfer < 0) {error = errno; goto done;}
@@ -314,9 +314,9 @@ int process_file(const char *infile, const char *outfile, int inflate, int type,
 			}
 		}
 	}
- 
 
-	/* 
+
+	/*
 	 * Always use a temp file when compressing to judge percentage or when an
 	 * outfile is given.
 	 */
@@ -350,7 +350,7 @@ int process_file(const char *infile, const char *outfile, int inflate, int type,
 		if (raw) {
 			error = compress(file, infd, outfd, type, blksize, &hdr, xfer);
 		} else {
-			if (verbose) fprintf(stderr, "%s: File already compressed, copying instead\n", __progname); 
+			if (verbose) fprintf(stderr, "%s: File already compressed, copying instead\n", __progname);
 			error = copy(infd, outfd, &hdr, xfer);
 		}
 		if (error) goto done;

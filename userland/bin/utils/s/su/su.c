@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -27,9 +27,9 @@
  *
  *        HOME = pw->pw_dir, SHELL = pw->pw_shell.
  *
- * 		  It sets the userid,euserid, groupid, egroupid to correspond to 
+ * 		  It sets the userid,euserid, groupid, egroupid to correspond to
  *		  the entries in the password file.
- *		  it uses the system call "exec" to transform itself into the 
+ *		  it uses the system call "exec" to transform itself into the
  *		  shell specified in the password file.
  *
  * $Log$
@@ -182,13 +182,13 @@ su(struct passwd *pw, char **argv)
 		fprintf(stderr, "su: %s (%s)\n", strerror(errno), "setgid");
 		return -1;
 	}
-	
+
 	if (setuid(pw->pw_uid)) {
 		fprintf(stderr, "su: %s (%s)\n", strerror(errno), "setuid");
 		return -1;
 	}
 
-	initgroups(pw->pw_name, pw->pw_gid); 
+	initgroups(pw->pw_name, pw->pw_gid);
 	if ((term=getenv("TERM"))) {
 		term = dupstring(term);
 	}
@@ -220,12 +220,12 @@ fprintf(stderr,"argv[0]=%s, [1]=%s, [2]=%s\n", argv[0], argv[1], argv[2] ? argv[
 
 int
 main(int argc, char **argv)
-{               
+{
 	struct	passwd	*pw;
 	/* NOT USED char	*p; */
 	int				 pwstat;
-	enum pwdbstat_e x;	
-	strcpy(login_name, "root"); 
+	enum pwdbstat_e x;
+	strcpy(login_name, "root");
 
 	init_defaults(argv[0], "su");
 
@@ -251,8 +251,8 @@ main(int argc, char **argv)
 				argv[1][LOGIN_NAME_MAX] = '\0';
 			}
 			strncpy(login_name,argv[1], sizeof login_name);
-			argv++; argc--;		
-		} 
+			argv++; argc--;
+		}
 	}
 
 	if (getuid() == 0) {

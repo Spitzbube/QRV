@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -32,7 +32,7 @@
 *	Author:		Peter Graves
 *
 *	Notes:		This test must have the tracelogger available to it in it's
-*				path.  If this is not available the tests will not be 
+*				path.  If this is not available the tests will not be
 *				run.
 *
 *****************************************************************************/
@@ -93,9 +93,9 @@ typedef struct {
 /*--------------------------------------------------------------------------*
  *									GLOBALS 								*
  *--------------------------------------------------------------------------*/
-/* This is a global used by the traceparser callback function to  
+/* This is a global used by the traceparser callback function to
  * tell the main thread that the values it got in the events were
- * correct 
+ * correct
  */
 static int correct_values;
 static int correct_values_eh;
@@ -122,7 +122,7 @@ unsigned data_array[70][30];
 *
 *	Parameters: none
 *
-*	Returns:	-1 on failures, 0 if tracelogger is not found, and 1 when 
+*	Returns:	-1 on failures, 0 if tracelogger is not found, and 1 when
 *				tracelogger has been killed.
 *
 *****************************************************************************/
@@ -151,22 +151,22 @@ int kill_tl()
 				/* This is tracelogger */
 				kill(curpid, SIGINT);
 				/* We should be able to exit here, but we will continue just to make
-			 	 * sure there are no more traceloggers to kill 
+			 	 * sure there are no more traceloggers to kill
 				 */
 				rval=1;
 			}
-				
+
 		}
 	}
 	closedir(mydir);
 	return(rval);
-	
+
 }
 /****************************************************************************
 *
 *						Subroutine parse_cb
 *
-*	Purpose: 	This will just count the number of events that we get in the 
+*	Purpose: 	This will just count the number of events that we get in the
 *				log.
 *
 *	Parameters:	header - event header
@@ -186,8 +186,8 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 	 */
 	correct_values++;
 	return(EOK);
-	
-	
+
+
 }
 
 /****************************************************************************
@@ -198,10 +198,10 @@ int parse_cb(tp_state_t  state, void * nothing, unsigned header, unsigned time, 
 *				the value in to_return
 *
 *	Parameters:	event_data - this is a pointer to all the event data
-*				
+*
 *
 *	Returns:	This function returns the value in to_return
-*			
+*
 *
 *****************************************************************************/
 int event_handler(event_data_t * event_data)
@@ -219,7 +219,7 @@ int event_handler(event_data_t * event_data)
 *	Returns: 	Pid of the tracelogger
 *
 *****************************************************************************/
-int start_logger(void) 
+int start_logger(void)
 {
 	int tlpid,rc;
 	char buf[100];
@@ -259,14 +259,14 @@ int main(int argc, char *argv[])
 	struct traceparser_state * tp_state;
 	struct stat statbuf;
 	char buf[100];
-	int events[] = {__KER_MSG_SENDV,__KER_MSG_SENDVNC,__KER_MSG_ERROR,__KER_MSG_RECEIVEV,__KER_MSG_REPLYV, 
-	__KER_MSG_READV,__KER_MSG_WRITEV,__KER_MSG_READWRITEV,__KER_MSG_INFO,__KER_MSG_SEND_PULSE,__KER_MSG_DELIVER_EVENT, 
+	int events[] = {__KER_MSG_SENDV,__KER_MSG_SENDVNC,__KER_MSG_ERROR,__KER_MSG_RECEIVEV,__KER_MSG_REPLYV,
+	__KER_MSG_READV,__KER_MSG_WRITEV,__KER_MSG_READWRITEV,__KER_MSG_INFO,__KER_MSG_SEND_PULSE,__KER_MSG_DELIVER_EVENT,
 	__KER_MSG_KEYDATA,__KER_MSG_READIOV,__KER_MSG_RECEIVEPULSEV,__KER_MSG_VERIFY_EVENT,__KER_SIGNAL_KILL, __KER_SIGNAL_RETURN,
 	__KER_SIGNAL_FAULT, __KER_SIGNAL_ACTION, __KER_SIGNAL_PROCMASK,__KER_SIGNAL_SUSPEND,__KER_SIGNAL_WAITINFO,__KER_CHANNEL_CREATE,
-	__KER_CHANNEL_DESTROY,__KER_CONNECT_ATTACH,__KER_CONNECT_DETACH,__KER_CONNECT_SERVER_INFO,__KER_CONNECT_CLIENT_INFO, 
-	__KER_CONNECT_FLAGS,__KER_THREAD_CREATE,__KER_THREAD_DESTROY,__KER_THREAD_DESTROYALL, __KER_THREAD_DETACH,  
-	__KER_THREAD_JOIN,__KER_THREAD_CANCEL,__KER_THREAD_CTL,__KER_SYNC_CREATE,__KER_SYNC_DESTROY,__KER_SYNC_MUTEX_LOCK, 
-	__KER_SYNC_MUTEX_UNLOCK,__KER_SYNC_CONDVAR_WAIT,__KER_SYNC_CONDVAR_SIGNAL,__KER_SYNC_SEM_POST, 
+	__KER_CHANNEL_DESTROY,__KER_CONNECT_ATTACH,__KER_CONNECT_DETACH,__KER_CONNECT_SERVER_INFO,__KER_CONNECT_CLIENT_INFO,
+	__KER_CONNECT_FLAGS,__KER_THREAD_CREATE,__KER_THREAD_DESTROY,__KER_THREAD_DESTROYALL, __KER_THREAD_DETACH,
+	__KER_THREAD_JOIN,__KER_THREAD_CANCEL,__KER_THREAD_CTL,__KER_SYNC_CREATE,__KER_SYNC_DESTROY,__KER_SYNC_MUTEX_LOCK,
+	__KER_SYNC_MUTEX_UNLOCK,__KER_SYNC_CONDVAR_WAIT,__KER_SYNC_CONDVAR_SIGNAL,__KER_SYNC_SEM_POST,
 	__KER_SYNC_SEM_WAIT,__KER_SYNC_CTL,__KER_SYNC_MUTEX_REVIVE, /* 46 kernel calls*/
 	_NTO_TRACE_THCONDVAR,_NTO_TRACE_THCREATE,_NTO_TRACE_THDEAD,_NTO_TRACE_THDESTROY,_NTO_TRACE_THINTR,
 	_NTO_TRACE_THJOIN,_NTO_TRACE_THMUTEX,_NTO_TRACE_THNANOSLEEP,_NTO_TRACE_THNET_REPLY,_NTO_TRACE_THNET_SEND,
@@ -285,7 +285,7 @@ int main(int argc, char *argv[])
 
 	/***********************************************************************/
 	/*
-	 * This is a simple test to make sure we need to have io privity to 
+	 * This is a simple test to make sure we need to have io privity to
 	 * add event handlers.
 	 */
  	testpntbegin("need io privity to add event handler");
@@ -297,7 +297,7 @@ int main(int argc, char *argv[])
 		testpntfail("Was able to attach an event handler");
 		TraceEvent(_NTO_TRACE_DELEVENTHANDLER, _NTO_TRACE_THREAD,1<<STATE_READY);
 	}else {
-		if (errno==EPERM) 
+		if (errno==EPERM)
 			testpntpass("Good");
 		else
 			testpntfail(strerror(errno));
@@ -318,10 +318,10 @@ int main(int argc, char *argv[])
  	testpntbegin("Event handler returns 1");
 	to_return=1;
 	correct_values_eh=0;
-		
+
 	/* We need to start up the tracelogger in daemon mode, 1 itteration.
-	 * we will filter out everything other then our thread state, then 
-	 * start logging. 
+	 * we will filter out everything other then our thread state, then
+	 * start logging.
 	 */
 	tlpid=start_logger();
 	sleep(1);
@@ -336,7 +336,7 @@ int main(int argc, char *argv[])
 	memset(data_array, 0, sizeof(data_array));
 	my_event_data[0].data_array=data_array[0];
 	TraceEvent(_NTO_TRACE_ADDEVENTHANDLER, _NTO_TRACE_THREAD,1<<STATE_READY, event_handler, &my_event_data[0]);
-	
+
 	rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 	assert(rc!=-1);
 	/* Make sure there is some system activity going on */
@@ -345,26 +345,26 @@ int main(int argc, char *argv[])
 
 	}
 	/* Now, setup the traceparser lib to pull out the thread state events
-	 * and make sure our event shows up 
+	 * and make sure our event shows up
 	 */
 	tp_state=traceparser_init(NULL);
 	assert(tp_state!=NULL);
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_THREAD, _NTO_TRACE_THDEAD, _NTO_TRACE_THDESTROY);
 
-	/* Since we don't want a bunch of output being displayed in the 
+	/* Since we don't want a bunch of output being displayed in the
 	 * middle of the tests, turn off verbose output.
 	 */
 	traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 	/* Set correct_values to 0, so we can see if the callback actually
-	 * got called. 
+	 * got called.
 	 */
 	correct_values=0;
 	/* And parse the tracebuffer */
 	traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-	
+
 	if ((correct_values<=correct_values_eh)  && (correct_values>0))
 		testpntpass("Good");
-	else if (correct_values==0) 
+	else if (correct_values==0)
 		testpntfail("No events were logged");
 	else if (correct_values_eh<correct_values)
 		testpntfail("Different number of events in eventhandler and tracebuffer");
@@ -382,10 +382,10 @@ int main(int argc, char *argv[])
  	testpntbegin("Event handler returns 0");
 	to_return=0;
 	correct_values_eh=0;
-		
+
 	/* We need to start up the tracelogger in daemon mode, 1 itteration.
-	 * we will filter out everything other then our thread state, then 
-	 * start logging. 
+	 * we will filter out everything other then our thread state, then
+	 * start logging.
 	 */
 	tlpid=start_logger();
 	sleep(1);
@@ -400,7 +400,7 @@ int main(int argc, char *argv[])
 	memset(data_array, 0, sizeof(data_array));
 	my_event_data[0].data_array=data_array[0];
 	TraceEvent(_NTO_TRACE_ADDEVENTHANDLER, _NTO_TRACE_THREAD,1<<STATE_READY, event_handler, &my_event_data[0]);
-	
+
 	rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 	assert(rc!=-1);
 	/* Make sure there is some system activity going on */
@@ -413,23 +413,23 @@ int main(int argc, char *argv[])
 
 	}
 	/* Now, setup the traceparser lib to pull out the thread state events
-	 * and make sure our event shows up 
+	 * and make sure our event shows up
 	 */
 	tp_state=traceparser_init(NULL);
 	assert(tp_state!=NULL);
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_THREAD, _NTO_TRACE_THDEAD, _NTO_TRACE_THDESTROY);
 
-	/* Since we don't want a bunch of output being displayed in the 
+	/* Since we don't want a bunch of output being displayed in the
 	 * middle of the tests, turn off verbose output.
 	 */
 	traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 	/* Set correct_values to 0, so we can see if the callback actually
-	 * got called. 
+	 * got called.
 	 */
 	correct_values=0;
 	/* And parse the tracebuffer */
 	traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-	
+
 	if ((correct_values_eh>0) && (correct_values==0)) {
 		testpntpass("Good");
 	} else if (correct_values_eh==0) {
@@ -444,16 +444,16 @@ int main(int argc, char *argv[])
 
 	/***********************************************************************/
 	/*
-	 * Make sure that if the event_handler returns a large number (other 
+	 * Make sure that if the event_handler returns a large number (other
 	 * then 1) that all events are still logged.
 	 */
  	testpntbegin("Event handler returns a large number");
 	to_return=9999999;
 	correct_values_eh=0;
-		
+
 	/* We need to start up the tracelogger in daemon mode, 1 itteration.
-	 * we will filter out everything other then our thread state, then 
-	 * start logging. 
+	 * we will filter out everything other then our thread state, then
+	 * start logging.
 	 */
 	tlpid=start_logger();
 	sleep(1);
@@ -468,7 +468,7 @@ int main(int argc, char *argv[])
 	memset(data_array, 0, sizeof(data_array));
 	my_event_data[0].data_array=data_array[0];
 	TraceEvent(_NTO_TRACE_ADDEVENTHANDLER, _NTO_TRACE_THREAD,1<<STATE_READY, event_handler, &my_event_data[0]);
-	
+
 	errno=0;
 	rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 	if (rc==-1) {
@@ -481,26 +481,26 @@ int main(int argc, char *argv[])
 
 	}
 	/* Now, setup the traceparser lib to pull out the thread state events
-	 * and make sure our event shows up 
+	 * and make sure our event shows up
 	 */
 	tp_state=traceparser_init(NULL);
 	assert(tp_state!=NULL);
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_THREAD, _NTO_TRACE_THDEAD, _NTO_TRACE_THDESTROY);
 
-	/* Since we don't want a bunch of output being displayed in the 
+	/* Since we don't want a bunch of output being displayed in the
 	 * middle of the tests, turn off verbose output.
 	 */
 	traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 	/* Set correct_values to 0, so we can see if the callback actually
-	 * got called. 
+	 * got called.
 	 */
 	correct_values=0;
 	/* And parse the tracebuffer */
 	traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-	
+
 	if ((correct_values<=correct_values_eh)  && (correct_values>0))
 		testpntpass("Good");
-	else if (correct_values==0) 
+	else if (correct_values==0)
 		testpntfail("No events were logged");
 	else if (correct_values_eh<correct_values)
 		testpntfail("Different number of events in eventhandler and tracebuffer");
@@ -518,10 +518,10 @@ int main(int argc, char *argv[])
  	testpntbegin("Event handler returns a negitive");
 	to_return=-2;
 	correct_values_eh=0;
-		
+
 	/* We need to start up the tracelogger in daemon mode, 1 itteration.
-	 * we will filter out everything other then our thread state, then 
-	 * start logging. 
+	 * we will filter out everything other then our thread state, then
+	 * start logging.
 	 */
 	tlpid=start_logger();
 	sleep(1);
@@ -536,7 +536,7 @@ int main(int argc, char *argv[])
 	memset(data_array, 0, sizeof(data_array));
 	my_event_data[0].data_array=data_array[0];
 	TraceEvent(_NTO_TRACE_ADDEVENTHANDLER, _NTO_TRACE_THREAD,1<<STATE_READY, event_handler, &my_event_data[0]);
-	
+
 	errno=0;
 	rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 	if (rc==-1) {
@@ -549,26 +549,26 @@ int main(int argc, char *argv[])
 
 	}
 	/* Now, setup the traceparser lib to pull out the thread state events
-	 * and make sure our event shows up 
+	 * and make sure our event shows up
 	 */
 	tp_state=traceparser_init(NULL);
 	assert(tp_state!=NULL);
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_THREAD, _NTO_TRACE_THDEAD, _NTO_TRACE_THDESTROY);
 
-	/* Since we don't want a bunch of output being displayed in the 
+	/* Since we don't want a bunch of output being displayed in the
 	 * middle of the tests, turn off verbose output.
 	 */
 	traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 	/* Set correct_values to 0, so we can see if the callback actually
-	 * got called. 
+	 * got called.
 	 */
 	correct_values=0;
 	/* And parse the tracebuffer */
 	traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-	
+
 	if ((correct_values<=correct_values_eh)  && (correct_values>0))
 		testpntpass("Good");
-	else if (correct_values==0) 
+	else if (correct_values==0)
 		testpntfail("No events were logged");
 	else if (correct_values_eh<correct_values)
 		testpntfail("Different number of events in eventhandler and tracebuffer");
@@ -580,17 +580,17 @@ int main(int argc, char *argv[])
 
 	/***********************************************************************/
 	/*
-	 * At the time of writing, there is a system limit of 64 event handlers 
-	 * that can be attached at one time. Try to attach 64 to make sure it 
+	 * At the time of writing, there is a system limit of 64 event handlers
+	 * that can be attached at one time. Try to attach 64 to make sure it
 	 * works as expected.
 	 */
  	testpntbegin("64 event handlers attached");
 	to_return=1;
 	correct_values_eh=0;
-		
+
 	/* We need to start up the tracelogger in daemon mode, 1 itteration.
-	 * we will filter out everything other then our thread state, then 
-	 * start logging. 
+	 * we will filter out everything other then our thread state, then
+	 * start logging.
 	 */
 	tlpid=start_logger();
 	sleep(1);
@@ -621,29 +621,29 @@ int main(int argc, char *argv[])
 
 	}
 	/* Now, setup the traceparser lib to pull out the thread state events
-	 * and make sure our event shows up 
+	 * and make sure our event shows up
 	 */
 	tp_state=traceparser_init(NULL);
 	assert(tp_state!=NULL);
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_KERCALLENTER, 0, 64);
 
-	/* Since we don't want a bunch of output being displayed in the 
+	/* Since we don't want a bunch of output being displayed in the
 	 * middle of the tests, turn off verbose output.
 	 */
 	traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 	/* Set correct_values to 0, so we can see if the callback actually
-	 * got called. 
+	 * got called.
 	 */
 	correct_values=0;
 	/* And parse the tracebuffer */
 	traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-	
+
 	if (x<64) {
 		snprintf(buf,sizeof(buf), "Could only attach %d event handler\n", x);
 		testpntfail(buf);
 	} else if ((correct_values<=correct_values_eh)  && (correct_values>0))
 		testpntpass("Good");
-	else if (correct_values==0) 
+	else if (correct_values==0)
 		testpntfail("No events were logged");
 	else if (correct_values_eh<correct_values)
 		testpntfail("Different number of events in eventhandler and tracebuffer");
@@ -657,17 +657,17 @@ int main(int argc, char *argv[])
 
 	/***********************************************************************/
 	/*
-	 * At the time of writing, there is a system limit of 64 event handlers 
+	 * At the time of writing, there is a system limit of 64 event handlers
 	 * that can be attached at one time. Try to attach more then 64 to make
 	 * sure it works as expected.
 	 */
  	testpntbegin("More then 64 event handlers attached");
 	to_return=1;
 	correct_values_eh=0;
-		
+
 	/* We need to start up the tracelogger in daemon mode, 1 itteration.
-	 * we will filter out everything other then our thread state, then 
-	 * start logging. 
+	 * we will filter out everything other then our thread state, then
+	 * start logging.
 	 */
 	tlpid=start_logger();
 	sleep(1);
@@ -706,23 +706,23 @@ int main(int argc, char *argv[])
 
 	}
 	/* Now, setup the traceparser lib to pull out the thread state events
-	 * and make sure our event shows up 
+	 * and make sure our event shows up
 	 */
 	tp_state=traceparser_init(NULL);
 	assert(tp_state!=NULL);
 	traceparser_cs_range(tp_state, NULL, parse_cb,_NTO_TRACE_KERCALLENTER, 0, 64);
 
-	/* Since we don't want a bunch of output being displayed in the 
+	/* Since we don't want a bunch of output being displayed in the
 	 * middle of the tests, turn off verbose output.
 	 */
 	traceparser_debug(tp_state, stdout, _TRACEPARSER_DEBUG_NONE);
 	/* Set correct_values to 0, so we can see if the callback actually
-	 * got called. 
+	 * got called.
 	 */
 	correct_values=0;
 	/* And parse the tracebuffer */
 	traceparser(tp_state, NULL, "/dev/shmem/tracebuffer");
-	
+
 	if (firstfail<64) {
 		snprintf(buf,sizeof(buf), "Could only attach %d event handler\n", firstfail);
 		testpntfail(buf);
@@ -731,7 +731,7 @@ int main(int argc, char *argv[])
 		testpntfail(buf);
 	} else if ((correct_values<=correct_values_eh)  && (correct_values>0))
 		testpntpass("Good");
-	else if (correct_values==0) 
+	else if (correct_values==0)
 		testpntfail("No events were logged");
 	else if (correct_values_eh<correct_values)
 		testpntfail("Different number of events in eventhandler and tracebuffer");
@@ -745,18 +745,18 @@ int main(int argc, char *argv[])
 
 	/***********************************************************************/
 	/*
-	 * At the time of writing, there is a system limit of 64 event handlers 
+	 * At the time of writing, there is a system limit of 64 event handlers
 	 * that can be attached at one time. Try to attach more then 64 to make
 	 * sure it works as expected.
 	 * This test will do the same as above, but it will fork a child to add
-	 * the event handlers. The child will then exit without starting 
+	 * the event handlers. The child will then exit without starting
 	 * tracelogger or removing the event handlers. This is just to make
 	 * sure it does not cause any problems.
 	 */
  	testpntbegin("64+ event handlers - not cleaned up ");
 	to_return=1;
 	correct_values_eh=0;
-		
+
 	child=fork();
 	assert(child!=-1);
 	if (child==0) {
@@ -781,7 +781,7 @@ int main(int argc, char *argv[])
 			rc=TraceEvent(_NTO_TRACE_ADDEVENTHANDLER,(x>45)?_NTO_TRACE_THREAD:_NTO_TRACE_KERCALLENTER,events[x], event_handler, &my_event_data[x]);
 			if ((rc==-1) &&(firstfail==-1))
 				firstfail=x;
-	
+
 		}
 		exit(0);
 	}
@@ -799,7 +799,7 @@ int main(int argc, char *argv[])
  	testpntend();
 	/***********************************************************************/
 	/* If the tracelogger was running when we started, we should restart it again */
-	if (tlkilled==1) 
+	if (tlkilled==1)
 		system("reopen /dev/null ; tracelogger -n 0 -f /dev/null &");
 
 	teststop(argv[0]);

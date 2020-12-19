@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -50,7 +50,7 @@ enum
 	// we return 1 if the expr evaluated to 0 or null
 	// ...go figure, huh?
 	EXPR_TRUE 		= 0,
-	EXPR_FALSE 		= 1, 
+	EXPR_FALSE 		= 1,
 	EXPR_INVALID	 	= 2, // the expr was invalid
 	EXPR_OTHER_ERROR	= 3  // some other error occured
 };
@@ -83,11 +83,11 @@ char *expr(int, int);
 char *eval(char *, int, char *);
 char *tostr(long);
 
-struct op 
+struct op
 {
 	char *op_text;
 	short op_num, op_prio;
-} ops[] = 
+} ops[] =
 	{
 		{"|",	OR,	6},
 		{"&",	AND,	5},
@@ -112,7 +112,7 @@ char **ip;
 struct op *ip_op;
 int  stringFLAG;
 
-char *tostr(long l) 
+char *tostr(long l)
 {
 	static char buf[26];
 	char *p;
@@ -122,13 +122,13 @@ char *tostr(long l)
 	if (p == 0)
 	{
 		fprintf (stderr, "expr error: out of memory.\n");
-		exit (EXPR_OTHER_ERROR);	
+		exit (EXPR_OTHER_ERROR);
 	}
 	return p;
 }
 
 
-enum token lex(char *s) 
+enum token lex(char *s)
 {
 	struct op *op = ops;
 
@@ -147,7 +147,7 @@ enum token lex(char *s)
 	return OPERAND;
 }
 
-void syntax() 
+void syntax()
 {
 	fprintf (stderr, "expr error: invalid syntax\n");
 	exit(EXPR_INVALID);
@@ -171,7 +171,7 @@ long num(char *s)
 	return sign * l;
 }
 
-char *expr(int n, int prio) 
+char *expr(int n, int prio)
 {
 	char *res = ""; // to shutup the compiler
 
@@ -186,7 +186,7 @@ char *expr(int n, int prio)
 		else
 			res = expr(n, prio - 1);
 		}
-	else if (n == OPERAND) 
+	else if (n == OPERAND)
 		{
 		if (prio == 0)
 			return(*ip);
@@ -208,7 +208,7 @@ fprintf( stderr, "res: %s\n", res );
 }
 
 
-char *eval(char *s1, int op, char *s2) 
+char *eval(char *s1, int op, char *s2)
 {
 	regex_t re;
 	regmatch_t rem[2];
@@ -216,7 +216,7 @@ char *eval(char *s1, int op, char *s2)
 	char *end1, *end2;
 	char  *buf;
 	size_t buflen;
-	
+
 	l1 = strtol( s1, &end1, 0 );
 	l2 = strtol( s2, &end2, 0 );
 
@@ -261,7 +261,7 @@ fprintf( stderr, "op:%d strings 1:%s  2:%s\n", op, s1, s2 );
 					char *p;
 					if (*s2 == '^')
 					{
-						// warn about lack of portability since patterns are 
+						// warn about lack of portability since patterns are
 						// supposed to be anchored at the beginning of a string
 						// according to Posix.2
 						fprintf (stderr, "expr warning: using '^' to anchor pattern matching is not portable. !%s!%s!\n", s1, s2);
@@ -287,7 +287,7 @@ fprintf( stderr, "op:%d strings 1:%s  2:%s\n", op, s1, s2 );
 				}
 				else
 				{	// force a "" string match on an empty pattern; regexec won't
-					rem[0].rm_eo = rem[0].rm_so = 0;	
+					rem[0].rm_eo = rem[0].rm_so = 0;
 				}
 
 #ifdef DEBUG
@@ -314,7 +314,7 @@ fprintf( stderr, ":op L=%ld rem[0].rm_sp=%x rem[0].rm_ep=%x rem[1].rm_sp=%x rem[
 					buf[length] = '\0';
 				}
 				return (buf);
-	
+
 			default:
 				fprintf (stderr, "expr error: invalid string operator.\n");
 				exit (EXPR_INVALID);
@@ -325,7 +325,7 @@ fprintf( stderr, ":op L=%ld rem[0].rm_sp=%x rem[0].rm_ep=%x rem[1].rm_sp=%x rem[
 #ifdef DEBUG
 fprintf( stderr, "op:%d integers 1:%ld:%s  2:%ld:%s\n", op, l1, s1, l2, s2 );
 #endif
-		switch (op) 
+		switch (op)
 		{
 			case OR:	return((l1) ? s1 : s2);
 			case AND:	return((l1 && l2) ? s1 : "0");
@@ -361,8 +361,8 @@ fprintf( stderr, "op:%d integers 1:%ld:%s  2:%ld:%s\n", op, l1, s1, l2, s2 );
 	exit(EXPR_INVALID);
 }
 
-int 
-main(int argc, char *argv[]) 
+int
+main(int argc, char *argv[])
 {
 	char *res, *endptr;
 	long result;
@@ -391,8 +391,8 @@ main(int argc, char *argv[])
 	printf("%s\n", res);
 
 	// the return value is 1 if the result is
-	// either "" or 0; so convert the result to 	
-	// a number. if the number is 0 *and* there 
+	// either "" or 0; so convert the result to
+	// a number. if the number is 0 *and* there
 	// are no trailing letters, then the result
 	// is 0 or null. we need to check if there
 	// are trailing numbers because "0abc" gets

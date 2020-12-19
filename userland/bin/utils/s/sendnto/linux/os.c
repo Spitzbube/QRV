@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -45,73 +45,73 @@ opendevice(const char *devicename, int baud) {
 
 		if(baud != -1) {
 			switch(baud) {
-			#ifdef B0	
-				case 0	    : baud_index = B0;		break; 
+			#ifdef B0
+				case 0	    : baud_index = B0;		break;
 			#endif
-			#ifdef B50	
-				case 50     : baud_index = B50;		break; 
+			#ifdef B50
+				case 50     : baud_index = B50;		break;
 			#endif
-			#ifdef B75	
-				case 75     : baud_index = B75;		break; 
+			#ifdef B75
+				case 75     : baud_index = B75;		break;
 			#endif
-			#ifdef B110	
-				case 110    : baud_index = B110;	break; 
+			#ifdef B110
+				case 110    : baud_index = B110;	break;
 			#endif
-			#ifdef B134	
-				case 134    : baud_index = B134;	break; 
+			#ifdef B134
+				case 134    : baud_index = B134;	break;
 			#endif
-			#ifdef B150	
-				case 150    : baud_index = B150;	break; 
+			#ifdef B150
+				case 150    : baud_index = B150;	break;
 			#endif
-			#ifdef B200	
-				case 200    : baud_index = B200;	break; 
+			#ifdef B200
+				case 200    : baud_index = B200;	break;
 			#endif
-			#ifdef B300	
-				case 300    : baud_index = B300;	break; 
+			#ifdef B300
+				case 300    : baud_index = B300;	break;
 			#endif
-			#ifdef B600	
-				case 600    : baud_index = B600;	break; 
+			#ifdef B600
+				case 600    : baud_index = B600;	break;
 			#endif
-			#ifdef B1200	
-				case 1200   : baud_index = B1200;	break; 
+			#ifdef B1200
+				case 1200   : baud_index = B1200;	break;
 			#endif
-			#ifdef B1800	
-				case 1800   : baud_index = B1800;	break; 
+			#ifdef B1800
+				case 1800   : baud_index = B1800;	break;
 			#endif
-			#ifdef B2400	
-				case 2400   : baud_index = B2400;	break; 
+			#ifdef B2400
+				case 2400   : baud_index = B2400;	break;
 			#endif
-			#ifdef B4800	
-				case 4800   : baud_index = B4800;	break; 
+			#ifdef B4800
+				case 4800   : baud_index = B4800;	break;
 			#endif
-			#ifdef B9600	
-				case 9600   : baud_index = B9600;	break; 
+			#ifdef B9600
+				case 9600   : baud_index = B9600;	break;
 			#endif
-			#ifdef B19200	
-				case 19200  : baud_index = B19200;	break; 
+			#ifdef B19200
+				case 19200  : baud_index = B19200;	break;
 			#endif
-			#ifdef B38400	
-				case 38400  : baud_index = B38400;	break; 
+			#ifdef B38400
+				case 38400  : baud_index = B38400;	break;
 			#endif
-			#ifdef B57600	
-				case 57600  : baud_index = B57600;	break; 
+			#ifdef B57600
+				case 57600  : baud_index = B57600;	break;
 			#endif
-			#ifdef B76800	
-				case 76800  : baud_index = B76800;	break; 
+			#ifdef B76800
+				case 76800  : baud_index = B76800;	break;
 			#endif
-			#ifdef B115200	
-				case 115200 : baud_index = B115200;	break; 
+			#ifdef B115200
+				case 115200 : baud_index = B115200;	break;
 			#endif
-			#ifdef B153600	
-				case 153600 : baud_index = B153600;	break; 
+			#ifdef B153600
+				case 153600 : baud_index = B153600;	break;
 			#endif
-			#ifdef B230400	
-				case 230400 : baud_index = B230400;	break; 
+			#ifdef B230400
+				case 230400 : baud_index = B230400;	break;
 			#endif
-			#ifdef B307200	
-				case 307200 : baud_index = B307200;	break; 
+			#ifdef B307200
+				case 307200 : baud_index = B307200;	break;
 			#endif
-			#ifdef B460800	
+			#ifdef B460800
 				case 460800 : baud_index = B460800;	break;
 			#endif
 				default:
@@ -161,7 +161,7 @@ getdevice(int fd, int timeout) {
 	void (*ofunc)();
 
 	// wait previous tx to complete before doing read
-	if (tcdrain(fd)) { 
+	if (tcdrain(fd)) {
 		fprintf(stderr,"tcdrain() failed, errno = %d\n",errno);
 	}
 

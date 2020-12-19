@@ -31,7 +31,7 @@
 
 /* Given a hash value and a new character, return a new hash value.  */
 #define HASH(h, c) ((c) + ROL (h, 7))
-
+
 /* The type of a hash value.  */
 typedef size_t hash_value;
 verify (hash_value_is_unsigned, ! TYPE_SIGNED (hash_value));
@@ -65,7 +65,7 @@ static lin equivs_index;
 
 /* Number of elements allocated in the array `equivs'.  */
 static lin equivs_alloc;
-
+
 /* Read a block of data into a file buffer, checking for EOF and error.  */
 
 void
@@ -81,7 +81,7 @@ file_block_read (struct file_data *current, size_t size)
       current->eof = s < size;
     }
 }
-
+
 /* Check for binary files and compare them for exact identity.  */
 
 /* Return 1 if BUF contains a non text character.
@@ -209,7 +209,7 @@ slurp (struct file_data *current)
       current->buffer = xrealloc (current->buffer, current->bufsize);
     }
 }
-
+
 /* Split the file into lines, simultaneously computing the equivalence
    class for each line.  */
 
@@ -505,7 +505,7 @@ find_and_hash_each_line (struct file_data *current)
   equivs_alloc = eqs_alloc;
   equivs_index = eqs_index;
 }
-
+
 /* Prepare the text.  Make sure the text end is initialized.
    Make sure text ends in a newline,
    but remember that we had to add one.
@@ -546,7 +546,7 @@ prepare_text (struct file_data *current)
 
   current->buffered = buffered;
 }
-
+
 /* We have found N lines in a buffer of size S; guess the
    proportionate number of lines that will be found in a buffer of
    size T.  However, do not guess a number of lines so large that the
@@ -777,7 +777,7 @@ find_identical_ends (struct file_data filevec[])
   filevec[1].alloc_lines = alloc_lines1 - buffered_prefix;
   filevec[0].prefix_lines = filevec[1].prefix_lines = lines;
 }
-
+
 /* If 1 < k, then (2**k - prime_offset[k]) is the largest prime less
    than 2**k.  This table is derived from Chris K. Caldwell's list
    <http://www.utm.edu/research/primes/lists/2small/>.  */

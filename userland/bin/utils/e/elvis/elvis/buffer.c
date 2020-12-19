@@ -43,7 +43,7 @@ BUFFER bufdefault;
 MSGIMP bufmsgtype = MSG_INFO;
 
 /* This buffer's contents are irrelevent.  The values of its options, though,
- * are significant because the values of its options are used as the default 
+ * are significant because the values of its options are used as the default
  * values of any new buffer.  This buffer is also used as the default buffer
  * during execution of the initialization scripts.
  */
@@ -256,7 +256,7 @@ static void proc(bufinfo, nchars, nlines, changes, prevloc, name)
 	     scan && scan->changes > changes;
 	     lag = scan, scan = scan->next)
 	{
-	} 
+	}
 	undo->next = scan;
 	if (lag)
 	{
@@ -360,7 +360,7 @@ BUFFER bufalloc(name, bufinfo, internal)
 		optpreset(o_tabstop(buffer),
 			(short *)safealloc(2 + o_tabstop(bufdefopts)[0],
 			sizeof(short)), OPT_FREE|OPT_REDRAW);
-		    memcpy(o_tabstop(buffer), o_tabstop(bufdefopts), 
+		    memcpy(o_tabstop(buffer), o_tabstop(bufdefopts),
 			    (2 + o_tabstop(bufdefopts)[0]) * sizeof(short));
 		optpreset(o_shiftwidth(buffer),
 			(short *)safealloc(2 + o_shiftwidth(bufdefopts)[0],
@@ -1659,7 +1659,7 @@ ELVBOOL bufwrite(from, to, wfile, force)
 		/* buffer is no longer modified */
 		o_modified(buf) = ElvFalse;
 		o_newfile(buf) = ElvFalse;
-		
+
 		/* if the original file was overwritten, then reset the
 		 * readonly flag because apparently the file isn't readonly.
 		 */

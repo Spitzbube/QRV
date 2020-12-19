@@ -689,7 +689,7 @@ void x_dl_add(xw, name, desc, excmd, spec)
 	/* input event selection */
 	XSelectInput(x_display, dia->win,
 	    KeyPressMask | KeyReleaseMask |
-	    ButtonPressMask | ButtonMotionMask | ButtonReleaseMask | 
+	    ButtonPressMask | ButtonMotionMask | ButtonReleaseMask |
 	    FocusChangeMask | StructureNotifyMask | ExposureMask);
 
 	/* map the window */
@@ -1216,7 +1216,7 @@ static void exposerow(dia, row, fromscratch)
 				else
 					newstate = 0;
 			else
-				if (row == dia->current && CHARlen(dia->field[row].value) - dia->shift > STRING_LENGTH) 
+				if (row == dia->current && CHARlen(dia->field[row].value) - dia->shift > STRING_LENGTH)
 					newstate = 2;
 				else
 					newstate = 0;
@@ -1258,7 +1258,7 @@ static void expose(dia)
 	gcv.ts_x_origin = 2;
 	gcv.ts_y_origin = 2;
 	gcv.stipple = dia->pinned ? x_elvis_pin_icon : x_elvis_icon;
-	gcv.fill_style = FillStippled; 
+	gcv.fill_style = FillStippled;
 	gcv.foreground = colorinfo[x_toolcolors].fg;
 	gcv.background = colorinfo[x_toolbarcolors].bg;
 	XChangeGC(x_display, dia->gc,
@@ -1456,7 +1456,7 @@ void x_dl_event(w, event)
 			keystroke(dia, key);
 			break;
 		}
-			
+
 		/* clicked on a button? */
 		btn = findbutton(dia, event->xbutton.x, event->xbutton.y);
 		if (btn)

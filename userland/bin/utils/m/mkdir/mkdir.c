@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -62,23 +62,23 @@ Where:
 	Revision 1.25  2007/04/17 14:38:21  aristovski
 	PR: 46523
 	CI: rmansfield
-	
+
 	Added mkdir define. in windows (mingw), second orgument (mode) does not exist.
-	
+
 	Revision 1.24  2007/04/03 19:49:53  jbaker
-	
+
 	PR: 46248
 	CI: rmansfield
-	
+
 	port our mkdir to cygwin.
-	
+
 	Revision 1.23  2006/11/02 16:53:34  seanb
-	
+
 	- 'mkdir -p' failing without error.
 	- Also fixed some vararg and buffer overrun issues.
 	PR:42551
 	CI:jgarvey
-	
+
 	Revision 1.22  2006/07/06 16:13:47  jgarvey
 	PR/39300
 	Ignore final EEXIST error.  The form_path() routine can go one
@@ -90,43 +90,43 @@ Where:
 	and lstat probes did not identify such a situation, so it must be due
 	to this utility having alerady created the directory in form_path()).
 	CI: sboucher
-	
+
 	Revision 1.21  2005/06/03 01:37:50  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.20  2005/04/07 15:16:23  kewarken
 	Final fix for PR:19533.  Remove -s option
-	
+
 	Revision 1.19  2005/02/03 21:45:18  mshane
 	Removed somewhat offensive comments at the request of dkeefe.
 	CR:Marcind
-	
+
 	Revision 1.18  2005/01/31 20:07:33  kewarken
 	Removed '-s' option from use message.  Also removed QNX4isms since they are
 	preserved in the QNX4 cvs tree.
-	
+
 	Revision 1.17  2003/08/26 18:56:25  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.16  2001/12/13 19:47:15  kewarken
 	fix for PR:9688 - mask for permissions was wrong
-	
+
 	Revision 1.15  2001/03/16 14:47:38  kewarken
 	fixed excess verbosity with -p option
-	
+
 	Revision 1.14  2000/07/31 18:24:59  thomasf
 	Partially addresses PR 2313, but in a very round about kind of way.
-	
+
 	Revision 1.13  1998/09/18 13:58:48  builder
 	gcc cleanup
-	
+
 	Revision 1.12  1998/09/15 18:44:03  eric
 	cvs
 
@@ -174,7 +174,7 @@ Where:
  * Revision 1.1  1991/09/04  01:30:21  brianc
  * Initial revision
  *
-	
+
 ---------------------------------------------------------------------*/
 
 #include <lib/compat.h>
@@ -192,7 +192,7 @@ Where:
 #endif
 
 #define FALSE 0
-#define TRUE  !(FALSE) 
+#define TRUE  !(FALSE)
 
 #define SKIP_TO_SLASH(p)	{for(;*p && *p!='/';p++);}
 #define isoctal(c)           (c>='0' && c<='7')
@@ -232,9 +232,9 @@ int main(int argc, char **argv)
 	dir_mode = mode | (S_IWUSR | S_IXUSR );
 
 	while(( i= getopt( argc, argv, "pm:")) != -1)
-	{	switch (i) 	
-		{	case 'p': pathflag++;                 
-					  break;                   
+	{	switch (i)
+		{	case 'p': pathflag++;
+					  break;
 
 			case 'm': modeflag++;
 					  mode_str = optarg;
@@ -245,7 +245,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if (optind >= argc) {     
+	if (optind >= argc) {
 		fprintf(stderr,"mkdir: no directory specified\n");
 		error++;
 	}
@@ -257,12 +257,12 @@ int main(int argc, char **argv)
 
 	for( ; optind < argc; optind++ ) {
 		filename = argv[optind];
-		
+
 		rmtrailslash(filename);
-		
+
 		if ((dir=mkdir(filename, mode))==-1) {
 			if (!pathflag) {
-				prerror("mkdir: %s",filename); 
+				prerror("mkdir: %s",filename);
 				error++;
 				continue;
 			} else if ( errno == EEXIST || errno == EPERM || errno == EACCES ) {
@@ -284,7 +284,7 @@ int main(int argc, char **argv)
 				else if (!S_ISDIR(buf.st_mode)) {
 					/* not an existing directory - this is an error */
 					errno=EEXIST;
-				}		
+				}
 				else {
 					/* else the already existing file is a directory;
 					in -p mode this is not an error */
@@ -303,7 +303,7 @@ int main(int argc, char **argv)
 				} else error++;	/* printed err msg was displayed in form_path() */
 			}
 		}
-	}                    
+	}
 
 	exit(error?EXIT_FAILURE:EXIT_SUCCESS);
 }
@@ -312,7 +312,7 @@ int parse(char *mode_str, int cur_mode, int create_mask)
 {
 	int len,i;
 	int mode;
-	
+
 	len = i = 0;
 	if (isoctal(*mode_str) )        /* parse mode */
 	{
@@ -335,7 +335,7 @@ int parse(char *mode_str, int cur_mode, int create_mask)
 		return(mode);
 	}
 }
-	
+
 
 void buildpath(char *path, int mode )
 {
@@ -419,7 +419,7 @@ int		cur_mode, who, op, perm;
 				default:		report_error(1,"Invalid Mode Specification\n");	break;
 				}
 			}
-	
+
 		if (!exit_loop) report_error(1,"Invalid Mode Specification\n");
 
 
@@ -452,7 +452,7 @@ int		cur_mode, who, op, perm;
 				}
 			}
 		}
-	
+
 	/*
 	 * Mode Spec Parsing Completed.  Return final mode integer value
 	 */
@@ -470,7 +470,7 @@ void process_perm(int perm, int who, int op, int *cur_mode, int creat_mask )
 		case MP_SETUID:	A = S_ISUID; B = S_ISGID; C = 0;		break;
 		default:												break;
 		}
-	
+
 	if ( op == MP_SET || op ==MP_ASSIGN){
 		if ( who & MP_USER )
 			*cur_mode |= A;
@@ -512,7 +512,7 @@ mode_t cur_mode = 0;
 		case MP_SETUID:	A = S_ISUID; B = S_ISGID; C = 0;		break;
 		default:												break;
 	}
-	
+
 	if ( who & MP_USER ) 		cur_mode |= A;
 	if ( who & MP_GROUP ) 		cur_mode |= B;
 	if ( who & MP_OTHER ) 		cur_mode |= C;
@@ -523,8 +523,8 @@ int octnum(char c)
 {
 	if (sum>=450) return(FALSE);   /* bounds checking, highest 6777 octal */
 
-	if( isoctal(c) )    
-	{	sum *= 8;                  
+	if( isoctal(c) )
+	{	sum *= 8;
 		sum += ( c - '0');
 	}
 	else
@@ -532,7 +532,7 @@ int octnum(char c)
 		return(FALSE);
 	}
 	return(TRUE);
-}       
+}
 
 
 /***************************************************************************
@@ -564,7 +564,7 @@ int form_path(char *fullpath)
 	} else if (fullpath[0] == '/') ptr++;
 
 	SKIP_TO_SLASH(ptr);
-	
+
 	for (;*ptr;) {
 		*ptr = (char)0x00;
 		#ifdef DIAG
@@ -605,7 +605,7 @@ void prerror(const char *format, ...)
 {
         va_list arglist;
         char buffer[512];
-   
+
         va_start(arglist, format);
         vsnprintf(buffer, sizeof(buffer), format, arglist);
         va_end(arglist);
@@ -616,7 +616,7 @@ void aberror(const char *format, ...)
 {
         va_list arglist;
         char buffer[512];
-   
+
 	va_start(arglist, format);
 	if (errno != EOK) {
 		vsnprintf(buffer, sizeof(buffer), format, arglist);
@@ -633,7 +633,7 @@ void aberror(const char *format, ...)
 void abprt(const char *format, ...)
 {
         va_list arglist;
-   
+
         va_start(arglist, format);
         vfprintf(stderr, format, arglist);
         va_end(arglist);

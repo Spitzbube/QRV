@@ -1,22 +1,22 @@
 /*
- * $QNXLicenseC: 
- * Copyright 2007, 2008, QNX Software Systems.  
- *  
- * Licensed under the Apache License, Version 2.0 (the "License"). You  
- * may not reproduce, modify or distribute this software except in  
- * compliance with the License. You may obtain a copy of the License  
- * at: http://www.apache.org/licenses/LICENSE-2.0  
- *  
- * Unless required by applicable law or agreed to in writing, software  
- * distributed under the License is distributed on an "AS IS" basis,  
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied. 
- * 
- * This file may contain contributions from others, either as  
- * contributors under the License or as licensors under other terms.   
- * Please review this entire file for other proprietary rights or license  
- * notices, as well as the QNX Development Suite License Guide at  
- * http://licensing.qnx.com/license-guide/ for other information. 
- * $ 
+ * $QNXLicenseC:
+ * Copyright 2007, 2008, QNX Software Systems.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"). You
+ * may not reproduce, modify or distribute this software except in
+ * compliance with the License. You may obtain a copy of the License
+ * at: http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
+ *
+ * This file may contain contributions from others, either as
+ * contributors under the License or as licensors under other terms.
+ * Please review this entire file for other proprietary rights or license
+ * notices, as well as the QNX Development Suite License Guide at
+ * http://licensing.qnx.com/license-guide/ for other information.
+ * $
  */
 
 
@@ -25,7 +25,7 @@
 #include <fcntl.h>
 #include <hw/i2c.h>
 
-/* 
+/*
  * RA-8581 Serial RTC on GE Energy UCSA board
  */
 #define RA8581_SEC          0
@@ -35,7 +35,7 @@
 #define RA8581_DATE         4
 #define RA8581_MONTH        5
 #define RA8581_YEAR         6
-#define RA8581_CTRL        15 
+#define RA8581_CTRL        15
 
 
 #define PCA9544_I2C_ADDRESS	(0xE0 >> 1)
@@ -161,7 +161,7 @@ done:
 int
 RTCFUNC(init,ucsa)(struct chip_loc *chip, char *argv[])
 {
-    fd = open((argv && argv[0] && argv[0][0])? 
+    fd = open((argv && argv[0] && argv[0][0])?
             argv[0]: RA8581_I2C_DEVNAME, O_RDWR);
     if (fd < 0) {
         fprintf(stderr, "Unable to open I2C device\n");
@@ -189,7 +189,7 @@ RTCFUNC(get,ucsa)(struct tm *tm, int cent_reg)
 			break;
 	}
 
-    if (tm->tm_year < 70) 
+    if (tm->tm_year < 70)
         tm->tm_year += 100;
 
     return (0);
@@ -200,7 +200,7 @@ RTCFUNC(set,ucsa)(struct tm *tm, int cent_reg)
 {
     uint8_t   date[7];
 
-    date[RA8581_SEC]   = BIN2BCD(tm->tm_sec); 
+    date[RA8581_SEC]   = BIN2BCD(tm->tm_sec);
     date[RA8581_MIN]   = BIN2BCD(tm->tm_min);
     date[RA8581_HOUR]  = BIN2BCD(tm->tm_hour);
     date[RA8581_DATE]  = BIN2BCD(tm->tm_mday);

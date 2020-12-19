@@ -138,7 +138,7 @@ XRenderPictFormat *XRenderFindVisualFormat(Display *dpy, Visual *visual)
 XRenderPictFormat *XRenderFindFormat(Display *dpy, unsigned long mask, XRenderPictFormat *templ, int count)
 {
 }
-    
+
 /* <X11/extensions/Xrender.h> */
 Picture XRenderCreatePicture(Display *dpy, Drawable drawable, XRenderPictFormat *format, unsigned long valuemask, XRenderPictureAttributes *attributes)
 {
@@ -355,10 +355,10 @@ typedef unsigned int XftChar32;
 
 /* <X11/Xft/Xft.h> */
 typedef enum _XftType {
-    XftTypeVoid, 
-    XftTypeInteger, 
-    XftTypeDouble, 
-    XftTypeString, 
+    XftTypeVoid,
+    XftTypeInteger,
+    XftTypeDouble,
+    XftTypeString,
     XftTypeBool,
     XftTypeMatrix
 } XftType;

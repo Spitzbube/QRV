@@ -387,7 +387,7 @@ char *dirpath(dir, file)
     static char *path2=0;
     static char *path=path1;
     int filelen=strlen(file);
-#else    
+#else
 	static char	path[NAME_MAX + 1];
 #endif
 	int		len;
@@ -490,7 +490,7 @@ char *expanduserhome(pathname, dest)
 	{
 		strcpy(dest, pathname);
 	}
-	
+
 	return(dest);
 }
 #endif /* FEATURE_MISC */

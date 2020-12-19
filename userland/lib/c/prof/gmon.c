@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -92,14 +92,14 @@ void moncontrol __P((int));
 extern char *__progname;
 
 static int
-qconn_map_add(struct gmon_arc_param *p) 
+qconn_map_add(struct gmon_arc_param *p)
 {
 	int       shmem_fd, ret = 0;
 	char      path[128];
 	char      *cp;
 	struct __prof_clientinfo *c;
 	int size;
-	
+
 	sprintf(path, "/dev/shmem/prof-%d-%d", getpid(), ++__shmem_key);
 #ifdef DEBUG
 	fprintf(stderr, "shmem name %s\n", path);
@@ -178,11 +178,11 @@ qconn_map_remove(struct gmon_arc_param *p)
 		c.cmd = PROF_CMD_ARCS | PROF_CMD_REMOVE_MAPPING;
 	}
 	c.lowpc = p->lowpc;
-	c.highpc = p->highpc;		
+	c.highpc = p->highpc;
 	devctl(prof_fd, DCMD_PROF_MAPPING_REM, &c, sizeof c, 0);
 }
 
-static int 
+static int
 get_arc_density() {
 	char *user_value, *end;
 	int density = 0;
@@ -194,7 +194,7 @@ get_arc_density() {
 			density = 0;
 		}
 	}
-	
+
 	if(density <= 0 || density >= 100) {
 		density = ARCDENSITY;
 	}
@@ -202,12 +202,12 @@ get_arc_density() {
 	return density;
 }
 
-static int 
-ldd_handler(Ldd_Eh_Data_t *ehd, void *data, unsigned flags) 
+static int
+ldd_handler(Ldd_Eh_Data_t *ehd, void *data, unsigned flags)
 {
 	char *libname = ehd->l_map->l_path;
 	struct gmonparam *p = (struct gmonparam *)data;
-	
+
 	if (flags & LDD_EH_DLL_LOAD) {
 		libname = strrchr(libname, '/');
 		if (libname != NULL) {
@@ -215,7 +215,7 @@ ldd_handler(Ldd_Eh_Data_t *ehd, void *data, unsigned flags)
 		} else {
 			libname = ehd->l_map->l_path;
 		}
-		if (strcmp(libname,__progname) != 0) {	
+		if (strcmp(libname,__progname) != 0) {
 			struct gmon_arc_param *arc_param = calloc(1, sizeof(struct gmon_arc_param));
 			if (arc_param != NULL) {
 				u_long lowpc = ehd->text_addr;
@@ -245,7 +245,7 @@ ldd_handler(Ldd_Eh_Data_t *ehd, void *data, unsigned flags)
 		struct gmon_arc_param *arc_param = _gmonparam.arc_param.next;
 		struct gmon_arc_param *prev = NULL;
 		while(arc_param) {
-			if (strcmp(libname, arc_param->name) == 0) { 
+			if (strcmp(libname, arc_param->name) == 0) {
 				if (prev == NULL) {
 					_gmonparam.arc_param.next = arc_param->next;
 				} else {
@@ -306,15 +306,15 @@ monstartup(u_long lowpc, u_long highpc, int argc, char **argv)
 	p->arc_param.pc_size = p->arc_param.pc_limit * sizeof(struct pc_struct);
 	p->arc_param.name = __progname;
 	p->arc_param.next = NULL;
-	
+
 	if (prof_fd != -1) {
 		p->kcountsize = 0; // qconn sampler being used.
 		p->kcount = NULL;
-		
+
 		memset(&c, 0, sizeof(c));
 		c.cmd = PROF_CMD_QUERY_SHLIB;
 		if (devctl(prof_fd, DCMD_PROF_QUERY, &c, sizeof c, 0) == EOK) {
-			if (qconn_map_add(&p->arc_param) != -1) {	
+			if (qconn_map_add(&p->arc_param) != -1) {
 				p->ldd_handle = __ldd_register_eh(ldd_handler, p, LDD_EH_DLL_LOAD | LDD_EH_DLL_UNLOAD | LDD_EH_DLL_REPLAY);
 			} else {
 				SET_GMON_STATE(p->arc_param.state_flags, GMON_PROF_OFF);
@@ -322,10 +322,10 @@ monstartup(u_long lowpc, u_long highpc, int argc, char **argv)
 			}
 		} else { // old qconn switch to old arc format
 			p->flags |= GMON_PARAM_FLAGS_FROM_TO_ARCS;
-			if (qconn_map_add(&p->arc_param) == -1) {	
+			if (qconn_map_add(&p->arc_param) == -1) {
 				SET_GMON_STATE(p->arc_param.state_flags, GMON_PROF_OFF);
 				fprintf(stderr, "monstartup: external profiler error (qconn_map_add - %s)\n", strerror(errno));
-			}			
+			}
 		}
 		memset(&c, 0, sizeof(c));
 		c.cmd = PROF_CMD_QUERY_THREAD;
@@ -382,7 +382,7 @@ _mcleanup()
 	int 			pc_index;
 	struct gmonparam *p = &_gmonparam;
 	struct gmon_arc_param *a = &_gmonparam.arc_param;
-		
+
 	struct gmonhdr  gmonhdr, *hdr;
 	struct gmon_hdr gmon_hdr, *ghdr;
 	struct gmon_hist_hdr gmon_hist, *hist;
@@ -421,9 +421,9 @@ _mcleanup()
 		}
 		return;
 	}
-	
+
 	/* Else we output the traditional gmon.out file */
-	
+
 	tmp = getenv("PROFDIR");
 	if(tmp)
 		sprintf(gmon_out,"%s/gmon.out.%d.%s", tmp, getpid(), __progname);
@@ -542,7 +542,7 @@ void moncontrol(int mode)
  * Code coverage cleanup called on executable exit
  * Output data in gcov format if we have no external profiler
  */
-void 
+void
 __attribute__((weak)) __bb_exit_func(void)
 {
 	FILE *da_file;
@@ -563,7 +563,7 @@ __attribute__((weak)) __bb_exit_func(void)
 			if (da_file == NULL) {
 				da_file = fopen(basename((char *)ptr->filename), "wb");
 			}
-			
+
 			if (!da_file)
 			{
 				fprintf (stderr, "arc profiling: Can't open output file %s.\n",
@@ -572,7 +572,7 @@ __attribute__((weak)) __bb_exit_func(void)
 				ptr = ptr->next;
 				continue;
 			}
-			
+
 			/* We have an FD, write out bb info */
 			(void) __write_long(ptr->ncounts, da_file, 8);
 			for(i = 0; i < ptr->ncounts; i++) {
@@ -585,10 +585,10 @@ __attribute__((weak)) __bb_exit_func(void)
 }
 
 /*
- * Constructor hook to link all basic-block and coverage structures on 
+ * Constructor hook to link all basic-block and coverage structures on
  * executable startup
  */
-void 
+void
 __attribute__((weak)) __bb_init_func(struct __bb * block)
 {
 
@@ -599,7 +599,7 @@ __attribute__((weak)) __bb_init_func(struct __bb * block)
 		(void)atexit(__bb_exit_func);
 	}
 	block->zero_word = 1;
-	block->next = bb_head;	
+	block->next = bb_head;
 	bb_head = block;
 }
 

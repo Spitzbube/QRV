@@ -1,6 +1,6 @@
 /*
  This provides the tracing breakpoint control.
- TODO: 
+ TODO:
  - Provide symbol -> address translation
  - Provide support for global symbol + offset (ie for libraries)
  - Provide multiple pid listing support
@@ -64,7 +64,7 @@ debug_break_t *get_breakpoint_list(int fd, int *count) {
 	list = NULL;
 	size = 0;
 	do {
-		ret = devctl(fd, DCMD_PROC_GET_BREAKLIST, list, size, &num);	
+		ret = devctl(fd, DCMD_PROC_GET_BREAKLIST, list, size, &num);
 		if(ret != EOK) {
 			fprintf(stderr, "breaklist devctl failed %d %s \n", ret, strerror(ret));
 			return NULL;
@@ -78,7 +78,7 @@ debug_break_t *get_breakpoint_list(int fd, int *count) {
 		if(list == NULL) {
 			printf("No more memory \n");
 			return NULL;
-		}	
+		}
 	} while(1);
 
 	close(fd);
@@ -106,7 +106,7 @@ void remove_breakpoint_addresses(addr_info_t *addresses, pid_info_t *pidinfo) {
 
 /*
  Format for this string to be determined.  For now support:
- <name>    
+ <name>
  <addr:name>
 */
 void add_to_symbol_list(symbol_lookup_t **symbol_list, char *symbol_path) {
@@ -155,7 +155,7 @@ void add_to_symbol_list(symbol_lookup_t **symbol_list, char *symbol_path) {
 
 /*
  Format for this string to be determined.  For now support:
- <addr>    
+ <addr>
 */
 void add_to_addr_list(addr_info_t **addr_list, char *address) {
 	addr_info_t *newaddr;
@@ -196,7 +196,7 @@ int fill_pid_info(pid_info_t *info, char *pidthing) {
 	} debuginfo;
 	char procfsname[20];
 	char *end;
-	
+
 	//Eat up initial whitespace
 	while(*pidthing == ' ') { pidthing++; }
 	if(*pidthing == '\0') {
@@ -208,12 +208,12 @@ int fill_pid_info(pid_info_t *info, char *pidthing) {
 		DIR		*dp;
 		struct dirent 	*dent;
 		int		ret;
-		
+
 		dp = opendir("/proc");
 		if(dp == NULL) {
 			return -1;
 		}
-		
+
 		info->fd = -1;
 		while((dent = readdir(dp)) != NULL) {
 			if(!isdigit(*dent->d_name)) {
@@ -221,7 +221,7 @@ int fill_pid_info(pid_info_t *info, char *pidthing) {
 			}
 
 			snprintf(procfsname, sizeof(procfsname), "/proc/%s/as", dent->d_name);
-			info->fd = open(procfsname, O_RDONLY);	
+			info->fd = open(procfsname, O_RDONLY);
 			if(info->fd == -1) {
 				continue;
 			}
@@ -233,7 +233,7 @@ int fill_pid_info(pid_info_t *info, char *pidthing) {
 				info->fd = -1;
 				continue;
 			}
-			
+
 			//TODO: Be wary of duplicate names
 			if(strcmp(basename(debuginfo.info.path), pidthing) == 0) {
 				info->pid = strtoul(dent->d_name, NULL, 0);
@@ -252,7 +252,7 @@ int fill_pid_info(pid_info_t *info, char *pidthing) {
 		}
 	} else {
 		snprintf(procfsname, sizeof(procfsname), "/proc/%d/as", info->pid);
-		info->fd = open(procfsname, O_RDONLY);	
+		info->fd = open(procfsname, O_RDONLY);
 		if(info->fd == -1) {
 			return -1;
 		}
@@ -344,7 +344,7 @@ usage:
 			fprintf(stderr, "Can't get breakpoint list \n");
 			return 1;
 		}
-		print_breakpoint_list(breakpoints, count);	
+		print_breakpoint_list(breakpoints, count);
 		break;
 		}
 

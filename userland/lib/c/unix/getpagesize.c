@@ -10,7 +10,7 @@ int
 getpagesize(void)
 {
 	int pagesize;
-   
+
 	pagesize = sysconf(_SC_PAGESIZE);
 	return (pagesize == -1) ? __PAGESIZE : pagesize;
 }

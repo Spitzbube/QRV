@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -20,11 +20,11 @@
 
 
 /*
- * This code was originally based on the NetBSD code for 
+ * This code was originally based on the NetBSD code for
  * mount, but has been wacked apart for Neutrino.  For
  * information and reference look at the NetBSD source
  *
- */ 
+ */
 
 /*
  * Copyright (c) 1980, 1988, 1993
@@ -138,13 +138,13 @@ int main(int argc, char **argv) {
 				catopt(&options, optarg);
 				break;
 
-			case 'T':			
+			case 'T':
 				init_flags |= _MFLAG_OCB;
 				vfslist = makevfslist(optarg);
 				vfstype = optarg;
 				alttypemode = 1;
 				break;
-			case 't':			
+			case 't':
 				init_flags &= ~_MFLAG_OCB;
 				vfslist = makevfslist(optarg);
 				vfstype = optarg;
@@ -198,10 +198,10 @@ int main(int argc, char **argv) {
 				Mount all QNX partitions on /dev/hd0 w/ /dev/hd0t77,/dev/hd0t79 ...
 					mount -e -t t79,t77,t78 /dev/hd0 /dev/hd0
 
-				- We should be able to enumerate and re-mount 
+				- We should be able to enumerate and re-mount
 				- It would be nice to not have to specify a -t/T all the time
 
-		 -r/w > We are mounting with read/[write] mode. 
+		 -r/w > We are mounting with read/[write] mode.
 		 -o --> Append this as an option to send to the server
 
 		 -t type implies that the special device and path will both exist,
@@ -222,7 +222,7 @@ yes     | yes | no ('/')   | mount -t type special ('/' implied)
 -----------------------------------
 yes     | no  | yes        | mount -T type special mountpoint
 -----------------------------------
-yes     | no  | no ('/')   | mount -T type special ('/' implied) 
+yes     | no  | no ('/')   | mount -T type special ('/' implied)
 	-> Perform lookup for special matching type in vfslist first.
 	-> _MOUNT_IMPLIED set
 -----------------------------------
@@ -244,19 +244,19 @@ no (NUL)| no  | no ('/')   | mount -T type (NULL '/' implied)
 		}
 
 		//Assume the next non-option is the path name
-		if (argc > 0 && *argv[0] != '-') {	
+		if (argc > 0 && *argv[0] != '-') {
 			mntonname = argv[0];
 			argv++; argc--;
 		}
 
-		/* 
-		 Leave the mntonname as a NULL and if we don't find it in the 
+		/*
+		 Leave the mntonname as a NULL and if we don't find it in the
 		 vfs list, then we will used the implied value of '/'
 		*/
-		
+
 		if (verbose) {
-			printf("Parsed: mount from [%s] mount on [%s] type [%s] \n", 
-				(mntfromname) ? mntfromname : "NULL", 
+			printf("Parsed: mount from [%s] mount on [%s] type [%s] \n",
+				(mntfromname) ? mntfromname : "NULL",
 				(mntonname) ? mntonname : "NULL",
 				(vfstype) ? vfstype : "NULL");
 		}
@@ -282,15 +282,15 @@ no (NUL)| no  | no ('/')   | mount -T type (NULL '/' implied)
 						if (vfstype && strcmp(vfstype, fs->fs_vfstype) != 0) {
 							continue;
 						}
-						if (mountfs(fs->fs_vfstype, fs->fs_spec, fs->fs_file, 
+						if (mountfs(fs->fs_vfstype, fs->fs_spec, fs->fs_file,
 						            init_flags, options, fs->fs_mntops, 0)) {
-							exit(1);	
+							exit(1);
 						}
 						rval++;
 				}
 				if(rval == 0) {
 					fprintf(stderr, (vfstype) ? "No fstab entries found for type %s\n" : "No fstab entries\n", vfstype);
-					exit(1);	
+					exit(1);
 				}
 			}
 			else {
@@ -298,16 +298,16 @@ no (NUL)| no  | no ('/')   | mount -T type (NULL '/' implied)
 			}
 			exit(0);
 		}
-		/* 
+		/*
 		 We are guessing at the type to mount based on the path/device
-		 % mount -[tT] xxx special 
+		 % mount -[tT] xxx special
 		   --> examine fstab for information first before sending NULL special device
 		*/
 		else if (mntfromname && !mntonname) {
 			//Remounting, don't need the special device name
 			if (init_flags & _MOUNT_REMOUNT) {
 				fs = NULL;
-			} 
+			}
 			//Otherwise go looking for a match
 			else if ((other_flags & _FLAG_NO_FSTAB) ||
                      ((fs = (struct fstab *)getfsfile(mntfromname)) == NULL &&
@@ -332,7 +332,7 @@ no (NUL)| no  | no ('/')   | mount -T type (NULL '/' implied)
 #if defined(_MOUNT_IMPLIED)
 				init_flags |= _MOUNT_IMPLIED;
 #endif
-			}	
+			}
 		}
 
 		/*
@@ -347,13 +347,13 @@ no (NUL)| no  | no ('/')   | mount -T type (NULL '/' implied)
 			}
 
 			if (verbose) {
-				fprintf(stderr, "Guessing type [%s], use -[t|T] if incorrect \n", 
+				fprintf(stderr, "Guessing type [%s], use -[t|T] if incorrect \n",
 					(vfstype) ? vfstype : "");
 			}
 		}
 
 		//TODO: Error out here if we don't have a type?
-		rval = mountfs(vfstype, mntfromname, mntonname, 
+		rval = mountfs(vfstype, mntfromname, mntonname,
 					   init_flags, options, extoptions, 0);
 
 		//Exit if we had any problems
@@ -361,7 +361,7 @@ no (NUL)| no  | no ('/')   | mount -T type (NULL '/' implied)
 			break;
 		}
 		optind = 0;
-	}	
+	}
 
 	exit(rval);
 }
@@ -372,7 +372,7 @@ no (NUL)| no  | no ('/')   | mount -T type (NULL '/' implied)
  the default mount type.
 
  Using the statvfs information would be nice, but it only
- works properly for the devb-xxx drivers once a partition 
+ works properly for the devb-xxx drivers once a partition
  has been mounted, too bad.
 */
 static char * guess_mount_type(const char *mntfromname, const char *mntonname) {
@@ -395,14 +395,14 @@ static char * guess_mount_type(const char *mntfromname, const char *mntonname) {
 	} else {
 		strcpy(typebuf, QNX4_FS_TYPE);
 	}
-	
+
 	return typebuf;
 }
 
 /*
- This function will iterate through mntopts (usually defined 
- from the fstab entry) checking to see if option is defined 
- in the string mntopts, (or not defined if the string starts 
+ This function will iterate through mntopts (usually defined
+ from the fstab entry) checking to see if option is defined
+ in the string mntopts, (or not defined if the string starts
  w/ no).  We only use this once to check for noauto.
 */
 int hasopt(const char *mntopts, const char *option) {
@@ -436,7 +436,7 @@ int hasopt(const char *mntopts, const char *option) {
  If skipmounted is set then we should query to see if
  a device is already mounted and not try it again.
 */
-static int mountfs(const char *vfstype, const char *spec, const char *name, 
+static int mountfs(const char *vfstype, const char *spec, const char *name,
 			int flags, const char *options, const char *mntopts, int skipmounted) {
 	/* List of directories containing mount_xxx subcommands. */
 	static const char *edirs[] = {
@@ -522,7 +522,7 @@ static int mountfs(const char *vfstype, const char *spec, const char *name,
 	if (verbose > 2) {
 		printf("Using internal mount (%s not found)\n", execbase);
 	}
-	
+
 	i = internal_mount_generic(vfstype, argc, (char **)argv);
 
 	if (i != 0) {
@@ -557,7 +557,7 @@ void catopt(char **sp, const char *o) {
 	*sp = s;
 }
 
-static void mangle(char *options, int *argcp, 
+static void mangle(char *options, int *argcp,
 				   const char ***argvp, int *maxargcp) {
 	char *p, *s;
 	int argc, maxargc;
@@ -600,7 +600,7 @@ static void usage() {
 
 
 /*
- *  Handle generic mounts that no=one has written a 
+ *  Handle generic mounts that no=one has written a
  *  handler for and hope that someone responds.
  */
 int internal_mount_generic(const char *type, int argc, char **argv) {
@@ -614,7 +614,7 @@ int internal_mount_generic(const char *type, int argc, char **argv) {
 	optind = 1;
 	while ((c = getopt(argc, argv, "o:")) != -1) {
 		switch (c) {
-		case 'o': 
+		case 'o':
 			if ((ret = mount_parse_generic_args(optarg, &flags))) {
 				catopt(&extra_opts, ret);
 			}
@@ -625,7 +625,7 @@ int internal_mount_generic(const char *type, int argc, char **argv) {
 			if(extra_opts) {
 				free(extra_opts);
 			}
-			return(1);	
+			return(1);
 		}
 	}
 
@@ -638,11 +638,11 @@ int internal_mount_generic(const char *type, int argc, char **argv) {
 	}
 
 	if (verbose > 1) {
-		printf("Type    [%s] Flags 0x%08x \n", 
+		printf("Type    [%s] Flags 0x%08x \n",
 				(type) ? type : "NULL", flags);
-		printf("Device  [%s] Directory [%s] \n", 
+		printf("Device  [%s] Directory [%s] \n",
 				(special) ? special : "NULL", (dir) ? dir : "NULL");
-		printf("Options [%s] \n", 
+		printf("Options [%s] \n",
 				(extra_opts) ? extra_opts : "NULL");
 	}
 
@@ -665,7 +665,7 @@ int internal_mount_generic(const char *type, int argc, char **argv) {
  if the filetype is FTYPE_ANY, otherwise we report
  the numeric value.
 
- /proc/mount shows the entries as 
+ /proc/mount shows the entries as
 	nid,pid,chid,handle,ftype
 */
 #include <fcntl.h>
@@ -673,14 +673,14 @@ int internal_mount_generic(const char *type, int argc, char **argv) {
 #include <sys/ftype.h>
 #include <sys/dcmd_blk.h>
 
-static const char *ftype_names[]={ 
+static const char *ftype_names[]={
 	"ftype:ALL",     "ftype:ANY",  "ftype:FILE",   "ftype:LINK",
 	"ftype:SYMLINK", "ftype:PIPE", "ftype:SHMEM",  "ftype:MQUEUE",
 	"ftype:SOCKET",  "ftype:SEM",  "ftype:PHOTON", "ftype:DUMPER",
-	"ftype:MOUNT",   "ftype:NAME",  NULL 
+	"ftype:MOUNT",   "ftype:NAME",  NULL
 };
 
-#if defined(SHOW_PIDNAME) 
+#if defined(SHOW_PIDNAME)
 #include <libgen.h>
 #include <sys/procfs.h>
 #include <sys/neutrino.h>
@@ -699,7 +699,7 @@ static char *get_process_name(int pid) {
 	}
 
 	memset(&map, 0, sizeof(map));
-	devctl(fd, DCMD_PROC_MAPDEBUG_BASE, &map, sizeof(map), 0); 
+	devctl(fd, DCMD_PROC_MAPDEBUG_BASE, &map, sizeof(map), 0);
 
 	return(strdup(map.info.path));
 }
@@ -735,12 +735,12 @@ static int _report_mounts(char *path, int pathsize, int offset, int flags) {
 			continue;
 		}
 
-		ret = sscanf(dent->d_name, "%d,%d,%d,%d,%d", 
+		ret = sscanf(dent->d_name, "%d,%d,%d,%d,%d",
 					&nd, &pid, &chid, &handle, &ftype);
 
 		path[len] = '/';
 		strcpy(&path[len+1], dent->d_name);
-		
+
 		fstype[0] = mounton[0] = '\0';
 		memset(&st, 0, sizeof(st));
 
@@ -773,7 +773,7 @@ static int _report_mounts(char *path, int pathsize, int offset, int flags) {
 			}
 			else {
 				devctl(fd, DCMD_FSYS_MOUNTED_ON, mounton, 256, 0);
-				ret = fstatvfs(fd, &stvfs);	
+				ret = fstatvfs(fd, &stvfs);
 				close(fd);
 			}
 
@@ -786,7 +786,7 @@ static int _report_mounts(char *path, int pathsize, int offset, int flags) {
 			}
 		}
 		/* These are single point mounts */
-		else {			
+		else {
 			if (!(flags & _FLAG_REPORT_NONFS)) {
 				continue;
 			}
@@ -807,7 +807,7 @@ static int _report_mounts(char *path, int pathsize, int offset, int flags) {
 		else {
 			printf("%d ", ftype);
 		}
-#if defined(SHOW_PIDNAME) 
+#if defined(SHOW_PIDNAME)
 		{
 			char *pidname;
 			if (!(pidname = get_process_name(pid))) {
@@ -817,7 +817,7 @@ static int _report_mounts(char *path, int pathsize, int offset, int flags) {
 				printf("(%s)", basename(pidname));
 				free(pidname);
 			}
-		}	
+		}
 #endif
 		printf("\n");
 	}

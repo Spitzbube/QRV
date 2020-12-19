@@ -34,7 +34,7 @@ spell_t *spellletter(node, letter)
 	spell_t	*node;	/* top of dictionary, or value returned by previous call */
 	_CHAR_	letter;	/* the first/next letter to check */
 {
-	
+
 	if (!node || letter < node->min || letter > node->max)
 		return NULL;
 	return node->link[letter - node->min];
@@ -65,7 +65,7 @@ spell_t *spellfindword(node, word, len)
 		if (!node)
 			break;
 	}
-	
+
 	/* return the final result */
 	return node;
 }
@@ -1325,7 +1325,7 @@ void spellcheckfont(fontname, check, bang)
 				drawextext(windefault, blanks, 1);
 				col++;
 			}
-				
+
 			/* write the name of this font */
 			drawextext(windefault, colorinfo[font].name, len);
 			col += len;

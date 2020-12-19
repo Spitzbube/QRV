@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -32,15 +32,15 @@
 #include <assert.h>
 
 static Flink __flist_avail_bins[] =  {
-	{ 0, &(__flist_avail_bins[0]),  &(__flist_avail_bins[0]) }, 
-	{ 0, &(__flist_avail_bins[1]),  &(__flist_avail_bins[1]) }, 
-	{ 0, &(__flist_avail_bins[2]),  &(__flist_avail_bins[2]) }, 
-	{ 0, &(__flist_avail_bins[3]),  &(__flist_avail_bins[3]) }, 
-	{ 0, &(__flist_avail_bins[4]),  &(__flist_avail_bins[4]) }, 
-	{ 0, &(__flist_avail_bins[5]),  &(__flist_avail_bins[5]) }, 
-	{ 0, &(__flist_avail_bins[6]),  &(__flist_avail_bins[6]) }, 
-	{ 0, &(__flist_avail_bins[7]),  &(__flist_avail_bins[7]) }, 
-	{ 0, &(__flist_avail_bins[8]),  &(__flist_avail_bins[8]) }, 
+	{ 0, &(__flist_avail_bins[0]),  &(__flist_avail_bins[0]) },
+	{ 0, &(__flist_avail_bins[1]),  &(__flist_avail_bins[1]) },
+	{ 0, &(__flist_avail_bins[2]),  &(__flist_avail_bins[2]) },
+	{ 0, &(__flist_avail_bins[3]),  &(__flist_avail_bins[3]) },
+	{ 0, &(__flist_avail_bins[4]),  &(__flist_avail_bins[4]) },
+	{ 0, &(__flist_avail_bins[5]),  &(__flist_avail_bins[5]) },
+	{ 0, &(__flist_avail_bins[6]),  &(__flist_avail_bins[6]) },
+	{ 0, &(__flist_avail_bins[7]),  &(__flist_avail_bins[7]) },
+	{ 0, &(__flist_avail_bins[8]),  &(__flist_avail_bins[8]) },
 };
 
 FlinkBins  __flist_abins[] = {
@@ -129,8 +129,8 @@ Fit _flist_bin_first_fit(size_t alignment, size_t size)
 	__FLIST_FIND_NBIN(size, startbin);
 
 	for (i=startbin; i < __flist_nbins; i++) {
-		for (cur = (__flist_avail_bins[i]).f_next; 
-         cur != &(__flist_avail_bins[i]); 
+		for (cur = (__flist_avail_bins[i]).f_next;
+         cur != &(__flist_avail_bins[i]);
          cur = cur->f_next) {
 			over = 0;
     	if (DH_ISBUSY(cur)) {

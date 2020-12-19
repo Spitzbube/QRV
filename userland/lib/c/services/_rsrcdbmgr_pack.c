@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -63,24 +63,24 @@ int _rsrcdbmgr_pack(void *header, int hbytes, int nbytes_off,
 	}
 
 	/* Header */
-	SETIOV(&iovout[index], header, hbytes);	
+	SETIOV(&iovout[index], header, hbytes);
 	index++;
 
 	/* Data */
-	SETIOV(&iovout[index], data, dwidth * nelm);	
+	SETIOV(&iovout[index], data, dwidth * nelm);
 	nbytes += dwidth * nelm;
 	index++;
 
 	/* Names */
 	for(i=0; i<nelm; i++) {
 		nameptr = (char **)((char *)data + (i*dwidth) + noff);
-		SETIOV(&iovout[index], nameptr[0], strlen(nameptr[0]) + 1);	
+		SETIOV(&iovout[index], nameptr[0], strlen(nameptr[0]) + 1);
 		nbytes += strlen(nameptr[0]) + 1;
 		index++;
 	}
 
 	/* Reply */
-	SETIOV(&iovreply, reply, rbytes);	
+	SETIOV(&iovreply, reply, rbytes);
 
 	*((int *)((char *)header + nbytes_off)) = nbytes;
 
@@ -117,7 +117,7 @@ int rsrcdbmgr_create(rsrc_alloc_t *list, int32_t count) {
 	ret = _rsrcdbmgr_pack(&request, sizeof(request), offsetof(struct _rsrc_cmd, nbytes),
 						   list, sizeof(*list), offsetof(rsrc_alloc_t, name), count,
 						   NULL, 0);
-	printf("Create %d ret %d fl 0x%08x 0x%llx-0x%llx \n", 
+	printf("Create %d ret %d fl 0x%08x 0x%llx-0x%llx \n",
 			count, ret,
 			list[0].flags, list[0].start, list[0].end);
 	return ret;
@@ -137,11 +137,11 @@ int rsrcdbmgr_destroy(rsrc_alloc_t *list, int32_t count) {
 	request.i.pid = 0;
 	request.i.count = count;
 	//request.i.nbytes set above
-	
+
 	ret = _rsrcdbmgr_pack(&request, sizeof(request), offsetof(struct _rsrc_cmd, nbytes),
 						   list, sizeof(*list), offsetof(rsrc_alloc_t, name), count,
 						   NULL, 0);
-	printf("Destroy %d ret %d fl 0x%08x 0x%llx-0x%llx \n", 
+	printf("Destroy %d ret %d fl 0x%08x 0x%llx-0x%llx \n",
 			count, ret,
 			list[0].flags, list[0].start, list[0].end);
 	return ret;
@@ -165,7 +165,7 @@ int rsrcdbmgr_attach(rsrc_request_t *list, int32_t count) {
 	ret = _rsrcdbmgr_pack(&request, sizeof(request), offsetof(struct _rsrc_cmd, nbytes),
 						   list, sizeof(*list), offsetof(rsrc_request_t, name), count,
 						   list, count * sizeof(*list));
-	printf("Attach %d ret %d fl 0x%08x 0x%llx-0x%llx \n", 
+	printf("Attach %d ret %d fl 0x%08x 0x%llx-0x%llx \n",
 			count, ret,
 			list[0].flags, list[0].start, list[0].end);
 	return ret;
@@ -185,11 +185,11 @@ int rsrcdbmgr_detach(rsrc_request_t *list, int32_t count) {
 	request.i.pid = 0;
 	request.i.count = count;
 	//request.i.nbytes set in pack code
-		
+
 	ret = _rsrcdbmgr_pack(&request, sizeof(request), offsetof(struct _rsrc_cmd, nbytes),
 						   list, sizeof(*list), offsetof(rsrc_request_t, name), count,
 						   NULL, 0);
-	printf("Detach %d ret %d fl 0x%08x 0x%llx-0x%llx \n", 
+	printf("Detach %d ret %d fl 0x%08x 0x%llx-0x%llx \n",
 			count, ret,
 			list[0].flags, list[0].start, list[0].end);
 	return ret;

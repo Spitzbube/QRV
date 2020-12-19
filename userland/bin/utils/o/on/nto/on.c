@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -50,7 +50,7 @@ Options:
 -d        detach (nozombie)
 -h        spawn held (for debugging)
 -n node   spawn on remote node
--f node	  spawn from remote node 
+-f node	  spawn from remote node
 -p prio   spawn with priority; optionally, can follow with
           changed scheduling policy (r|f|o).
 -P        spawn with SPAWN_PADDR64_SAFE
@@ -142,7 +142,7 @@ int check_pass(struct passwd *pw) {
 	}
 
 	for(tries = 0; tries < 3; tries++) {
-		if (chklogin(0,pw->pw_name)) 
+		if (chklogin(0,pw->pw_name))
 			return 1;
 	}
 	fprintf(stderr, "%s: Invalid passwd\n", __progname);
@@ -267,7 +267,7 @@ int main(int argc, char *argv[]) {
 			inherit.pgroup = 0;
 			break;
 
-		case 'f': 
+		case 'f':
 		{
 			char path[PATH_MAX];
 
@@ -288,7 +288,7 @@ int main(int argc, char *argv[]) {
 				return EXIT_FAILURE;
 			}
 			inherit.flags |= SPAWN_SETND;
-			if(ND_NODE_CMP(inherit.nd, ND_LOCAL_NODE)) { 
+			if(ND_NODE_CMP(inherit.nd, ND_LOCAL_NODE)) {
 				inherit.flags &= ~SPAWN_EXEC;
 				net_spawn.nd = inherit.nd;
 			}
@@ -364,7 +364,7 @@ int main(int argc, char *argv[]) {
 					gid_t					groups[NGROUPS_MAX];
 					int						size = 0;
 					gid_t					gid;
-	
+
 					if(setgid((gid = strtol(optarg, &optarg, 0))) == -1 || setegid(gid) == -1) {
 						fprintf(stderr, "%s: Unable to set gid (%s)\n", __progname, strerror(errno));
 						return EXIT_FAILURE;
@@ -561,7 +561,7 @@ int main(int argc, char *argv[]) {
 		fprintf(stderr, "%s: %s (%s)\n", __progname, strerror(status = errno), argv[0]);
 	} else if((inherit.flags & SPAWN_SETSID) == 0) {
 		int ret;
-		
+
 //		signal(SIGINT, SIG_IGN);
 //		signal(SIGQUIT, SIG_IGN);
 		close(0);
@@ -575,7 +575,7 @@ int main(int argc, char *argv[]) {
 
 			/* install signal handlers to propergate signals to the remote spawned process */
 			net_spawn.pid = pid;
-			
+
 			act.sa_flags = SA_SIGINFO;
 			sigemptyset(&act.sa_mask);
 			act.sa_handler = net_signal_deliver;
@@ -586,10 +586,10 @@ int main(int argc, char *argv[]) {
 			sigaction(SIGTTIN, &act, NULL);
 			sigaction(SIGTTOU, &act, NULL);
 			sigaction(SIGTERM, &act, NULL);
-		
+
 			if(net_spawn.info.si_signo != 0) {
 				net_signal_deliver(net_spawn.info.si_signo, &net_spawn.info, (void*)NULL);
-			}	
+			}
 			do {
 				ret = __waitid_net(inherit.nd, P_PID, pid, &info, WEXITED);
 			} while(ret == -1 && errno == EINTR);

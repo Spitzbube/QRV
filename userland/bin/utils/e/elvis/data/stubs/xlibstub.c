@@ -12,16 +12,16 @@
  */
 
 /* <X11/Xlib.h> */
-#define BitmapBitOrder(dpy) 
+#define BitmapBitOrder(dpy)
 
 /* <X11/Xlib.h> */
-#define BitmapPad(dpy) 
+#define BitmapPad(dpy)
 
 /* <X11/Xlib.h> */
-#define BitmapUnit(dpy) 
+#define BitmapUnit(dpy)
 
 /* <X11/Xlib.h> */
-#define BlackPixel(dpy, scr) 
+#define BlackPixel(dpy, scr)
 
 /* <X11/Xlib.h> */
 #define BlackPixelOfScreen(scr)
@@ -30,7 +30,7 @@
 #define CellsOfScreen(scr)
 
 /* <X11/Xlib.h> */
-#define ConnectionNumber(dpy) 
+#define ConnectionNumber(dpy)
 
 /* <X11/Xlib.h> */
 #define DefaultColormap(dpy, scr)
@@ -39,22 +39,22 @@
 #define DefaultColormapOfScreen(scr)
 
 /* <X11/Xlib.h> */
-#define DefaultDepth(dpy, scr) 
+#define DefaultDepth(dpy, scr)
 
 /* <X11/Xlib.h> */
 #define DefaultDepthOfScreen(scr)
 
 /* <X11/Xlib.h> */
-#define DefaultGC(dpy, scr) 
+#define DefaultGC(dpy, scr)
 
 /* <X11/Xlib.h> */
 #define DefaultGCOfScreen(scr)
 
 /* <X11/Xlib.h> */
-#define DefaultRootWindow(dpy) 
+#define DefaultRootWindow(dpy)
 
 /* <X11/Xlib.h> */
-#define DefaultScreen(dpy) 
+#define DefaultScreen(dpy)
 
 /* <X11/Xlib.h> */
 #define DefaultScreenOfDisplay(dpy)
@@ -66,7 +66,7 @@
 #define DefaultVisualOfScreen(scr)
 
 /* <X11/Xlib.h> */
-#define DisplayCells(dpy, scr) 
+#define DisplayCells(dpy, scr)
 
 /* <X11/Xlib.h> */
 #define DisplayHeight(dpy, scr)
@@ -81,10 +81,10 @@
 #define DisplayPlanes(dpy, scr)
 
 /* <X11/Xlib.h> */
-#define DisplayString(dpy) 
+#define DisplayString(dpy)
 
 /* <X11/Xlib.h> */
-#define DisplayWidth(dpy, scr) 
+#define DisplayWidth(dpy, scr)
 
 /* <X11/Xlib.h> */
 #define DisplayWidthMM(dpy, scr)
@@ -105,7 +105,7 @@
 #define HeightOfScreen(scr)
 
 /* <X11/Xlib.h> */
-#define ImageByteOrder(dpy) 
+#define ImageByteOrder(dpy)
 
 /* <X11/Xlib.h> */
 #define LastKnownRequestProcessed(dpy)
@@ -123,34 +123,34 @@
 #define PlanesOfScreen(scr)
 
 /* <X11/Xlib.h> */
-#define ProtocolRevision(dpy) 
+#define ProtocolRevision(dpy)
 
 /* <X11/Xlib.h> */
-#define ProtocolVersion(dpy) 
+#define ProtocolVersion(dpy)
 
 /* <X11/Xlib.h> */
-#define QLength(dpy) 
+#define QLength(dpy)
 
 /* <X11/Xlib.h> */
-#define RootWindow(dpy, scr) 
+#define RootWindow(dpy, scr)
 
 /* <X11/Xlib.h> */
 #define RootWindowOfScreen(scr)
 
 /* <X11/Xlib.h> */
-#define ScreenCount(dpy) 
+#define ScreenCount(dpy)
 
 /* <X11/Xlib.h> */
 #define ScreenOfDisplay(dpy, scr)
 
 /* <X11/Xlib.h> */
-#define ServerVendor(dpy) 
+#define ServerVendor(dpy)
 
 /* <X11/Xlib.h> */
-#define VendorRelease(dpy) 
+#define VendorRelease(dpy)
 
 /* <X11/Xlib.h> */
-#define WhitePixel(dpy, scr) 
+#define WhitePixel(dpy, scr)
 
 /* <X11/Xlib.h> */
 #define WhitePixelOfScreen(scr)
@@ -290,10 +290,10 @@ typedef struct {
 	unsigned long background;/* background pixel */
 	int line_width;		/* line width */
 	int line_style;	 	/* LineSolid, LineOnOffDash, LineDoubleDash */
-	int cap_style;	  	/* CapNotLast, CapButt, 
+	int cap_style;	  	/* CapNotLast, CapButt,
 				   CapRound, CapProjecting */
 	int join_style;	 	/* JoinMiter, JoinRound, JoinBevel */
-	int fill_style;	 	/* FillSolid, FillTiled, 
+	int fill_style;	 	/* FillSolid, FillTiled,
 				   FillStippled, FillOpaeueStippled */
 	int fill_rule;	  	/* EvenOddRule, WindingRule */
 	int arc_mode;		/* ArcChord, ArcPieSlice */
@@ -351,7 +351,7 @@ typedef struct {
 	unsigned long black_pixel;	/* White and Black pixel values */
 	int max_maps, min_maps;	/* max and min color maps */
 	int backing_store;	/* Never, WhenMapped, Always */
-	Bool save_unders;	
+	Bool save_unders;
 	long root_input_mask;	/* initial root input mask */
 } Screen;
 
@@ -467,13 +467,13 @@ typedef struct {
 typedef struct {
     short x, y;
 } XPoint;
-    
+
 /* <X11/Xlib.h> */
 typedef struct {
     short x, y;
     unsigned short width, height;
 } XRectangle;
-    
+
 /* <X11/Xlib.h> */
 typedef struct {
     short x, y;
@@ -642,7 +642,7 @@ typedef struct {
 	Display *display;	/* Display the event was read from */
 	Window window;
 	char key_vector[32];
-} XKeymapEvent;	
+} XKeymapEvent;
 
 /* <X11/Xlib.h> */
 typedef struct {
@@ -1151,11 +1151,11 @@ typedef unsigned long XIMFeedback;
 typedef struct _XIMText {
 	unsigned short length;
 	XIMFeedback *feedback;
-	Bool encoding_is_wchar; 
+	Bool encoding_is_wchar;
 	union {
 		char *multi_byte;
 		wchar_t *wide_char;
-	} string; 
+	} string;
 } XIMText;
 
 /* <X11/Xlib.h> */
@@ -1176,11 +1176,11 @@ typedef unsigned long XIMStringConversionFeedback;
 typedef struct _XIMStringConversionText {
 	unsigned short length;
 	XIMStringConversionFeedback *feedback;
-	Bool encoding_is_wchar; 
+	Bool encoding_is_wchar;
 	union {
 		char *mbs;
 		wchar_t *wcs;
-	} string; 
+	} string;
 } XIMStringConversionText;
 
 /* <X11/Xlib.h> */
@@ -1218,7 +1218,7 @@ typedef struct _XIMPreeditDrawCallbackStruct {
 
 /* <X11/Xlib.h> */
 typedef enum {
-	XIMIsInvisible,	/* Disable caret feedback */ 
+	XIMIsInvisible,	/* Disable caret feedback */
 	XIMIsPrimary,	/* UI defined caret feedback */
 	XIMIsSecondary	/* UI defined caret feedback */
 } XIMCaretStyle;
@@ -1234,7 +1234,7 @@ typedef struct _XIMPreeditCaretCallbackStruct {
 typedef enum {
 	XIMTextType, XIMBitmapType
 } XIMStatusDataType;
-	
+
 /* <X11/Xlib.h> */
 typedef struct _XIMStatusDrawCallbackStruct {
 	XIMStatusDataType type;
@@ -3786,13 +3786,13 @@ Copyright 1987 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL

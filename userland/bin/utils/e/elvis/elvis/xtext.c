@@ -311,14 +311,14 @@ void x_ta_draw(xw, fg, bg, bits, text, len)
 #ifdef FEATURE_IMAGE
 	if (ispixmap(bg))
 	{
-		XChangeGC(x_display, xw->gc, 
+		XChangeGC(x_display, xw->gc,
 			GCForeground|GCFont|GCGraphicsExposures, &gcvalues);
 	}
 	else
 #endif
 	{
 		gcvalues.background = bg;
-		XChangeGC(x_display, xw->gc, 
+		XChangeGC(x_display, xw->gc,
 			GCForeground|GCBackground|GCFont|GCGraphicsExposures, &gcvalues);
 		xw->bg = gcvalues.background;
 	}
@@ -377,7 +377,7 @@ void x_ta_draw(xw, fg, bg, bits, text, len)
 				seg[nsegs++].x2 -= left;
 			if (CHARchr(toCHAR("124578-"), text[i]))
 				seg[nsegs++].x2 += right;
-				
+
 			/* draw the segments */
 			XSetForeground(x_display, xw->gc, fg);
 			if (nsegs > 0)
@@ -448,7 +448,7 @@ void x_ta_draw(xw, fg, bg, bits, text, len)
 				XSetForeground(x_display, xw->gc, fg);
 			}
 			XftDrawString8(xw->ta.xftdraw, x_xftpixel(fg),
-				loaded->xftfont, 
+				loaded->xftfont,
 				(int)(xw->ta.cursx * xw->ta.cellw),
 				(int)(xw->ta.cursy * xw->ta.cellh + xw->ta.cellbase),
 				(XftChar8 *)text, len);
@@ -483,7 +483,7 @@ void x_ta_draw(xw, fg, bg, bits, text, len)
 #ifdef FEATURE_XFT
 			if (o_antialias && loaded->xftfont)
 				XftDrawString8(xw->ta.xftdraw, x_xftpixel(fg),
-					loaded->xftfont, 
+					loaded->xftfont,
 					(int)(xw->ta.cursx * xw->ta.cellw + 1),
 					(int)(xw->ta.cursy * xw->ta.cellh + xw->ta.cellbase),
 					(XftChar8 *)text, len);

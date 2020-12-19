@@ -1,23 +1,23 @@
 /*
- * eval.c - gawk parse tree interpreter 
+ * eval.c - gawk parse tree interpreter
  */
 
-/* 
+/*
  * Copyright (C) 1986, 1988, 1989, 1991-2000 the Free Software Foundation, Inc.
- * 
+ *
  * This file is part of GAWK, the GNU implementation of the
  * AWK Programming Language.
- * 
+ *
  * GAWK is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * GAWK is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
@@ -70,7 +70,7 @@ extern int exiting, exit_val;
 #ifdef C
 #undef C
 #endif
-#define C(c) ((char)c)  
+#define C(c) ((char)c)
 /*
  * This table is used by the regexp routines to do case independant
  * matching. Basically, every ascii character maps to itself, except
@@ -200,7 +200,7 @@ static char *nodetypes[] = {
 	"Node_expression_list",
 	"Node_param_list",
 	"Node_K_if",
-	"Node_K_while",	
+	"Node_K_while",
 	"Node_K_for",
 	"Node_K_arrayfor",
 	"Node_K_break",
@@ -350,7 +350,7 @@ int flagval;
 /*
  * interpret:
  * Tree is a bunch of rules to run. Returns zero if it hit an exit()
- * statement 
+ * statement
  */
 int
 interpret(tree)
@@ -629,7 +629,7 @@ register NODE *volatile tree;
 	default:
 		/*
 		 * Appears to be an expression statement.  Throw away the
-		 * value. 
+		 * value.
 		 */
 		if (do_lint && tree->type == Node_var)
 			warning("statement has no effect");
@@ -683,7 +683,7 @@ int iscond;
 			return Nnull_string;
 		sprintf(namebuf, "parameter #%d", paramnum);
 		tree->vname = namebuf;
-	} 
+	}
 	if (tree->type == Node_array_ref)
 		tree = tree->orig_array;
 
@@ -998,7 +998,7 @@ register NODE *tree;
 		 * of a Node_cond_pair; whether we evaluate the lnode of that
 		 * node or the rnode depends on the triggered word.  More
 		 * precisely:  if we are not yet triggered, we tree_eval the
-		 * lnode; if that returns true, we set the triggered word. 
+		 * lnode; if that returns true, we set the triggered word.
 		 * If we are triggered (not ELSE IF, note), we tree_eval the
 		 * rnode, clear triggered if it succeeds, and perform our
 		 * action (regardless of success or failure).  We want to be
@@ -1019,7 +1019,7 @@ register NODE *tree;
 
 	/*
 	 * Could just be J.random expression. in which case, null and 0 are
-	 * false, anything else is true 
+	 * false, anything else is true
 	 */
 
 	t1 = m_tree_eval(tree, TRUE);
@@ -1453,7 +1453,7 @@ NODE *arg_list;		/* Node_expression_list of calling args. */
 /*
  * r_get_lhs:
  * This returns a POINTER to a node pointer. get_lhs(ptr) is the current
- * value of the var, or where to store the var's new value 
+ * value of the var, or where to store the var's new value
  *
  * For the special variables, don't unref their current value if it's
  * the same as the internal copy; perhaps the current one is used in

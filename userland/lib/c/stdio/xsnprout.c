@@ -14,7 +14,7 @@ void *_Snprout(void *pa, const char *buf, size_t n)
 		   will fill the buffer and from that point on only "pretend"
 		   to actually copy the data.
 		*/
-		if(p->max > 0) 
+		if(p->max > 0)
 			{
 			memcpy(p->s, buf, p->max);
 			p->s += p->max;
@@ -37,7 +37,7 @@ void *_Snprout(void *pa, const char *buf, size_t n)
 _STD_END
 
 /*
- * Copyright (c) 1994-2000 by P.J. Plauger.  ALL RIGHTS RESERVED. 
+ * Copyright (c) 1994-2000 by P.J. Plauger.  ALL RIGHTS RESERVED.
  * Consult your license regarding permissions and restrictions.
  */
 

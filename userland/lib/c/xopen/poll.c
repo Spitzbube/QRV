@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -294,7 +294,7 @@ _poll(struct pollfd *fds, nfds_t nfds, int fd_first, int64_t timo, int extra_mas
 /*
  * It's been observed that at least one mgr (Photon)
  * actually returns ENOSYS if it sees events it doesn't
- * support.  This seems heavy as most mgrs simply ignore 
+ * support.  This seems heavy as most mgrs simply ignore
  * (don't trigger) these, plus it's slow here as it means
  * a double message pass.  This should hopefully only be
  * for backwards compatibility if we can get concensus
@@ -381,7 +381,7 @@ _poll(struct pollfd *fds, nfds_t nfds, int fd_first, int64_t timo, int extra_mas
 		 */
 		if (timo > 0 && TimerTimeout(CLOCK_MONOTONIC, _NTO_TIMEOUT_SIGWAITINFO, 0, (uint64_t *)&timo, 0) == -1)
 			return -1;
-			
+
 
 		if (SignalWaitinfo(&set, &info) == -1) {
 			if (errno != ETIMEDOUT)

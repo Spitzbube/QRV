@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,7 +33,7 @@ description:
 	Notice that newlines are not sent-forward as such. They are
 	either absorbed by yylex or translated into ';'.
 
-		
+
 	The intermediate-generation is straightforward.	The model is
 	a stack-machine with jumps,calls,returns.	The label-generation
 	logic is a little convoluted, and is annotated later in this file.
@@ -49,10 +49,10 @@ extern	int	 list;
 
 
 
-/*-	
+/*-
  This table maintains a mini-stack for parameter and local-var
  declarations.
-	
+
  52 is sensible since there are only 26 scalar and 26 array registers,
  any more is a little on the silly side
 */
@@ -94,7 +94,7 @@ enum	{
 #define IS_ARRAY	01
 #define _HAS_ASSIGN	0x01000
 
-/*	
+/*
 	These are for back-patching the labels in the code.
 */
 
@@ -132,7 +132,7 @@ int emit(struct icode *, int nwords, ...);
 #ifndef	MIN_CODE_ALLOC
 #define MIN_CODE_ALLOC	64
 #endif
-	
+
 /*
 	this stack maintains block structures, such as functions,
 	if, while, for stmts, nested to a depth of MAX_CSTACK
@@ -782,7 +782,7 @@ YYSTYPE yyvs[YYSTACKSIZE];
 
 
 
-static 
+static
 int is_loop()
 {
 	int             i;
@@ -793,7 +793,7 @@ int is_loop()
 	return 0;
 }
 
-static 
+static
 int is_func()
 {
 	int             i;
@@ -803,7 +803,7 @@ int is_func()
 	return 0;
 }
 
-static 
+static
 int base_type()
 {
 	int             i;
@@ -844,7 +844,7 @@ newsect(blk_type)
 }
 
 
-static 
+static
 int endsect()
 {
 	struct icode   *p0, *p1;
@@ -878,7 +878,7 @@ int endsect()
 }
 
 
-static void 
+static void
 trim_code(p, size)
 	struct icode   *p;
 	int             size;
@@ -888,7 +888,7 @@ trim_code(p, size)
 }
 
 
-static 
+static
 void more_code(p, delta)
 	struct icode   *p;
 	int             delta;
@@ -924,7 +924,7 @@ int emit(struct icode * p, int n,...)
  * These are both kind of kludgy.	The problem is that constants must be
  * "transformed" from strings into numbers at this stage, and assigned to
  * some form of literal pool.
- * 
+ *
  * add_const: if (there is an enclosing function) const->type = _PERMANENT. else
  * if (there is any enclosing structure) const->type = _TEMPORARY. else
  * const->type = _SCRATCH. Note: Currently there is no distinction between
@@ -933,7 +933,7 @@ int emit(struct icode * p, int n,...)
  * be deleted after it is used, since it is required for the next iteration.
  */
 
-static 
+static
 int add_const(char *s)
 {
 	numb_t         *n;
@@ -954,7 +954,7 @@ int add_const(char *s)
 	return 0;
 }
 
-static 
+static
 void add_zeroval()
 {
 	extern void    *constant_0;
@@ -968,49 +968,49 @@ void add_zeroval()
  * to before it is defined. When This occurs, the label is marked "used", and
  * the contents of the label field is a "relative linked list" of all
  * occurances of the label.
- * 
+ *
  * 2.	When a label is defined, it may have already been used. If so, one
  * must traverse the list, replacing the links with the relative location of
  * the label.
- * 
+ *
  * 3.	A jump may be made to a label which lies in another block (ie. a
  * BREAK in an IF nested in a FOR ).	When the block is complete, the
  * "used" lists may be joined, and the "defined" lists may be resolved.
- * 
+ *
  * Since BC is technincally an REC grammer, there are a fixed number of possible
  * labels available at any block ( Basically corresponding to "BREAK",
  * "CONTINUE", "RETURN", "IF-FAIL", "FOR-1", "FOR-2"). Thus a small
  * label-table is maintained in the code-gen structure, and the algorithms
  * presented will only work for this style of grammer.
- * 
+ *
  * add_jump:	first check to see if the target has been defined. if yes,
  * then simply insert the relative address of the target. if no, then insert
  * this at the head of the list by placing into the target the difference of
  * the current head (or NIL_LABEL if appropriate), and update the head to
  * reference here.
- * 
+ *
  * add_label:	first check to see if the label has been used. if yes, then
  * traverse the list, starting at the head and moving by the offset of each
  * target.	at each point in the list, generate a reference from the
  * current position. if no, simply insert the current position in the head.
- * 
+ *
  * join_sections:	for each label used in the lessor block switch (corresponding
  * label in greater block) DEFINED: resolve list in lessor for given label.
  * USED: find end of list in greater. link last element in greater to first
  * in lessor. NIL: mark as used, and link to lessor.
- * 
- * 
+ *
+ *
  * Notice that the NIL_LABEL is defined as -1.	0 was not an appropriate
  * choice.
- * 
+ *
  * Note:	bug in join_label, whereby the following statement: while (1) { if
  * (1)	break if (1)	break if (1)	break } would mess up the lists.
  * fixed.
- * 
- * 
+ *
+ *
  */
 
-static 
+static
 int add_jmp(cond, label)
 	int             cond, label;
 {
@@ -1043,7 +1043,7 @@ int add_jmp(cond, label)
 }
 
 
-static 
+static
 void make_label(lbl)
 	int             lbl;
 {
@@ -1073,10 +1073,10 @@ void make_label(lbl)
 
 /*
  * This impliments the back-patching logic to concatenate to code sections.
- * 
+ *
  */
 
-static 
+static
 void join_label(to, from, label)
 	struct icode   *to, *from;
 	int             label;
@@ -1119,7 +1119,7 @@ void join_label(to, from, label)
 	}
 }
 
-static 
+static
 void join_section(to, from)
 	struct icode   *to, *from;
 {
@@ -1380,12 +1380,12 @@ case 4:
 				if (cur->ityp == IMMED)
 					endsect();
 			}
-			yyval.i_val  = _IS_STMT;	
+			yyval.i_val  = _IS_STMT;
 		}
 break;
 case 5:
 #line 219 "parse.y"
-{	
+{
 			if (yyvsp[-1].s_val ) {
 				emit(0,1+sizeof(yyvsp[-1].s_val )/sizeof(int),'\"',yyvsp[-1].s_val );
 			} else	{
@@ -1414,7 +1414,7 @@ case 9:
 break;
 case 10:
 #line 234 "parse.y"
-{	
+{
 			if (is_loop()) {
 				add_jmp(JMP, LABEL_EXIT);
 				yyval.i_val  = _IS_STMT;
@@ -1426,7 +1426,7 @@ case 10:
 break;
 case 11:
 #line 245 "parse.y"
-{	
+{
 			if (is_loop()) {
 				add_jmp(JMP, LABEL_LOOP);
 				yyval.i_val  = _IS_STMT;
@@ -1492,7 +1492,7 @@ case 18:
 					while (--i >= 0) {
 						emit(cur,2,formal[i] & IS_ARRAY ? POPARRAY:POPVAR,
 							formal[i] >> 1);
-					}		
+					}
 					cur->label[LABEL_FUNC] = yyvsp[-3].i_val ;
 				} else	{
 					NO_CORE("yyparse");
@@ -1507,7 +1507,7 @@ case 19:
 					return _IS_ERROR;
 				}
 				/* generate a return zero if fall off end */
-				add_zeroval();	
+				add_zeroval();
 				make_label(LABEL_RETURN);
 				/* restore variables */
 				for (i=local_count; --i >= 0;) {
@@ -1574,7 +1574,7 @@ case 31:
 break;
 case 32:
 #line 363 "parse.y"
-{			
+{
 			for (;local_base < local_count; local_base++) {
 				emit(0,2,local[local_base] & IS_ARRAY ? SAVEARRAY:SAVEVAR,
 							local[local_base] >> 1);

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -26,7 +26,7 @@
 #include <sys/neutrino.h>
 #include "cpucfg.h"
 #include "sleepon.h"
-	
+
 extern int _sleepon_wait(sleepon_t *__handle, const volatile void *__addr, _uint64 nsec);
 static int _sleepon_wakeup(sleepon_t *l, const volatile void *addr, int type);
 
@@ -200,15 +200,15 @@ int _sleepon_wait(sleepon_t *l, const volatile void *addr, _uint64 nsec) {
 			// get a sleepon structure from its free list
 			l->free = p->next;
 		} else {
-			pthread_condattr_t			attr;	
+			pthread_condattr_t			attr;
 
 			// Try to allocate a sleepon structure
 			if(!(p = (struct _sleepon_entry *)malloc(sizeof *p))) {
 				return ENOMEM;
 			}
-			
-			if(((ret = pthread_condattr_init(&attr)) != EOK) 
-					|| (ret = (pthread_condattr_setclock(&attr, CLOCK_MONOTONIC) != EOK)) 
+
+			if(((ret = pthread_condattr_init(&attr)) != EOK)
+					|| (ret = (pthread_condattr_setclock(&attr, CLOCK_MONOTONIC) != EOK))
 					|| ((ret = pthread_cond_init(&p->cond, &attr)) != EOK)) {
 				(void)pthread_condattr_destroy(&attr);
 				free(p);

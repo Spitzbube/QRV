@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -50,7 +50,7 @@
 #define INVERSE_ATTR			0x04
 #define UNDERLINE_ATTR			0x08
 #define HIGHLIGHT_BLINK_ATTR	0x03
-         
+
 #define MACRO_DISABLE_CHAR	0xa3
 
 
@@ -108,7 +108,7 @@ update_screen() {
 			new_srow = screen_row;
 
 		lock_cursor = 0;
-	
+
 		if((new_ccol = curcol - screen_col) < 0) {
 			new_scol = memory_mapped ? curcol : imax(1, curcol - 20);
 			new_ccol = memory_mapped ? 0 : imax(0, curcol - new_scol);
@@ -340,7 +340,7 @@ hatch_cmd_line() {
  *  HERE STARTS THE VERY DISPLAY SPECIFIC ROUTINES                         *
  *                                                                         *
  ***************************************************************************/
- 
+
 
 
 /*
@@ -352,12 +352,12 @@ hatch_cmd_line() {
  */
 #if defined(__WATCOMC__)
 #pragma off(unreferenced);
-#endif 
+#endif
 void
 disp_line_image(int row, char *text, unsigned attr, char lflags)
 #if defined(__WATCOMC__)
 #pragma on(unreferenced);
-#endif 
+#endif
 	{
 	char *sp, *tp;					/* sp in reg di  and  tp in si */
 	int col, last_col, left_col;	/* col in reg dx and last_col in cx */
@@ -380,7 +380,7 @@ disp_line_image(int row, char *text, unsigned attr, char lflags)
 	null_char = opt.opt_b ? (memory_mapped ? NULL_CHAR : '.' ) : ' ';
 	tab_char  = opt.opt_t ? (memory_mapped ? TAB_CHAR  : '>' ) : ' ';
 	end_char = !(memory_mapped  ||  term_state.qnx_term) ? null_char
-				: lflags & PARA_FLAG ? PARA_CHAR 
+				: lflags & PARA_FLAG ? PARA_CHAR
 						: lflags & CONT_FLAG ? CONT_CHAR
 											 : lflags & OVER_FLAG ? OVER_CHAR
 																  : null_char;

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,7 +33,7 @@ Where:
          or a <comma>. A range of positions may be specified using the
          <hyphen>.
 Examples:
- cut -c 20-29,40-49 myfile    Output character columns 20 to 29 and 40 to 49 
+ cut -c 20-29,40-49 myfile    Output character columns 20 to 29 and 40 to 49
                               of the file 'myfile'
  cut -f 3,5,7-11 -d| myfile   Output fields numbered 3, 5, and 7 to 11 of the
                               file 'myfile'.  The fields in each input line
@@ -54,31 +54,31 @@ Examples:
 	Stage 1 of the warnings/errors cleanup.
 
 	Revision 1.13  2006/03/21 16:05:28  rmansfield
-	
+
 	PR: 23547
 	CI: kewarken
-	
+
 	Revision 1.12  2005/06/03 01:37:43  adanko
-	
+
 	Replace existing QNX copyright licence headers with macros as specified by
 	the QNX Coding Standard. This is a change to source files in the head branch
 	only.
-	
+
 	Note: only comments were changed.
-	
+
 	PR25328
-	
+
 	Revision 1.11  2003/08/21 20:43:05  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.10  1999/11/02 19:56:34  dagibbs
 	Fix PR 1731.  Standard fgets programming error, forgot to make sure there
 	was a newline before deleting the last character on the line.
-	
+
 	Revision 1.9  1997/02/10 20:46:53  eric
 	fopen had old mode chars from qnx2 days which are too funky for
 	fopen under nto and ignored under qnx4; removed.
-	
+
 	Revision 1.8  1996/11/12 18:54:56  eric
 	fixed bad fopen() parameters
 
@@ -104,7 +104,7 @@ Examples:
  * Revision 1.1  1991/09/03  16:25:13  ajedgar
  * Initial revision
  *
-	
+
 ---------------------------------------------------------------------*/
 
 
@@ -197,7 +197,7 @@ int main (int argc, char *argv[])
 	int nfiles;
 	int opt, error = 0;
 	char *curfile, delim = C_TAB;
-	
+
 
 	/*	Parse command line arguments */
 	error = 0;
@@ -242,13 +242,13 @@ int main (int argc, char *argv[])
 
 	/*	Check for mutually exclusive options -c and -f */
 	if (!Field && (Delim || Suppress)) {
-		fprintf(stderr, TXT(T_ERR_FOPT), Me);		
+		fprintf(stderr, TXT(T_ERR_FOPT), Me);
 		++error;
 	}
 
 	/*	Check field list */
 	if (!FieldList || check_flist(FieldList)) {
-		fprintf(stderr, TXT(T_ERR_FLIST), Me);		
+		fprintf(stderr, TXT(T_ERR_FLIST), Me);
 		++error;
 	}
 
@@ -279,7 +279,7 @@ int main (int argc, char *argv[])
 		/*	Close the file */
 		if (ifp != stdin)
 			fclose(ifp);
-	}	
+	}
 	if (! nfiles)
 		error += cut(stdin, "stdin", delim);
 
@@ -335,7 +335,7 @@ int extract_fields (char *op, char *ip, char delim)
 	char *p;
 	int a, b, c, i, max_pos;
 	char *field[512];
-	
+
 	/*	Max position does not include the <newline> */
 	max_pos = strccnt(ip, delim);
 
@@ -347,7 +347,7 @@ int extract_fields (char *op, char *ip, char delim)
 
 	/*	Find the beginning of each field */
 	field[0] = ip;
-	for (i=1; (field[i] = strchr(field[i-1], delim)); ++i) 
+	for (i=1; (field[i] = strchr(field[i-1], delim)); ++i)
 		field[i]++;
 	field[i] = &ip[strlen(ip)];
 

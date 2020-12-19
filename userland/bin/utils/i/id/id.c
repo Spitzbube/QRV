@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -72,7 +72,7 @@ Options:
  -u       Output only the effective user ID, as an unsigned integer.
 #endif
 
-int isallnumeric(char *s1) 
+int isallnumeric(char *s1)
 {
 	while ((*s1<='9') && (*s1>='0')) s1++;
 	return (*s1==0);
@@ -84,14 +84,14 @@ int main( int argc, char **argv )
 	int                     real_id, text_id;
 	int						ngroups=0;
 	gid_t					groups[NGROUPS_MAX+1];
-	
+
 	uid_t                   uid, euid;
 	gid_t                   gid, egid;
 	char                    *userid, *uname, *euname;
 	char                    *gname, *egname;
 	struct passwd   *user_data;
 	struct group    *group_data;
-		       
+
 	egroup_only = text_id = real_id = euser_only = all_group = FALSE;
 	option_given = FALSE;
 
@@ -103,7 +103,7 @@ int main( int argc, char **argv )
 			case 'n':       text_id = 1;                    break;
 			case 'r':       real_id = 1;                    break;
 			case 'u':       euser_only = 1;                 break;
-			default:        
+			default:
 				exit(EXIT_FAILURE);
 				break;
 		}
@@ -203,7 +203,7 @@ int main( int argc, char **argv )
 			for (i=0;i<ngroups;i++) {
 				if (first) { first = 0; printf(" groups="); } else putchar(',');
 				printf("%u",groups[i]);
-				if ((group_data=getgrgid(groups[i]))) printf("(%s)", group_data->gr_name); 
+				if ((group_data=getgrgid(groups[i]))) printf("(%s)", group_data->gr_name);
 			}
 		}
 		printf("\n");
@@ -223,7 +223,7 @@ int main( int argc, char **argv )
 				if (groups[i]==egid || groups[i]==gid) continue;
 
 				if (text_id) {
-					if ((group_data=getgrgid(groups[i]))) printf(" %s", group_data->gr_name); 
+					if ((group_data=getgrgid(groups[i]))) printf(" %s", group_data->gr_name);
 					else printf(" %d",groups[i]);
 				} else {
 					printf(" %d",groups[i]);
@@ -236,7 +236,7 @@ int main( int argc, char **argv )
 	if (egroup_only) {
 		if (text_id) printf("%s\n",real_id?gname:egname);
 		else printf("%u\n",real_id ? gid : egid);
-	}       
+	}
 
 	if (euser_only) {
 		if (text_id) printf("%s\n", real_id ? uname : euname);

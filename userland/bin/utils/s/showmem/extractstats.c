@@ -19,12 +19,12 @@
  */
 static void *find_sym_addr(int pid, char *sym) {
 	void *h, *s = NULL;
-	
+
 	h = dlopen(0, 0);
 	if(h != 0) {
 		s = dlsym(h, sym);
 		dlclose(h);
-	} 
+	}
 
 	return s;
 }
@@ -71,7 +71,7 @@ static int get_bin_stats(int fd, pid_t pid, struct bin_stats *stats, int max_bin
 	if(n > max_bins) {
 		n = max_bins;
 	}
-	
+
 	dlist_stats = alloca(sizeof *dlist_stats * n);
 	if((m = find_sym_addr(pid, DLIST_BIN_SYMBOL)) == NULL) {
 		return -1;
@@ -96,7 +96,7 @@ process_malloc_stats_t *gather_process_statistics(pid_t pid) {
 	process_malloc_stats_t 	*stats;
 	int					fd;
 	char 				buf[128];
-	
+
 	stats = malloc(sizeof(*stats));
 	if(stats == NULL) {
 		return NULL;
@@ -107,12 +107,12 @@ process_malloc_stats_t *gather_process_statistics(pid_t pid) {
 		free(stats);
 		return NULL;
 	}
-		
+
 	get_malloc_stats(fd, pid, &stats->stats);
 
 	stats->bin_count = get_bin_stats(fd, pid, stats->bins, MAX_BINS);
-	
+
 	close(fd);
-	
+
 	return stats;
 }

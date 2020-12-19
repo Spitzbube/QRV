@@ -35,7 +35,7 @@ typedef struct markup_s
 {
 	char	*name;		/* name of the markup */
 	char	attr[8];	/* attributes of markup */
-	twrap_t	(*fn)P_((TOKEN *));/* ptr to special function */	
+	twrap_t	(*fn)P_((TOKEN *));/* ptr to special function */
 } MARKUP;
 #define TITLE	attr[0]		/* in title: -, N, Y */
 #define BREAKLN	attr[1]		/* line break: -, 0, 1, 2, c, or p */
@@ -195,7 +195,7 @@ static long	cursoff;
 
 /* Offset & font of a space character, if "anyspc" is ElvTrue. */
 static long	spcoffset;
-static char	spcfont;	
+static char	spcfont;
 
 /* This the drawchar pointer points to a function for outputting a single
  * character.
@@ -1048,7 +1048,7 @@ static TOKEN *htmlget(refp)
 				 * of the loop...
 				 */
 			}
-			
+
 			/* if token text is full, then skip this char */
 			if (rettok.nchars >= QTY(rettok.text) - 2)
 				continue;
@@ -1122,7 +1122,7 @@ static TOKEN *htmlget(refp)
 	{
 		/* This is a word.  Collect characters up to next whitespace */
 		for (;
-		     *refp 
+		     *refp
 			&& rettok.nchars < QTY(rettok.text) - 1
 			&& **refp > ' ' /* !elvspace(**refp) */
 #ifdef SGML_HACK
@@ -1236,7 +1236,7 @@ static DMINFO *htmlinit(win)
 		 * then move the cursor here.  This is done because otherwise
 		 * the cursor would always start on an ugly formatting code.
 		 */
-		if (cursoffset == 0L 
+		if (cursoffset == 0L
 		 && !title
 		 && !elvspace(token->text[0])
 		 && !token->markup)
@@ -2564,7 +2564,7 @@ static TOKEN *manget(refp)
 		 * "\fX" string.
 		 */
 		for (quote = (ELVBOOL)(rettok.text[0] == '\\');
-		     *refp 
+		     *refp
 			&& rettok.nchars < QTY(rettok.text) - 1
 			&& !elvspace(**refp);
 		     offset++, scannext(refp))
@@ -2669,7 +2669,7 @@ static DMINFO *maninit(win)
 		 * then move the cursor here.  This is done because otherwise
 		 * the cursor would always start on an ugly formatting code.
 		 */
-		if (cursoffset == 0L 
+		if (cursoffset == 0L
 		 && !title
 		 && !elvspace(token->text[0])
 		 && !token->markup)
@@ -2939,7 +2939,7 @@ static twrap_t textitle(token)
 			col = 0;
 
 			/* prepare for next line of title */
-			j = 0; 
+			j = 0;
 			offset = token->offset[i];
 		}
 	}
@@ -3485,7 +3485,7 @@ static TOKEN *texget(refp)
 		 * rest of them.
 		 */
 		for (;
-		     *refp 
+		     *refp
 			&& rettok.nchars < QTY(rettok.text) - 1
 			&& !CHARchr("{}\\$& \t\n\r", **refp);
 		     offset++, scannext(refp))
@@ -3558,7 +3558,7 @@ static DMINFO *texinit(win)
 		 * then move the cursor here.  This is done because otherwise
 		 * the cursor would always start on an ugly formatting code.
 		 */
-		if (cursoffset == 0L 
+		if (cursoffset == 0L
 		 && !title
 		 && !elvspace(token->text[0])
 		 && !token->markup)
@@ -4164,7 +4164,7 @@ static MARK setup(win, top, cursor, bottom, info)
 	dmtex.canopt =
 #endif
 		(ELVBOOL)(!(o_list(win) && i) && !o_showmarkups);
-	
+
 	/* find the line indicies of the top & bottom marks, and the cursor */
 	/* NOTE: This could have been implemented more efficiently! */
 	topi = start(win, top, NULL);
@@ -4601,7 +4601,7 @@ void dmmuadjust(from, to, delta)
 
 		/* If we hit the end of the buffer, then no adjustments are
 		 * necessary.  This may leave superfluous data at the end of
-		 * the array, but who cares? 
+		 * the array, but who cares?
 		 */
 		if (!token || token->offset[token->nchars - 1] == o_bufchars(markbuffer(from)) - 1)
 		{
@@ -4642,7 +4642,7 @@ void dmmuadjust(from, to, delta)
 #endif
 			continue;
 		}
-		
+
 		/* Adjustments are going to be complex.  Start a new array,
 		 * but don't throw the old one out yet because it may save
 		 * us some work.
@@ -4660,7 +4660,7 @@ void dmmuadjust(from, to, delta)
 
 		/* regenerate lines until we have same (adjusted) offset and
 		 * state as we had before the change.
-		 */ 
+		 */
 		do
 		{
 			/* Regenerate a line */

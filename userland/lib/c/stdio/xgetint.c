@@ -116,7 +116,7 @@ int _Getint(_Sft *px, void *pans)
 
 		px->stored = 1;
 		if (*px->s == 'p')
- 
+
 
  #if defined(__BORLANDC__) && !__EDG__
 			if (pans != 0)

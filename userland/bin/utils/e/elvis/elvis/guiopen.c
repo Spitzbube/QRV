@@ -97,7 +97,7 @@ static void loop()
 	char	buf[10];
 	int	len;
 	MAPSTATE mst = MAP_CLEAR;
- 
+
 	/* peform the -c command or -t tag */
 	if (mainfirstcmd(windefault))
 		return;
@@ -287,7 +287,7 @@ static ELVBOOL oprgopen(command, willwrite, willread)
 {
 	/* switch the tty to normal mode */
 	ttynormal();
-	
+
 	/* use the OS prgopen() function */
 	return prgopen(command, willwrite, willread);
 }
@@ -296,13 +296,13 @@ static ELVBOOL oprgopen(command, willwrite, willread)
 static int oprgclose()
 {
 	int	ret;
-	
+
 	/* use the OS perclose() function */
 	ret = prgclose();
 
 	/* switch the tty back to raw mode */
 	ttyraw(&ttyerasekey);
-	
+
 	return ret;
 }
 

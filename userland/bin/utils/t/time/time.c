@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -44,27 +44,27 @@
 	Revision 1.7  2004/08/03 22:22:10  jgarvey
 	CLK_TCK is actually a sysconf() call under QNX6, so do it once and
 	cache the answer to save overheads.
-	
+
 	Revision 1.6  2004/08/03 01:29:23  jgarvey
 	Bring time into line with POSIX2 specification: add a '-p' option
 	which has a well-specified output format.  Utility now matches the
 	behaviour of the pdksh builtin.
-	
+
 	Revision 1.5  2003/09/02 14:39:34  martin
 	Add QSSL Copyright.
-	
+
 	Revision 1.4  2002/04/02 21:49:31  kewarken
 	fixed mixing of stderr and stdout on output
-	
+
 	Revision 1.3  2000/11/29 16:14:02  kewarken
 	Fixed time to account for different CLK_TCKs
-	
+
 	Revision 1.2  1998/11/25 22:50:36  eric
 	ported to GNU, added target dirs
-	
+
 	Revision 1.1  1998/10/23 20:53:55  trs
 	initial checkin
-	
+
 	Revision 1.4  1998/10/23 20:36:20  trs
 	*** empty log message ***
 
@@ -77,13 +77,13 @@
  * Revision 1.1  1991/07/11  13:40:54  brianc
  * Initial revision
  *
-	
+
 	Revision 1.2 Sun Apr  1 18:11:48 1990 opr
 	Output to stderr instead of stdout
-	
+
 	Revision 1.1 Wed Mar 14 13:28:33 1990 glen
 	 *** QRCS - Initial Revision ***
-	
+
 ---------------------------------------------------------------------*/
 
 #include <time.h>

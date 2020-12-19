@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -78,9 +78,9 @@ get_ptr_paddr(paddr64_t paddr) {
 		return TARGET_NULL;
 	}
 	switch(cpu->ptr_size) {
-	case 4:	
+	case 4:
 		return endian_native32(data._32);
-	case 8:	
+	case 8:
 		return endian_native64(data._64);
 	}
 	return TARGET_NULL;
@@ -98,9 +98,9 @@ get_ptr_vaddr(target_ptr vaddr) {
 		return TARGET_NULL;
 	}
 	switch(cpu->ptr_size) {
-	case 4:	
+	case 4:
 		return endian_native32(data._32);
-	case 8:	
+	case 8:
 		return endian_native64(data._64);
 	}
 	return TARGET_NULL;
@@ -214,7 +214,7 @@ find_tid(paddr64_t prp_paddr, unsigned *tidp) {
 	if(!get_kdinfo()) {
 		return 0;
 	}
-	if(core_read_paddr(prp_paddr + kdbg_private.pr_threads_off, 
+	if(core_read_paddr(prp_paddr + kdbg_private.pr_threads_off,
 			&vector, sizeof(vector)) != sizeof(vector)) {
 		return 0;
 	}

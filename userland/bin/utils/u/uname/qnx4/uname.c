@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -34,7 +34,7 @@ Note:
  If no options are specified, the uname utility writes the System name,
  as if the -s option had been specified.
 #endif
-	
+
 /*---------------------------------------------------------------------
 
 
@@ -55,13 +55,13 @@ Note:
 
 	Revision 1.7  2004/04/17 17:58:51  thomasf
 	Update licensing
-	
+
 	Revision 1.6  2001/05/15 20:12:40  bstecher
 	Added licensing.
-	
+
 	Revision 1.5  1995/01/26 23:57:21  glen
 	The extra spaces that were being output were breaking configure scripts.
-	
+
  * Revision 1.4  1992/10/27  19:55:30  eric
  * added usage one-liner
  *
@@ -76,7 +76,7 @@ Note:
  *
 
 	$Author: coreos $
-	
+
 ---------------------------------------------------------------------*/
 /*
  * Include declarations:
@@ -111,8 +111,8 @@ int create_mask;
 
 
 /*	Uname writes the current system name to standard output.  When options
- *	are specified, symbols representing one or more system characteristics are 
- *	written to the stdandard output.  
+ *	are specified, symbols representing one or more system characteristics are
+ *	written to the stdandard output.
  */
 main( argc, argv )
 int argc;
@@ -137,19 +137,19 @@ char *argv[];
 			case 'r':	flags |= RELEASE;   /* OS release level */
 						break;
 			case 's':	flags |= OSFLAG;    /* OS name - also default */
-						break;            
+						break;
 			case 'v':	flags |= VERSION;   /* OS version */
 						break;
 			case '?':	error = TRUE;       /* error */
 						break;
 			}
 
-	if (flags == 0) 
+	if (flags == 0)
 		flags |= OSFLAG;
 
 	if ( error )
 		exit(EXIT_FAILURE);
-	
+
 	if (uname(&name)==-1) {
 		perror("uname");
 		exit(EXIT_FAILURE);

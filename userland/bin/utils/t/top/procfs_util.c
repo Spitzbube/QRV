@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -46,7 +46,7 @@
  * help, it gets overwritten with trash.
  *
  */
- 
+
 #define MAX_ATTEMPTS 10
 
 int procfs_get_process_mapinfo(int fd, procfs_mapinfo ** mapinfo_pp)
@@ -54,7 +54,7 @@ int procfs_get_process_mapinfo(int fd, procfs_mapinfo ** mapinfo_pp)
     procfs_mapinfo 	*mem = NULL;
     int			num, new_num;
     int                 iterations;
-    
+
     if ( (devctl(fd, DCMD_PROC_MAPINFO, NULL, 0, &num) < 0) || num <= 0) {
         *mapinfo_pp = NULL;
         return -1;
@@ -107,21 +107,21 @@ int procfs_get_process_mapinfo(int fd, procfs_mapinfo ** mapinfo_pp)
  * This is a low memory version of the function which doesn't do any
  * mallocs, it just uses the buffer passed.
  */
-int 
+int
 procfs_get_process_mapinfo_lowmem(FILE *fp, int fd, procfs_mapinfo *mapinfo_pp,
                                       int count)
 {
     int		num;
     int		rv;
-    
-    rv = devctl(fd, DCMD_PROC_MAPINFO, mapinfo_pp, 
+
+    rv = devctl(fd, DCMD_PROC_MAPINFO, mapinfo_pp,
                           count * sizeof(procfs_mapinfo), &num);
     if (rv != EOK) {
 	return -1;
     }
 
     if (num > count) {
-        fprintf(fp, 
+        fprintf(fp,
         "procfs_get_process_mapinfo_lowmem: couldn't get all the meminfo \n"
         "for the process, process has %d segments\n", num);
         num = count;
@@ -300,7 +300,7 @@ int procfs_get_process_name(int fd, char *filename, int length)
 /*
  * This API for getting a process's name.
  */
-int 
+int
 procfs_get_name(pid_t pid, char *pname, int len)
 {
     int  fd, rv;
@@ -365,7 +365,7 @@ char * procfs_get_segment_name(unsigned long flags)
 	break;
     }
     n += (flags & MAP_TYPE);
-    
+
     for (p = bitnames; p->bit; p++) {
 	if (flags & p->bit) {
 	    if (n++) {

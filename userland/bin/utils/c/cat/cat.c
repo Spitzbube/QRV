@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -50,27 +50,27 @@ Options:
 	Make "cat" utility large-file-aware.  Change line count from int to
 	off_t (so will resize according to _FILE_OFFSET_BITS compilation) and
 	also allow for this in output formatting (printf).
-	
+
 	Revision 1.11  2003/08/21 19:50:02  martin
 	Update QSSL Copyright.
-	
+
 	Revision 1.10  2001/12/17 20:37:56  dwhelan
 	PR4075
-	
+
 	Revision 1.9  2001/07/31 14:25:03  jbaker
 	now builds under cygwin
-	
+
 	Revision 1.8  1999/08/09 22:00:30  adrianj
 	Clarified usage.
-	
+
 	Revision 1.7  1999/08/09 14:26:49  spuri
 	- I added the '-n' and '-r' options so that cat prints out line
 	  numbers. The '-r' option resets the line counter for each new
 	  file. This code works w/ both compressed and unbuffered input.
-	
+
 	Revision 1.6  1998/09/26 16:15:12  bstecher
 	all uses of <util/cpdeps.h> now should use <lib/compat.h>
-	
+
 	Revision 1.5  1998/05/01 16:03:49  eric
 	reorg for gcc
 
@@ -88,12 +88,12 @@ Options:
  *
 
 	$Author: rmansfield $
-	
+
 ---------------------------------------------------------------------*/
 /*
  * Description:
  *			The cat utility reads files sequentially, writing them to the
- *			standard output.  The filename operands are processed in   
+ *			standard output.  The filename operands are processed in
  *			command line order and are read from beginning to end.  If no
  *			filenames are given, the cat utility reads from the standard input.
  *
@@ -160,13 +160,13 @@ int	state = 0;
 						head += t;
 						m -= t;
 					}
-					if (t <= 0 && m) 
+					if (t <= 0 && m)
 						return 2;
 				}
 				head = tail;			/* update head ptr */
 				break;
 			case	1:			/* find the char after the last foldchr */
-				while (head < nbytes && iobuf[head] == foldchr) 
+				while (head < nbytes && iobuf[head] == foldchr)
 					head++;
 				state = head == nbytes;	/* if the buffer ran out, stay in state 1, otherwise state 0 */
 				break;
@@ -217,7 +217,7 @@ catfile(int ifd, int ofd, int iosize)
 				// if we have an entire line in our buffer, make sure
 				// we print out the '\n' as well
 				if (lbytes < nbytes)
-					lbytes++;			
+					lbytes++;
 			}
 			else
 			{
@@ -265,7 +265,7 @@ catfile(int ifd, int ofd, int iosize)
 				newline = (pnewline - obufp < nbytes);
 		}
 
-		if (t <= 0 && nbytes) 
+		if (t <= 0 && nbytes)
 		{
 			return 2;
 		}
@@ -291,7 +291,7 @@ main( int argc, char *argv[] )
 	int 	i;
 	int 	iosize = sizeof(iobuf);
 	int	nerrs = 0;
-	int	ifd;	
+	int	ifd;
 
 	while(( i= getopt( argc, argv, "u**cnrw")) != EOF) {
 		switch ( i )
@@ -318,12 +318,12 @@ main( int argc, char *argv[] )
 			exit( EXIT_FAILURE );
 		}
 	}
-#define	OUT_FD	1		
+#define	OUT_FD	1
 	MAKE_BINARY_FD( OUT_FD );
 	if (optind == argc) {
 		MAKE_BINARY_FD( 0 );
 //		switch (compress_line ? foldfile(0, OUT_FD, iosize, '\n')
-//								: catfile(0, OUT_FD, iosize)) 
+//								: catfile(0, OUT_FD, iosize))
 		switch (catfile(0, OUT_FD, iosize))
 		{
 		case	1:	perror("--stdin--");	nerrs++;	break;
@@ -342,7 +342,7 @@ main( int argc, char *argv[] )
 				MAKE_BINARY_FD( ifd );
 			}
 //			switch(compress_line ? foldfile(ifd, OUT_FD, iosize, '\n')
-//								: catfile(ifd, OUT_FD, iosize)) 
+//								: catfile(ifd, OUT_FD, iosize))
 			switch (catfile(ifd, OUT_FD, iosize))
 			{
 			case	1:
@@ -356,7 +356,7 @@ main( int argc, char *argv[] )
 			}
 			if (ifd)
 				close(ifd);
-		}                 
+		}
     }
 	return nerrs ? EXIT_FAILURE : EXIT_SUCCESS;
 }

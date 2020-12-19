@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -79,7 +79,7 @@ pid_t spawn(const char *path, int fd_count, const int fd_map[],
 		data = alloca(len + SPAWN_REMOTE_MSGBUF_SIZE);
 		if(data == NULL) {
 			mmapped_len = len + SPAWN_REMOTE_MSGBUF_SIZE;
-			data = mmap(NULL, mmapped_len, PROT_READ|PROT_WRITE, 
+			data = mmap(NULL, mmapped_len, PROT_READ|PROT_WRITE,
 						MAP_ANON|MAP_PRIVATE, NOFD, 0);
 			if(data == MAP_FAILED) {
 				errno = ENOMEM;
@@ -106,7 +106,7 @@ pid_t spawn(const char *path, int fd_count, const int fd_map[],
 		data = alloca(msg.i.nbytes);
 		if(data == NULL) {
 			mmapped_len = msg.i.nbytes;
-			data = mmap(NULL, mmapped_len, PROT_READ|PROT_WRITE, 
+			data = mmap(NULL, mmapped_len, PROT_READ|PROT_WRITE,
 						MAP_ANON|MAP_PRIVATE, NOFD, 0);
 			if(data == MAP_FAILED) {
 				errno = ENOMEM;

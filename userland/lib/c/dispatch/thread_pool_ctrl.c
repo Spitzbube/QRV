@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,7 +33,7 @@ void *_thread_pool_context_thread(void *data);
 // if lo > hi, then set lo and hi to the smaller of the two
 void _thread_pool_attr_normalise(thread_pool_attr_t *tpattr)
 {
-	if (tpattr == NULL) 
+	if (tpattr == NULL)
 		return;
 	// normalise simple absurd values
 	// we check hi first, because, if hi changes, lo might also be
@@ -69,8 +69,8 @@ int thread_pool_destroy(thread_pool_t *pool) {
 	_mutex_unlock(&(props->inline_lock));
 
 	/*
-	 Call the unblock function once for every thread that 
-	 is created.  Note that we might over call here since 
+	 Call the unblock function once for every thread that
+	 is created.  Note that we might over call here since
 	 someone might die between the created and num call.
 	 There should never be undercall though since the
 	 maximum and exiting flags should catch that.
@@ -86,7 +86,7 @@ int thread_pool_destroy(thread_pool_t *pool) {
 	}
 
 	/*
-	 Wait for everyone to die.  
+	 Wait for everyone to die.
 	*/
 	_mutex_lock(&(props->inline_lock));
 	while(pool->created > 0) {
@@ -119,7 +119,7 @@ there are no threads in the system (that is a shutdown scenario).
 - Change the lowater
  -> The lowwater can temporarily be higher than the highwater, this
     means that any threads that get created will automatically be
-	destroyed when they try and run.  
+	destroyed when they try and run.
 - Change the hiwater
  -> If the highwater is lower than the lowater there is a possiblity
     of all threads exiting, thus leaving you with an empty thread
@@ -131,7 +131,7 @@ It is up to the user to make these functions thread safe.
 We should probably do that ourselves though with a reference
 count or something in the thread pool.
 */
-int thread_pool_control(thread_pool_t *pool, thread_pool_attr_t *attr, 
+int thread_pool_control(thread_pool_t *pool, thread_pool_attr_t *attr,
 						uint16_t lower, uint16_t upper, unsigned flags) {
 	int done;
 	struct _pool_properties *props;
@@ -145,7 +145,7 @@ int thread_pool_control(thread_pool_t *pool, thread_pool_attr_t *attr,
 
 	_mutex_lock(&(props->inline_lock)); // we lock now
 	props->control_threads++;
-	// only one thread can be actively manipulating the 
+	// only one thread can be actively manipulating the
 	// limits. All others wait for that one to complete
 	while (pool->flags & POOL_FLAG_CONTROL) {
 		// if there is already someone waiting for a change
@@ -174,9 +174,9 @@ int thread_pool_control(thread_pool_t *pool, thread_pool_attr_t *attr,
 	// normalise new pool attr values to be reasonably sane
 	_thread_pool_attr_normalise(&(pool->pool_attr));
 	/* If we have more threads created than the MAXIMUM value, or
-	   we have more threads waiting than the HI_WATER value, then we 
-	   should slay them off to bring the number down.  
-	   If we have less threads waiting than the LO_WATER then we 
+	   we have more threads waiting than the HI_WATER value, then we
+	   should slay them off to bring the number down.
+	   If we have less threads waiting than the LO_WATER then we
 	   create one more thread which will in turn spawn others.
 	*/
 	done = 0;
@@ -186,7 +186,7 @@ int thread_pool_control(thread_pool_t *pool, thread_pool_attr_t *attr,
 			pool->created++;
 			props->newthreads++;
 			_mutex_unlock(&(props->inline_lock));
-			if(pthread_create(0, pool->pool_attr.attr, 
+			if(pthread_create(0, pool->pool_attr.attr,
                         _thread_pool_context_thread, pool) != EOK) {
 				_mutex_lock(&(props->inline_lock));
 				pool->created--;
@@ -213,7 +213,7 @@ int thread_pool_control(thread_pool_t *pool, thread_pool_attr_t *attr,
 			count = __max((int)((pool->created-props->control_threads) - pool->pool_attr.maximum), 0);
 			count = __max((int)(pool->waiting - pool->pool_attr.hi_water), count);
 			_mutex_unlock(&(props->inline_lock));
-			
+
 			while(count-- > 0) {
 				if(pool->pool_attr.unblock_func) {
 					pool->pool_attr.unblock_func(ctp);
@@ -229,12 +229,12 @@ int thread_pool_control(thread_pool_t *pool, thread_pool_attr_t *attr,
 		}
 
 		/* Wait until the number of threads created falls between
-		   the upper and lower limits provided.  */ 
+		   the upper and lower limits provided.  */
 		if(!(flags & THREAD_POOL_CONTROL_NONBLOCK)) {
 			_mutex_lock(&(props->inline_lock));
 			pool->flags |= POOL_FLAG_CHANGING;
 			props->control_threads++;
-			while(!((lower <= ((pool->created-props->control_threads)+1)) && 
+			while(!((lower <= ((pool->created-props->control_threads)+1)) &&
 				(((pool->created-props->control_threads)+1) <= upper))) {
 				pthread_cond_wait(&(props->pool_cond), &(props->inline_lock));
 			}
@@ -242,7 +242,7 @@ int thread_pool_control(thread_pool_t *pool, thread_pool_attr_t *attr,
 			pool->flags &= ~POOL_FLAG_CHANGING;
 			flags |= THREAD_POOL_CONTROL_NONBLOCK;
 			_mutex_unlock(&(props->inline_lock));
-		} 
+		}
 		(void)sched_yield();
 		if (!done) // if we need to loop again, we lock here
 			_mutex_lock(&(props->inline_lock));
@@ -251,7 +251,7 @@ int thread_pool_control(thread_pool_t *pool, thread_pool_attr_t *attr,
 }
 
 /* Change the limits of one or more of the number control fields for the thread pool. */
-int thread_pool_limits(thread_pool_t *pool, int lowater, int hiwater, 
+int thread_pool_limits(thread_pool_t *pool, int lowater, int hiwater,
                         int maximum, int increment, unsigned flags) {
 	thread_pool_attr_t tpattr;
 	uint16_t		   upper, lower;
@@ -270,15 +270,15 @@ int thread_pool_limits(thread_pool_t *pool, int lowater, int hiwater,
 	if(lowater >= 0) {
 		lower = tpattr.lo_water = __max((uint16_t)lowater, 0);
 		flags |= THREAD_POOL_CONTROL_LOWATER;
-	}	
+	}
 	if(increment >= 0) {
 		tpattr.increment = __max((uint16_t)increment, 0);
 		flags |= THREAD_POOL_CONTROL_INCREMENT;
-	}	
+	}
 	if(maximum >= 0) {
 		upper = tpattr.maximum = __max((uint16_t)maximum, 0);
 		flags |= THREAD_POOL_CONTROL_MAXIMUM;
-	}	
+	}
 
 	return thread_pool_control(pool, &tpattr, lower, upper, flags);
 }
