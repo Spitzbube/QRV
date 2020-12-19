@@ -1,5 +1,4 @@
 /*
- * $QNXLicenseC:
  * Copyright 2008, QNX Software Systems.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"). You
@@ -16,11 +15,8 @@
  * Please review this entire file for other proprietary rights or license
  * notices, as well as the QNX Development Suite License Guide at
  * http://licensing.qnx.com/license-guide/ for other information.
- * $
+ *
  */
-
-
-
 
 /*
  * sys/startup.h:	startup header definitions
@@ -40,38 +36,38 @@
 
 
 /*
-** In the comments the following letters tell you who uses the info
-**
-**   I  - used by the QNX IPL
-**   S  - used by the startup program
-**   IS - used by both the QNX IPL and the startup program
-*/
+ * In the comments the following letters tell you who uses the info
+ *
+ *   I  - used by the QNX IPL
+ *   S  - used by the startup program
+ *   IS - used by both the QNX IPL and the startup program
+ */
 struct startup_header {
-    unsigned long signature;    /*I  Header sig, see below */
-    unsigned short version;     /*I  Header vers, see below */
-    unsigned char flags1;       /*IS Misc flags, see below */
-    unsigned char flags2;       /*   No flags defined yet */
-    unsigned short header_size; /*S  sizeof(struct startup_header) */
-    unsigned short machine;     /*IS Machine type from sys/elf.h */
-    unsigned long startup_vaddr;/*I  Virtual Address to transfer */
+    unsigned long signature;    /* I  Header sig, see below */
+    unsigned short version;     /* I  Header vers, see below */
+    unsigned char flags1;       /* IS Misc flags, see below */
+    unsigned char flags2;       /*    No flags defined yet */
+    unsigned short header_size; /* S  sizeof(struct startup_header) */
+    unsigned short machine;     /* IS Machine type from sys/elf.h */
+    unsigned long startup_vaddr;/* I  Virtual Address to transfer */
     /*   to after IPL is done */
-    unsigned long paddr_bias;   /*S  Value to add to physical address */
+    unsigned long paddr_bias;   /* S  Value to add to physical address */
     /*   to get a value to put into a */
     /*   pointer and indirected through */
-    unsigned long image_paddr;  /*IS Physical address of image */
-    unsigned long ram_paddr;    /*IS Physical address of RAM to copy */
+    unsigned long image_paddr;  /* IS Physical address of image */
+    unsigned long ram_paddr;    /* IS Physical address of RAM to copy */
     /*   image to (startup_size bytes copied) */
-    unsigned long ram_size;     /*S  Amount of RAM used by the startup */
+    unsigned long ram_size;     /* S  Amount of RAM used by the startup */
     /*   program and executables contained */
     /*   in the file system */
-    unsigned long startup_size; /*I  Size of startup (never compressed) */
-    unsigned long stored_size;  /*I  Size of entire image */
-    unsigned long imagefs_paddr;/*IS Set by IPL to where the imagefs is when startup runs */
-    unsigned long imagefs_size; /*S  Size of uncompressed imagefs */
-    unsigned short preboot_size;/*I  Size of loaded before header */
-    unsigned short zero0;       /*   Zeros */
-    unsigned long zero[3];      /*   Zeros */
-    unsigned long info[48];     /*IS Array of startup_info* structures */
+    unsigned long startup_size; /* I  Size of startup (never compressed) */
+    unsigned long stored_size;  /* I  Size of entire image */
+    unsigned long imagefs_paddr;/* IS Set by IPL to where the imagefs is when startup runs */
+    unsigned long imagefs_size; /* S  Size of uncompressed imagefs */
+    unsigned short preboot_size;/* I  Size of loaded before header */
+    unsigned short zero0;       /*    Zeros */
+    unsigned long zero[3];      /*    Zeros */
+    unsigned long info[48];     /* IS Array of startup_info* structures */
 };
 
 /* We keep the flags as chars so they are endian neutral */

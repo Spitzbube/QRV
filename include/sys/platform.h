@@ -25,6 +25,38 @@
 #include <platform.h>
 #include <sys/compiler_gnu.h>
 
+#if !defined(__LINT)
+#define __LINT(__expr)
+#endif
+
+#if !defined(__FLEXARY)
+#define __FLEXARY(__type, __name) __type __name[1]
+#endif
+
+#if __INT_BITS__==16 && __LONG_BITS__==32 && __PTR_BITS__==32
+#define __LP32__ 1
+#define __LP32 1
+#define _LP32 1
+#elif __INT_BITS__==32 && __LONG_BITS__==32 && __PTR_BITS__==32
+#define __ILP32__ 1
+#define __ILP32 1
+#define _ILP32 1
+#elif __INT_BITS__==32 && __LONG_BITS__==32 && __PTR_BITS__==64
+#define __LLP64__ 1
+#define __LLP64 1
+#define _LLP64 1
+#elif __INT_BITS__==64 && __LONG_BITS__==64 && __PTR_BITS__==64
+#define __ILP64__ 1
+#define __ILP64 1
+#define _ILP64 1
+#elif __INT_BITS__==32 && __LONG_BITS__==64 && __PTR_BITS__==64
+#define __LP64__ 1
+#define __LP64 1
+#define _LP64 1
+#else
+#error Uncommon model for int, long, pointer sizes
+#endif
+
 /*
  * PPC numbers its bits backwards from the rest of the known universe
  * (except for the 370, of course :-).

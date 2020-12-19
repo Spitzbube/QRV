@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -36,7 +36,7 @@
 __BEGIN_DECLS
 
 #define QNX_NOTE_NAME	"QNX"
-	
+
 enum Elf_qnx_note_types {
 	QNT_NULL = 0,
 	QNT_DEBUG_FULLPATH,
@@ -55,7 +55,7 @@ enum Elf_qnx_note_types {
 typedef struct {
 	_Uint8t			major_version;
 	_Uint8t			minor_version;
-	_Uint16t		flags;	
+	_Uint16t		flags;
 } generator_version;
 
 #define QNXELF_GEN_MAJOR	1
