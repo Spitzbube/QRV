@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -86,7 +86,7 @@ struct mm_map {
 #define MM_ASFLAG_PADDR64_SAFE		0x00000010
 
 struct mm_aspace {
-	struct mm_map_head			map; 
+	struct mm_map_head			map;
 	struct  {
 		uintptr_t		vmem;
 		uintptr_t		data;
@@ -111,7 +111,7 @@ struct mm_aspace {
 #define PADDR_TO_SYNC_OBJ(addr)	((void *)_syspage_ptr)
 #endif
 #define PADDR_TO_SYNC_OFF(addr)	((unsigned)(addr))
-	
+
 
 #ifndef CPU_ZERO_PAGE
     #define CPU_ZERO_PAGE(d, l, mm)	memset((d), 0, (l))
@@ -163,7 +163,7 @@ extern int		cpu_pte_manipulate(struct mm_pte_manipulate *);
 extern int		cpu_pte_merge(struct mm_pte_manipulate *);
 
 /*
- * definitions for cache colour operations on a page 
+ * definitions for cache colour operations on a page
  */
 #define COLOUR_CLEAN_PURGE		0
 #define COLOUR_CLEAN_FLUSH		1
@@ -174,7 +174,7 @@ void			colour_set(uintptr_t, struct pa_quantum *, unsigned);
 
 int				map_init(struct mm_map_head *, uintptr_t start, uintptr_t end);
 int				map_fini(struct mm_map_head *);
-int 			map_create(struct map_set *, struct map_set *, 
+int 			map_create(struct map_set *, struct map_set *,
 							struct mm_map_head *, uintptr_t va,
 							uintptr_t size, uintptr_t mask, unsigned flags);
 uintptr_t		map_find_va(struct mm_map_head *, uintptr_t va, uintptr_t size,
@@ -197,7 +197,7 @@ void			sysaddr_map(void *);
 #define MI_NEXT			0x02
 #define MI_SKIP_SPECIAL	0x04
 
-int				map_isolate(struct map_set *, struct mm_map_head *, 
+int				map_isolate(struct map_set *, struct mm_map_head *,
 							uintptr_t start, size_t size, int flags);
 
 extern int		pte_map(ADDRESS *, uintptr_t,  uintptr_t, int, OBJECT *, paddr_t, unsigned);
@@ -273,7 +273,7 @@ extern int			munmap_flags_default;
 extern intrspin_t	map_spin;
 extern struct vaddr_range	system_code_vaddr;
 extern struct vaddr_range	system_data_vaddr;
-extern uintptr_t			(*vaddr_search_adjust_hook)(uintptr_t vaddr, 
+extern uintptr_t			(*vaddr_search_adjust_hook)(uintptr_t vaddr,
 							ADDRESS *adp, unsigned flags, uintptr_t size);
 
 #define PMEM_STATS_FREE     0x0

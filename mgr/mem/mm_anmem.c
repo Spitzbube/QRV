@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -39,14 +39,14 @@ int
 anmem_done(OBJECT *obp) {
 	if(obp->mem.mm.refs != NULL) return 0;
 	if(obp->mem.mm.pmem != NULL) {
-#ifndef NDEBUG		
-		// We can't lock since the aspace might be 
+#ifndef NDEBUG
+		// We can't lock since the aspace might be
 		// being destroyed and the __tls()->owner for mutex acquisition will
 		// not get the right value, so we turn on the MM_MEM_SKIPLOCKCHECK
 		// to prevent crash()'s. It's safe since nobody else is
 		// referencing this object.
-		obp->mem.mm.flags |= MM_MEM_SKIPLOCKCHECK; 
-#endif		
+		obp->mem.mm.flags |= MM_MEM_SKIPLOCKCHECK;
+#endif
 		memobj_pmem_del_len(obp, 0, obp->mem.mm.size);
 	}
 	return 1;

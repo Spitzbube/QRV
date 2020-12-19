@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,12 +29,12 @@ struct args_vaddrinfo {
 	size_t				len;
 };
 
-static void 
+static void
 ext_vaddrinfo(void *data) {
 	struct args_vaddrinfo	*args = data;
 
 	KerextLock();
-	KerextStatus(NULL, 
+	KerextStatus(NULL,
 			cpu_vmm_vaddrinfo(args->prp, args->vaddr, &args->paddr, &args->len));
 }
 
@@ -60,8 +60,8 @@ get_paddr(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void *d
 		data->paddr += ADDR_OFFSET(vaddr);
 		if(data->init) {
 			// Scan through the physically contiguous run of memory.
-			// If the page hasn't been initialized yet, do it now. 
-			// A driver might be programing some hardware to DMA 
+			// If the page hasn't been initialized yet, do it now.
+			// A driver might be programing some hardware to DMA
 			// into the memory and we don't want to overwrite
 			// that data later...
 			for( ;; ) {
@@ -80,11 +80,11 @@ get_paddr(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void *d
 	data->found = 1;
 	return -1;
 }
-	
+
 //FUTURE: Do we need to go into the kernel for this? Have to mux with
 //FUTURE: page table destruction if not.
 
-unsigned 
+unsigned
 vmm_vaddrinfo(PROCESS *prp, uintptr_t vaddr, paddr_t *paddrp, size_t *lenp, unsigned flags) {
 	ADDRESS					*adp;
 	struct map_set			ms;
@@ -123,7 +123,7 @@ vmm_vaddrinfo(PROCESS *prp, uintptr_t vaddr, paddr_t *paddrp, size_t *lenp, unsi
 					data.off = mm->offset + (ADDR_PAGE((uintptr_t)vaddr) - mm->start);
 					obp = mm->obj_ref->obp;
 					memobj_lock(obp);
-					memobj_pmem_walk(MPW_PHYS|MPW_SYSRAM, obp, data.off, data.off, 
+					memobj_pmem_walk(MPW_PHYS|MPW_SYSRAM, obp, data.off, data.off,
 										get_paddr, &data);
 					memobj_unlock(obp);
 					// Turn on MAP_PHYS to make sure PROT_NONE isn't returned;

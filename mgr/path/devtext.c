@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -56,7 +56,7 @@ static int text_read(resmgr_context_t *ctp, io_read_t *msg, void *ocb) {
 		return EOK;
 	}
 	for(;;) {
-		struct _msg_info			info; 
+		struct _msg_info			info;
 		uint64_t					to;
 
 		pthread_mutex_lock(&text_mutex);
@@ -129,7 +129,7 @@ static int text_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *ocb) {
 	}					*data = (void *)(msg + 1);
 	unsigned			ioflag = (uintptr_t)ocb;
 	int					nbytes = 0;
-	
+
 	switch((unsigned)msg->i.dcmd) {
 	case DCMD_ALL_GETFLAGS:
 		data->oflag = (ioflag & ~O_ACCMODE) | ((ioflag - 1) & O_ACCMODE);

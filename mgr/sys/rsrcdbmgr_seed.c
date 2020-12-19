@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -25,7 +25,7 @@
 #define PERFORM_SEEDING 1
 
 /* Old style seeding means we build a big in memory array and do
-   all of the magic splitting and sorting ourselves, this is 
+   all of the magic splitting and sorting ourselves, this is
    unfortuneate because it is now handled by the resource database
    and this is a wack of code.
 #define OLD_STYLE_SEEDING
@@ -42,25 +42,25 @@ struct _alloc_array {
 
  The logic behind this is that we will add the global ranges
  of values using a _create_ call and then we will remove data
- from those ranges using a _detach_ call, which means that 
+ from those ranges using a _detach_ call, which means that
  proc can return the missing data at a later date if it so
  chooses.
 ***************************/
 
 #define BETWEEN(s1, e1, n)      ((s1) <= (n) && (n) <= (e1))
 #define OVERLAP(s1, e1, s2, e2) (((s1) <= (s2) && (s2) <= (e1)) || \
-                                ((s2) <= (s1) && (s1) <= (e2))) 
+                                ((s2) <= (s1) && (s1) <= (e2)))
 #define CONTAINS(s1, e1, s2, e2) (((s1) <= (s2) && (s2) <= (e1)) && \
-                                 ((s1) <= (e2) && (e2) <= (e1))) 
+                                 ((s1) <= (e2) && (e2) <= (e1)))
 #define CONTAINSNE(s1, e1, s2, e2) (((s1) < (s2) && (s2) < (e1)) && \
-                                 ((s1) < (e2) && (e2) < (e1))) 
+                                 ((s1) < (e2) && (e2) < (e1)))
 
 #if defined(PERFORM_SEEDING)
 
 #if defined(OLD_STYLE_SEEDING)
 static void add_element(struct _alloc_array *array, rsrc_alloc_t *alloc) {
 	if (array->index >= array->count) {
-		array->array = (rsrc_alloc_t *)_srealloc(array->array, 
+		array->array = (rsrc_alloc_t *)_srealloc(array->array,
 		  		 array->count * sizeof(rsrc_alloc_t),
 		  		 (array->count + 10) * sizeof(rsrc_alloc_t));
 		array->count += 10;
@@ -79,10 +79,10 @@ static int add_range(struct _alloc_array *array, rsrc_alloc_t *alloc) {
 	add_element(array, alloc);
 	insend = array->index;
 
-	//Go through the list pruning the entry 
+	//Go through the list pruning the entry
 	for (i=0; i<insstart; i++) {
 		for (j=insstart; j<array->index; j++) {
-		
+
 			//Must be the same types ...
 			if ((array->array[i].flags & RSRCDBMGR_TYPE_MASK) !=
 			    (array->array[j].flags & RSRCDBMGR_TYPE_MASK)) {
@@ -90,29 +90,29 @@ static int add_range(struct _alloc_array *array, rsrc_alloc_t *alloc) {
 			}
 
 			//Check for overlaping start/end
-			if (!(OVERLAP(array->array[i].start, 	
+			if (!(OVERLAP(array->array[i].start,
 						array->array[i].end,
-						array->array[j].start, 
+						array->array[j].start,
 						array->array[j].end))) {
 				continue;
 			}
 
 			//If the new block is completely contained, nuke it
-			if (CONTAINS(array->array[i].start, 
+			if (CONTAINS(array->array[i].start,
 						 array->array[i].end,
 						 array->array[j].start,
 						 array->array[j].end)) {
 				array->index--;
-				memmove(&array->array[j], 
-				        &array->array[j+1], 
+				memmove(&array->array[j],
+				        &array->array[j+1],
 					(array->index - j) * sizeof(extra));
 				j--;	//Backup the counter to re-do this element
 				continue;
 			}
 
-			//If the new entry contains the old one, then create a 
+			//If the new entry contains the old one, then create a
 			//new block and add it in.
-			if (CONTAINSNE(array->array[j].start, 
+			if (CONTAINSNE(array->array[j].start,
 						   array->array[j].end,
 						   array->array[i].start,
 						   array->array[i].end)) {
@@ -126,16 +126,16 @@ static int add_range(struct _alloc_array *array, rsrc_alloc_t *alloc) {
 			}
 
 			//If the start borders, shrink it
-			if (BETWEEN(array->array[j].start, 
-						array->array[j].end, 
+			if (BETWEEN(array->array[j].start,
+						array->array[j].end,
 						array->array[i].end)) {
 				array->array[j].start = array->array[i].end+1;
 				continue;
 			}
 
 			//If the end borders, shrink it
-			if (BETWEEN(array->array[j].start, 
-						array->array[j].end, 
+			if (BETWEEN(array->array[j].start,
+						array->array[j].end,
 						array->array[i].start)) {
 				array->array[j].end = array->array[i].start-1;
 				continue;
@@ -143,7 +143,7 @@ static int add_range(struct _alloc_array *array, rsrc_alloc_t *alloc) {
 		}
 	}
 
-	//Go through and take all the new blocks and put them 
+	//Go through and take all the new blocks and put them
 	//in in the right spot (ie sorted by start).
 	insend = array->index;
 	for (i=insstart; i<insend; i++) {
@@ -157,15 +157,15 @@ static int add_range(struct _alloc_array *array, rsrc_alloc_t *alloc) {
 			if (extra.start < array->array[j].start) {
 				lastindex = j;
 				break;
-			}		
+			}
 		}
 		if (lastindex >= 0)	{
-			memmove(&array->array[lastindex+1], 
+			memmove(&array->array[lastindex+1],
 					&array->array[lastindex],
 					(i - lastindex) * sizeof(extra));
 			memcpy(&array->array[lastindex], &extra, sizeof(extra));
 		}
-	}		
+	}
 #else
 	if (rsrcdbmgr_proc_interface(alloc, 1, RSRCDBMGR_REQ_CREATE) != EOK) {
 		return -1;
@@ -238,8 +238,8 @@ static void add_io_and_memory(struct _alloc_array *array) {
 
 		/*
  		Here we check to see if the item is IO or
-		MEMORY memory. Note that we need to check for 
-		io that lives in both worlds. 
+		MEMORY memory. Note that we need to check for
+		io that lives in both worlds.
 		*/
 		memset(&alloc, 0, sizeof(alloc));
 		if (name && strcmp(name, "io") == 0) {
@@ -289,7 +289,7 @@ static void reserve_ranges(struct _alloc_array *array) {
         next = (hwi_tag *)((uint32_t *)tag + tag->prefix.size);
         name = __hwi_find_string(tag->prefix.name);
 
-		//Really I need to look at the AS of this entry to 
+		//Really I need to look at the AS of this entry to
 		//determine if this is io memory or regular memory.
 		if (name && strcmp(name, HWI_TAG_NAME_location) == 0) {
 			if ((type = get_as_type(tag->location.addrspace)) == -1) {
@@ -306,7 +306,7 @@ static void reserve_ranges(struct _alloc_array *array) {
 			}
 		}
 		else if (name && strcmp(name, HWI_TAG_NAME_irq) == 0) {
-			alloc.start = 
+			alloc.start =
 			alloc.end = tag->irq.vector;
 			alloc.flags = RSRCDBMGR_IRQ | RSRCDBMGR_FLAG_RSVP;
 			if (add_range(array, &alloc) == -1) {
@@ -321,7 +321,7 @@ static void reserve_ranges(struct _alloc_array *array) {
 #endif
 
 void rsrcdbmgr_seed() {
-#if defined(PERFORM_SEEDING)	
+#if defined(PERFORM_SEEDING)
 	struct _alloc_array aa;
 	memset(&aa, 0, sizeof(aa));
 

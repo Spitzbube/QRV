@@ -1,23 +1,23 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 #include "vmm.h"
 
-// A dummy cpu_mm_aspace for use until we allocate one for procnto 
+// A dummy cpu_mm_aspace for use until we allocate one for procnto
 static struct cpu_mm_aspace	dummy_aspace;
 struct cpu_mm_aspace	*pgtbl_list = &dummy_aspace;
 
@@ -45,9 +45,9 @@ pgtbl_init(void) {
 	dummy_aspace.pgdir = (void *)_syspage_ptr->un.x86.pgdir[0];
 	dummy_aspace.ptroot_paddr = rdpgdir();
 }
-	
 
-int 
+
+int
 cpu_vmm_fault(struct fault_info *info) {
 	pxe_t							*ptep;
 	pxe_t							*pdep;
@@ -62,7 +62,7 @@ cpu_vmm_fault(struct fault_info *info) {
 		if(pte_flags & X86_PTE_PRESENT) {
 			if(!(info->cpu.code & X86_FAULT_PAGELP)) {
 				// Fault caused by page not present and page is now present.
-				// Somebody else must have touched the page and gotten it 
+				// Somebody else must have touched the page and gotten it
 				// allocated before we got here.
 				return 1;
 			}
@@ -121,7 +121,7 @@ cpu_vmm_mcreate(PROCESS *prp) {
 	} else {
 		memsize_t  resv = 0;
 		part_id_t mpid = mempart_getid(prp, sys_memclass_id);
-		//make sure the L1 pgtbl is < 4G because of CR3 reg limit 
+		//make sure the L1 pgtbl is < 4G because of CR3 reg limit
 		if (MEMPART_CHK_and_INCR(mpid, (memsize_t)pdir_size, &resv) != EOK) {
 			return ENOMEM;
 		}
@@ -212,7 +212,7 @@ cpu_vmm_mdestroy(PROCESS *prp) {
 // pa_quantum.u.inuse.qpos field to hold the starting vaddr for an L2 table.
 // We're also going to sort the linked list of of L2's in increasing order
 // of that vaddr. That way the split code can easily find the same L2 table
-// that we were using before when it needs to re-establish the two level 
+// that we were using before when it needs to re-establish the two level
 // mapping and not have to bother initializing a new one.
 
 int
@@ -299,7 +299,7 @@ cpu_pte_split(uintptr_t vaddr, struct mm_pte_manipulate *data) {
 		check += pde_size;
 	}
 	if((check-1) > data->split_end) data->split_end = check - 1;
-	
+
 	return EOK;
 }
 
@@ -357,11 +357,11 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 		l2_paddr = pde & PTE_PADDR_BITS;
 		if((pde & X86_PTE_PRESENT) && !(pde & X86_PDE_PS)) {
 			// Get addressability to the L2 table
-			if((adp == NULL) 
-			  ||(check > CPU_USER_VADDR_END) 
+			if((adp == NULL)
+			  ||(check > CPU_USER_VADDR_END)
 			  ||(adp->cpu.ptroot_paddr == rdpgdir())) {
 
-				// We can use the currently active page table 
+				// We can use the currently active page table
 				// to check the PTEs - much faster
 				ptep = VTOPTP(check);
 				kmap_pde = NULL;
@@ -430,7 +430,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 }
 
 
-int 
+int
 cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 	pxe_t				*ptep;
 	pxe_t				*pdep;
@@ -481,7 +481,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 			bits |= X86_PTE_NX;
 		}
 		//RUSH3: Turn on X86_PTE_GLOBAL if in system space?
-		//RUSH3: If we do that, the SMP_FLUSH_TLB won't work, since 
+		//RUSH3: If we do that, the SMP_FLUSH_TLB won't work, since
 		//RUSH3: it doesn't flush global entries.
 	}
 	adp = data->adp;
@@ -554,7 +554,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 					curr = (curr + pde_size) & ~(pde_size - 1);
 					continue;
 				}
-			
+
 				// Find the spot in the list for the new L2
 				for( ;; ) {
 					pq = *l2_owner;
@@ -652,7 +652,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 			pte = 0;
 		} else if(orig_pte & X86_PTE_USER1) {
 			// PTE_OP_PROT
-			pte = (orig_pte & (PTE_PADDR_BITS|X86_PTE_ACCESSED|X86_PTE_DIRTY)) 
+			pte = (orig_pte & (PTE_PADDR_BITS|X86_PTE_ACCESSED|X86_PTE_DIRTY))
 					| bits;
 		} else {
 			// We don't change PTE permissions if we haven't mapped the
@@ -677,7 +677,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 //RUSH2: the cpu_vmm_fault() code invalidates any page that comes to
 //RUSH2: remove it from the TLB. Think about propagating this change
 //RUSH2: to PPC and MIPS as well.
-#define PERM_BITS (X86_PTE_PRESENT|X86_PTE_WRITE|X86_PTE_NX)				
+#define PERM_BITS (X86_PTE_PRESENT|X86_PTE_WRITE|X86_PTE_NX)
 			if((pte & ~PERM_BITS) != (orig_pte & ~PERM_BITS)) {
 				flags |= PMF_SMPFLUSH;
 			} else {
@@ -718,8 +718,8 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 	return r;
 }
 
-	
-unsigned 
+
+unsigned
 cpu_vmm_vaddrinfo(PROCESS *prp, uintptr_t vaddr, paddr_t *paddrp, size_t *lenp) {
 	uint64_t	pde;
 	pxe_t		*pgdir;
@@ -759,11 +759,11 @@ cpu_vmm_vaddrinfo(PROCESS *prp, uintptr_t vaddr, paddr_t *paddrp, size_t *lenp) 
 		return prot;
 	}
 
-	if((prp == NULL) 
-	  ||(vaddr > CPU_USER_VADDR_END) 
+	if((prp == NULL)
+	  ||(vaddr > CPU_USER_VADDR_END)
 	  ||(prp->memory->cpu.ptroot_paddr == rdpgdir())) {
 
-		// We can use the currently active page table 
+		// We can use the currently active page table
 		// to check the PTE - much faster
 		ptep = VTOPTEP(vaddr);
 		pte = PXE_GET(ptep);

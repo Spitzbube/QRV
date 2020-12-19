@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -35,7 +35,7 @@ static int				nvmtrr;
 static struct _mtrr		*mtrr_array;
 
 // Init the MTRR's on X86 if present
-void 
+void
 x86_init_mtrr() {
 	_uint64		cap;
 
@@ -54,8 +54,8 @@ x86_init_mtrr() {
 		_mtrr = mtrr_array;
 
 		for(i = 0; i < nvmtrr; i++, _mtrr++) {
-			_mtrr->phys_base = rdmsr(X86_MSR_MTRR_PHYSBASE0 + 2 * i);	
-			_mtrr->phys_mask = rdmsr(X86_MSR_MTRR_PHYSMASK0 + 2 * i);	
+			_mtrr->phys_base = rdmsr(X86_MSR_MTRR_PHYSBASE0 + 2 * i);
+			_mtrr->phys_mask = rdmsr(X86_MSR_MTRR_PHYSMASK0 + 2 * i);
 			if(_mtrr->phys_mask & X86_MTRR_PHYSMASK_VALID) {
 				_mtrr->flags = MTRR_VALID | MTRR_BIOS_SET | (_mtrr->phys_base & MTRR_DEFAULT_TYPE_MASK);
 				if((_mtrr->phys_base & MTRR_DEFAULT_TYPE_MASK) == X86_MTRR_TYPE_WRITEBACK) {
@@ -71,7 +71,7 @@ x86_init_mtrr() {
 	return;
 }
 
-static int 
+static int
 _find_free_mtrr() {
 	int 			i;
 
@@ -82,7 +82,7 @@ _find_free_mtrr() {
 	return -1;
 }
 
-static int 
+static int
 _find_overlapping_mtrr(paddr_t start, unsigned size) {
 	int 			i;
 	uint64_t		base;
@@ -106,14 +106,14 @@ _find_overlapping_mtrr(paddr_t start, unsigned size) {
 // This follows the intel-suggested algorithm, but will NOT work on SMP!
 //
 
-static void 
+static void
 _write_mtrr(int index, struct _mtrr *_mtrr) {
 	unsigned		cr0, cr0_val, cr4;
 	_uint64			def_type;
 
 	InterruptDisable();
-	cr0 = rdcr0();	
-	cr4 = rdcr4();	
+	cr0 = rdcr0();
+	cr4 = rdcr4();
 	ldcr4(cr4 & ~0x80);
 	cr0_val = cr0 | 0x40000000;
 	flushcache();
@@ -136,11 +136,11 @@ _write_mtrr(int index, struct _mtrr *_mtrr) {
 
 //
 // Set special HW attributes for the physical address range.
-// flags are special MEMOBJ flags, op is PTE_OP_MAP for adding, PTE_OP_UNMAP 
+// flags are special MEMOBJ flags, op is PTE_OP_MAP for adding, PTE_OP_UNMAP
 // for removing
 //
 
-int 
+int
 x86_set_mtrr(paddr_t start, unsigned size, unsigned flags, unsigned op) {
 	unsigned	setting;
 	int 		index;

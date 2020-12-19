@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -50,7 +50,7 @@ typedef struct {
 } io_pread_t;
 
 
-static int 
+static int
 mem_read_write(resmgr_context_t *ctp, resmgr_iomsgs_t *msg, struct mem_ocb *ocb) {
 	void					*addr;
 	unsigned				nbytes;
@@ -173,19 +173,19 @@ ok:
 }
 
 
-static int 
+static int
 mem_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 	return mem_read_write(ctp, (resmgr_iomsgs_t *)msg, (struct mem_ocb *)vocb);
 }
 
 
-static int 
+static int
 mem_write(resmgr_context_t *ctp, io_write_t *msg, void *vocb) {
 	return mem_read_write(ctp, (resmgr_iomsgs_t *)msg, (struct mem_ocb *)vocb);
 }
 
 
-static int 
+static int
 mem_close_ocb(resmgr_context_t *ctp, void *reserved, void *vocb) {
 	struct mem_ocb			*ocb = vocb;
 
@@ -206,7 +206,7 @@ mem_close_ocb(resmgr_context_t *ctp, void *reserved, void *vocb) {
 }
 
 
-static int 
+static int
 mem_lseek(resmgr_context_t *ctp, io_lseek_t *msg, void *vocb) {
 	struct mem_ocb			*ocb = vocb;
 	unsigned				pos;
@@ -238,7 +238,7 @@ mem_lseek(resmgr_context_t *ctp, io_lseek_t *msg, void *vocb) {
 }
 
 
-static int 
+static int
 mem_stat(resmgr_context_t *ctp, io_stat_t *msg, void *vocb) {
 	struct mem_ocb			*ocb = vocb;
 	union object			*obp = ocb ? ocb->object : 0;
@@ -261,7 +261,7 @@ mem_stat(resmgr_context_t *ctp, io_stat_t *msg, void *vocb) {
 		msg->o.st_rdev = S_ISNAM(msg->o.st_mode) ? S_INSHD : 0;
 	} else {
 		//The /dev/mem device is set to rw root only, the /dev/shmem
-		//device is set to rwx for all, since it is un-enforced. 
+		//device is set to rwx for all, since it is un-enforced.
 		msg->o.st_mode = ocb ? S_IFREG | 0600 : S_IFDIR | 0777;
 		msg->o.st_nlink = ocb ? 1 : 2;
 		msg->o.st_dev = mem_devno;
@@ -272,7 +272,7 @@ mem_stat(resmgr_context_t *ctp, io_stat_t *msg, void *vocb) {
 }
 
 
-static int 
+static int
 mem_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 	struct mem_ocb				*ocb = vocb;
 	OBJECT						*obp;
@@ -295,7 +295,7 @@ mem_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 		}
 		break;
 
-	case DCMD_ALL_GETMOUNTFLAGS: 
+	case DCMD_ALL_GETMOUNTFLAGS:
 		data->mountflag = 0;
 		nbytes = sizeof data->mountflag;
 		break;
@@ -315,7 +315,7 @@ mem_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 }
 
 
-static int 
+static int
 mem_utime(resmgr_context_t *ctp, io_utime_t *msg, void *vocb) {
 	struct mem_ocb				*ocb = vocb;
 	union object				*obp;
@@ -331,7 +331,7 @@ mem_utime(resmgr_context_t *ctp, io_utime_t *msg, void *vocb) {
 }
 
 
-static int 
+static int
 mem_space(resmgr_context_t *ctp, io_space_t *msg, void *vocb) {
 	struct mem_ocb				*ocb = vocb;
 	unsigned					start, end;
@@ -355,11 +355,11 @@ mem_space(resmgr_context_t *ctp, io_space_t *msg, void *vocb) {
 		return EINVAL;
 	}
 
-	/* 
+	/*
 	 This is an ENORMOUS HUGE BIG UGLY HACK!  We take in 64 bit offsets
 	 but all of the memory objects and memory functions use unsigned int
-	 values for their counters and sized so that if we just pass the 64 
-	 bit values directly then bad things tend to happen.  This is a stop-gap 
+	 values for their counters and sized so that if we just pass the 64
+	 bit values directly then bad things tend to happen.  This is a stop-gap
 	 measure until we fix that.
 	*/
 	{
@@ -401,7 +401,7 @@ mem_space(resmgr_context_t *ctp, io_space_t *msg, void *vocb) {
 }
 
 
-static int 
+static int
 mem_change_attr(resmgr_context_t *ctp, resmgr_iomsgs_t *msg, void *vocb) {
 	iofunc_ocb_t		nocb;
 	iofunc_attr_t		attr;
@@ -439,13 +439,13 @@ mem_change_attr(resmgr_context_t *ctp, resmgr_iomsgs_t *msg, void *vocb) {
 }
 
 
-static int 
+static int
 mem_chown(resmgr_context_t *ctp, io_chown_t *msg, void *vocb) {
 	return mem_change_attr(ctp, (resmgr_iomsgs_t *)msg, vocb);
 }
 
 
-static int 
+static int
 mem_chmod(resmgr_context_t *ctp, io_chmod_t *msg, void *vocb) {
 	return mem_change_attr(ctp, (resmgr_iomsgs_t *)msg, vocb);
 }
@@ -472,7 +472,7 @@ static const resmgr_io_funcs_t mem_io_funcs = {
 };
 
 
-int 
+int
 devmem_check_perm(resmgr_context_t *ctp, mode_t mode, uid_t uid, gid_t gid, int check) {
 	struct _client_info info;
 	iofunc_attr_t		attr;
@@ -482,10 +482,10 @@ devmem_check_perm(resmgr_context_t *ctp, mode_t mode, uid_t uid, gid_t gid, int 
 	attr.mode = mode, attr.gid = gid, attr.uid = uid;
 
 	return iofunc_check_access(ctp, &attr, check, &info);
-} 
+}
 
 
-int 
+int
 mem_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
 	OBJECT			*object = handle;
  	struct mem_ocb	*ocb;
@@ -504,7 +504,7 @@ mem_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
 			ret |= (msg->connect.ioflag & _IO_FLAG_RD) ? S_IRUSR : 0;
 			ret |= (msg->connect.ioflag & _IO_FLAG_WR) ? S_IWUSR : 0;
 			if(ret != 0) {
-				ret = devmem_check_perm(ctp, object->mem.pm.mode, 
+				ret = devmem_check_perm(ctp, object->mem.pm.mode,
 							object->mem.pm.uid, object->mem.pm.gid, ret);
 			}
 			if(ret != 0) {
@@ -526,7 +526,7 @@ mem_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
 
 #if 0 /* This breaks spawn ... need to check to see if the is proper behaviour */
 	/* Check our access mode all opens are assumed as read/write */
-	if (object) {	
+	if (object) {
 		int sflag = msg->connect.sflag & SH_MASK;
 
 		if(((sflag == SH_DENYRW || sflag == SH_DENYRD) && object->mem.count > 1 /*rcount*/) ||
@@ -563,7 +563,7 @@ static const resmgr_connect_funcs_t mem_connect_funcs = {
 };
 
 
-static int 
+static int
 shmem_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
 	if (msg->connect.path_len + sizeof(*msg) >= ctp->msg_max_size) {
 		return ENAMETOOLONG;
@@ -578,7 +578,7 @@ shmem_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
 		}
 		return EOK;
 	}
-		
+
 	_IO_SET_CONNECT_RET(ctp, _IO_CONNECT_RET_FTYPE);
 	msg->ftype_reply.status = EOK;
 	msg->ftype_reply.file_type = (msg->connect.file_type == _FTYPE_SHMEM) ? _FTYPE_SHMEM : _FTYPE_FILE;
@@ -615,7 +615,7 @@ static const resmgr_io_funcs_t tymem_io_funcs = {
 };
 
 
-int 
+int
 tymem_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
 	struct mem_ocb	*ocb;
 	unsigned		tflags;
@@ -698,7 +698,7 @@ static const resmgr_connect_funcs_t tymem_connect_funcs = {
 };
 
 
-void 
+void
 devmem_init(void) {
 	resmgr_attr_t	rattr;
 
@@ -715,7 +715,7 @@ devmem_init(void) {
 }
 
 
-int 
+int
 devmem_check(const resmgr_io_funcs_t *funcs, mem_map_t *msg, void *handle, OBJECT **pobp) {
 	struct mem_ocb	*ocb = handle;
 
@@ -765,7 +765,7 @@ devmem_check(const resmgr_io_funcs_t *funcs, mem_map_t *msg, void *handle, OBJEC
 }
 
 
-int 
+int
 devmem_check_ocb_phys(resmgr_context_t *ctp, void *vocb) {
 	struct mem_ocb *	ocb = vocb;
 	struct _msg_info	info;

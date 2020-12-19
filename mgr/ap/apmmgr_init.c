@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmmgr_init
- * 
+ *
  * Provide resource manager initialization for the memory partitioning module
- * 
+ *
 */
 
 #include "apmmgr.h"
@@ -74,7 +74,7 @@ const resmgr_io_funcs_t apmmgr_io_funcs =
 
 /*
  * mempart_rsrcmgr_fnctbl
- * 
+ *
  * Pointer to the table of memory partition interface routines required by the
  * memory partitioning resource manager.
 */
@@ -86,7 +86,7 @@ dev_t  apmmgr_devno;
 
 /*******************************************************************************
  * _mpmgr_st_size
- * 
+ *
  * FIX ME
  * This is a support routine to get the size of free memory from a partitioning
  * perspective (ie. a processes "world view" of free memory is the free memory
@@ -112,13 +112,13 @@ void apmmgr_init(char *basepath)
 	char name[PATH_MAX + 1];
 	resmgr_attr_t  attr;
 	memclass_entry_t *mclass_entry = memclass_find(NULL, sys_memclass_id);
-	
+
 	CRASHCHECK(mclass_entry == NULL);
 
 	/*
 	 * if the memory partitioning module is not installed, we do not enable
 	 * the memory partitioning resource manager code
-	*/ 
+	*/
 	if ((!MEMPART_INSTALLED()) || (mempart_fnctbl->rsrcmgr_attach == NULL) ||
 		((mempart_rsrcmgr_fnctbl = mempart_fnctbl->rsrcmgr_attach(&rsrcmgr_mempart_fnctbl)) == NULL))
 	{
@@ -193,7 +193,7 @@ void apmmgr_init(char *basepath)
 	sys_mclass->hdr.next = NULL;
 	sys_mclass->hdr.prev = NULL;
 	LIST_INIT(sys_mclass->children);
-	LIST_ADD(sys_mclass->children, sys_mpart); 
+	LIST_ADD(sys_mclass->children, sys_mpart);
 	if (S_ISDIR(sys_mpart->attr.mode)) ++sys_mclass->attr.nlink;
 	sys_mclass->parent = root_mpart;
 //kprintf("sys_mclass = 0x%x\n", sys_mclass);

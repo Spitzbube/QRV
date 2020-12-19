@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -26,7 +26,7 @@
 /*
  * Mark flags for quicker searching later
  */
-static void 
+static void
 object_set_flags(NODE *nop, OBJECT *obp) {
 	switch(obp->hdr.type) {
 	case OBJECT_SERVER:
@@ -42,7 +42,7 @@ object_set_flags(NODE *nop, OBJECT *obp) {
 		break;
 	}
 }
-	
+
 
 /*
  * Allocate node entry if necessary, then link object to it.
@@ -128,14 +128,14 @@ pathmgr_object_attach(PROCESS *prp, NODE *nop, const char *path, int type, unsig
  * unlink from the node. The object must be freed by the calling
  * routine after the unlink.
  */
-void 
+void
 pathmgr_object_detach(OBJECT *obp) {
 	OBJECT		*p, **pp;
 	NODE		*nop;
 	NODE		*anc;
-#ifndef NDEBUG	
-	int 		found = 0;	
-#endif	
+#ifndef NDEBUG
+	int 		found = 0;
+#endif
 
 	/* Grab a mutex */
 	pthread_mutex_lock(&pathmgr_mutex);
@@ -149,9 +149,9 @@ pathmgr_object_detach(OBJECT *obp) {
 	/* Scan the objects to remove this one */
 	for(pp = &nop->object; (p = *pp); pp = &p->hdr.next) {
 		if(p == obp) {
-#ifndef NDEBUG			
-			found = 1;			
-#endif			
+#ifndef NDEBUG
+			found = 1;
+#endif
 			if(!(p = *pp = p->hdr.next)) {
 				break;
 			}
@@ -159,9 +159,9 @@ pathmgr_object_detach(OBJECT *obp) {
 		/* Mark flags for quicker searching later */
 		object_set_flags(nop, p);
 	}
-#ifndef NDEBUG	
-	if(!found) crash();	
-#endif	
+#ifndef NDEBUG
+	if(!found) crash();
+#endif
 
 	/* Decrement child_object count on all ancestors */
 	anc = nop;
@@ -262,17 +262,17 @@ struct object_info {
 
 struct object_info obj_info[] = {
 	//DEAD
-	{ 0 },		
+	{ 0 },
 	//SERVER
-	{sizeof(struct server_object),	server_create, dummy_done, dummy_name, dummy_devctl},	
+	{sizeof(struct server_object),	server_create, dummy_done, dummy_name, dummy_devctl},
 	//NAME
 	{sizeof(struct server_object),	server_create, dummy_done, dummy_name, dummy_devctl},
 	//PROC_SYMLINK
 	{ 0, symlink_create, dummy_done, dummy_name, dummy_devctl},
 	//MEM_ANON
-	{sizeof(struct mm_object_anon),	anmem_create, anmem_done, anmem_name, dummy_devctl}, 
+	{sizeof(struct mm_object_anon),	anmem_create, anmem_done, anmem_name, dummy_devctl},
 	//MEM_SHARED
-	{sizeof(struct mm_object_shared),shmem_create, shmem_done, shmem_name, shmem_devctl}, 
+	{sizeof(struct mm_object_shared),shmem_create, shmem_done, shmem_name, shmem_devctl},
 	//MEM_FD
 	{sizeof(struct mm_object_fd),	fdmem_create, fdmem_done, fdmem_name, dummy_devctl},
 	//MEM_TYPED
@@ -293,8 +293,8 @@ object_create(int type, void *extra, PROCESS *prp, memclass_id_t mcid) {
 	len = info->len;
 	if(len == 0) {
 		len = info->create(NULL, extra);
-		if (len >PATHMGR_MAX_OBJECT_LEN) { 
-			//too big to fit into hdr.len. We can simply return because nothing was alloced since 
+		if (len >PATHMGR_MAX_OBJECT_LEN) {
+			//too big to fit into hdr.len. We can simply return because nothing was alloced since
 			//we passed NULL for obp
 			return NULL;
 		}
@@ -302,12 +302,12 @@ object_create(int type, void *extra, PROCESS *prp, memclass_id_t mcid) {
 	obp = _scalloc(len);
 	if(obp != NULL) {
 		obp->hdr.type = type;
-		CRASHCHECK(len>PATHMGR_MAX_OBJECT_LEN); 
+		CRASHCHECK(len>PATHMGR_MAX_OBJECT_LEN);
 		obp->hdr.len  = (_Uint8t)len;
 		obp->hdr.creator = prp ? prp->pid : 0;
 		obp->hdr.mpid = part_id_t_INVALID;
 		obp->hdr.mpart_disassociate = NULL;
-		
+
 		if ((MEMPART_OBJ_ASSOCIATE(obp, mpart_id) != EOK) ||
 			(info->create(obp, extra) != EOK)) {
 			if (obp->hdr.mpart_disassociate != NULL)

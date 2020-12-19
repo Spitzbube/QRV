@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -28,12 +28,12 @@ static int      dcache_hit_workaround;
  * See if a page is in the cache. Read the tags and
  * if valid, compare the physical address.
  *
- * Returns: 
+ * Returns:
  *      PAGE_NOT_PRESENT if page wasn't in cache, even in tags
  *      PAGE_INVALID if page was in some tags but lines were invalid
  *      PAGE_PRESENT if page in tags and line(s) valid
  */
-static int 
+static int
 page_in_dcache(paddr_t paddr) {
 	register uint32_t   cacheaddr;
 	register uint32_t   tag;
@@ -71,7 +71,7 @@ page_in_dcache(paddr_t paddr) {
 				".set reorder           ;"
 				".set mips2             ;"
 				: /* no outputs */
-				: "r" (cacheaddr)); 
+				: "r" (cacheaddr));
 
 		/* tag value stored in CP0_TAGLO */
 		tag = getcp0_taglo();
@@ -107,7 +107,7 @@ done:
 /*
  * clean_cache_page:
  *      Redo per-page cache scrubbing. Since the chip bugs relating
- *      to HIT_* operations in the dcache can't be worked around 
+ *      to HIT_* operations in the dcache can't be worked around
  *      reliably, take a different approach. March through the specified
  *      cache and read the tags. If the tag matches the paddr passed in,
  *      then do an indexed invalidate or indexed writeback-invalidate
@@ -122,7 +122,7 @@ zero_page(void *va) {
 }
 
 
-void 
+void
 cpu_colour_clean(struct pa_quantum *qp, int cacheop) {
 	void        		(*cache_rtn)(void *);
 	unsigned			colour;
@@ -206,8 +206,8 @@ clean_init(void) {
 	memsize_t			resv = 0;
 	part_id_t		mpid = mempart_getid(NULL, sys_memclass_id);	// FIX ME - system partition ?
 	switch(MIPS_PRID_COMPANY_IMPL(getcp0_prid())) {
-	case MIPS_PRID_MAKE_COMPANY_IMPL(MIPS_PRID_COMPANY_NONE,MIPS_PRID_IMPL_4600): 
-	case MIPS_PRID_MAKE_COMPANY_IMPL(MIPS_PRID_COMPANY_NONE,MIPS_PRID_IMPL_4700): 
+	case MIPS_PRID_MAKE_COMPANY_IMPL(MIPS_PRID_COMPANY_NONE,MIPS_PRID_IMPL_4600):
+	case MIPS_PRID_MAKE_COMPANY_IMPL(MIPS_PRID_COMPANY_NONE,MIPS_PRID_IMPL_4700):
 
 		if (MEMPART_CHK_and_INCR(mpid, __PAGESIZE, &resv) != EOK) {
 			crash();
@@ -220,19 +220,19 @@ clean_init(void) {
 		MEMCLASS_PID_USE(NULL, mempart_get_classid(mpid), __PAGESIZE);
 		paddr = pa_quantum_to_paddr(qp);
 		ptr = (char *)CPU_P2V(paddr);
-		
+
 		for(i = 0 ; i < dcache_lines_per_page; i++, ptr += dcache_lsize) {
 			*ptr = i;
 		}
 		ptr = (char *)CPU_P2V(paddr);
-	
+
 		if(page_in_dcache(paddr) != PAGE_PRESENT) {
 			crash();
 		}
-	
+
 		/* try to flush/invalidate the page with no work-around */
 		r4k_flush_dcache_page(ptr);
-	
+
 		/* now see if the page is still in the cache */
 		if(page_in_dcache(paddr) == PAGE_PRESENT) {
 			/* need to do the workaround */
@@ -242,7 +242,7 @@ clean_init(void) {
 		MEMCLASS_PID_FREE(NULL, mempart_get_classid(mpid), NQUANTUM_TO_LEN(qp->run));	// do before pa_free_list
 		pa_free_list(qp, MEMPART_DECR(mpid, NQUANTUM_TO_LEN(qp->run)));
 		break;
-	default: break;	
+	default: break;
 	}
 }
 

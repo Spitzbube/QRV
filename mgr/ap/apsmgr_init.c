@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apsmgr_init
- * 
+ *
  * Provide resource manager initialization for the scheduler partitioning module
- * 
+ *
 */
 
 #include "apsmgr.h"
@@ -70,7 +70,7 @@ const resmgr_io_funcs_t apsmgr_io_funcs =
 
 /*
  * schedpart_rsrcmgr_fnctbl
- * 
+ *
  * Pointer to the table of scheduler partition interface routines required by the
  * scheduler partitioning resource manager.
 */
@@ -82,7 +82,7 @@ dev_t  apsmgr_devno;
 
 /*******************************************************************************
  * _mpmgr_st_size
- * 
+ *
  * FIX ME
  * This is a support routine to get the size of free scheduler from a partitioning
  * perspective (ie. a processes "world view" of free scheduler is the free scheduler
@@ -107,7 +107,7 @@ void apsmgr_init(char *basepath)
 	/*
 	 * if the scheduler partitioning module is not installed, we do not enable
 	 * the scheduler partitioning resource manager code
-	*/ 
+	*/
 	if ((!SCHEDPART_INSTALLED()) || (schedpart_fnctbl->rsrcmgr_attach == NULL) ||
 		((schedpart_rsrcmgr_fnctbl = schedpart_fnctbl->rsrcmgr_attach(&rsrcmgr_schedpart_fnctbl)) == NULL))
 	{

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -20,14 +20,14 @@
 //
 //BACKWARDS
 //Sigh. Old memory manager let people access beyond the end of
-//the object if it was MAP_PRIVATE|MAP_ELF (for BSS). I'd change 
+//the object if it was MAP_PRIVATE|MAP_ELF (for BSS). I'd change
 //elf_load() to do things properly, but the same code is in the
 //shared object loader in libc, and I want to allow old libc's to
-//continue working. 
+//continue working.
 //
 
 //RUSH2: Use _mmap2() in elf_load() and ldd() in libc so this code
-//RUSH2: knows both p_filesz & p_memsz values? 
+//RUSH2: knows both p_filesz & p_memsz values?
 
 //RUSH3: Check for and remove extra msync/mprotect's in ldd().
 
@@ -37,11 +37,11 @@
 #define LOADER_BSS_KLUDGE
 
 
-uintptr_t	(*vaddr_search_adjust_hook)(uintptr_t vaddr, 
+uintptr_t	(*vaddr_search_adjust_hook)(uintptr_t vaddr,
 					ADDRESS *adp, unsigned flags, uintptr_t size);
 void (*pmem_stats_hook)(OBJECT *obp, size_t size, unsigned type);
 
-			
+
 #if defined(CPU_GBL_VADDR_START)
 static struct mm_map_head	gbl_map;
 static pthread_mutex_t		gbl_mux = PTHREAD_MUTEX_INITIALIZER;
@@ -77,7 +77,7 @@ tymem_valid_offset(off64_t off, size_t size, struct pa_restrict *list) {
 	struct pa_restrict	*rp;
 	int					found;
 	off64_t				end = off + size - 1;
-	
+
 	if(off < end) {
 		do {
 			found = 0;
@@ -139,7 +139,7 @@ tymem_split(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void 
 }
 
 int
-tymem_pmem_alloc(PROCESS *prp, OBJECT *obp, struct map_set *ms, struct mm_map *mm, 
+tymem_pmem_alloc(PROCESS *prp, OBJECT *obp, struct map_set *ms, struct mm_map *mm,
 			unsigned flags, off64_t boff, size_t size) {
 	int					r;
 	struct pa_quantum	*pq_add;
@@ -184,7 +184,7 @@ tymem_pmem_alloc(PROCESS *prp, OBJECT *obp, struct map_set *ms, struct mm_map *m
 		data.owner = &data.pq;
 		// Create fake quantums for all the regions that don't already have
 		// pmem entries.
-		r = memobj_pmem_walk(MPW_HOLES, obp, boff, boff + size - 1, 
+		r = memobj_pmem_walk(MPW_HOLES, obp, boff, boff + size - 1,
 								tymem_fakes, &data);
 		if(r != EOK) return r;
 		pq = data.pq;
@@ -208,7 +208,7 @@ tymem_pmem_alloc(PROCESS *prp, OBJECT *obp, struct map_set *ms, struct mm_map *m
 	if((pq->blk != PAQ_BLK_FAKE) || (pq->flags & PAQ_FLAG_RDB)) {
 
 		// We're hiding the quantum pointer for the mapping in the 'obj_ref'
-		// field in this section. It'll all be cleaned up before we leave. 
+		// field in this section. It'll all be cleaned up before we leave.
 
 		split_point = mm->start - ms->first->start;
 		mm_add = mm;
@@ -231,9 +231,9 @@ tymem_pmem_alloc(PROCESS *prp, OBJECT *obp, struct map_set *ms, struct mm_map *m
 			// we might run out in the middle of adding, which would
 			// be really obnoxious to back out of. Instead, we'll run
 			// through and split the problematic fake entries up ahead
-			// of time. That way, if we're going to run out of memory, 
+			// of time. That way, if we're going to run out of memory,
 			// we'll run out here where it's easier to undo things.
-			r = memobj_pmem_walk(MPW_PHYS, obp, mm->offset, 
+			r = memobj_pmem_walk(MPW_PHYS, obp, mm->offset,
 							mm->offset + run_len - 1, tymem_split, &data);
 			if(r != EOK) goto fail1;
 			// Keep track of the fact that we need to clean the region
@@ -265,7 +265,7 @@ tymem_pmem_alloc(PROCESS *prp, OBJECT *obp, struct map_set *ms, struct mm_map *m
 		}
 		if(mm == ms->last) break;
 		mm = mm->next;
-	} 
+	}
 	//RUSH3: It'd be nice to collapse adjacent, contiguous fake quantums
 	return EOK;
 
@@ -289,7 +289,7 @@ fail1:
 		}
 		if(mm == ms->last) break;
 		mm = mm->next;
-	} 
+	}
 	return r;
 }
 
@@ -329,7 +329,7 @@ setup_mappings(PROCESS *prp, struct map_set *ms, unsigned flags, unsigned preloa
 			}
 			prp->memory->rlimit.stack = todo;
 		}
-		r = memory_reference(&mm, start, end, 
+		r = memory_reference(&mm, start, end,
 				(mm->mmap_flags & PROT_WRITE) ? (MR_WRITE|MR_TRUNC) : MR_TRUNC, ms);
 	} else {
 		// memory_reference() might be fiddling the list
@@ -374,7 +374,7 @@ setup_mappings(PROCESS *prp, struct map_set *ms, unsigned flags, unsigned preloa
 						// Have to make sure all the L2's are allocated
 						r = pte_prealloc(adp, s, e);
 						if((r == EOK) && (mm->obj_ref->obp == obp)) {
-							// If we happen to have init'd pages, 
+							// If we happen to have init'd pages,
 							// set up the PTE's.
 							r = memory_reference(&mm, s, e, MR_NOINIT, ms);
 						}
@@ -406,15 +406,15 @@ setup_mappings(PROCESS *prp, struct map_set *ms, unsigned flags, unsigned preloa
 }
 
 
-int 
-vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested, 
-		int prot, int flags, OBJECT *obp, uint64_t boff, unsigned alignval, 
+int
+vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
+		int prot, int flags, OBJECT *obp, uint64_t boff, unsigned alignval,
 		unsigned preload, int fd, void **vaddrp, size_t *sizep, part_id_t mpart_id) {
 	uintptr_t			vaddr;
 	size_t				size;
 	size_t				guardsize = 0;
 	size_t				pg_offset;
-	ADDRESS				*adp;		
+	ADDRESS				*adp;
 	struct mm_map_head	*mh;
 	struct map_set		ms;
 	struct map_set		ms_repl;
@@ -432,7 +432,7 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 	void				*kludge_vaddr;
 	size_t				kludge_size;
 	part_id_t		kludge_mpart_id;
-#endif	
+#endif
 
 	//RUSH2: /proc/<pid>/as support. Remember to turn on the MM_ANMEM_MULTI_REFS
 	//RUSH2: bit for anonymous objects so we don't skip check_last_ref
@@ -497,8 +497,8 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 		if(flags & MAP_STACK) size_requested -= guardsize;
 		if(flags & MAP_ANON) {
 			//
-			// We're always asking for contiguous memory, but that might not 
-			// always be required. It should be OK though, since the vast 
+			// We're always asking for contiguous memory, but that might not
+			// always be required. It should be OK though, since the vast
 			// majority of system allocations are only going to be one page.
 			//
 			memsize_t  resv = 0;
@@ -507,7 +507,7 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 			if (MEMPART_CHK_and_INCR(mpart_id, size_requested, &resv) != EOK) {
 				return ENOMEM;
 			}
-			pq = pa_alloc(size_requested, 0, PAQ_COLOUR_NONE, 
+			pq = pa_alloc(size_requested, 0, PAQ_COLOUR_NONE,
 							PAA_FLAG_CONTIG, NULL, restrict_proc, resv);
 			if(pq == NULL) {
 				MEMPART_UNDO_INCR(mpart_id, size_requested, resv);
@@ -523,7 +523,7 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 			boff = pa_quantum_to_paddr(pq);
 			pg_offset = 0;
 		} else if(flags & MAP_PHYS) {
-			// Have to validate the paddr (passed in in 'boff') because 
+			// Have to validate the paddr (passed in in 'boff') because
 			// mounting an image file system gets given the paddr from
 			// user input and the code in memmmgr_map.c that normally
 			// checks for a good value is being bypassed.
@@ -531,7 +531,7 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 				return EINVAL;
 			}
 			pg_offset = boff - ROUNDDOWN(boff, __PAGESIZE);
-			boff -= pg_offset;	
+			boff -= pg_offset;
 			size_requested = ROUNDUP(size_requested+pg_offset, QUANTUM_SIZE);
 		} else {
 			crash();
@@ -585,13 +585,13 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 		}
 		return EOK;
 	}
-	
+
 	// mmap user memory...
 	adp = prp->memory;
 
 	// make sure our heap hasn't exceeded its rlimit
 	if((flags & (MAP_ANON|MAP_STACK|MAP_ELF|MAP_TYPE)) == (MAP_ANON|MAP_PRIVATE)) {
-		if(rlimit_blown(prp, RLIMIT_DATA, adp->rlimit.data + size_requested)) {	
+		if(rlimit_blown(prp, RLIMIT_DATA, adp->rlimit.data + size_requested)) {
 			return ENOMEM;
 		}
 		extra_flags |= EXTRA_FLAG_RLIMIT_DATA;
@@ -602,11 +602,11 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 		return ENOMEM;
 	}
 
-#ifdef LOADER_BSS_KLUDGE	
+#ifdef LOADER_BSS_KLUDGE
 	kludge_vaddr = NULL;
 	kludge_size = 0;
 	kludge_mpart_id = NULL;	// for the compiler
-	if((obp != NULL) 
+	if((obp != NULL)
 		&& ((flags & (MAP_TYPE|MAP_ANON|MAP_ELF|MAP_FIXED)) == (MAP_PRIVATE|MAP_ELF|MAP_FIXED))
 		&& !(prp->flags & _NTO_PF_LOADING)) {
 		uintptr_t	end_vaddr;
@@ -615,12 +615,12 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 		case OBJECT_MEM_FD:
 		case OBJECT_MEM_SHARED:
 			end_vaddr = ROUNDUP(vaddr_requested + size_requested, __PAGESIZE);
-			vaddr = ROUNDUP(vaddr_requested 
+			vaddr = ROUNDUP(vaddr_requested
 							+ (unsigned)(obp->mem.mm.size - boff), __PAGESIZE);
 			if(vaddr < end_vaddr) {
 				kludge_mpart_id = mempart_getid(prp, sys_memclass_id);
-				r = vmm_mmap(prp, vaddr, end_vaddr - vaddr, 
-							prot & PROT_MASK, MAP_PRIVATE|MAP_ANON|MAP_FIXED, 
+				r = vmm_mmap(prp, vaddr, end_vaddr - vaddr,
+							prot & PROT_MASK, MAP_PRIVATE|MAP_ANON|MAP_FIXED,
 							NULL, 0, 0, 0, NOFD, &kludge_vaddr, &kludge_size, kludge_mpart_id);
 				if(r != EOK) return r;
 				size_requested = vaddr - vaddr_requested;
@@ -628,8 +628,8 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 			break;
 		default: break;
 		}
-	} 
-#endif	
+	}
+#endif
 
 	obp_flags = 0;
 	if(prp->flags & _NTO_PF_LOADING) extra_flags |= EXTRA_FLAG_LOADER;
@@ -643,12 +643,12 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 		}
 		extra_flags |= EXTRA_FLAG_RDONLY;
 	}
-		
+
 	global_vaddr = VA_INVALID;
 	//RUSH3: CPUism
 	//RUSH3: This code is only correct for the ARM right now. Need better API
 #if defined(CPU_GBL_VADDR_START)
-	if((obp != NULL) 
+	if((obp != NULL)
 	 && ((obp->hdr.type == OBJECT_MEM_SHARED)||(obp->hdr.type == OBJECT_MEM_TYPED))
 	 && !(obp->mem.mm.flags & MM_SHMEM_IFS)
 	 //RUSH3: Do we really have to check for MM_SHMEM_SPECIAL?
@@ -666,13 +666,13 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 			if(obp->mem.mm.flags & SHMCTL_GLOBAL) {
 				if(obp->mem.mm.size == 0) return EINVAL;
 				//RUSH3: ARMism (1 megabyte vaddr alignment)
-				r = map_create(&ms, &ms_repl, &gbl_map, 0, 
-						ROUNDUP(obp->mem.mm.size, __PAGESIZE), 
+				r = map_create(&ms, &ms_repl, &gbl_map, 0,
+						ROUNDUP(obp->mem.mm.size, __PAGESIZE),
 						ADDR_PAGE((1024*1024)-1), 0);
 			} else {
 				//RUSH3: ARMism (1 megabyte vaddr alignment)
-				r = map_create(&ms, &ms_repl, &gbl_map, 0, 
-						ROUNDUP(size_requested, __PAGESIZE), 
+				r = map_create(&ms, &ms_repl, &gbl_map, 0,
+						ROUNDUP(size_requested, __PAGESIZE),
 						ADDR_PAGE((1024*1024)-1), 0);
 			}
 			if(r != EOK) {
@@ -778,7 +778,7 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 			}
 		}
 	}
-#endif	
+#endif
 
 	anmem_obp = adp->anon;
 	//RUSH2: Need to deal with alignment
@@ -791,18 +791,18 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 	if((mask == 0) && (vaddr_requested == 0) && (mm_flags & MM_FLAG_VPS)) {
 		// If we don't have an imposed alignment and no restrictions
 		// on the vaddr we allocate, tell map_create() that it should
-		// try to make (but not require) the allocated vaddr to be 
+		// try to make (but not require) the allocated vaddr to be
 		// aligned in such a manner that we can use big pages, but first
 		// check that the mapping could possibly create a big page.
 		switch(CPU_SYSTEM_HAVE_MULTIPLE_PAGESIZES) {
-		case VPS_HIGHUSAGE:	
+		case VPS_HIGHUSAGE:
 			// Only shared memory objects with SHMCTL_HIGHUSAGE on will
 			// potentially use big pages (e.g. PPC 600 family, Freescale E500)
-			if((obp == NULL) 
+			if((obp == NULL)
 			  || (obp->hdr.type != OBJECT_MEM_SHARED)
 			  || !(obp->mem.mm.flags & SHMCTL_HIGHUSAGE)) break;
 			// Fall through
-		case VPS_AUTO:	
+		case VPS_AUTO:
 			// All mappings could potentially use big pages.
 			mask = 1;
 			break;
@@ -848,12 +848,12 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 		size -= guardsize;
 		mm = ms.first;
 #ifdef STACK_GROWS_UP
-		// With an upwardly growing stack, the guard page is at end of list	
+		// With an upwardly growing stack, the guard page is at end of list
 		mm->next->mmap_flags = MAP_STACK;
-#else		
+#else
 		mm->mmap_flags = MAP_STACK;
 		mm = mm->next;
-#endif		
+#endif
 	}
 
 	//RUSH3: We can get more sophisticated and only zero the temp mapping
@@ -891,7 +891,7 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 		//RUSH3: For MAP_PRIVATE, we're going to end up allocating
 		//RUSH3: more pmem when we privatize(). Maybe we should just
 		//RUSH3: get the anon memory up front and read the file data
-		//RUSH3: into it here. Doing it the current way is faster for for 
+		//RUSH3: into it here. Doing it the current way is faster for for
 		//RUSH3: multiple mappings of the file, since we'll have a cached copy
 		//RUSH3: in RAM of the data for the second time. Maybe allow
 		//RUSH3: the user to choose via some flag to mmap()?
@@ -951,12 +951,12 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 		boff += ( mm->end - mm->start ) + 1;
 		mm = mm->next;
 	}
-	
+
 	obp->mem.mm.flags |= obp_flags;
 
 	if(preload == 0) {
 		//
-		// We have some heuristics to optimize performance. We detect 
+		// We have some heuristics to optimize performance. We detect
 		// a few different cases and try to pre-fault in some of the pages.
 		//
 		if(flags & MAP_STACK) {
@@ -965,17 +965,17 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 			// leave preload == 0
 		} else {
 			switch(obp->hdr.type) {
-			case OBJECT_MEM_ANON:	
+			case OBJECT_MEM_ANON:
 				// Anonymous memory up to 8 pages
 				preload = 8*__PAGESIZE;
 				break;
-			case OBJECT_MEM_FD:	
+			case OBJECT_MEM_FD:
 				// ELF data segments up to 4 pages
 				if(((flags & (PROT_WRITE|MAP_ELF|MAP_TYPE))==(PROT_WRITE|MAP_ELF|MAP_PRIVATE))) {
 					preload = 4*__PAGESIZE;
 				}
 				break;
-			case OBJECT_MEM_SHARED:	
+			case OBJECT_MEM_SHARED:
 				if(obp->mem.mm.flags & SHMCTL_HIGHUSAGE) {
 					/* wired objects should be setup right away */
 					preload = size;
@@ -986,7 +986,7 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 					preload = 8*__PAGESIZE;
 				}
 				break;
-			default: 
+			default:
 				break;
 			}
 			if((preload > size) || (size <= __PAGESIZE)) {
@@ -1025,7 +1025,7 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 	}
 
 	if(r != EOK) goto fail7;
-	
+
 	size += guardsize;
 	if (extra_flags & EXTRA_FLAG_RLIMIT_DATA) {
 		adp->rlimit.data += size;
@@ -1039,7 +1039,7 @@ vmm_mmap(PROCESS *prp, uintptr_t vaddr_requested, size_t size_requested,
 	*vaddrp = (void *)(vaddr + pg_offset);
 #if defined(LOADER_BSS_KLUDGE)
 	size += kludge_size;
-#endif	
+#endif
 	*sizep = size - pg_offset;
 
 	return EOK;
@@ -1048,7 +1048,7 @@ fail7:
 	(void) ms_unmap(adp, &ms, UNMAP_NORLIMIT);
 	return r;
 
-fail6:	
+fail6:
 	{
 		struct mm_map	*del;
 
@@ -1086,7 +1086,7 @@ fail3:
 		anmem_unoffset(obp, boff, size);
 	}
 
-fail2:	
+fail2:
 	map_destroy(&ms);
 	if(ms_repl.first != NULL) map_coalese(&ms_repl);
 
@@ -1094,20 +1094,20 @@ fail2:
 		memobj_unlock(obp);
 	}
 
-fail1:	
+fail1:
 #if defined(CPU_GBL_VADDR_START)
-	//RUSH3: CPUism. This code is only good for ARM. See previous 
+	//RUSH3: CPUism. This code is only good for ARM. See previous
 	//RUSH3: CPU_GBL_VADDR_START conditional section for details.
 	if((global_vaddr != VA_INVALID) && !(obp->mem.mm.flags & SHMCTL_GLOBAL)) {
 		(void) gbl_vaddr_unmap(global_vaddr, ROUNDUP(size_requested, __PAGESIZE));
 	}
-#endif	
-fail0:	
-#ifdef LOADER_BSS_KLUDGE	
+#endif
+fail0:
+#ifdef LOADER_BSS_KLUDGE
 	if(kludge_vaddr != NULL) {
 		(void) vmm_munmap(prp, (uintptr_t)kludge_vaddr, kludge_size, 0, kludge_mpart_id);
 	}
-#endif	
+#endif
 	return r;
 }
 

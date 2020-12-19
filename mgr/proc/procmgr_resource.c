@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -23,7 +23,7 @@ set_rlimit_resource(rlim_t cur, rlim_t max, uint32_t *rlim_soft, uint32_t *rlim_
 					resmgr_context_t *ctp)
 {
 	rlim_t old_hard = *rlim_hard;
-			
+
 	if (max > *rlim_hard) {
 		if (!proc_isaccess(0, &ctp->info)) {
 			return EPERM;
@@ -130,18 +130,18 @@ int procmgr_msg_resource(resmgr_context_t *ctp, void *vmsg) {
 			{
 				int num_fdcons = prp->fdcons.nentries - prp->fdcons.nfree;
 				if ((cur < num_fdcons) || (max < num_fdcons)) {
-					/* the limit specified can't be lowered because current 
+					/* the limit specified can't be lowered because current
 				 	* usage is already higher than the limit
 				 	*/
 					return proc_error(EINVAL, prp);
-				}	
+				}
 			};
 			break;
 		case RLIMIT_CORE:   break;
 		case RLIMIT_VMEM:   break;  // VMEM is the same as RLIMIT_AS
 		case RLIMIT_STACK:  break;
 		case RLIMIT_DATA:   break;
-		case RLIMIT_NTHR:   
+		case RLIMIT_NTHR:
 			{
 				int num_threads = prp->threads.nentries - prp->threads.nfree;
 				if ((cur < num_threads) || (max < num_threads)) {
@@ -153,24 +153,24 @@ int procmgr_msg_resource(resmgr_context_t *ctp, void *vmsg) {
 			}
 			break;
 		case RLIMIT_NPROC:  break;
-		case RLIMIT_CPU:    break; 
-				    
-                /* usupported ones here */ 
+		case RLIMIT_CPU:    break;
+
+                /* usupported ones here */
 		case RLIMIT_FSIZE:
 		case RLIMIT_MEMLOCK:
 		default:
 			return proc_error(EINVAL, prp);
 		}
-		
-		ret = set_rlimit_resource(cur, max, 
+
+		ret = set_rlimit_resource(cur, max,
 			&prp->rlimit_vals_soft[msg->setlimit.i.entry[0].resource],
-			&prp->rlimit_vals_hard[msg->setlimit.i.entry[0].resource], 
+			&prp->rlimit_vals_hard[msg->setlimit.i.entry[0].resource],
 			ctp);
 		if(ret != 0) {
 			return proc_error(ret, prp);
 		}
 
-		/* post processing */ 
+		/* post processing */
 		switch(msg->setlimit.i.entry[0].resource) {
 		case RLIMIT_CPU:
 			// multiply by 1 billion because internal time vals are in nanoseconds

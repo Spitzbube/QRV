@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -37,7 +37,7 @@ memref_add(struct mm_map *mm, OBJECT *obp, ADDRESS *adp, int fd) {
 	struct mm_map			*next;
 
 	VERIFY_OBJ_LOCK(obp);
-	//RUSH3: cache last N results for faster operation? 
+	//RUSH3: cache last N results for faster operation?
 	//RUSH3: keep all the same 'adp' values grouped together so we can bail
 	//RUSH3: from the list faster? Maybe vis-versa and group 'fd' together?
 	owner = &obp->mem.mm.refs;
@@ -68,7 +68,7 @@ memref_add(struct mm_map *mm, OBJECT *obp, ADDRESS *adp, int fd) {
 	or->obp = obp;
 	or->first_ref = NULL;
 
-found_it:	
+found_it:
 	mm->obj_ref = or;
 	next = or->first_ref;
 	mm->ref.next = next;
@@ -86,9 +86,9 @@ void
 memref_del(struct mm_map *del_mm) {
 	struct mm_map			*mm;
 	struct mm_object_ref	*or;
-	
-	//Don't have to worry about the reference list changing on us - we 
-	//should always have the aspace locked in this function. 
+
+	//Don't have to worry about the reference list changing on us - we
+	//should always have the aspace locked in this function.
 	or = del_mm->obj_ref;
 	if(or != NULL) {
 		mm = del_mm->ref.next;
@@ -129,7 +129,7 @@ memref_del(struct mm_map *del_mm) {
 //This function has to be able to traverse the reference list
 //without locking the address space(s) - the object is locked however.
 int
-memref_walk(OBJECT *obp, 
+memref_walk(OBJECT *obp,
 		int (*func)(struct mm_object_ref *, struct mm_map *, void *),
 		void *d) {
 	struct mm_object_ref	*or;

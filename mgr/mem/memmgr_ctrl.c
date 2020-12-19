@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -38,7 +38,7 @@ validate_vaddr(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
 
 	/*
 	 * Only enforce alignement is ENFORCE_ALIGNMENT is on.
-	 * FUTURE: this is off for the first release of trinity as 
+	 * FUTURE: this is off for the first release of trinity as
 	 * this is a new requirement in POSIX 1003.1 2003 which we
 	 * do not believe is valid. It also breaks a lot of code.
 	 */
@@ -49,7 +49,7 @@ validate_vaddr(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
 }
 
 
-int 
+int
 memmgr_ctrl(PROCESS *prp, mem_ctrl_t *msg) {
 	int			r;
 	unsigned	flags;
@@ -65,7 +65,7 @@ memmgr_ctrl(PROCESS *prp, mem_ctrl_t *msg) {
 	case _MEM_CTRL_UNMAP:
 		if(msg->i.len == 0) {
 			return EINVAL;
-		} 
+		}
 		if(msg->i.flags & ~(UNMAP_INIT_REQUIRED|UNMAP_INIT_OPTIONAL)) {
 			return EINVAL;
 		}
@@ -90,7 +90,7 @@ memmgr_ctrl(PROCESS *prp, mem_ctrl_t *msg) {
 		}
 
 		flags =	VV_RANGE|VV_MAPPED;
-//START KLUDGE		
+//START KLUDGE
 		//FUTURE: POSIX says that mprotect() requires the vaddr
 		//FUTURE: to be page aligned. Unfortunately, the ldd code
 		//FUTURE: in libc has a whack of unaligned mprotect()'s.
@@ -104,12 +104,12 @@ memmgr_ctrl(PROCESS *prp, mem_ctrl_t *msg) {
 		//FUTURE: support and require the fixed libc's. Don't forget
 		//FUTURE: the START/END KLUGE code in vmm_mprotect.c & mm_reference.c
 		//FUTURE: when this gets fixed.  bstecher 2005/06/23.
-#if 0		
+#if 0
 		if(!(mm_flags & MM_FLAG_BACKWARDS_COMPAT)) {
 			flags |= VV_ALIGN;
 		}
-#endif		
-//END KLUDGE		
+#endif
+//END KLUDGE
 		r = validate_vaddr(prp, msg->i.addr, msg->i.len, flags);
 		if(r != EOK) return r;
 		return memmgr.mprotect(prp, msg->i.addr, msg->i.len, msg->i.flags);

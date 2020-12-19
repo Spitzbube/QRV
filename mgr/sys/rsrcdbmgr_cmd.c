@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -23,10 +23,10 @@
 #include <sys/resmgr.h>
 
 /*
- We need to map the old style enumerated entries to new string 
+ We need to map the old style enumerated entries to new string
  based entries.
 */
-static const char *rsrc_names[] = { "memory", "irq", "io", "dma", /*"memory/pci"*/ "pcimemory", "unknown" }; 
+static const char *rsrc_names[] = { "memory", "irq", "io", "dma", /*"memory/pci"*/ "pcimemory", "unknown" };
 static char *
 rsrcdbmgr_id2name(int id) {
 	id = id & RSRCDBMGR_TYPE_MASK;
@@ -46,7 +46,7 @@ do_create_destroy(int (*getfunc)(rsrc_alloc_t *alloc, pid_t pid),
 	int		ret;
 
 	ret = EOK;
-	for(indx = 0; indx < count; indx++) { 
+	for(indx = 0; indx < count; indx++) {
 		if(alloc[indx].flags & RSRCDBMGR_FLAG_NAME) {
 			if(rsrcname != NULL) {
 				alloc[indx].name = rsrcname;
@@ -63,7 +63,7 @@ do_create_destroy(int (*getfunc)(rsrc_alloc_t *alloc, pid_t pid),
 			//If we failed, then try and back out those changes
 			for(indx-=1; indx >= 0; indx--) {
 				(void)restorefunc(&alloc[indx], pid);
-			}		
+			}
 			break;
 		}
 	}
@@ -80,10 +80,10 @@ static int
 do_detach(rsrc_request_t *request, unsigned count, const char *rsrcname, pid_t pid) {
 	int		indx;
 	int		ret;
-								   
+
 	//TODO: Do we need the range flag set here?
 	ret = EOK;
-	for(indx = 0; indx < count; indx++) { 
+	for(indx = 0; indx < count; indx++) {
 		if(request[indx].flags & RSRCDBMGR_FLAG_NAME) {
 			if(rsrcname != NULL) {
 				request[indx].name = rsrcname;
@@ -115,13 +115,13 @@ do_detach(rsrc_request_t *request, unsigned count, const char *rsrcname, pid_t p
 static int
 do_attach(rsrc_request_t *request, unsigned count, const char *rsrcname, pid_t pid) {
 	int		indx;
-	int		bestindx; 
-	int		bestpri; 
+	int		bestindx;
+	int		bestpri;
 	int		startindx;
 	int		ret;
 
 	ret = EOK;
-	for (indx = 0; !ret && indx < count; indx++) { 
+	for (indx = 0; !ret && indx < count; indx++) {
 		startindx = bestindx = indx;
 
 		if(request[indx].flags & RSRCDBMGR_FLAG_NAME) {
@@ -145,7 +145,7 @@ do_attach(rsrc_request_t *request, unsigned count, const char *rsrcname, pid_t p
 			if (indx+1 >= count) {
 				ret = EINVAL;
 				break;
-			} 
+			}
 
 			if(request[indx+1].flags & RSRCDBMGR_FLAG_NAME) {
 				if(rsrcname != NULL) {
@@ -157,7 +157,7 @@ do_attach(rsrc_request_t *request, unsigned count, const char *rsrcname, pid_t p
 			if(rsrcname != NULL) {
 				rsrcname += strlen(rsrcname) + 1;
 			}
-		
+
 			if(strcmp(request[indx].name, request[indx+1].name) != 0) {
 				ret = EINVAL;
 				break;
@@ -205,7 +205,7 @@ do_attach(rsrc_request_t *request, unsigned count, const char *rsrcname, pid_t p
  validation is done here prior to actually dispatching
  the request.
 */
-int 
+int
 rsrcdbmgr_handler(message_context_t *mctp, int code, unsigned flags, void *handle) {
 	resmgr_context_t	*ctp = (resmgr_context_t *)mctp;
 	rsrc_cmd_t 			*msg = (rsrc_cmd_t *)ctp->msg;
@@ -230,7 +230,7 @@ rsrcdbmgr_handler(message_context_t *mctp, int code, unsigned flags, void *handl
 	case RSRCDBMGR_REQ_ATTACH:
 	case RSRCDBMGR_REQ_DETACH:
 		rsrcname = (char*)((char*)request + msg->i.count * sizeof(*request));
-check:		
+check:
 		if(!proc_isaccess(0, &ctp->info)) {
 			return proc_status(ctp, EPERM);
 		} else if(msg->i.nbytes == 0) {
@@ -271,22 +271,22 @@ check:
 	switch(cmd) {
 	case RSRCDBMGR_REQ_CREATE:
 		//Permanently add to list
-		ret = do_create_destroy(_rsrcdbmgr_create, _rsrcdbmgr_destroy, 
-									alloc, msg->i.count, rsrcname, pid);
-		break;
-					
-	case RSRCDBMGR_REQ_DESTROY: 
-		//Permanently remove from list
-		ret = do_create_destroy(_rsrcdbmgr_destroy, _rsrcdbmgr_create, 
+		ret = do_create_destroy(_rsrcdbmgr_create, _rsrcdbmgr_destroy,
 									alloc, msg->i.count, rsrcname, pid);
 		break;
 
-	case RSRCDBMGR_REQ_DETACH: 
+	case RSRCDBMGR_REQ_DESTROY:
+		//Permanently remove from list
+		ret = do_create_destroy(_rsrcdbmgr_destroy, _rsrcdbmgr_create,
+									alloc, msg->i.count, rsrcname, pid);
+		break;
+
+	case RSRCDBMGR_REQ_DETACH:
 		//Move used to unused list
 		ret = do_detach(request, msg->i.count, rsrcname, pid);
 		break;
 
-	case RSRCDBMGR_REQ_ATTACH: 
+	case RSRCDBMGR_REQ_ATTACH:
 		//Move unsed to used list
 		ret = do_attach(request, msg->i.count, rsrcname, pid);
 
@@ -297,7 +297,7 @@ check:
 		}
 		break;
 
-	case RSRCDBMGR_REQ_QUERY: 
+	case RSRCDBMGR_REQ_QUERY:
 		//Perform some re-mapping to support previous query
 		msg->i.pid = (msg->i.subtype & RSRCDBMGR_FLAG_USED) ? -1 : 0;
 		msg->i.index = msg->i.count;
@@ -305,16 +305,16 @@ check:
 		msg->i.nbytes = 0;
 		/* Fall through */
 
-	case RSRCDBMGR_REQ_COUNT: 
-	case RSRCDBMGR_REQ_QUERY_NAME: 
-		ret = _rsrcdbmgr_query(rsrcname, msg->i.pid, 
-							  (cmd == RSRCDBMGR_REQ_COUNT) ? FLAG_QUERY_COUNT : 0, 
+	case RSRCDBMGR_REQ_COUNT:
+	case RSRCDBMGR_REQ_QUERY_NAME:
+		ret = _rsrcdbmgr_query(rsrcname, msg->i.pid,
+							  (cmd == RSRCDBMGR_REQ_COUNT) ? FLAG_QUERY_COUNT : 0,
 							  msg->i.index, alloc, msg->i.count * sizeof(*alloc), NULL);
-						 
+
 		if(ret >= 0) {
 			SETIOV(&reply_iov[0], alloc, ret * sizeof(*alloc));
 			if(cmd == RSRCDBMGR_REQ_QUERY) {	//Historical use
-				ret = _rsrcdbmgr_query(rsrcname, msg->i.pid, FLAG_QUERY_COUNT, 0, NULL, 0, NULL); 
+				ret = _rsrcdbmgr_query(rsrcname, msg->i.pid, FLAG_QUERY_COUNT, 0, NULL, 0, NULL);
 			}
 
 			MsgReplyv(ctp->rcvid, ret, reply_iov, (cmd == RSRCDBMGR_REQ_COUNT) ? 0 : 1);
@@ -338,35 +338,35 @@ check:
 */
 
 /*
- Command can be any of 
- 
+ Command can be any of
+
  RSRCDBMGR_REQ_CREATE, RSRCDBMGR_REQ_DESTROY
 	list is an array of count elements which are to be placed into/
-	taken out of the resource database.  
+	taken out of the resource database.
 	Returns errno on failure
 
- RSRCDBMGR_REQ_ATTACH, RSRCDBMGR_REQ_DETACH	
+ RSRCDBMGR_REQ_ATTACH, RSRCDBMGR_REQ_DETACH
 
 */
-int 
+int
 rsrcdbmgr_proc_interface(void *list, int count, int cmd) {
 	int		ret;
 
 	ret = ENOTSUP;
 	pthread_mutex_lock(&g_rsrc_mutex);
 	switch(cmd & RSRCDBMGR_REQ_MASK) {
-	case RSRCDBMGR_REQ_CREATE: 
-		ret = do_create_destroy(_rsrcdbmgr_create, _rsrcdbmgr_destroy, list, 
+	case RSRCDBMGR_REQ_CREATE:
+		ret = do_create_destroy(_rsrcdbmgr_create, _rsrcdbmgr_destroy, list,
 				count, NULL, SYSMGR_PID);
 		break;
 	case RSRCDBMGR_REQ_DESTROY:
-		ret = do_create_destroy(_rsrcdbmgr_destroy, _rsrcdbmgr_create, list, 
+		ret = do_create_destroy(_rsrcdbmgr_destroy, _rsrcdbmgr_create, list,
 				count, NULL, SYSMGR_PID);
 		break;
-	case RSRCDBMGR_REQ_DETACH: 
+	case RSRCDBMGR_REQ_DETACH:
 		ret = do_detach(list, count, NULL, SYSMGR_PID);
 		break;
-	case RSRCDBMGR_REQ_ATTACH: 
+	case RSRCDBMGR_REQ_ATTACH:
 		ret = do_attach(list, count, NULL, SYSMGR_PID);
 		break;
 	default:
@@ -378,7 +378,7 @@ rsrcdbmgr_proc_interface(void *list, int count, int cmd) {
 }
 
 
-int 
+int
 rsrcdbmgr_proc_query(rsrc_alloc_t *list, int count, int start, int flags) {
 	int		ret;
 
@@ -389,7 +389,7 @@ rsrcdbmgr_proc_query(rsrc_alloc_t *list, int count, int start, int flags) {
 	return ret;
 }
 
-int 
+int
 rsrcdbmgr_proc_query_name(rsrc_alloc_t *list, int count, int start, char *name) {
 	int		ret;
 
@@ -407,7 +407,7 @@ rsrcdbmgr_proc_query_name(rsrc_alloc_t *list, int count, int start, char *name) 
 
  Return EOK if things succeed.
 */
-int 
+int
 rsrcdbmgr_proc_devno(char *name, dev_t *devno, int minor_request, int flags) {
 	int ret, major, minor;
 

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -85,7 +85,7 @@ memobj_pmem_del_end(OBJECT *obp, off64_t start, off64_t end) {
 
 	if((pq == NULL) || (pq->u.inuse.qpos > qstart)) {
 		owner = &obp->mem.mm.pmem;
-	} 
+	}
 	for(;;) {
 		pq = *owner;
 		if(pq == NULL) break;
@@ -113,11 +113,11 @@ memobj_pmem_del_end(OBJECT *obp, off64_t start, off64_t end) {
 				//FUTURE: it here and avoid the individual page checks
 				paddr = pa_quantum_to_paddr(pq) + (skip << QUANTUM_BITS);
 				off = PADDR_TO_SYNC_OFF(paddr);
-				// MAP_PHYS mapping's don't keep track of PAQ_FLAG_HAS_SYNC 
+				// MAP_PHYS mapping's don't keep track of PAQ_FLAG_HAS_SYNC
 				// so if we've granted write permission to anything, we
 				// have to assume there's a sync object in it.
 				if(pq->flags & PAQ_FLAG_MODIFIED) {
-					MemobjDestroyed(PADDR_TO_SYNC_OBJ(paddr), 
+					MemobjDestroyed(PADDR_TO_SYNC_OBJ(paddr),
 								off, off + (num << QUANTUM_BITS) - 1,
 								NULL, NULL);
 				}
@@ -126,7 +126,7 @@ memobj_pmem_del_end(OBJECT *obp, off64_t start, off64_t end) {
 				}
 				if((skip != 0) && (this_end < run_end)) {
 					// Freeing a piece in the middle
-					tmp = pa_alloc_fake(paddr + ((num+skip) << QUANTUM_BITS), 
+					tmp = pa_alloc_fake(paddr + ((num+skip) << QUANTUM_BITS),
 								(pq->run - (num+skip)) << QUANTUM_BITS);
 					if(tmp == NULL) return ENOMEM;
 					tmp->u.inuse.next = next;
@@ -136,7 +136,7 @@ memobj_pmem_del_end(OBJECT *obp, off64_t start, off64_t end) {
 				} else if(this_end < run_end) {
 					// Keeping a bit at the end
 					((struct pa_quantum_fake *)pq)->paddr += num << QUANTUM_BITS;
-					pq->run -= num; 
+					pq->run -= num;
 					pq->u.inuse.qpos = this_end;
 				} else if(skip == 0) {
 					// Freeing the whole thing
@@ -146,7 +146,7 @@ memobj_pmem_del_end(OBJECT *obp, off64_t start, off64_t end) {
 				} else {
 					// Keeping a bit at the start
 					pq->run = skip;
-				} 
+				}
 			} else {
 				//FUTURE: If we start turning on MM_MEM_HAS_SYNC
 				//FUTURE: in vmm_vaddr_to_memobj(), we can check
@@ -157,7 +157,7 @@ memobj_pmem_del_end(OBJECT *obp, off64_t start, off64_t end) {
 					if(tmp->flags & PAQ_FLAG_HAS_SYNC) {
 						tmp->flags &= ~PAQ_FLAG_HAS_SYNC;
 						off = PADDR_TO_SYNC_OFF(paddr);
-						MemobjDestroyed(PADDR_TO_SYNC_OBJ(paddr), 
+						MemobjDestroyed(PADDR_TO_SYNC_OBJ(paddr),
 								off, off + (QUANTUM_SIZE-1),
 								NULL, NULL);
 					}
@@ -197,7 +197,7 @@ memobj_pmem_del_end(OBJECT *obp, off64_t start, off64_t end) {
 
 
 static int
-pq_insert(OBJECT *obp, off64_t off, unsigned numq, 
+pq_insert(OBJECT *obp, off64_t off, unsigned numq,
 		struct pa_quantum *(*func)(OBJECT *, unsigned, void *), void *d) {
 	struct pa_quantum	**owner;
 	struct pa_quantum	**chk;
@@ -247,7 +247,7 @@ pq_insert(OBJECT *obp, off64_t off, unsigned numq,
 		this_end = min(hole_end, add_end);
 
 		if(this_start < this_end) {
-			new = func(obp, this_end - this_start, d);	
+			new = func(obp, this_end - this_start, d);
 			if(new == NULL) return ENOMEM;
 			CRASHCHECK(!(new->flags & PAQ_FLAG_INUSE));
 			if(first) {
@@ -260,7 +260,7 @@ pq_insert(OBJECT *obp, off64_t off, unsigned numq,
 				this_start += new->run;
 				prev = new;
 				new = new->u.inuse.next;
-			} while(new != NULL);	
+			} while(new != NULL);
 			prev->u.inuse.next = ins;
 		}
 		if(hole_end >= add_end) return EOK;
@@ -293,7 +293,7 @@ pmem_alloc(OBJECT *obp, unsigned numq, void *d) {
 	if (MEMPART_CHK_and_INCR(obp->hdr.mpid, NQUANTUM_TO_LEN(numq), &resv) != EOK) {
 		return(NULL);
 	}
-	pq = pa_alloc(NQUANTUM_TO_LEN(numq), 0, PAQ_COLOUR_NONE, 
+	pq = pa_alloc(NQUANTUM_TO_LEN(numq), 0, PAQ_COLOUR_NONE,
 					data->flags, &status, data->restriction, resv);
 	if (pq == NULL) {
 		MEMPART_UNDO_INCR(obp->hdr.mpid, NQUANTUM_TO_LEN(numq), resv);
@@ -319,10 +319,10 @@ memobj_pmem_add(OBJECT *obp, off64_t off, size_t size, int flags) {
 	if((flags & MAP_BELOW16M)
 #if defined(__ARM__)||defined(__PPC__)||defined(__MIPS__)||defined(__SH__)
 		&& !(mm_flags & MM_FLAG_BACKWARDS_COMPAT)
-#endif		
+#endif
 	){
 		data.restriction = &restrict_16M;
-	} else { 
+	} else {
 		data.restriction = obp->mem.mm.restriction;
 	}
 	size += (size_t)off & (QUANTUM_SIZE-1);
@@ -371,8 +371,8 @@ memobj_pmem_split(OBJECT *obp, struct pa_quantum *pq, unsigned split_quanta) {
 
 
 int
-memobj_pmem_walk(int flags, OBJECT *obp, off64_t off_start, off64_t off_end, 
-					int (*func)(OBJECT *, off64_t, struct pa_quantum *, unsigned, void *), 
+memobj_pmem_walk(int flags, OBJECT *obp, off64_t off_start, off64_t off_end,
+					int (*func)(OBJECT *, off64_t, struct pa_quantum *, unsigned, void *),
 					void *d) {
 
 	struct pa_quantum	**owner;
@@ -454,9 +454,9 @@ done1:
 
 
 int
-memobj_pmem_walk_mm(int flags, struct mm_map *mm, 
+memobj_pmem_walk_mm(int flags, struct mm_map *mm,
 					int (*func)(OBJECT *, off64_t, struct pa_quantum *, unsigned, void *), void *d) {
-	return memobj_pmem_walk(flags, mm->obj_ref->obp, 
+	return memobj_pmem_walk(flags, mm->obj_ref->obp,
 				mm->offset, mm->offset + (mm->end - mm->start),
 				func, d);
 }

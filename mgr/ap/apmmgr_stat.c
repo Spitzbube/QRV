@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmmgr_stat
- * 
+ *
  * Provide resource manager stat() processing for the memory partitioning module
- * 
+ *
 */
 
 #include "apmmgr.h"
@@ -31,16 +31,16 @@ static int _apmmgr_st_size(apmmgr_attr_t *attr, struct stat *st);
 
 /*******************************************************************************
  * apmmgr_stat
- * 
+ *
  * Resource manager interface for stat() processing
- * 
+ *
  * Returns: EOK on success, otherwise an errno
 */
 int apmmgr_stat(resmgr_context_t *ctp, io_stat_t *msg, RESMGR_OCB_T *ocb)
 {
 	apmmgr_attr_t  *mp = (apmmgr_attr_t *)GET_PART_ATTR(ocb);
 	int r = iofunc_stat(ctp, &mp->attr, &msg->o);
-	
+
 	if (r == EOK)
 		r = _apmmgr_st_size(mp, &msg->o);
 
@@ -51,8 +51,8 @@ int apmmgr_stat(resmgr_context_t *ctp, io_stat_t *msg, RESMGR_OCB_T *ocb)
  * mpmgr_get_st_size
  *
  * Partition manager interface to obtain the 'st_size' field of a 'struct stat'
- * for entries managed by the memory partitioning resource manager 
- * 
+ * for entries managed by the memory partitioning resource manager
+ *
  * Returns: EOK on success, otherwise an errno
 */
 int mpmgr_get_st_size(apmmgr_attr_t *attr, struct stat *st)
@@ -65,13 +65,13 @@ int mpmgr_get_st_size(apmmgr_attr_t *attr, struct stat *st)
 
 /*******************************************************************************
  * _apmmgr_st_size
- * 
+ *
  * Do the work of filling in the struct stat structure st_size field.
- * 
+ *
  * Note that this routine assumes that iofunc_stat() (or equivalent) has been
  * called to do most of the work of filling in the io_stat_t.stat message. Only
  * the st_size field will be filled in here.
- * 
+ *
  * Returns: EOK on success, otherwise an errno
 */
 static int _apmmgr_st_size(apmmgr_attr_t *attr, struct stat *st)
@@ -123,11 +123,11 @@ static int _apmmgr_st_size(apmmgr_attr_t *attr, struct stat *st)
 #else	/* NDEBUG */
 				meminfo = MEMPART_GETINFO(parent->data.mpid, meminfo);
 #endif	/* NDEBUG */
-				
+
 				/* check the available space in the partition against the memory class */
 				partition_free_space = meminfo->cur_cfg.attr.size.max - meminfo->cur_size;
 				class_free_space = si->size.unreserved.free;
-	
+
 				/*
 				 * if the partition has a reservation that is not used up, then the unused
 				 * reserved amount must be added to the class_free_space
@@ -157,7 +157,7 @@ static int _apmmgr_st_size(apmmgr_attr_t *attr, struct stat *st)
 				memsize_t discretionary = meminfo->cur_cfg.attr.size.max - meminfo->cur_cfg.attr.size.min;
 				partition_free = min(discretionary, smallest_size);
 				partition_free += (meminfo->cur_cfg.attr.size.min - meminfo->cur_size);
-				
+
 			}
 			else
 			{
@@ -203,7 +203,7 @@ static int _apmmgr_st_size(apmmgr_attr_t *attr, struct stat *st)
 #endif
 			break;
 		}
-		
+
 		default:
 			r = ENOSYS;
 	}

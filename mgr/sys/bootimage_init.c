@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -55,10 +55,10 @@ struct boot_data {
 };
 
 #ifndef NKDEBUG
-static int 
+static int
 kdebug_path(struct kdebug_entry *entry, char *buff, int buffsize) {
 	char				*p;
-	
+
 	switch(entry->type) {
 	case KDEBUG_TYPE_PROCESS:
 		if(entry->ptr && (p = ((PROCESS *)(entry->ptr))->debug_name)) {
@@ -143,7 +143,7 @@ boot_waitfor_reopen(struct script_waitfor_reopen *scp, int fds[3], char *tty) {
 }
 
 
-static pid_t 
+static pid_t
 boot_external(struct script_external *scp, int extsched, int fds[3]) {
 	pid_t						pid;
 	int							argc, envc;
@@ -161,7 +161,7 @@ boot_external(struct script_external *scp, int extsched, int fds[3]) {
 
 	argv = &args[0];
 	arge = &args[argc+1]; //account for extra NULL ptr
-	
+
 	cmd = p = scp->args;
 	while(*p++) {
 		/* nothing to do */
@@ -213,7 +213,7 @@ boot_external(struct script_external *scp, int extsched, int fds[3]) {
 	case SCHED_EXT_APS:
 		if(scp->flags & SCRIPT_FLAGS_EXTSCHED && scp->extsched.aps.id != APS_SYSTEM_PARTITION_ID) {
 		sched_aps_join_parms		aps;
-			APS_INIT_DATA(&aps); 
+			APS_INIT_DATA(&aps);
 			aps.pid = aps.tid = 0;
 			aps.id = scp->extsched.aps.id;
 			if(SchedCtl(SCHED_APS_JOIN_PARTITION, &aps, sizeof(aps)) == -1)
@@ -232,7 +232,7 @@ boot_external(struct script_external *scp, int extsched, int fds[3]) {
 	case SCHED_EXT_APS:
 		if(scp->flags & SCRIPT_FLAGS_EXTSCHED && scp->extsched.aps.id != APS_SYSTEM_PARTITION_ID) {
 		sched_aps_join_parms		aps;
-			APS_INIT_DATA(&aps); 
+			APS_INIT_DATA(&aps);
 			aps.pid = aps.tid = 0;
 			aps.id = APS_SYSTEM_PARTITION_ID;
 			(void)SchedCtl(SCHED_APS_JOIN_PARTITION, &aps, sizeof(aps));
@@ -249,7 +249,7 @@ boot_external(struct script_external *scp, int extsched, int fds[3]) {
 }
 
 
-static int 
+static int
 map_ifs(struct asinfo_entry *as, char *name, void *d) {
 	struct image_header				*image;
 	struct system_private_entry		*spp;
@@ -270,7 +270,7 @@ map_ifs(struct asinfo_entry *as, char *name, void *d) {
 }
 
 
-static int 
+static int
 bootimage_start(message_context_t *ctp, int code, unsigned flags, void *handle) {
 	union image_dirent			*dir;
 	struct image_file			*pfp;
@@ -306,7 +306,7 @@ static char						boot[_POSIX_PATH_MAX + 1] = "/" PROC_BOOTIMAGE_DIR "/";
 		proc_thread_pool_reserve_done();
 		return -1;
 	}
-	
+
 	prp->flags |= _NTO_PF_LOADING;
 	proc_unlock(prp);
 
@@ -424,7 +424,7 @@ static			char					link[_POSIX_PATH_MAX + 1] = "/";
 		case SCRIPT_TYPE_EXTSCHED_APS:
 			if(query.extsched == SCHED_EXT_APS) {
 			sched_aps_create_parms		aps;
-				APS_INIT_DATA(&aps); 
+				APS_INIT_DATA(&aps);
 				aps.name = scp->extsched_aps.pname;
 				aps.budget_percent = scp->extsched_aps.budget;
 				aps.critical_budget_ms = scp->extsched_aps.critical_hi << 8 | scp->extsched_aps.critical_lo;
@@ -463,7 +463,7 @@ static			char					link[_POSIX_PATH_MAX + 1] = "/";
 }
 
 
-void 
+void
 bootimage_init(void) {
 	int								code;
 

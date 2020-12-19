@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -26,11 +26,11 @@ int procmgr_fork(resmgr_context_t *ctp, proc_fork_t *msg) {
 	proc_create_attr_t					extra = {NULL};
 	part_list_t							*mempart_list;
 	part_list_t							*schedpart_list = NULL;
-	
+
 	if(!(lcp = procmgr_context_alloc(0, LC_FORK))) {
 		return ENOMEM;
 	}
-	
+
 	/* memory partitions */
 	{
 		unsigned i, r;
@@ -49,7 +49,7 @@ int procmgr_fork(resmgr_context_t *ctp, proc_fork_t *msg) {
 			procmgr_context_free(lcp);
 			return ENOMEM;
 		}
-		
+
 		mempart_list->num_entries = num_parts;
 		if ((r = inherit_mempart_list(pprp, &mempart_list)) != EOK) {
 			proc_unlock(pprp);
@@ -68,7 +68,7 @@ int procmgr_fork(resmgr_context_t *ctp, proc_fork_t *msg) {
 			return EACCES;	// no permission for parents sysram partition
 		}
 
-		/* 
+		/*
 		 * By default, the mempart_list->i[].flags are inherited from the
 		 * parent. However, in the case of the the initial processes created
 		 * by procnto, we do not want this inheritance. Instead we want to use
@@ -85,7 +85,7 @@ int procmgr_fork(resmgr_context_t *ctp, proc_fork_t *msg) {
 		}
 		proc_unlock(pprp);
 	}
-	
+
 	/* scheduler partitions */
 	if (SCHEDPART_INSTALLED())
 	{
@@ -104,7 +104,7 @@ int procmgr_fork(resmgr_context_t *ctp, proc_fork_t *msg) {
 			procmgr_context_free(lcp);
 			return ENOMEM;
 		}
-		
+
 		schedpart_list->num_entries = num_parts;
 		if ((r = inherit_schedpart_list(pprp, &schedpart_list)) != EOK) {
 			proc_unlock(pprp);
@@ -117,7 +117,7 @@ int procmgr_fork(resmgr_context_t *ctp, proc_fork_t *msg) {
 			procmgr_context_free(lcp);
 			return EACCES;
 		}
-		/* 
+		/*
 		 * By default, the schedpart_list->i[].flags are inherited from the
 		 * parent. However, in the case of the the initial processes created
 		 * by procnto, we do not want this inheritance. Instead we want to use
@@ -141,8 +141,8 @@ int procmgr_fork(resmgr_context_t *ctp, proc_fork_t *msg) {
 	 * for a process (ie. first list entry).
 	 * The only time that this assertion should go off is when an explicit
 	 * partition list is provided by the user which does not have a sysram
-	 * partition as the first entry and list reordering has not occured. 
-	*/ 
+	 * partition as the first entry and list reordering has not occured.
+	*/
 	CRASHCHECK(mempart_get_classid(mempart_list->i[0].id) != sys_memclass_id);
 
 	lcp->flags = msg->i.flags;
@@ -158,7 +158,7 @@ int procmgr_fork(resmgr_context_t *ctp, proc_fork_t *msg) {
 		crash();
 	}
 #endif	/* NDEBUG */
-	
+
 	extra.mpart_list = mempart_list;
 	extra.spart_list = schedpart_list;
 	proc_wlock_adp(sysmgr_prp);

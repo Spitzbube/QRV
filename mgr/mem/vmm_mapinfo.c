@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -108,9 +108,9 @@ Returns:
 	number of valid bytes from vaddr (or start of returned mapping if vaddr is not within any mappings) to end of mapping
 */
 
-size_t 
-vmm_mapinfo(PROCESS *prp, uintptr_t vaddr, struct _procfs_map_info *mip, 
-					struct _procfs_debug_info *mdp, size_t dbginfo_pathlen, OBJECT **obpp, 
+size_t
+vmm_mapinfo(PROCESS *prp, uintptr_t vaddr, struct _procfs_map_info *mip,
+					struct _procfs_debug_info *mdp, size_t dbginfo_pathlen, OBJECT **obpp,
 					int *fdp, size_t *contigp) {
 	ADDRESS						*adp;
 	struct _procfs_map_info		info;
@@ -151,13 +151,13 @@ Things to fill in:
 
 		if(mdp != NULL) {
 			mdp->vaddr = vaddr;
-			if(mem from heap) {	
+			if(mem from heap) {
 				mdp->path[0] = '\0';
 			} else {
 				STRLCPY(mdp->path, procnto_prp->debug_name, dbginfo_pathlen);
 			}
 		}
-*/	
+*/
 		return 0;
 	}
 	chk_vaddr = vaddr;
@@ -190,7 +190,7 @@ Things to fill in:
 			 * For MAP_ELF objects, we need to set the ino & name to the base
 			 * of the text segment so pidin/qconn/IDE can match up text/data
 			 * of a given shared lib.
-			 * RUSH - as pointed below, we really need to keep a 
+			 * RUSH - as pointed below, we really need to keep a
 			 * reference to the object/shared lib for the data segment.
 			 * This code is just heuristics and not guaranteed
 			 * to always work.
@@ -263,7 +263,7 @@ Things to fill in:
 				} else if(obp->hdr.type == OBJECT_MEM_SHARED) {
 					info.dev = 3;
 					info.ino = 1;
-				//RUSH2: Do something with OBJECT_MEM_TYPED here?	
+				//RUSH2: Do something with OBJECT_MEM_TYPED here?
 				} else {
 					info.dev = 2;
 					if((mm->mmap_flags & MAP_STACK) && (data.flags == 0)) {

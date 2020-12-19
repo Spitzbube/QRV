@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,42 +33,42 @@
 extern mempart_rsrcmgr_fnctbl_t  *mempart_rsrcmgr_fnctbl;
 
 /*==============================================================================
- * 
+ *
  * 				interfaces to the memory partition module
- * 
+ *
 */
 
 /*******************************************************************************
  * MEMPART_CREATE
- * 
+ *
 */
 #define MEMPART_CREATE(p, c, mc) \
 		((mempart_rsrcmgr_fnctbl == NULL) ? part_id_t_INVALID : mempart_rsrcmgr_fnctbl->create((p), (c), (mc)))
 
 /*******************************************************************************
  * MEMPART_DESTROY
- * 
+ *
 */
 #define MEMPART_DESTROY(p) \
 		((mempart_rsrcmgr_fnctbl == NULL) ? ENOSYS : mempart_rsrcmgr_fnctbl->destroy((p)))
 
 /*******************************************************************************
  * MEMPART_CHANGE
- * 
+ *
 */
 #define MEMPART_CHANGE(p, c, k) \
 		((mempart_rsrcmgr_fnctbl == NULL) ? ENOSYS : mempart_rsrcmgr_fnctbl->config((p), (c), (k)))
 
 /*******************************************************************************
  * MEMPART_GETINFO
- * 
+ *
 */
 #define MEMPART_GETINFO(p, i) \
 		((mempart_rsrcmgr_fnctbl == NULL) ? NULL : mempart_rsrcmgr_fnctbl->getinfo((p), (i)))
 
 /*******************************************************************************
  * MEMPART_FINDPID
- * 
+ *
 */
 #define MEMPART_FINDPID(p, mp) \
 		((mempart_rsrcmgr_fnctbl == NULL) ? NULL : mempart_rsrcmgr_fnctbl->find_pid((p), (mp)))
@@ -76,7 +76,7 @@ extern mempart_rsrcmgr_fnctbl_t  *mempart_rsrcmgr_fnctbl;
 /*******************************************************************************
  * VALIDATE_CFG_CREATION
  * VALIDATE_CFG_MODIFICATION
- * 
+ *
  * These 2 routines are used to validate configurations for partition creation
  * or modification based on the policies in use. They provide common routines
  * for validation so that these types of checks are not littered throughout the
@@ -88,12 +88,12 @@ extern mempart_rsrcmgr_fnctbl_t  *mempart_rsrcmgr_fnctbl;
  * partition.
  * The configuration <cfg> can also be NULL however nothing useful will be done
  * unless a parent partition identifier is provided
- * 
+ *
  * VALIDATE_CFG_MODIFICATION requires a part_id_t for the partition to which
  * the modifications specified by <cfg> apply. The partition <mpid> must be valid
- * 
+ *
  * Both routines will return EOK if <cfg> is valid for the requested operation
- * and policies in place, otherwise and errno is returned. 
+ * and policies in place, otherwise and errno is returned.
 */
 #define VALIDATE_MP_CFG_CREATION(pmpid, cfg, mcid) \
 		((mempart_rsrcmgr_fnctbl == NULL) ? ENOSYS : mempart_rsrcmgr_fnctbl->validate_cfg_new((pmpid), (cfg), (mcid)))
@@ -104,9 +104,9 @@ extern mempart_rsrcmgr_fnctbl_t  *mempart_rsrcmgr_fnctbl;
 
 
 /*==============================================================================
- * 
+ *
  * 				internal memory partition manager module types
- * 
+ *
 */
 
 typedef struct
@@ -127,7 +127,7 @@ typedef struct apmmgr_attr_s
 		char *				symlink;
 		memclass_entry_t *	mclass_entry;
 	} data;
-	
+
 	part_evtlist_t			event_list[max(NUM_MEMPART_EVTTYPES, NUM_MEMCLASS_EVTTYPES)];
 
 } apmmgr_attr_t;

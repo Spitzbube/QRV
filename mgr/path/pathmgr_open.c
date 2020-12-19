@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -96,7 +96,7 @@ static int node_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 		}
 		node = node->sibling;
 	}
-	
+
 	pathmgr_node_complete( ocb->node );
 
 	nbytes -= offsetof(struct dirent, d_name) + 1;
@@ -217,7 +217,7 @@ static const resmgr_io_funcs_t node_funcs = {
 };
 
 
-static int 
+static int
 complete_open(resmgr_context_t *ctp, struct open_entry *oep, int ret) {
 	NODE				*nop;
 	struct open_entry	*chk;
@@ -254,8 +254,8 @@ complete_open(resmgr_context_t *ctp, struct open_entry *oep, int ret) {
 			// but we cannot leave the pending opens hanging
 			// so we continue on here
 			// this reservation is mainly a performance improvement
-			// not a necessity. Without this reservation, other 
-			// unrelated operations, would have to wait for this to 
+			// not a necessity. Without this reservation, other
+			// unrelated operations, would have to wait for this to
 			// complete if there were no other threads around.
 			reserve_thread_fail = 1;
 		}
@@ -277,10 +277,10 @@ complete_open(resmgr_context_t *ctp, struct open_entry *oep, int ret) {
 			break;
 		}
 		ret = _RESMGR_NOREPLY;
-		do {	
+		do {
 			next = todo->next;
 			// Restart the deferred operation on the node
-			resmgr_msg_again(ctp, todo->rcvid);	
+			resmgr_msg_again(ctp, todo->rcvid);
 			proc_object_free(&open_souls, todo);
 			todo = next;
 		} while(todo != NULL);
@@ -360,24 +360,24 @@ int pathmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extr
 		return ENAMETOOLONG;
 	}
 
-	nop = pathmgr_node_lookup(0, msg->connect.path, 
-			 /* Break out if we hit non-server object, attach to the 
-				node to prevent it's deletion and avoid returning 
+	nop = pathmgr_node_lookup(0, msg->connect.path,
+			 /* Break out if we hit non-server object, attach to the
+				node to prevent it's deletion and avoid returning
 				empty nodes (for links, we could probably remove this) */
 			 PATHMGR_LOOKUP_NOSERVER | PATHMGR_LOOKUP_ATTACH | PATHMGR_LOOKUP_NOEMPTIES |
 			 /* When looking up links, ignore the autocreated entries,
 				this isn't perfect, but it avoids the obvious case when
 				we have overlaid two links.  It would be better to be
-				able to specify one specific node to lookup as an 
+				able to specify one specific node to lookup as an
 				alternative. Add to the TODO list. */
-			 ((ctp->id == link_root_id) ? PATHMGR_LOOKUP_NOAUTO : 0), 
+			 ((ctp->id == link_root_id) ? PATHMGR_LOOKUP_NOAUTO : 0),
 			 &result);
 
 	if(nop) {
 		OBJECT				*o;
 		struct open_entry	*oep;
 		struct open_entry	*chk;
-		
+
 		oep = proc_object_alloc(&open_souls);
 		if(oep == NULL) {
 			pathmgr_node_detach(nop);
@@ -407,12 +407,12 @@ int pathmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extr
 		}
 
 		/* Only look for server/symlink entries (ie non-server) */
-		if (ctp->id == link_root_id) { 
+		if (ctp->id == link_root_id) {
 			if (o && o->hdr.type != OBJECT_PROC_SYMLINK) {
 				pathmgr_node_complete(nop);
 				return complete_open(ctp, oep, ENOENT);
 			}
-		} else {						
+		} else {
 			/* Only look for non-link entries here */
 			while (o && (o->hdr.type == OBJECT_PROC_SYMLINK)) {
 				o = o->hdr.next;
@@ -544,7 +544,7 @@ int pathmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extr
 		return complete_open(ctp, oep, EOK);
 	}
 
-	// nop == NULL at this point 
+	// nop == NULL at this point
 
 	if(msg->connect.subtype == _IO_CONNECT_MKNOD) {
 		return ENOSYS;
@@ -559,7 +559,7 @@ int pathmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extr
 		OBJECT						*obp;
 		int							status;
 		PROCESS *					prp;
-		
+
 		prp = proc_lookup_pid(ctp->info.pid);
 		if (MEMPART_INSTALLED()) {
 			CRASHCHECK(prp == NULL);	// FIX ME - need to resolve to a real process for accounting
@@ -577,8 +577,8 @@ int pathmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extr
 	}
 
    case _FTYPE_TYMEM:
-		return tymem_open(ctp, msg, NULL, extra);			   
-		
+		return tymem_open(ctp, msg, NULL, extra);
+
 	default:
 		break;
 	}

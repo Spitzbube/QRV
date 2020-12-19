@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -93,7 +93,7 @@ fdmem_create(OBJECT *obp, void *extra) {
 }
 
 
-int 
+int
 fdmem_done(OBJECT *obp) {
 	if(obp == fdmem_cleaner_object) {
 		atomic_add(&fdmem_close_lock, 1);
@@ -146,19 +146,19 @@ fdmem_name(OBJECT *obp, size_t max, char *dest) {
 	name = obp->fdmem.name;
 	//RUSH1: query the name from the file system?
 	if(name == NULL) return 0;
-	
+
 	STRLCPY(dest, name, max);
 	return strlen(dest);
 }
 
 /*
- * This sets the name of the fdmem object. Called from 
+ * This sets the name of the fdmem object. Called from
  * vmm_debuginfo. We need to do this here and properly protect
  * access to the name field.
  */
 int
 memmgr_fd_setname(OBJECT *obp, char *name) {
-	
+
 	pthread_mutex_lock(&fdmem_mutex);
 	memobj_lock(obp);
 
@@ -192,13 +192,13 @@ io_mmap(struct _msg_info *info, int fd, resmgr_context_t *ctp, mem_map_t *mmapp,
 }
 
 
-static int 
+static int
 mem_map_fd(resmgr_context_t *ctp, PROCESS *prp, mem_map_t *mmapp, OBJECT **object) {
 	int					fd, error;
 	int					mmap_fd;
 	OBJECT				*obp;
 	unsigned			prot;
-	unsigned			orig_prot;			
+	unsigned			orig_prot;
 	struct _msg_info	info;
 	int status;
 
@@ -238,7 +238,7 @@ mem_map_fd(resmgr_context_t *ctp, PROCESS *prp, mem_map_t *mmapp, OBJECT **objec
 	mmap_fd = io_mmap(&info, fd, ctp, mmapp, prot);
 	if(mmap_fd == -1) {
 		switch(errno) {
-		case EACCES:	
+		case EACCES:
 		case EROFS:
 			prot = orig_prot;
 			if(!(prot & PROT_WRITE)) {
@@ -293,7 +293,7 @@ mem_map_fd(resmgr_context_t *ctp, PROCESS *prp, mem_map_t *mmapp, OBJECT **objec
 				atomic_sub(&fdmem_close_lock, 1);
 				MMAPFD_WAKEUP_OPENER
 				return ENOMEM;
-			} 
+			}
 		}
 	}
 
@@ -343,7 +343,7 @@ mem_map_fd(resmgr_context_t *ctp, PROCESS *prp, mem_map_t *mmapp, OBJECT **objec
 }
 
 
-int 
+int
 memmgr_open_fd(resmgr_context_t *ctp, PROCESS *prp, mem_map_t *mmapp, OBJECT **obpp) {
 	int					fd;
 	struct stat64		sbuf;
@@ -416,9 +416,9 @@ again:
 // Go through mapped files, and clean up stale entries
 // Always called from Proc or the termer
 //
-int 
+int
 memmgr_fd_compact(void) {
-	if(!(atomic_set_value(&fdmem_cleanup, MMAPFD_CLEANUP_QUEUED) 
+	if(!(atomic_set_value(&fdmem_cleanup, MMAPFD_CLEANUP_QUEUED)
 				& (MMAPFD_CLEANUP_QUEUED|MMAPFD_CLEANUP_INPROGRESS))) {
 		if(MsgSendPulse(PROCMGR_COID, -1, memmgr_fd_code, NULL) != 0) {
 			atomic_clr(&fdmem_cleanup, MMAPFD_CLEANUP_QUEUED);
@@ -430,7 +430,7 @@ memmgr_fd_compact(void) {
 
 
 /* there is at most one memmgr_fd_cleanup run at any time */
-static int 
+static int
 memmgr_fd_cleanup(message_context_t *ctp, int code, unsigned flags, void *handle) {
 	OBJECT					**owner;
 	OBJECT					*obp;
@@ -444,7 +444,7 @@ memmgr_fd_cleanup(message_context_t *ctp, int code, unsigned flags, void *handle
 
 	nexttime = TIME_INFINITY;
 
-	if(atomic_set_value(&fdmem_cleanup, MMAPFD_CLEANUP_INPROGRESS) 
+	if(atomic_set_value(&fdmem_cleanup, MMAPFD_CLEANUP_INPROGRESS)
 			& MMAPFD_CLEANUP_INPROGRESS) {
 		// Somebody's already in here
 		return EOK;
@@ -530,10 +530,10 @@ memmgr_fd_cleanup(message_context_t *ctp, int code, unsigned flags, void *handle
 }
 
 
-void 
+void
 memmgr_fd_init(void) {
 	struct sigevent event;
-	
+
 	memmgr_fd_code = pulse_attach(dpp, MSG_FLAG_ALLOC_PULSE, 0, memmgr_fd_cleanup, NULL);
 	//RUSH3: getprio(0) or -1 end up as 255, probably aim for lower pulse pri?
 	SIGEV_PULSE_INIT(&event, PROCMGR_COID, -1, memmgr_fd_code, 0);

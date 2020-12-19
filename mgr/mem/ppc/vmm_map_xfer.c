@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -20,7 +20,7 @@
 
 // ***************************************************************
 // ***************************************************************
-// ** 
+// **
 // ** NOTE that this file is OVERRIDDEN for procnto-600. See
 // ** "memmgr/ppc/600-900/vmm_map_xfer.c" for the code used in that case.
 // **
@@ -160,7 +160,7 @@ vmm_map_addr_general(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, in
 			if(base > last || (!(flags & MAPADDR_FLAGS_SYSPRP) && !WITHIN_BOUNDRY(base, last, prp->boundry_addr))) {
 				return -1;
 			}
-   	
+
 			if(base < (uintptr_t)lo || last > (uintptr_t)hi) {
 				if(nparts) {
 					break;
@@ -265,7 +265,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, int *poff,
 			{
 				/* not int32 aligned, use the old interface */
 				return vmm_map_addr_general(actprp, prp,  piov, pparts, poff, niov, pnparts, flags);
-			}	
+			}
 			TRANSLATE_IOV_ADDR(iov,iov_phy)
 		}
 	} else {
@@ -282,7 +282,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, int *poff,
 			return 0;
 		}
 		++iov_phy;
-		addr = 0;	
+		addr = 0;
 		if((ADDR_OFFSET((uintptr_t)iov_phy + sizeof(_Int32t)) <= sizeof(_Int32t)) &&
 			!(flags & MAPADDR_FLAGS_IOVKERNEL)) {
 			int nalign = ADDR_OFFSET(iov_phy);
@@ -322,7 +322,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, int *poff,
 	nparts = 0;
 
 	do {
-	
+
 		// boundry check
 		last = addr + size - 1;
 		if(addr > last || (!(flags & MAPADDR_FLAGS_SYSPRP) && !WITHIN_BOUNDRY((uintptr_t)addr, last, bound))) {
@@ -341,7 +341,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, int *poff,
 		} else {
 			// make sure l1pidx != newidx the first time through the
 			// loop below
-			unsigned 	l1pidx = ~0; 
+			unsigned 	l1pidx = ~0;
 			unsigned	pg_size;
 			unsigned	pg_offset;
 			pte_t		*pde = 0;
@@ -368,7 +368,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, int *poff,
 				}
 				if(!PTE_PRESENT(pteop) || (flags & MAPADDR_FLAGS_WRITE) ?
 				  !PTE_WRITEABLE(pteop) : !PTE_READABLE(pteop)) {
-					/* 
+					/*
 						We use the original niov (orig_niov), since the first page mapping mungs it.
 						This addresses PR 12533
 					*/
@@ -378,7 +378,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, int *poff,
 				len = pg_size - pg_offset;
 				for( ;; ) {
 					uintptr_t	next_addr;
-					
+
 					if(len >= size) break;
 					next_addr = addr + len;
 					if(L1PAGEIDX(next_addr) != l1pidx) break;
@@ -386,7 +386,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, int *poff,
 					// check physical mem continuty
 					if((PTE_PERMS(ptep)) != PTE_PERMS(pteop)) break;
 					if((PTE_PADDR(pteop) + pg_size) != PTE_PADDR(ptep)) break;
-	
+
 					len += pg_size;
 					pteop = ptep;
 					pg_size = PTE_PGSIZE(ptep);
@@ -400,7 +400,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, int *poff,
 				if((addr_phy + min(len,size)) >= VM_KERN_LOW_SIZE) {
 					return vmm_map_addr_general(actprp,prp,piov,pparts,poff,orig_niov,pnparts,flags);
 				}
-	
+
 				// mapped area is bigger?
 				if(len >= size) {
 					// one source iov is ended
@@ -438,10 +438,10 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, int *poff,
 						// not eight bytes aligned, get addr first
 						addr = (uintptr_t)GETIOVBASE(iov_phy);
 					}
-					
+
 					// adjust iov_phy
 					iov = (IOV *)ADDR_PAGE((uintptr_t)iov + __PAGESIZE);
-					TRANSLATE_IOV_ADDR(iov, iov_phy)													
+					TRANSLATE_IOV_ADDR(iov, iov_phy)
 
 					if(nalign) {
 						// not eight bytes aligned, adjust iov_phy to unaligned position
@@ -462,8 +462,8 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, int *poff,
 			*poff = 0;
 		} else {
 			*poff = GETIOVLEN(iov_phy) - size;
-		} 
-	} 
+		}
+	}
 	*pparts = parts;
 	*pnparts = nparts;
 

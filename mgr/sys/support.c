@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -123,10 +123,10 @@ proc_lock_pid(pid_t pid) {
 			return NULL;
 		}
 		r = acquire_lock(&prp->lock);
-		
+
 		// Can say the query is done here because we've acquired the
-		// process lock and that will keep the terminator thread from 
-		// releasing the PROCESS structure (or acquire_lock failed and we 
+		// process lock and that will keep the terminator thread from
+		// releasing the PROCESS structure (or acquire_lock failed and we
 		// don't need the prp).
 		QueryObjectDone(prp);
 
@@ -139,12 +139,12 @@ proc_lock_pid(pid_t pid) {
 		}
 
 		/*
-		 We have to check to see if the entry matches what we asked for before we 
-		 actually locked the pid. There are two cases here that concern us.  The 
-		 first is that the prp/pid value switched while we weren't looking or that 
-		 the pid is terminating, both caused by exec/ProcessSwap().  As a result we 
-		 loop until we get a NULL reply from the QueryObject() which is the definitive 
-		 answer that a pid is gone.  We get into this condition running wh1_exec where 
+		 We have to check to see if the entry matches what we asked for before we
+		 actually locked the pid. There are two cases here that concern us.  The
+		 first is that the prp/pid value switched while we weren't looking or that
+		 the pid is terminating, both caused by exec/ProcessSwap().  As a result we
+		 loop until we get a NULL reply from the QueryObject() which is the definitive
+		 answer that a pid is gone.  We get into this condition running wh1_exec where
 		 a large number of execs and context switches occur.
 		*/
 		if(prp->pid == pid) {
@@ -174,7 +174,7 @@ proc_lock_parent(PROCESS *prp) {
 		if(count > 100) {
 			// Sleep for one tick to give the transition more time to complete
 			sleepl = 1;
-			TimerTimeout(CLOCK_MONOTONIC, _NTO_TIMEOUT_NANOSLEEP, NULL, 
+			TimerTimeout(CLOCK_MONOTONIC, _NTO_TIMEOUT_NANOSLEEP, NULL,
 							&sleepl, NULL);
 		} else if(count > 50) {
 			// Give other guys a chance to run
@@ -217,7 +217,7 @@ proc_mux_haslock(struct proc_mux_lock **mp, int owner) {
 
 pthread_mutex_t object_allocator_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-void * 
+void *
 proc_object_alloc(SOUL *soulp) {
 	void *ptr;
 
@@ -239,7 +239,7 @@ proc_object_free(SOUL *soulp, void *ptr) {
 		object_free(0, soulp, ptr);
 		return;
 	}
-	
+
 	pthread_mutex_lock(&object_allocator_mutex);
 	object_free(0, soulp, ptr);
 	pthread_mutex_unlock(&object_allocator_mutex);
@@ -256,7 +256,7 @@ proc_error(int ret, PROCESS *prp) {
 int
 proc_isaccess(PROCESS *prp, struct _msg_info *rcvinfo) {
 	struct _client_info					info;
-  	
+
 	return ConnectClientInfo(rcvinfo->scoid, &info, 0) == -1 ? 0 :
 		(info.cred.euid == 0 || (prp && prp->cred->info.euid == info.cred.euid));
 }
@@ -273,6 +273,6 @@ proc_status(resmgr_context_t *ctp, int status) {
 	}
 
 	return 0;
-} 
+}
 
 __SRCVERSION("support.c $Rev: 201354 $");

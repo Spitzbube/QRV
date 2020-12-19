@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -21,7 +21,7 @@
  * tlb_flush_asid()
  *       Flush TLB associated with a particular ASID
  */
-static void 
+static void
 tlb_flush_asid(unsigned asid) {
 	struct r4k_tlb	tlb;
 	unsigned		x;
@@ -32,10 +32,10 @@ tlb_flush_asid(unsigned asid) {
 		InterruptDisable();
 		idx = x << TLB_IDX_SHIFT;
 		r4k_gettlb(&tlb, idx);
-		if(((tlb.lo0 & TLB_VALID) || (tlb.lo1 & TLB_VALID)) && 
+		if(((tlb.lo0 & TLB_VALID) || (tlb.lo1 & TLB_VALID)) &&
 				((tlb.hi & TLB_HI_ASIDMASK) == asid)) {
 			// Kill the entry by pointing into a set kseg0 location.
-			r4k_settlb(MIPS_R4K_K0BASE + (x * (__PAGESIZE * 2)), 
+			r4k_settlb(MIPS_R4K_K0BASE + (x * (__PAGESIZE * 2)),
 					0, 0, pgmask_4k, idx);
 		}
 		InterruptEnable();
@@ -45,7 +45,7 @@ tlb_flush_asid(unsigned asid) {
 
 #if defined(VARIANT_smp)
 
-void 
+void
 smp_sync_tlb(PROCESS *prp) {
 	ADDRESS     *adp;
 	unsigned	mycpu;
@@ -66,11 +66,11 @@ smp_sync_tlb(PROCESS *prp) {
 
 #else
 
-#define smp_sync_tlb(prp) 
+#define smp_sync_tlb(prp)
 
 #endif
 
-void 
+void
 vmm_aspace(PROCESS *aspaceprp, PROCESS **paspaceprp) {
 	ADDRESS     *adp;
 	unsigned    *asidp;
@@ -85,7 +85,7 @@ vmm_aspace(PROCESS *aspaceprp, PROCESS **paspaceprp) {
 			int         asid, i;
 			ADDRESS     *oldadp;
 			struct asid_mapping *asid_map = gbl_asid_map[RUNCPU];
-		
+
 			/*
 			 * This poor guy had his asid stolen, go steal someone else's.
 			 *
@@ -94,13 +94,13 @@ vmm_aspace(PROCESS *aspaceprp, PROCESS **paspaceprp) {
 			 * handler routine, we will re-enterantly execute this code to
 			 * set up the address space for the routine.
 			 *
-			 * Do a quick scan through the asid_map and see 
+			 * Do a quick scan through the asid_map and see
 			 * if there are any unallocated entries. The
-			 * reason why we do this is because it is cheaper 
+			 * reason why we do this is because it is cheaper
 			 * to do this one scan than to steal an asid,
 			 * do a tlb_flush_asid, and also possibly incur
 			 * tlb refills for the poor guy we stole from.
-			 * If there are no unallocated asids, then go 
+			 * If there are no unallocated asids, then go
 			 * back to where we were in the asid_map.
 			 */
 			for (i = 1; i <= TLB_MAX_ASID; ++i) {
@@ -120,7 +120,7 @@ vmm_aspace(PROCESS *aspaceprp, PROCESS **paspaceprp) {
 			*asidp = asid;
 			oldadp = (ADDRESS *)_smp_xchg((unsigned *)&asid_map->map[asid], (unsigned)adp);
 			if (oldadp != NULL) {
-				/* 
+				/*
 				 * Mark his asid as invalid so
 				 * that when we switch to him he'll
 				 * pick up another one.

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -71,7 +71,7 @@ static int pathmgr_close_ocb(resmgr_context_t *ctp, void *reserved, void *ocb) {
 
 	//Namespace change notification, equivalent to procmgr_event_trigger
 	procmgr_trigger(PROCMGR_EVENT_PATHSPACE);
-	
+
 	return EOK;
 }
 
@@ -98,16 +98,16 @@ static int pathmgr_object_exists(char *path, int type) {
 	return 0;
 }
 
-/* 
+/*
  This is an override of the C library function which just does a _connect() call.
  Unfortunately this can lead to deadlock problems so proc queries the internal
  table first for the path, and if it isn't registered then fails.  If the connection
- exists then it attempts to establish a connection with that server, and that 
+ exists then it attempts to establish a connection with that server, and that
  server _only_.
 */
-int _netmgr_connect(int base, const char *path, mode_t mode, unsigned oflag, unsigned sflag, 
-					unsigned subtype, int testcancel, unsigned accessl, unsigned file_type, 
-					unsigned extra_type, unsigned extra_len, const void *extra, 
+int _netmgr_connect(int base, const char *path, mode_t mode, unsigned oflag, unsigned sflag,
+					unsigned subtype, int testcancel, unsigned accessl, unsigned file_type,
+					unsigned extra_type, unsigned extra_len, const void *extra,
 					unsigned response_len, void *response, int *status) {
 	struct _io_connect_entry    entry;
 	struct node_entry			*node;
@@ -115,11 +115,11 @@ int _netmgr_connect(int base, const char *path, mode_t mode, unsigned oflag, uns
 	char						*newpath;
 	int							ret;
 	size_t  slen = strlen(path) + 1;
-	
+
 	if(!(newpath = alloca(slen))) {
 		errno = ENOMEM;
 		return -1;
-	}		
+	}
 	memcpy(newpath, path, slen);	// '\0' guaranteed to be copied
 	memset(&entry, 0, sizeof(entry));
 
@@ -185,7 +185,7 @@ static int pathmgr_fdinfo(resmgr_context_t *ctp, io_fdinfo_t *msg, void *vocb) {
 				obp->server.nd, path, pathmax)) <= 1) {
 			len = 1;
 			*path = '\0';
-		} else { 
+		} else {
 			int			n;
 
 			if((n = strlen(path))) {
@@ -225,7 +225,7 @@ static int pathmgr_fdinfo(resmgr_context_t *ctp, io_fdinfo_t *msg, void *vocb) {
 	_IO_SET_FDINFO_LEN(ctp, len);
 	return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o + min(size, len));
 }
-	
+
 static const resmgr_io_funcs_t resmgrlink_io_funcs = {
 	_RESMGR_IO_NFUNCS,
 	0,
@@ -259,12 +259,12 @@ server_create(OBJECT *obp, void *data) {
 	return EOK;
 }
 
-static int 
+static int
 pathmgr_resmgrlink(resmgr_context_t *ctp, io_link_t *msg, void *handle, struct _io_resmgr_link_extra *extra) {
 	OBJECT						*obp;
 	PROCESS *					prp;
 
-	/* For FTYPE_NAME object, we let non-root users do the attach, but 
+	/* For FTYPE_NAME object, we let non-root users do the attach, but
 	   only if an attached object doesn't already exist in that space. */
 	if (extra && extra->file_type == _FTYPE_NAME) {
 		if (pathmgr_object_exists(msg->connect.path, OBJECT_NAME)) {
@@ -276,7 +276,7 @@ pathmgr_resmgrlink(resmgr_context_t *ctp, io_link_t *msg, void *handle, struct _
 
 	if (extra == NULL)
 		return EINVAL;
-	
+
 	prp = proc_lookup_pid(ctp->info.pid);
 	if (MEMPART_INSTALLED()) {
 		CRASHCHECK(prp == NULL);	// FIX ME - need to resolve to a real process for accounting
@@ -315,7 +315,7 @@ symlink_create(OBJECT *obp, void *data) {
 	return EOK;
 }
 
-static int 
+static int
 pathmgr_sys_symlink(resmgr_context_t *ctp, io_link_t *msg, void *handle, char *path) {
 	OBJECT		*obp;
 	PROCESS 	*prp;
@@ -327,7 +327,7 @@ pathmgr_sys_symlink(resmgr_context_t *ctp, io_link_t *msg, void *handle, char *p
 	if(pathmgr_object_exists(msg->connect.path, OBJECT_PROC_SYMLINK)) {
 		return EBUSY;
 	}
-	
+
 	prp = proc_lookup_pid(ctp->info.pid);
 	if (MEMPART_INSTALLED()) {
 		CRASHCHECK(prp == NULL);	// FIX ME - need to resolve to a real process for accounting
@@ -341,7 +341,7 @@ pathmgr_sys_symlink(resmgr_context_t *ctp, io_link_t *msg, void *handle, char *p
 	return EOK;
 }
 
-int 
+int
 pathmgr_dolink(resmgr_context_t *ctp, io_link_t *msg, void *handle, io_link_extra_t *extra) {
 	switch(msg->connect.extra_type) {
 	case _IO_CONNECT_EXTRA_RESMGR_LINK:
@@ -374,11 +374,11 @@ add_piece(char *p, char *endp, char *src, unsigned len) {
 
 
 /*
- get the fullpath of a node; 
+ get the fullpath of a node;
  return len (include the last NULL character)
 */
 
-int 
+int
 pathmgr_node2fullpath(NODE* node, char *path, int pathmax) {
 	int							len;
 	char						*p;
@@ -392,7 +392,7 @@ pathmgr_node2fullpath(NODE* node, char *path, int pathmax) {
 
 	mypid = getpid();
 	if(mypid != PROCMGR_PID) {
-		// We're being called from a loader thread - we need to make 
+		// We're being called from a loader thread - we need to make
 		// sure that __netmgr_send() uses a private connection id when
 		// it tries to contact qnet.
 		save_netmgr_coid = __netmgr_send_private(-1);

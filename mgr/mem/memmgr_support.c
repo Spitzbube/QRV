@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -25,7 +25,7 @@
 //RUSH3: threads blocked waiting for multiple aspaces.
 
 //RUSH3: However, if we _do_ use one condvar per aspace, we can keep track
-//RUSH3: if there are any threads requesting R/W locks (similar to 
+//RUSH3: if there are any threads requesting R/W locks (similar to
 //RUSH3: _PROMOTE_REQ) and use that information in the unlock code to
 //RUSH3: sometimes do a pthread_cond_signal() rather than broadcast
 //RUSH3: (when there are write requests, but no read). That would allow us
@@ -41,7 +41,7 @@ static pthread_cond_t  mm_cond = PTHREAD_COND_INITIALIZER;
  * the bottom 28 bits are used as reader count
  * top bits are a writer lock and promotion request
  *
- * The lock makes no attempt at fairness, and probably should not be used for 
+ * The lock makes no attempt at fairness, and probably should not be used for
  * heavily contested resources.
  *
  */

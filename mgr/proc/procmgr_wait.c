@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -83,9 +83,9 @@ static const resmgr_io_funcs_t proc_wait_funcs = {
  *     This prp can never match the criteria
  * Return 0
  *     This prp does not currently match the criteria
- * Return WNOHANG 
+ * Return WNOHANG
  *     An error with wap, reply was done (i.e. a thread unblocked)
- * Return non-zero W????? 
+ * Return non-zero W?????
  *     This prp matched and a reply was done (i.e. a thread unblocked)
  */
 int procmgr_wait_check(PROCESS *prp, PROCESS *parent, struct wait_entry *wap, int match) {
@@ -152,7 +152,7 @@ int procmgr_wait_check(PROCESS *prp, PROCESS *parent, struct wait_entry *wap, in
 	 */
 	if(match == 0) {
 		int				options = wap->options;
-        
+
 		if(prp->flags & (_NTO_PF_ZOMBIE | _NTO_PF_TERMING)) {
 			options &= ~(WUNTRACED|WTRAPPED|WCONTINUED);
 		}
@@ -177,7 +177,7 @@ int procmgr_wait_check(PROCESS *prp, PROCESS *parent, struct wait_entry *wap, in
 	/*
 	 * Unblock the waiting thread...
 	 */
-	
+
 	if(MsgInfo(wap->rcvid, &info) != -1) {
 		siginfo_t	siginfo;
 
@@ -302,7 +302,7 @@ int procmgr_wait(resmgr_context_t *ctp, proc_wait_t *msg) {
 				break;
 			case -1:
 				break;
-			default:	
+			default:
 				return proc_error(_RESMGR_NOREPLY, prp);
 			}
 			if(alive) {
@@ -324,7 +324,7 @@ int procmgr_wait(resmgr_context_t *ctp, proc_wait_t *msg) {
 				break;
 			case -1:
 				break;
-			default:	
+			default:
 				return proc_error(_RESMGR_NOREPLY, prp);
 			}
 		}
@@ -353,7 +353,7 @@ int procmgr_wait(resmgr_context_t *ctp, proc_wait_t *msg) {
 		memset(&msg->o, 0x00, sizeof msg->o);
 		return proc_error(_RESMGR_PTR(ctp, &msg->o, sizeof msg->o), prp);
 	}
-			
+
 	// nothing waiting, so add to queue sorted so pid match has higher priority
 	if(!(wap = proc_object_alloc(&wait_souls))) {
 		return proc_error(ENOMEM, prp);

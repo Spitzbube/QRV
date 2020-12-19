@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,9 +29,9 @@
 
 
 /*==============================================================================
- * 
+ *
  * 				internal partition manager module types
- * 
+ *
 */
 
 /*
@@ -129,7 +129,7 @@ typedef struct
 
 /*
  * GET_PART_ATTR
- * 
+ *
  * macro to extract a pointer to the relevant 'apxmgr_attr_t' from an ocb
 */
 #define GET_PART_ATTR(_ocb_) \
@@ -185,53 +185,53 @@ extern dev_t  apsmgr_devno;
 extern apmgr_attr_t  *root_npart;
 
 /*==============================================================================
- * 
+ *
  * 			interfaces to the memory partition resource manager module
- * 
+ *
 */
 
 /*******************************************************************************
  * APMMGR_INIT
- * 
+ *
 */
 #define APMMGR_INIT(path) \
 		apmmgr_init((path))
 
 /*******************************************************************************
  * APMMGR_GETATTR
- * 
+ *
  * Given <path> (which must be below the "/partition/mem" namespace) return
  * the corresponding 'mempart_attr_t' structure for the last entry or NULL
  * if the path does not exist
 */
 #define APMMGR_GETATTR(path)	mpmgr_getattr((path))
-		
+
 /*******************************************************************************
  * APMMGR_READ
- * 
+ *
  * Call the memory partitioning module to perform a read operation at offset <o>
  * for the entry identified by attribute structure <a>. The read should be
  * filtered based on PROCESS <p> and the contents read placed into buffer <d>.
  * The size of buffer <d> is pointed to by <n>.
- * 
+ *
  * Returns: EOK or an errno. If EOK is returned, <n> will point to the number of
  * 			bytes placed into <d> (which will never be greater than the original
  * 			value pointed to by <n>)
 */
 #define APMMGR_READ(p, a, o, d, n)	mpmgr_read((p), (a), (o), (d), (n))
-		
+
 
 /*==============================================================================
- * 
+ *
  * 			interfaces to the scheduling partition resource manager module
- * 
+ *
 */
 // FIX ME - function tables ?
 extern void apsmgr_init(char *);
 
 /*******************************************************************************
  * APSMGR_INIT
- * 
+ *
 */
 #define APSMGR_INIT(path) \
 		apsmgr_init((path))
@@ -239,20 +239,20 @@ extern void apsmgr_init(char *);
 
 /*******************************************************************************
  * APSMGR_GETATTR
- * 
+ *
  * Given <path> (which must be below the "/partition/sched" namespace) return
  * the corresponding 'schedpart_attr_t' structure for the last entry
 */
 #define APSMGR_GETATTR(path)	spmgr_getattr((path))
-		
+
 /*******************************************************************************
  * APSMGR_READ
- * 
+ *
  * Call the scheduling partitioning module to perform a read operation at offset
  * <o> for the entry identified by attribute structure <a>. The read should be
  * filtered based on PROCESS <p> and the contents read placed into buffer <d>.
  * The size of buffer <d> is pointed to by <n>.
- * 
+ *
  * Returns: EOK or an errno. If EOK is returned, <n> will point to the number of
  * 			bytes placed into <d> (which will never be greater than the original
  * 			value pointed to by <n>)

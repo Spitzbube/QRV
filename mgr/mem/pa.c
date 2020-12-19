@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -97,7 +97,7 @@ static const struct kdump_private  kdump_private = {
    a lot of problems with timing, and not being able to finish allocations in
    a preemption case, when we're doing all this verification on each allocation
    and free etc. So, by default, the debug variant build not do this extra
-   checking but will still enable the sanity checks which may be in the code 
+   checking but will still enable the sanity checks which may be in the code
    as well as compile in the verification code for later debuging.
 */
 #ifdef UBER_DEBUG
@@ -129,12 +129,12 @@ dump_q_list(struct pa_quantum *qp) {
 	}
 }
 
-void 
+void
 debug_dump_blkheadrun(struct block_head *bh) {
 	struct pa_quantum	*curr;
 	paddr_t				start,end;
     int q;
-	
+
 	// This isn't really correct since if we're outside the kernel
 	// the pa structures can change under our feet, but it's close
 	// enough for jazz
@@ -178,7 +178,7 @@ debug_verify_blk(struct block_head *bh) {
 	unsigned					free_count1;
 	unsigned					free_count2;
     int q;
-	
+
 	// Verify that the runs are good
 	free_count1 = 0;
 	prev = NULL;
@@ -202,7 +202,7 @@ debug_verify_blk(struct block_head *bh) {
 			crash();
 		}
 		if(!(chk->flags & PAQ_FLAG_INUSE)) {
-			++free_count1;	
+			++free_count1;
 			if((prev != NULL) && !(prev->flags & PAQ_FLAG_INUSE)) {
 				// two free runs in a row - should have coalesed
 				crash();
@@ -331,7 +331,7 @@ early_alloc(struct sysram_list *sl, unsigned size) {
 	if(size > max_size) {
 		crash();
 	}
-	return cpu_early_paddr_to_vaddr(sl->list[max].start, 
+	return cpu_early_paddr_to_vaddr(sl->list[max].start,
 				ROUNDUP(size, QUANTUM_SIZE), &sl->list[max].end);
 }
 
@@ -392,7 +392,7 @@ make_sysram_list(struct asinfo_entry *as, char *name, void *d) {
 				//We know we have enough space in the sysram_list to handle
 				//the splitting since we allocated enough entries to deal
 				//with one per asinfo and some asinfo entries aren't going
-				//to be "sysram"'s.	
+				//to be "sysram"'s.
 				data->list[i].end = CPU_SYSTEM_PADDR_END;
 				se.start = CPU_SYSTEM_PADDR_END+1;
 				++i;
@@ -413,7 +413,7 @@ static struct pa_quantum *
 dequeue_run(struct block_head *bh, struct pa_quantum *rtf) {
 	rtf->u.flink.prev->u.flink.next = rtf->u.flink.next;
 	rtf->u.flink.next->u.flink.prev = rtf->u.flink.prev;
-	
+
 	return rtf;
 }
 
@@ -421,7 +421,7 @@ dequeue_run(struct block_head *bh, struct pa_quantum *rtf) {
 static void
 enqueue_run(struct block_head *bh, struct pa_quantum *rtq) {
 	unsigned run = rtq->run;
-	
+
 	if (run < PA_FREE_QUEUES) {
 		// add to head of individual free queue; they're all the same size
 		rtq->u.flink.next = bh->free[run].next;
@@ -480,7 +480,7 @@ init_block(struct block_head **bhp, unsigned blk_idx, struct sysram_entry *se, s
 			// Initial initialization (from pa_init). Interrupts haven't
 			// been set up yet, so we have to poll the minidriver callouts
 			mdriver_check();
-		}	
+		}
 		pq->flags = PAQ_COLOUR_NONE;
 		pq->blk = blk_idx;
 		pq->u.flink.next = NULL;
@@ -503,7 +503,7 @@ init_block(struct block_head **bhp, unsigned blk_idx, struct sysram_entry *se, s
 	// Put the quantums on the free list
 	enqueue_run(bh, quanta);
 	bh->max_free_run = num;
-	
+
 	return num;
 }
 
@@ -673,7 +673,7 @@ pa_start_background(void) {
 	to address that issue.
 */
 //FUTURE: Have to convert to paddr_t before upshifting in case the block
-//FUTURE: is bigger than 4G. Could avoid if we split >4G blocks when 
+//FUTURE: is bigger than 4G. Could avoid if we split >4G blocks when
 //FUTURE: initializing.
 #define PQ_TO_PADDR(bh, pq)	((bh)->start.paddr + (((paddr_t)(unsigned)((pq) - (bh)->quanta)) << QUANTUM_BITS))
 
@@ -695,8 +695,8 @@ pa_paddr_to_quantum(paddr_t paddr) {
 	struct block_head	**bhp;
 	struct block_head	**rover;
 	struct block_head	**start;
-	static unsigned		last_blk; 
-	
+	static unsigned		last_blk;
+
 	bhp = blk_head;
 	start = rover = bhp + last_blk;
 	do {
@@ -707,7 +707,7 @@ pa_paddr_to_quantum(paddr_t paddr) {
 		}
 		if(*++rover == NULL) rover = bhp;
 	} while(rover != start);
-	
+
 	return NULL;
 }
 
@@ -728,14 +728,14 @@ pa_getrunhead(struct pa_quantum *pq) {
 
 
 
-/* 
+/*
 	Carve out a continous run of quanta from start to len from the free list.
 	'start' does not have to be the start of a run, could be
 	anywhere
 */
-										
+
 static unsigned
-pa_carve(struct block_head *bhp, struct pa_quantum *head, struct pa_quantum* start, size_t len, 
+pa_carve(struct block_head *bhp, struct pa_quantum *head, struct pa_quantum* start, size_t len,
 				unsigned *colour) {
 	struct pa_quantum 	*lhs;
 	struct pa_quantum	*rhs;
@@ -752,10 +752,10 @@ pa_carve(struct block_head *bhp, struct pa_quantum *head, struct pa_quantum* sta
 
 	/* can only check head of the run for flags due to run optimizations */
 	CRASHCHECK(head->flags & PAQ_FLAG_INUSE);
-	
+
 	total_runlen = head->run;
 
-	/* 
+	/*
 		Linked list structure:
 
 	           +-----------+ +-----------------------------+ +-----------~~~
@@ -768,9 +768,9 @@ pa_carve(struct block_head *bhp, struct pa_quantum *head, struct pa_quantum* sta
 	           |     |  |    |                               |
 	           |     |  +------------------------------------+
 	~~~--------+     +-------+
-	
+
 	N = next pointer
-	P = prev pointer 
+	P = prev pointer
 
 	Run carving:
 
@@ -791,11 +791,11 @@ pa_carve(struct block_head *bhp, struct pa_quantum *head, struct pa_quantum* sta
 	*/
 
 	(void) dequeue_run(bhp, head);
-	
+
 	if (IS_HEADQ(start->run)) {
 		start->run = nrun;
 		SET_TAIL(start, TAIL_CALC(start->run));
-		
+
 		if(total_runlen == nrun) {
 			/* taking whole run */
 
@@ -804,12 +804,12 @@ pa_carve(struct block_head *bhp, struct pa_quantum *head, struct pa_quantum* sta
 
 			rhs->run = total_runlen-nrun; /* just set the head to some value */
 			rhs->flags &= ~PAQ_FLAG_INUSE; /* turn off the inuse flag that might be set (since rhs is made from the middle */
-			SET_TAIL(rhs, TAIL_CALC(rhs->run));	
+			SET_TAIL(rhs, TAIL_CALC(rhs->run));
 
-			enqueue_run(bhp, rhs);			
+			enqueue_run(bhp, rhs);
 		}
-	
-	} else if (&head[head->run] == &start[nrun]) { 
+
+	} else if (&head[head->run] == &start[nrun]) {
 		/* carve from the end */
 		head->run -= nrun;
 		start->run = nrun;
@@ -817,12 +817,12 @@ pa_carve(struct block_head *bhp, struct pa_quantum *head, struct pa_quantum* sta
 		SET_TAIL(head, TAIL_CALC(head->run));
 
 		enqueue_run(bhp, head);
-	} else { 
+	} else {
 		/* carve from middle */
 		lhs = head;
 		rhs = start+nrun;
-	
-		/* 
+
+		/*
 			Remake the runs in the middle and RHS.
 			For the LHS just stuff the new runlen since the neg. displacements are ok.
 		*/
@@ -847,8 +847,8 @@ pa_carve(struct block_head *bhp, struct pa_quantum *head, struct pa_quantum* sta
 	start->flags |= PAQ_FLAG_INUSE;
 
 	verify_blk(blk_head[start->blk]);
-	
-	/* 
+
+	/*
 		NYI - Since we can't determine if we need to zero certain blocks (b/c we
 		don't update the information in the middle quantums any longer for speed)
 		we force a block zero for now, needed or not.  In the future we should come
@@ -891,7 +891,7 @@ pa_largest_pow2(paddr_t size) {
  *  5. Contain all zeros.
  *
  * The last two conditions aren't enforced by this code since they're
- * correctable. The pa_alloc() function merely indicates whether 
+ * correctable. The pa_alloc() function merely indicates whether
  * they're satisfied or not with the PAA_STATUS_COLOUR_MISMATCH and
  * PAA_STATUS_NOT_ZEROED bits. The upper level code is responsible for
  * dealing with them as needed.
@@ -974,7 +974,7 @@ kerext_pa_alloc(void	*d) {
 	//the same time.
 	if(mem_reserved_size < resv_size) goto fail; // must be first
 	if(mem_free_size < (size - resv_size)) goto fail;
-	
+
 	CRASHCHECK(flags & MAP_RESERVMASK);
 
 	size_left = size;
@@ -982,17 +982,17 @@ kerext_pa_alloc(void	*d) {
 	for(curr_res = kap->restriction ; curr_res ; curr_res=curr_res->next) {
 		rq_start = pa_paddr_to_quantum(curr_res->start);
 		rq_end = pa_paddr_to_quantum(curr_res->end);
-		
-		//FUTURE: If a non-contiguous request could not possibly be a 
-		// a big page, maybe we should just skip the whole power of two 
-		// thing and just try for whole allocation in one go. 
+
+		//FUTURE: If a non-contiguous request could not possibly be a
+		// a big page, maybe we should just skip the whole power of two
+		// thing and just try for whole allocation in one go.
 
 		pgsz = pgszlist;
 		for(	curr_size = (flags & PAA_FLAG_CONTIG) ? size_left : pa_largest_pow2(size_left) ;
 				curr_size >= QUANTUM_SIZE ; curr_size >>= 1) {
 
 			unsigned nquants = LEN_TO_NQUANTUM(curr_size);
-			
+
 			if(curr_size > size_left) continue; /* skip over sizes that aren't applicable */
 
 			if(kap->state & PAS_VPS_ALIGN) {
@@ -1000,7 +1000,7 @@ kerext_pa_alloc(void	*d) {
 				// should match the power of two size we're allocating to
 				// increase the probability of being able to use one.
 				// We can start looking in the pgszlist array from where
-				// we last left off, since curr_size will always be 
+				// we last left off, since curr_size will always be
 				// decreasing.
 				for( ;; ) {
 					align = *pgsz;
@@ -1016,7 +1016,7 @@ kerext_pa_alloc(void	*d) {
 				bhp = *rover++;
 				if(bhp == NULL) break;
 
-				/*  
+				/*
 					AM Note: Must use paddrs for comparison, since the actual location of Quantum descrptors
 					outside of the blk has no real location/meaning in reference to others from other
 					blks.  This is just for figuring out if the restriction is even part of the blk.
@@ -1032,33 +1032,33 @@ kerext_pa_alloc(void	*d) {
 				if(bhp->max_free_run < nquants) {
 					continue;
 				}
-		
-				found_run = NULL;	
+
+				found_run = NULL;
 				qblk_start = bhp->quanta;
 				qblk_end = &bhp->quanta[bhp->num_quanta-1];
-				mod_rq_start = rq_start;	
+				mod_rq_start = rq_start;
 				mod_rq_end = rq_end;
-		
-				/* restriction ends outside (or is NULL b/c its way out), 
+
+				/* restriction ends outside (or is NULL b/c its way out),
 				   take up end slack */
-				if((mod_rq_end==NULL) 
+				if((mod_rq_end==NULL)
 				  || (mod_rq_end > qblk_end)
 				  || (mod_rq_end->blk != qblk_end->blk)) {
 					mod_rq_end = qblk_end;
 				}
-				/* restriction starts outside the blk, but ends inside, 
+				/* restriction starts outside the blk, but ends inside,
 				   tighten the start */
 				if((mod_rq_start==NULL)
 				  || (mod_rq_start < qblk_start)
 				  || (mod_rq_start->blk != qblk_start->blk)) {
 					mod_rq_start = qblk_start;
-				} 
-				/* 
-					by elimination, if the restriction doesn't fall completely outside, 
+				}
+				/*
+					by elimination, if the restriction doesn't fall completely outside,
 					or somewhat inside (left or right), then we must be completly inside
 					or exactly the same size
 				*/
-		
+
 				if(!((mod_rq_start >= qblk_start) && (mod_rq_end <= qblk_end))) {
 					/*
 						we're allocating contig, and the restriction doesn't fit inside blk
@@ -1068,7 +1068,7 @@ kerext_pa_alloc(void	*d) {
 					continue; /* try next block */
 				}
 
-				/* 
+				/*
 					AM Note: Watch out, as carving runs out from the freelist cause the list
 					to be modified such that qp->u.flink.next will not be valid.  Also note
 					the freelist snaked in the quantums isn't going to always be in accending
@@ -1123,12 +1123,12 @@ kerext_pa_alloc(void	*d) {
 								// use the default one
 								current_q = PA_DEFAULT_QUEUE;
 							}
-							
+
 							qp = bhp->free[current_q].next;
 							free_list_end = FREE_LIST_END(bhp, current_q);
 							continue;
 						}
-						
+
 						// We've looked at all the runs, can update
 						// the max_free_run field to the true value.
 						// The stored value may not be correct
@@ -1144,15 +1144,15 @@ kerext_pa_alloc(void	*d) {
 
 					prev_qp = qp->u.flink.prev;
 					CRASHCHECK(qp->flags & PAQ_FLAG_INUSE);
-					/* check if we're interested in this run (ie. a piece of it could be within the restriction */	
+					/* check if we're interested in this run (ie. a piece of it could be within the restriction */
 					qp_end = qp + qp->run - 1;
 
-					if((qp->run < LEN_TO_NQUANTUM(curr_size)) || 
+					if((qp->run < LEN_TO_NQUANTUM(curr_size)) ||
 						((qp_end < mod_rq_start) || (qp > mod_rq_end)) ) {
 						qp=qp->u.flink.next;
 						continue; /* nope we're not */
 					}
-			
+
 					s = pa_quantum_to_paddr(qp);
 
 					/* we cut from the end of the run, or the end of the restriction within the run */
@@ -1178,7 +1178,7 @@ kerext_pa_alloc(void	*d) {
 					*/
 
 					coloured_c = x86_c = 0;
-					
+
 					/* Adjust down for alignment */
 					c = ROUNDDOWN(((e+(QUANTUM_SIZE-1))-(curr_size-1)), align);
 
@@ -1190,7 +1190,7 @@ kerext_pa_alloc(void	*d) {
 					}
 					c = coloured_c;
 
-					/* check if we're going to need to back up for the X64K case (grrr) */ 
+					/* check if we're going to need to back up for the X64K case (grrr) */
 					if((flags & PAA_FLAG_NOX64K) && ((c+curr_size) > PADDR_NEXT64K(c) )) {
 						/*  we crossed a 64k boundary, backup the amount we cross */
 						x86_c = c - ROUNDUP((c+curr_size - PADDR_NEXT64K(c)), align);
@@ -1199,7 +1199,7 @@ kerext_pa_alloc(void	*d) {
 						if((curr_size > ALIGN_64K) && (x86_c & (ALIGN_64K-1))) {
 							x86_c = PADDR_PREV64K(x86_c);
 						}
- 
+
 						if((x86_c > c) || (x86_c < s) || (x86_c < rp_start)) {
 							qp=qp->u.flink.next;
 							continue; /* doesn't fit with the NOX64K adj */
@@ -1254,7 +1254,7 @@ kerext_pa_alloc(void	*d) {
 
 					/* reload new qp to try from the same (or what was the same) */
 					qp = prev_qp->u.flink.next;
-				
+
 					/* link onto our found list */
 					found_run->u.flink.next = NULL;
 					found_run->u.flink.prev = NULL;
@@ -1281,8 +1281,8 @@ kerext_pa_alloc(void	*d) {
 						happen).  If that happened, we wouldn't kick out until the allocation
 						completed (or another preemption request booted us out).
 					*/
-						
-						
+
+
 					if(kap->state & PAS_PREEMPT) {
 						KerextUnlock();
 						if(KerextNeedPreempt()) { /* check for pending pre-emption */
@@ -1292,42 +1292,42 @@ kerext_pa_alloc(void	*d) {
 					/* === End of the locked area for carving, we can take preemption again === */
 
 					if(size_left < curr_size) break; /* try the next size */
-	
+
 					/*	Looks like we can still try to grab more likesized runs,
 						so we use the same current run, and try again
 					*/
-	
+
 				} /* for each free run */
 
 				if((found_run != NULL) && (size_left < curr_size)) {
 					break; /* cause us to re-evaluate our next size */
 				}
-					
+
 			} /* for each blkhead */
 
 			if(!valid_restrict || (flags & PAA_FLAG_CONTIG)) {
 				/*
-					it seems we've iterated through all the blks and	
+					it seems we've iterated through all the blks and
 					the restriction doesn't fit any of them - short circuit out
 					so we don't spin through all the sizes in the non-contig case
 				*/
 				break;
 			}
 
-	
+
 		} /* for each size */
 
 	} /* for each restriction */
 
 	// If we get to this point, we didn't manage to allocate everything
-	// we needed (size_left != 0). 
+	// we needed (size_left != 0).
 	CRASHCHECK(size_left == 0);
 
-fail:	
+fail:
 	KerextLock(); // make sure we're locked
 	kap->state |= PAS_EFREE; /* trigger a pa_free outside */
 
-done: 
+done:
 	/* still locked from last carve */
 	found_run = kap->alloc;
 	if(found_run != NULL) {
@@ -1366,7 +1366,7 @@ pa_alloc(paddr_t size, paddr_t align, unsigned colour, unsigned flags,
 		restriction = restriction->next;
 		if(restriction == NULL) return NULL;
 	}
-	
+
 	/* round up size to next quantum */
 	size = ROUNDUP(size, QUANTUM_SIZE);
 	if(size == QUANTUM_SIZE) flags |= PAA_FLAG_CONTIG; /* because it is contig by definition */
@@ -1378,13 +1378,13 @@ pa_alloc(paddr_t size, paddr_t align, unsigned colour, unsigned flags,
 		align = ROUNDUP(align, QUANTUM_SIZE);
 	} else if(mm_flags & MM_FLAG_VPS) {
 		switch(CPU_SYSTEM_HAVE_MULTIPLE_PAGESIZES) {
-		case VPS_HIGHUSAGE:	
-			// Only shared memory objects with SHMCTL_HIGHUSAGE 
-			// on will potentially use big pages (e.g. PPC 600 
+		case VPS_HIGHUSAGE:
+			// Only shared memory objects with SHMCTL_HIGHUSAGE
+			// on will potentially use big pages (e.g. PPC 600
 			// family, Freescale E500)
 			if(!(flags & PAA_FLAG_HIGHUSAGE)) break;
 			// Fall through
-		case VPS_AUTO:	
+		case VPS_AUTO:
 			// All mappings could potentially use big pages.
 			init_state = PAS_VPS_ALIGN;
 			break;
@@ -1414,8 +1414,8 @@ pa_alloc(paddr_t size, paddr_t align, unsigned colour, unsigned flags,
 		} else {
 			data.state |= PAS_PREEMPT;
 
-			/* 	loop (due to preemption) until we've completed 
-				the allocation or an error occurs 
+			/* 	loop (due to preemption) until we've completed
+				the allocation or an error occurs
 			*/
 			do {
 				__Ring0(kerext_pa_alloc, &data);
@@ -1460,15 +1460,15 @@ pa_alloc(paddr_t size, paddr_t align, unsigned colour, unsigned flags,
 	pa_size_info(&cur, NULL);
 	MEMCLASSMGR_EVENT(&sys_memclass->data, memclass_evttype_t_DELTA_TU_INCR, &cur, &prev);
 
-#ifdef TRACKPMEM	
+#ifdef TRACKPMEM
 	{
 		struct pa_quantum* p;
 		for(p=data.alloc; p ; p=p->u.flink.next) {
-			if(p == data.alloc) 
+			if(p == data.alloc)
 			kprintf("%s ALLOC 0x%x for %d [free=0x%x]\n", (p==data.alloc) ? "PMEM" : "    ", (uintptr_t)p, p->run, (unsigned)mem_free_size);
 		}
 	}
-#endif	
+#endif
 
 	return data.alloc;
 }
@@ -1511,7 +1511,7 @@ pa_alloc_given(struct pa_quantum *pq, unsigned num, unsigned *status_p) {
 		--start;
 	}
 	if(start->run < 0) start += start->run;
-	if(start->flags & PAQ_FLAG_INUSE) return ENXIO; 
+	if(start->flags & PAQ_FLAG_INUSE) return ENXIO;
 	next = start + start->run;
 	pq_end = pq + num;
 	if(pq_end > next) return ENXIO;
@@ -1559,8 +1559,8 @@ _pa_free(struct pa_quantum *paq, unsigned num, paddr_t resv_size) {
 	if(paq->blk == PAQ_BLK_FAKE) crash();
 	run_start = pa_getrunhead(paq);
 	if(!(run_start->flags & PAQ_FLAG_INUSE)) {
-		kprintf("paq %p paq_head %p, paq->run %d, runhead r/f/bl = %d/%08x/%d\n", 
-			paq, run_start, paq->run, 
+		kprintf("paq %p paq_head %p, paq->run %d, runhead r/f/bl = %d/%08x/%d\n",
+			paq, run_start, paq->run,
 			run_start->run, run_start->flags, run_start[run_start->run-1].run);
 		crash();
 	}
@@ -1580,9 +1580,9 @@ _pa_free(struct pa_quantum *paq, unsigned num, paddr_t resv_size) {
 
 	/* NYI - smarter locking */
 	KerextLock();
-#ifdef TRACKPMEM	
+#ifdef TRACKPMEM
 	kprintf("PMEM FREE  0x%x for %d [free=0x%x]\n", (uintptr_t)paq, num, (unsigned)mem_free_size);
-#endif	
+#endif
 
 	// Turn off (almost) all the flags
 	for(i = 0; i < num; ++i) {
@@ -1597,7 +1597,7 @@ _pa_free(struct pa_quantum *paq, unsigned num, paddr_t resv_size) {
 	// run_start is first of a series of quantums that's being freed
 	// paq_end is one after the last one being freed.
 	// (this queue might just be a part of a run)
-	
+
 	if(IS_HEADQ(paq->run)) {
 		// freeing from start of run
 		curr = paq;
@@ -1621,15 +1621,15 @@ _pa_free(struct pa_quantum *paq, unsigned num, paddr_t resv_size) {
 			}
 		}
 	} else {
-		// middle of object - not a very high runner case 
+		// middle of object - not a very high runner case
 //		kprintf("pa_free from middle!\n");
 		curr = pa_getrunhead(paq);
 		next = &curr[curr->run];
-		
+
 		//turn quanta in front into their own run
 		curr->run = paq - curr;
 		SET_TAIL(curr, TAIL_CALC(curr->run));
-		
+
 		//turn quanta on the end into their own run is done farther down
 	}
 
@@ -1638,13 +1638,13 @@ _pa_free(struct pa_quantum *paq, unsigned num, paddr_t resv_size) {
 		paq->run = num;
 		SET_TAIL(paq, TAIL_CALC(paq->run));
 	}
-	
+
 	// At this point, next points at start of next run
-	
+
 	if(paq_end < next) {
 		// The last quanta being freed is not the end of this run
 		// Turn the rest of the them into their own run
-		paq_end->run = next - paq_end; 
+		paq_end->run = next - paq_end;
 		paq_end->flags |= PAQ_FLAG_INUSE; /* NYI is this really needed?  The Qs are already 'in use' */
 		SET_TAIL(paq_end, TAIL_CALC(paq_end->run));
 #ifndef NDEBUG
@@ -1652,19 +1652,19 @@ _pa_free(struct pa_quantum *paq, unsigned num, paddr_t resv_size) {
 		crash();
 #endif
 
-	} else if((next < &bh->quanta[bh->num_quanta]) 
+	} else if((next < &bh->quanta[bh->num_quanta])
 		&& !(next->flags & PAQ_FLAG_INUSE)) {
-		// The next run is in bounds and free; coalesce with it 
+		// The next run is in bounds and free; coalesce with it
 		// first remove 'next' from free list
 		dequeue_run(bh, next);
-		
+
 		// Add the right hand side to the run
 		SET_TAIL(run_start, 0); /* remove old tail */
 		run_start->run += next->run;
 		next->run = NON_HEAD_QUANTUM;
-		SET_TAIL(run_start, TAIL_CALC(run_start->run)); 
+		SET_TAIL(run_start, TAIL_CALC(run_start->run));
 		coalesed = 1;
-	} 
+	}
 
 	// We've coalesced what we can; put whatever we have on the free list
 	enqueue_run(bh, run_start);
@@ -1686,10 +1686,10 @@ _pa_free(struct pa_quantum *paq, unsigned num, paddr_t resv_size) {
 	if(atomic_add_value(&bh->num_to_clean, num) == 0) {
 		//NYI: kick prio 1 thread to clean new pages
 	}
-#endif	
+#endif
 }
 
-void 
+void
 pa_free(struct pa_quantum *paq, unsigned num, paddr_t resv_size) {
 	memclass_sizeinfo_t  prev, cur;
 
@@ -1701,7 +1701,7 @@ pa_free(struct pa_quantum *paq, unsigned num, paddr_t resv_size) {
 
 /*
  * pa_free_paddr() used to be the following define in mm_internal.h
- * 
+ *
  * #define 			pa_free_paddr(p, s, r)	\
  *						pa_free(pa_paddr_to_quantum(p), LEN_TO_NQUANTUM(s), r)
  *
@@ -1724,13 +1724,13 @@ pa_free(struct pa_quantum *paq, unsigned num, paddr_t resv_size) {
  * independent physical allocations and that the timing was such that they
  * appear contiguous but are actually made up of 2 single block runs as described
  * above). The following function corrects that assumption.
- * 
+ *
  * Note that the _release_heap_pages() could have been modified so that it
  * umaps 1 4KB block at a time but that does not solve the problem in the general
  * case and is far less efficient since this code will release whatever the run
  * is
-*/ 
-void 
+*/
+void
 pa_free_paddr(paddr_t p, paddr_t s, paddr_t resv_size) {
 	int num = LEN_TO_NQUANTUM(s);
 
@@ -1738,7 +1738,7 @@ pa_free_paddr(paddr_t p, paddr_t s, paddr_t resv_size) {
 		struct pa_quantum *paq = pa_paddr_to_quantum(p);
 		unsigned int num_to_free;
 		paddr_t free_size;
-		
+
 		CRASHCHECK(paq == NULL);
 		num_to_free = min(paq->run, num);	// grab this before paq is gone
 		free_size = NQUANTUM_TO_LEN(num_to_free);
@@ -1752,7 +1752,7 @@ pa_free_paddr(paddr_t p, paddr_t s, paddr_t resv_size) {
 		CRASHCHECK((resv_size & (NQUANTUM_TO_LEN(1) - 1)) != 0);
 	}
 }
-						
+
 void
 pa_free_list(struct pa_quantum *qp, paddr_t resv_size) {
 	struct pa_quantum	*np;
@@ -1858,7 +1858,7 @@ pa_free_info(struct pa_restrict *restriction, paddr_t *totalp, paddr_t *contigp)
 				//RUSH3: If the list is in ascending order, kick out early
 				//RUSH3: if data.run_end < rp->start
 				start = max(data.run_start, rp->start);
-				end   = min(data.run_end, rp->end);		
+				end   = min(data.run_end, rp->end);
 				if(start < end) {
 					paddr_t		size;
 
@@ -1895,7 +1895,7 @@ pa_sysram_overlap(struct pa_restrict *res) {
 
 static int add_code;
 
-static int 
+static int
 pmem_add_cleanup(message_context_t *ctp, int code, unsigned flags, void *handle) {
 	 struct block_head	**bhp = ctp->msg->pulse.value.sival_ptr;
 	 struct block_head	**curr;
@@ -1910,7 +1910,7 @@ pmem_add_cleanup(message_context_t *ctp, int code, unsigned flags, void *handle)
 		 ++curr;
 	 } while(*curr != NULL);
 	 _sfree(bhp, size);
-	 
+
 	 // Find the timer and delete it....
 	 timerid = 0;
 	 for( ;; ) {
@@ -2022,7 +2022,7 @@ static INLINE void load_info(memclass_info_t *info)
 	info->size.unreserved.free = mem_free_size;
 	info->size.unreserved.used = sysram_attr.size		// total system ram
 								 - (info->size.reserved.used
-								 + (info->size.unreserved.free + info->size.reserved.free));	
+								 + (info->size.unreserved.free + info->size.reserved.free));
 }
 
 static INLINE void store_info(memclass_info_t *info)
@@ -2035,14 +2035,14 @@ static INLINE void store_info(memclass_info_t *info)
 
 /*
  * pa_reserve
- * 
+ *
  * Mark <size> bytes of memory as reserved and optionally make adjustments to
  * the amount of reserved and unreserved memory in use. For a reservation
  * increase (as handled by this routine), the adjustment will always be up
  * (ie. to transfer used unreserved to used reserved)
- * 
+ *
  * Returns: the amount of memory which was reserved
- * 
+ *
 */
 static memsize_t pa_reserve(memsize_t size, memsize_t adjust, int adjust_dir, memclass_info_t *info)
 {
@@ -2057,7 +2057,7 @@ static memsize_t pa_reserve(memsize_t size, memsize_t adjust, int adjust_dir, me
 
 /*
  * pa_unreserve
- * 
+ *
  * Mark <size> bytes of memory as no longer reserved and optionally make
  * adjustments to the amount of reserved and unreserved memory in use. For a
  * reservation decrease (as handled by this routine), the adjustment will depend
@@ -2067,9 +2067,9 @@ static memsize_t pa_reserve(memsize_t size, memsize_t adjust, int adjust_dir, me
  * Adjustment up occurs when a child partition reservation is being given up to
  * a parent which has discretionary allocations in the hieracrhy. In this case the
  * discretionary allocations must be re-accounted as reserved allocations
- * 
+ *
  * Returns: the amount of memory which was unreserved
- * 
+ *
  * FIX ME -lock
 */
 static memsize_t pa_unreserve(memsize_t size, memsize_t adjust, int adjust_dir, memclass_info_t *info)
@@ -2086,8 +2086,8 @@ static memsize_t pa_unreserve(memsize_t size, memsize_t adjust, int adjust_dir, 
 /*
  * pa_resv_adjust
  *
- * Transfer used memory between reserved and unreserved 
- * 
+ * Transfer used memory between reserved and unreserved
+ *
  * FIX ME -lock
 */
 static void pa_resv_adjust(memsize_t size, int sign, memclass_info_t *info)
@@ -2100,7 +2100,7 @@ static void pa_resv_adjust(memsize_t size, int sign, memclass_info_t *info)
 
 /*
  * pa_size_info
- * 
+ *
  * Get reserved/unreserved size information.
  * Returns NULL on error
 */
@@ -2131,7 +2131,7 @@ static memclass_sizeinfo_t *pa_size_info(memclass_sizeinfo_t *s, memclass_info_t
 //		crash();
 	}
 #endif	/* NDEBUG */
-	
+
 	*s = info->size;
 	return s;
 }
@@ -2140,7 +2140,7 @@ static memclass_sizeinfo_t *pa_size_info(memclass_sizeinfo_t *s, memclass_info_t
 /* FIX ME - remove debug code below */
 /*
  * pa_free_size
- * 
+ *
  * the amount of unallocated unreserved memory
 */
 memsize_t pa_free_size(void)
@@ -2154,7 +2154,7 @@ memsize_t pa_free_size(void)
 	for( ;; ) {
 		struct block_head	*bh = *bhp;
 		int i;
-		
+
 		if(bh == NULL) break;
 		for (i=0; i<PA_FREE_QUEUES; i++) {
 			for(curr = bh->free[i].next; curr != FREE_LIST_END(bh,i); curr = curr->u.flink.next) {
@@ -2176,7 +2176,7 @@ memsize_t pa_free_size(void)
 
 /*
  * pa_used_size
- * 
+ *
  * the amount of allocated memory (including reserved)
 */
 memsize_t pa_used_size(void)
@@ -2188,7 +2188,7 @@ memsize_t pa_used_size(void)
 
 /*
  * pa_reserved_size
- * 
+ *
  * the amount of unallocated reserved memory
 */
 memsize_t pa_reserved_size(void)
@@ -2200,7 +2200,7 @@ memsize_t pa_reserved_size(void)
 
 /*******************************************************************************
  * pa_memclass_init
- * 
+ *
  * Initialize the system ram memory class (the memory class handled by the
  * pa_xxx() routines)
  *
@@ -2208,14 +2208,14 @@ memsize_t pa_reserved_size(void)
  * and size specified by <sysmem_size>.
  * Other memory classes can be added to the system partition as they are
  * enumerated
- * 
+ *
  * Once the sysram memory class is created, a system partition will be created
  * depending on whether the memory partitioning module is installed or not
  *
 */
 void pa_memclass_init(memclass_attr_t *attr, const char *sysmem_name, allocator_accessfncs_t *f)
 {
-	/* can only be called once */	
+	/* can only be called once */
 	if (sys_memclass_id != NULL) crash();
 
 	sys_memclass_id = memclass_add(sysmem_name, attr, f);

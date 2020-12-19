@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -124,7 +124,7 @@ perm_map_init(void) {
 	//
 	{
 		struct system_private_entry *pp;
-		
+
 		pp = SYSPAGE_ENTRY(system_private);
 		user_cpupage = (uintptr_t)pp->user_cpupageptr;
 		cpupage_spacing = pp->cpupage_spacing >> (PG_PFNSHIFT-MIPS_TLB_LO_PFNSHIFT);
@@ -135,7 +135,7 @@ perm_map_init(void) {
 }
 
 
-uintptr_t	
+uintptr_t
 colour_init(uintptr_t free_base, unsigned colour_size) {
 	free_base = ROUNDUP(free_base, colour_size);
 	colour_base = free_base;
@@ -149,11 +149,11 @@ colour_reload() {
 	uint32_t	tlblo1;
 	uintptr_t	tlbhi;
 
-#if defined(VARIANT_r3k) 
+#if defined(VARIANT_r3k)
 	tlbhi = colour_va & ~(__PAGESIZE-1);
 	tlblo0 = colour_pte;
 	tlblo1 = 0;
-#else	
+#else
 	tlbhi = colour_va & ~(__PAGESIZE*2-1);
 	if(colour_va & __PAGESIZE) {
 		tlblo1 = colour_pte;
@@ -162,7 +162,7 @@ colour_reload() {
 		tlblo0 = colour_pte;
 		tlblo1 = 0;
 	}
-#endif	
+#endif
 
 	tlbhi |= (getcp0_tlb_hi() & TLB_HI_ASIDMASK);
 
@@ -218,7 +218,7 @@ colour_operation(void (*rtn)(void *), unsigned colour, paddr_t paddr) {
  * tlb_flush_va()
  *       Flush TLB associated with a particular virtual address range
  */
-static void 
+static void
 tlb_flush_va(ADDRESS *adp, uintptr_t va) {
 	unsigned	i;
 	unsigned	mycpu = RUNCPU;
@@ -236,7 +236,7 @@ tlb_flush_va(ADDRESS *adp, uintptr_t va) {
 }
 
 
-int 
+int
 cpu_vmm_fault(struct fault_info *info) {
 	uintptr_t		vaddr;
 	unsigned		sigcode;
@@ -260,19 +260,19 @@ cpu_vmm_fault(struct fault_info *info) {
 		return 1;
 	}
 
-#if 0 
+#if 0
 	//RUSH3: Re-enable when we support global mappings again.
 	//RUSH3: Should only do this if we aren't in Supervisor mode already
 #if !defined(VARIANT_r3k)
 	if((mem->flags & MAP_GLOBAL) && IS_GLOBAL_SUPV_ADDR(mem->addr, mem->size)) {
 		/*
-		 * This is a global mapping 
+		 * This is a global mapping
 		 */
 		info->cpu.regs[MIPS_CREG(MIPS_REG_SREG)] &= ~MIPS_SREG_KSU;
 		info->cpu.regs[MIPS_CREG(MIPS_REG_SREG)] |= MIPS_SREG_MODE_SUPER;
 		return 1;
 	}
-#endif		
+#endif
 #endif
 
 	prp = info->prp;
@@ -374,7 +374,7 @@ cpu_vmm_mcreate(PROCESS *prp) {
 	/*
 	 * allocate and zero the level1 page table.
 	 */
-	r = vmm_mmap(NULL, 0, __PAGESIZE*2, PROT_READ | PROT_WRITE, 
+	r = vmm_mmap(NULL, 0, __PAGESIZE*2, PROT_READ | PROT_WRITE,
 				MAP_PRIVATE|MAP_ANON|MAP_PHYS, 0, 0, __PAGESIZE, 0, NOFD, &vaddr, &size,
 				mempart_getid(prp, sys_memclass_id));
 	if(r != EOK) goto fail1;
@@ -417,7 +417,7 @@ fail3:
 
 fail2:
 	vmm_munmap(NULL, (uintptr_t)vaddr, __PAGESIZE*2, 0, mempart_getid(prp, sys_memclass_id));
-	
+
 fail1:
 	return r;
 }
@@ -527,11 +527,11 @@ cpu_pte_split(uintptr_t vaddr, struct mm_pte_manipulate *data) {
 					}
 					pgsz = pgsz2 / 2;
 					new_flags0 = ptep[0].lo & ~TLB_LO_PFNMASK;
-					paddr0 = PTE_PADDR(ptep[0].lo);	
+					paddr0 = PTE_PADDR(ptep[0].lo);
 					new_flags1 = ptep[1].lo & ~TLB_LO_PFNMASK;
-					paddr1 = PTE_PADDR(ptep[1].lo);	
+					paddr1 = PTE_PADDR(ptep[1].lo);
 //kprintf("splitting %x from size %x\n", check, pgsz);
-					// Temporarily unmap the pages that we're merging. 
+					// Temporarily unmap the pages that we're merging.
 					// That way nobody gets an inconsistent view of the set.
 					{
 						uintptr_t	um = check;
@@ -560,7 +560,7 @@ cpu_pte_split(uintptr_t vaddr, struct mm_pte_manipulate *data) {
 						}
 						check += __PAGESIZE*2;
 					}
-					// Since cpu_pte_split gets called multiple times, 
+					// Since cpu_pte_split gets called multiple times,
 					// this gives the upper level a chance to preempt
 					if((data->op & PTE_OP_PREEMPT) && KerextNeedPreempt()) {
 						return EINTR;
@@ -569,8 +569,8 @@ cpu_pte_split(uintptr_t vaddr, struct mm_pte_manipulate *data) {
 			}
 		}
 	}
-	if(!(data->op & PTE_OP_TEMP) 
-		&& (data->op & PTE_OP_UNMAP)	
+	if(!(data->op & PTE_OP_TEMP)
+		&& (data->op & PTE_OP_UNMAP)
 			&& (data->shmem_flags & SHMCTL_HIGHUSAGE)) {
 		// Have to go into the merge code to clean up any wired entries
 		data->op |= PTE_OP_FORCEMERGE;
@@ -600,7 +600,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 
 	// This code actually doesn't build as many big pages as it could.
 	// Because the MIPS TLB has one ENTRYHI controlling two ENTRYLO's,
-	// we require the vaddr alignment and contiguous length to be twice 
+	// we require the vaddr alignment and contiguous length to be twice
 	// the amount of the actual page size. In reality, we don't need
 	// the even/odd ENTRYLO's to be physically contiguous, nor have
 	// the same permissions. I can't see a nice way of figuring out
@@ -611,7 +611,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 	pgdir = data->adp->cpu.pgdir;
 	if(!(data->op & PTE_OP_MERGESTARTED)) {
 		// look at the PTE's in front of data->start and see if they're
-		// contiguous - we might be able to merge them in now. 
+		// contiguous - we might be able to merge them in now.
 		chk_vaddr = data->start;
 		// try merging to the start of the largest available pagesize in
 		// front of the manipulated region.
@@ -665,7 +665,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 			data->start += pgsz;
 			chk_ptep = ptep;
 		}
-		
+
 		if(chk_ptep != NULL) {
 			// We've got a run of PTE's with perms that are the same and the
 			// paddrs are contiguous. Start building up larger page sizes
@@ -679,7 +679,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 					pgsz = *pgszp++;
 					pgsz2 = pgsz * 2;
 					if(pgsz == 0) break;
-				} while((pgsz2 > ((run_last-run_start)+__PAGESIZE)) 
+				} while((pgsz2 > ((run_last-run_start)+__PAGESIZE))
 					  || ((run_start & (pgsz2-1)) != 0)
 					  || ((paddr & (pgsz-1)) != 0));
 
@@ -691,7 +691,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 					// merge the entries.
 
 //kprintf("merging %x to size %x\n", run_start, pgsz);
-					// Temporarily unmap and flush the TLB for the pages that 
+					// Temporarily unmap and flush the TLB for the pages that
 					// we're merging. That way nobody gets an inconsistent
 					// view of the set.
 					chk_vaddr = run_start;
@@ -739,7 +739,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 
 #define L1SIZE	(1 << PT_L1SHIFT)
 
-int 
+int
 cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 	pte_t				*ptep;
 	pte_t				*pde;
@@ -784,7 +784,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 		pde = adp->cpu.pgdir[l1idx];
 		if(pde == NULL) {
 			memsize_t  resv = 0;
-			
+
 			if(!(data->op & (PTE_OP_MAP|PTE_OP_PREALLOC|PTE_OP_BAD))) {
 				//Move vaddr to next page directory
 				data->start = (data->start + L1SIZE) & ~(L1SIZE-1);
@@ -799,7 +799,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 				return ENOMEM;
 			}
 			MEMCLASS_PID_USE(prp, mempart_get_classid(mpid), __PAGESIZE);
-			pq->flags |= PAQ_FLAG_SYSTEM;	
+			pq->flags |= PAQ_FLAG_SYSTEM;
 			pq->u.inuse.next = adp->cpu.l2_list;
 			adp->cpu.l2_list = pq;
 			pde = (void *)CPU_P2V(pa_quantum_to_paddr(pq));
@@ -820,9 +820,9 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 		orig_pte_lo = ptep->lo;
 		if(data->op & (PTE_OP_MAP|PTE_OP_BAD)) {
 			pte_lo = MAKE_PTE_PADDR(data->paddr) | bits;
-#if !defined(VARIANT_r3k)			
+#if !defined(VARIANT_r3k)
 			switch((unsigned)(data->paddr >> 37)) {
-			case 0x0:	
+			case 0x0:
 			case 0x7:
 				break;
 			default:
@@ -841,7 +841,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 				// think that the mapping actually worked.
 				return E2BIG;
 			}
-#endif		
+#endif
 #ifdef PTEHACK_SUPPORT
 			#error munging of pte should be happening here.
 #endif
@@ -867,7 +867,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 }
 
 
-unsigned 
+unsigned
 cpu_vmm_vaddrinfo(PROCESS *prp, uintptr_t vaddr, paddr_t *paddrp, size_t *lenp) {
 	struct r4k_tlb 	*perm;
 	uint32_t		pte_lo;
@@ -913,7 +913,7 @@ cpu_vmm_vaddrinfo(PROCESS *prp, uintptr_t vaddr, paddr_t *paddrp, size_t *lenp) 
 
 					pte_lo = adp->cpu.pgdir[L1IDX(check)][L2IDX(check)].lo;
 					pgsize *= 2;
-						
+
 				}
 				break;
 			}

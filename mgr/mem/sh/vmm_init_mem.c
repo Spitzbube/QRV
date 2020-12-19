@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -19,12 +19,12 @@
 
 
 
-/* 
+/*
  * TLB in32/out32 routines
- * 
+ *
  * The following routines are used to initialize the sh_tlb_in32 and
  * sh_tlb_out32 function pointers.
- * 
+ *
  * They differ in that for SH-4a architectures, we use the normal
  * in32/out32 routines.  For SH-4 architectures, the mov instruction
  * that does the in or out must run from the P2 area, and we must
@@ -32,19 +32,19 @@
  * the P2 area.  To satisfy these requirements for SH-4, we assign
  * the function pointer with the P2-equivalent of the function
  * address, and we add some NOPs before we return from the routine.
- * 
+ *
  * The SH-4a documentation also says that it is necessary to run out
  * of the P2 area, but consultation with Renesas confirms it isn't
  * necessary.  For speed, we will run the SH-4a routine out of the
  * P1 area so that it is cached.
  *
- * We could use the SH-4 routine for the SH-4a but run it out of 
- * the P1 area, but the extra NOPs will still slow the SH-4a down 
- * unnecessarily.  We'll keep the routines separate in order to 
- * improve the performance of the 4a at the expense of a few extra 
+ * We could use the SH-4 routine for the SH-4a but run it out of
+ * the P1 area, but the extra NOPs will still slow the SH-4a down
+ * unnecessarily.  We'll keep the routines separate in order to
+ * improve the performance of the 4a at the expense of a few extra
  * bytes of code.
  */
- 
+
 unsigned sh4a_tlb_in32(unsigned p) {
 	return in32(p);
 }
@@ -68,7 +68,7 @@ void sh4_tlb_out32(unsigned p, unsigned v) {
 		"	mov.l	%1,@%0;"
 		"	nop;nop;nop;nop;"   // h/w manual says we can't branch out of the p2 area for 8
 		"	nop;nop;nop;nop;"   // instructions after the mov (7751 h/w manual, section 3.7)
-		: 
+		:
 		: "r" (p), "r" (v)
 		: "pr", "memory"
 	);
@@ -105,9 +105,9 @@ void sh4_tlb_out32(unsigned p, unsigned v) {
  *					V
  *	 System				0x00000000
  *
- *	Note: P2 area is for inkernel i/o mapping only, since it does not 
+ *	Note: P2 area is for inkernel i/o mapping only, since it does not
  *  have any cache.
- *	
+ *
  */
 
 void
@@ -154,12 +154,12 @@ vmm_init_mem(int phase) {
 		if ( cache->flags & CACHE_FLAG_VIRT_IDX ) {
 			// The startup told us the cache attributes
 			colour_size = (((cache->line_size * cache->num_lines)/__PAGESIZE)/cache->ways);
-		} else {	
+		} else {
 			// startup says we can ignore colours
 			colour_size = 1;
 		}
 
-		// Initialize the tlb in32/out32 function pointers.	
+		// Initialize the tlb in32/out32 function pointers.
 		if ( __cpu_flags & SH_CPU_FLAG_P2_FOR_CACHE ) {
 			// assign the P2 addresses of the function pointers to ensure that
 			// the routines run out of the p2 area (see 7751 h/w manual, section 3.7)
@@ -169,7 +169,7 @@ vmm_init_mem(int phase) {
 			sh_tlb_in32 = sh4a_tlb_in32;
 			sh_tlb_out32 = sh4a_tlb_out32;
 		}
-  
+
 		pa_init(colour_size);
 
 		copy_vm_code();
@@ -197,11 +197,11 @@ vmm_init_mem(int phase) {
 			}
 			if ( __cpu_flags & SH_CPU_FLAG_USE_EMODE ) {
 				ccr |= SH_CCN_CCR_EMODE;
-			} 
+			}
 			_p2_out32(SH_MMR_CCN_CCR, ccr);
 		}
 
-		// ASID:  kernel 
+		// ASID:  kernel
 		out32(SH_MMR_CCN_PTEH, (in32(SH_MMR_CCN_PTEH) & ~SH_CCN_PTEH_ASID_M) | SH_CCN_PTEH_ASID(0));
 
 		// MMUCR
@@ -217,7 +217,7 @@ vmm_init_mem(int phase) {
 		out32(SH_MMR_CCN_PTEH, pteh);
 		out32(SH_MMR_CCN_PTEL, ptel | REAL_ADDR((paddr_t)SH_P1_TO_PHYS(_syspage_ptr)));
 		load_tlb();
-		
+
 		/*
 		 * Each CPU has its own cpupage
 		 */

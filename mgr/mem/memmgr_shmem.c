@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -64,7 +64,7 @@ shmem_create(OBJECT *obp, void *d) {
 }
 
 
-int 
+int
 shmem_done(OBJECT *obp) {
 	if(obp->mem.mm.refs != NULL) return 0;
 	(void)memmgr.resize(obp, 0);
@@ -78,7 +78,7 @@ shmem_name(OBJECT *obp, size_t max, char *dest) {
 }
 
 
-int 
+int
 shmem_devctl(resmgr_context_t *ctp, io_devctl_t *msg, OBJECT *obp) {
 	union {
 		unsigned				ptr;
@@ -92,7 +92,7 @@ shmem_devctl(resmgr_context_t *ctp, io_devctl_t *msg, OBJECT *obp) {
 	case DCMD_MEMMGR_MEMOBJ_OLD:
 		data->memobj.special = 0;
 		// fall through
-	case DCMD_MEMMGR_MEMOBJ: 
+	case DCMD_MEMMGR_MEMOBJ:
 		r = 0;
 		if((obp->mem.mm.flags & MM_SHMEM_SPECIAL) || (obp->mem.mm.pmem != NULL)) {
 			// The object is already "special"
@@ -100,7 +100,7 @@ shmem_devctl(resmgr_context_t *ctp, io_devctl_t *msg, OBJECT *obp) {
 		} else if(ConnectClientInfo(ctp->info.scoid, &info, 0) == -1) {
 			r = -1;
 		} else if(!proc_isaccess(0, &ctp->info) && ((data->memobj.flags & (SHMCTL_ANON|SHMCTL_PHYS)) == SHMCTL_PHYS)) {
-			// Should check permissions on /dev/mem, but this more 
+			// Should check permissions on /dev/mem, but this more
 			// restrictive "must be root" check will do for now..
 			r = -1;
 		} else {
@@ -114,7 +114,7 @@ shmem_devctl(resmgr_context_t *ctp, io_devctl_t *msg, OBJECT *obp) {
 					if((obp->mem.mm.flags & (SHMCTL_PHYS|SHMCTL_LAZY)) == (SHMCTL_PHYS|SHMCTL_LAZY)) {
 						// Asking for lazy allocation of physically contiguous
 						// memory doesn't make sense
-						r = -1; 
+						r = -1;
 					} else if(data->memobj.size > ~(size_t)0) {
 						r = -1;
 					} else if(memmgr.resize(obp, data->memobj.size) != EOK) {

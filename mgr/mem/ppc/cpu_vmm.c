@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -18,7 +18,7 @@
 #include "vmm.h"
 
 
-int 
+int
 cpu_vmm_fault(struct fault_info *info) {
 	PROCESS			*prp;
 	ADDRESS			*adp;
@@ -56,7 +56,7 @@ cpu_vmm_fault(struct fault_info *info) {
 	if((adp = prp->memory) == NULL || (root = adp->cpu.pgdir) == NULL) {
 		crash();
 	}
-#if defined(VARIANT_600)	
+#if defined(VARIANT_600)
 	if((flags & VM_FAULT_INSTR) && (flags & VM_FAULT_WIMG_ERR)) {
 		unsigned	sr;
 
@@ -68,7 +68,7 @@ cpu_vmm_fault(struct fault_info *info) {
 			return 1;
 		}
 	}
-#endif				
+#endif
 	pde = PDE_ADDR(root[L1PAGEIDX(vaddr)]);
 	if(pde != NULL) {
 		ptep = &pde[L2PAGEIDX(vaddr)];
@@ -111,7 +111,7 @@ cpu_vmm_fault(struct fault_info *info) {
 						// not the protection violation for write
 						xfer_rotor = (xfer_rotor + 1) & (NUM_XFER_MAPPINGS - 1);
 						if(xfer_lastaddr[xfer_rotor]) {
-							fam_pte_mapping_del(adp, xfer_lastaddr[xfer_rotor], 
+							fam_pte_mapping_del(adp, xfer_lastaddr[xfer_rotor],
 									__PAGESIZE);
 						}
 						if(xfer_rotor > 1) crash();
@@ -147,7 +147,7 @@ cpu_vmm_mcreate(PROCESS *prp) {
 	size_t				size;
 	part_id_t		mpid = mempart_getid(prp, sys_memclass_id);
 	adp = prp->memory;
-	if(vmm_mmap(NULL, 0, L1TBL_SIZE, PROT_READ | PROT_WRITE, 
+	if(vmm_mmap(NULL, 0, L1TBL_SIZE, PROT_READ | PROT_WRITE,
 				MAP_PRIVATE|MAP_ANON|MAP_PHYS, 0, 0, __PAGESIZE, 0, NOFD, &vaddr, &size, mpid) != EOK) {
 		return ENOMEM;
 	}
@@ -187,8 +187,8 @@ cpu_vmm_mdestroy(PROCESS *prp) {
 	fam_pte_asid_release(adp);
 }
 
-	
-unsigned 
+
+unsigned
 cpu_vmm_vaddrinfo(PROCESS *prp, uintptr_t vaddr, paddr_t *paddrp, size_t *lenp) {
 	pte_t			**pgdir;
 	pte_t			*pde;

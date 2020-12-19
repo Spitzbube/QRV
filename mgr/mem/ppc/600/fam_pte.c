@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -51,7 +51,7 @@ struct htentry {
 };
 
 /*
- * This is the hash table base and mask 
+ * This is the hash table base and mask
  */
 
 extern struct htentry 		*HashTable_base;
@@ -89,7 +89,7 @@ extern intrspin_t			ht_slock;
  * addr: bit 14 - 19 is effective
  * Note: for SMP, we must add tlbsync ops after to insure consistency
  */
- 
+
 
 static int
 fam_pte_flush_entry(unsigned vaddr) {
@@ -160,16 +160,16 @@ alloc_hashtable() {
 
 	// Calculate the size of the hash table needed; round up
 	// -> ram = total + total - 1
-	// The "| 0x10000" is because 0x10000 is the smallest legal size 
-	// for the hash table. By forcing that bit on we ensure that 
+	// The "| 0x10000" is because 0x10000 is the smallest legal size
+	// for the hash table. By forcing that bit on we ensure that
 	// the while loop below terminates at the minimum allowed size.
 	ram = ((total_ram >> 6) - 1) | 0x10000;
 	// find highest bit set
 	size = 0x80000000;
 	while((size & ram) == 0) {
 		size >>= 1;
-	} 
-	
+	}
+
 	for( ;; ) {
 		// Now alloc memory for page table. We need memory aligned
 		// on a 'size' boundary.
@@ -186,7 +186,7 @@ alloc_hashtable() {
 		}
 		size >>= 1;
 	}
-	
+
 	// The mask is that used to generate the hash function.
 	// HTABMASK = HashTable_mask >> 11
 	HashTable_mask = (size - 1) & 0x01ff0000;
@@ -214,7 +214,7 @@ fam_pte_init(int phase) {
 		//RUSH3: Do we need both (or either) of these reservations now?
 		idx0 = vector_add(&asid_vector, (void *)4, 0);
 		idx1 = vector_add(&asid_vector, (void *)8, 0);
-	
+
 		if((idx0 != 0) || (idx1 != 1)) {
 			crash();
 		}
@@ -234,7 +234,7 @@ fam_pte_init(int phase) {
 	 * have mappings for device memory required by the callouts.
 	 * If we're SMP and DBAT3 is already in use, we're in trouble.
 	 */
-		
+
 #ifdef VARIANT_smp
 
 	if(NUM_PROCESSORS > 1) {
@@ -246,7 +246,7 @@ fam_pte_init(int phase) {
 			kprintf("CPU page not 128kb aligned\n");
 			crash();
 		}
-	
+
 		i = 0;
 		for(;;) {
 			if(i >= num_bats) {
@@ -261,7 +261,7 @@ fam_pte_init(int phase) {
 			if(!(get_spr_indirect(PPC_SPR_DBAT0U + adj) & (PPC_BATU_VS|PPC_BATU_VP))) break;
 			++i;
 		}
-					
+
 		set_spr_indirect(PPC_SPR_IBAT0L+adj, PPC_BATL_BRPN(cpupage >> 17) | PPC_BATL_PP_R | PPC_BATL_M);
 		set_spr_indirect(PPC_SPR_IBAT0U+adj, PPC_BATU_BEPI(VM_CPUPAGE_ADDR >> 17) | PPC_BATU_BL_128K | PPC_BATU_VS | PPC_BATU_VP);
 		set_spr_indirect(PPC_SPR_DBAT0L+adj, PPC_BATL_BRPN(cpupage >> 17) | PPC_BATL_PP_R | PPC_BATL_M);
@@ -288,14 +288,14 @@ fam_pte_init(int phase) {
 
 
 /*
- * Adds an entry into the hash table 
+ * Adds an entry into the hash table
  *
  * One has to admire the complexity of this scheme :-)
  *
- * This is only called to put in message transfer mappings. Thus, 
+ * This is only called to put in message transfer mappings. Thus,
  * we only put in mappings in a primary slot (do not search the secondary
- * slots), and if we don't find a free slot, stick the mapping in the 
- * first primary slot. The hardware TLB refill will find it faster, 
+ * slots), and if we don't find a free slot, stick the mapping in the
+ * first primary slot. The hardware TLB refill will find it faster,
  * and we will also find it faster when removing the mapping.
  */
 
@@ -309,7 +309,7 @@ add_700ht_entry(uint32_t hi, uint32_t lo, uint32_t vaddr, uint32_t vsid) {
 	// Primary hash
 	hash = (vsid & 0x7ffff) ^ ((vaddr >> 12) & 0xffff);
 	hte = (struct htentry *) ((base & 0xf7000000) |
-		((base & 0x08ff0000) | 
+		((base & 0x08ff0000) |
 			(HashTable_mask & ((hash & 0x7fc00) << 6))) |
 				((hash & 0x3ff) << 6));
 
@@ -324,7 +324,7 @@ add_700ht_entry(uint32_t hi, uint32_t lo, uint32_t vaddr, uint32_t vsid) {
 	asm volatile( "eieio");
 	hte->hthi = hi;
 	ppc_sync();
-	
+
 	INTR_UNLOCK(&ht_slock);
 
 }
@@ -348,16 +348,16 @@ flush_700ht_entry(uint32_t vaddr, uint32_t vsid) {
 
 	if(__cpu_flags & PPC_CPU_HW_HT) {
 
-		hi = 	(PPC700_HENTRY_API(vaddr>>22)) 
-				| _BITFIELD32B(24, vsid) 
+		hi = 	(PPC700_HENTRY_API(vaddr>>22))
+				| _BITFIELD32B(24, vsid)
 				| PPC700_VSID_UP(vaddr)
 				| PPC700_HENTRY_VALID;
 		hash = (vsid & 0x7ffff) ^ ((vaddr >> 12) & 0xffff);
 		phte = hte = 	(struct htentry *) ((base & 0xf7000000) |
-					((base & 0x08ff0000) | 
+					((base & 0x08ff0000) |
 				(HashTable_mask & ((hash & 0x7fc00) << 6))) |
 				((hash & 0x3ff) << 6));
-				
+
 		for(i = 0;i < 8; i++, hte++){
 			if(hte->hthi == hi) {
 				found++;
@@ -365,7 +365,7 @@ flush_700ht_entry(uint32_t vaddr, uint32_t vsid) {
 			}
 		}
 
-		hte = (struct htentry *) ((uint32_t) 0xffffffc0 & (~(HashTable_mask | 0xffff) ^ ~(uint32_t) phte)); 
+		hte = (struct htentry *) ((uint32_t) 0xffffffc0 & (~(HashTable_mask | 0xffff) ^ ~(uint32_t) phte));
 
 		hi |= PPC700_HENTRY_SEC;
 		for(i = 0;i < 8; i++, hte++){
@@ -377,7 +377,7 @@ flush_700ht_entry(uint32_t vaddr, uint32_t vsid) {
 	}
 
 	// Have to arbitrate tlbsync's so that CPU's don't livelock
-	(void) fam_pte_flush_entry(vaddr);	
+	(void) fam_pte_flush_entry(vaddr);
 	return found;
 }
 
@@ -397,31 +397,31 @@ fam_pte_mapping_add(uintptr_t vaddr, paddr_t paddr, unsigned prot, unsigned flag
 	}
 
 	// Flags contains the faulting VSID in the lower 24 bits
-	hi = 	(PPC700_HENTRY_API(vaddr>>22)) 
-			| _BITFIELD32B(24, PPC700_VSID(flags)) 
+	hi = 	(PPC700_HENTRY_API(vaddr>>22))
+			| _BITFIELD32B(24, PPC700_VSID(flags))
 			| PPC700_VSID_UP(vaddr)
 			| PPC700_HENTRY_VALID;
 
 	lo = paddr & _BITFIELD32B(19, 0xfffff);
-	
+
 	if(prot & PROT_WRITE) {
 		lo |= PPC_TLBLO_PP_RW;
 	} else if(prot & (PROT_READ|PROT_EXEC)) {
 		lo |= PPC_TLBLO_PP_RO;
 	}
-	
+
 	if(prot & PROT_NOCACHE) {
 		lo |= PPC_TLBLO_G | PPC_TLBLO_I;
 	}
-	
+
 	lo |= PPC_TLBLO_C | PPC_TLBLO_R | PPC_TLBLO_M;
-	
+
    	//NYI: should respect VM_FAULT_GLOBAL flag (see book E implementation)
 	if(__cpu_flags & PPC_CPU_HW_HT) {
 		if(flush_700ht_entry(vaddr, PPC700_VSID(flags))) {
 			SMP_SYNC_TLBS();
 		}
-		add_700ht_entry(hi, lo, vaddr, PPC700_VSID(flags)); 
+		add_700ht_entry(hi, lo, vaddr, PPC700_VSID(flags));
 	} else {
 		// Must be a 603
 		add_tlb603(hi, lo, flags & VM_FAULT_INSTR, vaddr);
@@ -429,7 +429,7 @@ fam_pte_mapping_add(uintptr_t vaddr, paddr_t paddr, unsigned prot, unsigned flag
 }
 
 
-/* 
+/*
  * Rip out mappings for vsid, from vaddr to vaddr + size
  */
 
@@ -494,11 +494,11 @@ fam_pte_asid_alloc(ADDRESS *adp) {
 	// Mark user segment regions as having no execute permissions.
 	// There's code on the system page, so we have to mark that
 	// region as executable.
-	adp->cpu.nx_state = 
+	adp->cpu.nx_state =
 		(((1 << ((CPU_USER_VADDR_END >> 28)+1)) - 1)
 		& ~((1 << ((CPU_USER_VADDR_START >> 28))) - 1))
 		& ~(1 << (VM_SYSPAGE_ADDR >> 28));
-}	
+}
 
 
 void
@@ -566,7 +566,7 @@ clean_bats(struct mm_pte_manipulate *data, uintptr_t start, uintptr_t end) {
 	unsigned	up;
 	uintptr_t	bat_start;
 	uintptr_t	bat_end;
-	ADDRESS 	*adp; 
+	ADDRESS 	*adp;
 
 	adp = data->adp;
 	// Check for BATs in the range
@@ -576,14 +576,14 @@ clean_bats(struct mm_pte_manipulate *data, uintptr_t start, uintptr_t end) {
 		case ~0U:	// permanent entry
 		case 0:		// unused entry
 			break;
-		default:	
+		default:
 			bat_start = up & PPC_BATU_BEPI_MASK;
-			bat_end = bat_start 
+			bat_end = bat_start
 				+ ((((up & PPC_BATU_BL_MASK)|0x3)+1) << (17-2)) - 1;
 			if(!((bat_end < start) || (bat_start > end))) {
 				// bat is in the range
 
-				// Make sure the indicator bit is on so that the 
+				// Make sure the indicator bit is on so that the
 				// cpu_pte_merge code knows to try to re-establish
 				// the BAT (would be off for PTE_OP_UNMAP)
 				data->shmem_flags |= SHMCTL_HIGHUSAGE;
@@ -644,7 +644,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 	pgdir = adp->cpu.pgdir;
 	if(!(data->op & PTE_OP_MERGESTARTED)) {
 		// look at the PTE's in front of data->start and see if they're
-		// contiguous - we might be able to merge them in now. 
+		// contiguous - we might be able to merge them in now.
 		chk_vaddr = data->start;
 		// try merging to the start of the largest available pagesize in
 		// front of the manipulated region.
@@ -701,7 +701,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 				// Find a page size that works
 				do {
 					pgsz >>= 1;
-				} while((pgsz > ((run_last-run_start)+__PAGESIZE)) 
+				} while((pgsz > ((run_last-run_start)+__PAGESIZE))
 					  || ((run_start & (pgsz-1)) != 0)
 					  || ((paddr & (pgsz-1)) != 0));
 
@@ -804,7 +804,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 		if(data->prot & PROT_NOCACHE) {
 			bits |= PPC_TLBLO_I;
 			if(!(data->prot & PROT_EXEC)) {
-				// Nocache executable memory cannot be guarded 
+				// Nocache executable memory cannot be guarded
 				bits |= PPC_TLBLO_G;
 			}
 		}

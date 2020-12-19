@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -51,14 +51,14 @@ procmgr_context_alloc(unsigned msgsize, int state) {
 	}
 	if(lcp == NULL) {
 		pthread_mutex_unlock(&procmgr_context_alloc_mutex);
-		r = memmgr.mmap(NULL, 0, size, PROT_READ|PROT_WRITE|PROT_EXEC, 
+		r = memmgr.mmap(NULL, 0, size, PROT_READ|PROT_WRITE|PROT_EXEC,
 				MAP_PRIVATE|MAP_ANON, 0, 0, __PAGESIZE, 0, NOFD, (void *)&lcp, &size, mempart_getid(procnto_prp, sys_memclass_id));
-		if(r != EOK) {	
+		if(r != EOK) {
 			return NULL;
 		}
 		pthread_mutex_lock(&procmgr_context_alloc_mutex);
-	} 
-	++lcp_inuse;	
+	}
+	++lcp_inuse;
 	pthread_mutex_unlock(&procmgr_context_alloc_mutex);
 	// We don't have to zero the whole thing - just the first part.
 	memset(lcp, 0, sizeof(struct loader_context_prefix));
@@ -143,14 +143,14 @@ procmgr_context_purge(size_t amount) {
 	if(!KerextAmInKernel()) {
 		for( ;; ) {
 			pthread_mutex_lock(&procmgr_context_alloc_mutex);
-			// Always leave at least one entry on the list 
+			// Always leave at least one entry on the list
 			// to avoid deadlocks when terminating processes
 			if(lcp_num <= 1) break;
 			lcp = lcp_list;
 			lcp_list = lcp->next;
 			lcp_num--;
 			pthread_mutex_unlock(&procmgr_context_alloc_mutex);
-			(void)memmgr.munmap(NULL, (uintptr_t)lcp, lcp->size, 0, 
+			(void)memmgr.munmap(NULL, (uintptr_t)lcp, lcp->size, 0,
 								mempart_getid(procnto_prp, sys_memclass_id));
 			purged = 1;
 		}

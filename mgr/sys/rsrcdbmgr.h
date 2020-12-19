@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -52,17 +52,17 @@ at the head of all of the blocks.
 				uint64_t	start;	\
 				uint64_t	end;	\
 				nexttype	*next;	\
-				othertype	*othermember; 
+				othertype	*othermember;
 typedef struct _generic_block {
 	GENERIC_BLOCK(struct _generic_block, void, unused)
 } generic_block_t;
 
 /*
-These blocks are maintained in an active (ie free and used) 
-resource listing. We intermingle free blocks with used block 
-which are cross threaded back to the process they came from.  
+These blocks are maintained in an active (ie free and used)
+resource listing. We intermingle free blocks with used block
+which are cross threaded back to the process they came from.
 
-This way we can easily query the free list, the taken list, 
+This way we can easily query the free list, the taken list,
 a pid's list or the whole list of resources.  The downside
 is that the lookup is more complicated.
 */
@@ -82,9 +82,9 @@ point which makes priority queries easier.
 */
 typedef struct _rsrc_create {
 	GENERIC_BLOCK(struct _rsrc_create, struct _rsrc_node, node)
-	pid_t				creator;	
+	pid_t				creator;
 	uint16_t			flags;
-	uint16_t			zero;	
+	uint16_t			zero;
 } rsrc_create_t;
 
 /*
@@ -95,8 +95,8 @@ data allocated components point back to this node.
 typedef struct _rsrc_node {
 	struct _rsrc_node	*sibling;	//Root node uses this as a next pointer
 	struct _rsrc_node	*child;
-	uint8_t				 zero[2]; 
-	uint8_t				 priority; 
+	uint8_t				 zero[2];
+	uint8_t				 priority;
 	char				 name[1];	//Null terminated name allocated at creation
 } rsrc_node_t;
 
@@ -105,7 +105,7 @@ typedef struct _rsrc_root_node {
 	rsrc_create_t		*created;
 	union {
 		struct _rsrc_root_node	*_next;
-		rsrc_node_t				_head;		
+		rsrc_node_t				_head;
 	} data;
 #define next_root data._next
 #define head_node data._head
@@ -117,7 +117,7 @@ typedef struct _rsrc_root_node {
 #define MAX_NUM_MINORS		1024				/* 2^10 from sys/types.h */
 #define MAX_NUM_MAJORS		64					/* 2^6  from sys/types.h */
 
-/* 
+/*
  This structure contains the minor number mappings.
 */
 typedef struct _rsrc_devno {				/* Major # is index to an array of these */
@@ -129,7 +129,7 @@ typedef struct _rsrc_devno {				/* Major # is index to an array of these */
 } rsrc_devno_t;
 
 /*
- This is the per-process data structure which tracks resource usage. 
+ This is the per-process data structure which tracks resource usage.
  TERRIBLE NAME: Rename this later
 */
 typedef struct _rsrc_list_array {
@@ -142,7 +142,7 @@ typedef struct _rsrc_list_array {
  Function prototypes and globals for the resource tracking system.
 */
 extern pthread_mutex_t		g_rsrc_mutex;
-//extern rsrc_devno_array_t	g_rsrc_devno;	
+//extern rsrc_devno_array_t	g_rsrc_devno;
 extern rsrc_root_node_t		*g_rsrc_root;
 
 /* Prototypes */
@@ -155,9 +155,9 @@ int _rsrcdbmgr_remove(rsrc_request_t *rsrc, pid_t pid, int *priority);
 int _rsrcdbmgr_attach(rsrc_request_t *rsrc, pid_t pid);
 int _rsrcdbmgr_detach(rsrc_request_t *rsrc, pid_t pid);
 
-int rsrc_find_range(rsrc_root_node_t *root, uint64_t length, 
-					uint64_t *start, uint64_t *end, 
-					uint64_t alignment, pid_t owner, 
+int rsrc_find_range(rsrc_root_node_t *root, uint64_t length,
+					uint64_t *start, uint64_t *end,
+					uint64_t alignment, pid_t owner,
 					unsigned flags, int *priority);
 
 int _rsrcdbmgr_pid_clear(pid_t pid);
@@ -166,7 +166,7 @@ int _rsrcdbmgr_pid_mark(pid_t pid);
 #define FLAG_QUERY_NEXT     0x1
 #define FLAG_QUERY_COUNT    0x2
 #define FLAG_QUERY_CREATE   0x4
-int _rsrcdbmgr_query(const char *name, pid_t pid, unsigned flags, int start, 
+int _rsrcdbmgr_query(const char *name, pid_t pid, unsigned flags, int start,
 						rsrc_alloc_t *array, uint32_t nbytes, char **newname);
 
 void dump_list(char *name);

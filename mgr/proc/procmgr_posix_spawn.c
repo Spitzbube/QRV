@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -41,7 +41,7 @@ static void display_factlist(posix_spawn_file_actions_t *fact_p);
 
 /*******************************************************************************
  * procmgr_pspawn
- * 
+ *
  * Implement posix_spawn()
  * Currently we receive a _PROC_POSIX_SPAWN message and then reformat it into
  * a _PROC_SPAWN message with parse_pspawn_msg().
@@ -115,7 +115,7 @@ int procmgr_pspawn(resmgr_context_t *ctp, void *vmsg) {
 		 * behaviour, not vice versa). With the new message we have effectively
 		 * created the interface into procnto and now can focus on the internals,
 		 * the first step of which is to parse the 'proc_posixspawn_t' message into
-		 * a 'proc_spawn_t' message.  
+		 * a 'proc_spawn_t' message.
 		*/
 		if ((r = parse_pspawn_msg(ctp->info.pid, msg, &spawn_msg, &partlist)) == EOK)
 		{
@@ -126,7 +126,7 @@ int procmgr_pspawn(resmgr_context_t *ctp, void *vmsg) {
 									 + spawn_msg->i.nbytes;
 
 			r = EMSGSIZE;
-			/* make sure that the entire constructed 'proc_spawn_t' message can be processed */ 
+			/* make sure that the entire constructed 'proc_spawn_t' message can be processed */
 			if (spawn_msg_len <= ctp->msg_max_size)
 			{
  				resmgr_context_t ctp2 = *ctp;				// make a local copy of the ctp
@@ -138,7 +138,7 @@ int procmgr_pspawn(resmgr_context_t *ctp, void *vmsg) {
 
 				CRASHCHECK(ctp2.info.srcmsglen > ctp2.info.msglen);
 				CRASHCHECK(ctp2.info.msglen > ctp2.msg_max_size);
-				
+
 				r = procmgr_spawn(&ctp2, spawn_msg, &partlist);
 			}
 		}
@@ -161,7 +161,7 @@ int procmgr_pspawn(resmgr_context_t *ctp, void *vmsg) {
 /*******************************************************************************
  * inherit_mempart_list
  * inherit_schedpart_list
- * 
+ *
  * build the part_list from the inheritable partitions of the parent idenitfied
  * by <ppid>. This routine is also called from procmgr_spawn()/procmgr_fork()
  *
@@ -172,9 +172,9 @@ int procmgr_pspawn(resmgr_context_t *ctp, void *vmsg) {
  * If <*part_list> == NULL, then the necessary memory will be allocated and
  * the caller is responsible for releasing it unless an error is returned in
  * which case no memory will be allocated
- * 
+ *
  * Note that it is assumed that <prp> is safe to use (locked)
- * 
+ *
 */
 int inherit_mempart_list(PROCESS *prp, part_list_t **part_list)
 {
@@ -188,9 +188,9 @@ int inherit_schedpart_list(PROCESS *prp, part_list_t **part_list)
 
 /*
  * =============================================================================
- * 
+ *
  * 							Internal Support Routines
- * 
+ *
  * =============================================================================
 */
 
@@ -215,7 +215,7 @@ int inherit_schedpart_list(PROCESS *prp, part_list_t **part_list)
  * 4 byte aligned (the only other option), then we use a key mask of 3 and
  * encode the mask into the KEY_MASK bits of the '_posix_spawnattr_t' or
  * '_posix_spawn_file_actions_t' objects
- * 
+ *
  * The alternative to this solution is to
  * 		- weaken KEY_MASK by setting is to 3 requiring only 4 byte alignment
  * 		  which increases the chance of bogus pointer detection for user programs
@@ -231,7 +231,7 @@ static unsigned int key_mask_create(void *_v)
 	unsigned int v = (unsigned int)_v;
 	unsigned int align = ALIGNOF(v);
 	CRASHCHECK((align != 0) && (align != 4));
-	return (align == 0) ? KEY_MASK : align - 1; 
+	return (align == 0) ? KEY_MASK : align - 1;
 }
 
 static unsigned int obj_key_adj(void *_a, void *_b)
@@ -240,14 +240,14 @@ static unsigned int obj_key_adj(void *_a, void *_b)
 	unsigned int b = (unsigned int)_b;
 	unsigned int align = ALIGNOF(b);
 	CRASHCHECK((align != 0) && (align != 4));
-	return a + ((align == 0) ? 0 : align - 1); 
+	return a + ((align == 0) ? 0 : align - 1);
 }
 
 /*******************************************************************************
  * parse_pspawn_msg (temporary)
- * 
+ *
  * Create a proc_spawn_t message from a proc_posixspawn_t message
- * 
+ *
  * The memory for the new proc_spawn_t message and the part_list is allocated.
  * It is the responsibility of the caller to free it
 */
@@ -374,19 +374,19 @@ static int parse_pspawn_msg(pid_t ppid, proc_posixspawn_t *msg, proc_spawn_t **s
 
 /*******************************************************************************
  * inherit_mempart_list
- * 
+ *
  * build the mempart_list from the inheritable partitions of the parent idenitfied
  * by <ppid>. This routine is also called from procmgr_spawn()
  *
  * The inheritable list consists of partitions associated with <prp> which satisfy
  * the mempart_flags_t_GETLIST_INHERITABLE and mempart_flags_t_GETLIST_CREDENTIALS
  * flags to MEMPART_GETLIST
- * 
+ *
  * <If behaviour> == 0, then default inherit behaviour is selected.
  * If <behaviour> == 1, then the alternate inherit behaviour is selected
  * What default and alternate actually do depends on the compilation defines
  * MEMPART_DFLT_INHERIT_BEHVR_1 and MEMPART_DFLT_INHERIT_BEHVR_2
- * 
+ *
  * If <*mempart_list> is != NULL, it assumed that the caller has allocated
  * enough memory to hold the number of part_list_t entries to be inherited
  * and <mempart_list>->num_entries field should be set to indicate what the
@@ -394,9 +394,9 @@ static int parse_pspawn_msg(pid_t ppid, proc_posixspawn_t *msg, proc_spawn_t **s
  * If <*mempart_list> == NULL, then the necessary memory will be allocated and
  * the caller is responsible for releasing it unless an error is returned in
  * which case no memory will be allocated
- * 
+ *
  * Note that it is assumed that <prp> is safe to use (locked)
- * 
+ *
 */
 static int _inherit_mempart_list(PROCESS *prp, part_list_t **part_list, unsigned behaviour)
 {
@@ -421,7 +421,7 @@ static int _inherit_mempart_list(PROCESS *prp, part_list_t **part_list, unsigned
 			mempart_flags_t getlist_flags = mempart_flags_t_GETLIST_INHERITABLE | mempart_flags_t_GETLIST_CREDENTIALS;
 			struct _cred_info cred;
 			int n;
-		
+
 			CRASHCHECK(prp->cred == NULL);
 			cred = prp->cred->info;
 
@@ -451,7 +451,7 @@ static int _inherit_mempart_list(PROCESS *prp, part_list_t **part_list, unsigned
 			/* only the sysram partition of the parent will be inherited */
 			mempart_node_t *mp_node = MEMPART_NODEGET(prp, sys_memclass_id);
 			CRASHCHECK(mp_node == NULL);		// have to have a sysram partition
-			
+
 			/* make sure the parents sysram partition is inheritable */
 			if (mp_node->flags & part_flags_NO_INHERIT) {
 				return ENOMEM;	// ENORSRC
@@ -466,7 +466,7 @@ static int _inherit_mempart_list(PROCESS *prp, part_list_t **part_list, unsigned
 			(*part_list)->num_entries = 1;
 			(*part_list)->i[0].id = MEMPART_T_TO_ID(mp_node->mempart);
 			(*part_list)->i[0].flags = mp_node->flags;
-			
+
 			return EOK;
 		}
 		default:
@@ -476,19 +476,19 @@ static int _inherit_mempart_list(PROCESS *prp, part_list_t **part_list, unsigned
 
 /*******************************************************************************
  * _inherit_schedpart_list
- * 
+ *
  * build the part_list from the inheritable partitions of the parent idenitfied
  * by <ppid>. This routine is also called from procmgr_spawn()
  *
  * The inheritable list consists of partitions associated with <prp> which satisfy
  * the schedpart_flags_t_GETLIST_INHERITABLE and schedpart_flags_t_GETLIST_CREDENTIALS
  * flags to SCHEDPART_GETLIST
- * 
+ *
  * <If behaviour> == 0, then default inherit behaviour is selected.
  * If <behaviour> == 1, then the alternate inherit behaviour is selected
  * There is currently no defined alternate behaviour for scheduler partitions
  * and so this parameter is ignored
- * 
+ *
  * If <*part_list> is != NULL, it assumed that the caller has allocated
  * enough memory to hold the number of part_list_t entries to be inherited
  * and <part_list>->num_entries field should be set to indicate what the
@@ -496,9 +496,9 @@ static int _inherit_mempart_list(PROCESS *prp, part_list_t **part_list, unsigned
  * If <*part_list> == NULL, then the necessary memory will be allocated and
  * the caller is responsible for releasing it unless an error is returned in
  * which case no memory will be allocated
- * 
+ *
  * Note that it is assumed that <prp> is safe to use (locked)
- * 
+ *
 */
 static int _inherit_schedpart_list(PROCESS *prp, part_list_t **part_list, unsigned behaviour)
 {
@@ -513,7 +513,7 @@ static int _inherit_schedpart_list(PROCESS *prp, part_list_t **part_list, unsign
 			schedpart_flags_t getlist_flags = schedpart_flags_t_GETLIST_INHERITABLE | schedpart_flags_t_GETLIST_CREDENTIALS;
 			struct _cred_info cred;
 			int n;
-		
+
 			CRASHCHECK(prp->cred == NULL);
 			cred = prp->cred->info;
 
@@ -546,7 +546,7 @@ static int _inherit_schedpart_list(PROCESS *prp, part_list_t **part_list, unsign
 
 /*******************************************************************************
  * fill_mempart_list
- * 
+ *
  * This function only does something if the POSIX_SPAWN_SETMPART flags is set
  *
  * As per design doc, only 3 conditions to consider
@@ -573,7 +573,7 @@ static int fill_mempart_list(pid_t ppid, part_list_t **mempart_list, posix_spawn
 
 	r = posix_spawnattr_getxflags(attrp, &flags);
 	CRASHCHECK(r != EOK);
-	if (r != EOK) return r;	
+	if (r != EOK) return r;
 
 	/* 3rd case, POSIX_SPAWN_SETMPART is not set so just return */
 	if ((flags & POSIX_SPAWN_SETMPART) == 0) {
@@ -584,7 +584,7 @@ static int fill_mempart_list(pid_t ppid, part_list_t **mempart_list, posix_spawn
 	if ((r = get_mempartids(attrp, &num_entries, &mplist)) != EOK) {
 		return r;
 	}
-	
+
 	if (num_entries == 0) {
 		/* 2nd case, no partitions provided, select alternate inheritance behaviour */
 		PROCESS *pprp = proc_lock_pid(ppid);
@@ -667,7 +667,7 @@ static int fill_mempart_list(pid_t ppid, part_list_t **mempart_list, posix_spawn
 
 /*******************************************************************************
  * fill_schedpart_list
- * 
+ *
  * This function only does something if the POSIX_SPAWN_SETSPART flags is set
  *
  * As per design doc, only 2 conditions to consider
@@ -693,7 +693,7 @@ static int fill_schedpart_list(pid_t ppid, part_list_t **schedpart_list, posix_s
 
 	r = posix_spawnattr_getxflags(attrp, &flags);
 	CRASHCHECK(r != EOK);
-	if (r != EOK) return r;	
+	if (r != EOK) return r;
 
 	/* 3rd case, POSIX_SPAWN_SETSPART is not set so just return */
 	if ((flags & POSIX_SPAWN_SETSPART) == 0) {
@@ -743,7 +743,7 @@ static int fill_schedpart_list(pid_t ppid, part_list_t **schedpart_list, posix_s
 		*schedpart_list = splist;
 		return EOK;
 	}
-	
+
 }
 
 /*******************************************************************************
@@ -793,13 +793,13 @@ static int fill_struct_inheritance(struct inheritance *inherit, posix_spawnattr_
 
 /*******************************************************************************
  * calc_fdcnt
- * 
+ *
  * Figure out from the file actions object, how many entries are required in the
  * 'fdmap' for the _proc_spawn message. It is not equivalent to the number of
  * file actions but rather to the highest index file action fd being manipulated.
  * This is one of the reasons that we need to eliminate the fdmap and have spawn()
  * use posix_spawn().
- * 
+ *
  * Returns: EOK on success, otherwise an errno and *fdcnt should be considered
  * 			garbage.
 */
@@ -846,13 +846,13 @@ static int calc_fdcnt(posix_spawn_file_actions_t *factp, unsigned *fdcnt)
 
 /*******************************************************************************
  * add_fdmap
- * 
+ *
  * FIX ME - we are only providing equivalent spawn() behaviour for now which
  * means we handle close() and dup() actions, not open. Note also that the
  * existing close() functionality provided by spawn() is not really a close(),
  * it's "don't open" which is not the same, hence why open actions are currently
  * not supported.
- * 
+ *
  * Returns: EOK on success, otherwise errno and the fdmap should be considered
  * 			garbage
 */
@@ -900,13 +900,13 @@ static int add_fdmap(posix_spawn_file_actions_t *factp, int32_t fdmap[], unsigne
 /*******************************************************************************
  * get_mempartids
  * get_schedpartids
- * 
+ *
  * A 'part_list_t' of the indicated type is allocated and filled in and
  * num_entries is set to the number of entries of the indicated type
- * 
+ *
  * Returns: EOK on success. If <*num> is > 0, the caller is responsible for
  * 			deallocating the 'memory for the 'part_list_t'
- * 			otherwise return an errno and no memory is allocated 
+ * 			otherwise return an errno and no memory is allocated
 */
 static int getpartids(const posix_spawnattr_t *_Restrict attrp, unsigned *num, part_list_t **partlist, parttype_t type)
 {
@@ -922,7 +922,7 @@ static int getpartids(const posix_spawnattr_t *_Restrict attrp, unsigned *num, p
 		return EOK;
 	}
 	num_ids = -num_ids;
-	
+
 	if ((*partlist = calloc(1, PART_LIST_T_SIZE(num_ids))) == NULL) return ENOMEM;
 	if ((all_ids = alloca(num_ids * sizeof(*all_ids))) == NULL) return ENOMEM;
 
@@ -930,7 +930,7 @@ static int getpartids(const posix_spawnattr_t *_Restrict attrp, unsigned *num, p
 		free(partlist);
 		return r;
 	}
-	
+
 	/* filter out types not requested */
 	for (i=idx=0; i<num_ids; i++) {
 		if (PART_TYPE(all_ids[i].id) == type) {
@@ -970,7 +970,7 @@ static void display_factlist(posix_spawn_file_actions_t *fact_p)
 		else
 		{
 			unsigned i;
-			kprintf("actions list for actions object %p\n", fact_p); 
+			kprintf("actions list for actions object %p\n", fact_p);
 			for (i=0; i<num_fact; i++)
 			{
 				kprintf("\t[%u] type = %u, ", i, fact_list[i].type);

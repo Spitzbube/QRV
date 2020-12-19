@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -40,7 +40,7 @@ struct htentry {
 };
 
 /*
- * This is the hash table base and mask 
+ * This is the hash table base and mask
  */
 
 extern struct htentry 		*HashTable_base;
@@ -112,10 +112,10 @@ fam_pte_flush_entry(unsigned vaddr) {
 		:
 		: "b" (vaddr), "b" (locked), "b" (tmp), "b" (msr)
 	);
-#else 
+#else
 	ppc_tlbie(vaddr);
 	ppc_eieio();
-#endif	
+#endif
 }
 
 
@@ -147,7 +147,7 @@ fam_pte_init(int phase) {
 		if(get_spr(PPC603_SPR_HID0) & PPC603_SPR_HID0_DCE) {
 			zp_flags &= ~ZP_CACHE_OFF;
 		}
-#endif		
+#endif
 
 		sdr1 = get_spr(PPC_SPR_SDR1);
 		HashTable_base = (void *)(sdr1 & ~((1 << 18) - 1));
@@ -161,14 +161,14 @@ fam_pte_init(int phase) {
 
 
 /*
- * Adds an entry into the hash table 
+ * Adds an entry into the hash table
  *
  * One has to admire the complexity of this scheme :-)
  *
- * This is only called to put in message transfer mappings. Thus, 
+ * This is only called to put in message transfer mappings. Thus,
  * we only put in mappings in a primary slot (do not search the secondary
- * slots), and if we don't find a free slot, stick the mapping in the 
- * first primary slot. The hardware TLB refill will find it faster, 
+ * slots), and if we don't find a free slot, stick the mapping in the
+ * first primary slot. The hardware TLB refill will find it faster,
  * and we will also find it faster when removing the mapping.
  */
 
@@ -200,7 +200,7 @@ add_900ht_entry(uint32_t vaddr, uint32_t vsid, uint64_t lo) {
 	ppc_eieio();
 	hte->hthi = hi;
 	ppc_ptesync();
-	
+
 	INTR_UNLOCK(&ht_slock);
 
 }
@@ -228,8 +228,8 @@ flush_900ht_entry(uintptr_t vaddr, unsigned base_vsid) {
 		vsid = VSID_MAKE_REAL(base_vsid, vaddr) + idx;
 		hash = PPC64_PRIMARY_HASH(vsid, vaddr);
 		phte = PPC64_CALC_PTEG(hash);
-		shte = (struct htentry *) ((uint32_t) 0xffffff80 & (~(HashTable_mask | 0x3ffff) ^ ~(uintptr_t) phte)); 
-				
+		shte = (struct htentry *) ((uint32_t) 0xffffff80 & (~(HashTable_mask | 0x3ffff) ^ ~(uintptr_t) phte));
+
 		hi = (PPC64_HENTRY_AVPN(vsid, vaddr) << PPC64_TLBHI_AVPN_SHIFT) | PPC64_TLBHI_V;
 
 		for(i = 0; i < 8; i++, phte++, shte++){
@@ -246,7 +246,7 @@ flush_900ht_entry(uintptr_t vaddr, unsigned base_vsid) {
 	ppc_ptesync();
 
 	// Have to arbitrate tlbsync's so that CPU's don't livelock
-	fam_pte_flush_entry(vaddr);	
+	fam_pte_flush_entry(vaddr);
 	ppc_ptesync();
 	return found;
 }
@@ -270,27 +270,27 @@ fam_pte_mapping_add(uintptr_t vaddr, paddr_t paddr, unsigned prot, unsigned flag
 	base_vsid = flags & 0xffffff;
 
 	lo = paddr & ~(paddr_t)(__PAGESIZE-1);
-	
+
 	if(prot & PROT_WRITE) {
 		lo |= PPC_TLBLO_PP_RW;
 	} else if(prot & (PROT_READ|PROT_EXEC)) {
 		lo |= PPC_TLBLO_PP_RO;
 	}
-	
+
 	if(prot & PROT_NOCACHE) {
 		lo |= PPC_TLBLO_G | PPC_TLBLO_I;
 	}
-	
+
 	lo |= PPC_TLBLO_C | PPC_TLBLO_R | PPC_TLBLO_M;
-	
+
 	if(flush_900ht_entry(vaddr, base_vsid)) {
 		SMP_SYNC_TLBS();
 	}
-	add_900ht_entry(vaddr, base_vsid, lo); 
+	add_900ht_entry(vaddr, base_vsid, lo);
 }
 
 
-/* 
+/*
  * Rip out mappings for vsid, from vaddr to vaddr + size
  */
 
@@ -402,7 +402,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 		if(data->prot & PROT_NOCACHE) {
 			bits |= PPC_TLBLO_I;
 			if(!(data->prot & PROT_EXEC)) {
-				// Nocache executable memory cannot be guarded 
+				// Nocache executable memory cannot be guarded
 				bits |= PPC_TLBLO_G;
 			}
 		}

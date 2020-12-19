@@ -1,27 +1,27 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmmgr_devctl
- * 
+ *
  * Provide resource manager devctl() processing for the memory partitioning
  * module
- * 
+ *
 */
 
 #include "apmmgr.h"
@@ -56,7 +56,7 @@ int apmmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 /* FIX ME - appears not to be being obeyed .. should it ?
 			if ((ocb->ioflag & _IO_FLAG_WR) == 0)
 				return EBADF;
-*/			
+*/
 			if (msg->i.nbytes < sizeof(ocb->ioflag)) {
 				return EINVAL;
 			}
@@ -155,7 +155,7 @@ int apmmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 				return EINVAL;
 			}
 #endif	/* _MEMSIZE_and_memsize_are_different_ */
-			
+
 			/*
 			 * Unless we are changing everything, get the current configuration
 			 * so that the changes can be merged
@@ -175,12 +175,12 @@ int apmmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 				if (!(cfg->valid & cfgchg_t_ALLOC_POLICY)) {
 					cfg->val.policy.alloc = cur_cfg->policy.alloc;
 				}
-				
+
 				/* if not changing the terminal partition policy, use the current */
 				if (!(cfg->valid & cfgchg_t_LOCK_POLICY)) {
 					cfg->val.policy.config_lock = GET_MPART_POLICY_CFG_LOCK(cur_cfg);
 				}
-				
+
 				/* if not changing the terminal partition policy, use the current */
 				if (!(cfg->valid & cfgchg_t_TERMINAL_POLICY)) {
 					cfg->val.policy.terminal = GET_MPART_POLICY_TERMINAL(cur_cfg);
@@ -190,7 +190,7 @@ int apmmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 				if (!(cfg->valid & cfgchg_t_PERMANENT_POLICY)) {
 					cfg->val.policy.permanent = GET_MPART_POLICY_PERMANENT(cur_cfg);
 				}
-				
+
 				/* if not changing the maximum size attribute, use the current */
 				if (!(cfg->valid & cfgchg_t_ATTR_MAX)) {
 					cfg->val.attr.size.max = cur_cfg->attr.size.max;
@@ -233,7 +233,7 @@ int apmmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 				PART_ATTR_UNLOCK(mp);
 				return r;
 			}
-			
+
 			PART_ATTR_UNLOCK(mp);
 			break;
 		}
@@ -263,7 +263,7 @@ int apmmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 				break;
 			}
     	}
-    	
+
 #ifdef USE_PROC_OBJ_LISTS
     	case PART_GET_ASSOC_PLIST:
 		{
@@ -351,7 +351,7 @@ int apmmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 			} else if ((memclass->data.allocator.size_info == NULL) ||
 					 (memclass->data.allocator.size_info(&info_out->size, &memclass->data.info) == NULL)) {
 				r = EIO;
-			} else {		
+			} else {
 				/* fill in remainder of the memclass_info_t */
 				info_out->id = memclass->data.info.id;
 				info_out->attr = memclass->data.info.attr;
@@ -376,7 +376,7 @@ int apmmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 			evtclass_t evtclass;
 			evttype_t evttype_first;
 			evttype_t evttype_last;
-			int (*evtreg_func)(struct evt_info_s *evt, evtdest_t *evtdest, void *ocb);	
+			int (*evtreg_func)(struct evt_info_s *evt, evtdest_t *evtdest, void *ocb);
 
 			CRASHCHECK(mp == NULL);
 			CRASHCHECK(er == NULL);
@@ -467,7 +467,7 @@ int apmmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 				*((_MEMSIZE_T_ *)data) = mpart->info.hi_size;
 				mpart->info.hi_size = 0;
 				nbytes = sizeof(_MEMSIZE_T_);
-			
+
 				PART_ATTR_UNLOCK(mp);
 			}
 			break;

@@ -1,24 +1,24 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmgr_init
- * 
+ *
  * NOTE:
  * The apmgr_xxx() code provides management of the "/proc/<pid>/partition/"
  * namespace. This could be implemented as /pathmgr/ *.c code (similar to
@@ -34,10 +34,10 @@
  * linkage can be established. The first approach allows 'apmgr' to call
  * directly into 'apmmgr' and 'apsmgr' routines (since both will be
  * loaded in the same module). The first approach will be coded with macros
- * for the functions called so that the second approach is easily implemented. 
- * 
+ * for the functions called so that the second approach is easily implemented.
+ *
  * Provide resource manager initialization for the partitioning module
- * 
+ *
 */
 
 #include "apmgr.h"
@@ -49,7 +49,7 @@ static void apmgr_init(const char * const path);
 
 /*******************************************************************************
  * initialize_apmgr
- * 
+ *
  * Called from kmain.c during module initialization. This function will
  * initialize the partitioning resource manager
 */
@@ -75,7 +75,7 @@ void initialize_apmgr(unsigned version, unsigned pass)
 			apmgr_init("/proc");
 
 			kprintf("partition resource manager module loaded\n");
-			
+
 			break;
 		}
 		default:

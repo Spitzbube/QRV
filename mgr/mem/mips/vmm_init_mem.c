@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -18,7 +18,7 @@
 #include "vmm.h"
 
 
-void 
+void
 vmm_init_mem(int phase) {
 	unsigned    			    i;
 	unsigned					num_colours;
@@ -86,7 +86,7 @@ vmm_init_mem(int phase) {
 
 #if defined(VARIANT_r3k)
 	num_colours = 1;
-#else 
+#else
 	// Remember what the bits are on in the page mask register for a 4K page.
 	pgmask_4k = getcp0_pagemask();
 
@@ -96,11 +96,11 @@ vmm_init_mem(int phase) {
 	pt_cacheable_attr = (getcp0_config() & MIPS_CONFIG_KSEG0_COHERENCY) << MIPS_TLB_LO_CSHIFT;
 
 	if((dcache_ways != 0) && !(cache->flags & CACHE_FLAG_VIRT_IDX)) {
-		// This is a new startup, so we  can depend on the CACHE_FLAG_VIRT_IDX 
+		// This is a new startup, so we  can depend on the CACHE_FLAG_VIRT_IDX
 		// flag to tell us if we have colours or not.
 		num_colours = 1;
 	} else if(_syspage_ptr->num_cpu > 1) {
-		// Old startup, but SMP machines need a physically indexed dcache 
+		// Old startup, but SMP machines need a physically indexed dcache
 		// in order to maintain cache coherency
 		num_colours = 1;
 	} else {

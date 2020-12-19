@@ -1,12 +1,12 @@
-/* 
- * $QNXLicenseC:  
+/*
+ * $QNXLicenseC:
  * Copyright 2006, QNX Software Systems. All Rights Reserved.
  *
- * This source code may contain confidential information of QNX Software 
- * Systems (QSS) and its licensors.  Any use, reproduction, modification, 
- * disclosure, distribution or transfer of this software, or any software 
- * that includes or is based upon any of this code, is prohibited unless 
- * expressly authorized by QSS by written agreement.  For more information 
+ * This source code may contain confidential information of QNX Software
+ * Systems (QSS) and its licensors.  Any use, reproduction, modification,
+ * disclosure, distribution or transfer of this software, or any software
+ * that includes or is based upon any of this code, is prohibited unless
+ * expressly authorized by QSS by written agreement.  For more information
  * (including whether this source code file has been published) please
  * email licensing@qnx.com. $
 */
@@ -28,7 +28,7 @@
 /*
  * SET_MEMPART_POLICY_KEY
  * ISSET_MEMPART_POLICY_KEY
- * 
+ *
  * These macros are used to produce a unique 'key' for use in the internal
  * maintenance of mempart_policy_t types. There are (currently) 3 boolean policies
  * 'terminal', permanent' and 'cfg_lock'. These policies are meant to provide an
@@ -48,10 +48,10 @@
  * key value will be taken to mean a value of TRUE, or no child configurations.
  * Only a valid key value will be taken as a policy value of FALSE, and hence
  * permit child partition creation.
- * 
+ *
  * ISSET_MEMPART_POLICY_KEY() will evaluate (v) against the key and return
  * TRUE or FALSE according to whether (v) is equivalent to the key or not.
- * 
+ *
  * SET_MEMPART_POLICY_KEY() will set (v) to the key depending on whether the
  * current value of (v) is (p) or not.
 */
@@ -62,18 +62,18 @@
  * SET/GET_MPART_POLICY_CFG_LOCKED
  * SET/GET_MPART_POLICY_TERMINAL
  * SET/GET_MPART_POLICY_PERMANENT
- * 
+ *
  * These 6 macros encapsulate the setting/retrieving of the internal keying
  * mechanism used to protect the policy states and translate between the internal
  * representation of the policy and the external (ap_bool_t) representation of the
  * boolean valued policies.
- * 
+ *
  * For all boolean valued policies, once they are set TRUE, they can never be
  * changed therefore we want to protect the TRUE state. This means that the key
  * value will be used to represent the FALSE state so that any other value except
  * the key value will be considered TRUE.
  * This protects against errant overwrites which if the key represented the TRUE
- * state would allow an overwrite to inadvertently change the state to FALSE. 
+ * state would allow an overwrite to inadvertently change the state to FALSE.
 */
 #define GET_MPART_POLICY_CFG_LOCK(c)	(ISSET_MEMPART_POLICY_KEY((c)->policy.config_lock) ? bool_t_FALSE : bool_t_TRUE)
 #define GET_MPART_POLICY_TERMINAL(c)	(ISSET_MEMPART_POLICY_KEY((c)->policy.terminal) ? bool_t_FALSE : bool_t_TRUE)
@@ -89,18 +89,18 @@ extern bool mempart_module_loaded(void);
 
 
 /*==============================================================================
- * 
+ *
  *			memmgr internal interfaces for memory partition management
- * 
+ *
 */
 #define MEMPART_MODULE_LOADED()		mempart_module_loaded()
 
 
 /*
  * =============================================================================
- * 
+ *
  * 									D E B U G
- * 
+ *
  * =============================================================================
 */
 #ifndef NDEBUG

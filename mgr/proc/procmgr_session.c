@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -31,7 +31,7 @@ int procmgr_sleader_detach(PROCESS *prp) {
 
 	if(prp->flags & _NTO_PF_SLEADER) {
 		SESSION				*sep;
-	
+
 		prp->flags &= ~_NTO_PF_SLEADER;
 		if((sep = prp->session)) {
 			fd = sep->fd;
@@ -81,8 +81,8 @@ int procmgr_msg_session(resmgr_context_t *ctp, proc_session_t *msg) {
 
 		memset(&io_openfd.i, 0x00, sizeof io_openfd.i);
 
-		// If we have a controlling terminal, and the managing server is still alive 
-		// then error out can't have two controlling terminals.  If we detect the 
+		// If we have a controlling terminal, and the managing server is still alive
+		// then error out can't have two controlling terminals.  If we detect the
 		// server has disappeared, the set sep->fd = -1;
 		if(sep->fd != -1) {
 			if (ConnectServerInfo(0, sep->fd, &io_openfd.i.info) == sep->fd) {
@@ -91,7 +91,7 @@ int procmgr_msg_session(resmgr_context_t *ctp, proc_session_t *msg) {
 			} else {
 				fd = sep->fd;
 				sep->fd = -1;
-				close(fd);	
+				close(fd);
 			}
 		}
 
@@ -133,12 +133,12 @@ int procmgr_msg_session(resmgr_context_t *ctp, proc_session_t *msg) {
 		if(sep->fd != -1) {
 			close(sep->fd);
 		}
-*/		
+*/
 		sep->fd = fd;
 		sep->pgrp = sep->leader;	// Posix.1 7.1.1.3
 		proc_thread_pool_reserve_done();
 		return EOK;
-	}		
+	}
 
 	case PROCMGR_SESSION_SETSID:
 		if(!(prp = proc_lock_pid(ctp->info.pid))) {
@@ -161,7 +161,7 @@ int procmgr_msg_session(resmgr_context_t *ctp, proc_session_t *msg) {
 			return proc_error(ENOMEM, prp);
 		}
 		memset(sep, 0, sizeof(*sep));
-	
+
 		sep->links = 1;
 		sep->leader = prp->pid;
 		sep->pgrp = sep->fd = -1;

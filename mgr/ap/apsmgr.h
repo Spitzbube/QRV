@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -32,42 +32,42 @@
 extern schedpart_rsrcmgr_fnctbl_t  *schedpart_rsrcmgr_fnctbl;
 
 /*==============================================================================
- * 
+ *
  * 				interfaces to the scheduler partition module
- * 
+ *
 */
 
 /*******************************************************************************
  * SCHEDPART_CREATE
- * 
+ *
 */
 #define SCHEDPART_CREATE(p, n, c) \
 		((schedpart_rsrcmgr_fnctbl == NULL) ? part_id_t_INVALID : schedpart_rsrcmgr_fnctbl->create((p), (n), (c)))
 
 /*******************************************************************************
  * SCHEDPART_DESTROY
- * 
+ *
 */
 #define SCHEDPART_DESTROY(p) \
 		((schedpart_rsrcmgr_fnctbl == NULL) ? ENOSYS : schedpart_rsrcmgr_fnctbl->destroy((p)))
 
 /*******************************************************************************
  * SCHEDPART_CHANGE
- * 
+ *
 */
 #define SCHEDPART_CHANGE(p, c, k) \
 		((schedpart_rsrcmgr_fnctbl == NULL) ? ENOSYS : schedpart_rsrcmgr_fnctbl->config((p), (c), (k)))
 
 /*******************************************************************************
  * SCHEDPART_GETINFO
- * 
+ *
 */
 #define SCHEDPART_GETINFO(p, i) \
 		((schedpart_rsrcmgr_fnctbl == NULL) ? NULL : schedpart_rsrcmgr_fnctbl->getinfo((p), (i)))
 
 /*******************************************************************************
  * SCHEDPART_FINDPID
- * 
+ *
 */
 #define SCHEDPART_FINDPID(p, sp) \
 		((schedpart_rsrcmgr_fnctbl == NULL) ? NULL : schedpart_rsrcmgr_fnctbl->find_pid((p), (sp)))
@@ -75,7 +75,7 @@ extern schedpart_rsrcmgr_fnctbl_t  *schedpart_rsrcmgr_fnctbl;
 /*******************************************************************************
  * VALIDATE_SP_CFG_CREATION
  * VALIDATE_SP_CFG_MODIFICATION
- * 
+ *
  * These 2 routines are used to validate configurations for partition creation
  * or modification based on the policies in use. They provide common routines
  * for validation so that these types of checks are not littered throughout the
@@ -87,12 +87,12 @@ extern schedpart_rsrcmgr_fnctbl_t  *schedpart_rsrcmgr_fnctbl;
  * partition.
  * The configuration <cfg> can also be NULL however nothing useful will be done
  * unless a parent partition identifier is provided
- * 
+ *
  * VALIDATE_CFG_MODIFICATION requires a part_id_t for the partition to which
  * the modifications specified by <cfg> apply. The partition <spid> must be valid
- * 
+ *
  * Both routines will return EOK if <cfg> is valid for the requested operation
- * and policies in place, otherwise and errno is returned. 
+ * and policies in place, otherwise and errno is returned.
 */
 #define VALIDATE_SP_CFG_CREATION(pspid, cfg) \
 		((schedpart_rsrcmgr_fnctbl == NULL) ? ENOSYS : schedpart_rsrcmgr_fnctbl->validate_cfg_new((pspid), (cfg)))
@@ -103,9 +103,9 @@ extern schedpart_rsrcmgr_fnctbl_t  *schedpart_rsrcmgr_fnctbl;
 
 
 /*==============================================================================
- * 
+ *
  * 				internal scheduling partition manager module types
- * 
+ *
 */
 
 typedef struct
@@ -122,8 +122,8 @@ typedef struct apsmgr_attr_s
 		part_id_t			spid;
 		char *				symlink;
 	} data;
-	
-	part_evtlist_t			event_list[NUM_SCHEDPART_EVTTYPES];	
+
+	part_evtlist_t			event_list[NUM_SCHEDPART_EVTTYPES];
 
 } apsmgr_attr_t;
 

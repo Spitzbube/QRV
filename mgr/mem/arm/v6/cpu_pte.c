@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -301,7 +301,7 @@ l2_to_sc(pte_t opte)
  * Flags used in cpu_pte_split/merge/manipulate
  */
 #define	PMF_FLUSH_DEFER		(1<<0)
-#define	PMF_FLUSH_CACHE		(1<<1)	
+#define	PMF_FLUSH_CACHE		(1<<1)
 #define	PMF_INACTIVE		(1<<2)
 #define	PMF_USER_SPACE		(1<<3)
 #define	PMF_FLUSH_SMP		(1<<4)
@@ -383,7 +383,7 @@ cpu_pte_split(uintptr_t vaddr, struct mm_pte_manipulate *data)
 				l2_addr += ((va >> 20) & 3) * ARM_L2_SIZE;
 				l2_addr |= ARM_PTP_V6_L2;
 
-				*ptp = l2_addr;		
+				*ptp = l2_addr;
 				arm_v4_idtlb_addr(va | asid);
 				SMP_FLUSH_TLB();			// FIXME_smp
 
@@ -420,7 +420,7 @@ cpu_pte_split(uintptr_t vaddr, struct mm_pte_manipulate *data)
 					SMP_FLUSH_TLB();			// FIXME_smp
 				}
 				va  += ARM_LPSIZE;
-				pte += 16; 
+				pte += 16;
 			} while (va < data->end && (va & ARM_SCMASK) != 0);
 		}
 
@@ -909,7 +909,7 @@ out:
 	if (flags & PMF_FLUSH_DEFER) {
 		arm_cpu->page_flush_deferred(flags & PMF_FLUSH_CACHE);
 	}
-	
+
 	if (flags & PMF_INACTIVE) {
 		inactive_l1_unmap();
 		inactive_l2_unmap();

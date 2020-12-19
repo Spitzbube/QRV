@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -36,21 +36,21 @@ vmm_vaddr_to_memobj(PROCESS *prp, void *vaddr, unsigned *offset, int create) {
 	prot = cpu_vmm_vaddrinfo(prp, (uintptr_t)vaddr, &paddr, NULL);
 #ifndef NDEBUG
 	if(prot == PROT_NONE) crash();
-#endif	
+#endif
 
 	if(create) {
 		//RUSH3: Turn on a bit in the object saying that it has sync objects
-		//RUSH3: in it? Would allow us to handle MAP_LAZY/paged out stuff better.	
+		//RUSH3: in it? Would allow us to handle MAP_LAZY/paged out stuff better.
 
-		// whack in our sync flag, so on free we can avoid MemobjDestroy stuff 
+		// whack in our sync flag, so on free we can avoid MemobjDestroy stuff
 		pq = pa_paddr_to_quantum(paddr);
 		if(pq != NULL) {
-#ifndef NDEBUG		
-			if(!(pq->flags & PAQ_FLAG_INITIALIZED) 
+#ifndef NDEBUG
+			if(!(pq->flags & PAQ_FLAG_INITIALIZED)
 				&& WITHIN_BOUNDRY((uintptr_t)vaddr, (uintptr_t)vaddr, user_boundry_addr)) {
 				crash();
 			}
-#endif		
+#endif
 			pq->flags |= PAQ_FLAG_HAS_SYNC;
 		}
 	}

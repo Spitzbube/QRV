@@ -1,28 +1,28 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*******************************************************************************
  * mm_mempart.c
- * 
+ *
  * This file contains code that is permanently part of the memory manager even
  * if the memory partition module is not included.
  * It includes stub routines and variables that are present outside of the
  * memory manager and therefore must be included
- * 
+ *
  * ./mempart/apm.c contains the memory partitioning code that will be
  * automatically enabled if the memory partitioning module is included in the
  * image build
@@ -64,7 +64,7 @@ mempart_fnctbl_t proxy_mempart_fnctbl =
 
 /*
  * mempart_fncTbl
- * 
+ *
  * This function table pointer will be initialized when the memory partitioning
  * module is initialized and mempart_init() is called.
 */
@@ -72,19 +72,19 @@ mempart_fnctbl_t  *mempart_fnctbl = NULL;
 
 /*
  * sys_mempart
- * 
+ *
  * There are memory allocations which take place throughout the kernel which
  * do not have any objects associated with them per se.
  * In these situations, the allocation is accounted against the system
  * partition which is identified by 'sys_mempart'. This variable is initialized
  * in initialize_apm().
- * 
+ *
 */
 mempart_t  *sys_mempart = NULL;
 
 /*
  * sys_mempart_sysram_min_size
- * 
+ *
  * This variable is (optionally) used to allow control of the minimum configured
  * size of the sysram memory class of the system partition. It can be set by
  * specifying the -R option to procnto. If unspecified or incorrect, a default
@@ -94,7 +94,7 @@ memsize_t sys_mempart_sysram_min_size = 0;
 
 /*
  * mempart_init
- * 
+ *
  * This function pointer will be initialized to point to _mempart_init() when
  * the memory partition module is loaded (see initialize_apm()). This will
  * allow the _mempart_init() function to be called to perform the remainder of
@@ -104,7 +104,7 @@ void (*mempart_init)(memsize_t sysmem_size, memclass_id_t memclass_id) = proxy_m
 
 /*
  * default_mempart_flags
- * 
+ *
  * This global specifies the default memory partitioning flags, specifically
  * what behaviour is exhibited (by default) at process creation if nothing is
  * explicitly specified. It also sets the flags which are applied to the first
@@ -119,7 +119,7 @@ mempart_dcmd_flags_t default_mempart_flags = mempart_flags_HEAP_SHARE;
 
 /*
  * mpmgr_st_size
- * 
+ *
  * FIX ME
  * This function pointer exists to allow procfs to get the size of free memory
  * from a partitioning perspective (ie. a processes "world view" of free memory
@@ -131,7 +131,7 @@ int (*mpmgr_st_size)(void *attr, memsize_t *size) = NULL;
 
 /*
  * mpid_unique
- * 
+ *
  * Similar to process id's, memory partition id's will be kept unique
 */
 int mpid_unique = 0;
@@ -160,12 +160,12 @@ static int _list_audit(part_qnodehdr_t *list)
 
 /*******************************************************************************
  * mempart_getid
- * 
+ *
  * This function will return the partition identifier corresponding to the
  * memory class <mclass> for the process <prp>.
- * 
+ *
  * If <prp> == NULL, the system memory partition identifier will be returned
- * 
+ *
  * Returns: the partition pointer or NULL if no partition of the memory class
  * 			is associated with the process
 */
@@ -182,10 +182,10 @@ part_id_t mempart_getid(PROCESS *prp, memclass_id_t mclass_id)
 
 /*******************************************************************************
  * mempart_get_classid
- * 
+ *
  * this function is used obtain the memclass_id_t for a given partition. The
  * class id can then be used in subsequent memclass_xxx() calls
- * 
+ *
  * Returns: the 'memclass_id_t' for <mpart_id> otherwise memclass_id_t_INVALID
 */
 memclass_id_t mempart_get_classid(part_id_t mpart_id)
@@ -198,17 +198,17 @@ memclass_id_t mempart_get_classid(part_id_t mpart_id)
 
 /*******************************************************************************
  * free_mem
- * 
+ *
  * return the amount of free memory in the partition hierarchy starting at
  * <mpart_id>
- * 
+ *
 */
 memsize_t free_mem(pid_t pid, part_id_t mpart_id)
 {
 	extern int (*mpmgr_st_size)(void *attr, memsize_t *size);
 	memsize_t  st_size;
 //	PROCESS *prp = proc_lookup_pid(pid);
-	
+
 //	CRASHCHECK(prp == NULL);
 
 	if (mpmgr_st_size != NULL)
@@ -221,7 +221,7 @@ memsize_t free_mem(pid_t pid, part_id_t mpart_id)
 	else
 	{
 		memclass_info_t _ci, *ci = memclass_info(sys_memclass_id, &_ci);
-		
+
 		CRASHCHECK(ci == NULL);
 		st_size = ci->size.unreserved.free;
 	}
@@ -230,16 +230,16 @@ memsize_t free_mem(pid_t pid, part_id_t mpart_id)
 
 /*******************************************************************************
  * mempart_validate_id
- * 
+ *
  * this function is used to validate a partition identifier passed in from
  * user space.
- * 
+ *
  * It returns EOK if <mempart_id> is valid otherwise it returns an errno.
 */
 int mempart_validate_id(part_id_t mpid)
 {
 	mempart_t *mpart = MEMPART_ID_TO_T(mpid);
-	
+
 	/* RDLOCK ? */
 	if ((mpart != NULL) && (mpart->signature == MEMPART_SIGNATURE)) {
 		return EOK;
@@ -249,16 +249,16 @@ int mempart_validate_id(part_id_t mpid)
 
 /*******************************************************************************
  * mempart_module_loaded
- * 
+ *
  * this function is used to determine whether the memory partitioning module
  * is loaded or not. The module is considered to be loaded of the (*mempart_init)
  * function pointer is not NULL and not pointing to the proxy_mempart_init()
  * (ie. it has been overridden with the real memory partitioning initialization
- * function). 
- * 
+ * function).
+ *
  * It returns TRUE or FALSE depending on whether the memory partitioning module
  * is considered to be loaded or not.
- * 
+ *
  * Note that loaded and installed/initialized are considered to be 2 different
  * states for the memory partitioning module.
 */
@@ -269,10 +269,10 @@ bool mempart_module_loaded(void)
 
 /*******************************************************************************
  * mempart_lookup_mpid
- * 
+ *
  * implements MEMPART_ID_TO_T macro
  * Can be called from kernel or proc thread
- * 
+ *
  * Returns: the 'mempart_t *' corresponding to <mpid> or NULL
 */
 mempart_t *mempart_lookup_mpid(part_id_t mpid)
@@ -291,11 +291,11 @@ mempart_t *mempart_lookup_mpid(part_id_t mpid)
 
 /*******************************************************************************
  * mempart_vec_add
- * 
+ *
  * add <mpart> to the 'mempart_vector'
  * Called when a partition is created (procnto thread) so we must enter the
  * kernel since vector is queried from kernel
- * 
+ *
  * Returns: a 'part_id_t'
 */
 struct kerargs_mempart_vec
@@ -328,11 +328,11 @@ part_id_t mempart_vec_add(mempart_t *mpart)
 
 /*******************************************************************************
  * mempart_vec_del
- * 
+ *
  * delete <mpid> from the 'mempart_vector'
  * Called when a partition is destroyed (procnto thread) so we must enter the
  * kernel since vector is queried from kernel
- * 
+ *
  * Returns: n/a
 */
 static void kerext_mempart_vec_del(void *data)
@@ -352,20 +352,20 @@ mempart_t *mempart_vec_del(part_id_t mpid)
 
 /*
  * ===========================================================================
- * 
+ *
  * 					Memory Partition interface routines
- *  
+ *
  * The following routines implement the memory partitioning interface for the
  * case when the memory partitioning module is not installed. The exception are
  * the process association and disassociation functions which are effectively
  * used by both. The implementations in this file are called out through
  * wrappers in the partitioning module when it is installed (which perform
  * additional things like event notification).
- * 
+ *
  * They are exposed via the 'mempart_fncTbl' and in conjunction with
  * macros of the same name, provide the memory partitioning functionality in a format
- * which is optional. 
- *  
+ * which is optional.
+ *
  * ===========================================================================
 */
 /*
@@ -383,12 +383,12 @@ mempart_t *mempart_vec_del(part_id_t mpid)
 
 /*******************************************************************************
  * mempart_proc_associate
- * 
+ *
  * Associate process <prp> with the memory partition <mempart_id>.
  * A process can only be associated with 1 partition of a given memory class.
  * Attempts to associate with an already associated partition will return
  * EALREADY.
- * 
+ *
  * HEAP structure creation is controlled by the <flags> argument. This allows
  * the caller to specify whether or not a HEAP is considered necessary. Some
  * memory classes may not require a HEAP since it is known that no internal
@@ -398,14 +398,14 @@ mempart_t *mempart_vec_del(part_id_t mpid)
  * For this case, the 'mempart_node_t' structure will be allocated from the
  * processes 'sysram' heap and have its HEAP pointer set to NULL (ie no heap
  * for the memory class even though it has partition association with the class)
- * 
+ *
  * All of the partition structures required for process association, currently
  * use the sysram memory class for their allocations hence when associating with
  * the sysram memory class, it is expected that a HEAP be either shared or created
  * (ie. flags & mempart_flags_HEAP_CREATE | mempart_flags_HEAP_SHARE) since we
  * know that most (if not all) internal memory allocations will be made from the
  * sysram heap for the process. See also mempart.h
- * 
+ *
  * Returns EOK or an errno
 */
 static int mempart_proc_associate(PROCESS *prp, part_id_t mempart_id,
@@ -474,7 +474,7 @@ static int mempart_proc_associate(PROCESS *prp, part_id_t mempart_id,
 #ifdef USE_PROC_OBJ_LISTS
 		/* add 'prp' to the process list for the partition */
 		prp_node->prp = prp;
-		
+
 		(void)MUTEX_WRLOCK(&mpart_node->mempart->prplist_lock);
 		LIST_ADD(mpart_node->mempart->prp_list, prp_node);
 		CRASHCHECK(prp_list_audit(mpart_node->mempart->prp_list) != EOK);
@@ -487,7 +487,7 @@ static int mempart_proc_associate(PROCESS *prp, part_id_t mempart_id,
 
 /*******************************************************************************
  * mempart_proc_disassociate
- * 
+ *
  * Remove the process <prp> from the process list for partition <mempart_id>.
  * If <mempart_id> is part_id_t_INVALID, the process is disassociated from
  * all partitions in its partition list.
@@ -538,11 +538,11 @@ static int mempart_proc_disassociate(PROCESS *prp, part_id_t mempart_id, ext_loc
 
 /*******************************************************************************
  * mempart_getlist
- * 
+ *
  * This is a proxy handler for the case when the memory partitioning module is
  * not installed. It minimally replicates the behaviour of the
  * _mempart_getlist() function in apm.c.
- * 
+ *
  * Since there are no actual partitions, this function always returns the
  * same thing
 */
@@ -572,11 +572,11 @@ static int mempart_getlist(PROCESS *prp, part_list_t *mpart_list, int n,
 
 /*******************************************************************************
  * mempart_nodeget
- * 
+ *
  * This is a proxy handler for the case when the memory partitioning module is
  * not installed. It minimally replicates the behaviour of the _mempart_get()
  * function in apm.c.
- * 
+ *
  * Since there are no actual partitions, this function always returns the
  * same thing
 */
@@ -594,7 +594,7 @@ static mempart_node_t *mempart_nodeget(PROCESS *prp, memclass_id_t memclass_id)
 
 /*******************************************************************************
  * mempart_obj_associate
- * 
+ *
  * This is a proxy handler for the case when the memory partitioning module is
  * not installed. It minimally replicates the behaviour of the
  * _mempart_obj_associate() function in apm.c.
@@ -616,18 +616,18 @@ static int mempart_obj_associate(OBJECT *obj, part_id_t mpid)
 
 /*
  * ===========================================================================
- * 
+ *
  * 								support routines
- *  
+ *
  * ===========================================================================
 */
 
 
 /*******************************************************************************
  * mempart_disassociate_1
- * 
+ *
  * Disassociate process <prp> from the partition <mpart>
- * 
+ *
  * Returns: EOK on success, otherwise and errno
 */
 static int mempart_proc_disassociate_1(PROCESS *prp, mempart_t *mpart, ext_lockfncs_t *lf)
@@ -673,7 +673,7 @@ static int mempart_proc_disassociate_1(PROCESS *prp, mempart_t *mpart, ext_lockf
 	(void)MUTEX_WRLOCK(&prp->mpartlist_lock);
 	memclass_id = mpart->memclass->data.info.id;
 	n = vector_rem(&prp->mpart_list, memclass_id);
-	
+
 	/* if all entries have been disassociated, we will release the memory for the vector */
 	if (prp->mpart_list.nentries == prp->mpart_list.nfree) {
 		/* make a copy of the vector so we can unlock before releasing the it */
@@ -695,11 +695,11 @@ static int mempart_proc_disassociate_1(PROCESS *prp, mempart_t *mpart, ext_lockf
 
 /*******************************************************************************
  * proxy_mempart_init
- * 
+ *
  * This is a proxy handler for the case when the memory partitioning module is
  * not installed. It minimally replicates the behaviour of the
  * _mempart_init() function in apm.c.
- * 
+ *
 */
 static void proxy_mempart_init(memsize_t sysmem_size, memclass_id_t memclass_id)
 {
@@ -713,7 +713,7 @@ static void proxy_mempart_init(memsize_t sysmem_size, memclass_id_t memclass_id)
 	_sys_mempart.signature = MEMPART_SIGNATURE;
 	_sys_mempart.memclass = memclass_find(NULL, sys_memclass_id);
 
-	/* can only be called once */	
+	/* can only be called once */
 	if ((sys_mempart != NULL) || (memclass_id == memclass_id_t_INVALID))
 	{
 		kprintf("Unable to create system partition, sys_mempart: 0x%x, memclass_id: 0x%x\n",
@@ -729,12 +729,12 @@ static void proxy_mempart_init(memsize_t sysmem_size, memclass_id_t memclass_id)
 
 /*
  * ===========================================================================
- * 
+ *
  * The following will pull in libc routines into the the main procnto build
  * so that they are available when a module is included. Currently any function
  * used by a module must already be included in the base procnto build so this
  * is how it will be done for partitioning modules
- *  
+ *
  * ===========================================================================
 */
 void dummy_func(void)
@@ -769,5 +769,5 @@ char *strrchr(const char *s, int c)
 			return ((char *)sc);
 	}
 }
-	
+
 __SRCVERSION("mm_mempart.c $Rev$");

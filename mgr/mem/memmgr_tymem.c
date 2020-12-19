@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -23,7 +23,7 @@
 static pthread_mutex_t		rl_mux = PTHREAD_MUTEX_INITIALIZER;
 
 static int
-match_name(struct asinfo_entry *base_as, struct asinfo_entry *as, 
+match_name(struct asinfo_entry *base_as, struct asinfo_entry *as,
 				const char *name, unsigned name_len) {
 	const char				*str = SYSPAGE_ENTRY(strings)->data;
 	const char				*curr;
@@ -53,8 +53,8 @@ match_name(struct asinfo_entry *base_as, struct asinfo_entry *as,
 	if(as->owner == AS_NULL_OFF) return 0;
 
 	//See if prefix also matches.
-	return match_name(base_as, 
-				(struct asinfo_entry *)((uint8_t *)base_as + as->owner), 
+	return match_name(base_as,
+				(struct asinfo_entry *)((uint8_t *)base_as + as->owner),
 				name, (name_len - len) - 1);
 }
 
@@ -143,7 +143,7 @@ multi_restrict_create(const char *name, OBJECT *obp, memclass_attr_t *attr) {
 	last_op = ' ';
 	do {
 		switch(*curr) {
-		case '\0':	
+		case '\0':
 		case '|':
 		case '&':
 			if(curr == name) {
@@ -160,7 +160,7 @@ multi_restrict_create(const char *name, OBJECT *obp, memclass_attr_t *attr) {
 				// first time, just set par to new
 				par = new;
 				break;
-			case '|':	
+			case '|':
 				// unioning the two names together, just tack the new
 				// restriction list to the end of the first
 				owner = &par;
@@ -276,18 +276,18 @@ tymem_done(OBJECT *obp) {
 
 /*
  * tymem_register
- * 
+ *
  * this routine ties the memclass table to the resource database. Its main
  * purpose is to check for the existence of <name> and add it to the class table
  * with the startup defined attributes if it does exist.
- * 
+ *
  * The default access functions will be used hence NULL is passed for the
  * 'allocator_accessfncs_t *' parameter
- * 
+ *
  * On error, errno will be returned and the entry will not be added
- * 
+ *
  * Should be reworked so that there is one memory class repository
-*/ 
+*/
 int
 tymem_register(const char *name) {
 
@@ -309,14 +309,14 @@ tymem_register(const char *name) {
  * can have an OBJECT per open() similar to a processes anonymous memory OBJECT.
  * As a minimum, I should eliminate the restrict_create() call for every open since
  * it is wasteful. Not positve I even need the per open() OBJECT. Could just account
- * the OBJECT (and its name) to the system heap. 
- * 
+ * the OBJECT (and its name) to the system heap.
+ *
 */
 	kill_restrict(tmp_obj.mem.mm.restriction);
 	return r;
 }
 
-//RUSH1: permission checking? 
+//RUSH1: permission checking?
 int
 memmgr_tymem_open(const char *name, int oflags, OBJECT **obpp, PROCESS *prp) {
 	OBJECT				*obp;
@@ -340,7 +340,7 @@ memmgr_tymem_open(const char *name, int oflags, OBJECT **obpp, PROCESS *prp) {
 		/*
 		 * if memory partitioning is installed and the caller is trying to open the
 		 * typed memory for allocation, then the caller is required to be associated
-		 * with a partition of the class 
+		 * with a partition of the class
 		*/
 		if(oflags & (POSIX_TYPED_MEM_ALLOCATE | POSIX_TYPED_MEM_ALLOCATE_CONTIG)) {
 			if(mempart_getid(prp, e->data.info.id) == part_id_t_INVALID) {
@@ -371,11 +371,11 @@ memmgr_tymem_open(const char *name, int oflags, OBJECT **obpp, PROCESS *prp) {
 	*obpp = obp;
 	pthread_mutex_unlock(&rl_mux);
 	return EOK;
-	
+
 fail2:
 	object_done(obp);
 
-fail1:	
+fail1:
 	pthread_mutex_unlock(&rl_mux);
 	return r;
 }
@@ -435,7 +435,7 @@ restart:
 			req.end = rl->end;
 			req.align = __PAGESIZE;
 			req.flags = RSRCDBMGR_MEMORY | RSRCDBMGR_FLAG_RANGE | RSRCDBMGR_FLAG_ALIGN;
-			
+
 			/* can the allocator satisfy the request ? */
 			if ((e->data.info.size.reserved.free < resv_size) ||
 				(e->data.info.size.unreserved.free < (size - resv_size))) {
@@ -525,10 +525,10 @@ tymem_rdb_alloc_given(OBJECT *obp, paddr_t paddr, size_t size, int *rp) {
 	pq->flags |= PAQ_FLAG_RDB;
 	return pq;
 
-fail2:		
+fail2:
 	tymem_rdb_free(obp, paddr, size);
 
-fail1:	
+fail1:
 	*rp = r;
 	return NULL;
 }
@@ -555,7 +555,7 @@ tymem_rdb_free(OBJECT *obp, paddr_t paddr, size_t size) {
 
 		CRASHCHECK(size < resv_size);
 
-		/* LOCK */		
+		/* LOCK */
 		/* this lock won't work if the kernel ever uses non sysram memory for any internal objects */
 		CRASHCHECK(KerextAmInKernel());
 		if (pthread_mutex_lock(&e->lock.mutex) != EOK) crash();
@@ -599,7 +599,7 @@ tymem_rdb_free_info(struct pa_restrict *rlp, paddr_t *totalp, paddr_t *contigp) 
 					//RUSH3: If the list is in ascending order, kick out early
 					//RUSH3: if list[i].end < rp->start
 					start = max(list[i].start, rp->start);
-					end   = min(list[i].end, rp->end);		
+					end   = min(list[i].end, rp->end);
 					if(start < end) {
 						paddr_t		size;
 
@@ -619,7 +619,7 @@ tymem_rdb_free_info(struct pa_restrict *rlp, paddr_t *totalp, paddr_t *contigp) 
 void
 tymem_free_info(OBJECT *obp, paddr_t *total, paddr_t *contig) {
 	if(obp->mem.mm.flags & MM_MEM_RDB) {
-		tymem_rdb_free_info(obp->mem.mm.restriction, total, contig);	
+		tymem_rdb_free_info(obp->mem.mm.restriction, total, contig);
 	} else {
 		//RUSH3: This doesn't work for a physical system - the pa_*
 		//RUSH3: routines are only used by the virtual memmgr code.

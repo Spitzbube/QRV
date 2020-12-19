@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -71,7 +71,7 @@ uintptr_t				pde_map = PROCTOP;
  *	 System				0x00000000
  */
 
-void 
+void
 vmm_init_mem(int phase) {
 	unsigned						cr0;
 	unsigned						pde_mask;
@@ -82,7 +82,7 @@ vmm_init_mem(int phase) {
 	extern void __exc7emul();
 	extern void __exc7emul_end();
 	extern void *__fpuemu_stub;
-	
+
 	if(phase != 0) {
 		unsigned		pdir_user_boundry;
 
@@ -133,7 +133,7 @@ vmm_init_mem(int phase) {
 		PXE_SET_FLAGS(VTOPTEP((uintptr_t)&__exc7emul_end), ~0, X86_PTE_USER);
 		ldcr0(cr0);
 	}
-			
+
 	if((__cpu_flags & X86_CPU_PSE) && !(PXE_GET_FLAGS(VTOPDIRP(CPU_1TO1_VADDR_BIAS)) & X86_PTE_PRESENT)) {
 		//__cpu_flags &= ~X86_CPU_PSE;
 		// Crash for now, make sure people have a new startup
@@ -156,7 +156,7 @@ vmm_init_mem(int phase) {
 
 	// Allocate the slot lists (Should add check for large number of cpus...
 	if(!(xfer_slot = slot = _scalloc(_syspage_ptr->num_cpu * sizeof *xfer_slot))) {
-		crash();		
+		crash();
 	}
 	slot_size = (MAP_SIZE / _syspage_ptr->num_cpu) & ~((1 << (pd_bits+1))-1);
 	base = MAP_BASE;

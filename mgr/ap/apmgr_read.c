@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmgr_read
- * 
+ *
  * Provide resource manager read() processing for the partitioning module
- * 
+ *
 */
 
 #include "apmgr.h"
@@ -31,7 +31,7 @@ static int _apmgr_readdir(apmgr_attr_t *attr, off_t *offset, void *buf, size_t s
 
 /*
  * apmgr_read
- * 
+ *
  * Only ever called for a /proc/<pid> and only ever returns a single directory
  * entry for "partition"
 */
@@ -68,13 +68,13 @@ int apmgr_read(resmgr_context_t *ctp, io_read_t *msg, void *_ocb)
 		{
 			unsigned size = msg->i.nbytes;
 			static const char part_str[] = "partition";
-			
+
 			if (ocb->ocb.offset > 0)
 				break;
 
 			dir = (struct dirent *)(void *)msg;
 			memset(dir, 0, sizeof(*dir));
-		
+
 			dir->d_reclen = (sizeof(*dir) + sizeof(part_str) + 3) & ~3;
 			nbytes += dir->d_reclen;
 			if(nbytes > size) {
@@ -110,7 +110,7 @@ int apmgr_read(resmgr_context_t *ctp, io_read_t *msg, void *_ocb)
 				if (MEMPART_INSTALLED())
 				{
 					static const char mem_str[] = "mem";
-				
+
 					dir->d_reclen = (sizeof(*dir) + sizeof(mem_str) + 3) & ~3;
 					nbytes += dir->d_reclen;
 					if(nbytes > size) {
@@ -128,14 +128,14 @@ int apmgr_read(resmgr_context_t *ctp, io_read_t *msg, void *_ocb)
 				if (SCHEDPART_INSTALLED())
 				{
 					static const char sched_str[] = "sched";
-				
+
 					dir->d_reclen = (sizeof(*dir) + sizeof(sched_str) + 3) & ~3;
 					nbytes += dir->d_reclen;
 					if(nbytes > size) {
 						ret = EMSGSIZE;
 						break;
 					}
-			
+
 					dir->d_ino = 0;	// FIX ME - need unique ino for all of my resmgrs;
 					dir->d_offset = ocb->ocb.offset++;
 					memcpy(dir->d_name, sched_str, sizeof(sched_str));
@@ -197,7 +197,7 @@ int apmgr_read(resmgr_context_t *ctp, io_read_t *msg, void *_ocb)
 //			if ((reply_msg = calloc(1, msg->i.nbytes)) == NULL)
 //				return ENOMEM;
 reply_msg = msg;
-		
+
 			if ((r = PART_ATTR_LOCK(ocb->attr)) != EOK)
 			{
 //				free(reply_msg);	// FIX ME - won't be required as per above
@@ -223,7 +223,7 @@ reply_msg = msg;
 		/*
 		 * The ocb is for an open on '/proc/<pid>/partition/mem/', The specific
 		 * partitions that the process is associated with will be obtained from
-		 * the memory partitioning resource manager 
+		 * the memory partitioning resource manager
 		*/
 		case apmgr_type_MEM:
 		{
@@ -237,11 +237,11 @@ reply_msg = msg;
 			ocb->ocb.offset_hi = 0;
 #endif
 			break;
-		} 
+		}
 		/*
 		 * The ocb is for an open on '/proc/<pid>/partition/sched/', The specific
 		 * partitions that the process is associated with will be obtained from
-		 * the scheduling partitioning resource manager 
+		 * the scheduling partitioning resource manager
 		*/
 		case apmgr_type_SCHED:
 		{
@@ -252,7 +252,7 @@ reply_msg = msg;
 			break;
 		}
 
-#ifndef NDEBUG		
+#ifndef NDEBUG
 		default: crash();
 #else	/* NDEBUG */
 		default:
@@ -278,7 +278,7 @@ reply_msg = msg;
  * contents are placed into buffer <buf>. The size of <buf> is pointed to by
  * <size>.
  * <offset> is adjusted acordingly.
- * 
+ *
  * Returns: the number of bytes placed into <buf> (never more than <size>)
 */
 static int _apmgr_readdir(apmgr_attr_t *attr, off_t *offset, void *buf, size_t size)

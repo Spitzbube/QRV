@@ -1,6 +1,6 @@
 define EXTRA_TARGETS
 foobar:
 	echo foo
-endef	
+endef
 
 include ../../../common.mk

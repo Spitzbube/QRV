@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -91,7 +91,7 @@ struct node_entry *pathmgr_resolve_path(struct node_entry *node, struct _io_conn
 					p2 = path;
 				}
 			}
-		} 
+		}
 
 		if(p2) {
 			// write path string for component
@@ -159,11 +159,11 @@ int pathmgr_resolve_servers(resmgr_context_t *ctp, struct node_entry *node, stru
 	file_type = connect->file_type;
 	local_flags = 0;
 
-	if(connect->type == _IO_CONNECT && 
+	if(connect->type == _IO_CONNECT &&
 	   connect->subtype == _IO_CONNECT_LINK && connect->extra_type == _IO_CONNECT_EXTRA_RESMGR_LINK) {
 	   local_flags |= _PMFLAG_IS_LINK;
 	}
-	
+
 	for(len = 1, n = node; n != n->parent; n = n->parent) {
 		len += n->len + 1;
 	}
@@ -200,16 +200,16 @@ int pathmgr_resolve_servers(resmgr_context_t *ctp, struct node_entry *node, stru
 		pathmgr_node_access(n);
 
 		snode_lookup = NULL;
-		for(o = n->object; o; o = o->hdr.next) {		
+		for(o = n->object; o; o = o->hdr.next) {
 #ifndef NDEBUG
 			if(n->object == NULL) {
 				crash();
 			}
 #endif
-			/* Only the pathmanager resolves after an OPAQUE entry, and only 
+			/* Only the pathmanager resolves after an OPAQUE entry, and only
 			   one pathmanager entry should be reported else we get duplicates */
-			if (local_flags & _PMFLAG_SEEN_OPAQUE) { 
-				if (o->hdr.type != OBJECT_SERVER || (local_flags & _PMFLAG_SEEN_PATHMGR) || 
+			if (local_flags & _PMFLAG_SEEN_OPAQUE) {
+				if (o->hdr.type != OBJECT_SERVER || (local_flags & _PMFLAG_SEEN_PATHMGR) ||
 				    o->server.pid != PATHMGR_PID || o->server.handle != root_id) {
 					continue;
 				}
@@ -228,18 +228,18 @@ int pathmgr_resolve_servers(resmgr_context_t *ctp, struct node_entry *node, stru
 					}
 
 					//Check to see if we have the right file_type info
-					if (o->hdr.flags & PATHMGR_FLAG_FTYPEONLY && 
+					if (o->hdr.flags & PATHMGR_FLAG_FTYPEONLY &&
 					    o->server.file_type != file_type) {
 							continue;
 					}
-					
+
 					if(server_max_space < sizeof(*s)) {
 						pathmgr_node_complete(n);
 						proc_thread_pool_reserve_done();
 						return ENAMETOOLONG;
 					}
 					server_max_space -= sizeof(*s);
-					
+
 					if(o->hdr.flags & PATHMGR_FLAG_OPAQUE) {
 						local_flags |= _PMFLAG_SEEN_OPAQUE;
 					}
@@ -264,7 +264,7 @@ int pathmgr_resolve_servers(resmgr_context_t *ctp, struct node_entry *node, stru
 					s->key = 0;
 					s++;
 				}
-			} 
+			}
 
 			//Always replace the last symlink as we climb up the tree
 			else {
@@ -275,7 +275,7 @@ int pathmgr_resolve_servers(resmgr_context_t *ctp, struct node_entry *node, stru
 				}
 				server_max_space -= sizeof(*s);
 
-				/* 
+				/*
 				 Proc symlinks are like any other OPAQUE entry, except for the
 				 fact that they re-direct to the link_root_id handle of the
 				 pathmanager. OPAQUE entries stop all entries underneath
@@ -336,7 +336,7 @@ int pathmgr_resolve_servers(resmgr_context_t *ctp, struct node_entry *node, stru
 
 		if(n == n->parent) {
 			break;
-		} 
+		}
 
 	}
 
@@ -358,7 +358,7 @@ int pathmgr_resolve_servers(resmgr_context_t *ctp, struct node_entry *node, stru
 	SETIOV(ctp->iov + 2, reply, len);
 	SETIOV(ctp->iov + 3, path, linkp->path_len - len);
 	return _RESMGR_NPARTS(4);
-}	
+}
 
 
 __SRCVERSION("pathmgr_resolve.c $Rev: 153052 $");

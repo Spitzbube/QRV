@@ -1,33 +1,33 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmmgr_event
- * 
+ *
  * When installed, this routine is called into from the memory partition
  * module to deliver events to any registered process.
  * This routine will be called with the partition that the event is associated
  * with <mp>, the event type (evtype> and (depending on the event type) optional
  * event specific data.
- * 
+ *
  * Event processing is kept out of the memory partitioning module and is
  * implemented entirely within the resource manager.
- * 
+ *
  * Returns: nothing
 */
 
@@ -51,11 +51,11 @@ static char *mclass_evt_string(memclass_evttype_t evt);
 
 /*
  * =============================================================================
- * 
+ *
  * 						S U P P O R T   R O U T I N E S
- * 
+ *
  * 				These routines are first to allow them to be inlined
- * 
+ *
  * =============================================================================
 */
 
@@ -73,7 +73,7 @@ static char *mclass_evt_string(memclass_evttype_t evt);
 
 /*
  * pid_match
- * 
+ *
  * compare 2 values as process identifier (pid_t) types and return whether
  * they are equivalent
 */
@@ -87,7 +87,7 @@ static INLINE bool pid_match(void **match, void **val)
 
 /*
  * mpid_match
- * 
+ *
  * compare 2 values as memory partition identifier (part_id_t) types and
  * return whether they are equivalent
 */
@@ -101,7 +101,7 @@ static INLINE bool mpid_match(void **match, void **val)
 
 /*
  * oid_match
- * 
+ *
  * compare 2 values as object identifier (void *) types and return whether they
  * are equivalent
 */
@@ -115,7 +115,7 @@ static INLINE bool oid_match(void **match, void **val)
 
 /*
  * delta_decr_check
- * 
+ *
  * perform the applicable delta decrement calculation and return TRUE if the
  * event send conditions are satisfied, otherwise return FALSE
 */
@@ -126,7 +126,7 @@ static INLINE bool delta_decr_check(memsize_t delta, memsize_t last_sz, memsize_
 
 /*
  * delta_incr_check
- * 
+ *
  * perform the applicable delta increment calculation and return TRUE if the
  * event send conditions are satisfied, otherwise return FALSE
 */
@@ -137,7 +137,7 @@ static INLINE bool delta_incr_check(memsize_t delta, memsize_t last_sz, memsize_
 
 /*
  * threshold_X_over_check
- * 
+ *
  * perform the applicable threshold cross over calculation and return TRUE if the
  * event send conditions are satisfied, otherwise return FALSE
 */
@@ -148,7 +148,7 @@ static INLINE bool threshold_X_over_check(memsize_t threshold, memsize_t cur_sz,
 
 /*
  * threshold_X_under_check
- * 
+ *
  * perform the applicable threshold cross over calculation and return TRUE if the
  * event send conditions are satisfied, otherwise return FALSE
 */
@@ -159,10 +159,10 @@ static INLINE bool threshold_X_under_check(memsize_t threshold, memsize_t cur_sz
 
 /*
  * initial_delta_conditions_check
- * 
+ *
  * initialization routine for delta events.
  * This routine will update the event->evt_data.size value so that the delivery
- * conditions for a delta change event can be properly evaluated. 
+ * conditions for a delta change event can be properly evaluated.
  * A value of 'memsize_t_INFINITY' for the event->evt_data.size is used to
  * trigger the update when a delta event is initially registered.
 */
@@ -214,7 +214,7 @@ typedef struct
 } elistdata_t;
 /*
  * get_first_event
- * 
+ *
  * Safely get the first event to send from 'evlist'. This function handles the
  * case where an event has transitioned from the active to the inactive list and
  * continues to process all events in the active list
@@ -236,7 +236,7 @@ static INLINE mempart_evt_t *get_first_event(part_evtlist_t *evlist, elistdata_t
 
 /*
  * get_next_event
- * 
+ *
  * Safely get the next event to send from 'evlist'. This function handles the
  * case where an event has transitioned from the active to the inactive list and
  * continues to process all events in the active list
@@ -298,29 +298,29 @@ static INLINE mempart_evt_t *get_next_event(part_evtlist_t *evlist, mempart_evt_
 
 /*
  * send_threshold_X_events
- * 
+ *
  * Send an event to all listeners in list <evlist> for which
  * <ev>->_type.threshold_cross is either > or < the registered 'threshold' value
- * 
+ *
  * Note that in order to meet the conditions for a threshold crossing OVER, the
  * registered event crossing 'over' value must be greater than <prev_size> and
  * less than <ev>->_type.threshold_cross (ie. it must be between the
  * previous and the current values). If the previous current value was already
  * over the registered 'over' value, the threshold is not crossed and no event
  * will be sent.
- * 
+ *
  * Similarly, in order to meet the conditions for a threshold crossing UNDER,
  * the registered event crossing 'under' value must be less than <prev_size> and
  * greater than or equal to <ev>->_type.threshold_cross (ie it must be
  * between the previous and the current values). If the previous current value
  * was already under the registered 'under' value, the threshold is not crossed
  * and no event will be sent.
- * 
+ *
  * By default, events are removed from the event list once they have been
  * delivered. This behavour is controlled with the xxxx_evtflags_t_REARM flag.
  * If set, the event is not removed from the event list and will be sent
  * whenever the event delivery condition is met.
- * 
+ *
 */
 #define GET_THRESHOLD_X_P(_ei_) \
 		(((_ei_)->class == evtclass_t_MEMCLASS) ? &(_ei_)->info.mc.val.threshold_cross : \
@@ -391,11 +391,11 @@ send_threshold_X_events(part_evtlist_t *evlist, memsize_t cur_size, memsize_t pr
 
 /*
  * send_delta_events
- * 
+ *
  * Send an event to all listeners in list <evlist> for which the delta between
  * the current size value and the size at the time the last event was sent
  * is >= the registered 'delta' value on increment or decrement
- * 
+ *
  * By default, events are removed from the event list once they have been
  * delivered. This behavour is controlled with the xxxx_evtflags_t_REARM flag.
  * If set, the event is not removed from the event list and will be sent
@@ -475,9 +475,9 @@ send_delta_events(part_evtlist_t *evlist, memsize_t cur_size, memsize_t prev_siz
 
 /*
  * send_event
- * 
+ *
  * Unconditionally send event data <ev> to all listeners in list <evlist>.
- * 
+ *
  * By default, events are removed from the event list once they have been
  * delivered. This behavour is controlled with the xxxx_evtflags_t_REARM flag.
  * If set, the event is not removed from the event list and will be sent
@@ -545,7 +545,7 @@ static INLINE void send_event(part_evtlist_t *evlist, void **val, bool (*match_f
 
 /*
  * _apmmgr_event_trigger
- * 
+ *
  * This is the routine which is made available externally to the memory
  * partitioning module and performs initial event processing
 */
@@ -615,7 +615,7 @@ static void _apmmgr_event_trigger(apmmgr_attr_t *mpart, memclass_evttype_t evtyp
 
 /*
  * __apmmgr_event_trigger2
- * 
+ *
  * This routine will handle all of the possible memory class DELTA and
  * THRESHOLD_CROSS events. It is only called from _apmmgr_event_trigger2()
 */
@@ -701,7 +701,7 @@ static INLINE void __apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttyp
 
 /*
  * _apmmgr_event_trigger2
- * 
+ *
  * This routine will take the individual memory class DELTA events and generate
  * the applicable THRESHOLD_CROSS events. __apmmgr_event_trigger2() is
  * called to actually deliver the event.
@@ -746,7 +746,7 @@ static INLINE void _apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype
 			break;
 		case memclass_evttype_t_DELTA_RU_DECR:
 			evtype = memclass_evttype_t_THRESHOLD_CROSS_RU_UNDER;
-			break;		
+			break;
 		case memclass_evttype_t_DELTA_UU_INCR:
 			evtype = memclass_evttype_t_THRESHOLD_CROSS_UU_OVER;
 			break;
@@ -760,7 +760,7 @@ static INLINE void _apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype
 			evtype = memclass_evttype_t_INVALID;
 			break;
 	}
-	
+
 	if (evtype != memclass_evttype_t_INVALID) {
 		__apmmgr_event_trigger2(mpart, evtype, cur_size, prev_size);
 	}
@@ -768,15 +768,15 @@ static INLINE void _apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype
 
 /*
  * =============================================================================
- * 
+ *
  * 						E V E N T   A P I   R O U T I N E S
- * 
+ *
  * =============================================================================
 */
 
 /*******************************************************************************
  * apmmgr_event_trigger
- * 
+ *
  * This is the routine which is made available externally to the memory
  * partitioning module and performs initial event processing
 */
@@ -866,7 +866,7 @@ void apmmgr_event_trigger(apmmgr_attr_t *mpart, mempart_evttype_t evtype, ...)
 				 * addition arguments:
 				 * arg1 - previous configuration (mempart_cfg_t *)
 				 * arg2 - current configuration (mempart_cfg_t *)
-				 * 
+				 *
 				 * From these args the 'cfg_chg.attr.min' will be built an sent
 				 * to any registered processes
 				*/
@@ -896,7 +896,7 @@ void apmmgr_event_trigger(apmmgr_attr_t *mpart, mempart_evttype_t evtype, ...)
 				 * addition arguments:
 				 * arg1 - previous configuration (mempart_cfg_t *)
 				 * arg2 - current configuration (mempart_cfg_t *)
-				 * 
+				 *
 				 * From these args the 'cfg_chg.attr.max' will be built an sent
 				 * to any registered processes
 				*/
@@ -926,10 +926,10 @@ void apmmgr_event_trigger(apmmgr_attr_t *mpart, mempart_evttype_t evtype, ...)
 				 * addition arguments:
 				 * arg1 - previous configuration (mempart_cfg_t *)
 				 * arg2 - current configuration (mempart_cfg_t *)
-				 * 
+				 *
 				 * Note that the policies in the previous configuration are munged
 				 * and must be converted to boolean values
-				 * 
+				 *
 				 * From these args a 'cfg_chg.policy' will be built an sent to any
 				 * registered processes
 				*/
@@ -946,7 +946,7 @@ void apmmgr_event_trigger(apmmgr_attr_t *mpart, mempart_evttype_t evtype, ...)
 					cfgchg.policy.b |= (cur->policy.config_lock ? cfgchg_t_LOCK_POLICY : 0);
 					cfgchg.policy.b |= (cur->policy.permanent ? cfgchg_t_PERMANENT_POLICY : 0);
 					cfgchg.policy.alloc = cur->policy.alloc;
-				
+
 #ifdef DISPLAY_EVENT_MSG
 					kprintf("CONFIG_CHG_POLICY: mp %p (%s) alloc/term/cfg_lck/perm = %d/%c/%c/%c\n",
 							mpart, mpart->name,
@@ -995,7 +995,7 @@ void apmmgr_event_trigger(apmmgr_attr_t *mpart, mempart_evttype_t evtype, ...)
 			}
 			break;
 		}
-		
+
 		case mempart_evttype_t_OBJ_ASSOCIATE:
 		case mempart_evttype_t_OBJ_DISASSOCIATE:
 		{
@@ -1039,13 +1039,13 @@ void apmmgr_event_trigger(apmmgr_attr_t *mpart, mempart_evttype_t evtype, ...)
 
 /*******************************************************************************
  * apmmgr_event_trigger2
- * 
+ *
  * This is the routine which is made available externally to the memory
  * partitioning module and performs initial event processing for memory classes
- * 
+ *
  * this event handler is called from the memory class allocator. The only
  * events sent from the allocator are ...
- * 
+ *
  * 	memclass_evttype_t_DELTA_TU_INCR - implying an allocation
  * 	memclass_evttype_t_DELTA_TU_DECR - implying a deallocation
  * 	memclass_evttype_t_DELTA_RF_INCR - implying an increase in the amount of
@@ -1062,10 +1062,10 @@ void apmmgr_event_trigger(apmmgr_attr_t *mpart, mempart_evttype_t evtype, ...)
  * 										created
  * 	memclass_evttype_t_PARTITION_DESTROY- a partition of the memory class was
  * 										destroyed
- * 
+ *
  * Note that all of the other events can be generated based on the previous
  * and current size information.
- * 
+ *
  * This function will generate all of the sub DELTA events from the primary
  * events received from the allocator and call _apmmgr_event_trigger2() to
  * deliver them. _apmmgr_event_trigger2() will in turn generate all
@@ -1094,14 +1094,14 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 		/*
 		 * an allocation has occurred for the memory class. This has the
 		 * possibility to generate 4 separate events
-		 * 
+		 *
 		 * 		total used increment
 		 * 		total free decrement
 		 * 		reserved used increment
 		 * 		unreserved used increment
 		 * 		reserved free decrement
 		 * 		unreserved free decrement
-		 * 
+		 *
 		 * Either 4 of these events will occur or all 6 will occur as the first
 		 * 2 are unconditional
 		*/
@@ -1110,38 +1110,38 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 			if ((cur_size_info->reserved.used + cur_size_info->unreserved.used) >
 				(prev_size_info->reserved.used + prev_size_info->unreserved.used))
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_TU_INCR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_TU_INCR,
 											cur_size_info->reserved.used + cur_size_info->unreserved.used,
 											prev_size_info->reserved.used + prev_size_info->unreserved.used);
 			}
 			if ((cur_size_info->reserved.free + cur_size_info->unreserved.free) <
 				(prev_size_info->reserved.free + prev_size_info->unreserved.free))
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_TF_DECR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_TF_DECR,
 											cur_size_info->reserved.free + cur_size_info->unreserved.free,
 											prev_size_info->reserved.free + prev_size_info->unreserved.free);
 			}
 			if (cur_size_info->reserved.used > prev_size_info->reserved.used)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RU_INCR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RU_INCR,
 											cur_size_info->reserved.used,
 											prev_size_info->reserved.used);
 			}
 			if (cur_size_info->unreserved.used > prev_size_info->unreserved.used)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UU_INCR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UU_INCR,
 											cur_size_info->unreserved.used,
 											prev_size_info->unreserved.used);
 			}
 			if (cur_size_info->reserved.free < prev_size_info->reserved.free)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RF_DECR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RF_DECR,
 											cur_size_info->reserved.free,
 											prev_size_info->reserved.free);
 			}
 			if (cur_size_info->unreserved.free < prev_size_info->unreserved.free)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UF_DECR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UF_DECR,
 											cur_size_info->unreserved.free,
 											prev_size_info->unreserved.free);
 			}
@@ -1151,7 +1151,7 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 		/*
 		 * a deallocation has occurred for the memory class. This has the
 		 * possibility to generate 6 separate events
-		 * 
+		 *
 		 * 		total used decrement
 		 * 		total free increment
 		 * 		reserved used decrement
@@ -1167,44 +1167,44 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 			if ((cur_size_info->reserved.used + cur_size_info->unreserved.used) <
 				(prev_size_info->reserved.used + prev_size_info->unreserved.used))
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_TU_DECR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_TU_DECR,
 											cur_size_info->reserved.used + cur_size_info->unreserved.used,
 											prev_size_info->reserved.used + prev_size_info->unreserved.used);
 			}
 			if ((cur_size_info->reserved.free + cur_size_info->unreserved.free) >
 				(prev_size_info->reserved.free + prev_size_info->unreserved.free))
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_TF_INCR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_TF_INCR,
 											cur_size_info->reserved.free + cur_size_info->unreserved.free,
 											prev_size_info->reserved.free + prev_size_info->unreserved.free);
 			}
 			if (cur_size_info->reserved.used < prev_size_info->reserved.used)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RU_DECR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RU_DECR,
 											cur_size_info->reserved.used,
 											prev_size_info->reserved.used);
 			}
 			if (cur_size_info->unreserved.used < prev_size_info->unreserved.used)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UU_DECR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UU_DECR,
 											cur_size_info->unreserved.used,
 											prev_size_info->unreserved.used);
 			}
 			if (cur_size_info->reserved.free > prev_size_info->reserved.free)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RF_INCR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RF_INCR,
 											cur_size_info->reserved.free,
 											prev_size_info->reserved.free);
 			}
 			if (cur_size_info->unreserved.free > prev_size_info->unreserved.free)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UF_INCR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UF_INCR,
 											cur_size_info->unreserved.free,
 											prev_size_info->unreserved.free);
 			}
 			break;
 		}
-		
+
 		case memclass_evttype_t_DELTA_RF_INCR:
 		{
 			/*
@@ -1214,18 +1214,18 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 			 * unreserved.free decreases by a corresponding amount. The used
 			 * amounts do not change hence there are only 2 possible events to
 			 * generate from this event
-			 * 
+			 *
 			 *	memclass_evttype_t_DELTA_RF_INCR
 			 * 	memclass_evttype_t_DELTA_UF_DECR
 			*/
 			if (cur_size_info->reserved.free > prev_size_info->reserved.free)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RF_INCR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RF_INCR,
 											cur_size_info->reserved.free, prev_size_info->reserved.free);
 			}
 			if (cur_size_info->unreserved.free < prev_size_info->unreserved.free)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UF_DECR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UF_DECR,
 											cur_size_info->unreserved.free, prev_size_info->unreserved.free);
 			}
 			break;
@@ -1240,18 +1240,18 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 			 * unreserved.free increases by a corresponding amount. The used
 			 * amounts do not change hence there are only 2 possible events to
 			 * generate from this event
-			 * 
+			 *
 			 *	memclass_evttype_t_DELTA_RF_DECR
 			 * 	memclass_evttype_t_DELTA_UF_INCR
 			*/
 			if (cur_size_info->reserved.free < prev_size_info->reserved.free)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RF_DECR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RF_DECR,
 											cur_size_info->reserved.free, prev_size_info->reserved.free);
 			}
 			if (cur_size_info->unreserved.free > prev_size_info->unreserved.free)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UF_INCR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UF_INCR,
 											cur_size_info->unreserved.free, prev_size_info->unreserved.free);
 			}
 			break;
@@ -1267,7 +1267,7 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 			 * Also, in order to keep the totals constant, reserved.free decreases
 			 * and the unreserved.free increases by identical amounts. The 4 events
 			 * to generate from this event are
-			 * 
+			 *
 			 *	memclass_evttype_t_DELTA_RU_INCR
 			 * 	memclass_evttype_t_DELTA_RF_DECR
 			 * 	memclass_evttype_t_DELTA_UU_DECR
@@ -1275,7 +1275,7 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 			*/
 			if (cur_size_info->reserved.used > prev_size_info->reserved.used)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RU_INCR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RU_INCR,
 											cur_size_info->reserved.used, prev_size_info->reserved.used);
 			}
 			if (cur_size_info->reserved.free < prev_size_info->reserved.free)
@@ -1285,7 +1285,7 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 			}
 			if (cur_size_info->unreserved.used < prev_size_info->unreserved.used)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UU_DECR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UU_DECR,
 											cur_size_info->unreserved.used, prev_size_info->unreserved.used);
 			}
 			if (cur_size_info->unreserved.free > prev_size_info->unreserved.free)
@@ -1306,7 +1306,7 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 			 * Also, in order to keep the totals constant, reserved.free increases
 			 * and the unreserved.free decreases by identical amounts. The 4 events
 			 * to generate from this event are
-			 * 
+			 *
 			 *	memclass_evttype_t_DELTA_RU_DECR
 			 * 	memclass_evttype_t_DELTA_RF_INCR
 			 * 	memclass_evttype_t_DELTA_UU_INCR
@@ -1314,7 +1314,7 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 			*/
 			if (cur_size_info->reserved.used < prev_size_info->reserved.used)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RU_DECR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_RU_DECR,
 											cur_size_info->reserved.used, prev_size_info->reserved.used);
 			}
 			if (cur_size_info->reserved.free > prev_size_info->reserved.free)
@@ -1324,7 +1324,7 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 			}
 			if (cur_size_info->unreserved.used > prev_size_info->unreserved.used)
 			{
-				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UU_INCR, 
+				_apmmgr_event_trigger2(mpart, memclass_evttype_t_DELTA_UU_INCR,
 											cur_size_info->unreserved.used, prev_size_info->unreserved.used);
 			}
 			if (cur_size_info->unreserved.free < prev_size_info->unreserved.free)
@@ -1364,9 +1364,9 @@ void apmmgr_event_trigger2(apmmgr_attr_t *mpart, memclass_evttype_t evtype,
 
 /*
  * =============================================================================
- * 
+ *
  * 					D E B U G   S U P P O R T   R O U T I N E S
- * 
+ *
  * =============================================================================
 */
 #if !defined(NDEBUG) && defined(DISPLAY_EVENT_MSG)
@@ -1387,7 +1387,7 @@ static char *mclass_evt_strings[] =
 	[memclass_evttype_t_THRESHOLD_CROSS_RU_UNDER] = "RESERVED USED UNDER",
 	[memclass_evttype_t_THRESHOLD_CROSS_UU_OVER] = "UNRESERVED USED OVER",
 	[memclass_evttype_t_THRESHOLD_CROSS_UU_UNDER] = "UNRESERVED USED UNDER",
-	
+
 	//	free and used deltas (total)
 	[memclass_evttype_t_DELTA_TF_INCR] = "TOTAL FREE DELTA INCR",
 	[memclass_evttype_t_DELTA_TF_DECR] = "TOTAL FREE DELTA DECR",
@@ -1403,7 +1403,7 @@ static char *mclass_evt_strings[] =
 	[memclass_evttype_t_DELTA_RU_DECR] = "RESERVED USED DELTA DECR",
 	[memclass_evttype_t_DELTA_UU_INCR] = "UNRESERVED USED DELTA INCR",
 	[memclass_evttype_t_DELTA_UU_DECR] = "UNRESERVED USED DELTA DECR",
-	
+
 	[memclass_evttype_t_PARTITION_CREATE] = "MEMCLASS PARTITION CREATE",
 	[memclass_evttype_t_PARTITION_DESTROY] = "MEMCLASS PARTITION DESTROY",
 };

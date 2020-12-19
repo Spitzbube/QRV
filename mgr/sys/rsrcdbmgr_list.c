@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -50,7 +50,7 @@ void rsrc_block_free(rsrc_block_t *blockp) {
 }
 
 /***
- Searching Functions 
+ Searching Functions
 ***/
 /*
  This will return the root node for a given class.  If NULL is passed
@@ -116,7 +116,7 @@ rsrc_node_t *rsrc_node_locate(const char *name, int create) {
 	}
 
 	for(level=1, parent=&root->head_node; parent; level++, parent=node) {
-		//Eat any extra slashes in the name, then find the end 
+		//Eat any extra slashes in the name, then find the end
 		while(*start && *start == '/') { start++; }
 		end = start;
 		while(*end && *end != '/') { end++; }
@@ -152,8 +152,8 @@ rsrc_node_t *rsrc_node_locate(const char *name, int create) {
 /*
  Return the priority information about this range (max/?min?)
 */
-static int16_t find_range_priority(rsrc_root_node_t *root, 
-								   uint64_t start, uint64_t end, 
+static int16_t find_range_priority(rsrc_root_node_t *root,
+								   uint64_t start, uint64_t end,
 								   unsigned flags) {
 	rsrc_create_t *create;
 	int16_t priority;
@@ -164,7 +164,7 @@ static int16_t find_range_priority(rsrc_root_node_t *root,
 			break;
 		}
 
-		if ((create->start <= start && start <= create->end) || 
+		if ((create->start <= start && start <= create->end) ||
 		    (start <= create->start && create->start <= end)) {
 			//HACK: We need to support the RSVP flags in some way
 			priority = __max(create->node->priority + (create->flags & RSRCDBMGR_FLAG_RSVP) ? 1 : 0, priority);
@@ -174,7 +174,7 @@ static int16_t find_range_priority(rsrc_root_node_t *root,
 	return(priority);
 }
 
-/* 
+/*
  Find the priority of this block.  Then find the next lowest priority
  block that starts before (backward = 1) or starts after (backwards = 0).
  We then stuff the appropriate end point (backward = 1) or startpoint
@@ -182,12 +182,12 @@ static int16_t find_range_priority(rsrc_root_node_t *root,
  we stuff it with the start/end values respectively
 */
 static int find_next_priority(rsrc_root_node_t *root,
-							  uint64_t start, uint64_t end, 
+							  uint64_t start, uint64_t end,
 							  int backward, uint64_t *value) {
 	rsrc_create_t *create;
 	uint16_t curpriority, priority;
 
-	
+
 	curpriority = find_range_priority(root, start, end, 0);
 	*value = (backward) ? ((start == 0) ? 0 : start-1)
                         : ((end == ULONGLONG_MAX) ? ULONGLONG_MAX : end+1);
@@ -202,7 +202,7 @@ static int find_next_priority(rsrc_root_node_t *root,
 			break;
 		}
 
-		if((create->start <= start && start <= create->end) || 
+		if((create->start <= start && start <= create->end) ||
 		   (start <= create->start && create->start <= end)) {
 			//HACK: Support the RSVP flag
 			uint16_t nodeprio;
@@ -211,7 +211,7 @@ static int find_next_priority(rsrc_root_node_t *root,
 			priority = __max(nodeprio, priority);
 
 			if(priority >= curpriority && nodeprio >= curpriority) {
-				*value = (backward) ? __min(*value, create->start-1) 
+				*value = (backward) ? __min(*value, create->start-1)
                                     : __max(*value, create->end+1);
 			}
 		}
@@ -246,14 +246,14 @@ static int find_next_priority(rsrc_root_node_t *root,
 		 ((blk)->owner && (blk)->flags & RSRC_FIND_SHARE && \
 		  (flags) & RSRC_FIND_SHARE))
 
-int rsrc_find_range(rsrc_root_node_t *root, uint64_t length, 
-					uint64_t *start, uint64_t *end, 
+int rsrc_find_range(rsrc_root_node_t *root, uint64_t length,
+					uint64_t *start, uint64_t *end,
 					uint64_t alignment, pid_t owner,
 					unsigned flags, int *priority) {
 	uint64_t		limit_start, limit_end;
 	uint64_t		tmp_start, tmp_end, extraamount;
 	uint64_t		savedstart, savedend;
-	rsrc_block_t	*curblock, *tmpblock;	
+	rsrc_block_t	*curblock, *tmpblock;
 	int16_t			savedprio, curprio;
 	uint8_t			forward;
 
@@ -295,7 +295,7 @@ int rsrc_find_range(rsrc_root_node_t *root, uint64_t length,
 restart:
 
 		/* Look for something that is valid and might fit */
-		if(BLOCK_SHARE_COMPATABLE(curblock, flags, owner) && 
+		if(BLOCK_SHARE_COMPATABLE(curblock, flags, owner) &&
 			tmp_start <= tmp_end && length <= ((tmp_end - tmp_start) + 1)) {
 
 			tmp_start = (forward) ? tmp_start : tmp_end - (length - 1);
@@ -309,12 +309,12 @@ restart:
 
 			/* Re-check the limits after a possible alignment adjust */
 			if(/*extraamount && We iterate below ... so always check */
-			   (tmp_start < __max(curblock->start, limit_start) || 
+			   (tmp_start < __max(curblock->start, limit_start) ||
 			    tmp_end   > __min(curblock->end, limit_end))) {
 				;		//Invalid block ... just continue
-			} else { 
+			} else {
 				/* Check range priority against saved block */
-				curprio = find_range_priority(root, tmp_start, tmp_end, 0);	
+				curprio = find_range_priority(root, tmp_start, tmp_end, 0);
 				if(curprio == 0 || savedprio == -1 || curprio < savedprio) {
 					savedstart = tmp_start;
 					savedend = tmp_end;
@@ -322,7 +322,7 @@ restart:
 					if(curprio == 0) {
 						break;
 					}
-				} 
+				}
 
 				/* Find the next possible starting block based on the priority */
 				if(find_next_priority(root, tmp_start, tmp_end, !forward, &extraamount)) {
@@ -340,7 +340,7 @@ restart:
 
 		curblock = (forward) ? curblock->next : curblock->prev;
 	}
-		
+
 	/* Check and see if what was found was better than what was saved */
 	if(savedprio != -1) {
 		*start = savedstart;
@@ -351,7 +351,7 @@ restart:
 		return EOK;
 	}
 
-	errno = ERANGE;	
+	errno = ERANGE;
 	return -1;
 }
 
@@ -380,7 +380,7 @@ void sort_check (rsrc_block_t *head)
 rsrc_create_t *rsrc_insert_create(rsrc_create_t **head, rsrc_create_t *create) {
 	rsrc_create_t **prev;
 
-	prev = head;	
+	prev = head;
 	while(*prev && (*prev)->start <= create->start) {
 		prev = &((*prev)->next);
 	}
@@ -393,8 +393,8 @@ rsrc_create_t *rsrc_insert_create(rsrc_create_t **head, rsrc_create_t *create) {
 /*
  Insert a new block (start, end) into the list before/after curblk.
 */
-rsrc_block_t *rsrc_insert_block(rsrc_block_t **head, rsrc_block_t *curblk, 
-								uint64_t start, uint64_t end, 
+rsrc_block_t *rsrc_insert_block(rsrc_block_t **head, rsrc_block_t *curblk,
+								uint64_t start, uint64_t end,
 								pid_t owner, unsigned flags, int after) {
 	rsrc_block_t *newblk;
 
@@ -414,7 +414,7 @@ rsrc_block_t *rsrc_insert_block(rsrc_block_t **head, rsrc_block_t *curblk,
 		}
 		*head = newblk;
 	} else {
-		//newblk->prev should alway be set to something 
+		//newblk->prev should alway be set to something
 		newblk->prev = (after) ? curblk : curblk->prev;
 		if((newblk->next = newblk->prev->next)) {
 			newblk->next->prev = newblk;
@@ -430,7 +430,7 @@ rsrc_block_t *rsrc_insert_block(rsrc_block_t **head, rsrc_block_t *curblk,
 
 /*
  Add a new allocation block into the single linked list of existing
- allocated blocks. 
+ allocated blocks.
  Then add the intersection of this block and existing blocks into
  the active pool of resources (make this another function?).
 */
@@ -448,7 +448,7 @@ rsrc_block_t *rsrc_insert_block(rsrc_block_t **head, rsrc_block_t *curblk,
 /*TODO:
   We need to roll these block_add_range* functions into one!
 */
-int rsrc_block_add_range_pid(rsrc_root_node_t *root, 
+int rsrc_block_add_range_pid(rsrc_root_node_t *root,
 							 uint64_t newstart, uint64_t newend, pid_t pid, unsigned flags) {
 	rsrc_block_t	*curblk, *absorb;
 
@@ -459,8 +459,8 @@ int rsrc_block_add_range_pid(rsrc_root_node_t *root,
 		if(newstart <= curblk->end + 1) {
 			uint8_t overlaps, canjoin;
 
-			overlaps = OVERLAPE((newstart != 0) ? newstart-1 : newstart, 
-							    (newend != ULONGLONG_MAX) ? newend+1 : newend, 
+			overlaps = OVERLAPE((newstart != 0) ? newstart-1 : newstart,
+							    (newend != ULONGLONG_MAX) ? newend+1 : newend,
 								curblk->start, curblk->end);
 			canjoin = JOIN_COMPATIBLE(curblk, pid, flags);
 
@@ -508,10 +508,10 @@ int rsrc_block_add_range_pid(rsrc_root_node_t *root,
  This function should have no intelligence other than determining that you want to
  insert a block in a "start point first" scenario or that you want to insert a block
  to be merged with other like minded blocks.  Currently this routine does a lot of
- extra work to limit ranges and the like.  This should be done by an external 
+ extra work to limit ranges and the like.  This should be done by an external
  function.
 */
-int rsrc_block_add_range(rsrc_root_node_t *root, 
+int rsrc_block_add_range(rsrc_root_node_t *root,
 						 uint64_t newstart, uint64_t newend, pid_t pid, unsigned flags) {
 	rsrc_block_t	*curblk, *absorb;
 
@@ -520,7 +520,7 @@ int rsrc_block_add_range(rsrc_root_node_t *root,
 	for(curblk = root->active; curblk && newstart <= newend; curblk = curblk->next) {
 		uint8_t overlaps;
 
-		//Skip blocks that aren't even close to us, 
+		//Skip blocks that aren't even close to us,
 		if(curblk->end + 1 < newstart) {
 			if(!curblk->next) {
 				break;
@@ -537,11 +537,11 @@ int rsrc_block_add_range(rsrc_root_node_t *root,
 			break;
 		}
 
-		overlaps = OVERLAPE((newstart != 0) ? newstart-1 : newstart, 
-						    (newend != ULONGLONG_MAX) ? newend+1 : newend, 
+		overlaps = OVERLAPE((newstart != 0) ? newstart-1 : newstart,
+						    (newend != ULONGLONG_MAX) ? newend+1 : newend,
 							curblk->start, curblk->end);
 
-		//If the next block has an owner and we overlap then create a new block before 
+		//If the next block has an owner and we overlap then create a new block before
 		if(curblk->owner && overlaps) {
 			if(newstart < curblk->start) {
 				if(absorb) {
@@ -554,7 +554,7 @@ int rsrc_block_add_range(rsrc_root_node_t *root,
 				break;
 			}
 			newstart = curblk->end + 1;
-			absorb = NULL;					
+			absorb = NULL;
 		} else if(overlaps) {
 			newstart = __min(newstart, curblk->start);
 			newend = __max(newend, curblk->end);
@@ -618,7 +618,7 @@ int rsrc_block_remove_range(rsrc_root_node_t *root, uint64_t newstart, uint64_t 
 			memcpy(target, *curblk, sizeof(*target));
 			target->next = *curblk;
 			target->next->prev = target;
-			
+
 			/*
 			TODO: If the block is owned/shared then we need
 			      to do some extra fiddling.
@@ -637,8 +637,8 @@ int rsrc_block_remove_range(rsrc_root_node_t *root, uint64_t newstart, uint64_t 
 			//Advance the pointer to the next,next block
 			curblk = &target->next->next;
 		} else {
-			target->start = (newstart <= target->start) ? newend + 1 : target->start; 
-			target->end = (newend >= target->end) ? newstart - 1 : target->end; 
+			target->start = (newstart <= target->start) ? newend + 1 : target->start;
+			target->end = (newend >= target->end) ? newstart - 1 : target->end;
 			curblk = &target->next;
 		}
 	}
@@ -646,7 +646,7 @@ int rsrc_block_remove_range(rsrc_root_node_t *root, uint64_t newstart, uint64_t 
 }
 
 /***
- Middle Layer Helper Functions 
+ Middle Layer Helper Functions
 ***/
 int _remove_callout(rsrc_root_node_t *root, uint64_t start, uint64_t end, void *data) {
 	return rsrc_block_remove_range(root, start, end, 0);
@@ -661,9 +661,9 @@ int _add_callout(rsrc_root_node_t *root, uint64_t start, uint64_t end, void *dat
  and apply a function to that range (ie add/remove etc).
 */
 int _rsrc_block_limit_op(rsrc_root_node_t *root, uint64_t start, uint64_t end,
-                        void *odata, 
+                        void *odata,
 						int (* overlap)(rsrc_root_node_t *root, uint64_t start, uint64_t end, void *data),
-                        void *nodata, 
+                        void *nodata,
 						int (* nonoverlap)(rsrc_root_node_t *root, uint64_t start, uint64_t end, void *data)) {
 	rsrc_create_t *tmpinfo;
 	uint64_t	  overlapstart, overlapend;
@@ -750,7 +750,7 @@ static int _rsrc_is_child(rsrc_node_t *parent, rsrc_node_t *target) {
 
 	return 0;
 }
- 
+
 /*
  This function is called when you want to perform some sort of search/removal
  operation on a set of blocks.
@@ -776,7 +776,7 @@ int _rsrc_block_search_op(rsrc_request_t *rsrc, pid_t pid, unsigned flags, int *
 	uint8_t			curvalid;
 
 	/* Validate the resource entry being attached */
-	if(!rsrc || !rsrc->name || 
+	if(!rsrc || !rsrc->name ||
 	  ((rsrc->flags & RSRCDBMGR_FLAG_RANGE) && rsrc->start > rsrc->end)) {
 		return EINVAL;
 	}
@@ -791,8 +791,8 @@ int _rsrc_block_search_op(rsrc_request_t *rsrc, pid_t pid, unsigned flags, int *
 		return errno;
 	}
 
-	/* 
-	 Iterate now over all of the entries and if not successfull, then over 
+	/*
+	 Iterate now over all of the entries and if not successfull, then over
 	 all of the child entries, looking for the best match that we can offer.
 	*/
 	memset(&lastmatch, 0, sizeof(lastmatch));
@@ -806,7 +806,7 @@ int _rsrc_block_search_op(rsrc_request_t *rsrc, pid_t pid, unsigned flags, int *
 		pid_t			frompid;
 
 		//OPTIMIZE: If we are at the head, then the range is 0-ULONGLONG_MAX rather than
-		//restricting the range to what is in the create list.  
+		//restricting the range to what is in the create list.
 		if((rsrc->flags & RSRCDBMGR_FLAG_ALIGN) && rsrc->align) {
 			alignment = rsrc->align;
 		} else {
@@ -828,10 +828,10 @@ int _rsrc_block_search_op(rsrc_request_t *rsrc, pid_t pid, unsigned flags, int *
 					curstart = __max(rsrc->start, curstart);
 					curend = __min(rsrc->end, curend);
 				}
-	
-				if(rsrc_find_range(root, rsrc->length, &curstart, &curend, 
+
+				if(rsrc_find_range(root, rsrc->length, &curstart, &curend,
 									alignment, frompid, rsrc->flags, &curprio) != -1) {
-					if(curprio < lastprio || 
+					if(curprio < lastprio ||
 					   (rsrc->flags & RSRCDBMGR_FLAG_TOPDOWN && curprio <= lastprio)) {
 						lastmatch.start = curstart;
 						lastmatch.end = curend;
@@ -840,7 +840,7 @@ int _rsrc_block_search_op(rsrc_request_t *rsrc, pid_t pid, unsigned flags, int *
 				}
 				curvalid = 0;
 			}
-	
+
 			if(curvalid) {
 				curstart =  __min(curstart, target->start);
 				curend = __max(curend, target->end);
@@ -850,7 +850,7 @@ int _rsrc_block_search_op(rsrc_request_t *rsrc, pid_t pid, unsigned flags, int *
 			}
 			curvalid = 1;
 		}
-	
+
 		//One last check on exit if we missed any
 		if(curvalid) {
 			if(rsrc->flags & RSRCDBMGR_FLAG_RANGE) {
@@ -858,7 +858,7 @@ int _rsrc_block_search_op(rsrc_request_t *rsrc, pid_t pid, unsigned flags, int *
 				curend = __min(rsrc->end, curend);
 			}
 
-			if(rsrc_find_range(root, rsrc->length, &curstart, &curend, 
+			if(rsrc_find_range(root, rsrc->length, &curstart, &curend,
 								alignment, frompid, rsrc->flags, &curprio) != -1) {
 				if(curprio < lastprio) {
 					lastmatch.start = curstart;
@@ -867,7 +867,7 @@ int _rsrc_block_search_op(rsrc_request_t *rsrc, pid_t pid, unsigned flags, int *
 				}
 			}
 		}
-	
+
 		//We didn't find a matching entry, invalid arguments assumed
 		if(lastprio == INT_MAX) {
 			return EINVAL;
@@ -876,13 +876,13 @@ int _rsrc_block_search_op(rsrc_request_t *rsrc, pid_t pid, unsigned flags, int *
 
 	if(flags & FLAG_ATTACH_RMTOPID) {			/* Remove and assign to pid */
 		(void)rsrc_block_remove_range(root, lastmatch.start, lastmatch.end, 0);
-		(void)rsrc_block_add_range_pid(root, lastmatch.start, lastmatch.end, 
+		(void)rsrc_block_add_range_pid(root, lastmatch.start, lastmatch.end,
 								 pid, rsrc->flags & RSRCDBMGR_FLAG_SHARE);
 	} else if(flags & FLAG_ATTACH_RMFROMPID) {	/* Remove from the pid */
 		(void)rsrc_block_remove_range(root, lastmatch.start, lastmatch.end, pid);
 		if(!(flags & FLAG_ATTACH_RM)) {
-			_rsrc_block_limit_op(root, lastmatch.start, lastmatch.end, 
-								 NULL, _add_callout,	/* Overlap ranges */	
+			_rsrc_block_limit_op(root, lastmatch.start, lastmatch.end,
+								 NULL, _add_callout,	/* Overlap ranges */
 								 NULL, NULL);			/* Non-overlap ranges */
 		}
 	}
@@ -928,8 +928,8 @@ int _rsrcdbmgr_create(rsrc_alloc_t *rsrc, pid_t pid) {
 	create->node = node;
 
 	/* Insert the data blocks before we insert the create block */
-	_rsrc_block_limit_op(root, create->start, create->end, 
-						 NULL, NULL,			/* Overlap ranges */	
+	_rsrc_block_limit_op(root, create->start, create->end,
+						 NULL, NULL,			/* Overlap ranges */
 						 NULL, _add_callout);	/* Non-overlap ranges */
 
 	/* Insert the create block into the list ordered by start fields */
@@ -960,13 +960,13 @@ int _rsrcdbmgr_destroy(rsrc_alloc_t *rsrc, pid_t pid) {
 	}
 
 	/*
-	 Remove/Split/Modify the create block to erase this range.  
-	 Then remove the active resources from the range.  
+	 Remove/Split/Modify the create block to erase this range.
+	 Then remove the active resources from the range.
 	 Makes it multipass but this is a low runner function.
 	*/
-	prev = &root->created;	
+	prev = &root->created;
 	while((target = *prev) && target->start <= rsrc->end) {
-		if(target->node != node || target->creator != pid || 
+		if(target->node != node || target->creator != pid ||
 		   !OVERLAPE(target->start, target->end, rsrc->start, rsrc->end)) {
 			prev = &(*prev)->next;
 			continue;
@@ -1002,8 +1002,8 @@ int _rsrcdbmgr_destroy(rsrc_alloc_t *rsrc, pid_t pid) {
 	}
 
 	/* Remove the data blocks after we removed the create block */
-	_rsrc_block_limit_op(root, rsrc->start, rsrc->end, 
-						 NULL, NULL,				/* Overlap ranges */	
+	_rsrc_block_limit_op(root, rsrc->start, rsrc->end,
+						 NULL, NULL,				/* Overlap ranges */
 						 NULL, _remove_callout);	/* Non-overlap ranges */
 
 	return EOK;
@@ -1031,8 +1031,8 @@ int _rsrcdbmgr_attach(rsrc_request_t *rsrc, pid_t pid) {
 /*
  Return a value to the system.  This must be a value that is valid
  for the process, otherwise this will error.  This function can't
- be used to return all values to the system. 
-*/ 
+ be used to return all values to the system.
+*/
 int _rsrcdbmgr_detach(rsrc_request_t *rsrc, pid_t pid) {
 	return _rsrc_block_search_op(rsrc, pid, FLAG_ATTACH_RMFROMPID, 0);
 }
@@ -1064,10 +1064,10 @@ int _rsrcdbmgr_pid_clear(pid_t pid) {
 			if(ctarget->creator == pid) {
 				*create = ctarget->next;
 
-				_rsrc_block_limit_op(root, ctarget->start, ctarget->end, 
-									 NULL, NULL,				/* Overlap ranges */	
+				_rsrc_block_limit_op(root, ctarget->start, ctarget->end,
+									 NULL, NULL,				/* Overlap ranges */
 									 NULL, _remove_callout);	/* Non-overlap ranges */
-				
+
 				rsrc_create_free(ctarget);
 			} else {
 				create = &ctarget->next;
@@ -1081,8 +1081,8 @@ int _rsrcdbmgr_pid_clear(pid_t pid) {
 					(*blockp)->prev = btarget->prev;
 				}
 
-				_rsrc_block_limit_op(root, btarget->start, btarget->end, 
-								 NULL, _add_callout,	/* Overlap ranges */	
+				_rsrc_block_limit_op(root, btarget->start, btarget->end,
+								 NULL, _add_callout,	/* Overlap ranges */
 								 NULL, NULL);			/* Non-overlap ranges */
 				rsrc_block_free(btarget);
 			} else {
@@ -1104,7 +1104,7 @@ int _rsrcdbmgr_pid_mark(pid_t pid) {
 	if(!(prp = proc_lock_pid(pid))) {
 		return -1;
 	}
-	
+
 	if(!(pidrsrc = (rsrc_list_array_t *)prp->rsrc_list)) {
 		pidrsrc =
 		prp->rsrc_list = _scalloc(sizeof(*pidrsrc));
@@ -1116,7 +1116,7 @@ int _rsrcdbmgr_pid_mark(pid_t pid) {
 }
 
 /*
- Things we want to query for: 
+ Things we want to query for:
 	Created Resources (start,end,owner,priority) (any level)
 	Free Resources (start,end,flags) (top level)
 	Allcated Resources (start,end,owner,flags) (top level)
@@ -1139,11 +1139,11 @@ int _rsrcdbmgr_pid_mark(pid_t pid) {
 	Additionally return information on created blocks rather
  than the allocated blocks if the FLAG_QUERY_CREAT is set.
 */
-	
+
 #define FLAG_QUERY_NEXT 	0x1		/* Get the next root element */
 #define FLAG_QUERY_COUNT	0x2		/* Return the count of the objects */
 #define FLAG_QUERY_CREATE	0x4		/* Look at the create rather than the active blocks */
-int _rsrcdbmgr_query(const char *name, pid_t pid, unsigned flags, int start, 
+int _rsrcdbmgr_query(const char *name, pid_t pid, unsigned flags, int start,
 					 rsrc_alloc_t *array, uint32_t nbytes, char **newname) {
 	rsrc_root_node_t *root;
 	rsrc_block_t	 *blockp;
@@ -1167,7 +1167,7 @@ int _rsrcdbmgr_query(const char *name, pid_t pid, unsigned flags, int start,
 		*newname = NULL;
 	}
 
-	for(total=0, blockp=root->active; blockp; blockp=blockp->next) { 
+	for(total=0, blockp=root->active; blockp; blockp=blockp->next) {
 		if(pid == -2 || blockp->owner == pid || (pid == -1 && blockp->owner)) {
 			total++;
 		}
@@ -1200,7 +1200,7 @@ int _rsrcdbmgr_query(const char *name, pid_t pid, unsigned flags, int start,
 
     for (i=0, blockp=root->active; blockp && i < (start + total); blockp=blockp->next) {
 		if(pid == -2 || blockp->owner == pid || (pid == -1 && blockp->owner)) {
-			if(i++ < start) {  
+			if(i++ < start) {
 				continue;
 			}
 			array[(i-start)-1].start = blockp->start;
@@ -1230,13 +1230,13 @@ void dump_list(char *name) {
 		return;
 	}
 
-	kprintf("Created blocks (%s):\n", name);	
+	kprintf("Created blocks (%s):\n", name);
 	for(create=root->created; create; create = create->next) {
 		kprintf(" %lld-%lld (by %d node %p (pri%d) flags 0x%x)\n",
-				create->start, create->end, create->creator, 
+				create->start, create->end, create->creator,
 				create->node, create->node->priority, create->flags);
 	}
-	kprintf("Allocated blocks (%s):\n", name);	
+	kprintf("Allocated blocks (%s):\n", name);
 	for(block=root->active; block; block = block->next) {
 		kprintf(" %lld-%lld (owner %d flags 0x%x)\n",
 				block->start, block->end, block->owner, block->flags);

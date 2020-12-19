@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -58,7 +58,7 @@ xfer_init(uintptr_t free_base, uintptr_t max_pgsz) {
 	xfer_tbl = xfer_curr = xfer;
 	xfer_end = &xfer[num_slots];
 	kern_xfer_base = free_base;
-	do { 
+	do {
 		xfer->xferbase = free_base;
 		xfer->slots = 1;
 		free_base += KERN_XFER_SLOT_SIZE;
@@ -116,7 +116,7 @@ clean_slots(void) {
 		va = tlb.hi & ~TLB_HI_ASIDMASK;
 		if((va >= start) && (va <= end)) {
 			// Kill the entry by pointing into a set kseg0 location.
-			r4k_settlb(MIPS_R4K_K0BASE + (idx * (__PAGESIZE * 2)), 
+			r4k_settlb(MIPS_R4K_K0BASE + (idx * (__PAGESIZE * 2)),
 					0, 0, pgmask_4k, idx << TLB_IDX_SHIFT);
 		}
 		if(++idx >= num_tlbs) {
@@ -169,7 +169,7 @@ map_range(PROCESS *actprp, PROCESS *prp, uintptr_t addr, uintptr_t *lo, uintptr_
 
 	otheraddr = ROUNDDOWN(addr, map_size);
 
-	if((adp == last_xfer.other_adp) 
+	if((adp == last_xfer.other_adp)
 		&& (actprp->memory == last_xfer.act_adp)
 		&& (addr >= last_xfer.lo)
 		&& (addr < last_xfer.hi)) {
@@ -192,9 +192,9 @@ map_range(PROCESS *actprp, PROCESS *prp, uintptr_t addr, uintptr_t *lo, uintptr_
 
 	root1 = &adp->cpu.pgdir[L1IDX(otheraddr)];
 
-	/* 
-	 * record for caller the lowest and highest accessible 
-	 * addresses in the inactive address space. 
+	/*
+	 * record for caller the lowest and highest accessible
+	 * addresses in the inactive address space.
 	 */
 	*lo = otheraddr;
 	*hi = otheraddr + map_size;
@@ -208,7 +208,7 @@ map_range(PROCESS *actprp, PROCESS *prp, uintptr_t addr, uintptr_t *lo, uintptr_
 		 * Transfer the L2 page table for the inactive aspace to the
 		 * active page table.
 		 * Also store the difference between the actual address and the
-		 * address used to do the copy, as well as the other 
+		 * address used to do the copy, as well as the other
 		 * prp, since if/when a page fault happens during the xfer,
 		 * we only know the active process.
 		 */
@@ -252,7 +252,7 @@ map_range(PROCESS *actprp, PROCESS *prp, uintptr_t addr, uintptr_t *lo, uintptr_
 			}
 		}
 	}
-#endif	
+#endif
 
 	last_xfer.lo = *lo;
 	last_xfer.hi = *hi;
@@ -266,8 +266,8 @@ map_range(PROCESS *actprp, PROCESS *prp, uintptr_t addr, uintptr_t *lo, uintptr_
 }
 
 
-int 
-vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, 
+int
+vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts,
 					int *poff, IOV *niov, int *pnparts, unsigned flags) {
 	uintptr_t 	lo;
 	uintptr_t 	hi;
@@ -370,7 +370,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts,
 				// The IOV was split across a mapping range.
 				// We saved the first part in 'iovlist' above, now copy
 				// the rest of the entry into it so we can get the length.
-				memcpy((uint8_t *)iovlist + remainder, 
+				memcpy((uint8_t *)iovlist + remainder,
 						(uint8_t *)iov_a + remainder, sizeof(*iov_a));
 				len = GETIOVLEN(iovlist);
 			} else {
@@ -390,7 +390,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts,
 			num_inparts = NUM_ELTS(iovlist);
 			last = (uintptr_t)&iov_a[NUM_ELTS(iovlist)];
 		}
-		memcpy((uint8_t *)iovlist + remainder, 
+		memcpy((uint8_t *)iovlist + remainder,
 				(uint8_t *)iov_a + remainder, last - (uintptr_t)iov_a - remainder);
 		iov = iovlist;
 	}
@@ -410,7 +410,7 @@ vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts,
 		if(nparts >= nparts_max) break;
 		/* Make sure address is within range for process */
 		if(len) {
-			last = base + len - 1; 
+			last = base + len - 1;
 			if(base > last || (!(flags & MAPADDR_FLAGS_SYSPRP) && !WITHIN_BOUNDRY(base, last, prp->boundry_addr))) {
 				if(len != 0) {
 					return -1;

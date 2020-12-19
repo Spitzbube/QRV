@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -53,10 +53,10 @@ static int rdecl
 condition_cache(struct mm_map *mm, struct pa_quantum *pq, unsigned num, struct data *data) {
 	int		r;
 
-	// If PROT_NOCACHE is on, we have to purge any cache entries 
+	// If PROT_NOCACHE is on, we have to purge any cache entries
 	// for the physical memory that might be lurking about.
-	
-#if CPU_SYSTEM_HAVE_COLOURS		
+
+#if CPU_SYSTEM_HAVE_COLOURS
 	if(mm->mmap_flags & PROT_NOCACHE) {
 		if(pq->blk != PAQ_BLK_FAKE) {
 			unsigned remaining = num;
@@ -120,7 +120,7 @@ pq_init_run(void *dst, size_t len, void *d) {
 				if(!(pq->flags & PAQ_FLAG_ZEROED)) {
 					CPU_ZERO_PAGE(dst, QUANTUM_SIZE, mm);
 					//RUSH3: If we set PAQ_FLAG_ZEROED here and maintained
-					//RUSH3: it properly (e.g. turned it off when setting 
+					//RUSH3: it properly (e.g. turned it off when setting
 					//RUSH3: PAQ_FLAG_MODIFIED), we might be able save
 					//RUSH3: some zeroing when reusing the page. Gather
 					//RUSH3: some stats on how often a page is freed while
@@ -132,7 +132,7 @@ pq_init_run(void *dst, size_t len, void *d) {
 			} while(dst < endp);
 		}
 		break;
-	case OBJECT_MEM_FD:	
+	case OBJECT_MEM_FD:
 		if(proc_thread_pool_reserve() != 0) {
 			return EAGAIN;
 		}
@@ -144,7 +144,7 @@ pq_init_run(void *dst, size_t len, void *d) {
 		} else {
 			last_page_bss = 0;
 		}
-		got = proc_read(obp->fdmem.fd, dst, len - last_page_bss, 
+		got = proc_read(obp->fdmem.fd, dst, len - last_page_bss,
 						mm->offset + (data->va - mm->start));
 		proc_thread_pool_reserve_done();
 		if(got == (size_t)-1) return errno;
@@ -180,14 +180,14 @@ pq_init(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void *d) 
 	struct mm_map	*mm;
 	unsigned		i;
 
-#ifndef NDEBUG	
+#ifndef NDEBUG
 	// Check to make sure we've allocated pmem for the whole range
 	if(pq == NULL) crash();
 	#undef INIT_MPW_FLAGS
 	#define INIT_MPW_FLAGS	(MPW_HOLES|MPW_SYSRAM)
-#endif	
+#endif
 	mm = data->mm;
-	
+
 	for( ;; ) {
 		// skip over pages that don't need initialization
 		for( ;; ) {
@@ -260,12 +260,12 @@ pq_map(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void *d) {
 			// Still want to fault on first write
 			mmap_flags &= ~PROT_WRITE;
 		}
-#if CPU_SYSTEM_HAVE_COLOURS		
+#if CPU_SYSTEM_HAVE_COLOURS
 		if(!(pq->flags & PAQ_FLAG_INITIALIZED) && !(mmap_flags & PROT_NOCACHE)) {
 			colour_set(start - skip, pq, 1);
 			pq->flags |= PAQ_FLAG_INITIALIZED;
 		}
-#endif		
+#endif
 		if(!(mm->extra_flags & EXTRA_FLAG_CACHE_CLEANED)) {
 			mm->extra_flags |= EXTRA_FLAG_CACHE_CLEANED;
 			// We're making an assumption here that we set up the PTE's
@@ -277,7 +277,7 @@ pq_map(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void *d) {
 			// things ever change, the check below will catch the
 			// problem and someone will read this comment and say
 			// Aaarrrggghhh!
-			if((((mm->end - mm->start) + 1) != NQUANTUM_TO_LEN(num)) 
+			if((((mm->end - mm->start) + 1) != NQUANTUM_TO_LEN(num))
 				&& (obp->hdr.type == OBJECT_MEM_ANON)) {
 				crash();
 			}
@@ -304,7 +304,7 @@ pq_map(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void *d) {
 				r = pte_map(or->adp, start, data->va - 1, mmap_flags | PROT_NOCACHE, or->obp, paddr, 0);
 			}
 		}
-	} else { 
+	} else {
 		data->va = start + NQUANTUM_TO_LEN(num);
 		curr = start;
 		for( ;; ) {
@@ -325,7 +325,7 @@ pq_map(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void *d) {
 			// Find run of init'd pages
 			i = 0;
 			for( ;; ) {
-#if CPU_SYSTEM_HAVE_COLOURS		
+#if CPU_SYSTEM_HAVE_COLOURS
 				if(obp->mem.mm.flags & MM_MEM_COLOUR_FLUSH) {
 					// We've set up multiple mappings to the same memory with
 					// different colours. Normally that's a no-no, but in some
@@ -398,12 +398,12 @@ pq_map(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void *d) {
 					//RUSH3: vs MS_ASYNC, privatize() mapping vs final
 					//RUSH3: mapping in memory_reference().
 					CPU_CACHE_CONTROL(or->adp, (void *)start, curr - start, cache_flags);
-					//RUSH1: There's a period of time after we've mapped the pages but 
-					//RUSH1: before we've flushed. If another thread started executing 
+					//RUSH1: There's a period of time after we've mapped the pages but
+					//RUSH1: before we've flushed. If another thread started executing
 					//RUSH1: on the page in that interval, it could get messed up (think
-					//RUSH1: SMP or this code getting preempted). 
+					//RUSH1: SMP or this code getting preempted).
 					//RUSH1: We could:
-					//RUSH1:     - do the CacheControl on a temp mapping (bad for virt caches) 
+					//RUSH1:     - do the CacheControl on a temp mapping (bad for virt caches)
 					//RUSH1:     - map with kernel access priv only until after the
 					//RUSH1:       flush (maybe not possible everywhere)
 					//RUSH1:     - hold off anybody who's running/attempting to run
@@ -527,15 +527,15 @@ privatize(struct data *data) {
 	//FUTURE: more likely that we'll be able to merge this mm_mmap with one
 	//FUTURE: following. Unfortunately, this region could be a PLT on the PPC,
 	//FUTURE: and the libc ldd code is going to turn around and issue an
-	//FUTURE: mprotect() for it to invalidate the instruction cache. In old 
-	//FUTURE: libc's, that mprotect isn't going to be page aligned like it 
-	//FUTURE: should, so the new memmgr will fail it unless the MAP_ELF flag 
+	//FUTURE: mprotect() for it to invalidate the instruction cache. In old
+	//FUTURE: libc's, that mprotect isn't going to be page aligned like it
+	//FUTURE: should, so the new memmgr will fail it unless the MAP_ELF flag
 	//FUTURE: is on :-(. See memmgr_ctrl.c for details.
 #if 0
 	new->mmap_flags = (mm->mmap_flags & ~(MAP_PHYS|MAP_ELF|MAP_NOSYNCFILE)) | MAP_SYSRAM | MAP_ANON;
-#else	
+#else
 	new->mmap_flags = (mm->mmap_flags & ~(MAP_PHYS|MAP_NOSYNCFILE)) | MAP_SYSRAM | MAP_ANON;
-#endif	
+#endif
 //END KLUDGE
 	new->extra_flags = mm->extra_flags;
 	new->reloc = mm->reloc;
@@ -582,7 +582,7 @@ fail1:
 
 
 int
-memory_reference(struct mm_map **mmp, uintptr_t start, uintptr_t end, 
+memory_reference(struct mm_map **mmp, uintptr_t start, uintptr_t end,
 		unsigned flags, struct map_set *ms) {
 	OBJECT					*obp;
 	struct mm_map			*mm;
@@ -592,7 +592,7 @@ memory_reference(struct mm_map **mmp, uintptr_t start, uintptr_t end,
 	uintptr_t				valid_end;
 
 	mm = *mmp;
-	//RUSH2: When we allocate pmem, we need to check if 
+	//RUSH2: When we allocate pmem, we need to check if
 	//RUSH2: freespace < some_limit(s) and, if so, start
 	//RUSH2: paging out globally. If mm_aspace->rlimit.rss > RLIMIT_RSS, start
 	//RUSH2: paging out the process.
@@ -602,7 +602,7 @@ memory_reference(struct mm_map **mmp, uintptr_t start, uintptr_t end,
 
 	or = mm->obj_ref;
 	obp = or->obp;
-	
+
 	if(mm->mmap_flags & PROT_WRITE) {
 		if(!CPU_FAULT_ON_WRITE_WORKS || (or->adp->flags & MM_ASFLAG_ISR_LOCK)) {
 			// If we can write to this memory and fault on write doesn't
@@ -610,10 +610,10 @@ memory_reference(struct mm_map **mmp, uintptr_t start, uintptr_t end,
 			// access is a write to force privatization (if needed)
 			flags |= MR_WRITE;
 			//RUSH3: If we force on MR_WRITE and MR_NOINIT is also on,
-			//RUSH3: kick out of the optimization because privatize() doesn't 
+			//RUSH3: kick out of the optimization because privatize() doesn't
 			//RUSH3: handle a range that has uninitialized quantums properly.
-			if(((mm->mmap_flags & MAP_TYPE) == MAP_PRIVATE) 
-				&& (obp->hdr.type != OBJECT_MEM_ANON) 
+			if(((mm->mmap_flags & MAP_TYPE) == MAP_PRIVATE)
+				&& (obp->hdr.type != OBJECT_MEM_ANON)
 				&& (flags & MR_NOINIT)) {
 				return EOK;
 			}
@@ -621,7 +621,7 @@ memory_reference(struct mm_map **mmp, uintptr_t start, uintptr_t end,
 	}
 
 	//RUSH1: We might be asked to 'reference' beyond the end of a shared
-	//RUSH1: memory object (the start/end pointers might be beyond 
+	//RUSH1: memory object (the start/end pointers might be beyond
 	//RUSH1: obp->mem.mm.size). Make sure we handle that without blowing
 	//RUSH1: up.
 	start = ADDR_PAGE(start);
@@ -671,15 +671,15 @@ memory_reference(struct mm_map **mmp, uintptr_t start, uintptr_t end,
 		data.off_end -= QUANTUM_SIZE;
 	}
 
-	//RUSH2: Have to handle COW, COR 
+	//RUSH2: Have to handle COW, COR
 	if(flags & MR_WRITE) {
 		// MR_WRITE might have been turned on after first assignment above
-		data.flags = flags; 
+		data.flags = flags;
 		if((mm->mmap_flags & MAP_TYPE) == MAP_PRIVATE) {
 			switch(obp->hdr.type) {
-			case OBJECT_MEM_ANON:	
+			case OBJECT_MEM_ANON:
 				break;
-			default:	
+			default:
 				// Change the memory to private and anonymous.
 				data.va = start;
 				r = privatize(&data);
@@ -719,11 +719,11 @@ memory_reference(struct mm_map **mmp, uintptr_t start, uintptr_t end,
 	}
 
 	data.va = start;
-	r = memobj_pmem_walk(MPW_PHYS|MPW_SYSRAM, obp, data.off_start, data.off_end, 
+	r = memobj_pmem_walk(MPW_PHYS|MPW_SYSRAM, obp, data.off_start, data.off_end,
 							pq_map, &data);
 	if(r != EOK) goto fail1;
 
-fail1:	
+fail1:
 	if(data.unlock_obp) memobj_unlock(obp);
 	return r;
 }

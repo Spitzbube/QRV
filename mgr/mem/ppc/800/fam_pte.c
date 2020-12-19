@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -28,11 +28,11 @@ fam_pte_init(int phase) {
 	// MI_CTR & MD_CTR
 	set_spr(PPC800_SPR_MI_CTR, 0/*PPC800_MICTR_CIDEF*/);
 	set_spr(PPC800_SPR_MD_CTR, /*PPC800_MDCTR_WTDEF |*/	PPC800_MDCTR_TWAN | PPC800_MDCTR_CIDEF);
-	
+
 	// PID: M_CASID -- kernel
 //	set_spr(PPC800_SPR_M_CASID, 1);
 	set_spr(PPC800_SPR_M_CASID, 0);
-	
+
 	// ZONE: MI_AP & MD_AP
 	set_spr(PPC800_SPR_MI_AP, 0x55555555);//PPC800_AP_PPCMODE_PGPERM(15) | PPC800_AP_PPCMODE_PGPERM(0));
 	set_spr(PPC800_SPR_MD_AP, 0x55555555);//PPC800_AP_PPCMODE_PGPERM(0) |PPC800_AP_PPCMODE_PGPERM(15));
@@ -57,7 +57,7 @@ fam_pte_init(int phase) {
 	unsigned		rpn;
 	unsigned		epn;
 
-	// add first 8M mapping for both ker and proc to both itlb and dtlb (31) 
+	// add first 8M mapping for both ker and proc to both itlb and dtlb (31)
 	set_spr(PPC800_SPR_MI_CTR, (31<<PPC800_MICTR_INDX_SHIFT));
 	set_spr(PPC800_SPR_MD_CTR, (31<<PPC800_MDCTR_INDX_SHIFT) | PPC800_MDCTR_TWAN | PPC800_MDCTR_CIDEF);
 	epn = 0 | PPC800_EPN_EV;
@@ -72,7 +72,7 @@ fam_pte_init(int phase) {
 	epn = 0x1000000  | PPC800_EPN_EV;
 	rpn =  0x1000000  | PPC800_RPN_SH | PPC800_RPN_V | PPC800_RPN_LPS | 0xf0 | (0x1<<PPC800_RPN_PP2_SHIFT);
 	add_tlb800( epn, twc, rpn, 1);
-	
+
 	set_spr(PPC800_SPR_MD_CTR, (28<<PPC800_MDCTR_INDX_SHIFT) | PPC800_MDCTR_TWAN | PPC800_MDCTR_CIDEF);
 	epn = 0x800000  | PPC800_EPN_EV;
 	rpn =  0x800000  | PPC800_RPN_SH | PPC800_RPN_V | PPC800_RPN_LPS | 0xf0 | (0x1<<PPC800_RPN_PP2_SHIFT);
@@ -130,7 +130,7 @@ fam_pte_mapping_add(uintptr_t vaddr, paddr_t paddr, unsigned prot, unsigned flag
 	unsigned		rpn;
 	unsigned		epn;
 
-	epn = (vaddr & PPC800_EPN_EPN_MASK) | PPC800_EPN_EV; 
+	epn = (vaddr & PPC800_EPN_EPN_MASK) | PPC800_EPN_EV;
 	twc = PPC800_TWC_V;
 	rpn = (paddr & PPC800_RPN_RPN_MASK) | PPC800_RPN_V | 0xf0 /*| PPC800_RPN_CI*/;// turn off cache for the bug
 	if(prot & PROT_WRITE) {
@@ -184,15 +184,15 @@ fam_pte_asid_alloc(ADDRESS *adp) {
 	 * handler routine, we will re-enterantly execute this code to set up
 	 * the address space for the routine.
 	 */
-	
+
 	/*
-	 * Do a quick scan through the asid_map and see 
+	 * Do a quick scan through the asid_map and see
 	 * if there are any unallocated entries. The
-	 * reason why we do this is because it is cheaper 
+	 * reason why we do this is because it is cheaper
 	 * to do this one scan than to steal an asid,
 	 * do a MemPageFlushAsid, and also possibly incur
 	 * tlb refills for the poor guy we stole from.
-	 * If there are no unallocated asids, then go 
+	 * If there are no unallocated asids, then go
 	 * back to where we were in the asid_map.
 	 */
 	// asid 0 is reserved for system address space
@@ -217,7 +217,7 @@ fam_pte_asid_alloc(ADDRESS *adp) {
     oldadp = asid_map[asid];
 	asid_map[asid] = adp;
     if (oldadp) {
-		/* 
+		/*
 		 * Mark his asid as invalid so
 		 * that when we switch to him he'll
 		 * pick up another one.

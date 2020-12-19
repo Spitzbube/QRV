@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -67,8 +67,8 @@ ker_data_dup(void *data) {
 
 
 int
-pte_temp_map(ADDRESS *adp, uintptr_t user_va, struct pa_quantum *pq, 
-			struct mm_map *mm, size_t len, 
+pte_temp_map(ADDRESS *adp, uintptr_t user_va, struct pa_quantum *pq,
+			struct mm_map *mm, size_t len,
 			int (*func)(void *, size_t, void *), void *d) {
 	paddr_t					paddr;
 	uintptr_t				end;
@@ -125,8 +125,8 @@ pte_temp_map(ADDRESS *adp, uintptr_t user_va, struct pa_quantum *pq,
 	if(piece > MAX_TEMP_MAPPING) piece = MAX_TEMP_MAPPING;
 	min_len = colour_mask_shifted + __PAGESIZE;
 	if(piece < min_len) piece = min_len;
-	if(piece <= adp->tmap_size && 
-		((adp->tmap_base >= (user_va + len)) || 
+	if(piece <= adp->tmap_size &&
+		((adp->tmap_base >= (user_va + len)) ||
 		 ((adp->tmap_base + adp->tmap_size) <= user_va))) {
 		tmap_start = adp->tmap_base;
 		piece = adp->tmap_size;
@@ -135,7 +135,7 @@ pte_temp_map(ADDRESS *adp, uintptr_t user_va, struct pa_quantum *pq,
 			// We don't have to actually allocate the virtual address since
 			// we have the aspace write-locked - nobody else can get in here
 			// to fiddle things.
-			tmap_start = map_find_va(&adp->map, user_va & ~colour_mask_shifted, 
+			tmap_start = map_find_va(&adp->map, user_va & ~colour_mask_shifted,
 									piece, colour_mask_shifted, 0);
 			if(tmap_start != VA_INVALID) break;
 			piece >>= 1;
@@ -170,7 +170,7 @@ pte_temp_map(ADDRESS *adp, uintptr_t user_va, struct pa_quantum *pq,
 		piece = (tmap_end - vaddr) + 1;
 		if(len < piece) piece = len;
 		end = vaddr + piece - 1;
-		r = pte_map(adp, vaddr, end, mm->mmap_flags|(PROT_READ|PROT_WRITE), 
+		r = pte_map(adp, vaddr, end, mm->mmap_flags|(PROT_READ|PROT_WRITE),
 				obp, paddr, PTE_OP_TEMP);
 		if(r != EOK) break;
 		if(vaddr < use_start) use_start = vaddr;
@@ -181,7 +181,7 @@ pte_temp_map(ADDRESS *adp, uintptr_t user_va, struct pa_quantum *pq,
 		paddr += piece;
 		len -= piece;
 		if(len == 0) break;
-	} 
+	}
 	if(use_start < use_end) { // in case pte_map() failed on first iteration
 		pte_unmap(adp, use_start, use_end, obp);
 	}

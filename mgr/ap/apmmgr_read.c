@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmmgr_read
- * 
+ *
  * Provide resource manager read() processing for the memory partitioning module
- * 
+ *
 */
 
 #include "apmmgr.h"
@@ -33,10 +33,10 @@ static bool node_is_in_hierarchy(apmmgr_attr_t *node, part_list_t *mpart_list);
 
 /*******************************************************************************
  * apmmgr_read
- * 
+ *
  * This routine wraps _apmmgr_read() and provides the resource manager
  * read implementation
- * 
+ *
 */
 int apmmgr_read(resmgr_context_t *ctp, io_read_t *msg, RESMGR_OCB_T *_ocb)
 {
@@ -60,7 +60,7 @@ int apmmgr_read(resmgr_context_t *ctp, io_read_t *msg, RESMGR_OCB_T *_ocb)
 		if ((reply_msg = calloc(1, msg->i.nbytes)) == NULL) {
 			return ENOMEM;
 		}
-		
+
 		if ((r = PART_ATTR_LOCK(mp)) != EOK)
 		{
 			free(reply_msg);	// FIX ME - won't be required as per above
@@ -105,7 +105,7 @@ int mpmgr_read(PROCESS *prp, apmmgr_attr_t *attr, off_t *offset,
 	else
 	{
 		int  r;
-		
+
 		if ((r = PART_ATTR_LOCK(attr)) != EOK) {
 			return r;
 		}
@@ -123,16 +123,16 @@ int mpmgr_read(PROCESS *prp, apmmgr_attr_t *attr, off_t *offset,
 
 /*******************************************************************************
  * _apmmgr_readdir
- * 
+ *
  * This routine does the actual work of reading the contents of the entry
  * identified by <attr>. The read is performed starting at the offset pointed
  * to by <offset> the contents are placed into buffer <buf>. The size of <buf>
  * is pointed to by <size>. If <prp> == NULL, no filtering will be done.
  * <offset> is adjusted acordingly.
- * 
+ *
  * Returns: the number of bytes placed into <buf> (never more than <size>) or
  * 			a negative errno.
- * 
+ *
 */
 static int _apmmgr_readdir(PROCESS *prp, apmmgr_attr_t *attr, off_t *offset,
 							void *buf, size_t size)
@@ -146,7 +146,7 @@ static int _apmmgr_readdir(PROCESS *prp, apmmgr_attr_t *attr, off_t *offset,
 	CRASHCHECK(offset == NULL);
 	CRASHCHECK(buf == NULL);
 	CRASHCHECK(!S_ISDIR(attr->attr.mode));
-	
+
 	dirent_max = LIST_COUNT(attr->children);
 	if (attr->type == part_type_MEMPART_REAL)
 	{
@@ -192,7 +192,7 @@ static int _apmmgr_readdir(PROCESS *prp, apmmgr_attr_t *attr, off_t *offset,
 							 ((sibling->type == part_type_GROUP) ||
 							 	 (sibling->type == part_type_MEMPART_PSEUDO)));
 			if (!exclude)
-			{					
+			{
 				if (dir_offset >= *offset)
 				{
 					if (space_left >= (sizeof(struct dirent) + strlen(sibling->name) + 1))
@@ -219,7 +219,7 @@ static int _apmmgr_readdir(PROCESS *prp, apmmgr_attr_t *attr, off_t *offset,
 #ifdef USE_PROC_OBJ_LISTS
 	if (prp == NULL)
 	{
-		if (attr->type == part_type_MEMPART_REAL) 
+		if (attr->type == part_type_MEMPART_REAL)
 		{
 			mempart_t *mpart = MEMPART_ID_TO_T(attr->data.mpid);
 			CRASHCHECK(mpart == NULL);
@@ -262,9 +262,9 @@ static int _apmmgr_readdir(PROCESS *prp, apmmgr_attr_t *attr, off_t *offset,
 #if 0	// FIX ME - no longer required, here for reference
 /*******************************************************************************
  * mpart_in_list
- * 
+ *
  * Determine whether <mempart> is contained in <mpart_list>
- * 
+ *
  * Returns: bool_t_TRUE if it is, bool_t_FALSE is it is not
 */
 static bool_t mpart_in_list(part_list_t *mpart_list, mempart_t *mempart)
@@ -283,19 +283,19 @@ static bool_t mpart_in_list(part_list_t *mpart_list, mempart_t *mempart)
 
 /*******************************************************************************
  * node_is_in_hierarchy
- * 
+ *
  * Determine whether the apmmgr_attr_t referred to by <node> is in the
  * partition hierarchy of any partition in <mpart_list>
- * 
+ *
  * Example is if a process is associated with partition sysram/p0/p1/p2 and we
  * are filtering for that process, then as _apmmgr_readdir() is called we
  * will see first sysram. In this case, we cannot reject p0 because it is in the
  * hierarchy of the partition we are ultimately trying to resolve, ie p2.
- * 
+ *
  * The most efficient way to do this is to start with the partitions in
  * <mpart_list> and follow the hierarchy up (since a partition can have at most
  * 1 parent) checking against node->mpart along the way.
- * 
+ *
  * Returns: bool_t_TRUE if it is, bool_t_FALSE is it is not
 */
 static bool node_is_in_hierarchy(apmmgr_attr_t *node, part_list_t *mpart_list)

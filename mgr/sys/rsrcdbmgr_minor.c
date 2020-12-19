@@ -1,23 +1,23 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*
  Minor operations
- 
+
  The major/minors are packed into an int in the
  following manner:
 
@@ -61,7 +61,7 @@ int _rsrc_minor(const char *name, int *major, int *minor_request, int flags) {
 		}
 
 		/* Pre-allocate with 8 entries if nothing there already */
-		g_devno_table[eindex].name = strdup(name); 
+		g_devno_table[eindex].name = strdup(name);
 		if(g_devno_table[eindex].minors == NULL) {
 			g_devno_table[eindex].minors = _scalloc(sizeof(struct _devno_minors));
 			g_devno_table[eindex].minors->count = 1;
@@ -88,7 +88,7 @@ int _rsrc_minor(const char *name, int *major, int *minor_request, int flags) {
 		return EINVAL;
 	}
 
-	index = *minor_request / 8; 
+	index = *minor_request / 8;
 	bit = *minor_request % 8;
 	mask = 0x1 << bit;
 
@@ -96,8 +96,8 @@ int _rsrc_minor(const char *name, int *major, int *minor_request, int flags) {
 		if (index >= head->minors->count) {
 			struct _devno_minors *tmp = head->minors;
 
-			if(!(head->minors = _srealloc(head->minors, 
-								          (head->minors->count - 1) + sizeof(*head->minors), 
+			if(!(head->minors = _srealloc(head->minors,
+								          (head->minors->count - 1) + sizeof(*head->minors),
 								          index + sizeof(*head->minors)))) {
 				head->minors = tmp;
 				return ENOMEM;
@@ -114,7 +114,7 @@ int _rsrc_minor(const char *name, int *major, int *minor_request, int flags) {
 	} else {
 		head->minors->bits[index] &= ~mask;
 
-		for(index=0; index < head->minors->count; index++) { 
+		for(index=0; index < head->minors->count; index++) {
 			if(head->minors->bits[index]) {
 				return EOK;
 			}
@@ -178,7 +178,7 @@ int rsrcmgr_handle_minor(resmgr_context_t *ctp, rsrc_cmd_t *msg, rsrc_minor_requ
 			return proc_error(EINVAL, prp);
 		}
 
-		list_array->dev_list = _srealloc(list_array->dev_list, 
+		list_array->dev_list = _srealloc(list_array->dev_list,
 										 list_array->dev_count * sizeof (dev_t),
 										(list_array->dev_count+GROW_SIZE) * sizeof (dev_t));
 		if(!list_array->dev_list) {
@@ -204,7 +204,7 @@ int rsrcmgr_handle_minor(resmgr_context_t *ctp, rsrc_cmd_t *msg, rsrc_minor_requ
 		MsgReplyv(ctp->rcvid, ret, ctp->iov, 1);
 		ret = _RESMGR_NOREPLY;
 	}
-	
+
 	proc_unlock(prp);
 
 	return(ret);

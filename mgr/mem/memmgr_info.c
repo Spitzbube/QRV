@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -38,7 +38,7 @@ get_flags(resmgr_context_t *ctp, int fd) {
 }
 
 
-int 
+int
 memmgr_info(resmgr_context_t *ctp, PROCESS *prp, mem_info_t *msg) {
 	OBJECT		*obp;
 	int			r;
@@ -48,7 +48,7 @@ memmgr_info(resmgr_context_t *ctp, PROCESS *prp, mem_info_t *msg) {
 	if(msg->i.fd != NOFD) {
 		r = memmgr_find_object(ctp, prp, msg->i.fd, NULL, &obp);
 		switch(r) {
-		case EOK:	
+		case EOK:
 			if(obp != NULL) break;
 			// fall through
 		case ENOTSUP:
@@ -58,7 +58,7 @@ memmgr_info(resmgr_context_t *ctp, PROCESS *prp, mem_info_t *msg) {
 			return r;
 		}
 		switch(obp->hdr.type) {
-		case OBJECT_MEM_TYPED:	
+		case OBJECT_MEM_TYPED:
 			flags = get_flags(ctp, msg->i.fd);
 			if(flags & IMAP_TYMEM_ALLOCATE) {
 				tymem_free_info(obp, &size, NULL);
@@ -74,7 +74,7 @@ memmgr_info(resmgr_context_t *ctp, PROCESS *prp, mem_info_t *msg) {
 		default:
 			break;
 		}
-		
+
 		memobj_unlock(obp);
 		return ENODEV;
 	}

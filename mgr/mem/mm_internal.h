@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -23,7 +23,7 @@
 #endif
 
 //
-// General utility macros 
+// General utility macros
 //
 #define VA_INVALID	((uintptr_t)-1)
 
@@ -63,7 +63,7 @@
 	#define COLOUR_ADJUST_VA(addr,addr_colour) \
 			((addr) + (((addr_colour) - (addr)) & colour_mask_shifted))
 
-	/* Adjusts the paddr backwards to the appropriate colour _if_ it doesn't 
+	/* Adjusts the paddr backwards to the appropriate colour _if_ it doesn't
 	   match already. (don't bother if we're ignoring colour) */
 	#define COLOUR_ADJUST_PA(paddr,paddr_colour) \
 			( (((paddr_colour)>> ADDR_OFFSET_BITS) == PAQ_COLOUR_NONE) || ( (COLOUR_PA((paddr)) == (COLOUR_PA(paddr_colour))))) ? \
@@ -76,7 +76,7 @@
 	#define COLOUR_ADJUST_PA(paddr,paddr_colour) (paddr)
 #endif
 
-// 
+//
 // Flags for memmgr.validate()
 //
 #define VV_RANGE		0x1
@@ -208,8 +208,8 @@ extern void		rdecl memobj_unlock(OBJECT *);
 
 //anonymous, typed memory flags
 //reuse POSIX_TYPED_MEM_* bits
-#define MM_ANMEM_TYPED_MASK			0x0000000f 
-#define MM_ANMEM_MULTI_REFS			0x00000010 
+#define MM_ANMEM_TYPED_MASK			0x0000000f
+#define MM_ANMEM_MULTI_REFS			0x00000010
 
 #define VERIFY_OBJ_LOCK(o)	CRASHCHECK(!((o)->mem.mm.flags & MM_MEM_SKIPLOCKCHECK) && !proc_mux_haslock(&(o)->mem.mm.mux, 0))
 

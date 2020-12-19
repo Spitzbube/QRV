@@ -3,7 +3,7 @@ ifeq ($(NOMODULE_SUPPORT),)
 LDBOOTSTRAP_nto_x86_gcc=$(LR_nto_x86_gcc) -nostartfiles -u_start
 LDBOOTSTRAP_nto_x86_gcc_qcc=$(LR_nto_x86_gcc_qcc) -nostartup -Wl,-u_start
 LDBOOTSTRAP_nto_x86_wcc=$(LDBOOTSTRAP_nto_x86_gcc_qcc)
-else	
+else
 CHECK_FOR_UNDEFS=$(ECHO_HOST) "Not checking for unresolveds on x86"
 endif
 
@@ -14,7 +14,7 @@ ifneq ($(wildcard $(wcc_comp)*),)
 select_compiler := _nto_x86_wcc
 DEFCOMPILER_TYPE_x86=wcc
 endif
-endif	
+endif
 ifneq ($(DEFCOMPILER_TYPE_x86),wcc)
 # In an "ac" directory and not using Watcom - don't compile anything
 BUILD_LIST=

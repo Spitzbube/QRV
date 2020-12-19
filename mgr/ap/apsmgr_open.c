@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apsmgr_open
- * 
+ *
  * Provide resource manager open() processing for the scheduler partitioning module
- * 
+ *
 */
 
 #include "apsmgr.h"
@@ -56,7 +56,7 @@ int apsmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *extra, void *reserv
 				(nametoolong(part_name, NAME_MAX, (void *)apsmgr_devno)))
 				return ENAMETOOLONG;
 
-			/* get client info now. It will be required at some point */			
+			/* get client info now. It will be required at some point */
 			if ((r = iofunc_client_info(ctp, msg->connect.ioflag, &ci)) != EOK)
 				return r;
 
@@ -71,7 +71,7 @@ int apsmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *extra, void *reserv
 						last = bool_t_TRUE;
 					else
 						*name_p++ = '\0';		// remove the '/'
-					
+
 					if (((mp = spath_find((apsmgr_attr_t *)LIST_FIRST(mp_parent->children), part_name, NULL)) == NULL) && !last)
 					{
 						/*
@@ -114,7 +114,7 @@ check_for_pid:
 									 * below this root should be accessed from /proc/<pid>/partition/
 									 * Note that the dummy_attr structure results in a stat of
 									 * '0' size, thus terminating the listing
-									*/						
+									*/
 									if (memcmp(name_p, "partition", sizeof("partition")-1) == 0)
 									{
 										static apsmgr_attr_t  dummy_attr = {{NULL}};
@@ -136,7 +136,7 @@ check_for_pid:
 						else
 							return ENOENT;		// intermediate pathname missing
 					}
-				
+
 					if (last)
 						break;
 
@@ -154,7 +154,7 @@ check_for_pid:
 				return EEXIST;
 
 			CRASHCHECK((mp_parent == NULL) && ((mp == NULL) || (mp->type != part_type_ROOT)));
-			
+
 			/* LOCK the required attributes structures */
 			if ((r = PART_ATTR_LOCK(mp_parent)) != EOK)
 				return r;
@@ -188,10 +188,10 @@ check_for_pid:
 				if (mp != NULL) mp->attr.mode |= dir_mode;	// restore
 				PART_ATTR_UNLOCK(mp);
 				PART_ATTR_UNLOCK(mp_parent);
-				return r;	// some other error 
+				return r;	// some other error
 			}
 			if (mp != NULL) mp->attr.mode |= dir_mode;	// restore
-			
+
 			/*
 			 * if creating a new name under mp_parent, make sure write permission
 			 * exists. This is necessary since the
@@ -205,18 +205,18 @@ check_for_pid:
 			{
 				check_mode |= S_IWRITE;
 				recurse = bool_t_TRUE;
-			}	
+			}
 			if ((check_mode != 0) && ((r = check_access_perms(ctp, (apxmgr_attr_t *)(mp ? mp : mp_parent), check_mode, &ci, recurse)) != EOK))
 			{
 				PART_ATTR_UNLOCK(mp);
 				PART_ATTR_UNLOCK(mp_parent);
 				return r;
 			}
-			
+
 			if ((mp == NULL) && (mp_parent != NULL) && (msg->connect.ioflag & O_CREAT))
 			{
 				int rr;
-				
+
 				if ((mp == NULL) && ((mp = calloc(1, sizeof(*mp))) == NULL))
 				{
 					PART_ATTR_UNLOCK(mp_parent);
@@ -236,7 +236,7 @@ check_for_pid:
 				 * scheduler partition
 				*/
 				switch (mp_parent->type)
-				{	
+				{
 					case part_type_SCHEDPART_REAL:
 					{
 						/*
@@ -261,7 +261,7 @@ check_for_pid:
 						}
 
 						spid = mp_parent->data.spid;
-						
+
 						if ((rr = VALIDATE_SP_CFG_CREATION(spid, NULL)) != EOK)
 						{
 #ifndef NDEBUG
@@ -350,7 +350,7 @@ check_for_pid:
 				free( ocb );
 			PART_ATTR_UNLOCK(mp);
 			PART_ATTR_UNLOCK(mp_parent);
-			return r; 
+			return r;
 		}
 		default:
 			return ENOSYS;
@@ -359,10 +359,10 @@ check_for_pid:
 
 /*******************************************************************************
  * redirect_pid_open
- * 
+ *
  * redirect the open on a process id that is associated with a partition to the
  * procfs filesystem
- * 
+ *
  * Returns: a value that can be returned to the resource manager library
 */
 static int redirect_pid_open(resmgr_context_t *ctp, io_open_t *msg, char *name)
@@ -373,7 +373,7 @@ static int redirect_pid_open(resmgr_context_t *ctp, io_open_t *msg, char *name)
 	unsigned						eflag = msg->connect.eflag;
 	unsigned						ftype = msg->connect.file_type;
 	unsigned						len = strlen(name);
-	
+
 	_IO_SET_CONNECT_RET(ctp, _IO_CONNECT_RET_LINK);
 
 //#define REDIRECT_PATH	"../../../../proc/"

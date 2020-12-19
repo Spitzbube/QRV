@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -47,7 +47,7 @@ wire_sync(ADDRESS *adp) {
 		for( ;; ) {
 			if(i == WIRE_TLB_NUM_PERM) break;
 			--i;
-			// Kill the entry 
+			// Kill the entry
 			tlbop.write_entry(wire_tlb, i, &dead);
 		}
 	}
@@ -110,14 +110,14 @@ wire_check(struct mm_pte_manipulate *data) {
 		if(i == 0) return;
 		if(we->tlb.epn == VA_INVALID) break;
 		if((vaddr & mask) == (we->tlb.epn & mask)) {
-			if(!we->perm && 
-			  	((we->tlb.rpn != new.rpn)	
-			  ||(we->tlb.attr != new.attr) 
-			  ||(we->tlb.access != new.access) 
-			  ||(we->tlb.size != new.size) 
-			  ||(we->tlb.ts != new.ts) 
+			if(!we->perm &&
+			  	((we->tlb.rpn != new.rpn)
+			  ||(we->tlb.attr != new.attr)
+			  ||(we->tlb.access != new.access)
+			  ||(we->tlb.size != new.size)
+			  ||(we->tlb.ts != new.ts)
 			  ||(we->tlb.v != new.v))) {
-			  	
+
 				// Something's changed, have to update
 				if(!new.v) {
 					// Entry deleted, shift stuff down
@@ -141,8 +141,8 @@ wire_check(struct mm_pte_manipulate *data) {
 		// We don't want to wire unmapped entries.
 		return;
 	}
-	
-	memmgr.aspace = wire_aspace;	
+
+	memmgr.aspace = wire_aspace;
 	we->perm = (data->shmem_flags & SHMCTL_GLOBAL) ? 1 : 0;
 	we->tlb = new;
 
@@ -152,7 +152,7 @@ wire_check(struct mm_pte_manipulate *data) {
 	// try to load a partially set up entry.
 	we->tlb.epn = vaddr;
 
-need_sync:	
+need_sync:
 	cpu = RUNCPU;
 	atomic_set(&adp->cpu.pending_wire_sync, LEGAL_CPU_BITMASK & ~(1 << cpu));
 	for(i = 0; i < NUM_PROCESSORS; i++) {
@@ -170,7 +170,7 @@ wire_mcreate(PROCESS *prp) {
 	struct wire_entry	*we;
 	unsigned			i;
 	int					r;
-	
+
 	r =  vmm_mcreate(prp);
 	if(r == EOK) {
 		prp->memory->cpu.wires = we = object_to_data(prp, wire_cookie);
@@ -188,7 +188,7 @@ wire_init(void) {
 	unsigned					i;
 	ppcbke_tlb_t				tlb;
 
-	memmgr.mcreate = wire_mcreate;	
+	memmgr.mcreate = wire_mcreate;
 
 	num = _syspage_ptr->un.ppc.tlbinfo.entry_size / sizeof(struct ppc_tlbinfo_entry);
 	for(i = 0; i < num; ++i) {

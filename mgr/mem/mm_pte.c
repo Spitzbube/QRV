@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -37,7 +37,7 @@ do_manipulation(struct pte_manip *manip) {
 		if(mm_flags & MM_FLAG_VPS) {
 			r = EOK;
 			switch(manip->state) {
-			case MSTATE_SPLIT_START:	
+			case MSTATE_SPLIT_START:
 				if(!(manip->data.op & PTE_OP_PREALLOC)) {
 					r = cpu_pte_split(manip->data.start, &manip->data);
 					if(r != EOK) return r;
@@ -50,17 +50,17 @@ do_manipulation(struct pte_manip *manip) {
 					r = cpu_pte_split(ADDR_PAGE(manip->data.end+1), &manip->data);
 					if(r != EOK) return r;
 					manip->data.start = manip->data.first;
-				}	
+				}
 				manip->state = MSTATE_MANIPULATE;
 				// fall through
-			case MSTATE_MANIPULATE:	
+			case MSTATE_MANIPULATE:
 				r = cpu_pte_manipulate(&manip->data);
 				manip->mapped = manip->data.start;
 				if(r != EOK) return r;
 				manip->data.start = manip->data.first;
 				manip->state = MSTATE_MERGE;
 				// fall through
-			case MSTATE_MERGE:	
+			case MSTATE_MERGE:
 				if(manip->data.op & (PTE_OP_MAP|PTE_OP_PROT|PTE_OP_FORCEMERGE)) {
 					r = cpu_pte_merge(&manip->data);
 				} else if(manip->data.split_end > manip->data.end) {
@@ -74,7 +74,7 @@ do_manipulation(struct pte_manip *manip) {
 				break;
 			}
 			return r;
-		}		
+		}
 	}
 
 	r = cpu_pte_manipulate(&manip->data);
@@ -84,21 +84,21 @@ do_manipulation(struct pte_manip *manip) {
 }
 
 
-static void 
+static void
 ker_manipulate(void *data) {
 	KerextLock();
 	KerextStatus(0, do_manipulation(data));
 }
 
 
-static int 
+static int
 pte_manipulate(struct pte_manip *manip) {
 	int		r;
 
 	if(ADDR_OFFSET(manip->data.start) != 0) crash();
 	if(ADDR_OFFSET(manip->data.end+1) != 0) crash();
 	if((manip->data.op & PTE_OP_MAP) && (ADDR_OFFSET(manip->data.paddr) != 0)) crash();
-			
+
 	manip->state = MSTATE_SPLIT_START;
 	manip->mapped = manip->data.first = manip->data.start;
 	manip->data.split_end = manip->data.end;
@@ -170,12 +170,12 @@ pte_prot(ADDRESS *adp, uintptr_t start, uintptr_t end, int flags, OBJECT *obp) {
 	manip.data.prot = flags;
 	manip.data.op = PTE_OP_PROT;
 	switch(obp->hdr.type) {
-	case OBJECT_MEM_SHARED:	
-	case OBJECT_MEM_TYPED:	
+	case OBJECT_MEM_SHARED:
+	case OBJECT_MEM_TYPED:
 		manip.data.shmem_flags = obp->mem.mm.flags;
 		manip.data.special = obp->shmem.special;
 		break;
-	default:	
+	default:
 		manip.data.shmem_flags = 0;
 		break;
 	}

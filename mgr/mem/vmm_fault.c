@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -18,7 +18,7 @@
 #include "vmm.h"
 
 
-int 
+int
 vmm_fault(struct fault_info *info) {
 	ADDRESS			*adp;
 	struct map_set	ms;
@@ -54,7 +54,7 @@ vmm_fault(struct fault_info *info) {
 		}
 	} else if(r == -2) {
 		// Forced bad page
-		info->sigcode = MAKE_SIGCODE(SIGBUS, BUS_OBJERR, FLTPAGE) | 
+		info->sigcode = MAKE_SIGCODE(SIGBUS, BUS_OBJERR, FLTPAGE) |
 							(info->sigcode & SIGCODE_FLAGS_MASK);
 		r = -1;
 	}
@@ -63,7 +63,7 @@ vmm_fault(struct fault_info *info) {
 }
 
 
-static int 
+static int
 fault_pulse(message_context_t *ctp, int code, unsigned _flags, void *handle) {
 	pid_t				pid;
 	pid_t				aspace_pid;
@@ -113,7 +113,7 @@ fault_pulse(message_context_t *ctp, int code, unsigned _flags, void *handle) {
 		goto fail4;
 	} else if(sigcode & SIGCODE_STORE) {
 		if(!(mm->mmap_flags & PROT_WRITE)) goto fail4;
-	} else if(access_error) { 
+	} else if(access_error) {
 		goto fail4;
 	} else {
 		if(!(mm->mmap_flags & (PROT_READ|PROT_EXEC))) goto fail4;
@@ -128,9 +128,9 @@ fault_pulse(message_context_t *ctp, int code, unsigned _flags, void *handle) {
 		// If the faulting thread already had the object locked, we have
 		// to disable the VERIFY_OBJ_LOCK() checks since this thread
 		// won't own the mutex
-#ifndef NDEBUG		
+#ifndef NDEBUG
 		obp->mem.mm.flags |= MM_MEM_SKIPLOCKCHECK;
-#endif		
+#endif
 	} else {
 		memobj_lock(obp);
 	}
@@ -148,8 +148,8 @@ fault_pulse(message_context_t *ctp, int code, unsigned _flags, void *handle) {
 			goto fail5;
 		}
 	}
-	//FUTURE: Take advantage of "mm->extra_flags & EXTRA_FLAG_MADV_MASK" 
-	//FUTURE: (madvise) information to gang page things in. Should I have 
+	//FUTURE: Take advantage of "mm->extra_flags & EXTRA_FLAG_MADV_MASK"
+	//FUTURE: (madvise) information to gang page things in. Should I have
 	//FUTURE: logic here, or in memory_reference()?
 
 	//RUSH3: If SIGCODE_INXFER is on, we're (probably) in a message
@@ -158,11 +158,11 @@ fault_pulse(message_context_t *ctp, int code, unsigned _flags, void *handle) {
 	vend = vaddr;
 	if(!(mm->mmap_flags & MAP_LAZY)) {
 		switch(obp->hdr.type) {
-		case OBJECT_MEM_SHARED:	
+		case OBJECT_MEM_SHARED:
 			// Only bring in one page for lazily allocated shared objects
 			if(obp->mem.mm.flags & SHMCTL_LAZY) break;
 			// fall through
-		case OBJECT_MEM_ANON:	
+		case OBJECT_MEM_ANON:
 			// Fault for an anon/shared page. Let's see if we should bring in
 			// more than one page at a time.
 			vend = mm->end;
@@ -176,7 +176,7 @@ fault_pulse(message_context_t *ctp, int code, unsigned _flags, void *handle) {
 		}
 	}
 
-	r = memory_reference(&mm, vaddr, vend, 
+	r = memory_reference(&mm, vaddr, vend,
 			(sigcode & SIGCODE_STORE) ? (MR_WRITE|MR_TRUNC) : MR_TRUNC, &ms);
 	lcp = prp->lcp;
 	if((lcp != NULL) && (r != EOK)) {
@@ -198,7 +198,7 @@ fault_pulse(message_context_t *ctp, int code, unsigned _flags, void *handle) {
 		adp->rlimit.stack += QUANTUM_SIZE;
 	}
 	sigcode = 0;
-	
+
 fail5:
 	if(sigcode & SIGCODE_INXFER) {
 		// We were in a msg pass when the fault occured. Mark the
@@ -208,9 +208,9 @@ fail5:
 	}
 	if(have_obj_lock) {
 		// Re-enable VERIFY_OBJ_LOCK() checks
-#ifndef NDEBUG		
+#ifndef NDEBUG
 		obp->mem.mm.flags &= ~MM_MEM_SKIPLOCKCHECK;
-#endif		
+#endif
 	} else {
 		memobj_unlock(obp);
 	}

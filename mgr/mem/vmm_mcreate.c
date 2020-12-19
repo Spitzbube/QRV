@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -18,7 +18,7 @@
 #include "vmm.h"
 #include <spawn.h>
 
-int 
+int
 vmm_mcreate(PROCESS *prp) {
 	ADDRESS 	*adp;
 	OBJECT		*anon;
@@ -29,7 +29,7 @@ vmm_mcreate(PROCESS *prp) {
 	struct map_set	repl;
 #endif
 
-	r = ENOMEM;	// Start by assuming out of memory.	
+	r = ENOMEM;	// Start by assuming out of memory.
 	adp = object_to_data(prp, address_cookie);
 
 	// The -mP procnto option was _not_ specified, mark any executable
@@ -82,11 +82,11 @@ fail5:
 #if CPU_USER_VADDR_START == 0
 	map_remove(&ms);
 
-fail4:	
+fail4:
 	map_destroy(&ms);
 
 fail3:
-#endif	
+#endif
 	(void)map_fini(&adp->map);
 
 fail2:

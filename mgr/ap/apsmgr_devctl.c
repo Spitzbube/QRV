@@ -1,27 +1,27 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apsmgr_devctl
- * 
+ *
  * Provide resource manager devctl() processing for the scheduler partitioning
  * module
- * 
+ *
 */
 
 #include "apsmgr.h"
@@ -56,7 +56,7 @@ int apsmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 /* FIX ME - appears not to be being obeyed .. should it ?
 			if ((ocb->ioflag & _IO_FLAG_WR) == 0)
 				return EBADF;
-*/			
+*/
 			if (msg->i.nbytes < sizeof(ocb->ioflag)) {
 				return EINVAL;
 			}
@@ -155,7 +155,7 @@ int apsmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 				if (!(cfg->valid & cfgchg_t_LOCK_POLICY)) {
 					cfg->val.policy.config_lock = GET_SPART_POLICY_CFG_LOCK(cur_cfg);
 				}
-				
+
 				/* if not changing the terminal partition policy, use the current */
 				if (!(cfg->valid & cfgchg_t_TERMINAL_POLICY)) {
 					cfg->val.policy.terminal = GET_SPART_POLICY_TERMINAL(cur_cfg);
@@ -195,7 +195,7 @@ int apsmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 				PART_ATTR_UNLOCK(mp);
 				return r;
 			}
-			
+
 			PART_ATTR_UNLOCK(mp);
 			break;
 		}
@@ -225,7 +225,7 @@ int apsmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 				break;
 			}
     	}
-    	
+
 #ifdef USE_PROC_OBJ_LISTS
     	case PART_GET_ASSOC_PLIST:
 		{
@@ -307,12 +307,12 @@ int apsmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 			if ((r = PART_ATTR_LOCK(sp)) != EOK) {
 				return r;
 			}
-			
+
 			for (i=0; i<er->num_entries; i++)
 			{
 				int ret = EINVAL;
 				evtdest_t evt_dest;
-				
+
 				evt_dest.pid = ctp->info.pid;
 				evt_dest.rcvid = ctp->rcvid;
 				evt_dest.in_progress = bool_t_FALSE;

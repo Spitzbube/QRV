@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -20,7 +20,7 @@
 #include "mm_internal.h"
 
 static int (* const fs_check[])(const resmgr_io_funcs_t *, mem_map_t *, void *, OBJECT **) = {
-	devmem_check, devzero_check, imagefs_check 
+	devmem_check, devzero_check, imagefs_check
 };
 
 int
@@ -83,7 +83,7 @@ memmgr_find_object(resmgr_context_t *ctp, PROCESS *prp, int fd, mem_map_t *msg, 
 	return status;
 }
 
-int 
+int
 memmgr_map(resmgr_context_t *ctp, PROCESS *prp, mem_map_t *msg) {
 	void		*addr;
 	unsigned	size;
@@ -97,7 +97,7 @@ memmgr_map(resmgr_context_t *ctp, PROCESS *prp, mem_map_t *msg) {
 	pid = prp->pid;
 
 	switch(msg->i.flags & MAP_TYPE) {
-	case 0:	
+	case 0:
 		if((mm_flags & MM_FLAG_BACKWARDS_COMPAT) || (msg->i.flags & MAP_ANON)) {
 			// User didn't specify MAP_PRIVATE or MAP_SHARED. Really should
 			// error out, but the libc malloc code does this sillyness :-(.
@@ -107,7 +107,7 @@ memmgr_map(resmgr_context_t *ctp, PROCESS *prp, mem_map_t *msg) {
 			return EINVAL;
 		}
 		break;
-	case MAP_PRIVATEANON:	
+	case MAP_PRIVATEANON:
 		msg->i.flags = (msg->i.flags & ~MAP_TYPE) | (MAP_ANON|MAP_PRIVATE);
 		break;
 	default:
@@ -121,7 +121,7 @@ memmgr_map(resmgr_context_t *ctp, PROCESS *prp, mem_map_t *msg) {
 		return EINVAL;
 	}
 	//MAP_SYSRAM is just a status indicator - not allowed to pass it in.
-check_again:	
+check_again:
 	if(msg->i.flags & (PROT_MASK|MAP_SYSRAM|MAP_RESERVMASK|PG_MASK)) {
 		if(msg->i.flags & PROT_NOCACHE) {
 			//Kludge fix for test programs that pass PROT_NOCACHE in flags
@@ -149,7 +149,7 @@ check_again:
 		if(!proc_isaccess(0, &ctp->info)) {
 			// This is the test for MAP_PRIVATE mappings.
 			// The test for MAP_PHYS|MAP_SHARED should check permissions
-			// on /dev/mem, but this more restrictive "must be root" check 
+			// on /dev/mem, but this more restrictive "must be root" check
 			// will do for now..
 			return EPERM;
 		}
@@ -187,13 +187,13 @@ check_again:
 	mpart_id = (object != NULL) ? object->hdr.mpid : mempart_getid(prp, sys_memclass_id);
 	for( ;; ) {
 		int lock_status;
-		status = memmgr.mmap(prp, msg->i.addr, msg->i.len, msg->i.prot, 
-					msg->i.flags, object, msg->i.offset, msg->i.align, 
+		status = memmgr.mmap(prp, msg->i.addr, msg->i.len, msg->i.prot,
+					msg->i.flags, object, msg->i.offset, msg->i.align,
 					msg->i.preload, msg->i.fd, &addr, &size, mpart_id);
 		if((status != ENOMEM) && (status != EAGAIN)) break;
 		//RUSH3: This only schedules the compaction, it doesn't actually
 		//RUSH3: do it - we really should wait until complete, or at least
-		//RUSH3: until something's been freed, and it needs to set 
+		//RUSH3: until something's been freed, and it needs to set
 		//RUSH3: try_again to TRUE if it worked (assignment below should be |=).
 		(void)memmgr_fd_compact();
 		ProcessBind(0);
@@ -203,7 +203,7 @@ check_again:
 		prp = proc_lookup_pid(pid);
 		CRASHCHECK(prp == NULL);
 		// We always aquire the aspace lock first, then the underlying
-		// object (avoids deadlocks). Right now we've got the object locked 
+		// object (avoids deadlocks). Right now we've got the object locked
 		// and we need to get the aspace back again. We need to release
 		// the object lock first. The memobj_lock() that we originally
 		// did upped the reference count on the object, so no one will
@@ -221,7 +221,7 @@ check_again:
 		if(!try_again) break;
 	}
 
-#if defined(VARIANT_instr) 
+#if defined(VARIANT_instr)
 	{
 		iov_t 	iov[7];
 		int 	iovcnt = 0;
@@ -243,11 +243,11 @@ check_again:
 #endif
 
 	proc_thread_pool_reserve_done();
-	
+
 	if(object != NULL) {
 		memobj_unlock(object);
 	}
-	
+
 	if(status) {
 		return status;
 	}

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -44,7 +44,7 @@ NODE *pathmgr_node_alloc(const char *name, unsigned len) {
 }
 
 /*
- * This call is used to indicate that we are "reading" 
+ * This call is used to indicate that we are "reading"
  * something associated with the node.  No external calls
  * (ie messages, anything which could result in a recursive
  * call back into a node accessing call) can be made between
@@ -55,7 +55,7 @@ void pathmgr_node_access(NODE *node) {
 }
 
 /*
- * This call is used to indicate that we are finished 
+ * This call is used to indicate that we are finished
  * doing something associated with the node.
  */
 void pathmgr_node_complete(NODE *node) {
@@ -166,7 +166,7 @@ NODE *pathmgr_node_lookup(register NODE *nop, register const char *path, unsigne
 			OBJECT					*object;
 
 			if((object = nop->object)) {
-				/* We should have an option for shortest/longest pathname matches 
+				/* We should have an option for shortest/longest pathname matches
 				   shortest match would break at this point, longest one would continue */
 				if(object->hdr.type != OBJECT_NONE && object->hdr.type != OBJECT_SERVER) {
 					lasttail = path;
@@ -176,7 +176,7 @@ NODE *pathmgr_node_lookup(register NODE *nop, register const char *path, unsigne
 		}
 	}
 
-	/* If we don't have any objects (ie the node was autocreated), then 
+	/* If we don't have any objects (ie the node was autocreated), then
 	   fall back and use the last node that we think was valid */
 	if ((flags & PATHMGR_LOOKUP_NOAUTO) && nop && !nop->object) {
 		nop = 0;
@@ -235,7 +235,7 @@ void pathmgr_node_detach_flags(NODE *nop, unsigned flags) {
 
 			/* Rember the parent */
 			p = nop->parent;
-			
+
 			_sfree(nop, offsetof(NODE, name) + nop->len + 1);
 
 			/* Loop to see if parent also has no children or links */

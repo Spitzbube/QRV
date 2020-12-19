@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,7 +33,7 @@ struct intrspin	asid_spin;
 * opt: 1 -- alloc, -1 -- free
 */
 // NIY: think about real int safe
-static void 
+static void
 alloc_asid(ADDRESS *adp) {
 	static int	asid_rotor = 1;
 	int 		asid, i;
@@ -47,13 +47,13 @@ alloc_asid(ADDRESS *adp) {
 	 */
 
 	/*
-	 * Do a quick scan through the asid_map and see 
+	 * Do a quick scan through the asid_map and see
 	 * if there are any unallocated entries. The
-	 * reason why we do this is because it is cheaper 
+	 * reason why we do this is because it is cheaper
 	 * to do this one scan than to steal an asid,
 	 * do a MemPageFlushAsid, and also possibly incur
 	 * tlb refills for the poor guy we stole from.
-	 * If there are no unallocated asids, then go 
+	 * If there are no unallocated asids, then go
 	 * back to where we were in the asid_map.
 	 */
 	// asid 0 is reserved for system address space
@@ -67,7 +67,7 @@ alloc_asid(ADDRESS *adp) {
 			 */
 			atomic_set(&adp->cpu.asid_flush, LEGAL_CPU_BITMASK);
 #endif
-			return; 
+			return;
 		}
 	}
 	/* have to steal one */
@@ -85,7 +85,7 @@ alloc_asid(ADDRESS *adp) {
 	oldadp = asid_map[asid];
 	asid_map[asid] = adp;
 	if(oldadp != NULL) {
-		/* 
+		/*
 		 * Mark his asid as invalid so
 		 * that when we switch to him he'll
 		 * pick up another one.
@@ -102,7 +102,7 @@ alloc_asid(ADDRESS *adp) {
 }
 
 
-void 
+void
 vmm_aspace(PROCESS *actprp, PROCESS **pactprp) {
 	ADDRESS					*adp;
 
@@ -111,13 +111,13 @@ vmm_aspace(PROCESS *actprp, PROCESS **pactprp) {
 		SPINLOCK(&asid_spin);
 		if(adp->cpu.asid > VM_ASID_BOUNDARY) {
 			// later move it out for minimize int disable time
-			alloc_asid(adp); 
+			alloc_asid(adp);
 		}
 		SPINUNLOCK(&asid_spin);
 		smp_tlb_sync(actprp);
 
 		// Set the ASID
-		out32(SH_MMR_CCN_PTEH, 
+		out32(SH_MMR_CCN_PTEH,
 				(in32(SH_MMR_CCN_PTEH) & ~VM_ASID_MASK)  | adp->cpu.asid);
 		// Set the page table
 		out32(SH_MMR_CCN_TTB, (uintptr_t)adp->cpu.pgdir);

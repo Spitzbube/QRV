@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -18,7 +18,7 @@
 #include "mm_internal.h"
 
 
-static int 
+static int
 memmgr_handler(message_context_t *mctp, int code, unsigned flags, void *handle) {
 	resmgr_context_t				*ctp = (resmgr_context_t *)mctp;
 	union {
@@ -45,10 +45,10 @@ memmgr_handler(message_context_t *mctp, int code, unsigned flags, void *handle) 
 
 	ctp->status = 0;
 
-peer_restart:	
+peer_restart:
 	ProcessBind(prp->pid);
 	switch(msg->type) {
-	case _MEM_PEER:	
+	case _MEM_PEER:
 		ProcessBind(0);
 		if(ctp->info.msglen <= msg->peer.i.peer_msg_len) {
 			// no message following
@@ -59,9 +59,9 @@ peer_restart:
 			peer = prp;
 		} else if(!(peer = proc_lock_pid(msg->peer.i.pid))) {
 			return proc_status(ctp, ESRCH);
-		} 
+		}
 		if(peer->flags & (_NTO_PF_TERMING | _NTO_PF_DESTROYALL | _NTO_PF_ZOMBIE)){
-			// Not allowed to do things with a peer process that's 
+			// Not allowed to do things with a peer process that's
 			// terminating.
 			if(peer != prp) proc_unlock(peer);
 			return proc_status(ctp, ESRCH);
@@ -72,7 +72,7 @@ peer_restart:
 		// add to 'msg', the reply message being built will go in the
 		// wrong spot, since the proc_status() call down at the bottom
 		// of this routine MsgReply's from the start of the message buffer.
-		memmove(msg, (uint8_t *)msg + msg->peer.i.peer_msg_len, 
+		memmove(msg, (uint8_t *)msg + msg->peer.i.peer_msg_len,
 						(ctp->info.msglen - msg->peer.i.peer_msg_len));
 		switch(msg->type) {
 		case _MEM_MAP:
@@ -94,7 +94,7 @@ peer_restart:
 		case _MEM_OFFSET:
 		case _MEM_DEBUG_INFO:
 			// always OK to look at another process
-			break;	
+			break;
 		default:
 			if(peer != prp) proc_unlock(peer);
 			return proc_status(ctp, EINVAL);
@@ -105,7 +105,7 @@ peer_restart:
 
 	case _MEM_MAP:
 		status = proc_wlock_adp(prp);
-		CRASHCHECK(status == -1);	
+		CRASHCHECK(status == -1);
 		status = memmgr_map(ctp, prp, &msg->map);
 		break;
 
@@ -172,7 +172,7 @@ peer_restart:
 }
 
 
-void 
+void
 memmgr_init(void) {
 	guardpagesize = memmgr.pagesize;
     devzero_init();
@@ -188,7 +188,7 @@ memmgr_init(void) {
 }
 
 
-int 
+int
 memmgr_resize(OBJECT *obj, size_t size) {
 	if(obj->mem.mm.flags & MM_SHMEM_SPECIAL) {
 		return EINVAL;

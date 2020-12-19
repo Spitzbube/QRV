@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -122,7 +122,7 @@ cpu_early_paddr_to_vaddr(paddr_t p, unsigned size, paddr_t *l2mem) {
 			*l2mem -= __PAGESIZE;
 			l2 = *l2mem + 1; // +1 since l2mem points to _last_ free paddr
 
-			/* zero the pagetable before we stick it in the pagedir (smp) */	
+			/* zero the pagetable before we stick it in the pagedir (smp) */
 			kmap_pde = VTOPDIRP(L2MAP_BASE);
 			kmap_pte = VTOPTP(L2MAP_BASE);
 			PXE_SET(kmap_pde, l2 | (X86_PTE_WRITE|X86_PTE_PRESENT));
@@ -133,7 +133,7 @@ cpu_early_paddr_to_vaddr(paddr_t p, unsigned size, paddr_t *l2mem) {
 			// renables interrupts, and they're supposed to be left off
 			// throughout this whole section.
 			ldpgdir(rdpgdir()); /* make sure TLB is consistent with change */
-		} 
+		}
 		ptep = VTOPTEP(va);
 		PXE_SET(ptep, ADDR_PAGE(p) | (X86_PTE_PRESENT|X86_PTE_WRITE));
 		p += __PAGESIZE;

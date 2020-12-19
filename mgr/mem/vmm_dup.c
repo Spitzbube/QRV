@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -45,8 +45,8 @@ data_dup_run(void *src, size_t len, void *d) {
 }
 
 
-static int 
-data_dup(OBJECT *obp, off64_t off, struct pa_quantum *pq, 
+static int
+data_dup(OBJECT *obp, off64_t off, struct pa_quantum *pq,
 				unsigned num, void *d) {
 	struct dup_data			*data = d;
 	struct mm_map			*mm;
@@ -86,7 +86,7 @@ data_dup(OBJECT *obp, off64_t off, struct pa_quantum *pq,
 
 		r = memory_reference(&mm, start, end, MR_WRITE, NULL);
 		if(r != EOK) return r;
-		r = pte_temp_map(data->adp, start, pq, data->pmm, (end - start) + 1, 
+		r = pte_temp_map(data->adp, start, pq, data->pmm, (end - start) + 1,
 							data_dup_run, data);
 		or = mm->obj_ref;
 		if(!(orig_flags & PROT_WRITE)) {
@@ -103,8 +103,8 @@ data_dup(OBJECT *obp, off64_t off, struct pa_quantum *pq,
 	}
 }
 
- 
-int 
+
+int
 vmm_dup(PROCESS *pprp, PROCESS *prp) {
 	ADDRESS					*padp;
 	struct map_set			pms;
@@ -147,8 +147,8 @@ vmm_dup(PROCESS *pprp, PROCESS *prp) {
 		}
 	}
 
-	// CacheControl() (in data_dup()) might cause page faults, so let 
-	// fault_pulse() know that it doesn't have to grab the lock for 
+	// CacheControl() (in data_dup()) might cause page faults, so let
+	// fault_pulse() know that it doesn't have to grab the lock for
 	// this reference
 	//RUSH3: data_dup() only ever copies modified pages now,
 	//RUSH3: so the CacheControl won't ever fault (hopefully). Can
@@ -179,7 +179,7 @@ vmm_dup(PROCESS *pprp, PROCESS *prp) {
 				CRASHCHECK(r != EOK);
 			}
 			r = map_create(&ms, NULL, &adp->map, pmm->start, len, 0, MAP_FIXED);
-			if(r != EOK) goto fail1;			
+			if(r != EOK) goto fail1;
 			mm = ms.first;
 			mm->mmap_flags = pmm->mmap_flags;
 			mm->extra_flags = pmm->extra_flags & ~EXTRA_FLAG_LOCK;
@@ -279,7 +279,7 @@ vmm_dup(PROCESS *pprp, PROCESS *prp) {
 fail4:
 	map_remove(&ms);
 
-fail3:	
+fail3:
 	map_destroy(&ms);
 
 fail2:

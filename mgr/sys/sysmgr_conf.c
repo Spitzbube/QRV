@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -62,7 +62,7 @@ void sysmgr_conf_destroy(PROCESS *prp) {
 int sysmgr_conf_get(int name, long *value, char *str) {
 	struct conf_entry			*p;
 	int							ret = -1;
-	
+
 	if(pthread_mutex_lock(&conf_mutex) == EOK) {
 		for(p = conf_list; p; p = p->next) {
 			if(p->list) {
@@ -112,7 +112,7 @@ int sysmgr_conf_set(pid_t pid, int cmd, int name, long value, const char *str) {
 	if(!(prp = proc_lock_pid(pid ? pid : SYSMGR_PID))) {
 		return EL2HLT;
 	}
-	
+
 	if(pid) {
 		if(str) {
 			char						buff[1];
@@ -187,12 +187,12 @@ int sysmgr_conf(resmgr_context_t *ctp, sys_conf_t *msg) {
 			return sysmgr_conf_set(pid, msg->i.cmd, msg->i.name, msg->i.value, 0);
 		}
 		return EINVAL;
-		
+
 	case _SYS_SUB_GET:
 		if(msg->i.cmd & _CONF_STR) {
 			int					room = ctp->msg_max_size - sizeof msg->i;
 			size_t				size;
-		
+
 			size = msg->i.value;
 			value = min(msg->i.value, room);
 			msg->o.match = _conf_get(sysmgr_conf_table, msg->i.name, &value, (char *)(&msg->o + 1));

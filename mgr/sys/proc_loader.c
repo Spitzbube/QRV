@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -43,13 +43,13 @@ void loader_exit(resmgr_context_t *ctp, union proc_msg_union *msg, PROCESS *prp)
 	if((lcp = prp->lcp)) {
 		if(lcp->rcvid != -1) {
 			switch(prp->siginfo.si_signo) {
-			case SIGCHLD:	
+			case SIGCHLD:
 				r = prp->siginfo.si_status;
 				break;
 			case SIGBUS:
 				r = (lcp->fault_errno != EOK) ? lcp->fault_errno : ENOMEM;
 				break;
-			default:		
+			default:
 				r = EINTR;
 				break;
 			}
@@ -106,7 +106,7 @@ static int loader_fd(struct loader_context *lcp) {
 			}
 		} else {
 			proc_spawn_remote_t *p;
-			 
+
 			p = (proc_spawn_remote_t*) ((char*)&lcp->msg.spawn.i + lcp->remote_off);
 			if(lcp->state & LC_CROSS_ENDIAN) {
 				/*
@@ -141,7 +141,7 @@ static int loader_fd(struct loader_context *lcp) {
 	msgdup.i.info.pid = lcp->ppid;
 	msgdup.i.info.tid = 0;
 	msgdup.i.info.nd = ND_LOCAL_NODE;
-	
+
 	while(1) {
 		switch(type) {
 			case _FD_SPAWN_LIST:
@@ -203,14 +203,14 @@ static int loader_fd(struct loader_context *lcp) {
 							proc_spawn_remote_t *p;
 
 							p = (proc_spawn_remote_t*) ((char*)&lcp->msg.spawn.i + lcp->remote_off);
-	
+
 							if(coid == SYSMGR_COID) {
 								/* make a connection to remote proc */
 								if((coid = ConnectAttach(lcp->pnode, PROCMGR_PID, PROCMGR_CHID, _NTO_SIDE_CHANNEL, 0)) == -1) {
 									return errno;
 								}
 							}
-			 
+
 							pfdinfo = (struct _proc_spawn_fd_info*) ((char*)p + sizeof(*p));
 							nfds = (SPAWN_REMOTE_REMOTEBUF_SIZE - sizeof(*p))/sizeof(*pfdinfo);
 						} else {
@@ -220,7 +220,7 @@ static int loader_fd(struct loader_context *lcp) {
 							if(size < sizeof(temp_buff)) {
 								size = sizeof(temp_buff);
 								pfdinfo = temp_buff;
-							} 
+							}
 							nfds = size/(int)sizeof(*pfdinfo);
 						}
 
@@ -294,7 +294,7 @@ static int loader_fd(struct loader_context *lcp) {
 				pfdinfo ++;
 				break;
 			default:
-				crash();	
+				crash();
 		}
 
 		if(ConnectAttach(info.nd, info.pid, info.chid, fd, info.flags) != fd) {
@@ -454,7 +454,7 @@ static int searchpath(const char *name, const char *path, char *buffer, int bufs
 				errno = ENAMETOOLONG;
 				break;
 			}
-			trailing = (*path != ':') ? 0 : !*++path;	
+			trailing = (*path != ':') ? 0 : !*++path;
 		} while (*path || trailing);
 	}
 	*buffer = 0;
@@ -521,7 +521,7 @@ static void loader_args(struct loader_context *lcp, const char *p, const char *e
 					++aux_exefile;
 				}
 				// Add a path separator between the CWD and exefile
-				aux_exefile[real_len-1] = '/'; 
+				aux_exefile[real_len-1] = '/';
 			}
 		}
 	}
@@ -546,7 +546,7 @@ static void loader_args(struct loader_context *lcp, const char *p, const char *e
 		args.i.nbytes = lcp->msg.spawn.i.nbytes;
 		args.i.offset = (uintptr_t)p - (uintptr_t)&lcp->msg;
 		args.i.zero = 0;
-		if(MsgSend(PROCMGR_COID, &args.i, sizeof args.i, 
+		if(MsgSend(PROCMGR_COID, &args.i, sizeof args.i,
 				   strings + interplen, args.i.nbytes) == -1) {
 			ThreadDestroy(-1, -1, (void *)errno);
 		}
@@ -600,7 +600,7 @@ static void loader_args(struct loader_context *lcp, const char *p, const char *e
 			if (lcp->msg.spawn.i.nargv == 0) {
 				*arg++ = 0;
 			}
-		} 
+		}
 
 		if(lcp->msg.spawn.i.nargv == 0) {
 			if(lcp->msg.spawn.i.narge == 0) {
@@ -633,7 +633,7 @@ try_hash_bang(int fd, char **pname, char **arg, char *buf, int buflen)
 {
 	int numread;
 	char *ptr = buf;
-	
+
 	*pname = NULL;      /* initialize these two */
 	*arg   = NULL;
 
@@ -641,18 +641,18 @@ try_hash_bang(int fd, char **pname, char **arg, char *buf, int buflen)
 	if (numread <= 3) {   /* need at least #! characters */
 		return ENOEXEC;
 	}
-	
+
 	if (ptr[0] != '#' || ptr[1] != '!') {
 		return ENOEXEC;
 	}
 	ptr += 2;
-	
+
 	/* skip whitespace after the #! */
 	while ((*ptr == ' ' || *ptr == '\t') && ptr < (buf + numread)) {
 		ptr++;
 	}
 
-	/* 
+	/*
 	 * If this condition is true it means the first line was just "#!\n".
 	 * The spec says this is not valid.  We could be nice and interpret
 	 * it to be the same as "#!/bin/sh" but we won't do that for now.
@@ -668,11 +668,11 @@ try_hash_bang(int fd, char **pname, char **arg, char *buf, int buflen)
 	while (*ptr != ' ' && *ptr != '\t' && *ptr != '\n' && ptr < (buf+numread)) {
 		ptr++;
 	}
-	
+
 	if (ptr >= (buf+numread)) {  /* hmmm, interpreter name was too long... */
 		return ENOEXEC;
 	}
-	
+
 	if (*ptr == '\n') {         /* we're at the end of the line */
 		*ptr = '\0';
 		return EOK;
@@ -684,7 +684,7 @@ try_hash_bang(int fd, char **pname, char **arg, char *buf, int buflen)
 	while ((*ptr == ' ' || *ptr == '\t') && ptr < (buf+numread)) {
 		ptr++;
 	}
-	
+
 	if (ptr >= (buf+numread) || *ptr == '\n') {   /* there was nothing else */
 		return EOK;
 	}
@@ -810,7 +810,7 @@ void *loader_load(void *parm) {
 	if(lcp->msg.spawn.i.parms.flags & SPAWN_SETSID) {
 		if(setsid() == -1) {
 			ThreadDestroy(-1, -1, (void *)errno);
-		}			
+		}
 	}
 
 	if(lcp->msg.spawn.i.parms.flags & SPAWN_EXPLICIT_CPU) {
@@ -825,7 +825,7 @@ void *loader_load(void *parm) {
 	if(lcp->msg.spawn.i.parms.flags & SPAWN_SETGROUP) {
 		if(setpgid(getpid(), lcp->msg.spawn.i.parms.pgroup) == -1) {
 			ThreadDestroy(-1, -1, (void *)errno);
-		}			
+		}
 	}
 
 	// proc_spawn set saved_user_id to 0, so this will work...
@@ -833,7 +833,7 @@ void *loader_load(void *parm) {
 	(void)setreuid(geteuid(), 0);
 	(void)setregid(getegid(), getgid());
 
-	/* set root and cwd. 
+	/* set root and cwd.
 	 * Note: netmgr_xxx() can't be called from loader thread (PR#21182), so
 	 * we already munged the premote value in procmgr_spawn().
 	 */
@@ -890,7 +890,7 @@ void *loader_load(void *parm) {
 			interp_name = linebuf;
 			interp_arg = 0;
 			status = EOK;
-		} 
+		}
 		close(fd);
 
 		if (status == EOK) {
@@ -924,7 +924,7 @@ void *loader_load(void *parm) {
 		prealloc = lcp->start.stackalloc;
 	}
 	if(_mmap2((void *)lcp->start.stackaddr, lcp->start.stacksize + guardpagesize,
-			PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON|MAP_STACK|MAP_LAZY, 
+			PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANON|MAP_STACK|MAP_LAZY,
 			NOFD, guardpagesize, __PAGESIZE, prealloc, &base, &size) == MAP_FAILED) {
 		ThreadDestroy(-1, -1, (void *)ENOMEM);
 	}

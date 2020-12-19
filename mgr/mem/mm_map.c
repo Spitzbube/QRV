@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -65,7 +65,7 @@ map_alloc(void) {
 	memset(mm, 0, sizeof(*mm));
 	return mm;
 
-need_more:	
+need_more:
 	INTR_UNLOCK(&map_spin);
 	// We go directly to mmap() for the storage rather than using the
 	// heap because this memory will never be released and can cause
@@ -106,18 +106,18 @@ need_more:
 #if defined(VARIANT_smp)
 static void rdecl
 map_write_lock(struct mm_map_head *mh) {
-#ifndef NDEBUG	
+#ifndef NDEBUG
 	unsigned	count = 0;
-#endif	
+#endif
 
 	do {
 
 		for( ;; ) {
 			if(mh->lock == 0) break;
 			__cpu_membarrier(); // give somebody else a chance at the bus
-#ifndef NDEBUG	
+#ifndef NDEBUG
 			if(++count == 0) crash();
-#endif			
+#endif
 		}
 	} while(_smp_cmpxchg(&mh->lock, 0, MAP_WRITE_LOCK) != 0);
 }
@@ -129,7 +129,7 @@ map_write_lock(struct mm_map_head *mh) {
 #define map_write_unlock(mh) 	((mh)->lock = 0)
 
 
-int 
+int
 map_fault_lock(struct mm_map_head *mh) {
 #if defined(VARIANT_smp)
 	unsigned	l;
@@ -139,18 +139,18 @@ map_fault_lock(struct mm_map_head *mh) {
 		l = mh->lock;
 		if(l & MAP_WRITE_LOCK) return 0;
 	} while(_smp_cmpxchg(&mh->lock, l, l + 1) != l);
-#else 
+#else
 	if(mh->lock & MAP_WRITE_LOCK) return 0;
 	mh->lock = 1;
 #endif
 	return 1;
 }
 
-void 
+void
 map_fault_unlock(struct mm_map_head *mh) {
 #if defined(VARIANT_smp)
 	atomic_sub(&mh->lock, 1);
-#else 
+#else
 	mh->lock = 0;
 #endif
 }
@@ -182,7 +182,7 @@ split_one(struct mm_map_head *mh, struct mm_map_internal *mm, uintptr_t split) {
 	new->map.last_page_bss = mm->map.last_page_bss;
 	mm->map.last_page_bss = 0;
 	new->map.reloc = mm->map.reloc;
-	//MAPFIELDS: copy other mm_map fields. 
+	//MAPFIELDS: copy other mm_map fields.
 	mm->map.next = &new->map;
 	map_write_unlock(mh);
 	memref_walk_restart(mh);
@@ -200,9 +200,9 @@ split_one(struct mm_map_head *mh, struct mm_map_internal *mm, uintptr_t split) {
  * If MI_SPLIT is specified, the mappings will be split up so that the boundaries
  * of the map_set exactly match 'start' and 'end'.
  */
- 
+
 int
-map_isolate(struct map_set *ms, struct mm_map_head *mh, 
+map_isolate(struct map_set *ms, struct mm_map_head *mh,
 				uintptr_t start, size_t size, int flags) {
 	struct mm_map_internal	*prev;
 	struct mm_map_internal	*mm;
@@ -253,7 +253,7 @@ map_isolate(struct map_set *ms, struct mm_map_head *mh,
 					}
 				}
 			}
-		} 
+		}
 		if(!(flags & MI_NEXT) && (end < mm->map.start)) {
 			// this map is past our range and MI_NEXT is off; we're done
 			break;
@@ -286,7 +286,7 @@ map_isolate(struct map_set *ms, struct mm_map_head *mh,
 			// End mapping crosses 'end' boundary; slice it up
 			mm = split_one(mh, (struct mm_map_internal *)ms->last, end + 1);
 			if(mm == NULL) {
-				(void)map_coalese(ms); 
+				(void)map_coalese(ms);
 				return ENOMEM;
 			}
 		}
@@ -296,7 +296,7 @@ map_isolate(struct map_set *ms, struct mm_map_head *mh,
 
 
 uintptr_t
-map_find_va(struct mm_map_head *mh, uintptr_t va, uintptr_t size, 
+map_find_va(struct mm_map_head *mh, uintptr_t va, uintptr_t size,
 			uintptr_t mask, unsigned flags) {
 	uintptr_t				hole_start;
 	uintptr_t				hole_end;
@@ -343,7 +343,7 @@ map_find_va(struct mm_map_head *mh, uintptr_t va, uintptr_t size,
 		} else {
 			hole_end = mm->map.start;
 
-			//This "if" is for the first entry, 
+			//This "if" is for the first entry,
 			// where mh->start == mm->map.start == 0
 			if(hole_start < hole_end) hole_end -= 1;
 		}
@@ -379,7 +379,7 @@ map_find_va(struct mm_map_head *mh, uintptr_t va, uintptr_t size,
 			}
 		}
 		if(mm == NULL) break;
-		hole_start = mm->map.end + 1;			
+		hole_start = mm->map.end + 1;
 		mm = (struct mm_map_internal *)mm->map.next;
 	}
 	return start;
@@ -387,7 +387,7 @@ map_find_va(struct mm_map_head *mh, uintptr_t va, uintptr_t size,
 
 
 int
-map_create(struct map_set *ms, struct map_set *repl, struct mm_map_head *mh, 
+map_create(struct map_set *ms, struct map_set *repl, struct mm_map_head *mh,
 				uintptr_t va, uintptr_t size, uintptr_t mask, unsigned flags) {
 	struct mm_map_internal	*new;
 	struct mm_map			*mm;
@@ -429,7 +429,7 @@ map_create(struct map_set *ms, struct map_set *repl, struct mm_map_head *mh,
 					if(mm->extra_flags & EXTRA_FLAG_SPECIAL) return EINVAL;
 					if(mm == repl->last) break;
 					mm = mm->next;
-				} 
+				}
 			}
 		}
 	} else {
@@ -445,7 +445,7 @@ map_create(struct map_set *ms, struct map_set *repl, struct mm_map_head *mh,
 	new->map.end = va + size - 1;
 	return EOK;
 
-fail1:	
+fail1:
 	map_free(new, new);
 	return r;
 }

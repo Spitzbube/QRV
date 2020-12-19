@@ -1,23 +1,23 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 #include "vmm.h"
 
-int 
+int
 vmm_validate(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
 	ADDRESS					*adp;
 	int						r;
@@ -53,7 +53,7 @@ vmm_validate(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
 	if((vaddr < mm->start) || (end > ms.last->end)) goto fail2;
 
 	for( ;; ) {
-		// Attempting to fiddle with the system page address. 
+		// Attempting to fiddle with the system page address.
 		// No-no unless we're terminating.
 		if((mm->extra_flags & EXTRA_FLAG_SPECIAL) && !(prp->flags & _NTO_PF_TERMING)) {
 			goto fail2;
@@ -64,7 +64,7 @@ vmm_validate(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
 		mm = next;
 	}
 
-	r = EOK; // Everything's good	
+	r = EOK; // Everything's good
 fail2:
 	map_coalese(&ms);
 fail1:

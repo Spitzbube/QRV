@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmgr_devctl
- * 
+ *
  * Provide resource manager devctl() processing for the partitioning module
- * 
+ *
 */
 
 #include "apmgr.h"
@@ -78,14 +78,14 @@ int apmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *_ocb)
 				apmmgr_attr_t *attr = (apmmgr_attr_t *)p;
 				memclass_id_t mclass_id = mempart_get_classid(attr->data.mpid);
 				mempart_node_t *mp_node = MEMPART_NODEGET(prp, mclass_id);
-				
+
 				CRASHCHECK(mp_node == NULL);	// cannot be NULL at this point
 				mp_node->flags = *part_flags & (part_flags_COMMON_MASK | part_flags_MEM_MASK);
 			}
 			else if (p->type == part_type_SCHEDPART_REAL)
 			{
 				schedpart_node_t *sp_node = SCHEDPART_NODEGET(prp);
-				
+
 				CRASHCHECK(sp_node == NULL);	// cannot be NULL at this point
 				sp_node->flags = *part_flags & (part_flags_COMMON_MASK | part_flags_SCHED_MASK);
 			}
@@ -129,14 +129,14 @@ int apmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *_ocb)
 				apmmgr_attr_t *attr = (apmmgr_attr_t *)p;
 				memclass_id_t mclass_id = mempart_get_classid(attr->data.mpid);
 				mempart_node_t *mp_node = MEMPART_NODEGET(prp, mclass_id);
-				
+
 				CRASHCHECK(mp_node == NULL);	// cannot be NULL at this point
 				*part_flags = mp_node->flags;
 			}
 			else if (p->type == part_type_SCHEDPART_REAL)
 			{
 				schedpart_node_t *sp_node = SCHEDPART_NODEGET(prp);
-				
+
 				CRASHCHECK(sp_node == NULL);	// cannot be NULL at this point
 				*part_flags = sp_node->flags;
 			}
@@ -175,7 +175,7 @@ int apmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *_ocb)
 
 			num_ids = MEMPART_GETLIST(prp, NULL, 0, NULL, NULL);
 			num_entries = min(num_ids, info_out->num_entries);
-			
+
 			if (((mpart_list = alloca(PART_LIST_T_SIZE(num_ids))) == NULL) ||
 				(MEMPART_GETLIST(prp, mpart_list, num_ids, mempart_flags_t_GETLIST_ALL, NULL) != 0))
 			{

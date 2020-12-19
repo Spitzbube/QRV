@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmgr_support
- * 
+ *
  * Resource manager miscellaneous support functions
- * 
+ *
 */
 
 #include "apmgr.h"
@@ -35,7 +35,7 @@ static void unregister_event(part_qnodehdr2_t *evlist, part_evt_t *reg_event);
 
 /*******************************************************************************
  * path_find
- * 
+ *
  * search from <root> looking for <name>. If found return a pointer to the
  * apmmgr_attr_t for <name>, otherwise return NULL.
  * If <parent> is non-NULL, return the parent apmmgr_attr_t
@@ -67,7 +67,7 @@ apxmgr_attr_t *path_find(apmgr_type_t type, apxmgr_attr_t *root, char *path, apx
 
 /*******************************************************************************
  * isStringOfDigits
- * 
+ *
  * Return True or False based on whether or not <part_name> is a string of
  * digits between (0-9)
 */
@@ -77,16 +77,16 @@ bool isStringOfDigits(char *part_name)
 	while((c = *part_name++) != '\0')
 		if ((c < 0x30) || (c > 0x39))
 			return 0;	// FALSE
-	
+
 	return 1;	// TRUE;
 }
 
 
 /*******************************************************************************
  * check_access_perms
- * 
+ *
  * Recursively check the hierarchy starting at <mp> for accessibility
- * 
+ *
  * Returns: EOK on success, otherwise and errno
 */
 int check_access_perms(resmgr_context_t *ctp, apxmgr_attr_t *mp, mode_t check,
@@ -103,7 +103,7 @@ int check_access_perms(resmgr_context_t *ctp, apxmgr_attr_t *mp, mode_t check,
 
 /*******************************************************************************
  * npath_find
- * 
+ *
  * search from <root> looking for <name> where root is in the common partitioning
  * resource managers namespace (ie. below root_npart). If found return a pointer
  * to the apmgr_attr_t for <name>, otherwise return NULL.
@@ -119,11 +119,11 @@ apmgr_attr_t *npath_find(apmgr_attr_t *root, char *path, apmgr_attr_t **parent)
 
 /*******************************************************************************
  * deactivate_event
- * 
+ *
  * This function will move <event> from its active list to its inactive list.
  * This happens during event dregistration and or when an event has been deemed
  * undeliverable a specified number of times. Inactive lists are cleaned up
- * whenever a registration or deregistration takes place. 
+ * whenever a registration or deregistration takes place.
 */
 void deactivate_event(part_evtlist_t *evlist, part_evt_t  *event)
 {
@@ -169,15 +169,15 @@ void deactivate_event(part_evtlist_t *evlist, part_evt_t  *event)
 
 /*******************************************************************************
  * unregister_events
- * 
+ *
  * Remove any events for <mp> that were attached through <ocb>.
  * If <ocb> is NULL, all events are removed for <mp> by explicitly deactivating
  * them. This mode is typeically only used during partition removal
- * 
+ *
  * FIX ME - currently I run all the event lists for the mempart referenced by
  * <ocb>. This is very inefficient. What I should do is also link all events
  * registered through this ocb to the ocb as well so that cleanup will be a
- * breeze. This requires a private ocb type which I currently don't do. 
+ * breeze. This requires a private ocb type which I currently don't do.
 */
 int unregister_events(apxmgr_attr_t *p, iofunc_ocb_t *ocb, int num_evts)
 {
@@ -186,12 +186,12 @@ int unregister_events(apxmgr_attr_t *p, iofunc_ocb_t *ocb, int num_evts)
 	part_evt_t *event;
 
 	CRASHCHECK(p == NULL);
-	CRASHCHECK((p->type != part_type_MEMPART_REAL) && 
+	CRASHCHECK((p->type != part_type_MEMPART_REAL) &&
 			   (p->type != part_type_SCHEDPART_REAL) &&
-			   (p->type != part_type_MEMCLASS)); 
+			   (p->type != part_type_MEMCLASS));
 
 	if ((r = PART_ATTR_LOCK(p)) != EOK) return r;
-	
+
 	for (i=0; i<num_evts; i++)
 	{
 		part_evtlist_t *evlist;
@@ -259,7 +259,7 @@ restart:
 
 /*******************************************************************************
  * clean_inactive_list
- * 
+ *
  * clean the inactive events list.
  * We accomplish the necessary synchonization for this by moving all of the
  * inactive events to a temporary list so that the primary list for the event
@@ -311,17 +311,17 @@ void clean_inactive_list(part_qnodehdr2_t *evlist)
 
 /*
  * ===========================================================================
- * 
+ *
  * 							Internal support routines
- * 
+ *
  * ===========================================================================
 */
 
 /*******************************************************************************
  * find_sibling
- * 
+ *
  * Find <name> in <root> or its siblings.
- * 
+ *
  * Returns: a apmmgr_attr_t on success, otherwise NULL
 */
 static apxmgr_attr_t *find_sibling(apxmgr_attr_t *root, const char *name)
@@ -340,9 +340,9 @@ static apxmgr_attr_t *find_sibling(apxmgr_attr_t *root, const char *name)
 
 /*******************************************************************************
  * _path_find
- * 
+ *
  * Recurse down through a hierarchy starting at <root> looking for <path>
- * 
+ *
  * Returns: a apmmgr_attr_t on success, otherwise NULL
 */
 static apxmgr_attr_t *_path_find(apxmgr_attr_t *root, char *path, apxmgr_attr_t **parent)
@@ -375,13 +375,13 @@ static apxmgr_attr_t *_path_find(apxmgr_attr_t *root, char *path, apxmgr_attr_t 
 		else
 			root = find_sibling(root, path);
 	}
-	return root; 
+	return root;
 }
 
 
 /*
  * _check_access_perms
- * 
+ *
  * local (modified) copy of iofunc_check_access() to eliminate the "root can do
  * anything" pass-through
 */
@@ -450,7 +450,7 @@ static int _check_access_perms(resmgr_context_t *ctp, iofunc_attr_t *attr, mode_
 
 /*
  * unregister_event
- * 
+ *
  * unregister a single event and delete it
 */
 static void unregister_event(part_qnodehdr2_t *evlist, part_evt_t *reg_event)

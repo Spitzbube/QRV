@@ -1,22 +1,22 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*
- Neutrino Resource Manager 
+ Neutrino Resource Manager
  - Maintains a database of resources which can be requested
    by other processes.
 */
@@ -33,21 +33,21 @@ void rsrcdbmgr_seed(void);
  Globals
 */
 pthread_mutex_t					g_rsrc_mutex = PTHREAD_MUTEX_INITIALIZER;
-rsrc_root_node_t				*g_rsrc_root;		
+rsrc_root_node_t				*g_rsrc_root;
 
 void rsrcdbmgr_init() {
 	//Initialize all the list heads to NULL
 	g_rsrc_root = NULL;
 
 	rsrcdbmgr_seed();
-	
+
 	//Tell proc to send resource database messages our way
 	message_attach(dpp, NULL, _RSRCDBMGR_BASE, _RSRCDBMGR_MAX, rsrcdbmgr_handler, NULL);
 }
 
 
 /*
- Called to destroy a process's resource allocations 
+ Called to destroy a process's resource allocations
 */
 void rsrcdbmgr_destroy_process(PROCESS *prp) {
 	rsrc_list_array_t *pidrsrc;

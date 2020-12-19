@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -64,7 +64,7 @@ static int termer_done(resmgr_context_t *ctp, union proc_msg_union *msg, PROCESS
 		free(prp->debug_name);
 		prp->debug_name = NULL;
 	}
-	
+
 	parent = proc_lock_parent(prp);
 
 	// If we are the parents guardian, remove it
@@ -186,7 +186,7 @@ int procmgr_termer(message_context_t *mctp, int code, unsigned flags, void *hand
 				} else {
 					fd = termer_done(ctp, msg, prp);	// cleanup termer context, and send SIGCHLD's
 				}
-			} 
+			}
 			if(!(prp->flags & (_NTO_PF_LOADING | _NTO_PF_TERMING | _NTO_PF_WAITINFO))) {
 				pid_t			pid2;
 				PROCESS			*parent;
@@ -196,9 +196,9 @@ int procmgr_termer(message_context_t *mctp, int code, unsigned flags, void *hand
 				pid2 = prp->pid;
 #ifndef NDEBUG
 				if(pid2 == 0) {
-					/* 
+					/*
 					 The pid test is historical and should not be needed.  At
-					 some point we should remove it but for now put this in 
+					 some point we should remove it but for now put this in
 					 to guarantee that the test is not required.
 					*/
 					crash();

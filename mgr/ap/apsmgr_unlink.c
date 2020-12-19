@@ -1,27 +1,27 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apsmgr_unlink
- * 
+ *
  * Provide resource manager unlink() processing for the scheduler partitioning
  * module
- * 
+ *
 */
 
 #include "apsmgr.h"
@@ -49,7 +49,7 @@ int apsmgr_unlink(resmgr_context_t *ctp, io_unlink_t *msg, RESMGR_HANDLE_T *hand
 				char *part_name = msg->connect.path;
 				bool  last = bool_t_FALSE;
 				char *name_p;
-				
+
 				mp_parent = root_spart;
 				/* parse the connect path */
 				while(1)
@@ -114,7 +114,7 @@ int apsmgr_unlink(resmgr_context_t *ctp, io_unlink_t *msg, RESMGR_HANDLE_T *hand
 					return EACCES;
 				}
 			}
-			
+
 			/*
 			 * this check does not catch associated processes for real partitions,
 			 * they are caught below. It will catch child partitions however
@@ -205,7 +205,7 @@ int apsmgr_unlink(resmgr_context_t *ctp, io_unlink_t *msg, RESMGR_HANDLE_T *hand
 			mp->name = NULL;
 			PART_ATTR_UNLOCK(mp);
 			PART_ATTR_UNLOCK(mp_parent);
-			
+
 			free(mp);
 
 			/* have a bit of a problem at this point if iofunc_unlink() reported
@@ -214,7 +214,7 @@ int apsmgr_unlink(resmgr_context_t *ctp, io_unlink_t *msg, RESMGR_HANDLE_T *hand
 			 * and then a real partition reporting a non NULL prp or object list
 			 * (these things take time to cleanup). For now, I will assert the
 			 * debug load and return whatever iofunc_unlink() returns on a regular
-			 * load. In both cases, everything will be removed. 
+			 * load. In both cases, everything will be removed.
 			*/
 			CRASHCHECK(r != EOK);
 

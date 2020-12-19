@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -23,7 +23,7 @@
 
 /*******************************************************************************
  * aps.c
- * 
+ *
  * This file servers the purpose of providing implementations of scheduler
  * partitioning function that are the analogue of those in memmgr/apm/aps.c
  * and memmgr/mm_mespart.c.
@@ -32,11 +32,11 @@
  * the gap.
  * It contains code that is permanently part of the system even if the either
  * the apsgr or aps modules are not included in the build.
- * 
+ *
 */
 /*
  * rsrcmgr_mempart_fnctbl
- * 
+ *
  * When the memory partitioning resource manager initializes, it can optionally
  * register a table of interface functions for use by the memory partioning
  * module. In this case the 'rsrcmgr_mempart_fnctbl' variable will be set
@@ -70,17 +70,17 @@ schedpart_fnctbl_t proxy_schedpart_fnctbl =
 
 /*
  * _schedpart_rsrcmgr_fnctbl
- * 
+ *
  * This table defines the scheduler partitioning interface routines provided for
  * the resource manager porition of the scheduler partitioning module. When the
  * resource manager module registers (_schedpart_fnctbl.rsrcmgr_attach()), it will
  * be returned a pointer to this table so that it can interact with the scheduler
  * partitioning module.
- * 
+ *
  * Note that although this code is current within the same file and not in a module
  * we maintain the same module as for apm. Technically, this table and the functions
  * it holds could be part of the aps module
- * 
+ *
 */
 static part_id_t			_schedpart_create(part_id_t parent_spid, const char *name, schedpart_cfg_t *child_cfg);
 static int					_schedpart_destroy(part_id_t spid);
@@ -102,7 +102,7 @@ static schedpart_rsrcmgr_fnctbl_t _schedpart_rsrcmgr_fnctbl =
 
 /*
  * schedpart_fncTbl
- * 
+ *
  * This function table pointer will be initialized when the scheduler partitioning
  * module is initialized and schedpart_init() is called.
 */
@@ -110,13 +110,13 @@ schedpart_fnctbl_t  *schedpart_fnctbl = NULL;
 
 /*
  * sys_schedpart
- * 
+ *
 */
 schedpart_t  *sys_schedpart = NULL;
 
 /*
  * schedpart_init
- * 
+ *
  * This function pointer will be initialized to point to _schedpart_init() when
  * the scheduler partition module is loaded (see initialize_aps()). This will
  * allow the _schedpart_init() function to be called to perform the remainder of
@@ -126,7 +126,7 @@ void (*schedpart_init)(part_id_t spid, sched_aps_partition_info *aps_info) = pro
 
 /*
  * schedpart_select_dpp
- * 
+ *
  * This function pointer is initialized by the aps module and provides the
  * mechanism by which a newly created process can be associated with a specific
  * scheduling partition via posix_spawn(). It is called via SCHEDPART_SELECT_DPP()
@@ -137,7 +137,7 @@ DISPATCH * (*schedpart_select_dpp)(PROCESS *prp, int id) = NULL;
 
 /*
  * default_schedpart_flags
- * 
+ *
  * This global specifies the default scheduler partitioning flags, specifically
  * what behaviour is exhibited (by default) at process creation if nothing is
  * explicitly specified. It also sets the flags which are applied to the first
@@ -151,7 +151,7 @@ schedpart_dcmd_flags_t default_schedpart_flags = part_flags_NONE;
 
 /*
  * spmgr_st_size
- * 
+ *
  * FIX ME
  * This function pointer exists to allow procfs to get the size of free scheduler
  * from a partitioning perspective (ie. a processes "world view" of free scheduler
@@ -163,7 +163,7 @@ int (*spmgr_st_size)(void *attr, off_t *size) = NULL;
 
 /*
  * spid_unique
- * 
+ *
  * Similar to process id's, scheduler partition id's will be kept unique
 */
 int spid_unique = 0;
@@ -218,7 +218,7 @@ static void m_unlock(pthread_mutex_t *m)
 
 /*
  * FIND_PART_NAME
- * 
+ *
  * FIX ME - this should be common
 */
 #define FIND_PART_NAME(_p_)		(((apxmgr_attr_t *)(_p_)->rmgr_attr_p)->name)
@@ -264,7 +264,7 @@ bool apmgr_module_installed(void)
 static schedpart_rsrcmgr_fnctbl_t *_rsrcmgr_attach(rsrcmgr_schedpart_fnctbl_t *ifTbl)
 {
 #ifndef NDEBUG
-	if (ker_verbose) kprintf("Attaching scheduler partitioning resource manager\n"); 
+	if (ker_verbose) kprintf("Attaching scheduler partitioning resource manager\n");
 #endif
 	if (ifTbl != NULL)
 	{
@@ -282,12 +282,12 @@ void _schedpart_init(part_id_t spid, sched_aps_partition_info *aps_info)
 
 /*******************************************************************************
  * schedpart_getid
- * 
+ *
  * This function will return the scheduler partition identifier for the process
  * <prp>.
- * 
+ *
  * If <prp> == NULL, the system scheduler partition identifier will be returned
- * 
+ *
  * Returns: the partition pointer or NULL if no partition of the scheduler class
  * 			is associated with the process
 */
@@ -305,16 +305,16 @@ part_id_t schedpart_getid(PROCESS *prp)
 
 /*******************************************************************************
  * schedpart_validate_id
- * 
+ *
  * this function is used to validate a partition identifier passed in from
  * user space.
- * 
+ *
  * It returns EOK if <schedpart_id> is valid otherwise it returns an errno.
 */
 int schedpart_validate_id(part_id_t spid)
 {
 	schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
-	
+
 	/* RDLOCK ? */
 	if ((spart != NULL) && (spart->signature == SCHEDPART_SIGNATURE)) {
 		return EOK;
@@ -324,16 +324,16 @@ int schedpart_validate_id(part_id_t spid)
 
 /*******************************************************************************
  * schedpart_module_loaded
- * 
+ *
  * this function is used to determine whether the scheduler partitioning module
  * is loaded or not. The module is considered to be loaded of the (*schedpart_init)
  * function pointer is not NULL and not pointing to the proxy_schedpart_init()
  * (ie. it has been overridden with the real scheduler partitioning initialization
- * function). 
- * 
+ * function).
+ *
  * It returns TRUE or FALSE depending on whether the scheduler partitioning module
  * is considered to be loaded or not.
- * 
+ *
  * Note that loaded and installed/initialized are considered to be 2 different
  * states for the scheduler partitioning module.
 */
@@ -344,10 +344,10 @@ bool schedpart_module_loaded(void)
 
 /*******************************************************************************
  * schedpart_lookup_spid
- * 
+ *
  * implements SCHEDPART_ID_TO_T macro
  * Can be called from kernel or proc thread
- * 
+ *
  * Returns: the 'schedpart_t *' corresponding to <spid> or NULL
 */
 schedpart_t *schedpart_lookup_spid(part_id_t spid)
@@ -367,11 +367,11 @@ schedpart_t *schedpart_lookup_spid(part_id_t spid)
 
 /*******************************************************************************
  * schedpart_vec_add
- * 
+ *
  * add <spart> to the 'schedpart_vector'
  * Called when a partition is created (procnto thread) so we must enter the
  * kernel since vector is queried from kernel
- * 
+ *
  * Returns: a 'part_id_t'
 */
 struct kerargs_schedpart_vec
@@ -407,11 +407,11 @@ part_id_t schedpart_vec_add(schedpart_t *spart)
 
 /*******************************************************************************
  * schedpart_vec_del
- * 
+ *
  * delete <spid> from the 'schedpart_vector'
  * Called when a partition is destroyed (procnto thread) so we must enter the
  * kernel since vector is queried from kernel
- * 
+ *
  * Returns: n/a
 */
 static void kerext_schedpart_vec_del(void *data)
@@ -433,20 +433,20 @@ schedpart_t *schedpart_vec_del(part_id_t spid)
 
 /*
  * ===========================================================================
- * 
+ *
  * 					Scheduler Partition interface routines
- *  
+ *
  * The following routines implement the scheduler partitioning interface for the
  * case when the scheduler partitioning module is not installed. The exception are
  * the process association and disassociation functions which are effectively
  * used by both. The implementations in this file are called out through
  * wrappers in the partitioning module when it is installed (which perform
  * additional things like event notification).
- * 
+ *
  * They are exposed via the 'schedpart_fncTbl' and in conjunction with
  * macros of the same name, provide the scheduler partitioning functionality in a format
- * which is optional. 
- *  
+ * which is optional.
+ *
  * ===========================================================================
 */
 /*
@@ -466,12 +466,12 @@ schedpart_t *schedpart_vec_del(part_id_t spid)
 
 /*******************************************************************************
  * schedpart_proc_associate
- * 
+ *
  * Associate process <prp> with the scheduler partition <schedpart_id>.
  * A process can only be associated with 1 partition of a given scheduler class.
  * Attempts to associate with an already associated partition will return
  * EALREADY.
- * 
+ *
  * HEAP structure creation is controlled by the <flags> argument. This allows
  * the caller to specify whether or not a HEAP is considered necessary. Some
  * scheduler classes may not require a HEAP since it is known that no internal
@@ -481,14 +481,14 @@ schedpart_t *schedpart_vec_del(part_id_t spid)
  * For this case, the 'schedpart_node_t' structure will be allocated from the
  * processes 'sysram' heap and have its HEAP pointer set to NULL (ie no heap
  * for the scheduler class even though it has partition association with the class)
- * 
+ *
  * All of the partition structures required for process association, currently
  * use the sysram scheduler class for their allocations hence when associating with
  * the sysram scheduler class, it is expected that a HEAP be either shared or created
  * (ie. flags & schedpart_flags_HEAP_CREATE | schedpart_flags_HEAP_SHARE) since we
  * know that most (if not all) internal scheduler allocations will be made from the
  * sysram heap for the process. See also schedpart.h
- * 
+ *
  * Returns EOK or an errno
 */
 static int schedpart_proc_associate(PROCESS *prp, part_id_t schedpart_id,
@@ -544,7 +544,7 @@ static int schedpart_proc_associate(PROCESS *prp, part_id_t schedpart_id,
 #ifdef USE_PROC_OBJ_LISTS
 		/* add 'prp' to the process list for the partition */
 		prp_node->prp = prp;
-		
+
 		(void)MUTEX_WRLOCK(&spart_node->schedpart->prplist_lock);
 		LIST_ADD(spart_node->schedpart->prp_list, prp_node);
 		CRASHCHECK(prp_list_audit(spart_node->schedpart->prp_list) != EOK);
@@ -557,7 +557,7 @@ static int schedpart_proc_associate(PROCESS *prp, part_id_t schedpart_id,
 
 /*******************************************************************************
  * schedpart_proc_disassociate
- * 
+ *
  * Remove the process <prp> from the process list for partition <schedpart_id>.
  * If <schedpart_id> is part_id_t_INVALID, the process is disassociated from
  * all partitions in its partition list.
@@ -595,11 +595,11 @@ static int schedpart_proc_disassociate(PROCESS *prp, part_id_t schedpart_id, ext
 
 /*******************************************************************************
  * schedpart_getlist
- * 
+ *
  * This is a proxy handler for the case when the scheduler partitioning module is
  * not installed. It minimally replicates the behaviour of the
  * _schedpart_getlist() function in aps.c.
- * 
+ *
  * Since there are no actual partitions, this function always returns the
  * same thing
 */
@@ -654,17 +654,17 @@ static int schedpart_getlist(PROCESS *prp, part_list_t *spart_list, int n,
 		spart_list->i[spart_list->num_entries++].flags = sp_node->flags;
 	}
 	MUTEX_RDUNLOCK(&prp->spartlist_lock.mutex);
-	
+
 	return (n_sparts - (spart_list->num_entries + filtered));
 }
 
 /*******************************************************************************
  * schedpart_nodeget
- * 
+ *
  * This is a proxy handler for the case when the scheduler partitioning module is
  * not installed. It minimally replicates the behaviour of the _schedpart_get()
  * function in aps.c.
- * 
+ *
  * Since there are no actual partitions, this function always returns the
  * same thing
 */
@@ -678,12 +678,12 @@ static schedpart_node_t *schedpart_nodeget(PROCESS *prp)
 
 /*******************************************************************************
  * schedpart_validate_association
- * 
+ *
  * This API is used to determine whether or not the partition identified by
  * 'part_id_t' <mpid> can be associated with based on the 'struct _cred_info' <c>.
- * 
+ *
  * Returns: EOK if association is permitted, otherwise and errno.
- * 
+ *
  * If the resource manager module is not installed, EOK will be returned since
  * associations control is meaningless
  *
@@ -707,32 +707,32 @@ static int _schedpart_validate_association(part_id_t spid, struct _cred_info *cr
 
 /* remove this when we no longer support WATCOM, or WATCOM supports inlines */
 #if (defined(__WATCOMC__) || !defined(NDEBUG))
-void *_select_dpp(PROCESS *prp, part_id_t spid) 
+void *_select_dpp(PROCESS *prp, part_id_t spid)
 {
 	if (!SCHEDPART_INSTALLED() || !apmgr_module_installed() || (schedpart_select_dpp == NULL)) {
 		return NULL;
 	} else {
 		schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
 		CRASHCHECK(spart == NULL);
-	
+
 		return schedpart_select_dpp(prp, spart->info.info.id);
 	}
 }
 #endif	/* (defined(__WATCOMC__) || !defined(NDEBUG)) */
 
 /* ===========================================================================
- * 
+ *
  * 								support routines
- *  
+ *
  * ===========================================================================
 */
 
 
 /*******************************************************************************
  * schedpart_disassociate_1
- * 
+ *
  * Disassociate process <prp> from the partition <spart>
- * 
+ *
  * Returns: EOK on success, otherwise and errno
 */
 static int schedpart_proc_disassociate_1(PROCESS *prp, schedpart_t *spart, ext_lockfncs_t *lf)
@@ -784,18 +784,18 @@ static int schedpart_proc_disassociate_1(PROCESS *prp, schedpart_t *spart, ext_l
 
 /*******************************************************************************
  * proxy_schedpart_init
- * 
+ *
  * This is a proxy handler for the case when the scheduler partitioning module is
  * not installed. It minimally replicates the behaviour of the
  * _schedpart_init() function in aps.c.
- * 
+ *
 */
 static void proxy_schedpart_init(part_id_t internal_sys_spid, sched_aps_partition_info *aps_info)
 {
 	static schedpart_fnctbl_t private_schedpart_fnctbl;
 	part_id_t  sys_spid;
 
-	/* can only be called once */	
+	/* can only be called once */
 	if ((sys_schedpart != NULL) || (internal_sys_spid == part_id_t_INVALID))
 	{
 		kprintf("Unable to create system partition, sys_schedpart: 0x%x, sys_schedpart_id: 0x%x\n",
@@ -827,7 +827,7 @@ static void proxy_schedpart_init(part_id_t internal_sys_spid, sched_aps_partitio
 	sys_schedpart->info.info = *aps_info;
 	sys_schedpart->info.cre_cfg.pinfo_flags = aps_info->pinfo_flags;
 	sys_schedpart->info.cre_cfg.attr.budget_percent = aps_info->budget_percent;
-	//sys_schedpart->info.cre_cfg.attr.critical_budget_ms = 
+	//sys_schedpart->info.cre_cfg.attr.critical_budget_ms =
 
 	/* set cur_cfg == cre_cfg without messing up the policy flags */
 	sys_schedpart->info.cur_cfg.attr = sys_schedpart->info.cre_cfg.attr;
@@ -843,22 +843,22 @@ static void proxy_schedpart_init(part_id_t internal_sys_spid, sched_aps_partitio
 
 /*
  * ===========================================================================
- * 
+ *
  * 								support routines analogous
  * 									to memmgr/apm/apm.c
  * 					This is where we shim and interface with existing aps code
- *  
+ *
  * ===========================================================================
 */
 
 /*******************************************************************************
  * _schedpart_create
- * 
+ *
  * Normally, partition creation is handled via the open call and there is no
  * means of providing the creation parameters so just create a '0' budget
  * partition. It will be modified after it is created.
  * If a valid <child_cfg> is provided, we do handle it
- * 
+ *
  * Unfortunately because the original aps code stores a name internally that
  * cannot be changed afterwards. I could add a new SchedCtl() that allowed the
  * name to be changed, but this is easier.
@@ -872,13 +872,13 @@ static part_id_t _schedpart_create(part_id_t parent_spid, const char *name, sche
  * i_schedpart_create
  *
  * internal partition creation implementation with the added functionality
- * required for initialization as follows. 
+ * required for initialization as follows.
  * If <spid> is != part_id_t_INVALID then the actual partition creation via
  * SchedCtl() is not performed and the internal (APS known) id should be <spid>.
  * All other aspects of schedpart_create() are performed.
  * Note that this feature is only used at initialization time in order to
- * synchronize with APS internal data structures for the System partition. 
- * 
+ * synchronize with APS internal data structures for the System partition.
+ *
  * A note on partition id's
  * The externally visible partition id is held in 'schedpart_info_t.id'
  * (see schedpart.h) and this id is generated based on the uniqueness provided
@@ -893,7 +893,7 @@ static part_id_t _schedpart_create(part_id_t parent_spid, const char *name, sche
  * 'create_key' (useful during debug). The initial value of LSb=0b1 IS however
  * important and in conjunction with the increment of '2' ensures that we never
  * have a value of '0', which is regarded as special (ie. it's the "no key" value)
-*/ 
+*/
 static unsigned create_key = 1 | parttype_SCHED;
 static part_id_t i_schedpart_create(part_id_t parent_spid, const char *name, schedpart_cfg_t *child_cfg, part_id_t spid)
 {
@@ -949,7 +949,7 @@ static part_id_t i_schedpart_create(part_id_t parent_spid, const char *name, sch
 		schedpart->info.cre_cfg.policy = schedpart->info.cur_cfg.policy = SCHEDPART_DFLT_POLICY;
 		/*
 		 * Generate the policy keys based on the currently selected policies. This
-		 * must be done before calling _schedpart_config() 
+		 * must be done before calling _schedpart_config()
 		*/
 		SET_SPART_POLICY_TERMINAL_KEY(&schedpart->info.cre_cfg);
 		SET_SPART_POLICY_CFG_LOCK_KEY(&schedpart->info.cre_cfg);
@@ -990,7 +990,7 @@ static part_id_t i_schedpart_create(part_id_t parent_spid, const char *name, sch
 			 * Note that the query needs schedpart->info.info.id to contain the
 			 * correct (internal) 'id' so that the information can be retrieved.
 			 * The 'id' for the newly created partition was returned in the
-			 * 'aps_create_parms' 
+			 * 'aps_create_parms'
 			*/
 			CRASHCHECK(aps_create_parms.id <= 0);	// cannot be the system partition (0)
 			APS_INIT_DATA(&schedpart->info.info);	//initialize parameter block. Must be done
@@ -1045,7 +1045,7 @@ static part_id_t i_schedpart_create(part_id_t parent_spid, const char *name, sch
 
 /*******************************************************************************
  * _schedpart_destroy
- * 
+ *
  * FIX ME - APS doesn't support this concept yet.
  * 			Don't forget to subtract num_children when/if this is implemented
 */
@@ -1056,7 +1056,7 @@ static int _schedpart_destroy(part_id_t spid)
 
 /*******************************************************************************
  * _schedpart_config
- * 
+ *
 */
 static int _schedpart_config(part_id_t spid, schedpart_cfg_t *cfg, unsigned key)
 {
@@ -1090,7 +1090,7 @@ static int _schedpart_config(part_id_t spid, schedpart_cfg_t *cfg, unsigned key)
 			if (aps_mod_parms.new_critical_budget_ms != -1) {
 				spart->info.cur_cfg.attr.critical_budget_ms = aps_mod_parms.new_critical_budget_ms;
 			}
-				
+
 			if ((spart->create_key != 0) && (spart->create_key == key))
 			{
 				/* this is an initial creation */
@@ -1098,7 +1098,7 @@ static int _schedpart_config(part_id_t spid, schedpart_cfg_t *cfg, unsigned key)
 				SET_SPART_POLICY_TERMINAL_KEY(&spart->info.cre_cfg);
 				SET_SPART_POLICY_CFG_LOCK_KEY(&spart->info.cre_cfg);
 				SET_SPART_POLICY_PERMANENT_KEY(&spart->info.cre_cfg);
-			}	
+			}
 		}
 		else
 		{
@@ -1115,7 +1115,7 @@ static int _schedpart_config(part_id_t spid, schedpart_cfg_t *cfg, unsigned key)
 
 /*******************************************************************************
  * _schedpart_getinfo
- * 
+ *
 */
 static schedpart_info_t *_schedpart_getinfo(part_id_t spid, schedpart_info_t *info)
 {
@@ -1137,7 +1137,7 @@ static schedpart_info_t *_schedpart_getinfo(part_id_t spid, schedpart_info_t *in
 		APS_INIT_DATA(&aps_info);	//initialize parameter block. Must be done
 		APS_INIT_DATA(&aps_stats);	//initialize parameter block. Must be done
 		aps_info.id = aps_stats.id = spart->info.info.id;	// need the internal id
-	
+
 		if ((SchedCtl(SCHED_APS_QUERY_PARTITION, &aps_info, sizeof(aps_info)) != EOK) ||
 			(SchedCtl(SCHED_APS_PARTITION_STATS, &aps_stats, sizeof(aps_stats)) != EOK))
 		{
@@ -1172,16 +1172,16 @@ static schedpart_info_t *_schedpart_getinfo(part_id_t spid, schedpart_info_t *in
 
 /*******************************************************************************
  * _schedpart_find_pid
- * 
+ *
  * determine if the process id <pid> is associated with the scheduler partition
  * identified by <spid>
- * 
+ *
  * FIX ME - can possibly make this faster by checking to see if the process has
  * 			the partition associated instead of whether the partition has the
  * 			process in its list
- * 
+ *
  * Returns: a PROCESS pointer if found, NULL otherwise
- * 
+ *
 */
 static PROCESS *_schedpart_find_pid(pid_t pid, part_id_t spid)
 {
@@ -1224,7 +1224,7 @@ static PROCESS *_schedpart_find_pid(pid_t pid, part_id_t spid)
 
 /*******************************************************************************
  * _validate_cfg_creation
- * 
+ *
 */
 static int _validate_cfg_creation(part_id_t parent_spid, schedpart_cfg_t *cfg)
 {
@@ -1242,14 +1242,14 @@ static int _validate_cfg_creation(part_id_t parent_spid, schedpart_cfg_t *cfg)
 			return EINVAL;
 		}
 	}
-	
+
 	if (parent_sp != NULL)
 	{
 		/* assert that the parent partition may have children */
 		if (GET_SPART_POLICY_TERMINAL(&parent_sp->info.cur_cfg) == bool_t_TRUE) {
-			return EPERM; 
+			return EPERM;
 		}
-	
+
 		/* the following are checks validate the config against the parent partition */
 		if (cfg != NULL)
 		{
@@ -1261,17 +1261,17 @@ static int _validate_cfg_creation(part_id_t parent_spid, schedpart_cfg_t *cfg)
 
 /*******************************************************************************
  * _validate_cfg_modification
- * 
+ *
 */
 static int _validate_cfg_modification(part_id_t spid, schedpart_cfg_t *cfg)
 {
 	schedpart_t *sp = SCHEDPART_ID_TO_T(spid);
-	
+
 	/* assert modifying a valid partition */
 	if (sp == NULL) {
 		return ENOENT;
 	}
-	
+
 	if (cfg == NULL) {
 		return EINVAL;
 	}
@@ -1320,5 +1320,5 @@ static int _validate_cfg_modification(part_id_t spid, schedpart_cfg_t *cfg)
 	return EOK;
 }
 
-	
+
 __SRCVERSION("aps.c $Rev: 209913 $");

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -176,11 +176,11 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 		 * instead of having inherit_mempart_list() malloc() the memory for us. This
 		 * requires that the number of associated partitions for <ppid> be determined
 		 * first
-		*/ 
+		*/
 		int  num_parts, r;
 		mempart_flags_t getlist_flags = mempart_flags_t_GETLIST_INHERITABLE | mempart_flags_t_GETLIST_CREDENTIALS;
 		struct _cred_info cred;
-		
+
 		pprp = proc_lock_pid(ppid);
 		CRASHCHECK(pprp == NULL);
 
@@ -193,14 +193,14 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 			/* if no partitions returned, process likely has not got proper permissions */
 			return (num_parts < 0) ? EACCES : ENOMEM;
 		}
-		
+
 		partlist->mpart_list->num_entries = num_parts;
 		if ((r = inherit_mempart_list(pprp, &partlist->mpart_list)) != EOK) {
 			proc_unlock(pprp);
 			return r;
 		}
 
-		/* 
+		/*
 		 * By default, the mempart_list->i[].flags are inherited from the
 		 * parent. However, in the case of the the initial processes created
 		 * by procnto, we do not want this inheritance. Instead we want to use
@@ -224,7 +224,7 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 		int  num_parts, r;
 		schedpart_flags_t getlist_flags = schedpart_flags_t_GETLIST_INHERITABLE | schedpart_flags_t_GETLIST_CREDENTIALS;
 		struct _cred_info cred;
-		
+
 		pprp = proc_lock_pid(ppid);
 		CRASHCHECK(pprp == NULL);
 
@@ -243,7 +243,7 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 			return r;
 		}
 
-		/* 
+		/*
 		 * By default, the schedpart_list->i[].flags are inherited from the
 		 * parent. However, in the case of the the initial processes created
 		 * by procnto, we do not want this inheritance. Instead we want to use
@@ -256,7 +256,7 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 				partlist->spart_list->i[i].flags = default_schedpart_flags;
 			}
 		}
-		proc_unlock(pprp);	
+		proc_unlock(pprp);
 	}
 
 	switch(msg->spawn.i.subtype) {
@@ -295,8 +295,8 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 		 * for a process (ie. first list entry).
 		 * The only time that this assertion should go off is when an explicit
 		 * partition list is provided by the user which does not have a sysram
-		 * partition as the first entry and list reordering has not occured. 
-		*/ 
+		 * partition as the first entry and list reordering has not occured.
+		*/
 		CRASHCHECK(mempart_get_classid(partlist->mpart_list->i[0].id) != sys_memclass_id);
 
 		off = msgsize = sizeof(struct _proc_spawn)
@@ -327,7 +327,7 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 		if(!(lcp = procmgr_context_alloc(msgsize, LC_SPAWN | (((ctp->info.flags & _NTO_MI_ENDIAN_DIFF)) ? LC_CROSS_ENDIAN : 0)))) {
 			return ENOMEM;
 		}
-			
+
 		lcp->flags = msg->spawn.i.parms.flags;
 		lcp->pnode = ctp->info.nd;
 		ppid = lcp->ppid = ctp->info.pid;
@@ -345,7 +345,7 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 			} else {
 				(void)MsgRead(ctp->rcvid, (char*)&lcp->msg + lcp->remote_off, len, off);
 			}
-		} 
+		}
 		if(msgsize <= ctp->info.msglen) {
 			memcpy(&lcp->msg, msg, msgsize);
 		} else {
@@ -377,7 +377,7 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 		}
 		if(ND_NODE_CMP(lcp->pnode, ND_LOCAL_NODE) != 0) {
 			struct _client_info info;
-			
+
 			// network spawn case
 			ConnectClientInfo(ctp->info.scoid, &info, NGROUPS_MAX);
 			info.cred.sgid = info.cred.egid;
@@ -405,18 +405,18 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 
 			proc_unlock(prp);
 		}
-		
+
 		/* For remote spawn, "root directory" was generated on another node.
-		 * Check if it starts with the network path to the local node (e.g. "on -f") 
-		 * and if it does remove it.  Do it here since netmgr_xxx() functions can't 
+		 * Check if it starts with the network path to the local node (e.g. "on -f")
+		 * and if it does remove it.  Do it here since netmgr_xxx() functions can't
 		 * be called by the loader thread while in loader_load (PR21182)
 		 */
 		if(ND_NODE_CMP(lcp->pnode, ND_LOCAL_NODE) != 0) {
 			proc_spawn_remote_t *premote;
 			char *p0, *p1;
-			
+
 			premote = (proc_spawn_remote_t*)((char*)&lcp->msg.spawn.i + lcp->remote_off);
-			
+
 			p0 = (char*)premote + sizeof(*premote);
 			if(proc_thread_pool_reserve() != 0) {
 				return EAGAIN;
@@ -434,7 +434,7 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 					memmove(p0, p1-1, min(lenp1,premote->root_len));
 				}
 			}
-			proc_thread_pool_reserve_done(); 
+			proc_thread_pool_reserve_done();
 		}
 
 
@@ -569,7 +569,7 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 					}
 				}
 			}
-	
+
 			remote2.umask = prp->umask;
 
 			max = 2 * PATH_MAX;
@@ -655,7 +655,7 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 			ENDIAN_SWAP16(&remote2.flags);
 		}
 		MsgReplyv(ctp->rcvid, EOK, &ctp->iov[0], 4);
-		
+
 		_sfree(buff, size);
 		return _RESMGR_NOREPLY;
 	}
@@ -719,7 +719,7 @@ int procmgr_spawn(resmgr_context_t *ctp, void *vmsg, proc_create_attr_t *partlis
 		}
 		if((lcp->state & LC_STATE_MASK) == LC_FORK) {
 			SignalProcmask(ctp->info.pid, 1, SIG_SETMASK, &lcp->mask, 0);
-		} 
+		}
 		if(((lcp->state & LC_STATE_MASK) != LC_FORK) || (lcp->flags & _FORK_ASPACE)) {
 			MsgReplyv(lcp->rcvid, ctp->info.pid, 0, 0);
 		}
@@ -739,8 +739,8 @@ procmgr_exec(resmgr_context_t *ctp, void *msg, PROCESS *prp) {
 	struct sched_param		params;
 
 	// Need to access child through lcp->pid, lcp->process may be invalid
-	if(MsgInfo(lcp->rcvid, &ctp->info) == -1 || !prp->child 
-			|| (prp->pid != lcp->ppid) || !(child = proc_lock_pid(lcp->pid)) 
+	if(MsgInfo(lcp->rcvid, &ctp->info) == -1 || !prp->child
+			|| (prp->pid != lcp->ppid) || !(child = proc_lock_pid(lcp->pid))
 			|| (child->parent != prp) || (child->flags & (_NTO_PF_TERMING | _NTO_PF_ZOMBIE))) {
 		// Child started terming or is gone; don't try to swap
 		// Need to term again without LC_EXEC_SWAP set

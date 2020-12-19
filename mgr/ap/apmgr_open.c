@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmgr_open
- * 
+ *
  * /proc/<pid>/partition resource manager open()
- * 
+ *
 */
 
 #include "apmgr.h"
@@ -29,7 +29,7 @@
 
 /*
  * apmgr_open
- * 
+ *
  * This instance of the apmgr resource manager handles names under "/partition"
  * that are not handled by "/partition/mem" or "/partition/sched". By design,
  * only pseudo partitions or group names can exist under "/partition"
@@ -68,7 +68,7 @@ int apmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *extra, void *reserve
 				(nametoolong(name, NAME_MAX, (void *)apmgr_devno)))
 				return ENAMETOOLONG;
 
-			/* get client info now. It will be required at some point */			
+			/* get client info now. It will be required at some point */
 			if ((r = iofunc_client_info(ctp, msg->connect.ioflag, &ci)) != EOK)
 				return r;
 
@@ -83,12 +83,12 @@ int apmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *extra, void *reserve
 						last = bool_t_TRUE;
 					else
 						*name_p++ = '\0';		// remove the '/'
-					
+
 					if (((p = npath_find((apmgr_attr_t *)LIST_FIRST(parent->children), name, NULL)) == NULL) && !last)
 					{
 						return ENOENT;
 					}
-				
+
 					if (last)
 						break;
 
@@ -107,7 +107,7 @@ int apmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *extra, void *reserve
 
 			CRASHCHECK((parent == NULL) && (p == NULL));
 			CRASHCHECK((parent == NULL) && (p->type != part_type_ROOT));
-			
+
 			/* LOCK the required attributes structures */
 			if ((r = PART_ATTR_LOCK(parent)) != EOK)
 				return r;
@@ -141,10 +141,10 @@ int apmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *extra, void *reserve
 				if (p != NULL) p->attr.mode |= dir_mode;	// restore
 				PART_ATTR_UNLOCK(p);
 				PART_ATTR_UNLOCK(parent);
-				return r;	// some other error 
+				return r;	// some other error
 			}
 			if (p != NULL) p->attr.mode |= dir_mode;	// restore
-			
+
 			/*
 			 * if creating a new name under parent, make sure write permission
 			 * exists. This is necessary since the
@@ -158,18 +158,18 @@ int apmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *extra, void *reserve
 			{
 				check_mode |= S_IWRITE;
 				recurse = bool_t_TRUE;
-			}	
+			}
 			if ((check_mode != 0) && ((r = check_access_perms(ctp, (apxmgr_attr_t *)(p ? p : parent), check_mode, &ci, recurse)) != EOK))
 			{
 				PART_ATTR_UNLOCK(p);
 				PART_ATTR_UNLOCK(parent);
 				return r;
 			}
-			
+
 			if ((p == NULL) && (parent != NULL) && (msg->connect.ioflag & O_CREAT))
 			{
 				int rr;
-				
+
 				if ((p == NULL) && ((p = calloc(1, sizeof(*p))) == NULL))
 				{
 					PART_ATTR_UNLOCK(parent);
@@ -197,7 +197,7 @@ int apmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *extra, void *reserve
 					 * under the root, only a partition group or pseudo name
 					 * is legal
 					*/
-					case part_type_ROOT:	
+					case part_type_ROOT:
 					case part_type_GROUP:
 					{
 						/*
@@ -252,7 +252,7 @@ int apmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *extra, void *reserve
 			}
 			PART_ATTR_UNLOCK(p);
 			PART_ATTR_UNLOCK(parent);
-			return r; 
+			return r;
 		}
 		default:
 			return ENOSYS;

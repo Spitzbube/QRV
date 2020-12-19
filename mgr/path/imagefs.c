@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -94,13 +94,13 @@ image_get_path(union image_dirent *dir) {
 /*
  Get a list of all the unique entries under path and stick'em in an array
 */
-static int 
+static int
 image_getdir_children(union image_dirent *startdir, char *path, char ***children, uint16_t *childcount, uint16_t *index) {
 	union image_dirent *dir;
 	int					len, ncount;
 	char				**names;
 
-	ncount = 0;	
+	ncount = 0;
 	names = NULL;
 	len = strlen(path);
 
@@ -110,7 +110,7 @@ image_getdir_children(union image_dirent *startdir, char *path, char ***children
 
 		entry_name = image_get_path(dir);
 		if (!entry_name || strncmp(path, entry_name, len) != 0) {
-			continue;	
+			continue;
 		}
 
 		*index = ((uintptr_t)entry_name - (uintptr_t)startdir) + len;
@@ -118,26 +118,26 @@ image_getdir_children(union image_dirent *startdir, char *path, char ***children
 		/* Advance us up to the relevant portion */
 		entry_name += len;
 
-		i = 0;	
+		i = 0;
 		while (*entry_name && *entry_name == '/') { entry_name++; i++; }
 		if (i <= 0  && len > 0) {
 			continue;	//We need at least one slash character seperator, unless we are at root
 		}
-			
+
 		entry_len = 0;
 		while (entry_name[entry_len] && entry_name[entry_len] != '/') { entry_len++; }
 		if (!entry_len) {
 			continue;	//We need something after the slash
 		}
-	
-		/* 
+
+		/*
 		 At this point entry_len either points at the end of the string
 		 or it points at the / character.  If the null character, we
 		 need go no further, just add it.  If a / then we need to check
 		 to see if the entry has already been added.
 		*/
 		for (i=0; i<ncount && names[i]; i++) {
-			if (strncmp(names[i], entry_name, entry_len) == 0 && 
+			if (strncmp(names[i], entry_name, entry_len) == 0 &&
 			    (names[i][entry_len] == '/' || names[i][entry_len] == '\0')) {
 				entry_name = NULL;
 				break;
@@ -170,7 +170,7 @@ image_getdir_children(union image_dirent *startdir, char *path, char ***children
 	return ncount;
 }
 
-static int 
+static int
 image_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 	struct image_ocb			*ocb = vocb;
 	unsigned					nbytes;
@@ -232,11 +232,11 @@ image_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 			if (!(entry_name = ocb->children[*pos])) {
 				break;
 			}
-		
+
 			/* Adjust the length to only include up until the slash */
 			cplen = 0;
 			while (entry_name[cplen] && entry_name[cplen] != '/') { cplen++; }
-			if (cplen == 0) {	
+			if (cplen == 0) {
 				continue;
 			}
 
@@ -264,7 +264,7 @@ image_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 			amount += reclen;
             nbytes -= reclen;
 		}
-		nbytes = amount;		
+		nbytes = amount;
 		SETIOV(ctp->iov + 0, &msg->i, amount);
 		resmgr_endian_context(ctp, _IO_READ, S_IFDIR, 0);
 	}
@@ -274,7 +274,7 @@ image_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 	return _RESMGR_NPARTS(1);
 }
 
-static int 
+static int
 image_close_ocb(resmgr_context_t *ctp, void *reserved, void *vocb) {
 	struct image_ocb			*ocb = vocb;
 
@@ -290,7 +290,7 @@ image_close_ocb(resmgr_context_t *ctp, void *reserved, void *vocb) {
 	return EOK;
 }
 
-static int 
+static int
 image_stat(resmgr_context_t *ctp, io_stat_t *msg, void *vocb) {
 	struct image_ocb			*ocb = vocb;
 	struct image_data			*image = ocb->image;
@@ -334,7 +334,7 @@ image_stat(resmgr_context_t *ctp, io_stat_t *msg, void *vocb) {
 		}
 		msg->o.st_nlink = S_ISDIR(dire->attr.mode) ? 2 : 1;
 		msg->o.st_dev = (ctp->info.srcnd << ND_NODE_BITS) | ocb->image->devno;
-	
+
 		if (S_ISLNK(msg->o.st_mode)) {
 			char *p = &dire->symlink.path[dire->symlink.sym_offset];
 
@@ -347,7 +347,7 @@ image_stat(resmgr_context_t *ctp, io_stat_t *msg, void *vocb) {
 	return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o);
 }
 
-static int 
+static int
 image_pathconf(resmgr_context_t *ctp, io_pathconf_t *msg, void *vocb) {
 	struct image_ocb			*ocb = vocb;
 	struct image_data			*image = ocb->image;
@@ -371,7 +371,7 @@ image_pathconf(resmgr_context_t *ctp, io_pathconf_t *msg, void *vocb) {
 	return EINVAL;
 }
 
-static int 
+static int
 image_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 	struct image_ocb			*ocb = vocb;
 	union {
@@ -407,7 +407,7 @@ image_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 	return EOK;
 }
 
-static int 
+static int
 image_lseek(resmgr_context_t *ctp, io_lseek_t *msg, void *vocb) {
 	struct image_ocb			*ocb = vocb;
 	union image_dirent			*dire = ocb->dir;
@@ -446,7 +446,7 @@ image_lseek(resmgr_context_t *ctp, io_lseek_t *msg, void *vocb) {
 	return _RESMGR_NPARTS(1);
 }
 
-static int 
+static int
 image_mmap(resmgr_context_t *ctp, io_mmap_t *msg, void *vocb) {
 	struct image_ocb			*ocb = (struct image_ocb *)vocb;
 	struct image_ocb			*oldocb = ocb;
@@ -460,7 +460,7 @@ image_mmap(resmgr_context_t *ctp, io_mmap_t *msg, void *vocb) {
 	if ((ocb->ioflag & ioflag) != ioflag) {
 		return EACCES;
 	}
-			
+
 	//RUSH3: we should be looking to see if we already have this
 	//RUSH3: memory mapped file open and returning that coid.
 	if (!(ocb = _smalloc(sizeof *ocb))) {
@@ -528,15 +528,15 @@ static resmgr_io_funcs_t image_io_funcs = {
 };
 
 /*
- This will attempt to match the target path with an internal entry 
+ This will attempt to match the target path with an internal entry
  based on the following preferences/criteria:
   -Symbolic links within the path are stored and the shortest link
    path wins above all else.
-  -If the path contains no links, but a perfect match is found it 
+  -If the path contains no links, but a perfect match is found it
    is returned (might be a symlink).
   -If the path contains no links, but a perfect match is not found,
    but the path is a sub-path of another entry then that other
-   entry is returned.  This is the case with internal directory 
+   entry is returned.  This is the case with internal directory
    references.
 
  This is kind of wastefull in terms of search time, but is cheap
@@ -566,7 +566,7 @@ image_lookup(struct image_data *image, struct _io_connect *connect, int *state) 
 		entry_len = strlen(entry_name);
 
 		/* Check for symbolic links, less than equal to pathlength && a directory or endpoint */
-		if (S_ISLNK(dir->attr.mode) && entry_len < len && 
+		if (S_ISLNK(dir->attr.mode) && entry_len < len &&
 			name[entry_len] == '/' && strncmp(entry_name, name, entry_len) == 0) {
 
 			/* If the link is longer than the last one, forget it */
@@ -601,8 +601,8 @@ image_lookup(struct image_data *image, struct _io_connect *connect, int *state) 
 	return altdir;
 }
 
-static int 
-image_link_redirect(resmgr_context_t *ctp, io_open_t *msg, 
+static int
+image_link_redirect(resmgr_context_t *ctp, io_open_t *msg,
 							   struct image_symlink *symlinkp, int redirect) {
 	int len, eflag;
 	char *p, *ap, *ip, *tp;		/* [p]ath, [a]fter, [i]nsert, [t]emp */
@@ -624,7 +624,7 @@ image_link_redirect(resmgr_context_t *ctp, io_open_t *msg,
 	if (redirect) {
 		_IO_SET_CONNECT_RET(ctp, _IO_CONNECT_RET_LINK);
 
-		/* Build the link pathname making it relative to our root entry but only 
+		/* Build the link pathname making it relative to our root entry but only
 		   if we are actually re-directing, otherwise show the symlink string */
 		if (*p != '/') {
 			char *nip;
@@ -650,7 +650,7 @@ image_link_redirect(resmgr_context_t *ctp, io_open_t *msg,
 	return _RESMGR_PTR(ctp, msg, sizeof(struct _io_connect_link_reply) + len);
 }
 
-static int 
+static int
 image_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
 	struct image_data			*image = handle;
 	union image_dirent			*dire;
@@ -659,7 +659,7 @@ image_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
 	if (handle == NULL) {
 		return ENOSYS;
 	}
-	
+
 	if (msg->connect.path_len + sizeof(*msg) >= ctp->msg_max_size) {
 		return ENAMETOOLONG;
 	}
@@ -693,7 +693,7 @@ image_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
               (msg->connect.eflag & (_IO_CONNECT_EFLAG_DOT | _IO_CONNECT_EFLAG_DIR))) {
 				int redirect = 0;
 				int	r;
-				
+
 				if (notmatch == LOOKUP_INT_LNK || msg->connect.subtype != _IO_CONNECT_READLINK) {
 					redirect = 1;
 				}
@@ -709,7 +709,7 @@ image_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
 			IMAGE_ADDRESSABLE_DONE(image);
 			return ENOMEM;
 		}
-		
+
 		/* If it is a directory, fetch the children (just the dirs?) */
 		ocb->childcount = 0;
 		ocb->children = NULL;
@@ -746,13 +746,13 @@ image_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void *extra) {
 	IMAGE_ADDRESSABLE_DONE(image);
 	return errno;
 }
-		
-static int 
+
+static int
 image_readlink(resmgr_context_t *ctp, io_readlink_t *msg, void *handle, void *extra) {
 	return image_open(ctp, (io_open_t *)msg, handle, extra);
 }
 
-static int 
+static int
 image_unlink(resmgr_context_t *ctp, io_unlink_t *msg, void *handle, void *extra) {
 	struct image_data			*image = handle;
 	union image_dirent			*dire;
@@ -804,10 +804,10 @@ static char *device_options[] = {
 	NULL
 };
 
-// 
+//
 // Example usage: mount -tifs -ooffset=XXXX,size=YYYY /dev/mem /foobar
 //
-static int 
+static int
 image_mount(resmgr_context_t *ctp, io_mount_t *msg, void *handle, io_mount_extra_t *extra) {
 	char *		options;
 	char *		p;
@@ -880,15 +880,15 @@ static const resmgr_connect_funcs_t image_connect_funcs = {
 	0,	//link (must be null);
 	0,	//unblock
 	image_mount	//mount
-};                                              
+};
 
-int 
+int
 imagefs_mount_mounter () {
 	return resmgr_attach(dpp, NULL, NULL, _FTYPE_MOUNT, _RESMGR_FLAG_DIR | _RESMGR_FLAG_FTYPEONLY,
 	                      &image_connect_funcs, &image_io_funcs, NULL);
 }
 
-static void 
+static void
 kerext_validate_signature(void *p) {
 	int					i;
 	int					j;
@@ -906,7 +906,7 @@ kerext_validate_signature(void *p) {
 
 /* when memory management is added, this will probably pass in a memory object structure instead */
 void *
-imagefs_mount(paddr_t paddr, unsigned size, unsigned offset, unsigned flags, struct node_entry *root, 
+imagefs_mount(paddr_t paddr, unsigned size, unsigned offset, unsigned flags, struct node_entry *root,
 		const char *mountpoint) {
 	void						*addr;
 	struct image_data			*image;
@@ -939,10 +939,10 @@ imagefs_mount(paddr_t paddr, unsigned size, unsigned offset, unsigned flags, str
 	if((r == ENOTSUP) && (mountpoint != NULL)) {
 		// memmgr can't handle the paddr - we're being asked to map something
 		// into the sysaddr space on an architecture that only supports
-		// sysaddr access to the 1-to-1 area. 
+		// sysaddr access to the 1-to-1 area.
 		// Instead, we'll do the mapping into procnto's local user address
 		// space and bind each thread to that when they need to look at the IFS.
-		// Only do this for things brought in via image_mount(), since the 
+		// Only do this for things brought in via image_mount(), since the
 		// bootimage.c code assumes a pointer in sysaddr space is returned.
 		in_user_space = 1;
 		ProcessBind(SYSMGR_PID);
@@ -951,7 +951,7 @@ imagefs_mount(paddr_t paddr, unsigned size, unsigned offset, unsigned flags, str
 	}
 	if(r != EOK) goto fail2;
 
-	// Do signature validation inside the kernel so that if we get a 
+	// Do signature validation inside the kernel so that if we get a
 	// fault because of a bad paddr, we don't kill proc.
 	if(__Ring0(&kerext_validate_signature, addr) != 0) {
 		r = EBADFSYS;
@@ -1028,11 +1028,11 @@ fail5:
 	//Undo rsrcdbmgr_proc_devno() above
 	rsrcdbmgr_proc_devno(NULL, &image->devno, -1, 0);
 
-fail4:	
+fail4:
 	_sfree(image, sizeof *image);
 
-fail3:	
-	(void)memmgr.munmap(in_user_space ? sysmgr_prp : NULL, 
+fail3:
+	(void)memmgr.munmap(in_user_space ? sysmgr_prp : NULL,
 						(uintptr_t)addr, size, 0, obp->hdr.mpid);
 
 fail2:
@@ -1044,7 +1044,7 @@ fail1:
 	return (void *)-1;
 }
 
-int 
+int
 imagefs_check(const resmgr_io_funcs_t *funcs, mem_map_t *msg, void *handle, OBJECT **pobp) {
 	struct image_ocb			*ocb = handle;
 	struct image_file			*file;

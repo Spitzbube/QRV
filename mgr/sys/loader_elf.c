@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -44,7 +44,7 @@ struct seg {
 };
 
 
-static void 
+static void
 debug_info(const void *vaddr, const Elf32_Phdr *phdr, int fd, const char *name) {
 	mem_debug_info_t			msg;
 	iov_t						iov[2];
@@ -60,11 +60,11 @@ debug_info(const void *vaddr, const Elf32_Phdr *phdr, int fd, const char *name) 
 	msg.i.old_vaddr = phdr->p_vaddr;
 	SETIOV(iov + 0, &msg.i, offsetof(mem_debug_info_t, i.path));
 	SETIOV(iov + 1, name, strlen(name) + 1);
-	
+
 	MsgSendv(MEMMGR_COID, iov, 2, 0, 0);
 }
 
-int 
+int
 elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *statlocal, struct inheritance *parms) {
 	Elf32_Ehdr				ehdr;
 	Elf32_Phdr				*phdr, *phdrs;
@@ -97,7 +97,7 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 		return(ENAMETOOLONG);
 	}
 
-	//RUSH3: Rather than doing proc_read()'s in this function, we could mmap() 
+	//RUSH3: Rather than doing proc_read()'s in this function, we could mmap()
 	//RUSH3: the file. More expensive if the executable's not already loaded,
 	//RUSH3: less if it is. Maybe look at sticky bit?
 	i = proc_read(fd, &ehdr, sizeof ehdr, 0);
@@ -106,8 +106,8 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 		return ENOEXEC;
 	}
 	if(i != sizeof ehdr
-		|| memcmp(ehdr.e_ident, ELFMAG, SELFMAG) 
-		|| ehdr.e_ident[EI_DATA] != ELFDATANATIVE 
+		|| memcmp(ehdr.e_ident, ELFMAG, SELFMAG)
+		|| ehdr.e_ident[EI_DATA] != ELFDATANATIVE
 		|| ehdr.e_phentsize != sizeof *phdr) {
 		// Not an ELF file - try executing interpreter if necessary
 		return -1;
@@ -118,7 +118,7 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 	default:
 		return ENOEXEC;
 	}
-	switch(ehdr.e_type) { 
+	switch(ehdr.e_type) {
 	case ET_DYN:
 		return ELIBEXEC;
 	case ET_EXEC:
@@ -160,7 +160,7 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 	text_seg = data_seg = -1;
 	for(i = 0; i < ehdr.e_phnum; i++) {
 		phdr = phdrs + i;
-		switch(phdr->p_type) {	
+		switch(phdr->p_type) {
 		case PT_LOAD:
 			if(phdr->p_filesz > phdr->p_memsz) {
 				return ENOEXEC;
@@ -226,7 +226,7 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 				void	*vaddr;
 				size_t	lsize;
 
-				(void)memmgr.mmap(NULL, (phdr->p_vaddr), (phdr->p_memsz), prot, 
+				(void)memmgr.mmap(NULL, (phdr->p_vaddr), (phdr->p_memsz), prot,
 						MAP_PHYS+MAP_SHARED+MAP_SYSRAM, NULL, 0, 0, 0, NOFD,
 						&vaddr, &lsize, part_id_t_INVALID);
 			}
@@ -274,7 +274,7 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 									}
 								}
 								break;
-	
+
 							default:
 								break;
 							}
@@ -286,12 +286,12 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 						}
 						size -= len;
 					}
-				} else { 
+				} else {
 					//PR61735 reject truncated reads, even for .note headers
-					return ENOEXEC;   
+					return ENOEXEC;
 				}
-			} else { 
-				//PR61735 too small to be a proper .note header 
+			} else {
+				//PR61735 too small to be a proper .note header
 				return ENOEXEC;
 			}
 			break;
@@ -300,7 +300,7 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 			if ( phdr->p_filesz < sizeof(*sr) ) {
 				break;
 			}
-			size = min(phdr->p_filesz, sizeof buffer); 
+			size = min(phdr->p_filesz, sizeof buffer);
 			if(proc_read(fd, buffer, size, phdr->p_offset) != size) {
 				return ENOEXEC;
 			} else {
@@ -330,7 +330,7 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 
 				addr_ndx = 1;
 				segaddr = sr + 1;
-				
+
 				while(segaddr->sr_un.sr_addr.sra_skip != (Elf32_Half)-1) {
 					if(segaddr->sr_un.sr_addr.sra_skip == 0) {
 						int					ent;
@@ -435,8 +435,8 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 				switch(p->a_type) {
 				case AT_ENTRY:
 				case AT_PHDR:
-					p->a_un.a_ptr = (char *)p->a_un.a_ptr + seg[text_seg].reloc;				
-					break;			
+					p->a_un.a_ptr = (char *)p->a_un.a_ptr + seg[text_seg].reloc;
+					break;
 				default: break;
 				}
 			}
@@ -493,7 +493,7 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 						start |= phdr->p_offset & (__PAGESIZE - 1);
 					}
 				}
-				vaddr = mmap((void *)start, phdr->p_filesz, prot, flags, 
+				vaddr = mmap((void *)start, phdr->p_filesz, prot, flags,
 									fd2, phdr->p_offset);
 				if(vaddr == MAP_FAILED) {
 					int		orig_errno = errno;
@@ -512,7 +512,7 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 				mem_end = ROUNDUP(start + phdr->p_memsz, __PAGESIZE);
 				if(mem_end > fil_end) {
 					//allocate remainder of pages
-					if(mmap((void *)fil_end, mem_end - fil_end, prot, 
+					if(mmap((void *)fil_end, mem_end - fil_end, prot,
 								(MAP_ANON|MAP_FIXED)|(flags & MAP_TYPE), NOFD, 0) == MAP_FAILED) {
 						int		orig_errno = errno;
 
@@ -538,12 +538,12 @@ elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat
 		auxv->a_type = AT_INTP_INODE;
 		auxv->a_un.a_val = interpstat.st_ino;
 		auxv++;
-		
+
 		close(fd2);
 
 		lsp->eip = ehdr.e_entry + base_reloc;
 	}
-		
+
 	if(auxv) {
 		auxv->a_type = AT_NULL;
 		auxv->a_un.a_val = 0;

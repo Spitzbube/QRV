@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -98,7 +98,7 @@ wire_check(struct mm_pte_manipulate *data) {
 	// Go through the existing wired entries, and remove any that are
 	// a) deleted now
 	// b) covered by a new, larger mapping
-	// 
+	//
 	// FIXME: we will also need to be able to remove entries that have
 	// now been split.
 	//
@@ -116,8 +116,8 @@ wire_check(struct mm_pte_manipulate *data) {
 	}
 
 	if(i < wire_max && ((pt[0].lo | pt[1].lo) & TLB_VALID)) {
-		we->lo0 = pt[0].lo;	
-		we->lo1 = pt[1].lo;	
+		we->lo0 = pt[0].lo;
+		we->lo1 = pt[1].lo;
 		we->pm = pt[0].pm;
 		vaddr &= mask;
 		// Assign 'vaddr' last so wire_sync() doesn't
@@ -147,7 +147,7 @@ wire_mcreate(PROCESS *prp) {
 	ADDRESS				*adp = prp->memory;
 	struct wire_entry	*wires;
 	unsigned			i;
-	
+
 	adp->cpu.wires = wires = object_to_data(prp, wire_cookie);
 	for(i = 0; i < wire_max; ++i) {
 		wires[i].vaddr = VA_INVALID;
@@ -164,7 +164,7 @@ wire_init(void) {
 #else
 	// Don't allow wired entries to take more than one-eighth of the TLB
 	wire_max = num_tlbs/8;
-#endif	
+#endif
 
 	wire_cookie = object_register_data(&process_souls, wire_max*sizeof(struct wire_entry));
 }

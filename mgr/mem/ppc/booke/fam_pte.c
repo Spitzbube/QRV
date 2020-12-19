@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, 2008, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -57,14 +57,14 @@ fam_pte_init(int phase) {
 			num_entries = tlbinfo[i].num_entries;
 			size_set = tlbinfo[i].page_sizes;
 			if((size_set & (size_set - 1)) != 0) {
-				// The above expression will be zero if there's only a 
-				// single bit on and non-zero if multiple bits are on in 
-				// size_set. Lets us find out how many of the TLB entries 
+				// The above expression will be zero if there's only a
+				// single bit on and non-zero if multiple bits are on in
+				// size_set. Lets us find out how many of the TLB entries
 				// support a variable page size
 				var_tlb += num_entries;
 			} else {
 				fix_tlb += num_entries;
-			} 
+			}
 			set |= tlbinfo[i].page_sizes;
 		}
 		if(var_tlb > (fix_tlb/2)) {
@@ -117,7 +117,7 @@ fam_pte_mapping_add(uintptr_t vaddr, paddr_t paddr, unsigned prot, unsigned flag
 			new.attr |= PPCBKE_TLB_ATTR_G;
 		}
 	}
-		
+
 	new.access = 0;
 	if(prot & PROT_READ)  new.access |= PPCBKE_TLB_ACCESS_SR|PPCBKE_TLB_ACCESS_UR;
 	if(prot & PROT_WRITE) new.access |= PPCBKE_TLB_ACCESS_SW|PPCBKE_TLB_ACCESS_UW;
@@ -169,15 +169,15 @@ fam_pte_asid_alloc(ADDRESS *adp) {
 	 *
 	 * Note that on SMP asid_lock is held by the caller (vmm_aspace)
 	 */
-	
+
 	/*
-	 * Do a quick scan through the asid_map and see 
+	 * Do a quick scan through the asid_map and see
 	 * if there are any unallocated entries. The
-	 * reason why we do this is because it is cheaper 
+	 * reason why we do this is because it is cheaper
 	 * to do this one scan than to steal an asid,
 	 * do a MemPageFlushAsid, and also possibly incur
 	 * tlb refills for the poor guy we stole from.
-	 * If there are no unallocated asids, then go 
+	 * If there are no unallocated asids, then go
 	 * back to where we were in the asid_map.
 	 */
     for(i = PPC_ASID_FIRST; i < num_asids; ++i) {
@@ -202,7 +202,7 @@ fam_pte_asid_alloc(ADDRESS *adp) {
     oldadp = asid_map[asid];
 	asid_map[asid] = adp;
     if(oldadp) {
-		/* 
+		/*
 		 * Mark his asid as invalid so
 		 * that when we switch to him he'll
 		 * pick up another one.
@@ -255,7 +255,7 @@ cpu_pte_split(uintptr_t vaddr, struct mm_pte_manipulate *data) {
 	uintptr_t				check_end;
 	paddr_t					paddr;
 
-	if(  (data->op & PTE_OP_UNMAP) 
+	if(  (data->op & PTE_OP_UNMAP)
 	  || (data->shmem_flags & SHMCTL_HIGHUSAGE)
 	  || (vps_state == VPS_AUTO)) {
 		pgdir = data->adp->cpu.pgdir;
@@ -276,7 +276,7 @@ cpu_pte_split(uintptr_t vaddr, struct mm_pte_manipulate *data) {
 					if(check_end > data->split_end) data->split_end = check_end;
 					new_flags = (ptep->flags & ~PPCBKE_PTE_PGSZ_MASK)
 							| (PPCBKE_TLB_SIZE_4K << PPCBKE_PTE_PGSZ_SHIFT);
-					paddr = PTE_PADDR(ptep);	
+					paddr = PTE_PADDR(ptep);
 //kprintf("splitting %x from size %x\n", check, pgsz);
 					{
 						uintptr_t	um = check;
@@ -303,7 +303,7 @@ cpu_pte_split(uintptr_t vaddr, struct mm_pte_manipulate *data) {
 						paddr += __PAGESIZE;
 						check += __PAGESIZE;
 					}
-					// Since cpu_pte_split gets called multiple times, 
+					// Since cpu_pte_split gets called multiple times,
 					// this gives the upper level a chance to preempt
 					if((data->op & PTE_OP_PREEMPT) && KerextNeedPreempt()) {
 						return EINTR;
@@ -312,8 +312,8 @@ cpu_pte_split(uintptr_t vaddr, struct mm_pte_manipulate *data) {
 			}
 		}
 	}
-	if(!(data->op & PTE_OP_TEMP) 
-		&& (data->op & PTE_OP_UNMAP)	
+	if(!(data->op & PTE_OP_TEMP)
+		&& (data->op & PTE_OP_UNMAP)
 		&& (data->shmem_flags & SHMCTL_HIGHUSAGE)) {
 		// Have to go into the merge code to clean up any wired entries
 		data->op |= PTE_OP_FORCEMERGE;
@@ -352,7 +352,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 	pgdir = data->adp->cpu.pgdir;
 	if(!(data->op & PTE_OP_MERGESTARTED)) {
 		// look at the PTE's in front of data->start and see if they're
-		// contiguous - we might be able to merge them in now. 
+		// contiguous - we might be able to merge them in now.
 		chk_vaddr = data->start;
 		// try merging to the start of the largest available pagesize in
 		// front of the manipulated region.
@@ -411,7 +411,7 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 				// Find a page size that works
 				do {
 					pgsz = *pgszp++;
-				} while((pgsz > ((run_last-run_start)+__PAGESIZE)) 
+				} while((pgsz > ((run_last-run_start)+__PAGESIZE))
 					  || ((run_start & (pgsz-1)) != 0)
 					  || ((paddr & (pgsz-1)) != 0));
 
@@ -429,8 +429,8 @@ cpu_pte_merge(struct mm_pte_manipulate *data) {
 
 					// merge the entries.
 
-//kprintf("merging %x to size %x (tlb=%x)\n", run_start, pgsz, tlbsize);		
-					// Temporarily unmap and flush the TLB for the pages that 
+//kprintf("merging %x to size %x (tlb=%x)\n", run_start, pgsz, tlbsize);
+					// Temporarily unmap and flush the TLB for the pages that
 					// we're merging. That way nobody gets an inconsistent
 					// view of the set.
 					chk_vaddr = run_start;
@@ -521,7 +521,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 		}
 	} else {
 		bits = 0;
-	} 
+	}
 
 	flushed = 0;
 	r = EOK;
@@ -584,7 +584,7 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 			ptep->paddr = 0;
 		} else if(ptep->flags & ~PPCBKE_PTE_ATTR_I) {
 			// preserve the current pagesize
-			ptep->flags = (bits & ~PPCBKE_PTE_PGSZ_MASK) 
+			ptep->flags = (bits & ~PPCBKE_PTE_PGSZ_MASK)
 					| (ptep->flags & PPCBKE_PTE_PGSZ_MASK);
 		}  else {
 			// We don't change PTE permissions if we haven't mapped the

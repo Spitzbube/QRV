@@ -1,31 +1,31 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
- * 
+ *
  * Security wise, the caller must have write permissions on the partition name
  * in order to rename it. No other security policies apply to renaming
  *
  */
 
 /*==============================================================================
- * 
+ *
  * apmmgr_rename
- * 
+ *
  * Provide resource manager handling for the memory partitioning module.
  * This entry point allows the use of 'mv' for the renaming of an existing
  * real memory partition or group name.
- * 
+ *
  * Note that we do not support moving partition names, that concept does not
  * exist, this is not a filesystem. The only thing that can be done is to rename
  * an existing partition to a new name. The entire path prefix must be identical
@@ -37,7 +37,7 @@ static pthread_mutex_t mempart_rename_lock = PTHREAD_MUTEX_INITIALIZER;
 
 /*******************************************************************************
  * apmmgr_rename
- * 
+ *
 */
 int apmmgr_rename(resmgr_context_t *ctp, io_rename_t *msg, RESMGR_HANDLE_T *handle, io_rename_extra_t *extra)
 {
@@ -75,8 +75,8 @@ int apmmgr_rename(resmgr_context_t *ctp, io_rename_t *msg, RESMGR_HANDLE_T *hand
 				}
 				CRASHCHECK(nn_prefix_end == NULL);
 				CRASHCHECK(cn_prefix_end == NULL);
-				
-				/* prefix length check */ 
+
+				/* prefix length check */
 				if ((nn_prefix_end - new_name) != (cn_prefix_end - cur_name)) {
 					return EINVAL;
 				}
@@ -133,7 +133,7 @@ int apmmgr_rename(resmgr_context_t *ctp, io_rename_t *msg, RESMGR_HANDLE_T *hand
 				return r;
 			}
 
-			/* only deal with real/pseudo partitions and group names */			
+			/* only deal with real/pseudo partitions and group names */
 			if ((mp->type != part_type_MEMPART_REAL) &&
 				(mp->type != part_type_MEMPART_PSEUDO) &&
 				(mp->type != part_type_GROUP))

@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apsmgr_support
- * 
+ *
  * Resource manager miscellaneous support functions
- * 
+ *
 */
 
 #include "apsmgr.h"
@@ -29,7 +29,7 @@
 
 /*******************************************************************************
  * spath_find
- * 
+ *
  * search from <root> looking for <name> where root is in the scheduler partitioning
  * resource managers namespace (ie. below root_spart). If found return a pointer
  * to the apsmgr_attr_t for <name>, otherwise return NULL.
@@ -42,7 +42,7 @@ apsmgr_attr_t *spath_find(apsmgr_attr_t *root, char *path, apsmgr_attr_t **paren
 
 /*******************************************************************************
  * spmgr_getattr
- * 
+ *
  * Return a pointer to the 'apsmgr_attr_t' associated with <path>.
  * This function hooks the generic apsgr code to the apsmgr code.
 */
@@ -54,14 +54,14 @@ apsmgr_attr_t *spmgr_getattr(char *path)
 
 /*******************************************************************************
  * find_pid_in_spart_hierarchy
- * 
+ *
  * Determine whether process <pid> is associated with any partition in the
  * partition hierarchy starting at <sp>.
  *
  * If so, a pointer to the 'apsmgr_attr_t' that the process is associated
  * with will be returned, otherwise NULL will be returned.
  * If an 'apsmgr_attr_t' structure is returned, it is guaranteed to be a
- * child, grandchild, great-grandchild, etc of <sp>. 
+ * child, grandchild, great-grandchild, etc of <sp>.
 */
 apsmgr_attr_t *find_pid_in_spart_hierarchy(pid_t pid, apsmgr_attr_t *sp)
 {
@@ -96,15 +96,15 @@ apsmgr_attr_t *find_pid_in_spart_hierarchy(pid_t pid, apsmgr_attr_t *sp)
 
 /*******************************************************************************
  * register_spart_event
- * 
+ *
  * Register scheduler partition event <evt> to the scheduler partition identified by
  * <ocb> and <rcvid>.
- * 
+ *
  * If successful, a 'schedpart_evt_t' structure will be allocated, initialized
  * and added to the queue of events for the event type.
- * 
+ *
  * Returns: EOK on success otherwise an errno
- * 
+ *
  * 'memsize_t' overflow check
  * external representation of 'memsize_t' can be larger than the internal
  * representation of 'memsize_t' so ckeck for overflows on incoming size
@@ -153,31 +153,31 @@ int register_spart_event(struct evt_info_s *evt, evtdest_t *evtdest, void *ocb)
 
 /*******************************************************************************
  * validate_sp_association
- * 
+ *
  * This function determines whether or not the partition identified by <spart>
  * can be associated with based on the 'struct _cred_info' <cred>.
  *
  * if S_IXOTH is set in the attributes for <spart> then EOK is returned otherwise
  * an appropriate uid/gid match is attempted.
- *  
+ *
  * Returns: EOK if association is permitted, otherwise an errno.
- * 
+ *
 */
 int validate_sp_association(apsmgr_attr_t *attr, struct _cred_info *cred)
 {
 	if (attr->attr.mode & S_IXOTH) return EOK;
 	if ((attr->attr.gid == cred->rgid) && (attr->attr.mode & S_IXGRP)) return EOK;
 	if ((attr->attr.uid == cred->ruid) && (attr->attr.mode & S_IXUSR)) return EOK;
-	
+
 	return ((attr->attr.gid == cred->rgid) || (attr->attr.uid == cred->ruid)) ? EACCES : EPERM;
 }
 
 
 /*
  * ===========================================================================
- * 
+ *
  * 							Internal support routines
- * 
+ *
  * ===========================================================================
 */
 

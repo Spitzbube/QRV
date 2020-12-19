@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -66,8 +66,8 @@ do_zero(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void *d) 
 	size_t		size;
 	int			r;
 
-	// If the quantum's been modified, we have to zero the 
-	// portion beyond end of the object so that accesses don't pick up 
+	// If the quantum's been modified, we have to zero the
+	// portion beyond end of the object so that accesses don't pick up
 	// whatever content was there before.
 	if(pq->flags & PAQ_FLAG_MODIFIED) {
 		r = vmm_mmap(sysmgr_prp, 0, QUANTUM_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, obp,
@@ -113,7 +113,7 @@ vmm_resize(OBJECT *obp, size_t size) {
 
 	flags = MAP_ANON;
 	switch(obp->hdr.type) {
-	case OBJECT_MEM_SHARED:	
+	case OBJECT_MEM_SHARED:
 		if(obp->mem.mm.flags & MM_SHMEM_SPECIAL) {
 			switch(obp->mem.mm.flags & (SHMCTL_ANON|SHMCTL_PHYS)) {
 			case 0:
@@ -130,9 +130,9 @@ vmm_resize(OBJECT *obp, size_t size) {
 			}
 			if(obp->mem.mm.flags & SHMCTL_ISADMA) {
 				//RUSH3: CPUism
-#ifdef __X86__			
+#ifdef __X86__
 				flags |= MAP_ANON|MAP_BELOW16M|MAP_NOX64K|MAP_PHYS;
-#else				
+#else
 				flags |= MAP_ANON|MAP_PHYS;
 #endif
 			}
@@ -149,7 +149,7 @@ vmm_resize(OBJECT *obp, size_t size) {
 	//RUSH2: make OBJECT_MEM_TYPED an OBJECT_MEM_SHARED with a MM_MEM_TYPED
 	//RUSH2: flag bit. In that case we'll have to add gear to the OBJECT_MEM_SHARED
 	//RUSH2: case above
-	case OBJECT_MEM_TYPED: 
+	case OBJECT_MEM_TYPED:
 		// fall through
 	default:
 		return EINVAL;
@@ -200,7 +200,7 @@ vmm_resize(OBJECT *obp, size_t size) {
 					crash();
 				}
 			}
-#endif			
+#endif
 		}
 	} else {
 		r = EOK;
@@ -212,10 +212,10 @@ vmm_resize(OBJECT *obp, size_t size) {
 	if(!has_lock) memobj_unlock(obp);
 	return EOK;
 
-fail2:	
+fail2:
 	if(!has_lock) memobj_unlock(obp);
 
-fail1:	
+fail1:
 	return r;
 }
 

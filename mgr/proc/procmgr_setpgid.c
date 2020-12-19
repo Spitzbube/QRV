@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -46,7 +46,7 @@ int procmgr_setpgid(resmgr_context_t *ctp, proc_setpgid_t *msg) {
 		}
 		prp2 = prp1;
 	} else {
-		// Lock prp2 first. 
+		// Lock prp2 first.
 		if(!(prp2 = proc_lock_pid(msg->i.pid)) || (prp2->parent == NULL)) {
 			ret = ESRCH; goto out_unlock;
 		}
@@ -56,7 +56,7 @@ int procmgr_setpgid(resmgr_context_t *ctp, proc_setpgid_t *msg) {
 			ret = ESRCH; goto out_unlock;
 		}
 
-		// If pid is a child that has execed, return EACCES 
+		// If pid is a child that has execed, return EACCES
 		//@@@ This catches spawns _and_ exec's
 		if(!(prp2->flags & _NTO_PF_FORKED)) {
 			ret = EACCES; goto out_unlock;
@@ -79,9 +79,9 @@ int procmgr_setpgid(resmgr_context_t *ctp, proc_setpgid_t *msg) {
 		ret = ESRCH; goto out_unlock;
 	}
 
-	// Note that we now snapshot some values in case we need to 
+	// Note that we now snapshot some values in case we need to
 	// lock prp3 (in which case we will need to unlock prp1/prp2).
-	// Unfortunately, prp3 is not necessarily an ancestor 
+	// Unfortunately, prp3 is not necessarily an ancestor
 	// of prp1/prp2 but may be a peer. Therefore, we cannot hold
 	// all three locks at once.
 

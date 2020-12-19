@@ -1,29 +1,29 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*==============================================================================
- * 
+ *
  * apmmgr_link
- * 
+ *
  * Provide resource manager symlink processing for the memory partitioning module.
  * This functionality implements the pseudo partition scheme which allows a
  * single name to refer to multiple partitions of differing memory classes so
  * that a single name can be used for association.
- * 
+ *
 */
 
 #include "apmmgr.h"
@@ -66,7 +66,7 @@ int apmmgr_link(resmgr_context_t *ctp, io_link_t *msg, void *attr, io_link_extra
 			while(1)
 			{
 				char *name_p;
-				
+
 				if ((name_p = strchr(chk_part_name, '/')) == NULL)
 					last = bool_t_TRUE;
 				else
@@ -123,7 +123,7 @@ int apmmgr_link(resmgr_context_t *ctp, io_link_t *msg, void *attr, io_link_extra
 				PART_ATTR_UNLOCK(mp_parent);
 				return r;
 			}
-			
+
 			if (msg->connect.ioflag & O_CREAT)
 			{
 				char *p;
@@ -147,8 +147,8 @@ int apmmgr_link(resmgr_context_t *ctp, io_link_t *msg, void *attr, io_link_extra
 				/* use the mpart field point to the mempart_part_t of the real partition */
 				mp->data.symlink = strdup(part_name);
 
-				iofunc_attr_init(&mp->attr, S_IFLNK | (msg->connect.mode & ~S_IFMT), &mp_parent->attr, &ci);		
-//				iofunc_attr_init(&mp->attr, S_IFLNK | (mp_parent->attr.mode & ~S_IFMT), &mp_parent->attr, &ci);		
+				iofunc_attr_init(&mp->attr, S_IFLNK | (msg->connect.mode & ~S_IFMT), &mp_parent->attr, &ci);
+//				iofunc_attr_init(&mp->attr, S_IFLNK | (mp_parent->attr.mode & ~S_IFMT), &mp_parent->attr, &ci);
 				/* insert into sibling list */
 				LIST_ADD(mp_parent->children, mp);
 				if (S_ISDIR(mp->attr.mode)) ++mp_parent->attr.nlink;
@@ -164,7 +164,7 @@ int apmmgr_link(resmgr_context_t *ctp, io_link_t *msg, void *attr, io_link_extra
 			}
 			break;
 		}
-		
+
 		default:
 			break;
 	}

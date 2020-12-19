@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -24,7 +24,7 @@ static resmgr_attr_t			resmgr_attr = {
 	10,									/* Max nparts */
 	sizeof(union proc_msg_union)		/* Max message size required */
 };
-	
+
 
 static thread_pool_attr_t		pool_attr = {
 	NULL,								/* Handle */
@@ -39,7 +39,7 @@ static thread_pool_attr_t		pool_attr = {
 	10,									/* high water mark */
 	75,									/* maximum threads */
 };
- 
+
 // Internal dispatch function to specify our own chid
 void *_dispatch_create(int chid, unsigned flags);
 // Internal dispatch function to specify receiving of pulses
@@ -89,7 +89,7 @@ int message_start(void) {
 
 	// Never returns
 	(void)thread_pool_start(tpp);
-	return 0; 
+	return 0;
 }
 
 
@@ -100,9 +100,9 @@ int message_start(void) {
 */
 int _thread_pool_reserve(thread_pool_t *pool, int wait_count);
 
-/* 
+/*
  Called before/after any blocking operation to reserve/
- create an extra operating thread.  
+ create an extra operating thread.
 
  If wait_count >= 0 and there are less than wait_count threads
  waiting in the thread pool, then we create a new thread
@@ -110,11 +110,11 @@ int _thread_pool_reserve(thread_pool_t *pool, int wait_count);
 
  If wait_count < 0 then the high water mark is decremented.
 
- We always adjust the high water mark to allow us to 
+ We always adjust the high water mark to allow us to
  maintain a simplicity in the functionality.
 
  Returns 0 on success -1 on failure
- 
+
  IMPORTANT:
  if you add any new calls to proc_thread_pool_reserve(), make sure you turn on
  the CATCH_NONPROC_RESV compile flag and set 'catch_nonproc_resv' in the
@@ -125,7 +125,7 @@ int _thread_pool_reserve(thread_pool_t *pool, int wait_count);
 	List of loader call paths that we know flow through proc_thread_pool_reserve()
 		pathmgr_node2fullpath()
 		_netmgr_connect()
- 
+
 */
 //#define CATCH_NONPROC_RESV
 #ifdef	CATCH_NONPROC_RESV
@@ -147,7 +147,7 @@ static int thread_pool_reserve(thread_pool_t *pool, int wait_count) {
 
 int
 proc_thread_pool_reserve() {
-	return thread_pool_reserve(tpp, 1); 
+	return thread_pool_reserve(tpp, 1);
 }
 
 int

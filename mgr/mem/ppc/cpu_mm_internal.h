@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -29,7 +29,7 @@
 
 // Whether we support variable pagesizes
 // Overridden for Book E, 600's
-#define CPU_SYSTEM_HAVE_MULTIPLE_PAGESIZES	VPS_NONE 
+#define CPU_SYSTEM_HAVE_MULTIPLE_PAGESIZES	VPS_NONE
 
 // Starting vaddrs for shared objects and shared memory
 #define CPU_SO_VADDR_START 		0xfe300000
@@ -65,7 +65,7 @@ struct cpu_mm_aspace {
 	volatile unsigned	pending_wire_sync;
 	volatile unsigned	pending_asid_flush;
 	struct wire_entry	*wires;
-#endif	
+#endif
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ struct cpu_mm_aspace {
  */
 
 #define ZP_NOCACHE		PROT_NOCACHE // Must use same bit
-// We can reuse the PG_* bits because we know they'll never be on in the 
+// We can reuse the PG_* bits because we know they'll never be on in the
 // mmap_flags field  (output only from vmm_mapinfo)
 #define ZP_CACHE_PURGE	PG_MODIFIED
 #define ZP_CACHE_OFF	PG_REFERENCED

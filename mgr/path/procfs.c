@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -45,7 +45,7 @@ static dev_t				procfs_devno;
  * to get rid of the temporary buffer that is jammed in there.
  */
 static int return_a_link(resmgr_context_t *ctp, struct _io_connect_link_reply *link_reply,
-                  char * path, char * append, int eflag, int newlookup, int addslash, 
+                  char * path, char * append, int eflag, int newlookup, int addslash,
 				  struct _io_connect_entry *entry) {
 		char *p, buff[PATH_MAX + 1];
         int len;
@@ -71,15 +71,15 @@ static int return_a_link(resmgr_context_t *ctp, struct _io_connect_link_reply *l
 			memcpy(p, entry, sizeof(*entry));
 			p += sizeof(*entry);
 		}
-			
+
 		if (addslash && *buff != '/')  {
-			*p++ = '/';		
+			*p++ = '/';
 		}
         memcpy(p, buff, len);
 		if (addslash && *buff != '/') {
 			len++;
 		}
-		
+
         link_reply->eflag = eflag;
         link_reply->nentries = (entry) ? 1 : 0;
         link_reply->path_len = len;
@@ -90,8 +90,8 @@ static int return_a_link(resmgr_context_t *ctp, struct _io_connect_link_reply *l
 		 [nentries of struct _io_connect_entry]
 		 {path}
 		*/
-        return(_RESMGR_PTR(ctp, link_reply, sizeof(*link_reply) + 
-											len + 
+        return(_RESMGR_PTR(ctp, link_reply, sizeof(*link_reply) +
+											len +
 											((entry) ? sizeof(*entry) : 0)));
 }
 
@@ -108,7 +108,7 @@ static NODE *proc_pathmgr_resolve(int type, char *path, const char **tail) {
 
 
 /*
- * This function does the bulk of the work in looking up and 
+ * This function does the bulk of the work in looking up and
  * manipulating the pathmgr entries in terms of validating
  * them and re-directing them to the appropriate person.
  */
@@ -131,7 +131,7 @@ static int proc_pathmgr_validate(resmgr_context_t *ctp, io_open_t *msg, int type
 	if (!(nop = proc_pathmgr_resolve(type, path, &result))) {
 		return ENOENT;
 	}
-		
+
 	/*
 	 If we are looking at the mount directory, and we
 	 don't have a full node match, then we hope that
@@ -143,7 +143,7 @@ static int proc_pathmgr_validate(resmgr_context_t *ctp, io_open_t *msg, int type
 		char					*lastslash;
 		struct _io_connect_entry entry;
 
-		cresult = lastslash = (char *)result;	
+		cresult = lastslash = (char *)result;
 
 		ret = ENOENT;
 		/* This really licks, come up w/ a smaller method */
@@ -227,8 +227,8 @@ static int proc_pathmgr_validate(resmgr_context_t *ctp, io_open_t *msg, int type
 	} else if (type & PROCFS_FLAG_LINK) {
 		/*
 		 * If we are looking at the link directory, then we
-		 * will have a full match on the target, but will 
-		 * need to re-direct it if it contains a symlink 
+		 * will have a full match on the target, but will
+		 * need to re-direct it if it contains a symlink
 		 * node.
 		 */
 		for (obj = nop->object; obj; obj = obj->hdr.next) {
@@ -238,8 +238,8 @@ static int proc_pathmgr_validate(resmgr_context_t *ctp, io_open_t *msg, int type
 		}
 		if (obj) {
 			cresult = (char *)result;
-			//kprintf("Perform a symlink re-direction to %s / %s \n", nop->name, (cresult) ? cresult : "NULL");	
-			ret = return_a_link(ctp, &msg->link_reply,  nop->name, cresult, 
+			//kprintf("Perform a symlink re-direction to %s / %s \n", nop->name, (cresult) ? cresult : "NULL");
+			ret = return_a_link(ctp, &msg->link_reply,  nop->name, cresult,
 								 msg->connect.eflag, 1, 1, NULL);
 		}
 		if(handle) {
@@ -284,7 +284,7 @@ static int proc_pathmgr_read(resmgr_context_t *ctp, io_read_t *msg, struct procf
 		obj = (ocb->flags & PROCFS_FLAG_LINK) ? NULL : nop->object;
 		for (count = 0; obj; obj = obj->hdr.next) {
 			char  *p;
-			
+
 			if (obj->hdr.type != OBJECT_SERVER && obj->hdr.type != OBJECT_NAME) {
 				continue;
 			}
@@ -311,9 +311,9 @@ static int proc_pathmgr_read(resmgr_context_t *ctp, io_read_t *msg, struct procf
 				d = (struct dirent *)((unsigned)d + d->d_reclen);
 			}
 			count++;
-		}	
+		}
 		/* We want to read the second section too */
-		if (!obj || ocb->flags & PROCFS_FLAG_LINK) {	
+		if (!obj || ocb->flags & PROCFS_FLAG_LINK) {
 			ocb->offset = TOP_BIT;
 		}
 	}
@@ -325,10 +325,10 @@ static int proc_pathmgr_read(resmgr_context_t *ctp, io_read_t *msg, struct procf
 		// Lock access to the node so that it's children don't get deleted as
 		// we're walking the list.
 		pathmgr_node_access( nop );
-		
+
 		for (tmpnode = nop->child; tmpnode; tmpnode = tmpnode->sibling) {
 			if (tmpnode->object) {
-				if ((ocb->flags & PROCFS_FLAG_MOUNT) && 
+				if ((ocb->flags & PROCFS_FLAG_MOUNT) &&
 					 tmpnode->object->hdr.type != OBJECT_SERVER && tmpnode->object->hdr.type != OBJECT_NAME)  {
 					continue;
 				}
@@ -357,10 +357,10 @@ static int proc_pathmgr_read(resmgr_context_t *ctp, io_read_t *msg, struct procf
 			}
 			count++;
 		}
-		
+
 		pathmgr_node_complete( nop );
 	}
-	
+
 	resmgr_endian_context(ctp, _IO_READ, S_IFDIR, 0);
 	_IO_SET_READ_NBYTES(ctp, amount);
 	pathmgr_node_detach(nop);
@@ -389,9 +389,9 @@ static int procfs_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 		return ENOSYS;
 	}
 
-	/* 
+	/*
 	 Case #1 We are reading from a link or a mount point dir
-	 Eventually we will have all these reads as callouts 
+	 Eventually we will have all these reads as callouts
 	*/
 	if (ocb->flags & (PROCFS_FLAG_LINK | PROCFS_FLAG_MOUNT)) {
 		return proc_pathmgr_read(ctp, msg, ocb);
@@ -435,7 +435,7 @@ static int procfs_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 
 		//RUSH2: Once the new memmgr is online, we can redo this by
 		//RUSH2: mmap'ing "/proc/<pid>/as" and avoiding the double copy...
- 
+
  		if (ND_NODE_CMP(ND_LOCAL_NODE, ctp->info.nd) != 0) {
  			uintptr_t offset2 = 0;
  			// we reuse msg, so save off any msg->i fields we need.
@@ -460,7 +460,7 @@ static int procfs_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 					proc_lock_owner_mark(prp);
  					ProcessBind(ocb->pid);
  				}
- 
+
 				ptr = (void *)*pos;
  				mappedsize = memmgr.mapinfo(prp, *pos, &mi, NULL, 0, NULL, NULL, NULL);
  				copysize   = min(desiredsize, min(mappedsize, ctp->msg_max_size));
@@ -471,28 +471,28 @@ static int procfs_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 					return EINVAL;
 				}
  				memcpy(msg, ptr, copysize);
- 
+
  				{ // Release locks
  					ProcessBind(0);
  					proc_unlock_adp(prp);
  					proc_unlock(prp);
  				}
- 
+
  				if(copysize == 0) {
  					// Done transferring data, locks released; flee.
  					// [True, this last memcpy was a NOP.  Rien fait.]
  					break;
  				}
- 
+
  				if (resmgr_msgwrite(ctp, msg, copysize, offset2) == -1) {
  					return errno;
  				}
- 
+
  				offset2     += copysize;
  				*pos        += copysize;
  				desiredsize -= copysize;
  			}
-  
+
  			// We reply NULL,0 as the resmgr_msgwrite()s have done all the
  			// needed copying to client;
  			// We just want the client wakeup 'side-effect' of MsgReply.
@@ -514,7 +514,7 @@ static int procfs_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 			return proc_error(ESRCH, prp);
 		}
 		proc_lock_owner_mark(prp);
-		
+
 		ProcessBind(ocb->pid);
 
 		ptr = (void *)*pos;
@@ -547,12 +547,12 @@ static int procfs_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 		++*pos;
 	}
 
-	while(nbytes < size) { 
+	while(nbytes < size) {
 		pid_t		pid;
 
 		memset(d, 0x00, sizeof *d);
 
-#if defined(SUPPORT_LINK) && defined(SHOW_MOUNT) 
+#if defined(SUPPORT_LINK) && defined(SHOW_MOUNT)
 #define EXTRA_ENTRIES 3
 #elif defined(SHOW_MOUNT)
 #define EXTRA_ENTRIES 2
@@ -565,7 +565,7 @@ static int procfs_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 			uintptr_t	offset3;
 
 			offset3 = *pos - (EXTRA_ENTRIES - 1);
-			prp = QueryObject(_QUERY_PROCESS, offset3, 
+			prp = QueryObject(_QUERY_PROCESS, offset3,
 									_QUERY_PROCESS_VECTOR, 0, &offset3, 0, 0);
 			if(prp == NULL) break;
 			pid = prp->pid;
@@ -581,16 +581,16 @@ static int procfs_read(resmgr_context_t *ctp, io_read_t *msg, void *vocb) {
 #ifdef SHOW_MOUNT
 		case 1:
 			memcpy(d->d_name, "mount", sizeof("mount"));
-			d->d_ino = INODE_XOR(0); 
+			d->d_ino = INODE_XOR(0);
 			break;
 #endif
 #ifdef SUPPORT_LINK
 		case 2:
 			memcpy(d->d_name, "link", sizeof("link"));
-			d->d_ino = INODE_XOR(0); 
+			d->d_ino = INODE_XOR(0);
 			break;
 #endif
-		default:	
+		default:
 			ultoa(pid, d->d_name, 10);
 			d->d_ino = PID_TO_INO(pid, PROCFS_FLAG_AS);
 			break;
@@ -708,10 +708,10 @@ static int procfs_waitstop(PROCESS *prp, int rcvid) {
 	return EOK;
 }
 
-/* 
- Dis-associate any procfs ocbs from this pid (called during 
- process termination).  After setting the pid to -1 the OCB may 
- be freed (context switch to the procfs close_ocb code) and as 
+/*
+ Dis-associate any procfs ocbs from this pid (called during
+ process termination).  After setting the pid to -1 the OCB may
+ be freed (context switch to the procfs close_ocb code) and as
  a result can no longer be referenced by the prp.
 */
 int proc_debug_destroy(resmgr_context_t *ctp, PROCESS *prp) {
@@ -733,7 +733,7 @@ static int procfs_close_ocb(resmgr_context_t *ctp, void *reserved, void *vocb) {
 	struct procfs_ocb			*ocb = vocb;
 	struct procfs_ocb			*p, **pp;
 	PROCESS						*prp;
-   	
+
 	if(ocb->pid > 0 && !(ocb->flags & PROCFS_FLAG_MASK)) {
 		if((prp = proc_lock_pid(ocb->pid))) {
 			for(pp = &prp->ocb_list; (p = *pp); pp = &p->next) {
@@ -747,8 +747,8 @@ static int procfs_close_ocb(resmgr_context_t *ctp, void *reserved, void *vocb) {
 				(void)DebugDetach(prp->pid);
 			}
 			proc_unlock(prp);
-		} 
-	} 
+		}
+	}
 	_sfree(ocb, sizeof *ocb + ((*ocb->tail) ? strlen(ocb->tail) : 0));
 	return EOK;
 }
@@ -921,7 +921,7 @@ static int memmgr_shared_to_private( PROCESS *prp, uintptr_t addr, size_t size) 
 	*/
 	proc_lock_owner_mark(prp);
 	ProcessBind(prp->pid);
-	status = memmgr.mmap( 
+	status = memmgr.mmap(
 		prp,
 		0,
 		size,
@@ -959,7 +959,7 @@ static int memmgr_shared_to_private( PROCESS *prp, uintptr_t addr, size_t size) 
 		return -1;
 	}
 
-	status = memmgr.mmap( 
+	status = memmgr.mmap(
 		prp,
 		info.vaddr, /* address */
 		size,
@@ -1217,10 +1217,10 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 				 return EBADF;
 			}
 		}
-	    
+
 		break;
 	}
-		
+
 	prp = 0;
 	switch((unsigned)msg->i.dcmd) {
 	case DCMD_ALL_GETFLAGS:
@@ -1269,7 +1269,7 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 			return errno;
 		}
 		break;
-			
+
 	case DCMD_PROC_CLEAR_FLAG:
 		if(DebugProcess(NTO_DEBUG_CLEAR_FLAG, ocb->pid, 0, (union nto_debug_data *)&ioctl->flags) == -1) {
 			return errno;
@@ -1423,10 +1423,10 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 			//will reply with the same ioctl->threadctl that was passed in (ie tid/cmd in the
   			//top 8 bytes) due to the way the Kerext call is made.
 
-			if(msg->i.nbytes > ctp->msg_max_size) {	
+			if(msg->i.nbytes > ctp->msg_max_size) {
 				nbytes = ctp->msg_max_size;
 			} else {
-				nbytes = msg->i.nbytes; 
+				nbytes = msg->i.nbytes;
 			}
 
 			//Switch access based on sub-command
@@ -1437,7 +1437,7 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 
 				if(tn->name_buf_len > (ctp->msg_max_size - lenadj)) {
 					tn->name_buf_len = ctp->msg_max_size - lenadj;
-				}	
+				}
 
 				if(tn->new_name_len >= 0 && !(ocb->ioflag & _IO_FLAG_WR)) {
 					return proc_error(EBADF, prp);
@@ -1492,7 +1492,7 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 			default:
 				if(!(ocb->ioflag & _IO_FLAG_WR)) {
 					return proc_error(EBADF, prp);
-				}	
+				}
 				break;
 			}
 
@@ -1603,7 +1603,7 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 				p = &ioctl->irq;
 				nbytes = 0;
 				num = (ctp->msg_max_size - sizeof *msg) / sizeof *p;
-				while(num && 
+				while(num &&
 						((entryp = QueryObject(_QUERY_INTERRUPT, id, 0, 0, &id, &entry, sizeof(entry))) != NULL)) {
 					if (entry.pid == prp->pid) {
 						p->pid = entry.pid;
@@ -1647,7 +1647,7 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 				p = &ioctl->timer;
 				nbytes = 0;
 				num = (ctp->msg_max_size - sizeof *msg) / sizeof *p;
-				while(num-- && 
+				while(num-- &&
 						((id = TimerInfo(prp->pid, id, _NTO_TIMER_SEARCH, &p->info)) != -1)) {
 					p->id = id;
 					if (p->info.event.sigev_notify == SIGEV_SIGNAL_CODE && p->info.event.sigev_code == SI_TIMER) { /* ???? Not safe.  Shouldn't there be a way of remembering this better? */
@@ -1683,7 +1683,7 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 				p = &ioctl->channel;
 				nbytes = 0;
 				num = (ctp->msg_max_size - sizeof *msg) / sizeof *p;
-				while(num && 
+				while(num &&
 	((chp = QueryObject(_QUERY_PROCESS, prp->pid, _QUERY_PROCESS_CHANCONS, id, &id, &chan, sizeof(chan))) != NULL )) {
 					if ( chp->type == TYPE_CHANNEL ) {
 
@@ -1768,10 +1768,10 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 		case DCMD_PROC_GET_BREAKLIST: {
 			debug_breaklist_t 	breaklist;
 			int					offset;
-		
+
 			nbytes = msg->i.nbytes;		//Number of bytes user has ready
 			ret_val = 0;				//Total number of breakpoints (set later)
-			offset = 0;					
+			offset = 0;
 
 			do {
 				breaklist.offset = offset;
@@ -1796,8 +1796,8 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 				}
 				ProcessBind(0);
 				proc_unlock_adp(prp);
-				
-				//Fill in the total number of breakpoints to return to the user 
+
+				//Fill in the total number of breakpoints to return to the user
 				if(offset == 0) {
 					ret_val = breaklist.total_count;
 				}
@@ -1808,14 +1808,14 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 				}
 
 				//Reply to the user with the data as we collect it
-				if(resmgr_msgwrite(ctp, breaklist.breakpoints, 
-										breaklist.count * sizeof(*breaklist.breakpoints), 
+				if(resmgr_msgwrite(ctp, breaklist.breakpoints,
+										breaklist.count * sizeof(*breaklist.breakpoints),
 									    sizeof(msg->o) + offset * sizeof(*breaklist.breakpoints)) == -1) {
 					return proc_error(errno, prp);
 				}
 
 				nbytes -= breaklist.count * sizeof(*breaklist.breakpoints);
-				offset += breaklist.count;	
+				offset += breaklist.count;
 
 			} while((offset < ret_val) && (nbytes >= sizeof(*breaklist.breakpoints)));
 
@@ -1838,7 +1838,7 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 			*/
 			int  r;
 			int  n = ioctl->mpart_list.num_entries;
-	
+
 			if (!MEMPART_INSTALLED())
 				return proc_error(ENOSYS, prp);
 
@@ -1853,7 +1853,7 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 
 			break;
 		}
-		
+
 		/* add/remove a parition association
 		 * FIX ME - what happens if I delete a previous partition association
 		 * and objects still exist which were accounted against that partition.
@@ -1899,10 +1899,10 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 			}
 			return proc_error(r, prp);
 		}
-		
+
 		/*
 		 * change which partition a process is associated with
-		 * 
+		 *
 		 * Note that when a partition was originally associated, a heap was also
 		 * implicitly associated as well as a soul list for each soul type. Any
 		 * memory explicitly allocated or souls that were allocated whether from
@@ -1910,7 +1910,7 @@ static int procfs_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *vocb) {
 		 * partition association. Once the association changes, new allocations
 		 * will be accounted to the new partition but all remamining objects will
 		 * continue to be accounted to the previous partition until they are
-		 * released. 
+		 * released.
 		*/
 		case DCMD_PROC_CHG_MEMPARTID:
 		{
@@ -2050,7 +2050,7 @@ static int procfs_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void
 			if (S_ISDIR(msg->connect.mode)) {
 				flags |= PROCFS_FLAG_DIR;
 			}
-			pid = INODE_XOR(handlep); 
+			pid = INODE_XOR(handlep);
 		} else if (*path) {
 			return ENOENT;
 		}
@@ -2078,7 +2078,7 @@ static int procfs_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void
 			_sfree(ocb, sizeof *ocb);
 			return proc_error(EINVAL, prp);
 		}
-		
+
 		for(ocb2 = prp->ocb_list; ocb2; ocb2 = ocb2->next) {
 			if(ocb2->ioflag & _IO_FLAG_WR) {
 				_sfree(ocb, sizeof *ocb);
@@ -2112,7 +2112,7 @@ static int procfs_open(resmgr_context_t *ctp, io_open_t *msg, void *handle, void
 static const resmgr_connect_funcs_t procfs_connect_funcs = {
 	_RESMGR_CONNECT_NFUNCS,
 	procfs_open,
-};                                              
+};
 
 static int pulse(message_context_t *ctp, int code, unsigned flags, void *handle) {
 	PROCESS						*prp;

@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -99,11 +99,11 @@ static int
 do_write(void *dst, size_t len, void *d) {
 	struct sync_data	*data = d;
 
-#ifndef NDEBUG	
-	// Things need to get more sophisticated if we write out more than 
+#ifndef NDEBUG
+	// Things need to get more sophisticated if we write out more than
 	// a page at a time
 	if(len != QUANTUM_SIZE) crash();
-#endif	
+#endif
 
 	data->got = write_page(data, dst);
 	return EOK;
@@ -186,7 +186,7 @@ one_cache(struct cache_data *cache, uintptr_t start, uintptr_t next) {
 		cache->start = start;
 	} else if(cache->next != start) {
 		// Had a hole, need to do the cache op for previous piece
-		CPU_CACHE_CONTROL(cache->as, (void *)cache->start, 
+		CPU_CACHE_CONTROL(cache->as, (void *)cache->start,
 					cache->next - cache->start, cache->flags);
 		cache->start = start;
 	}
@@ -205,7 +205,7 @@ check_cache(OBJECT *obp, off64_t off, struct pa_quantum *pq, unsigned num, void 
 }
 
 
-int 
+int
 vmm_msync(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
 	ADDRESS					*as;
 	int						r;
@@ -223,7 +223,7 @@ vmm_msync(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
 	r = map_isolate(&ms, &as->map, vaddr, len, MI_SPLIT);
 	if(r != EOK) goto fail1;
 
-	// We have to make sure there are extra threads available in case 
+	// We have to make sure there are extra threads available in case
 	// CacheControl() puts this thread into WAITPAGE, or when we
 	// go to write a page out.
 	if(proc_thread_pool_reserve() != 0) {
@@ -231,7 +231,7 @@ vmm_msync(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
 		goto fail2;
 	}
 
-	// CacheControl() might cause page faults, so let fault_pulse() 
+	// CacheControl() might cause page faults, so let fault_pulse()
 	// know that it doesn't have to grab the lock for this reference
 	proc_lock_owner_mark(prp);
 
@@ -265,7 +265,7 @@ vmm_msync(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
 		}
 	}
 	if(cache.start != VA_INVALID) {
-		CPU_CACHE_CONTROL(as, (void *)cache.start, cache.next - cache.start, 
+		CPU_CACHE_CONTROL(as, (void *)cache.start, cache.next - cache.start,
 				cache.flags);
 	}
 
@@ -302,10 +302,10 @@ vmm_msync(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
 fail3:
 	proc_thread_pool_reserve_done();
 
-fail2:	
+fail2:
 	map_coalese(&ms);
 
-fail1:	
+fail1:
 	return r;
 }
 

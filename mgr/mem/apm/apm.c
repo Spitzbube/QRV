@@ -1,26 +1,26 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 /*******************************************************************************
  * apm.c
- * 
+ *
  * This file contains code that implements memory partitioning when the module
  * is loaded.
- * 
+ *
  * See also ../mm_mempart.c
 */
 #include "vmm.h"
@@ -39,7 +39,7 @@ static const mempart_policy_t  _mempart_dflt_policy = MEMPART_DFLT_POLICY_INITIA
 
 /*
  * rsrcmgr_mempart_fnctbl
- * 
+ *
  * When the memory partitioning resource manager initializes, it can optionally
  * register a table of interface functions for use by the memory partioning
  * module. In this case the 'rsrcmgr_mempart_fnctbl' variable will be set
@@ -48,24 +48,24 @@ static const mempart_policy_t  _mempart_dflt_policy = MEMPART_DFLT_POLICY_INITIA
 static rsrcmgr_mempart_fnctbl_t *rsrcmgr_mempart_fnctbl = NULL;
 
 /*==============================================================================
- * 
+ *
  *			public interfaces to memory partition resource manager
- * 
+ *
 */
 /*
  * APMMGR_EVENT
- * 
+ *
  * This API is used to send event notifications to any registered process. Event
  * delivery is handled entirely from the resource manager.
- * 
+ *
  * Mandatory arguments include the mempart_t.resmgr_attr_p and the event type
  * (mempart_evttype_t). Depending on the event type (etype), additional event
  * specific arguments may be provided.
- * 
+ *
  * If the resource manager has elected not to register an event handler, this
  * API is a no-op.
- * 
- * Returns: nothing 
+ *
+ * Returns: nothing
 */
 #ifdef MEMPART_NO_EVENTS
 /* WATCOM compiler can't do vararg macros #define APMMGR_EVENT(mpid, etype, args...)	{} */
@@ -84,13 +84,13 @@ static rsrcmgr_mempart_fnctbl_t *rsrcmgr_mempart_fnctbl = NULL;
 
 /*
  * _mempart_rsrcmgr_fnctbl
- * 
+ *
  * This table defines the memory partitioning interface routines provided for
  * the resource manager porition of the memory partitioning module. When the
  * resource manager module registers (_mempart_fnctbl.rsrcmgr_attach()), it will
  * be returned a pointer to this table so that it can interact with the memory
  * partitioning module.
- * 
+ *
 */
 static part_id_t		_mempart_create(part_id_t parent_mpid, mempart_cfg_t *child_cfg, memclass_id_t memclass);
 static int				_mempart_destroy(part_id_t mpid);
@@ -113,7 +113,7 @@ static mempart_rsrcmgr_fnctbl_t _mempart_rsrcmgr_fnctbl =
 
 /*
  * _mempart_fnctbl
- * 
+ *
  * This table defines the memory partitioning interface routines for the
  * accounting portion of the implementation. When the memory partitioning module
  * is included, these interface routines are exposed to external code through
@@ -328,7 +328,7 @@ static INLINE int _mutex_wrlock(kerproc_lock_t *l)
 {
 	atomic_add_value((unsigned int *)&l->wr_cnt, 1);
 	return MUTEX_LOCK((void *)l);
-		
+
 }
 static INLINE int _mutex_wrunlock(kerproc_lock_t *l)
 {
@@ -384,13 +384,13 @@ static INLINE int _obj_list_audit(part_qnodehdr_t *list)
 
 /*******************************************************************************
  * reserve_size
- * 
+ *
  * calculate how much of <req_size> will come from any reserve established in
  * partition <mp>.
  * Note that when this macro is called, the mp->info.cur_size has not yet been
  * incremented so the allocation has not yet taken place from the perspective of
  * the partition.
- * 
+ *
  * if (cur_size < size.min) (ie. there is some reserve to use up)
  *   return (min(size.min - cur_size, req_size))
  * else
@@ -420,13 +420,13 @@ static INLINE memsize_t reserve_size(mempart_info_t *meminfo, memsize_t req_size
 
 /*******************************************************************************
  * unreserve_size
- * 
+ *
  * calculate how much of <free_size> will go back to reserved such that any
  * reserve established in partition <mp> is maintained.
  * Note that when this macro is called, the mp->info.cur_size has not yet been
  * decremented so the allocation has not yet been freed from the perspective of
  * the partition
- * 
+ *
  * if (cur_size <= size.min)
  *   return (free_size)			(ie. it all goes back to reserved)
  * else if ((cur - min) > free)
@@ -459,7 +459,7 @@ static INLINE memsize_t unreserve_size(mempart_info_t *meminfo, memsize_t free_s
 
 /*******************************************************************************
  * initialize_apm
- * 
+ *
  * Called from kmain.c during module initialization. This function will
  * initialize the (*mempart_init)() function pointer so that when MEMPART_INIT()
  * is called, the _mempart_init() function can perform the actual module
@@ -506,7 +506,7 @@ void initialize_apm(unsigned version, unsigned pass)
 		case 5:
 		{
 			int r;
-			
+
 			/* initialize the sys_mempart->info_lock (it could not be done earlier) */
 			mutex->init = real.init;
 
@@ -542,27 +542,27 @@ void initialize_apm(unsigned version, unsigned pass)
 
 /*
  * ===========================================================================
- * 
+ *
  * 					Memory Partition interface routines
- *  
+ *
  * The following routines implement the memory partitioning interface for the
  * case when the memory partitioning module is installed.
  * They are exposed via the 'mempart_fnctbl' and in conjunction with macros of
  * the same name, provide the memory partitioning functionality in a format
- * which is optional. 
- *  
+ * which is optional.
+ *
  * ===========================================================================
 */
 
 /*******************************************************************************
  * mempart_init
- * 
+ *
  * Initialize the memory partition system. Called from pa_memclass_init(), this
  * function will create the initial system partition and establish initial values
  * based on the amount of system memory available and currently used
  *
  * Bootstrapping the partitions
- * 
+ *
  * In order to utilize the _mempart_create() function to actually do the work
  * (which will in turn do a memory allocation, which would require a valid
  * memory partition with enough space, etc ... which we don't have) the
@@ -578,7 +578,7 @@ static void _mempart_init(memsize_t sysmem_size, memclass_id_t memclass_id)
 	mempart_cfg_t  sys_cfg;
 	part_id_t  sys_mpid;
 
-	/* can only be called once */	
+	/* can only be called once */
 	if ((sys_mempart != NULL) || (memclass_id == memclass_id_t_INVALID))
 	{
 		kprintf("Unable to create system partition, sys_mempart: 0x%x, memclass_id: 0x%x\n",
@@ -633,14 +633,14 @@ static void _mempart_init(memsize_t sysmem_size, memclass_id_t memclass_id)
 	 * other words, the configured size.min for the system partition could
 	 * theorectically be used up already depending on what allocations were made
 	 * prior to creating the system partition.
-	 * 
+	 *
 	 * The total free memory for the system memory class is represented by
 	 * (pa_free_size() + pa_reserved_size()), therefore what has been used so
 	 * far (ie. cur_size) is the configured size.max - the total free. Any memory
 	 * used upto the configured size.min must be accounted for against reserved
 	 * memory
 	*/
-	
+
 // FIX ME - consider pa_xx() funcs either through class allocator functions or return
 //			values as arguments
 	sys_mempart->info.cur_size =
@@ -657,7 +657,7 @@ static void _mempart_init(memsize_t sysmem_size, memclass_id_t memclass_id)
 	 * memory as well as the creation of child partitions
 	*/
 	mempart_fnctbl = &_mempart_fnctbl;
-	
+
 #ifndef NDEBUG
 	{
 		display_mempart_info(sys_mempart);
@@ -667,12 +667,12 @@ static void _mempart_init(memsize_t sysmem_size, memclass_id_t memclass_id)
 
 /*******************************************************************************
  * _mempart_proc_associate
- * 
+ *
  * Associate process <prp> with the memory partition <mempart_id>.
  * A process can only be associated with 1 partition of a given memory class.
  * Attempts to associate with an already associated partition will return
  * EALREADY.
- * 
+ *
  * HEAP structure creation is controlled by the <flags> argument. This allows
  * the caller to specify whether or not a HEAP is considered necessary. Some
  * memory classes may not require a HEAP since it is known that no internal
@@ -682,14 +682,14 @@ static void _mempart_init(memsize_t sysmem_size, memclass_id_t memclass_id)
  * For this case, the 'mempart_node_t' structure will be allocated from the
  * processes 'sysram' heap and have its HEAP pointer set to NULL (ie no heap
  * for the memory class even though it has partition association with the class)
- * 
+ *
  * All of the partition structures required for process association, currently
  * use the sysram memory class for their allocations hence when associating with
  * the sysram memory class, it is expected that a HEAP be either shared or created
  * (ie. flags & mempart_flags_HEAP_CREATE | mempart_flags_HEAP_SHARE) since we
  * know that most (if not all) internal memory allocations will be made from the
  * sysram heap for the process. See also mempart.h
- * 
+ *
  * Returns EOK or an errno
 */
 static int _mempart_proc_associate(PROCESS *prp, part_id_t mempart_id,
@@ -705,12 +705,12 @@ static int _mempart_proc_associate(PROCESS *prp, part_id_t mempart_id,
 
 /*******************************************************************************
  * _mempart_proc_disassociate
- * 
+ *
  * Remove the process <prp> from the process list for partition <mempart_id>.
  * If <mempart_id> is part_id_t_INVALID, the process is disassociated from
  * all partitions in its partition list.
  * Otherwise, the process is disassociated from partition <mempart_id>.
- * 
+ *
  * Implementation Note:
  * Why do I not just call the proxy_mempart_fnctbl.disassociate() function?
  * Without memory partitioning installed no events are sent. Therefore the proxy
@@ -781,7 +781,7 @@ static int _mempart_proc_disassociate(PROCESS *prp, part_id_t mempart_id, ext_lo
 }
 
 /*******************************************************************************
- * _mempart_obj_associate 
+ * _mempart_obj_associate
 */
 static int _mempart_obj_associate(OBJECT *obj, part_id_t mpid)
 {
@@ -809,7 +809,7 @@ static int _mempart_obj_associate(OBJECT *obj, part_id_t mpid)
 
 		obj->hdr.mpid = mpid;
 		obj->hdr.mpart_disassociate = _mempart_obj_disassociate;
-		
+
 #ifdef USE_PROC_OBJ_LISTS
 		obj_node->obj = obj;
 
@@ -821,7 +821,7 @@ static int _mempart_obj_associate(OBJECT *obj, part_id_t mpid)
 #ifndef NDEBUG
 	/* if its not NULL, it better be the same as what's being passed in */
 	else {CRASHCHECK(obj->hdr.mpid != mpid);}
-	
+
 	MUTEX_RDLOCK(&mpart->objlist_lock);
 	if (obj_list_audit(mpart->obj_list) != EOK) crash();
 	MUTEX_RDUNLOCK(&mpart->objlist_lock);
@@ -834,7 +834,7 @@ static int _mempart_obj_associate(OBJECT *obj, part_id_t mpid)
 
 /*******************************************************************************
  * _mempart_obj_disassociate
- * 
+ *
  * remove <obp> from the object list in the partition in which it is associated
 */
 static void _mempart_obj_disassociate(OBJECT *obj)
@@ -899,11 +899,11 @@ static void _mempart_obj_disassociate(OBJECT *obj)
 
 /*******************************************************************************
  * _mempart_chk_and_incr
- * 
+ *
  * Atomically check for enough free space for <incr> in partition <mp> and
  * account it if there is. If there is, the amount of the allocation that should
  * be taken from previously reserved memory will be returned in <resv>.
- * 
+ *
  * Return: EOK on success, errno otherwise
  * No accounting takes place unless EOK is returned.
 */
@@ -931,12 +931,12 @@ static int _mempart_chk_and_incr(part_id_t mpid, memsize_t incr, memsize_t *resv
 
 /*******************************************************************************
  * _mempart_incr
- * 
+ *
  * Atomically account for <incr> in partition <mp>.
- * 
+ *
  * Note that this routine is really only used when a kernel object is returned
  * from a user process.
- * 
+ *
  * Return: EOK or an errno
 */
 static int _mempart_incr(part_id_t mpid, memsize_t incr)
@@ -954,10 +954,10 @@ static int _mempart_incr(part_id_t mpid, memsize_t incr)
 
 /*******************************************************************************
  * _mempart_decr
- * 
+ *
  * Atomically account for <decr> in partition <mp> and return the anount of the
  * deallocation that should be given back to previously reserved memory.
- * 
+ *
  * Return: from 0 to <decr> bytes that should be returned to reserved memory by
  * 			the deallocator
 */
@@ -986,19 +986,19 @@ static memsize_t _mempart_decr(part_id_t mpid, memsize_t decr)
 
 /*******************************************************************************
  * _mempart_undo_incr
- * 
+ *
  * Atomically undo the increment previously done by _mempart_chk_and_incr()
  * after the subsequent allocation was attempted and failed.
- * 
+ *
  * This routine should ONLY BE CALLED after MEMPART_CHK_and_INCR() returns EOK
  * AND the subsequent allocation (recorded by MEMPART_CHK_and_INCR()) fails.
- * 
+ *
  * Return: nothing (void)
 */
 static void _mempart_undo_incr(part_id_t mpid, memsize_t incr, memsize_t resv_size)
 {
 	mempart_t *mp = MEMPART_ID_TO_T(mpid);
-	
+
 	CRASHCHECK(mp == NULL);
 
 	if (incr == 0) {
@@ -1020,10 +1020,10 @@ static void _mempart_undo_incr(part_id_t mpid, memsize_t incr, memsize_t resv_si
 
 /*******************************************************************************
  * _mempart_get
- * 
+ *
  * Return the mempart_node_t * associated with the process <prp> corresponding to
  * <memclass_id>.
- * 
+ *
  * Returns: a pointer to the mempart_node_t or NULL is no partition of that memory
  * class is associated with the process
 */
@@ -1033,34 +1033,34 @@ static mempart_node_t *_mempart_get(PROCESS *prp, memclass_id_t memclass_id)
 
 	CRASHCHECK(prp == NULL);
 	CRASHCHECK(memclass_id == memclass_id_t_INVALID);
-	
+
 	MUTEX_RDLOCK(&prp->mpartlist_lock);
 	m = (mempart_node_t *)vector_lookup(&prp->mpart_list, memclass_id);
 	MUTEX_RDUNLOCK(&prp->mpartlist_lock);
-		
+
 	return m;
 }
 
 /*******************************************************************************
  * _mempart_getlist
- * 
+ *
  * Retrieve the list of partitions associated with process <prp>.
  * This function will fill in the provided <mpart_list> for the process <prp>
  * filtering the results based on <flags> and optionally <cred>.
  * The number of entries that can be filled in is specified by <n>.
- * 
+ *
  *  The flags which can be specified are
  * 		mempart_flags_t_GETLIST_ALL			- no filtering, return all associated partitions
  * 		mempart_flags_t_GETLIST_INHERITABLE	- filter out those partitions which have the
  * 											  part_flags_NO_INHERIT flag set
  * 		mempart_flags_t_GETLIST_CREDENTIALS	- filter out those partitions which do not have
  * 											  appropriate credentials
- * 
+ *
  * If mempart_flags_t_GETLIST_CREDENTIALS is set, <cred> should point to an appropriately
  * initialized 'struct _cred_info'. Only partitions which have the appropriate S_IXUSR or
  * S_IXGRP bits set will be returned. S_IXOTH will always be included unless other filters
  * take effect
- * 
+ *
  * Returns: -1 on any error. If successful, the number of remaining associations
  * 			which would not fit in <mpart_list> is returned. A return value of 0
  * 			indicates that all of the associations "requested" are contained in
@@ -1116,18 +1116,18 @@ static int _mempart_getlist(PROCESS *prp, part_list_t *mpart_list, int n,
 		mpart_list->i[mpart_list->num_entries++].flags = mp_node->flags;
 	}
 	MUTEX_RDUNLOCK(&prp->mpartlist_lock);
-	
+
 	return (n_mparts - (mpart_list->num_entries + filtered));
 }
 
 /*******************************************************************************
  * _mempart_validate_association
- * 
+ *
  * This API is used to determine whether or not the partition identified by
  * 'part_id_t' <mpid> can be associated with based on the 'struct _cred_info' <c>.
- * 
+ *
  * Returns: EOK if association is permitted, otherwise and errno.
- * 
+ *
  * If the resource manager module is not installed, EOK will be returned since
  * associations control is meaningless
  *
@@ -1156,7 +1156,7 @@ static int _mempart_validate_association(part_id_t mpid, struct _cred_info *cred
 mempart_rsrcmgr_fnctbl_t *_rsrcmgr_attach(rsrcmgr_mempart_fnctbl_t *ifTbl)
 {
 #ifndef NDEBUG
-	if (ker_verbose) kprintf("Attaching memory partitioning resource manager\n"); 
+	if (ker_verbose) kprintf("Attaching memory partitioning resource manager\n");
 #endif
 	if (ifTbl != NULL)
 	{
@@ -1169,17 +1169,17 @@ mempart_rsrcmgr_fnctbl_t *_rsrcmgr_attach(rsrcmgr_mempart_fnctbl_t *ifTbl)
 
 /*
  * ===========================================================================
- * 
+ *
  * 				Memory Partition resource manager interface routines
- *  
+ *
  * The following routines are made available to the memory partition resource
  * manager via the 'mempart_rsrcfnctbl' which is initialized when mempart_init()
  * is called.
- * 
+ *
  * These routines allow the resource manager to create and destroy memory
  * partitions, add or remove memory classes to or from an existing partition
  * and retrieve information about a partition
- * 
+ *
  * _mempart_create 		- create a new partition optionally specifying the
  * 						  attributes and polcies
  * _mempart_destroy		- destroy an existing partition
@@ -1192,19 +1192,19 @@ mempart_rsrcmgr_fnctbl_t *_rsrcmgr_attach(rsrcmgr_mempart_fnctbl_t *ifTbl)
  * _resmgr_attach		- allows the resource manager for memory partitioning
  * 						  to retrieve the interface functions necessary to
  * 						  interact with the memory partitioning module
- *  
+ *
  * ===========================================================================
 */
 
 /*******************************************************************************
  * _mempart_create
- * 
+ *
  * This function will (internally) create a new memory partition as a child of
  * the parent. The parent/child relationship exists primarily for the purpose of
  * establishing constraints on the newly created partition. In this regard, the
  * specified child configuration will be validated against the parent to
  * determine whether or not the creation will be permitted.
- * 
+ *
  * Note that at this point permissions level checking has been provided by the
  * resource manager, so what is beng done here it to validate any optional
  * attributes and policies. If no attributes or policies are provided
@@ -1212,22 +1212,22 @@ mempart_rsrcmgr_fnctbl_t *_rsrcmgr_attach(rsrcmgr_mempart_fnctbl_t *ifTbl)
  * the use of the partition (ie min = max = 0) although processes may still
  * associate with the partition.
  * Attributes can be modified at a later time with _mempart_config().
- *  
+ *
  * If successful, a partition identifier is returned that can be used to
  * reference the partition otherwise NULL is returned.
- * 
+ *
  * LOCKING note
  * When a new partition is created is not usable in any way by the system
  * prior to return therefore no locks are requried to be held. Because this
  * function calls _mempart_config() to perform a configuration change (if
  * <child_cfg> != NULL), which does acquire the mempart->info_lock, this lock
  * needs to be initialized prior to calling that function
- * 
+ *
  * IMPORTANT
  * The memory for the partition structures always comes from the internal heap
  * since it may need to live beyond the existence of the creating process.
  * Note that this represents a security hole since an appropriately privileged
- * process could exhaust system memory by continuously creating partitions 
+ * process could exhaust system memory by continuously creating partitions
 */
 /* note re create_key
  * there is nothing special about the 'parttype_MEM' value being OR'd in other
@@ -1296,7 +1296,7 @@ static part_id_t _mempart_create(part_id_t parent_mpid, mempart_cfg_t *child_cfg
 		mempart->info.cre_cfg.policy = mempart->info.cur_cfg.policy = MEMPART_DFLT_POLICY;
 		/*
 		 * Generate the policy keys based on the currently selected policies. This
-		 * must be done before calling _mempart_config() 
+		 * must be done before calling _mempart_config()
 		*/
 		SET_MPART_POLICY_TERMINAL_KEY(&mempart->info.cre_cfg);
 		SET_MPART_POLICY_CFG_LOCK_KEY(&mempart->info.cre_cfg);
@@ -1364,26 +1364,26 @@ static part_id_t _mempart_create(part_id_t parent_mpid, mempart_cfg_t *child_cfg
 
 /*******************************************************************************
  * _mempart_destroy
- * 
+ *
  * This function will (internally) destroy the memory partition <mp> and return
  * any reserved memory back to the parent.
  * The memory allocated for <mp> will also be released.
- * 
+ *
  * IMPORTANT:
- * 
+ *
  * It is assumed that all previous associations (by objects or processes) with
  * the partition have been removed. An assert for this condition will be made.
  * Specifically, only the 'mempart_t' structure is released.
  * Process references to <mp> made through the list of 'mempart_node_t' structures
  * are not handled in this function but should have been cleaned up when the
  * processes were disassociated with the partition.
- * 
+ *
  * Policies regarding the removal of a partition (ie. are all associated
  * processes terminated/objects freed unvoluntarily or do associations prevent
  * removal) are handled in the resource manager portion of the code.
- * 
+ *
  * Returns: N/A
- * 
+ *
  * IMPORTANT
  * The memory for the partition structures always comes from the internal sysram
  * heap since it may need to live beyond the existence of the creating process. It
@@ -1426,12 +1426,12 @@ static int _mempart_destroy(part_id_t mpid)
 
 	mclass = &mp->memclass->data;	// grab this before the partition is destroyed
 	free(mp);
-	
+
 	/* send event notifications to any interested parties */
 	APMMGR_EVENT(parent, mempart_evttype_t_PARTITION_DESTROY, mpid, NULL);
 	MEMCLASSMGR_EVENT(mclass, memclass_evttype_t_PARTITION_DESTROY,
 						(memclass_sizeinfo_t *)&mpid, NULL);
-	
+
 	return EOK;
 }
 
@@ -1439,13 +1439,13 @@ static int _mempart_destroy(part_id_t mpid)
  * _mempart_config
  *
  * Modify the attributes and/or policies of the memory partition <mpart>
- * 
+ *
  * This function will modify the current partition attributes and polcies
  * as per <cfg>. The requested change will be validated against the current
  * partition settings and usage as well as any parent partition restrictions.
- * 
+ *
  * Most of the validation should have taken place prior to calling this function
- * 
+ *
  * Returns: EOK on success otherwise errno
 */
 static int _mempart_config(part_id_t mpid, mempart_cfg_t *cfg, unsigned key)
@@ -1602,7 +1602,7 @@ static int _mempart_config(part_id_t mpid, mempart_cfg_t *cfg, unsigned key)
 			mempart_unreserve(mpart->parent, unresv_size, unresv_used_adjust, 0, mpart->memclass->data.info.id);
 		}
 	}
-	
+
 	if ((mpart->create_key != 0) && (mpart->create_key == key))
 	{
 		/* this is an initial creation */
@@ -1646,12 +1646,12 @@ static int _mempart_config(part_id_t mpid, mempart_cfg_t *cfg, unsigned key)
 
 /*******************************************************************************
  * _mempart_get_info
- * 
+ *
  * Get partition info into caller provided buffer.
  * If successful, a pointer to the mempart_info_t buffer is returned otherwise
  * NULL is returned.
- * 
- * Note that this routine will also "restore" policy keys back to bool_t values   
+ *
+ * Note that this routine will also "restore" policy keys back to bool_t values
 */
 static mempart_info_t *_mempart_getinfo(part_id_t mpid, mempart_info_t *info)
 {
@@ -1681,11 +1681,11 @@ static mempart_info_t *_mempart_getinfo(part_id_t mpid, mempart_info_t *info)
  *
  * determine if the process id <pid> is associated with the memory partition
  * identified by <mpid>
- * 
+ *
  * FIX ME - can possibly make this faster by checking to see if the process has
  * 			the partition associated instead of whether the partition has the
  * 			process in its list
- * 
+ *
  * Returns: a PROCESS pointer if found, NULL otherwise
 */
 static PROCESS *_mempart_find_pid(pid_t pid, part_id_t mpid)
@@ -1717,21 +1717,21 @@ static PROCESS *_mempart_find_pid(pid_t pid, part_id_t mpid)
 /*******************************************************************************
  * _validate_cfg_creation
  * _validate_cfg_modification
- * 
+ *
  * These 2 routines are used to validate configurations for partition creation
  * or modification based on the policies in use. They provide common routines
  * for validation (via validate_config()) so that these checks are not littered
  * throughout the code.
- * 
+ *
  * They are mainly called from the memory partition resource manager in order
  * to trap illegal requests from applications, however they are also called
  * internally from functions in this file for debug loads in order to ensure
- * that the resource manager is doing its job 
- * 
+ * that the resource manager is doing its job
+ *
  * Note that overflow checking of size fields of the config structures should
  * have been done prior to calling either of these 2 functions. The debug build
  * does assert on this
- * 
+ *
  * FIX ME - currently no locking here. Could lead to a bad decision re validation
 */
 static int _validate_cfg_creation(part_id_t parent_mpid, mempart_cfg_t *cfg, memclass_id_t memclass_id)
@@ -1778,10 +1778,10 @@ static int _validate_cfg_creation(part_id_t parent_mpid, mempart_cfg_t *cfg, mem
 			return EINVAL;
 		}
 	}
-	
+
 	if (parent_mp != NULL)
 	{
-		/* assert that if the parent is mempart_alloc_policy_t_ROOT, then no children */ 
+		/* assert that if the parent is mempart_alloc_policy_t_ROOT, then no children */
 		if (parent_mp->info.cur_cfg.policy.alloc == mempart_alloc_policy_t_ROOT) {
 			return EINVAL;
 		}
@@ -1790,16 +1790,16 @@ static int _validate_cfg_creation(part_id_t parent_mpid, mempart_cfg_t *cfg, mem
 		if (parent_mp->memclass->data.info.id != memclass->data.info.id) {
 			return EINVAL;
 		}
-		
+
 		/* assert that the parent partition may have children */
 		if (GET_MPART_POLICY_TERMINAL(&parent_mp->info.cur_cfg) == bool_t_TRUE) {
-			return EPERM; 
+			return EPERM;
 		}
-	
+
 		/* the following are checks validate the config against the parent partition */
 		if (cfg != NULL)
 		{
-			/* assert the specified allocation policy is the same as the parent */ 
+			/* assert the specified allocation policy is the same as the parent */
 			if (cfg->policy.alloc != parent_mp->info.cur_cfg.policy.alloc) {
 				return EINVAL;
 			}
@@ -1823,12 +1823,12 @@ static int _validate_cfg_modification(part_id_t mpid, mempart_cfg_t *cfg)
 	 * NOTE: anything to do with changes in reservations will be handled when
 	 * change is actually made, not here
 	*/
-	
+
 	/* assert modifying a valid partition */
 	if (mp == NULL) {
 		return ENOENT;
 	}
-	
+
 	if (cfg == NULL) {
 		return EINVAL;
 	}
@@ -1892,7 +1892,7 @@ static int _validate_cfg_modification(part_id_t mpid, mempart_cfg_t *cfg)
 	if (cfg->attr.size.min > cfg->attr.size.max) {
 		return EINVAL;
 	}
-	
+
 	/* assert that the new maximum >= current size */
 	if (cfg->attr.size.max < mp->info.cur_size) {
 		return ENOMEM;
@@ -1923,15 +1923,15 @@ static int _validate_cfg_modification(part_id_t mpid, mempart_cfg_t *cfg)
 
 /*
  * ===========================================================================
- * 
+ *
  * 							Internal support routines
- *  
+ *
  * ===========================================================================
 */
 
 /*******************************************************************************
  * mempart_size_chk
- * 
+ *
  * Check whether <size> bytes can be allocated in the partition hierarchy
  * starting at partition <mp>.
 */
@@ -1955,7 +1955,7 @@ static bool mempart_size_chk(mempart_t *mp, memsize_t size)
 	else if (mp->info.cur_cfg.policy.alloc == mempart_alloc_policy_t_HIERARCHICAL)
 	{
 		memsize_t resv_size = reserve_size(&mp->info, size);
-		/* if there is not enough reserve, check the partition hierarchy */ 
+		/* if there is not enough reserve, check the partition hierarchy */
 		if (resv_size >= size)
 		{
 			return bool_t_TRUE;
@@ -1976,18 +1976,18 @@ static bool mempart_size_chk(mempart_t *mp, memsize_t size)
 #undef max_size
 #undef cur_size
 #endif	/* _MEMSIZE_and_memsize_are_different_ */
-	}	
+	}
 }
 
-	
+
 /*******************************************************************************
  * mempart_size_incr
- * 
+ *
  * Account an allocation of <inc> bytes against the partition hierarchy starting
  * at <mp>.
- * 
+ *
  * Returns: the amount of memory that should accounted against reserved memory
- * 			for the partition class 
+ * 			for the partition class
 */
 static memsize_t mempart_size_incr(mempart_t *mp, memsize_t inc)
 {
@@ -2015,7 +2015,7 @@ static memsize_t mempart_size_incr(mempart_t *mp, memsize_t inc)
 	if (mp->info.cur_cfg.policy.alloc == mempart_alloc_policy_t_ROOT)
 	{
 		memsize_t  prev_size = mp->info.cur_size;
-		
+
 		resv = reserve_size(&mp->info, inc);	// expects that increment happens after
 
 		if ((mp->info.cur_size += inc) > mp->info.hi_size) {
@@ -2041,12 +2041,12 @@ static memsize_t mempart_size_incr(mempart_t *mp, memsize_t inc)
 
 /*******************************************************************************
  * mempart_size_decr
- * 
+ *
  * Account a deallocation of <dec> bytes against the partition hierarchy starting
  * at <mp>.
- * 
+ *
  * Returns: the amount of memory that was accounted against reserved memory for
- * 			the partition class 
+ * 			the partition class
 */
 static memsize_t mempart_size_decr(mempart_t *mp, memsize_t dec)
 {
@@ -2092,7 +2092,7 @@ static memsize_t mempart_size_decr(mempart_t *mp, memsize_t dec)
 
 /*******************************************************************************
  * reserved_free
- * 
+ *
  * This function returns the amount of unallocated reserved memory of the class
  * identified by <meminfo>
  * <memclass_id> in partition <mp> or 0 if there is no unallocated reserved
@@ -2102,7 +2102,7 @@ static memsize_t mempart_size_decr(mempart_t *mp, memsize_t dec)
 
 /*******************************************************************************
  * free_size
- * 
+ *
  * This function returns the amount of free space in partition <mp>
 */
 static INLINE memsize_t free_size(mempart_t *mp)
@@ -2112,7 +2112,7 @@ static INLINE memsize_t free_size(mempart_t *mp)
 
 /*******************************************************************************
  * max_size
- * 
+ *
  * This function returns the currently configured maximum for partition <mp>
 */
 /* FIX ME - I wonder if some confusion with the #define max_size was ocurring
@@ -2124,13 +2124,13 @@ static INLINE memsize_t max_size(mempart_t *mp)
 
 /*******************************************************************************
  * mempart_reserve
- * 
+ *
  * This function will recurse back as far as necessary in the partition hierarchy
  * (terminating at the 'root' partition) attempting to ensure that the requested
  * preallocation can be accounted for. There is no actual memory allocation that
  * takes place, but the memory for the requested guarantee of a child must be
  * satisfiable and therefore accounted for at some point in the hierarchy
- * 
+ *
  * This function will either return the amount of memory requested or 0 if the
  * reservation could not be made.
  *
@@ -2148,7 +2148,7 @@ static int mempart_reserve(mempart_t *mp, memsize_t size, memsize_t adjust, mems
 		if (adjust >= resv_free)
 		{
 			adjust -= resv_free;
-			resv_adjust_dir = +1; 
+			resv_adjust_dir = +1;
 		}
 		else
 		{
@@ -2160,7 +2160,7 @@ static int mempart_reserve(mempart_t *mp, memsize_t size, memsize_t adjust, mems
 		if ((size == 0) && (adjust == 0)) {
 			return 0;
 		}
-		
+
 		/* FIX ME - this locking should be done inside the allocator for the class
 		 * 			Need to pass &entry then so that entry->lock is available */
 		MUTEX_WRLOCK(&entry->lock);
@@ -2180,7 +2180,7 @@ static int mempart_reserve(mempart_t *mp, memsize_t size, memsize_t adjust, mems
 		memsize_t  reserved_unused;
 
 		MUTEX_RDLOCK(&mp->info_lock);
-		
+
 		/* verify that the parent limit will not be exhausted */
 		if ((mp->info.cur_cfg.attr.size.max - mp->info.cur_size) < size)
 		{
@@ -2234,7 +2234,7 @@ static int mempart_reserve(mempart_t *mp, memsize_t size, memsize_t adjust, mems
 			}
 			new_size = mp->info.cur_size;
 		}
-		
+
 		MUTEX_RDUNLOCK(&mp->info_lock);
 
 		/* if required, send event notifications to any interested parties */
@@ -2250,7 +2250,7 @@ static int mempart_reserve(mempart_t *mp, memsize_t size, memsize_t adjust, mems
 
 /*******************************************************************************
  * mempart_unreserve
- * 
+ *
  * This function will release <size> bytes of previously reserved memory of
  * class <memclass_id>.
  * It basically undoes mempart_reserve().
@@ -2269,7 +2269,7 @@ static void mempart_unreserve(mempart_t *mp, memsize_t size, memsize_t adjust, m
 		if (adjust >= resv_free)
 		{
 			adjust -= resv_free;
-			resv_adjust_dir = -1; 
+			resv_adjust_dir = -1;
 		}
 		else
 		{
@@ -2297,14 +2297,14 @@ static void mempart_unreserve(mempart_t *mp, memsize_t size, memsize_t adjust, m
 		memsize_t  discretionary_used = 0;
 
 		MUTEX_RDLOCK(&mp->info_lock);
-		
+
 		if (mp->child_resv_size <= mp->info.cur_cfg.attr.size.min)
 		{
 			resv_decr = 0;
 		}
 		else if (mp->child_resv_size <= (mp->info.cur_cfg.attr.size.min + size))
 		{
-			/* child_resv_size will transition below this partitions min */ 
+			/* child_resv_size will transition below this partitions min */
 			resv_decr = mp->child_resv_size - mp->info.cur_cfg.attr.size.min;
 		}
 		else
@@ -2362,7 +2362,7 @@ static void mempart_unreserve(mempart_t *mp, memsize_t size, memsize_t adjust, m
 
 /*******************************************************************************
  * hierarchy_chk
- * 
+ *
  * This routine is only used for mempart_alloc_policy_t_HIERARCHICAL
  * This routine will recurse back through a partition hierarchy starting
  * with partition <mp> and return the least amount of memory of memory class
@@ -2379,7 +2379,7 @@ static memsize_t hierarchy_chk(mempart_t *mp, memsize_t size)
 	CRASHCHECK(mp->info.cur_cfg.policy.alloc != mempart_alloc_policy_t_HIERARCHICAL);
 
 	MUTEX_RDLOCK(&mp->info_lock);
-	
+
 	free_sz = free_size(mp);
 	r =  min(size, free_sz);
 
@@ -2393,7 +2393,7 @@ static memsize_t hierarchy_chk(mempart_t *mp, memsize_t size)
 
 /*******************************************************************************
  * hierarchy_incr
- * 
+ *
  * This routine is only used for mempart_alloc_policy_t_HIERARCHICAL
  * This routine will recurse back through a partition hierarchy starting
  * with partition <mp> incrementing the cur_size for memory class <memclass_id>.
@@ -2406,7 +2406,7 @@ static memsize_t hierarchy_incr(mempart_t *mp, memsize_t size, memsize_t *resv_s
 //	memsize_t  resv_size;
 	memsize_t  new_size;
 	memsize_t  prev_size;
-	
+
 	CRASHCHECK(mp == NULL);
 
 	MUTEX_WRLOCK(&mp->info_lock);
@@ -2440,21 +2440,21 @@ static memsize_t hierarchy_incr(mempart_t *mp, memsize_t size, memsize_t *resv_s
 	if ((mp_meminfo->cur_size += size) > mp_meminfo->hi_size) {
 		mp_meminfo->hi_size = mp_meminfo->cur_size;
 	}
-	
+
 	new_size = mp_meminfo->cur_size;	// grab cur_size before we unlock
 	MUTEX_WRUNLOCK(&mp->info_lock);
-	
+
 	/* send event notifications to any interested parties */
 	if (new_size != prev_size) {
 		APMMGR_EVENT(mp, mempart_evttype_t_DELTA_INCR, new_size, prev_size);
 	}
-	
+
 	return size;
 }
 
 /*******************************************************************************
  * hierarchy_decr
- * 
+ *
  * This routine is only used for mempart_alloc_policy_t_HIERARCHICAL
  * This routine will recurse back through a partition hierarchy starting
  * with partition <mp> decrementing the cur_size for memory class <memclass_id>.
@@ -2467,7 +2467,7 @@ static memsize_t hierarchy_decr(mempart_t *mp, memsize_t size, memsize_t *unresv
 //	memsize_t  unresv_size;
 	memsize_t  new_size;
 	memsize_t  prev_size;
-	
+
 	CRASHCHECK(mp == NULL);
 
 	MUTEX_WRLOCK(&mp->info_lock);
@@ -2493,7 +2493,7 @@ static memsize_t hierarchy_decr(mempart_t *mp, memsize_t size, memsize_t *unresv
 
 	new_size = mp_meminfo->cur_size;	// grab cur_size before we unlock
 	MUTEX_WRUNLOCK(&mp->info_lock);
-	
+
 	/* send event notifications to any interested parties */
 	if (new_size != prev_size) {
 		APMMGR_EVENT(mp, mempart_evttype_t_DELTA_DECR, new_size, prev_size);

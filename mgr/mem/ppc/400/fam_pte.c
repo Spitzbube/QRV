@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -98,15 +98,15 @@ fam_pte_asid_alloc(ADDRESS *adp) {
 	 * handler routine, we will re-enterantly execute this code to set up
 	 * the address space for the routine.
 	 */
-	
+
 	/*
-	 * Do a quick scan through the asid_map and see 
+	 * Do a quick scan through the asid_map and see
 	 * if there are any unallocated entries. The
-	 * reason why we do this is because it is cheaper 
+	 * reason why we do this is because it is cheaper
 	 * to do this one scan than to steal an asid,
 	 * do a MemPageFlushAsid, and also possibly incur
 	 * tlb refills for the poor guy we stole from.
-	 * If there are no unallocated asids, then go 
+	 * If there are no unallocated asids, then go
 	 * back to where we were in the asid_map.
 	 */
     for(i = PPC_ASID_FIRST; i < NUM_ASIDS; ++i) {
@@ -131,7 +131,7 @@ fam_pte_asid_alloc(ADDRESS *adp) {
     oldadp = asid_map[asid];
 	asid_map[asid] = adp;
     if(oldadp) {
-		/* 
+		/*
 		 * Mark his asid as invalid so
 		 * that when we switch to him he'll
 		 * pick up another one.
