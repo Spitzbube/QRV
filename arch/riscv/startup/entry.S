@@ -22,6 +22,13 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+.section .data
+
+.global boot_args
+
+boot_args:
+	.ascii	"ddpvbskr"	/* signature for mkifs */
+
 /*
  * qemu -kernel loads the kernel at 0x80000000 and causes each CPU to jump there.
  * kernel.ld causes the following code to be placed at 0x80000000.

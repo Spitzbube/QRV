@@ -26,36 +26,36 @@
 #ifndef __KERTRACE_H_INCLUDED
 
 #ifndef __TYPES_H_INCLUDED
- #include <sys/types.h>
+#include <sys/types.h>
 #endif
 #ifndef _STDDEF_H_INCLUDED
- #include <stddef.h>
+#include <stddef.h>
 #endif
 #ifndef __TRACE_H_INCLUDED
- #include <sys/trace.h>
+#include <sys/trace.h>
 #endif
 
 typedef struct {
-	uint32_t time_off;
-	uint32_t data_emitted;	//Data has been emitted
-	uint32_t di;			//Byte offset filled
-	union {
-		uint32_t idata[2];
-		char	 cdata[8];
-	} data;
+    uint32_t time_off;
+    uint32_t data_emitted;      //Data has been emitted
+    uint32_t di;                //Byte offset filled
+    union {
+        uint32_t idata[2];
+        char cdata[8];
+    } data;
 } trace_state_t;
 
 typedef struct ehandler_data {
-	int                    (*handler)(event_data_t*);
-	event_data_t*          area;
-	THREAD*                thp;
-	PROCESS*               process;
-	struct ehandler_data** location;
-  struct cpu_intrsave    cpu;
+    int (*handler)(event_data_t *);
+    event_data_t *area;
+    THREAD *thp;
+    PROCESS *process;
+    struct ehandler_data **location;
+    struct cpu_intrsave cpu;
 } ehandler_data_t;
 
 // Prototype of event emitting function
-int em_event(tracebuf_t*);
+int em_event(tracebuf_t *);
 
 
 // Getting/setting events/classes
@@ -66,38 +66,38 @@ int em_event(tracebuf_t*);
 
 // platform dependent pointer argument access and ClockCycles() ret.
 #ifdef __BIGENDIAN__
- #define _TRACE_CLOCK_MSB           (0^_TRACE_CLOCK_SWAP)
- #define _TRACE_CLOCK_LSB           (1^_TRACE_CLOCK_SWAP)
+#define _TRACE_CLOCK_MSB           (0^_TRACE_CLOCK_SWAP)
+#define _TRACE_CLOCK_LSB           (1^_TRACE_CLOCK_SWAP)
 #else
- #define _TRACE_CLOCK_MSB           (1^_TRACE_CLOCK_SWAP)
- #define _TRACE_CLOCK_LSB           (0^_TRACE_CLOCK_SWAP)
+#define _TRACE_CLOCK_MSB           (1^_TRACE_CLOCK_SWAP)
+#define _TRACE_CLOCK_LSB           (0^_TRACE_CLOCK_SWAP)
 #endif
 #if defined(__X86__)
- #define _TRACE_ARGPTR(thp)         ((KSP(thp))+4)
- #define _TRACE_CLOCK_SWAP          (0)
- #define _TRACE_SAVE_REGS(t,c)
+#define _TRACE_ARGPTR(thp)         ((KSP(thp))+4)
+#define _TRACE_CLOCK_SWAP          (0)
+#define _TRACE_SAVE_REGS(t,c)
 #elif defined(__PPC__)
- #define _TRACE_ARGPTR(thp)         (&(thp)->reg.gpr[3])
- #define _TRACE_CLOCK_SWAP          (0)
- #define _TRACE_SAVE_REGS(t,c)      ((c)->gpr2=(t)->reg.gpr[2],(c)->gpr13=(t)->reg.gpr[13])
+#define _TRACE_ARGPTR(thp)         (&(thp)->reg.gpr[3])
+#define _TRACE_CLOCK_SWAP          (0)
+#define _TRACE_SAVE_REGS(t,c)      ((c)->gpr2=(t)->reg.gpr[2],(c)->gpr13=(t)->reg.gpr[13])
 #elif defined(__MIPS__)
- #define _TRACE_ARGPTR(thp)         (&(thp)->reg.regs[MIPS_BAREG(MIPS_REG_A0)])
- #define _TRACE_CLOCK_SWAP          (1)
- #define _TRACE_SAVE_REGS(t,c)      ((c)->gp=*(uint64_t*)&(t)->reg.regs[MIPS_BAREG(MIPS_REG_GP)])
+#define _TRACE_ARGPTR(thp)         (&(thp)->reg.regs[MIPS_BAREG(MIPS_REG_A0)])
+#define _TRACE_CLOCK_SWAP          (1)
+#define _TRACE_SAVE_REGS(t,c)      ((c)->gp=*(uint64_t*)&(t)->reg.regs[MIPS_BAREG(MIPS_REG_GP)])
 #elif defined(__ARM__)
- #define _TRACE_ARGPTR(thp)         ((thp)->reg.gpr)
- #define _TRACE_CLOCK_SWAP          (0)
- #define _TRACE_SAVE_REGS(t,c)
+#define _TRACE_ARGPTR(thp)         ((thp)->reg.gpr)
+#define _TRACE_CLOCK_SWAP          (0)
+#define _TRACE_SAVE_REGS(t,c)
 #elif defined(__SH__)
- #define _TRACE_ARGPTR(thp)         (&(thp)->reg.gr[4])
- #define _TRACE_CLOCK_SWAP          (1)
- #define _TRACE_SAVE_REGS(t,c)
+#define _TRACE_ARGPTR(thp)         (&(thp)->reg.gr[4])
+#define _TRACE_CLOCK_SWAP          (1)
+#define _TRACE_SAVE_REGS(t,c)
 #elif defined(__RISCV__)
- #define _TRACE_ARGPTR(thp)         ((thp)->reg.gpr)
- #define _TRACE_CLOCK_SWAP          (0)
- #define _TRACE_SAVE_REGS(t,c)
+#define _TRACE_ARGPTR(thp)         ((thp)->reg.gpr)
+#define _TRACE_CLOCK_SWAP          (0)
+#define _TRACE_SAVE_REGS(t,c)
 #else
- #error instrumentation not supported
+#error instrumentation not supported
 #endif
 
 #define _TRACEDATANUM               (2)

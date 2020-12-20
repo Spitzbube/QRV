@@ -8,10 +8,24 @@ CFLAGS += -nostdinc -I../../../include -I../include
 LDFLAGS = -z max-page-size=4096
 
 OBJECTS = entry.o \
+          vectors.o \
           trampoline.o \
+          trap.o \
           start.o \
-          dbg_uart.o \
+          common_options.o \
+          _main.o \
           main.o
+
+# Library
+OBJECTS += lib/mem.o \
+           lib/strtoul.o \
+           lib/getopt.o \
+           lib/kprintf.o \
+           lib/typed_strings.o \
+           lib/util.o
+
+# Platform-dependent
+OBJECTS += ../platform/qemu_virt/dbg_uart.o
 
 kernel: $(OBJECTS) kernel.ld
 	$(LD) $(LDFLAGS) -T kernel.ld -o kernel $(OBJECTS)

@@ -46,11 +46,11 @@
 #define CPU_FAULT_ON_WRITE_WORKS	(__cpu_flags & X86_CPU_WP)
 
 struct cpu_mm_aspace {
-	struct cpu_mm_aspace	*next;
-	struct cpu_mm_aspace	**prev;
-	union pxe				*pgdir;
-	struct pa_quantum		*l2_list;
-	paddr32_t				ptroot_paddr;
+    struct cpu_mm_aspace *next;
+    struct cpu_mm_aspace **prev;
+    union pxe *pgdir;
+    struct pa_quantum *l2_list;
+    paddr32_t ptroot_paddr;
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -64,55 +64,55 @@ struct cpu_mm_aspace {
 extern void pgtbl_init(void);
 
 typedef union pxe {
-	uint32_t		pxe32;
-	uint64_t		pxe64;
-} pxe_t; // used for both page directory entries and page table entries.
+    uint32_t pxe32;
+    uint64_t pxe64;
+} pxe_t;                        // used for both page directory entries and page table entries.
 
 struct xfer_slots {
-	uintptr_t						addr;	// Address of last slot used
-	uintptr_t						first;	// First slot available to cpu
-	uintptr_t						last;	// Last slot plus size for cpu
-	uintptr_t						spare;
-	ptrdiff_t						diff;	// diff from mapping to real vaddr
-	volatile PROCESS				*prp;
-	uintptr_t						base0;	// Address of second to last slot used
-	ptrdiff_t						diff0;	// diff from mapping to real vaddr
+    uintptr_t addr;             // Address of last slot used
+    uintptr_t first;            // First slot available to cpu
+    uintptr_t last;             // Last slot plus size for cpu
+    uintptr_t spare;
+    ptrdiff_t diff;             // diff from mapping to real vaddr
+    volatile PROCESS *prp;
+    uintptr_t base0;            // Address of second to last slot used
+    ptrdiff_t diff0;            // diff from mapping to real vaddr
 };
 
-extern int						pae_enabled;
-extern unsigned					pd_bits;
-extern unsigned					pxe_bits;
-extern uintptr_t				pde_map;
-extern struct xfer_slots		*xfer_slot;
+extern int pae_enabled;
+extern unsigned pd_bits;
+extern unsigned pxe_bits;
+extern uintptr_t pde_map;
+extern struct xfer_slots *xfer_slot;
 
 
 /* This is used when PAE is disabled */
 /* To make these work the last entry of the page directory points to itself */
 
-#define PXE1_BITS		 2				// 2 bits of addr for each tbl entry
-#define PD1_BITS		22				// 22 bits in page directory
+#define PXE1_BITS		 2      // 2 bits of addr for each tbl entry
+#define PD1_BITS		22      // 22 bits in page directory
 
 #define PG1_REMAP       1023
-#define PG1_PDIRADDR    (PG1_REMAP << PD1_BITS | PG1_REMAP << 12)							// Pointer to start of page directory
-#define PG1_PTEADDR 	(PG1_REMAP << PD1_BITS)											// Pointer to first page table
+#define PG1_PDIRADDR    (PG1_REMAP << PD1_BITS | PG1_REMAP << 12)   // Pointer to start of page directory
+#define PG1_PTEADDR 	(PG1_REMAP << PD1_BITS) // Pointer to first page table
 
-#define V1TOPDIRP(v)    ((uint32_t *)(PG1_PDIRADDR | (((uint32_t)(v))>>20&~3)))		// Pointer to page directory entry
-#define V1TOPTEP(v)     ((uint32_t *)(PG1_PTEADDR  | (((uint32_t)(v))>>10&~3)))		// Pointer to page table entry
-#define V1TOPTP(v)      ((uint32_t *)(PG1_PTEADDR  | (((uint32_t)(v))>>10&0x3ff000))) // Pointer to start of page table
+#define V1TOPDIRP(v)    ((uint32_t *)(PG1_PDIRADDR | (((uint32_t)(v))>>20&~3))) // Pointer to page directory entry
+#define V1TOPTEP(v)     ((uint32_t *)(PG1_PTEADDR  | (((uint32_t)(v))>>10&~3))) // Pointer to page table entry
+#define V1TOPTP(v)      ((uint32_t *)(PG1_PTEADDR  | (((uint32_t)(v))>>10&0x3ff000)))   // Pointer to start of page table
 
 
 /* This is used when PAE is enabled */
 /* To make these work the last 4 entries of the PDPT point to 4 pages within a 16k page directory */
 
-#define PXE2_BITS		 3				// 3 bits of addr for each tbl entry
-#define PD2_BITS		21				// 21 bits in page directory
+#define PXE2_BITS		 3      // 3 bits of addr for each tbl entry
+#define PD2_BITS		21      // 21 bits in page directory
 
-#define PG2_PDIRADDR    0xffffc000		// Pointer to start of page directory
-#define PG2_PTEADDR     0xff800000		// Pointer to first page table
+#define PG2_PDIRADDR    0xffffc000  // Pointer to start of page directory
+#define PG2_PTEADDR     0xff800000  // Pointer to first page table
 
-#define V2TOPDIRP(v)    ((uint64_t *)(PG2_PDIRADDR | (((uint32_t)(v))>>18&~7)))		// Pointer to page directory entry
-#define V2TOPTEP(v)     ((uint64_t *)(PG2_PTEADDR  | (((uint32_t)(v))>>9&~7)))		// Pointer to page table entry
-#define V2TOPTP(v)      ((uint64_t *)(PG2_PTEADDR  | (((uint32_t)(v))>>9&0x7ff000)))	// Pointer to start of page table
+#define V2TOPDIRP(v)    ((uint64_t *)(PG2_PDIRADDR | (((uint32_t)(v))>>18&~7))) // Pointer to page directory entry
+#define V2TOPTEP(v)     ((uint64_t *)(PG2_PTEADDR  | (((uint32_t)(v))>>9&~7)))  // Pointer to page table entry
+#define V2TOPTP(v)      ((uint64_t *)(PG2_PTEADDR  | (((uint32_t)(v))>>9&0x7ff000)))    // Pointer to start of page table
 
 
 /* Combo macros that do the right thing whether PAE is enabled or not */
@@ -121,12 +121,12 @@ extern struct xfer_slots		*xfer_slot;
 #define	PXE_GET(p)			(pae_enabled ? (p)->pxe64 : (p)->pxe32)
 #define PXE_SET(p,v)		(pae_enabled ? ((p)->pxe64 = (v)) : ((p)->pxe32 = (v)))
 #if defined(__LITTLEENDIAN__)
-	#define PXE_GET_FLAGS(p)	((p)->pxe32)
-	#define PXE_SET_FLAGS(p,m,s) ((p)->pxe32 = ((p)->pxe32 & (m)) | (s))
+#define PXE_GET_FLAGS(p)	((p)->pxe32)
+#define PXE_SET_FLAGS(p,m,s) ((p)->pxe32 = ((p)->pxe32 & (m)) | (s))
 #elif defined(__BIGENDIAN__)
-	#error not supported
+#error not supported
 #else
-	#error Endianness not set
+#error Endianness not set
 #endif
 
 #define GENERIC_VTOPDIRP(r,v) PXE_ADD(r,((v) >> pd_bits) << pxe_bits)
@@ -144,8 +144,8 @@ extern struct xfer_slots		*xfer_slot;
 #define L2MAP_BASE			(MAP_BASE+MAP_SIZE)
 #define PROCMEM_BASE		(L2MAP_BASE+(4*1024*1024))
 
-void			x86_init_mtrr(void);
-int				x86_set_mtrr(paddr_t start, unsigned size, unsigned flags, unsigned op);
+void x86_init_mtrr(void);
+int x86_set_mtrr(paddr_t start, unsigned size, unsigned flags, unsigned op);
 
 #if defined(__WATCOMC__)
 
@@ -173,7 +173,7 @@ int _zero_dwords(void *ptr, int num);
 			})
 #else
 
-	#error Compiler not supported
+#error Compiler not supported
 
 #endif
 

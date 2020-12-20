@@ -3,8 +3,7 @@
  *
  * \brief Definitions for GCC compiler, LP64 model.
  *
- * The only symbols made visible by this header are
- * OS/compiler reserved symbols.
+ * The only symbols made visible by this header are OS/compiler reserved symbols.
  *
  * \license
  * Copyright 2007, 2008, QNX Software Systems. All Rights Reserved.
@@ -21,12 +20,17 @@
  * for other information.
  */
 
-
 #ifndef __GCC_LP64_H_INCLUDED
 #define __GCC_LP64_H_INCLUDED
 
 #if (__GNUC__ < 8)
 #error GNU C compiler is too old (must be at least 8.x)
+#endif
+
+#if __has_attribute(__fallthrough__)
+# define fallthrough    __attribute__((__fallthrough__))
+#else
+# define fallthrough    do {} while (0) /* fallthrough */
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED

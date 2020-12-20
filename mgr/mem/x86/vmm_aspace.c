@@ -17,18 +17,18 @@
 
 #include "vmm.h"
 
-void
-vmm_aspace(PROCESS *actprp, PROCESS **pactprp) {
-	ADDRESS					*adp;
+void vmm_aspace(PROCESS * actprp, PROCESS ** pactprp)
+{
+    ADDRESS *adp;
 
-	CRASHCHECK(actprp == 0);
+    CRASHCHECK(actprp == 0);
 
-	if((adp = actprp->memory)) {
-		InterruptDisable();
-		ldpgdir(adp->cpu.ptroot_paddr);
-		*pactprp = actprp;
-		InterruptEnable();
-	}
+    if ((adp = actprp->memory)) {
+        InterruptDisable();
+        ldpgdir(adp->cpu.ptroot_paddr);
+        *pactprp = actprp;
+        InterruptEnable();
+    }
 }
 
 __SRCVERSION("vmm_aspace.c $Rev: 153052 $");

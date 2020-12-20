@@ -1,0 +1,60 @@
+#
+# The build file.
+#
+[virtual=riscv] boot = {
+    startup-qemu-virt
+    [+keeplinked]
+    PATH=/proc/boot:/bin:/usr/bin LD_LIBRARY_PATH=/proc/boot:/lib:/usr/lib:/lib/dll procnto
+}
+
+[+script] startup-script = {
+    display_msg "  "
+    display_msg "Welcome to QRV"
+    display_msg "  "
+    procmgr_symlink ../../proc/boot/libc.so.3 /usr/lib/ldqnx.so.2
+
+    display_msg "Starting virtio disk driver..."
+    devb-virtio-minimal
+    waitfor /dev/hd0
+
+    display_msg "Mounting filesystems..."
+    mount /dev/hd0 /
+
+    # Some common servers
+    display_msg "Starting common servers..."
+    pipe &
+    #mqueue &
+    #devc-pty &
+
+    # Chose either console or serial port (or both using [+session])
+
+    display_msg "Starting console manager..."
+    devc-con &
+    reopen /dev/con1
+
+    #display_msg "Starting serial port manager..."
+    #devc-ser8250 -e -b115200 &
+    #reopen /dev/ser1
+
+    display_msg "Starting esh..."
+    esh
+}
+
+# Libraries
+libc.so
+
+# From this point, copy the data
+[data=c]
+pipe
+mqueue
+devb-virtio-minimal
+esh
+devc-con
+devc-ser8250
+ls
+cat
+mkdir
+mount
+ping
+slay
+pidin

@@ -31,77 +31,83 @@
  */
 #undef NDEBUG
 
-extern struct cpu_mm_aspace	*pgtbl_list;
+extern struct cpu_mm_aspace *pgtbl_list;
 
-OBJECT *
-vmm_vaddr_to_memobj(PROCESS *prp, void *addr, unsigned *offset, int mark_page) {
-	pxe_t			*pgdir;
-	pxe_t			*ptep;
-	uint64_t		pde;
-	uint64_t		pte;
-	unsigned		pg_offset;
-	unsigned		pde_mask = (1 << pd_bits) - 1;
-	paddr_t			paddr;
-	uintptr_t		vaddr = (uintptr_t)addr;
+OBJECT *vmm_vaddr_to_memobj(PROCESS * prp, void *addr, unsigned *offset, int mark_page)
+{
+    pxe_t *pgdir;
+    pxe_t *ptep;
+    uint64_t pde;
+    uint64_t pte;
+    unsigned pg_offset;
+    unsigned pde_mask = (1 << pd_bits) - 1;
+    paddr_t paddr;
+    uintptr_t vaddr = (uintptr_t) addr;
 
 
 #ifndef NDEBUG
-	if(prp == NULL) crash();
+    if (prp == NULL)
+        crash();
 #endif
-	if(prp->memory == NULL)  {
-		pgdir = pgtbl_list->pgdir;
-	} else {
-		pgdir = prp->memory->cpu.pgdir;
+    if (prp->memory == NULL) {
+        pgdir = pgtbl_list->pgdir;
+    } else {
+        pgdir = prp->memory->cpu.pgdir;
 #ifndef NDEBUG
-		if(prp->memory->cpu.ptroot_paddr != rdpgdir() && (vaddr < CPU_USER_VADDR_END)) crash();
+        if (prp->memory->cpu.ptroot_paddr != rdpgdir() && (vaddr < CPU_USER_VADDR_END))
+            crash();
 #endif
-	}
+    }
 
-	pde = PXE_GET(GENERIC_VTOPDIRP(pgdir, vaddr));
+    pde = PXE_GET(GENERIC_VTOPDIRP(pgdir, vaddr));
 
-	if(!(pde & X86_PTE_PRESENT)) goto fail;
+    if (!(pde & X86_PTE_PRESENT))
+        goto fail;
 
-	if(pde & X86_PDE_PS) {
-		pg_offset = vaddr & pde_mask;
-		if(!(pde & (X86_PDE_USER1|X86_PDE_PRESENT))) goto fail;
-		paddr = (pde & ~(X86_PTE_NX | pde_mask)) + pg_offset;
+    if (pde & X86_PDE_PS) {
+        pg_offset = vaddr & pde_mask;
+        if (!(pde & (X86_PDE_USER1 | X86_PDE_PRESENT)))
+            goto fail;
+        paddr = (pde & ~(X86_PTE_NX | pde_mask)) + pg_offset;
 
-		*offset = PADDR_TO_SYNC_OFF(paddr);
-		return PADDR_TO_SYNC_OBJ(paddr);
-	}
+        *offset = PADDR_TO_SYNC_OFF(paddr);
+        return PADDR_TO_SYNC_OBJ(paddr);
+    }
 
-	pg_offset = ADDR_OFFSET(vaddr);
+    pg_offset = ADDR_OFFSET(vaddr);
 
-	// We can use the currently active page table
-	// to check the PTE - much faster
-	ptep = VTOPTEP(vaddr);
-	pte = PXE_GET(ptep);
-	pte = PXE_GET(ptep);
-	if(!(pte & (X86_PTE_USER1|X86_PTE_PRESENT))) goto fail;
-	paddr = (pte & PTE_PADDR_BITS) | pg_offset;
+    // We can use the currently active page table
+    // to check the PTE - much faster
+    ptep = VTOPTEP(vaddr);
+    pte = PXE_GET(ptep);
+    pte = PXE_GET(ptep);
+    if (!(pte & (X86_PTE_USER1 | X86_PTE_PRESENT)))
+        goto fail;
+    paddr = (pte & PTE_PADDR_BITS) | pg_offset;
 
-	if(mark_page) {
-		struct pa_quantum	*pq;
+    if (mark_page) {
+        struct pa_quantum *pq;
 
-		// This line is for the 386, which doesn't produce write faults
-		// when we want it to.
-		if(!(pte & X86_PTE_WRITE)) return (OBJECT *)-1;
+        // This line is for the 386, which doesn't produce write faults
+        // when we want it to.
+        if (!(pte & X86_PTE_WRITE))
+            return (OBJECT *) - 1;
 
-		pq = pa_paddr_to_quantum(paddr);
-		if(pq != NULL) {
-			pq->flags |= PAQ_FLAG_HAS_SYNC;
-		}
-	}
+        pq = pa_paddr_to_quantum(paddr);
+        if (pq != NULL) {
+            pq->flags |= PAQ_FLAG_HAS_SYNC;
+        }
+    }
 
-	*offset = PADDR_TO_SYNC_OFF(paddr);
-	return PADDR_TO_SYNC_OBJ(paddr);
+    *offset = PADDR_TO_SYNC_OFF(paddr);
+    return PADDR_TO_SYNC_OBJ(paddr);
 
-fail:
+  fail:
 #ifndef NDEBUG
-	crash();
-	/* NOTREACHED */
+    crash();
+    /* NOTREACHED */
 #endif
-	return (OBJECT *)-1;
+    return (OBJECT *) - 1;
 }
 
 __SRCVERSION("vmm_vaddr_to_memobj.c $Rev: 199396 $");

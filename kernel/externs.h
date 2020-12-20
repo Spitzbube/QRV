@@ -168,7 +168,7 @@ EXT int (rdecl * debug_process_exit) (PROCESS * prp, int priority);
 EXT void (rdecl * debug_attach_brkpts) (DEBUG * dep);
 EXT void (rdecl * debug_detach_brkpts) (DEBUG * dep);
 EXT void (rdecl * debug_moduleinfo) (PROCESS * prp, THREAD * thp, void *dbg);
-EXT void (*sched_trace_initial_parms) ();
+EXT void (*sched_trace_initial_parms)();
 EXT DISPATCH *(*init_scheduler)(void) INIT1(init_scheduler_default);
 
 EXT uint64_t startup_stack[STARTUP_STACK_NBYTES / sizeof(uint64_t)] INIT1(__STACK_SIG);

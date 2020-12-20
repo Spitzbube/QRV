@@ -23,9 +23,8 @@
  */
 
 #include <kernel/startup.h>
-
-#include "memlayout.h"
-#include "riscv.h"
+#include <platform/qemu_virt.h>
+#include <riscv.h>
 
 void main();
 void timerinit();

@@ -39,5 +39,3 @@ int sysmgr_cmd(resmgr_context_t *ctp, sys_cmd_t *msg) {
 	}
 	return ENOSYS;
 }
-
-__SRCVERSION("sysmgr_cmd.c $Rev: 153052 $");

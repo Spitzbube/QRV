@@ -45,7 +45,7 @@
 
 #include <externs.h>
 #include <process.h>
-#include <stdint.h>	/* for types like uint32_t */
+#include <stdint.h>             /* for types like uint32_t */
 #include <sys/types.h>
 #include <sys/mt_trace.h>
 
@@ -66,66 +66,64 @@
  * Tracesets are in the same order as their corresponding data control structures.
  */
 
-#define _MT_ALIGNMENT 		0 /* static value for alignment in traces (all of them) */
+#define _MT_ALIGNMENT 		0   /* static value for alignment in traces (all of them) */
 
-typedef struct mt_ker_info
-{
-	mt_data_ctrl_t *in_use;
-	//mt_data_ctrl_t *next;
-	mt_data_ctrl_t *first;
-	mt_data_ctrl_t *last;
+typedef struct mt_ker_info {
+    mt_data_ctrl_t *in_use;
+    //mt_data_ctrl_t *next;
+    mt_data_ctrl_t *first;
+    mt_data_ctrl_t *last;
 } mt_ker_info_t;
 
-typedef struct mt_trace_filters
-{
-	char	task;
-	char	sem;
-	char	irq;
-	char	debug;
+typedef struct mt_trace_filters {
+    char task;
+    char sem;
+    char irq;
+    char debug;
 } mt_trace_filters_t;
 
 /*	function prototypes	*/
 /* init and format functions */
-int mt_buffer_init		(mt_data_ctrl_t *ptdc);
-int mt_new_buffer_init	(mt_data_ctrl_t *ptdc, int remaining);
-int mt_buffer_init		(mt_data_ctrl_t *ptdc);
-void * mt_write_id		(void *pt0, unsigned short id, uint64_t clk_cycles);
-void * mt_write_id29	(void *pt0, unsigned short id, unsigned size, uint64_t clk_cycles);
-void * mt_write_id31	(void *pt0, unsigned short id, uint64_t clk_cycles);
-void * mt_write_header	(void *pt0);
+int mt_buffer_init(mt_data_ctrl_t * ptdc);
+int mt_new_buffer_init(mt_data_ctrl_t * ptdc, int remaining);
+int mt_buffer_init(mt_data_ctrl_t * ptdc);
+void *mt_write_id(void *pt0, unsigned short id, uint64_t clk_cycles);
+void *mt_write_id29(void *pt0, unsigned short id, unsigned size, uint64_t clk_cycles);
+void *mt_write_id31(void *pt0, unsigned short id, uint64_t clk_cycles);
+void *mt_write_header(void *pt0);
 
 void mt_filter_tracing_debug(char val);
 void mt_list_task_info();
-void mt_send_flush_pulse		();
+void mt_send_flush_pulse();
 
 /* tracing functions */
-void mt_trace_dummy_check		();
-void mt_trace_task_create		(unsigned pid, unsigned tid, unsigned char priority);
-void mt_trace_task_suspend		(unsigned pid, unsigned tid);
-void mt_trace_task_resume		(unsigned pid, unsigned tid);
-void mt_trace_task_delete		(unsigned pid, unsigned tid, int status);
-void mt_trace_task_periodicity	(unsigned pid, unsigned tid, unsigned long long period);
-void mt_trace_task_priority		(unsigned pid, unsigned tid, unsigned char priority);
-void mt_trace_task_info			(unsigned pid, unsigned tid, unsigned char state, unsigned char priority);
-void mt_trace_task_sig_return	(unsigned pid, unsigned tid);
-void mt_trace_sem_init			(void *sem, int value, unsigned pid, unsigned tid);
-void mt_trace_sem_P				(void *sem, int value, unsigned pid, unsigned tid);
-void mt_trace_sem_V				(void *sem, int value, unsigned pid, unsigned tid);
-void mt_trace_mutex_init		(void *mutex, unsigned pid, unsigned tid);
-void mt_trace_mutex_lock		(void *mutex, unsigned pid, unsigned tid, unsigned owner);
-void mt_trace_mutex_unlock		(void *mutex, unsigned pid, unsigned tid, unsigned owner);
-void mt_trace_sync_destroy		(void *sem, int value, unsigned pid, unsigned tid);
+void mt_trace_dummy_check();
+void mt_trace_task_create(unsigned pid, unsigned tid, unsigned char priority);
+void mt_trace_task_suspend(unsigned pid, unsigned tid);
+void mt_trace_task_resume(unsigned pid, unsigned tid);
+void mt_trace_task_delete(unsigned pid, unsigned tid, int status);
+void mt_trace_task_periodicity(unsigned pid, unsigned tid, unsigned long long period);
+void mt_trace_task_priority(unsigned pid, unsigned tid, unsigned char priority);
+void mt_trace_task_info(unsigned pid, unsigned tid, unsigned char state, unsigned char priority);
+void mt_trace_task_sig_return(unsigned pid, unsigned tid);
+void mt_trace_sem_init(void *sem, int value, unsigned pid, unsigned tid);
+void mt_trace_sem_P(void *sem, int value, unsigned pid, unsigned tid);
+void mt_trace_sem_V(void *sem, int value, unsigned pid, unsigned tid);
+void mt_trace_mutex_init(void *mutex, unsigned pid, unsigned tid);
+void mt_trace_mutex_lock(void *mutex, unsigned pid, unsigned tid, unsigned owner);
+void mt_trace_mutex_unlock(void *mutex, unsigned pid, unsigned tid, unsigned owner);
+void mt_trace_sync_destroy(void *sem, int value, unsigned pid, unsigned tid);
 
-void rdecl mt_trace_irq_entry			(unsigned irq);
-void rdecl mt_trace_irq_exit			(unsigned irq);
-void rdecl mt_trace_irq_handler_entry	(unsigned irq);
-void rdecl mt_trace_irq_handler_exit	(unsigned irq);
-void rdecl mt_trace_irq_timer_entry	();
-void rdecl mt_trace_irq_timer_exit	();
+void rdecl mt_trace_irq_entry(unsigned irq);
+void rdecl mt_trace_irq_exit(unsigned irq);
+void rdecl mt_trace_irq_handler_entry(unsigned irq);
+void rdecl mt_trace_irq_handler_exit(unsigned irq);
+void rdecl mt_trace_irq_timer_entry();
+void rdecl mt_trace_irq_timer_exit();
 #if 1
-void mt_trace_var_debug			(unsigned v1, unsigned v2, unsigned *p);
+void mt_trace_var_debug(unsigned v1, unsigned v2, unsigned *p);
 #endif
-void mt_trace_debug				(const char *func, unsigned line, const char *txt);
+void mt_trace_debug(const char *func, unsigned line, const char *txt);
 
 
 /* this is the new 2-buffers version
@@ -191,15 +189,15 @@ void mt_trace_debug				(const char *func, unsigned line, const char *txt);
 
 
 struct mt_event_header {
-	unsigned 	id			: 5;
-	unsigned 	timestamp	: 27;
+    unsigned id:5;
+    unsigned timestamp:27;
 };
 
 struct mt_event_id29 {
-	uint16_t	id;
-	uint16_t	smallsize;
-	uint32_t	fullsize;
-	uint64_t	timestamp;
+    uint16_t id;
+    uint16_t smallsize;
+    uint32_t fullsize;
+    uint64_t timestamp;
 };
 
-#endif /* __mt_kertrace_h__ */
+#endif                          /* __mt_kertrace_h__ */

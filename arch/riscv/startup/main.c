@@ -30,8 +30,27 @@ extern void display_clocks(char *);
 /* ~2 cycles per loop at 720MHz, x in 1/720us units (720MHz clock) */
 #define delay_cy(x) {unsigned _delay = ((x+1)>>1); while (_delay--) asm volatile (""); }
 
-void init_riscv_ser(unsigned, const char *, const char *);
-void put_riscv_ser(int);
+// TODO: empty for now
+void init_riscv_ser(unsigned channel, const char *init, const char *defaults)
+{
+}
+void board_init(void)
+{
+}
+int cpu_handle_common_option(int opt)
+{
+    return 0;
+}
+void tweak_cmdline(struct bootargs_entry *bap, const char *name)
+{
+}
+void cpu_startup(void)
+{
+    crash("Not yet.\n");
+}
+
+
+extern void rvq_putc_ser_dbg(int c);
 
 const struct debug_device debug_devices[] = {
     { "8250",
@@ -39,7 +58,7 @@ const struct debug_device debug_devices[] = {
 	    "0x44E09000^2.0.48000000.16",    // UART0, use the baud rate set by boot loader
         },
         init_riscv_ser,
-        put_riscv_ser,
+        rvq_putc_ser_dbg,
 	{
 	    &display_char_8250,
 	    &poll_key_8250,
@@ -110,7 +129,7 @@ int main(int argc, char **argv, char **envv)
 
     init_qtime();
 
-    init_cacheattr();
+    //init_cacheattr();
 
     init_cpuinfo();
 

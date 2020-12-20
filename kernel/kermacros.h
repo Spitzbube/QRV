@@ -26,9 +26,9 @@
 #define MCINDEX(mid)	((mid) & 0xffff)
 
 #if defined(WANT_SMP_MACROS) || defined(VARIANT_smp)
-	#define KERNCPU					((unsigned)cpunum)
+#define KERNCPU					((unsigned)cpunum)
 #else
-	#define	KERNCPU					0
+#define	KERNCPU					0
 #endif
 
 /*
@@ -131,29 +131,29 @@
 
 /* FPU save areas; low order bits of fpudata is overloaded in SMP case. */
 #if PROCESSORS_MAX > 8
-	#define FPUDATA_CPUMAX	PROCESSORS_MAX
+#define FPUDATA_CPUMAX	PROCESSORS_MAX
 #else
-	#define FPUDATA_CPUMAX	8
+#define FPUDATA_CPUMAX	8
 #endif
 #define FPUDATA_ALIGN		(FPUDATA_CPUMAX<<1)
 #define FPUDATA_MASK		(~(FPUDATA_ALIGN-1))
 #define FPUDATA_INUSE(ptr)	((uintptr_t)ptr & FPUDATA_BUSY)
 #define FPUDATA_CPU(ptr)	((uintptr_t)ptr & FPUDATA_CPUMASK)
 #if defined(WANT_SMP_MACROS) || defined(VARIANT_smp)
-	#define FPUDATA_BUSY		(FPUDATA_ALIGN>>1)
-	#define FPUDATA_CPUMASK		((FPUDATA_ALIGN>>1)-1)
-	#define FPUDATA_PTR(ptr)	((void *)((uintptr_t)ptr & FPUDATA_MASK))
+#define FPUDATA_BUSY		(FPUDATA_ALIGN>>1)
+#define FPUDATA_CPUMASK		((FPUDATA_ALIGN>>1)-1)
+#define FPUDATA_PTR(ptr)	((void *)((uintptr_t)ptr & FPUDATA_MASK))
 #else
-	#define FPUDATA_BUSY		0
-	#define FPUDATA_CPUMASK		0
-	#define FPUDATA_PTR(ptr)	(ptr)
+#define FPUDATA_BUSY		0
+#define FPUDATA_CPUMASK		0
+#define FPUDATA_PTR(ptr)	(ptr)
 #endif
 
 #define KERCALL_RESTART(act)	{	lock_kernel(); \
 									CRASHCHECK(TYPE_MASK(act->type) != TYPE_THREAD); \
 									SETKTYPE((act), _TRACE_GETSYSCALL((act)->syscall)); \
 									SETKIP(act, KIP(act) - KER_ENTRY_SIZE); }
-							
+
 
 #if !defined(__PPC__) && (defined(WANT_SMP_MACROS) || defined(VARIANT_smp))
 //NYI: Kludge - PPC code should be updated to handle need_to_run
@@ -210,18 +210,18 @@
 #define SETKSP(thp,v)		SETREGSP(&(thp)->reg, v)
 #define SETKIP(thp,v)		SETREGIP(&(thp)->reg, v)
 #ifndef SETKIP_FUNC
-    #define SETKIP_FUNC(thp,v)		SETKIP(thp, v)
+#define SETKIP_FUNC(thp,v)		SETKIP(thp, v)
 #endif
 
 /* Manipulate the thread's stack */
 #ifdef STACK_GROWS_UP
-	#define STACK_INIT(bottom, size)	(bottom)
-	#define STACK_ALLOC(res, new_sp, curr_sp, size)	\
+#define STACK_INIT(bottom, size)	(bottom)
+#define STACK_ALLOC(res, new_sp, curr_sp, size)	\
 				(res) = (void *)(curr_sp)),	\
 				((new_sp) = ((curr_sp) + (size) + (STACK_ALIGNMENT-1)) & ~(STACK_ALIGNMENT-1)
 #else
-	#define STACK_INIT(bottom, size)	((bottom) + (size))
-	#define STACK_ALLOC(res, new_sp, curr_sp, size)	\
+#define STACK_INIT(bottom, size)	((bottom) + (size))
+#define STACK_ALLOC(res, new_sp, curr_sp, size)	\
 				((new_sp) = ((curr_sp) - (size)) & ~(STACK_ALIGNMENT-1),	\
 				(res) = (void *)(new_sp))
 #endif
@@ -236,7 +236,7 @@
  * Manipulate inkernel state
  */
 #ifndef INKERNEL_BITS_SHIFT
-    #define INKERNEL_BITS_SHIFT	4
+#define INKERNEL_BITS_SHIFT	4
 #endif
 #define INKERNEL_INTRMASK	((1 << INKERNEL_BITS_SHIFT) - 1)
 #define INKERNEL_EXIT		(0x0001 << INKERNEL_BITS_SHIFT)
@@ -245,55 +245,59 @@
 #define INKERNEL_NOW		(0x0008 << INKERNEL_BITS_SHIFT)
 
 #if defined(COMPILING_MODULE)
-	// We can't use the following macros when compiling a module - have
-	// to invoke the appropriate functions that live in the kernel proper
-	// to get the correct versions for the variant that we're running
-	// on. Define the macros such that people will get an error message
-	// if they try to use them.
-	#undef am_inkernel
-	#undef bitset_inkernel
-	#undef bitclr_inkernel
-	#define am_inkernel() use_KerextAmInKernel_when_in_a_module
-	#define bitset_inkernel() use_KerextLock_when_in_a_module
-	#define bitclr_inkernel() use_KerextUnlock_when_in_a_module
-#endif	
+    // We can't use the following macros when compiling a module - have
+    // to invoke the appropriate functions that live in the kernel proper
+    // to get the correct versions for the variant that we're running
+    // on. Define the macros such that people will get an error message
+    // if they try to use them.
+#undef am_inkernel
+#undef bitset_inkernel
+#undef bitclr_inkernel
+#define am_inkernel() use_KerextAmInKernel_when_in_a_module
+#define bitset_inkernel() use_KerextLock_when_in_a_module
+#define bitclr_inkernel() use_KerextUnlock_when_in_a_module
+#endif
 
 #if defined(VARIANT_smp) && !(defined(am_inkernel) && defined(bitset_inkernel) && defined(bitclr_inkernel))
-	#error am_inkernel(), bitset_inkernel(), bitclr_inkernel()
-	#error need overrides when building SMP system
+#error am_inkernel(), bitset_inkernel(), bitclr_inkernel()
+#error need overrides when building SMP system
 #endif
 #ifdef get_inkernel
-	#define HAVE_INKERNEL_STORAGE 1
+#define HAVE_INKERNEL_STORAGE 1
 #else
-	#define get_inkernel()		inkernel
-	#define set_inkernel(val)	(inkernel=(val))
+#define get_inkernel()		inkernel
+#define set_inkernel(val)	(inkernel=(val))
 #endif
 #ifndef am_inkernel
-	#define am_inkernel()		(get_inkernel() != 0)
+#define am_inkernel()		(get_inkernel() != 0)
 #endif
 #define ASM_VOLATILIZER	asm volatile ("":::"memory")
 #ifndef ASM_VOLATILIZER
 #define ASM_VOLATILIZER
 #endif
 #ifndef bitset_inkernel
-	#define bitset_inkernel(bits)	(set_inkernel(get_inkernel() | (bits)))
+#define bitset_inkernel(bits)	(set_inkernel(get_inkernel() | (bits)))
 #endif
 #ifndef bitclr_inkernel
-	#define bitclr_inkernel(bits)	(set_inkernel(get_inkernel() & ~(bits)))
+#define bitclr_inkernel(bits)	(set_inkernel(get_inkernel() & ~(bits)))
 #endif
 
 #ifndef atomic_order
-	// atomic_order() makes sure that the compiler doesn't re-order things
-	// across the given statement. Otherwise we might end up modifying kernel 
-	// state before we've actually locked the kernel.
-	#if (defined(__GNUC__) || defined(__ICC))
-		static __inline__ void __attribute__((__unused__)) atomic_boundry() { asm volatile( "" ::: "memory"); }
-		#define atomic_order(s)	(atomic_boundry(), (s), atomic_boundry()) 
-	#elif defined(__WATCOMC__)
-		#define atomic_order(s)	(s)
-	#else
-		#error atomic_order not defined for compiler
-	#endif
+    // atomic_order() makes sure that the compiler doesn't re-order things
+    // across the given statement. Otherwise we might end up modifying kernel 
+    // state before we've actually locked the kernel.
+#if (defined(__GNUC__) || defined(__ICC))
+static __inline__ void __attribute__((__unused__)) atomic_boundry()
+{
+    asm volatile ("":::"memory");
+}
+
+#define atomic_order(s)	(atomic_boundry(), (s), atomic_boundry())
+#elif defined(__WATCOMC__)
+#define atomic_order(s)	(s)
+#else
+#error atomic_order not defined for compiler
+#endif
 #endif
 #define lock_kernel()			(atomic_order(bitset_inkernel(INKERNEL_LOCK)))
 #define unlock_kernel()			atomic_order(bitclr_inkernel(INKERNEL_LOCK))
@@ -301,17 +305,17 @@
 #define unspecret_kernel()		(atomic_order(bitclr_inkernel(INKERNEL_SPECRET)),inspecret=0)
 
 #ifndef CONDITION_CYCLES
-	#define CONDITION_CYCLES(c)	((unsigned long)c)
+#define CONDITION_CYCLES(c)	((unsigned long)c)
 #endif
 
 
 /* Check passed in pointers to make sure that they're an OK address */
 
 #ifdef CPU_RD_SYSADDR_OK
-	#define RD_VERIFY_PTR(thp, p, size)	if(!WITHIN_BOUNDRY((uintptr_t)(p),(uintptr_t)(p)+(size),(thp)->process->boundry_addr) && !CPU_RD_SYSADDR_OK((thp), (p), (size))) return EFAULT;
-#else		
-	#define RD_VERIFY_PTR(thp, p, size)	if(!WITHIN_BOUNDRY((uintptr_t)(p),(uintptr_t)(p)+(size),(thp)->process->boundry_addr)) return EFAULT;
-#endif		
+#define RD_VERIFY_PTR(thp, p, size)	if(!WITHIN_BOUNDRY((uintptr_t)(p),(uintptr_t)(p)+(size),(thp)->process->boundry_addr) && !CPU_RD_SYSADDR_OK((thp), (p), (size))) return EFAULT;
+#else
+#define RD_VERIFY_PTR(thp, p, size)	if(!WITHIN_BOUNDRY((uintptr_t)(p),(uintptr_t)(p)+(size),(thp)->process->boundry_addr)) return EFAULT;
+#endif
 #define WR_VERIFY_PTR(thp, p, size)	if(!WITHIN_BOUNDRY((uintptr_t)(p),(uintptr_t)(p)+(size),(thp)->process->boundry_addr)) return EFAULT;
 #define WR_PROBE_PTR(thp, p, size)	(((uintptr_t)(p) + (size) >= (uintptr_t)(p)) && WITHIN_BOUNDRY((uintptr_t)(p),(uintptr_t)(p)+(size),(thp)->process->boundry_addr))
 
@@ -329,21 +333,21 @@
 #define _FORCE_NO_UNBLOCK		(_TOPBIT>>2)
 // If another _FORCE_* flag is added, be sure to add it to the _FORCE_BITS
 // definition below and make sure that nano_sched.c is recompiled so that
-// we properly mask all these bits off before passing the errno to kererr()		
+// we properly mask all these bits off before passing the errno to kererr()     
 #define _FORCE_BITS				(_FORCE_SET_ERROR|_FORCE_KILL_SELF|_FORCE_NO_UNBLOCK)
 
 //
 // Configuration constants
 //
-#define _NTO_TICKSIZE_MIN	10000		// Smallest ticksize allowed (10 usec for now)
-#define _NTO_TICKSIZE_MAX	(INT_MAX/_NTO_RR_INTERVAL_MUL) // Largest ticksize allowed
-#define _NTO_SLOW_MHZ		40			// A machine less than this number of mhz is concidered slow
-#define _NTO_TICKSIZE_FAST	1000000		// Ticksize in ns to default to for a fast machine (less than 1ms for posix)
-#define _NTO_TICKSIZE_SLOW	10000000	// Ticksize in ns to default to for a slow machine
+#define _NTO_TICKSIZE_MIN	10000   // Smallest ticksize allowed (10 usec for now)
+#define _NTO_TICKSIZE_MAX	(INT_MAX/_NTO_RR_INTERVAL_MUL)  // Largest ticksize allowed
+#define _NTO_SLOW_MHZ		40  // A machine less than this number of mhz is concidered slow
+#define _NTO_TICKSIZE_FAST	1000000 // Ticksize in ns to default to for a fast machine (less than 1ms for posix)
+#define _NTO_TICKSIZE_SLOW	10000000    // Ticksize in ns to default to for a slow machine
 #define _NTO_RR_INTERVAL_MUL_DEFAULT 4  // Default ValueMultiplier of ticksize to round robin interval
-#define _NTO_RR_INTERVAL_MUL rr_interval_mul // Multiplier of ticksize to round robin interval
+#define _NTO_RR_INTERVAL_MUL rr_interval_mul    // Multiplier of ticksize to round robin interval
 
-#define THREAD_NAME_FIXED_SIZE	24		// Thread name pool object size, not max thread name
+#define THREAD_NAME_FIXED_SIZE	24  // Thread name pool object size, not max thread name
 
 #define VECTOR_MAX			(0xffff-1)
 
@@ -355,7 +359,7 @@
 //
 // Values used within a pulse entry
 //
-	// Maximum count for compressing pulses
+    // Maximum count for compressing pulses
 #define _PULSE_COUNT_MAX			((2U<<(sizeof(((struct pulse_entry *)0)->count)*8-1)) - 1U)
 
 //
@@ -372,27 +376,27 @@
 //
 #define _NTO_ITF_MSG_DELIVERY	0x01
 #define _NTO_ITF_MSG_FORCE_RDY	0x02
-#define _NTO_ITF_NET_UNBLOCK	0x04 /* for vthread only */
-#define _NTO_ITF_SSTEP_SUSPEND	0x08 
-#define _NTO_ITF_SPECRET_PENDING 0x10 
+#define _NTO_ITF_NET_UNBLOCK	0x04    /* for vthread only */
+#define _NTO_ITF_SSTEP_SUSPEND	0x08
+#define _NTO_ITF_SPECRET_PENDING 0x10
     /* SPECRET_PENDING: some other thread needs this thread's data for specialret().
      * It is set for a sending thread when a message or pulse is sent that causes
      * RCVINFO or SHORT_MSG to be set in the receiver's flags.  Note that it does not
      * get used when SHORT_MSG is set in a reply, as in that case the thread that is
      * receiving the reply does not depend on the thread sending the reply.
      */
-//#define unused		0x20
+//#define unused        0x20
 #define _NTO_ITF_UNBLOCK_QUEUED	0x40
 #define _NTO_ITF_RCVPULSE		0x80
 
 //
-//	These flags are set asynchronously by the kernel.
+//  These flags are set asynchronously by the kernel.
 //
 #define _NTO_ATF_TIMESLICE		0x00000001
 #define _NTO_ATF_FPUSAVE_ALLOC	0x00000002
 #define _NTO_ATF_SMP_RESCHED	0x00000004
 #define _NTO_ATF_SMP_EXCEPTION	0x00000008
-#define _NTO_ATF_WAIT_FOR_KER	0x00000010	
+#define _NTO_ATF_WAIT_FOR_KER	0x00000010
 #define _NTO_ATF_WATCHPOINT		0x00000020
 #define _NTO_ATF_REGCTX_ALLOC	0x40000000
 #define _NTO_ATF_FORCED_KERNEL	0x80000000
@@ -402,7 +406,7 @@
 //
 #if defined(SMP_MSGOPT)
 #define SET_XFER_HANDLER(handler)	xfer_handlers[KERNCPU] = handler
-#define GET_XFER_HANDLER()			(xfer_handlers[KERNCPU]) 
+#define GET_XFER_HANDLER()			(xfer_handlers[KERNCPU])
 #else
 #define SET_XFER_HANDLER(handler)	xfer_handlers[0] = handler
 #define GET_XFER_HANDLER()			(xfer_handlers[0])
@@ -435,7 +439,7 @@
 #define RR_ADD_FULLTICK(thp)	if (IS_SCHED_RR((thp))) { \
 									(thp)->schedinfo.rr_ticks = ((thp)->schedinfo.rr_ticks <= (RR_MAXTICKS-RR_FULLTICK)) \
 											? (thp)->schedinfo.rr_ticks+RR_FULLTICK : RR_MAXTICKS; }
- 
+
 #define RR_ADD_PREEMPT_TICK(thp) if (IS_SCHED_RR((thp))) { \
 									(thp)->schedinfo.rr_ticks = ((thp)->schedinfo.rr_ticks <= (RR_MAXTICKS-RR_PREEMPT_TICK)) \
 											? (thp)->schedinfo.rr_ticks+RR_PREEMPT_TICK : RR_MAXTICKS; }
@@ -459,7 +463,7 @@
  Note the time that this thread was first made read/running.  This is used for
  later scheduling the replenishment operations.  
 **/
-#define SS_MARK_ACTIVATION(thp) 	if(IS_SCHED_SS((thp))) { sched_ss_queue((thp)); } 
+#define SS_MARK_ACTIVATION(thp) 	if(IS_SCHED_SS((thp))) { sched_ss_queue((thp)); }
 
 /**
  Since the scheduler can be entered from many points, this macro allows us to do
@@ -478,19 +482,19 @@
 //For identifying which external scheduler is loaded. assign to externs.h: scheduler_type 
 #define SCHEDULER_TYPE_DEFAULT	0
 #define SCHEDULER_TYPE_APS 		1
-		
+
 
 //macros for APS scheduling
 //
 /* values for thread_entry.sched_flags */
-#define AP_SCHED_RUNNING_CRIT	0x00000001 /*is our thread critical now? */
-#define AP_SCHED_PERM_CRIT 		0x00000002 /*thread is always running critical. means AP_SCHED_RUNNING_CRIT is never cleared */
-#define AP_SCHED_BILL_AS_CRIT	0x00000004 /*not all critcal time is billed as critical. Bit on means bill to crit bugdet */ 
+#define AP_SCHED_RUNNING_CRIT	0x00000001  /*is our thread critical now? */
+#define AP_SCHED_PERM_CRIT 		0x00000002  /*thread is always running critical. means AP_SCHED_RUNNING_CRIT is never cleared */
+#define AP_SCHED_BILL_AS_CRIT	0x00000004  /*not all critcal time is billed as critical. Bit on means bill to crit bugdet */
 
 #define AP_CLEAR_CRIT(thp) (\
 	(thp)->sched_flags &= ~AP_SCHED_BILL_AS_CRIT, \
 	(thp)->sched_flags &= ((thp)->sched_flags & AP_SCHED_PERM_CRIT) ? ~0 : ~AP_SCHED_RUNNING_CRIT \
-) 
+)
 
 #define AP_INHERIT_CRIT(to_thp,from_thp) ((to_thp)->sched_flags =\
 		(~(AP_SCHED_RUNNING_CRIT|AP_SCHED_BILL_AS_CRIT)&(to_thp)->sched_flags )\
@@ -498,17 +502,17 @@
 	)\
 
 
-#define AP_MARK_THREAD_CRITICAL(thp) ((thp)->sched_flags |= AP_SCHED_RUNNING_CRIT) 	
+#define AP_MARK_THREAD_CRITICAL(thp) ((thp)->sched_flags |= AP_SCHED_RUNNING_CRIT)
 
 /* The following macro and flag is to allow intrevent_add to deterimine if it's being called from an IO interrupt.
  * (If * intrevent_add is called from IO, it will set the SIGEV_FLAG_CRITICAL bit to make the final receiving thread run
  * critical.) Use the following macro to pass the thp parameter to intrevent_add. ex:
  * intrevent_add(evp, AP_INTREVENT_FROM_IO(thp), 1); 
  */
-#define AP_INTREVENT_FROM_IO_FLAG 1 
+#define AP_INTREVENT_FROM_IO_FLAG 1
 #define AP_INTREVENT_FROM_IO(thp) ( (THREAD*)((uintptr_t)(thp) | AP_INTREVENT_FROM_IO_FLAG) )
-	
-	
+
+
 // end APS macros 
 
 
