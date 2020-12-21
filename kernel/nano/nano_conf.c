@@ -19,25 +19,26 @@
 #include <confname.h>
 #include <sys/conf.h>
 
-static int sc_nprocessors(int name) {
-	return NUM_PROCESSORS;
+static int sc_nprocessors(int name)
+{
+    return NUM_PROCESSORS;
 }
 
-const long					 kernel_conf_table[] = {
-	_CONF_VALUE_NUM|_CONF_INDIRECT |	_SC_CLK_TCK, 		(intptr_t)&clk_tck,
-	_CONF_VALUE_MIN|_CONF_INDIRECT |	_SC_OPEN_MAX, 		(intptr_t)&max_fds,
-	_CONF_VALUE_MIN | 					_SC_NGROUPS_MAX, 	NGROUPS_MAX,
-	_CONF_VALUE_NUM |					_SC_SAVED_IDS,		1,
-	_CONF_VALUE_NUM |					_SC_NZERO,			20,
-	_CONF_VALUE_NUM |					_SC_RTSIG_MAX,		(SIGRTMAX - SIGRTMIN) + 1,
-	_CONF_VALUE_MIN |					_SC_CHILD_MAX,		PID_MASK - 2,
-	_CONF_VALUE_MAX |					_SC_THREAD_STACK_MIN,	PTHREAD_STACK_MIN,
-	_CONF_VALUE_NUM |					_SC_THREAD_THREADS_MAX, VECTOR_MAX,
-	_CONF_VALUE_NUM|_CONF_FCN |			_SC_NPROCESSORS_CONF,	(intptr_t)sc_nprocessors,
-	_CONF_VALUE_NUM|_CONF_FCN |			_SC_NPROCESSORS_ONLN,	(intptr_t)sc_nprocessors,
-	_CONF_VALUE_NUM |					_SC_DELAYTIMER_MAX,	DELAYTIMER_MAX,
-	_CONF_VALUE_NUM |					_SC_AIO_PRIO_DELTA_MAX,	NUM_PRI - 1,
-	_CONF_END
+const long kernel_conf_table[] = {
+    _CONF_VALUE_NUM | _CONF_INDIRECT | _SC_CLK_TCK, (intptr_t) & clk_tck,
+    _CONF_VALUE_MIN | _CONF_INDIRECT | _SC_OPEN_MAX, (intptr_t) & max_fds,
+    _CONF_VALUE_MIN | _SC_NGROUPS_MAX, NGROUPS_MAX,
+    _CONF_VALUE_NUM | _SC_SAVED_IDS, 1,
+    _CONF_VALUE_NUM | _SC_NZERO, 20,
+    _CONF_VALUE_NUM | _SC_RTSIG_MAX, (SIGRTMAX - SIGRTMIN) + 1,
+    _CONF_VALUE_MIN | _SC_CHILD_MAX, PID_MASK - 2,
+    _CONF_VALUE_MAX | _SC_THREAD_STACK_MIN, PTHREAD_STACK_MIN,
+    _CONF_VALUE_NUM | _SC_THREAD_THREADS_MAX, VECTOR_MAX,
+    _CONF_VALUE_NUM | _CONF_FCN | _SC_NPROCESSORS_CONF, (intptr_t) sc_nprocessors,
+    _CONF_VALUE_NUM | _CONF_FCN | _SC_NPROCESSORS_ONLN, (intptr_t) sc_nprocessors,
+    _CONF_VALUE_NUM | _SC_DELAYTIMER_MAX, DELAYTIMER_MAX,
+    _CONF_VALUE_NUM | _SC_AIO_PRIO_DELTA_MAX, NUM_PRI - 1,
+    _CONF_END
 };
 
 __SRCVERSION("nano_conf.c $Rev: 153052 $");

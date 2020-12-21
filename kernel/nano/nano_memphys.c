@@ -38,13 +38,13 @@
 #define emm_memobj_phys		smm_memobj_phys
 
 MEMMGR memmgr_rte = {
- 	0,							// pagesize - filled in from startup
-	0,							// fault_pulse_code
-	0,							// size of ADDRESS
+    0,                          // pagesize - filled in from startup
+    0,                          // fault_pulse_code
+    0,                          // size of ADDRESS
 
-	#undef MMF
-	#define MMF(r, f, p, e)		MMF_DEFN(r, f, p, e)
-	MM_FUNCS(emm)
+#undef MMF
+#define MMF(r, f, p, e)		MMF_DEFN(r, f, p, e)
+    MM_FUNCS(emm)
 };
 
 __SRCVERSION("nano_memphys.c $Rev: 153052 $");

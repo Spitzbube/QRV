@@ -27,19 +27,19 @@
 #define _INTR_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __TYPES_H_INCLUDED
- #include <sys/types.h>
+#include <sys/types.h>
 #endif
 
 #ifndef _TIME_H_INCLUDED
- #include <time.h>
+#include <time.h>
 #endif
 
 #ifndef _SIGNAL_H_INCLUDED
- #include <signal.h>
+#include <signal.h>
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED
@@ -55,15 +55,13 @@ typedef int intr_t;
 #define INTR_NOT_HANDLED				2
 
 __BEGIN_DECLS
-
-extern int intr_capture(intr_t __intr, int (*intr_handler)(volatile void *__area), volatile void *__area, size_t __areasize);
+    extern int intr_capture(intr_t __intr, int (*intr_handler)(volatile void *__area),
+                            volatile void *__area, size_t __areasize);
 extern int intr_lock(intr_t __intr);
 extern int intr_release(intr_t __intr, int (*intr_handler)(volatile void *__area));
 extern int intr_timed_wait(int __flags, const struct timespec *__timeout);
 extern int intr_unlock(intr_t __intr);
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("intr.h $Rev: 153052 $"); */

@@ -22,28 +22,28 @@
  * Change the power management mode for the CPU.
  */
 
-static void
-cpumode(void *mode) {
-	int			r = ENOSYS;
-	uint64_t	tspec;
+static void cpumode(void *mode)
+{
+    int r = ENOSYS;
+    uint64_t tspec;
 
-	timer_next(&tspec);
+    timer_next(&tspec);
 
-	lock_kernel();
-	if(calloutptr->power != NULL) {
+    lock_kernel();
+    if (calloutptr->power != NULL) {
 
-		// The top bit on tells the callout that it's a power level
-		// setting, the low order bits are what level to set it to.
+        // The top bit on tells the callout that it's a power level
+        // setting, the low order bits are what level to set it to.
 
-		r = calloutptr->power(_syspage_ptr, (int)mode | 0x80000000, &tspec);
-	}
-	SETKSTATUS(actives[KERNCPU], r);
+        r = calloutptr->power(_syspage_ptr, (int) mode | 0x80000000, &tspec);
+    }
+    SETKSTATUS(actives[KERNCPU], r);
 }
 
 
-int
-SysCpumode(int mode) {
-	return __Ring0(cpumode, (void *)mode);
+int SysCpumode(int mode)
+{
+    return __Ring0(cpumode, (void *) mode);
 }
 
 __SRCVERSION("kerext_cpumode.c $Rev: 153052 $");

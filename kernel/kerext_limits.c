@@ -19,71 +19,71 @@
 
 
 struct kerargs_limits_get {
-	uid_t		uid;
-	LIMITS		*limits;
+    uid_t uid;
+    LIMITS *limits;
 };
 
-void
-kerext_limits_get(void *data) {
-	struct kerargs_limits_get *kap = data;
-	THREAD	*act = actives[KERNCPU];
-	LIMITS	*lip;
+void kerext_limits_get(void *data)
+{
+    struct kerargs_limits_get *kap = data;
+    THREAD *act = actives[KERNCPU];
+    LIMITS *lip;
 
-	if((lip = lookup_limits(kap->uid)) == NULL) {
-		kererr(act, ESRCH);
-		return;
-	}
+    if ((lip = lookup_limits(kap->uid)) == NULL) {
+        kererr(act, ESRCH);
+        return;
+    }
 
-	*kap->limits = *lip;
-	lock_kernel();
-	SETKSTATUS(act,0);
+    *kap->limits = *lip;
+    lock_kernel();
+    SETKSTATUS(act, 0);
 }
 
-int
-LimitsGet(uid_t uid, LIMITS *limits) {
-	struct kerargs_limits_get		data;
+int LimitsGet(uid_t uid, LIMITS * limits)
+{
+    struct kerargs_limits_get data;
 
-	data.uid = uid;
-	data.limits = limits;
-	return(__Ring0(kerext_limits_get, &data));
+    data.uid = uid;
+    data.limits = limits;
+    return (__Ring0(kerext_limits_get, &data));
 }
 
 
 struct kerargs_limits_set {
-	uid_t			uid;
-	unsigned		**maxes;
+    uid_t uid;
+    unsigned **maxes;
 };
 
-void
-kerext_limits_set(void *data) {
-	struct kerargs_limits_set *kap = data;
-	THREAD	*act = actives[KERNCPU];
-	LIMITS	*lip;
+void kerext_limits_set(void *data)
+{
+    struct kerargs_limits_set *kap = data;
+    THREAD *act = actives[KERNCPU];
+    LIMITS *lip;
 
-	if((lip = lookup_limits(kap->uid)) == NULL) {
-		lock_kernel();
-		if((lip = object_alloc(NULL, &limits_souls)) == NULL) {
-			kererr(act, ESRCH);
-			return;
-		}
+    if ((lip = lookup_limits(kap->uid)) == NULL) {
+        lock_kernel();
+        if ((lip = object_alloc(NULL, &limits_souls)) == NULL) {
+            kererr(act, ESRCH);
+            return;
+        }
 
-		lip->next = limits_list;
-		limits_list = lip;
-	}
+        lip->next = limits_list;
+        limits_list = lip;
+    }
 
-	memcpy(lip->max, kap->maxes, sizeof(lip->max));
+    memcpy(lip->max, kap->maxes, sizeof(lip->max));
 
-	lock_kernel();
-	SETKSTATUS(act,0);
+    lock_kernel();
+    SETKSTATUS(act, 0);
 }
 
-int
-LimitsSet(uid_t uid, unsigned **maxes) {
-	struct kerargs_limits_set		data;
+int LimitsSet(uid_t uid, unsigned **maxes)
+{
+    struct kerargs_limits_set data;
 
-	data.uid = uid;
-	data.maxes = maxes;
-	return(__Ring0(kerext_limits_set, &data));
+    data.uid = uid;
+    data.maxes = maxes;
+    return (__Ring0(kerext_limits_set, &data));
 }
 
 __SRCVERSION("kerext_limits.c $Rev: 153052 $");

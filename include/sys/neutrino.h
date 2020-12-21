@@ -15,8 +15,6 @@
  * $
  */
 
-
-
 /*
  *  sys/neutrino.h
  *
@@ -96,6 +94,8 @@ typedef struct intrspin {
 } intrspin_t;
 
 #include <arch_neutrino.h>
+#include <stdint.h>
+#include <arch/cpu_def.h>
 
 #include <_pack64.h>
 

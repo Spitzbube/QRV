@@ -44,8 +44,9 @@
  * On Exit:
  *   a errno is returned, single step will only occur if EOK is returned.
  */
-int rdecl cpu_debug_sstep(DEBUG *dep, THREAD *thp) {
-	return ENOTSUP;
+int rdecl cpu_debug_sstep(DEBUG * dep, THREAD * thp)
+{
+    return ENOTSUP;
 }
 
 /*
@@ -84,8 +85,9 @@ int rdecl cpu_debug_sstep(DEBUG *dep, THREAD *thp) {
  *   pflags
  *       This should have all _DEBUG_FLAGS set that this fault matches
  */
-int rdecl cpu_debug_fault(DEBUG *dep, THREAD *thp, siginfo_t *info, unsigned *pflags) {
-	return 0;
+int rdecl cpu_debug_fault(DEBUG * dep, THREAD * thp, siginfo_t * info, unsigned *pflags)
+{
+    return 0;
 }
 
 /*
@@ -106,8 +108,9 @@ int rdecl cpu_debug_fault(DEBUG *dep, THREAD *thp, siginfo_t *info, unsigned *pf
  *   a errno is returned, the breakpoint will not be added unless EOK is returned.
  *
  */
-int rdecl cpu_debug_brkpt(DEBUG *dep, BREAKPT *bpp) {
-	return ENOTSUP;
+int rdecl cpu_debug_brkpt(DEBUG * dep, BREAKPT * bpp)
+{
+    return ENOTSUP;
 }
 
 
@@ -125,7 +128,8 @@ int rdecl cpu_debug_brkpt(DEBUG *dep, BREAKPT *bpp) {
  *   dep
  *      DEBUG structure of process with breakpoint list.
  */
-void rdecl cpu_debug_attach_brkpts(DEBUG *dep) {
+void rdecl cpu_debug_attach_brkpts(DEBUG * dep)
+{
 }
 
 /*
@@ -139,22 +143,23 @@ void rdecl cpu_debug_attach_brkpts(DEBUG *dep) {
  *   dep
  *      DEBUG structure of process with breakpoint list.
  */
-void rdecl cpu_debug_detach_brkpts(DEBUG *dep) {
+void rdecl cpu_debug_detach_brkpts(DEBUG * dep)
+{
 }
 
 /*
  * Get/Set the alternate register set.
  */
-int rdecl
-cpu_debug_get_altregs(THREAD *thp, debug_altreg_t *reg) {
+int rdecl cpu_debug_get_altregs(THREAD * thp, debug_altreg_t * reg)
+{
 
-	return EINVAL;
+    return EINVAL;
 }
 
-int rdecl
-cpu_debug_set_altregs(THREAD *thp, debug_altreg_t *reg) {
+int rdecl cpu_debug_set_altregs(THREAD * thp, debug_altreg_t * reg)
+{
 
-	return EINVAL;
+    return EINVAL;
 }
 
 __SRCVERSION("cpu_debug.c $Rev: 153052 $");

@@ -37,11 +37,11 @@
 #define SCHAR_MAX   127         /*  maximum value of a signed char      */
 #define UCHAR_MAX   255         /*  maximum value of an unsigned char   */
 #if defined(__CHAR_SIGNED__)
- #define CHAR_MIN   SCHAR_MIN   /*  minimum value of a char         */
- #define CHAR_MAX   SCHAR_MAX   /*  maximum value of a char         */
+#define CHAR_MIN   SCHAR_MIN    /*  minimum value of a char         */
+#define CHAR_MAX   SCHAR_MAX    /*  maximum value of a char         */
 #elif defined(__CHAR_UNSIGNED__)
- #define CHAR_MIN   0           /*  minimum value of a char         */
- #define CHAR_MAX   UCHAR_MAX   /*  maximum value of a char         */
+#define CHAR_MIN   0            /*  minimum value of a char         */
+#define CHAR_MAX   UCHAR_MAX    /*  maximum value of a char         */
 #else
 #error CHAR sign not defined
 #endif
@@ -56,45 +56,45 @@
 #endif
 
 #if __LONG_BITS__-0 == 32
-#define LONG_MAX    2147483647L  /*  maximum value of a long int     */
-#define LONG_MIN    (-2147483647L-1) /* minimum value of a long int     */
-#define ULONG_MAX   4294967295UL   /* maximum value of a unsigned long    */
+#define LONG_MAX    2147483647L /*  maximum value of a long int     */
+#define LONG_MIN    (-2147483647L-1)    /* minimum value of a long int     */
+#define ULONG_MAX   4294967295UL    /* maximum value of a unsigned long    */
 #elif __LONG_BITS__-0 == 64
-#define LONG_MIN   (-9223372036854775807L-1)  /*  minimum value of a long        */
-#define LONG_MAX   9223372036854775807L       /*  maximum value of a long        */
-#define ULONG_MAX  18446744073709551615UL     /*  maximum value of an unsigned long */
+#define LONG_MIN   (-9223372036854775807L-1)    /*  minimum value of a long        */
+#define LONG_MAX   9223372036854775807L /*  maximum value of a long        */
+#define ULONG_MAX  18446744073709551615UL   /*  maximum value of an unsigned long */
 #else
 #error __LONG_BITS__ Not valid
 #endif
 
 #if __INT_BITS__-0 == 64
-#define LLONG_MIN   (-9223372036854775807-1)  /*  minimum value of a long long        */
-#define LLONG_MAX   9223372036854775807       /*  maximum value of a long long        */
-#define ULLONG_MAX  18446744073709551615U     /*  maximum value of an unsigned long long */
+#define LLONG_MIN   (-9223372036854775807-1)    /*  minimum value of a long long        */
+#define LLONG_MAX   9223372036854775807 /*  maximum value of a long long        */
+#define ULLONG_MAX  18446744073709551615U   /*  maximum value of an unsigned long long */
 #else
 #if defined(__WATCOM_INT64__)
-#define LLONG_MIN   (-9223372036854775807I64-1)  /*  minimum value of a long long        */
-#define LLONG_MAX   9223372036854775807I64       /*  maximum value of a long long        */
-#define ULLONG_MAX  18446744073709551615UI64     /*  maximum value of an unsigned long long */
+#define LLONG_MIN   (-9223372036854775807I64-1) /*  minimum value of a long long        */
+#define LLONG_MAX   9223372036854775807I64  /*  maximum value of a long long        */
+#define ULLONG_MAX  18446744073709551615UI64    /*  maximum value of an unsigned long long */
 #else
 #define LLONG_MIN   (-9223372036854775807LL-1)  /*  minimum value of a long long        */
-#define LLONG_MAX   9223372036854775807LL       /*  maximum value of a long long        */
-#define ULLONG_MAX  18446744073709551615ULL     /*  maximum value of an unsigned long long */
+#define LLONG_MAX   9223372036854775807LL   /*  maximum value of a long long        */
+#define ULLONG_MAX  18446744073709551615ULL /*  maximum value of an unsigned long long */
 #endif
 #endif
 
 #if __INT_BITS__-0 == 16
-#define INT_MAX    32767      /*  maximum value of a int     */
-#define INT_MIN    (-32767-1) /* minimum value of a int     */
-#define UINT_MAX   65535U     /* maximum value of a unsigned int   */
+#define INT_MAX    32767        /*  maximum value of a int     */
+#define INT_MIN    (-32767-1)   /* minimum value of a int     */
+#define UINT_MAX   65535U       /* maximum value of a unsigned int   */
 #elif __INT_BITS__-0 == 32
-#define INT_MAX    2147483647      /*  maximum value of a int     */
-#define INT_MIN    (-2147483647-1) /* minimum value of a int     */
-#define UINT_MAX   4294967295U     /* maximum value of a unsigned int   */
+#define INT_MAX    2147483647   /*  maximum value of a int     */
+#define INT_MIN    (-2147483647-1)  /* minimum value of a int     */
+#define UINT_MAX   4294967295U  /* maximum value of a unsigned int   */
 #elif __INT_BITS__-0 == 64
 #define INT_MIN   (-9223372036854775807-1)  /*  minimum value of a int  */
-#define INT_MAX   9223372036854775807       /*  maximum value of a int   */
-#define UINT_MAX  18446744073709551615U     /*  maximum value of an unsigned int */
+#define INT_MAX   9223372036854775807   /*  maximum value of a int   */
+#define UINT_MAX  18446744073709551615U /*  maximum value of an unsigned int */
 #else
 #error __INT_BITS__ Not valid
 #endif
@@ -108,25 +108,25 @@
 
 #if defined(__EXT_POSIX1_199009)
 #define _POSIX_ARG_MAX      4096    /*  Length of args for exec             */
-                                    /*  functions including environment data*/
-#define _POSIX_CHILD_MAX    6       /*  Number of simultaneous              */
+                                    /*  functions including environment data */
+#define _POSIX_CHILD_MAX    6   /*  Number of simultaneous              */
                                     /*  processes per real user ID.         */
-#define _POSIX_LINK_MAX     8       /*  Max. links per file                 */
-#define _POSIX_MAX_CANON    255     /*  No. bytes in terminal               */
+#define _POSIX_LINK_MAX     8   /*  Max. links per file                 */
+#define _POSIX_MAX_CANON    255 /*  No. bytes in terminal               */
                                     /*  cannonical input queue.             */
-#define _POSIX_MAX_INPUT    255     /*  Size of terminal input queue buffer */
-#define _POSIX_NAME_MAX     14      /*  Max bytes in a filename             */
-#define _POSIX_NGROUPS_MAX  0       /*  Num. simultaneous supplementary     */
+#define _POSIX_MAX_INPUT    255 /*  Size of terminal input queue buffer */
+#define _POSIX_NAME_MAX     14  /*  Max bytes in a filename             */
+#define _POSIX_NGROUPS_MAX  0   /*  Num. simultaneous supplementary     */
                                     /*  group IDs per process               */
-#define _POSIX_OPEN_MAX     16      /*  Min num. files open per process.    */
-#define _POSIX_PATH_MAX     256     /*  Num. bytes in pathname (excl. NULL) */
-#define _POSIX_PIPE_BUF     512     /*  Num. bytes written atomically to a  */
+#define _POSIX_OPEN_MAX     16  /*  Min num. files open per process.    */
+#define _POSIX_PATH_MAX     256 /*  Num. bytes in pathname (excl. NULL) */
+#define _POSIX_PIPE_BUF     512 /*  Num. bytes written atomically to a  */
                                     /*  pipe.                               */
 #define _POSIX_SSIZE_MAX    32767   /*  The value that can be stored in an  */
                                     /*  object of type ssize_t.             */
-#define _POSIX_STREAM_MAX   8       /*  The number of streams that one      */
+#define _POSIX_STREAM_MAX   8   /*  The number of streams that one      */
                                     /*  process can have open at one time.  */
-#define _POSIX_TZNAME_MAX   3       /*  The maximum number of bytes         */
+#define _POSIX_TZNAME_MAX   3   /*  The maximum number of bytes         */
                                     /*  supported for the name of a time    */
                                     /*  zone (not of the TZ variable).      */
 #endif
@@ -169,10 +169,10 @@
 #define _POSIX_THREAD_DESTRUCTOR_ITERATIONS    4
 #define _POSIX_THREAD_KEYS_MAX                 128
 #define _POSIX_THREAD_THREADS_MAX              64
-#define _POSIX_TTY_NAME_MAX                    9     /*  The maximum length of a ttyname     */
+#define _POSIX_TTY_NAME_MAX                    9    /*  The maximum length of a ttyname     */
 #endif
 
-#if defined(__EXT_POSIX1_200112)		/* Approved 1003.1d D14 */
+#if defined(__EXT_POSIX1_200112)    /* Approved 1003.1d D14 */
 #define _POSIX_SS_REPL_MAX						4
 #define SS_REPL_MAX							    USHRT_MAX
 #endif
@@ -182,7 +182,7 @@
 #endif
 
 #if defined(__EXT_POSIX1_200112)
-#define _POSIX_SYMLOOP_MAX  8       /*  The number of loops to traverse     */
+#define _POSIX_SYMLOOP_MAX  8   /*  The number of loops to traverse     */
                                     /*  while resolving symbolic links      */
                                     /*  or prefix aliases.                  */
 #define _POSIX_SYMLINK_MAX	255
@@ -198,7 +198,7 @@
 
 #define	__NGROUPS_MAX	8
 #if defined(__EXT_POSIX1_199009)
-#define NGROUPS_MAX __NGROUPS_MAX       /*  Num. simultaneous supplementary */
+#define NGROUPS_MAX __NGROUPS_MAX   /*  Num. simultaneous supplementary */
                                         /*  group IDs per process           */
 #endif
 
@@ -279,7 +279,7 @@
 #define PATH_MAX	1024
 #endif
 
-#if defined(__EXT_POSIX1_199309)		/* Approved 1003.1d D14 */
+#if defined(__EXT_POSIX1_199309)    /* Approved 1003.1d D14 */
 #undef MIN_ALLOC_SIZE
 #undef REC_MIN_XFER_SIZE
 #undef REC_MAX_XFER_SIZE
@@ -328,10 +328,10 @@
  *  Unix98  requirement limits
  */
 #if defined(__EXT_XOPEN_EX)
-#define ATEXIT_MAX         32  /* Maximum number of functions that may be registered with atexit */
+#define ATEXIT_MAX         32   /* Maximum number of functions that may be registered with atexit */
 #define _XOPEN_IOV_MAX	16
-#undef IOV_MAX	            /*	_XOPEN_IOV_MAX */
-#undef PASS_MAX	            /*  20 */
+#undef IOV_MAX                  /*  _XOPEN_IOV_MAX */
+#undef PASS_MAX                 /*  20 */
 #endif
 #if defined(__EXT_XOPEN_EX) || defined(__EXT_POSIX1_200112)
 #define BC_STRING_MAX	1000
@@ -347,27 +347,27 @@
 #define NL_SETMAX	255
 #define NL_TEXTMAX	_POSIX2_LINE_MAX
 #define NZERO		20
-#ifndef TMP_MAX         /* Also defined in stdio.h */
+#ifndef TMP_MAX                 /* Also defined in stdio.h */
 #define TMP_MAX     (26*26*26)
 #endif
 #endif
 
 #ifdef __EXT_UNIX_HIST
-#ifndef FLT_DIG		/* Also defined in float.h */
+#ifndef FLT_DIG                 /* Also defined in float.h */
 #define FLT_DIG         6
 #endif
-#ifndef FLT_MAX		/* Also defined in float.h */
+#ifndef FLT_MAX                 /* Also defined in float.h */
 #define FLT_MAX         3.402823466e+38f
 #endif
-#ifndef DBL_DIG		/* Also defined in float.h */
+#ifndef DBL_DIG                 /* Also defined in float.h */
 #define DBL_DIG         15
 #endif
-#ifndef DBL_MAX		/* Also defined in float.h */
+#ifndef DBL_MAX                 /* Also defined in float.h */
 #define DBL_MAX         1.79769313486231500e+308
 #endif
 #endif
 
-#if defined(__EXT_QNX)	/* NON ANSI DEFINES */
+#if defined(__EXT_QNX)          /* NON ANSI DEFINES */
 #define LONGLONG_MIN  LLONG_MIN
 #define LONGLONG_MAX  LLONG_MAX
 #define ULONGLONG_MAX ULLONG_MAX
@@ -377,8 +377,8 @@
  *  QNX specific values
  */
 #if defined(__EXT_QNX)
-#define SYMLOOP_MAX 16      /* This is bigger than _POSIX_SYMLOOP_MAX */
-#undef SYMLINK_MAX			/* Must query with pathconf(_PC_SYMLINK_MAX) */
+#define SYMLOOP_MAX 16          /* This is bigger than _POSIX_SYMLOOP_MAX */
+#undef SYMLINK_MAX              /* Must query with pathconf(_PC_SYMLINK_MAX) */
 #define _MALLOC_ALIGN         8
 #define _QNX_MSG_ALIGN        8
 #endif

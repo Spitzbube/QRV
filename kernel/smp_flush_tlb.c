@@ -17,15 +17,15 @@
 
 #include "externs.h"
 
-void rdecl
-smp_flush_tlb(void) {
-	int i;
+void rdecl smp_flush_tlb(void)
+{
+    int i;
 
-	for(i = 0; i < NUM_PROCESSORS; ++i) {
-		if((i != KERNCPU) && alives[i]) {
-			SENDIPI(i, IPI_TLB_FLUSH);
-		}
-	}
+    for (i = 0; i < NUM_PROCESSORS; ++i) {
+        if ((i != KERNCPU) && alives[i]) {
+            SENDIPI(i, IPI_TLB_FLUSH);
+        }
+    }
 }
 
 __SRCVERSION("smp_flush_tlb.c $Rev: 153052 $");

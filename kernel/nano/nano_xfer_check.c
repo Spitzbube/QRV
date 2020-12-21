@@ -41,62 +41,64 @@
  *  special care need to be taken on fault handlers.
  */
 
-static void xfer_dst_fault(THREAD *thp, CPU_REGISTERS *regs, unsigned flags) {
-	xfer_longjmp(*xfer_env, FAULT_ISWRITE(flags) ? XFER_SRC_FAULT : XFER_DST_FAULT, regs);
+static void xfer_dst_fault(THREAD * thp, CPU_REGISTERS * regs, unsigned flags)
+{
+    xfer_longjmp(*xfer_env, FAULT_ISWRITE(flags) ? XFER_SRC_FAULT : XFER_DST_FAULT, regs);
 }
 
-static void xfer_src_fault(THREAD *thp, CPU_REGISTERS *regs, unsigned flags) {
-	xfer_longjmp(*xfer_env, FAULT_ISWRITE(flags) ? XFER_DST_FAULT : XFER_SRC_FAULT, regs);
+static void xfer_src_fault(THREAD * thp, CPU_REGISTERS * regs, unsigned flags)
+{
+    xfer_longjmp(*xfer_env, FAULT_ISWRITE(flags) ? XFER_DST_FAULT : XFER_SRC_FAULT, regs);
 }
 
 const struct fault_handlers xfer_dst_handlers = {
-	xfer_dst_fault, xfer_restart
+    xfer_dst_fault, xfer_restart
 };
 
 const struct fault_handlers xfer_src_handlers = {
-	xfer_src_fault, xfer_restart
+    xfer_src_fault, xfer_restart
 };
 
 const struct fault_handlers xfer_async_handlers = {
-        xfer_src_fault, xfer_async_restart
+    xfer_src_fault, xfer_async_restart
 };
 
-int	(xfer_memchk)(uintptr_t bound, const IOV *iov, size_t iov_len) {
-	unsigned	base, last, len, status;
-	jmp_buf		env;
+int (xfer_memchk) (uintptr_t bound, const IOV * iov, size_t iov_len) {
+    unsigned base, last, len, status;
+    jmp_buf env;
 
-	xfer_env = &env;
-	if((status = xfer_setjmp(*xfer_env))) {
-		return status;
-	}
+    xfer_env = &env;
+    if ((status = xfer_setjmp(*xfer_env))) {
+        return status;
+    }
 
-	while(iov_len) {
-		base = (uintptr_t)GETIOVBASE(iov);
-		len	 = GETIOVLEN(iov++);
-		last = base + len - 1;
-		if(base > last || !WITHIN_BOUNDRY(base, last, bound)) {
-			if(len != 0) {
-				return -1;
-			}
-		}
-		iov_len--;
-	}
+    while (iov_len) {
+        base = (uintptr_t) GETIOVBASE(iov);
+        len = GETIOVLEN(iov++);
+        last = base + len - 1;
+        if (base > last || !WITHIN_BOUNDRY(base, last, bound)) {
+            if (len != 0) {
+                return -1;
+            }
+        }
+        iov_len--;
+    }
 
-	return 0;
+    return 0;
 }
 
-int	(xfer_memprobe)(void *ptr) {
-	int			status;
-	jmp_buf		env;
+int (xfer_memprobe) (void *ptr) {
+    int status;
+    jmp_buf env;
 
-	xfer_env = &env;
-	if((status = xfer_setjmp(*xfer_env))) {
-		return status;
-	}
+    xfer_env = &env;
+    if ((status = xfer_setjmp(*xfer_env))) {
+        return status;
+    }
 
-	RD_PROBE_INT(NULL, ptr, 1);
+    RD_PROBE_INT(NULL, ptr, 1);
 
-	return 0;
+    return 0;
 }
 
 

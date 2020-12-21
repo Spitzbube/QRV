@@ -1,4 +1,4 @@
-#pragma aux ClockCycles
+/*#pragma aux ClockCycles
 #pragma aux __inline_InterruptEnable
 #pragma aux __inline_InterruptDisable
 extern unsigned __cpu_flags;
@@ -7,4 +7,4 @@ extern unsigned __cpu_flags;
 #pragma aux __inline_InterruptStatus
 #pragma aux __inline_DebugBreak
 #pragma aux __inline_DebugKDBreak
-#pragma aux __inline_DebugKDOutput
+#pragma aux __inline_DebugKDOutput*/

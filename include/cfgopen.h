@@ -35,27 +35,26 @@
 #endif
 
 /* open() style options (same bits as open()) */
-#define CFGFILE_RDONLY   0x00000000		/* Iterate through and open read only */
-#define CFGFILE_WRONLY   0x00000001		/* Iterate through and open write only */
-#define CFGFILE_RDWR     0x00000002		/* Open the file as read/write */
-#define CFGFILE_CREAT    0x00000100		/* We want to create the file */
-#define CFGFILE_TRUNC    0x00000200		/* We want to truncate the file */
-#define CFGFILE_EXCL     0x00000400		/* Exclusive open */
-#define CFGFILE_APPEND   0x00000008		/* Append open */
+#define CFGFILE_RDONLY   0x00000000 /* Iterate through and open read only */
+#define CFGFILE_WRONLY   0x00000001 /* Iterate through and open write only */
+#define CFGFILE_RDWR     0x00000002 /* Open the file as read/write */
+#define CFGFILE_CREAT    0x00000100 /* We want to create the file */
+#define CFGFILE_TRUNC    0x00000200 /* We want to truncate the file */
+#define CFGFILE_EXCL     0x00000400 /* Exclusive open */
+#define CFGFILE_APPEND   0x00000008 /* Append open */
 
-#define CFGFILE_NOFD	 0x00800000		/* Fill the buffer, but don't get an fd (returns 0) */
+#define CFGFILE_NOFD	 0x00800000 /* Fill the buffer, but don't get an fd (returns 0) */
 
 /* path location options */
-#define CFGFILE_USER_NODE   0x01000000		/* $HOME + .cfg + confstr(CS_NODENAME) + path */
-#define CFGFILE_USER        0x02000000		/* $HOME + .cfg + path */
-#define CFGFILE_NODE        0x04000000		/* /nodecfg + confstr(CS_NODENAME) + path */
-#define CFGFILE_GLOBAL      0x08000000		/* path */
+#define CFGFILE_USER_NODE   0x01000000  /* $HOME + .cfg + confstr(CS_NODENAME) + path */
+#define CFGFILE_USER        0x02000000  /* $HOME + .cfg + path */
+#define CFGFILE_NODE        0x04000000  /* /nodecfg + confstr(CS_NODENAME) + path */
+#define CFGFILE_GLOBAL      0x08000000  /* path */
 
 #define CFGFILE_MASK        0xff000000
 
 
 __BEGIN_DECLS
-
 /*
  path       = Path to the file that we want to open
  flags      = Open + Location flags
@@ -63,14 +62,11 @@ __BEGIN_DECLS
  namebuf    = Buffer to save the pathname in (optional)
  nblen      = Length of saved pathname buffer (optional)
 */
-int cfgopen(const char *path, unsigned flags,
-			const char *historical, char *namebuf, int nblen);
+int cfgopen(const char *path, unsigned flags, const char *historical, char *namebuf, int nblen);
 
 FILE *fcfgopen(const char *path, const char *mode, int location,
-			   const char *historical, char *namebuf, int nblen);
+               const char *historical, char *namebuf, int nblen);
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("cfgopen.h $Rev: 153052 $"); */

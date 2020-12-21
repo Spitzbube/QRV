@@ -29,47 +29,48 @@
 #include "externs.h"
 
 /* use xfer_fault_handlers_xferlen, in case that xfer_fault is for no setjmp version */
-static void xfer_fault(THREAD *thp, CPU_REGISTERS *regs, unsigned flags) {
-	xfer_longjmp(*xfer_env, -1, regs);
+static void xfer_fault(THREAD * thp, CPU_REGISTERS * regs, unsigned flags)
+{
+    xfer_longjmp(*xfer_env, -1, regs);
 }
 
 static const struct fault_handlers xfer_fault_handlers_xferlen = {
-	xfer_fault, 0
+    xfer_fault, 0
 };
 
-int xferlen(THREAD *thp, IOV *iov, int parts) {
-	int				len;
-	int				status;
-	jmp_buf			env;
+int xferlen(THREAD * thp, IOV * iov, int parts)
+{
+    int len;
+    int status;
+    jmp_buf env;
 
-	if(parts < 0) {
-		return(-parts);
-	}
-
+    if (parts < 0) {
+        return (-parts);
+    }
 #ifndef NDEBUG
-	/* Make sure iov's address space is accessable */
-	if(thp->aspace_prp && thp->aspace_prp != aspaces_prp[KERNCPU]) {
-		crash();
-	}
+    /* Make sure iov's address space is accessable */
+    if (thp->aspace_prp && thp->aspace_prp != aspaces_prp[KERNCPU]) {
+        crash();
+    }
 #endif
 
-	xfer_env = &env;
-	if((status = xfer_setjmp(*xfer_env))) {
-		return(status);
-	}
+    xfer_env = &env;
+    if ((status = xfer_setjmp(*xfer_env))) {
+        return (status);
+    }
 
-	SET_XFER_HANDLER(&xfer_fault_handlers_xferlen);
+    SET_XFER_HANDLER(&xfer_fault_handlers_xferlen);
 
-	len = 0;
-	while(parts > 0) {
-		len += GETIOVLEN(iov);
-		++iov;
-		--parts;
-	}
+    len = 0;
+    while (parts > 0) {
+        len += GETIOVLEN(iov);
+        ++iov;
+        --parts;
+    }
 
-	SET_XFER_HANDLER(0);
+    SET_XFER_HANDLER(0);
 
-	return(len);
+    return (len);
 }
 
 

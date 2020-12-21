@@ -40,52 +40,49 @@
 #endif
 
 _C_STD_BEGIN
-
 #ifndef NULL
-  #define NULL   0
+#define NULL   0
 #endif
-
 #if defined(__SSIZE_T)
-typedef __SSIZE_T	ssize_t;
+typedef __SSIZE_T ssize_t;
 #undef __SSIZE_T
 #endif
 
 #if defined(__SIZE_T)
-typedef __SIZE_T	size_t;
+typedef __SIZE_T size_t;
 #undef __SIZE_T
 #endif
 
 _C_STD_END
-
 #if defined(__OFF_T)
-typedef __OFF_T		off_t;
+typedef __OFF_T off_t;
 #undef __OFF_T
 #endif
 
 #if defined(__OFF64_T)
-typedef __OFF64_T	off64_t;
+typedef __OFF64_T off64_t;
 #undef __OFF64_T
 #endif
 
 #if defined(__PID_T)
-typedef __PID_T		pid_t;
+typedef __PID_T pid_t;
 #undef __PID_T
 #endif
 
 #if defined(__UID_T)
-typedef __UID_T		uid_t;
+typedef __UID_T uid_t;
 #undef __UID_T
 #endif
 
 #if defined(__GID_T)
-typedef __GID_T		gid_t;
+typedef __GID_T gid_t;
 #undef __GID_T
 #endif
 
 #if defined(__EXT_XOPEN_EX)
 
 #if defined(__USECONDS_T)
-typedef __USECONDS_T	useconds_t;
+typedef __USECONDS_T useconds_t;
 #undef __USECONDS_T
 #endif
 
@@ -97,10 +94,10 @@ typedef __USECONDS_T	useconds_t;
 
 /* Symbolic constants for the access() function */
 
-#define R_OK    4       /*  Test for read permission    */
-#define W_OK    2       /*  Test for write permission   */
-#define X_OK    1       /*  Test for execute permission */
-#define F_OK    0       /*  Test for existence of file  */
+#define R_OK    4               /*  Test for read permission    */
+#define W_OK    2               /*  Test for write permission   */
+#define X_OK    1               /*  Test for execute permission */
+#define F_OK    0               /*  Test for existence of file  */
 
 /* Symbolic constants for the lseek() function */
 
@@ -119,10 +116,10 @@ typedef __USECONDS_T	useconds_t;
 
 /* Symbolic constants for lockf() function */
 
-#define F_ULOCK 0      /* Unlock locked sections */
-#define F_LOCK  1      /* Lock a section for exclusive use */
-#define F_TLOCK 2      /* Test and lock a section for exclusive use */
-#define F_TEST  3      /* Test a lock for locks by other processes */
+#define F_ULOCK 0               /* Unlock locked sections */
+#define F_LOCK  1               /* Lock a section for exclusive use */
+#define F_TLOCK 2               /* Test and lock a section for exclusive use */
+#define F_TEST  3               /* Test a lock for locks by other processes */
 
 /* Compile-time Symbolic Constants for Portability Specifications */
 
@@ -267,9 +264,9 @@ typedef __USECONDS_T	useconds_t;
 /* Execution-time Symbolic Constants for Portability Specifications */
 
 #if defined(__EXT_POSIX1_199009)
-#define _POSIX_CHOWN_RESTRICTED 1       /* restricted use of chown() */
-#define _POSIX_NO_TRUNC         1       /* pathname components > NAME_MAX */
-#define _POSIX_VDISABLE         0       /* terminal special chars can be disabled */
+#define _POSIX_CHOWN_RESTRICTED 1   /* restricted use of chown() */
+#define _POSIX_NO_TRUNC         1   /* pathname components > NAME_MAX */
+#define _POSIX_VDISABLE         0   /* terminal special chars can be disabled */
 #endif
 
 #if defined(__EXT_POSIX1_199309)
@@ -279,34 +276,33 @@ typedef __USECONDS_T	useconds_t;
 #endif
 
 __BEGIN_DECLS
-
 #if defined(__EXT_POSIX2) && !defined(__EXT_UNIX_HIST)
 #if defined(__SLIB_DATA_INDIRECT) && !defined(optind) && !defined(__SLIB)
-   int *__get_optind_ptr(void);
-   #define optind (*__get_optind_ptr())
+int *__get_optind_ptr(void);
+#define optind (*__get_optind_ptr())
 #else
-   extern int   optind;        /*  index of current option being scanned */
+extern int optind;              /*  index of current option being scanned */
 #endif
 
 #if defined(__SLIB_DATA_INDIRECT) && !defined(optarg) && !defined(__SLIB)
-   char **__get_optarg_ptr(void);
-   #define optarg (*__get_optarg_ptr())
+char **__get_optarg_ptr(void);
+#define optarg (*__get_optarg_ptr())
 #else
-   extern char *optarg;        /*  points to optional argument */
+extern char *optarg;            /*  points to optional argument */
 #endif
 
 #if defined(__SLIB_DATA_INDIRECT) && !defined(opterr) && !defined(__SLIB)
-   int *__get_opterr_ptr(void);
-   #define opterr (*__get_opterr_ptr())
+int *__get_opterr_ptr(void);
+#define opterr (*__get_opterr_ptr())
 #else
-   extern int   opterr;        /*  print|don't print error message */
+extern int opterr;              /*  print|don't print error message */
 #endif
 
 #if defined(__SLIB_DATA_INDIRECT) && !defined(optopt) && !defined(__SLIB)
-   int *__get_optopt_ptr(void);
-   #define optopt (*__get_optopt_ptr())
+int *__get_optopt_ptr(void);
+#define optopt (*__get_optopt_ptr())
 #else
-   extern int   optopt;        /*  offending letter when error detected */
+extern int optopt;              /*  offending letter when error detected */
 #endif
 #endif
 
@@ -327,84 +323,87 @@ __BEGIN_DECLS
  */
 
 #if _LARGEFILE64_SOURCE - 0 > 0
-extern off64_t  lseek64(int __fildes, off64_t __offset, int __whence);
-extern int      ftruncate64(int __fd, off64_t __length);
-extern _CSTD ssize_t	pread64(int __filedes, void *__buff, _CSTD size_t __nbytes, off64_t __offset);
-extern _CSTD ssize_t	pwrite64(int __filedes, const void *__buff, _CSTD size_t __nbytes, off64_t __offset);
+extern off64_t lseek64(int __fildes, off64_t __offset, int __whence);
+extern int ftruncate64(int __fd, off64_t __length);
+extern _CSTD ssize_t pread64(int __filedes, void *__buff, _CSTD size_t __nbytes, off64_t __offset);
+extern _CSTD ssize_t pwrite64(int __filedes, const void *__buff, _CSTD size_t __nbytes,
+                              off64_t __offset);
 #if defined(__EXT_QNX)
-extern off64_t  tell64(int __fildes);
+extern off64_t tell64(int __fildes);
 #endif
 #if defined(__EXT_XOPEN_EX)
-extern int      truncate64(const char *__path, off64_t __length);
-extern int	    lockf64(int __fd, int __function, off64_t __size);
+extern int truncate64(const char *__path, off64_t __length);
+extern int lockf64(int __fd, int __function, off64_t __size);
 #endif
 #endif
 
 #if defined(__EXT_POSIX1_198808) && !defined(__EXT_UNIX_HIST)
-extern char     *ctermid( char * );
+extern char *ctermid(char *);
 #endif
 
 #if defined(__EXT_POSIX1_198808)
-extern int      access( const char *__path, int __mode );
-extern unsigned alarm( unsigned int __seconds );
-extern int      chdir( const char *__path );
-extern int      chown( const char *__path, uid_t __owner, gid_t __group );
-extern int      close( int __fildes );
-extern _CSTD size_t   confstr( int, char*, _CSTD size_t );
+extern int access(const char *__path, int __mode);
+extern unsigned alarm(unsigned int __seconds);
+extern int chdir(const char *__path);
+extern int chown(const char *__path, uid_t __owner, gid_t __group);
+extern int close(int __fildes);
+extern _CSTD size_t confstr(int, char *, _CSTD size_t);
 #if defined(__EXT_QNX)
-extern void	confstr_cache_enable( void );
-extern void	confstr_cache_disable( void );
-extern void	confstr_cache_invalidate( void );
-extern void	confstr_cache_attach( void );
+extern void confstr_cache_enable(void);
+extern void confstr_cache_disable(void);
+extern void confstr_cache_invalidate(void);
+extern void confstr_cache_attach(void);
 #endif
 #if defined(__NYI)
-extern char     *cuserid( char * );
+extern char *cuserid(char *);
 #endif
-extern int      dup( int __fildes );
-extern int      dup2( int __fildes, int __fildes2 );
-extern int      fchown( int __fildes, uid_t __owner, gid_t __group );
-extern long     fpathconf( int __fildes, int __name );
-extern char     *getcwd( char *__buf, _CSTD size_t __size );
-extern gid_t    getegid( void );
-extern uid_t    geteuid( void );
-extern gid_t    getgid( void );
-extern int      getgroups( int __gidsetsize, gid_t __grouplist[] );
-extern char     *getlogin( void );
-extern pid_t    setsid( void );
-extern uid_t    getuid( void );
-extern int      isatty( int __fildes );
-extern int      link( const char *__path1, const char *__path2 );
-extern off_t    lseek(int __fildes, off_t __offset, int __whence) __ALIAS64("lseek64");
-extern long     pathconf( const char *__path, int __name );
-extern int      pause( void );
-extern int      pipe( int __fildes[2] );
-extern _CSTD ssize_t	pread(int __filedes, void *__buff, _CSTD size_t __nbytes, off_t __offset) __ALIAS64("pread64");
-extern _CSTD ssize_t	pwrite(int __filedes, const void *__buff, _CSTD size_t __nbytes, off_t __offset) __ALIAS64("pwrite64");
-extern _CSTD ssize_t  read( int __fildes, void *__buffer, _CSTD size_t __len );
-extern int      readlink( const char *__path, char *__buf, _CSTD size_t __bufsiz );
-extern int      rmdir( const char *__path );
-extern int      setgid( gid_t __newgroup );
-extern int      setuid( uid_t __newuserid );
-extern unsigned int sleep( unsigned int __seconds );
-extern int      symlink( const char *__pname, const char *__slink );
-extern void     sync( void );
-extern long     sysconf( int __name );
-extern pid_t    tcgetpgrp( int __fildes );
-extern int      tcsetpgrp( int __fildes, pid_t __pgrp_id );
-extern char     *ttyname( int __fildes );
-extern int      unlink( const char *__path );
-extern _CSTD ssize_t  write( int __fildes, const void *__buf, _CSTD size_t __len );
+extern int dup(int __fildes);
+extern int dup2(int __fildes, int __fildes2);
+extern int fchown(int __fildes, uid_t __owner, gid_t __group);
+extern long fpathconf(int __fildes, int __name);
+extern char *getcwd(char *__buf, _CSTD size_t __size);
+extern gid_t getegid(void);
+extern uid_t geteuid(void);
+extern gid_t getgid(void);
+extern int getgroups(int __gidsetsize, gid_t __grouplist[]);
+extern char *getlogin(void);
+extern pid_t setsid(void);
+extern uid_t getuid(void);
+extern int isatty(int __fildes);
+extern int link(const char *__path1, const char *__path2);
+extern off_t lseek(int __fildes, off_t __offset, int __whence) __ALIAS64("lseek64");
+extern long pathconf(const char *__path, int __name);
+extern int pause(void);
+extern int pipe(int __fildes[2]);
+extern _CSTD ssize_t pread(int __filedes, void *__buff, _CSTD size_t __nbytes,
+                           off_t __offset) __ALIAS64("pread64");
+extern _CSTD ssize_t pwrite(int __filedes, const void *__buff, _CSTD size_t __nbytes,
+                            off_t __offset) __ALIAS64("pwrite64");
+extern _CSTD ssize_t read(int __fildes, void *__buffer, _CSTD size_t __len);
+extern int readlink(const char *__path, char *__buf, _CSTD size_t __bufsiz);
+extern int rmdir(const char *__path);
+extern int setgid(gid_t __newgroup);
+extern int setuid(uid_t __newuserid);
+extern unsigned int sleep(unsigned int __seconds);
+extern int symlink(const char *__pname, const char *__slink);
+extern void sync(void);
+extern long sysconf(int __name);
+extern pid_t tcgetpgrp(int __fildes);
+extern int tcsetpgrp(int __fildes, pid_t __pgrp_id);
+extern char *ttyname(int __fildes);
+extern int unlink(const char *__path);
+extern _CSTD ssize_t write(int __fildes, const void *__buf, _CSTD size_t __len);
 #endif
 
 #if defined(__EXT_POSIX1_199309)
-extern int      fdatasync(int __fildes);
-extern int      fsync(int __fildes);
-extern int      ftruncate(int __fd, off_t __length) __ALIAS64("ftruncate64");
+extern int fdatasync(int __fildes);
+extern int fsync(int __fildes);
+extern int ftruncate(int __fd, off_t __length) __ALIAS64("ftruncate64");
 #endif
 
 #if defined(__EXT_POSIX1_199506)
-extern int	getlogin_r(char* __name, _CSTD size_t __namesize);
-extern int  ttyname_r( int __fildes, char *__buf, _CSTD size_t __bufsize );
+extern int getlogin_r(char *__name, _CSTD size_t __namesize);
+extern int ttyname_r(int __fildes, char *__buf, _CSTD size_t __bufsize);
 #endif
 
 #if _FILE_OFFSET_BITS - 0 == 64
@@ -457,105 +456,109 @@ extern int  ttyname_r( int __fildes, char *__buf, _CSTD size_t __bufsize );
 
 #if defined(__EXT_UNIX_MISC)
 extern int sethostname(const char *__buffer, _CSTD size_t __buffer_length);
-extern int setgroups( int __gidsetsize, const gid_t *__grouplist );
-extern int getgrouplist(const char *__uname, gid_t __agroup, gid_t *__groups, int *__grpcnt);
+extern int setgroups(int __gidsetsize, const gid_t * __grouplist);
+extern int getgrouplist(const char *__uname, gid_t __agroup, gid_t * __groups, int *__grpcnt);
 /* extern int mount( const char *__special, const char * __dir, int __rwflag ); */
 /* extern int umount( const char *__special ); */
-extern int	rcmd(char **__ahost, unsigned short __inport, const char *__locuser, const char *__remuser, const char *__cmd, int *__fd2p);
-extern int	rcmd_af(char **, unsigned short, const char *, const char *, const char *, int*, int);
-extern int 	rresvport(int *__port);
-extern int	rresvport_af(int *, int);
-extern int 	ruserok(char *__rhost, int __superuser, char *__ruser, char *__luser);
-extern int	iruserok(_Uint32t, int, const char *, const char *);
-extern int	iruserok_sa(const void *, int, int, const char *, const char *);
+extern int rcmd(char **__ahost, unsigned short __inport, const char *__locuser,
+                const char *__remuser, const char *__cmd, int *__fd2p);
+extern int rcmd_af(char **, unsigned short, const char *, const char *, const char *, int *, int);
+extern int rresvport(int *__port);
+extern int rresvport_af(int *, int);
+extern int ruserok(char *__rhost, int __superuser, char *__ruser, char *__luser);
+extern int iruserok(_Uint32t, int, const char *, const char *);
+extern int iruserok_sa(const void *, int, int, const char *, const char *);
 #endif
 
 #if defined(__EXT_XOPEN_EX)
-extern int      gethostname(char *__buffer, _CSTD size_t __buffer_length);
-extern int      brk(void *__endds);
-extern int      chroot(const char *__path);
-extern char		*crypt(const char *, const char *);
-extern void		encrypt(char[64], int);
-extern int		fchdir(int __fd);
+extern int gethostname(char *__buffer, _CSTD size_t __buffer_length);
+extern int brk(void *__endds);
+extern int chroot(const char *__path);
+extern char *crypt(const char *, const char *);
+extern void encrypt(char[64], int);
+extern int fchdir(int __fd);
 /* extern long	gethostid(void); */
-extern int	getdtablesize(void);
-extern int	getpagesize(void); /* legacy */
-extern char		*getpass(const char *);
-extern pid_t	getpgid(pid_t __pid);
-extern pid_t    getsid(pid_t __pid);
-extern char	*getwd(char *);
-extern int	lchown( const char *__path, uid_t __owner, gid_t __group );
-extern int	lockf(int __fd, int __function, off_t __size) __ALIAS64("lockf64");
-extern int	nice(int);
-extern void     *sbrk(int __incr);
-extern pid_t	setpgrp(void);
-extern int      setregid( gid_t __readgroupid, gid_t __effectivegroupid );
-extern int      setreuid( uid_t __readuserid, uid_t __effectiveuserid );
-extern void      swab( char *__src, char *__dest, int __num );
-extern int      truncate(const char *__path, off_t __length) __ALIAS64("truncate64");
-extern useconds_t ualarm(useconds_t __usec, useconds_t __interval );
-extern		int usleep(useconds_t __useconds);
+extern int getdtablesize(void);
+extern int getpagesize(void);   /* legacy */
+extern char *getpass(const char *);
+extern pid_t getpgid(pid_t __pid);
+extern pid_t getsid(pid_t __pid);
+extern char *getwd(char *);
+extern int lchown(const char *__path, uid_t __owner, gid_t __group);
+extern int lockf(int __fd, int __function, off_t __size) __ALIAS64("lockf64");
+extern int nice(int);
+extern void *sbrk(int __incr);
+extern pid_t setpgrp(void);
+extern int setregid(gid_t __readgroupid, gid_t __effectivegroupid);
+extern int setreuid(uid_t __readuserid, uid_t __effectiveuserid);
+extern void swab(char *__src, char *__dest, int __num);
+extern int truncate(const char *__path, off_t __length) __ALIAS64("truncate64");
+extern useconds_t ualarm(useconds_t __usec, useconds_t __interval);
+extern int usleep(useconds_t __useconds);
 #endif
 
 #if defined(__EXT_POSIX2)
 #if !defined(__EXT_UNIX_HIST)
-extern int      getopt( int __argc, char * const __argv[], const char * __optstring );
+extern int getopt(int __argc, char *const __argv[], const char *__optstring);
 #endif
 #endif
 
 #if defined(__EXT_UNIX_MISC)
-extern int      setegid(gid_t __newegroup);
-extern int      seteuid(uid_t __newuserid);
+extern int setegid(gid_t __newegroup);
+extern int seteuid(uid_t __newuserid);
 #endif
 
 #if defined(__EXT_QNX)
 struct sigevent;
 
 extern unsigned delay(unsigned int __milliseconds);
-extern _CSTD ssize_t  _readx(int __fildes, void *__buffer, _CSTD size_t __len, unsigned __xtype, void *__xdata, _CSTD size_t __xdatalen);
-extern int      readblock(int __fd, _CSTD size_t __blksize, unsigned __block, int __numblks, void *__buff);
-extern _CSTD ssize_t  _writex(int __fildes, const void *__buffer, _CSTD size_t __len, unsigned __xtype, void *__xdata, _CSTD size_t __xdatalen);
-extern int      writeblock(int __fd, _CSTD size_t __blksize, unsigned __block, int __numblks, const void *__buff);
-extern int      readcond(int __fd, void *__buff, int __nbytes, int __min, int __time, int __timeout);
-extern int      ionotify(int __fd, int __action, int __flags, const struct sigevent *__event);
-extern int      chsize( int __fildes, long __size );
-extern off_t    tell(int __fildes) __ALIAS64("tell64");
-extern int      eof( int __fildes );
+extern _CSTD ssize_t _readx(int __fildes, void *__buffer, _CSTD size_t __len, unsigned __xtype,
+                            void *__xdata, _CSTD size_t __xdatalen);
+extern int readblock(int __fd, _CSTD size_t __blksize, unsigned __block, int __numblks,
+                     void *__buff);
+extern _CSTD ssize_t _writex(int __fildes, const void *__buffer, _CSTD size_t __len,
+                             unsigned __xtype, void *__xdata, _CSTD size_t __xdatalen);
+extern int writeblock(int __fd, _CSTD size_t __blksize, unsigned __block, int __numblks,
+                      const void *__buff);
+extern int readcond(int __fd, void *__buff, int __nbytes, int __min, int __time, int __timeout);
+extern int ionotify(int __fd, int __action, int __flags, const struct sigevent *__event);
+extern int chsize(int __fildes, long __size);
+extern off_t tell(int __fildes) __ALIAS64("tell64");
+extern int eof(int __fildes);
 #if _FILE_OFFSET_BITS-0 != 64
-extern off_t    ltrunc( int __fildes, off_t __offset, int __origin );
+extern off_t ltrunc(int __fildes, off_t __offset, int __origin);
 #endif
-extern int      _sopenfd(int __fd, int __oflag, int __sflag, int __xtype);
-extern int      sopenfd(int __fd, int __oflag, int __sflag);
-extern int      openfd(int __fd, int __oflag);
-extern char		*qnx_crypt(const char *, const char *);
-extern int      flink(int __fd, const char *__path);
-extern int 	getdomainname(char *__name, _CSTD size_t __namelen);
-extern int	setdomainname(const char *__name, _CSTD size_t __namelen);
+extern int _sopenfd(int __fd, int __oflag, int __sflag, int __xtype);
+extern int sopenfd(int __fd, int __oflag, int __sflag);
+extern int openfd(int __fd, int __oflag);
+extern char *qnx_crypt(const char *, const char *);
+extern int flink(int __fd, const char *__path);
+extern int getdomainname(char *__name, _CSTD size_t __namelen);
+extern int setdomainname(const char *__name, _CSTD size_t __namelen);
 
 #if defined(__SLIB_DATA_INDIRECT) && !defined(environ) && !defined(__SLIB)
-    extern char **__get_environ_ptr(void);
-    extern void __set_environ_ptr(char **__newptr);
-    #define environ (__get_environ_ptr())
+extern char **__get_environ_ptr(void);
+extern void __set_environ_ptr(char **__newptr);
+#define environ (__get_environ_ptr())
 #else
-    extern char **environ;   /*  pointer to environment table        */
+extern char **environ;          /*  pointer to environment table        */
 #endif
 
 #if defined(__SLIB_DATA_INDIRECT) && !defined(_connect_malloc) && !defined(__SLIB)
-   char *__get_connect_malloc_ptr(void);
-   #define _connect_malloc (*__get_connect_malloc_ptr())
+char *__get_connect_malloc_ptr(void);
+#define _connect_malloc (*__get_connect_malloc_ptr())
 #else
-   extern char   _connect_malloc;   /*  connect malloc*/
+extern char _connect_malloc;    /*  connect malloc */
 #endif
 
 #endif
 
 __END_DECLS
-
 #endif
-
 #ifdef _STD_USING
-using std::size_t; using std::ssize_t;
-#endif /* _STD_USING */
+using std::size_t;
+using std::ssize_t;
+#endif                          /* _STD_USING */
 
 #endif
 

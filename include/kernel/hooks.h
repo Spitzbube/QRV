@@ -87,5 +87,3 @@ struct procmgr_entry {
 #define	MAPADDR_FLAGS_SYSPRP	0x2
 #define MAPADDR_FLAGS_NOTFIRST	0x4
 #define	MAPADDR_FLAGS_IOVKERNEL	0x8000
-
-/* __SRCVERSION("hooks.h $Rev: 156323 $"); */

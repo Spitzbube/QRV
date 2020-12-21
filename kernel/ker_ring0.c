@@ -18,15 +18,15 @@
 #include "externs.h"
 
 
-int kdecl
-ker_ring0(THREAD *act,struct kerargs_ring0 *kap) {
+int kdecl ker_ring0(THREAD * act, struct kerargs_ring0 *kap)
+{
 
-	if((act->process->flags & _NTO_PF_RING0) == 0) {
-		return EPERM;
-	}
+    if ((act->process->flags & _NTO_PF_RING0) == 0) {
+        return EPERM;
+    }
 
-	(*kap->func)(kap->arg);
-	return ENOERROR;
+    (*kap->func) (kap->arg);
+    return ENOERROR;
 }
 
 __SRCVERSION("ker_ring0.c $Rev: 153052 $");

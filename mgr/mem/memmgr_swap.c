@@ -23,16 +23,16 @@
  * Called when we run out of memory; try to swap out all we can.
  */
 
-int
-memmgr_swap_freemem(pid_t pid, unsigned size, unsigned waitl) {
-	//FUTURE: stub implementation
-	return 0;
+int memmgr_swap_freemem(pid_t pid, unsigned size, unsigned waitl)
+{
+    //FUTURE: stub implementation
+    return 0;
 }
 
-int
-memmgr_swap(resmgr_context_t *ctp, PROCESS *prp, mem_swap_t *msg) {
-	//FUTURE: stub implementation
-	return ENOSYS;
+int memmgr_swap(resmgr_context_t * ctp, PROCESS * prp, mem_swap_t * msg)
+{
+    //FUTURE: stub implementation
+    return ENOSYS;
 }
 
 __SRCVERSION("memmgr_swap.c $Rev: 153052 $");

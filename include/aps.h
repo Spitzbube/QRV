@@ -17,8 +17,8 @@
 #include <stdbool.h>
 
 #ifdef __WATCOMC__
-typedef char _Bool;	// not done in stdbool.h for watcom
-#endif	/* __WATCOMC__ */
+typedef char _Bool;             // not done in stdbool.h for watcom
+#endif                          /* __WATCOMC__ */
 
 /*
  * this file contains external interfaces for the scheduler partitioning module
@@ -32,7 +32,7 @@ typedef char _Bool;	// not done in stdbool.h for watcom
 #include <kernel/event.h>
 
 #ifndef EXTERN
-	#define EXTERN	extern
+#define EXTERN	extern
 #endif
 
 /*
@@ -48,19 +48,18 @@ extern int spid_unique;
  * schedpart_flags_t
  *
 */
-typedef enum
-{
-	/* flags used to filter returns from SCHEDPART_GETLIST()
-	 *  The flags which can be specified are
-	 * 	schedpart_flags_t_GETLIST_ALL			- no filtering, return all associated partitions
-	 *	schedpart_flags_t_GETLIST_INHERITABLE	- filter out those partitions which have the
-	 * 										  schedpart_flags_NO_INHERIT flag set
-	 *	schedpart_flags_t_GETLIST_CREDENTIALS	- filter out those partitions which do not have
-	 * 										  appropriate credentials
-	*/
-	schedpart_flags_t_GETLIST_ALL = 0,
-	schedpart_flags_t_GETLIST_INHERITABLE = 0x01,
-	schedpart_flags_t_GETLIST_CREDENTIALS = 0x02,
+typedef enum {
+    /* flags used to filter returns from SCHEDPART_GETLIST()
+     *  The flags which can be specified are
+     *  schedpart_flags_t_GETLIST_ALL           - no filtering, return all associated partitions
+     *  schedpart_flags_t_GETLIST_INHERITABLE   - filter out those partitions which have the
+     *                                        schedpart_flags_NO_INHERIT flag set
+     *  schedpart_flags_t_GETLIST_CREDENTIALS   - filter out those partitions which do not have
+     *                                        appropriate credentials
+     */
+    schedpart_flags_t_GETLIST_ALL = 0,
+    schedpart_flags_t_GETLIST_INHERITABLE = 0x01,
+    schedpart_flags_t_GETLIST_CREDENTIALS = 0x02,
 } schedpart_flags_t;
 
 /*
@@ -90,25 +89,24 @@ typedef enum
 */
 #define SCHEDPART_SIGNATURE		0x31911978
 
-typedef struct schedpart_s
-{
-	_Uint32t		signature;		// used to help ensure not looking at a bogus schedpart_t
+typedef struct schedpart_s {
+    _Uint32t signature;         // used to help ensure not looking at a bogus schedpart_t
 
-	struct schedpart_s  *parent;	// pointer to the partition from which this partition
-								// was derived (for the purpose of establishing creation
-								// attributes)
-	//kerproc_lock_t	info_lock;	// protection for schedpart_info_t
-	pthread_mutex_t		info_lock;	// FIX ME
-	schedpart_info_t	info;		// (public) accounting and configuration data
+    struct schedpart_s *parent; // pointer to the partition from which this partition
+    // was derived (for the purpose of establishing creation
+    // attributes)
+    //kerproc_lock_t    info_lock;  // protection for schedpart_info_t
+    pthread_mutex_t info_lock;  // FIX ME
+    schedpart_info_t info;      // (public) accounting and configuration data
 
 #ifdef USE_PROC_OBJ_LISTS
-	pthread_mutex_t	prplist_lock;	// FIX ME
-//	kerproc_lock_t	prplist_lock;	// protects the 'prp_list'
-	part_qnodehdr_t	prp_list;		// associated process list
-#endif	/* USE_PROC_OBJ_LISTS */
+    pthread_mutex_t prplist_lock;   // FIX ME
+//  kerproc_lock_t  prplist_lock;   // protects the 'prp_list'
+    part_qnodehdr_t prp_list;   // associated process list
+#endif                          /* USE_PROC_OBJ_LISTS */
 
-	void 			*rmgr_attr_p;	// back pointer to resource manager structure
-	unsigned		create_key;		// used to establish initial partition creation configuration
+    void *rmgr_attr_p;          // back pointer to resource manager structure
+    unsigned create_key;        // used to establish initial partition creation configuration
 } schedpart_t;
 
 /*
@@ -122,19 +120,18 @@ typedef struct schedpart_s
  * the process. This also allows a partition to "reside" on several (process)
  * lists.
 */
-typedef struct schedpart_node_s
-{
-	part_qnode_t			hdr;
-	struct schedpart_s *	schedpart;
-	schedpart_dcmd_flags_t	flags;		// per process partition flags
+typedef struct schedpart_node_s {
+    part_qnode_t hdr;
+    struct schedpart_s *schedpart;
+    schedpart_dcmd_flags_t flags;   // per process partition flags
 #if (_PADDR_BITS == 64) || defined(__PPC__)
-	/* note that this conditionally compiled lock cannot be conditional on
-	 * VARIANT_smp (even though it's only used in that case) because
-	 * schedpart_node_t is used both inside and outside of modules and modules
-	 * are always compiled for SMP. Also for reason described in kernel/types.h
-	 * we must always have this variable for PPC family */
-	struct intrspin 		lock;		// for atomic update of mem_used
-#endif	/* (_PADDR_BITS == 64)  || defined(__PPC__)*/
+    /* note that this conditionally compiled lock cannot be conditional on
+     * VARIANT_smp (even though it's only used in that case) because
+     * schedpart_node_t is used both inside and outside of modules and modules
+     * are always compiled for SMP. Also for reason described in kernel/types.h
+     * we must always have this variable for PPC family */
+    struct intrspin lock;       // for atomic update of mem_used
+#endif                          /* (_PADDR_BITS == 64)  || defined(__PPC__) */
 } schedpart_node_t;
 
 /*
@@ -144,10 +141,9 @@ typedef struct schedpart_node_s
  * partitioning resource manager for use by the scheduler partitioning module.
 */
 struct apsmgr_attr_s;
-typedef struct rsrcmgr_schedpart_fnctbl_s
-{
-	int		(*validate_association)(struct apsmgr_attr_s *attr, struct _cred_info *cred);
-	void	(*spart_event_handler)(struct apsmgr_attr_s *attr, evttype_t evtType, ...);
+typedef struct rsrcmgr_schedpart_fnctbl_s {
+    int (*validate_association)(struct apsmgr_attr_s * attr, struct _cred_info * cred);
+    void (*spart_event_handler)(struct apsmgr_attr_s * attr, evttype_t evtType, ...);
 
 } rsrcmgr_schedpart_fnctbl_t;
 
@@ -157,15 +153,14 @@ typedef struct rsrcmgr_schedpart_fnctbl_s
  * This type defines the table of interface functions provided by the scheduler
  * partitioning module for use by the scheduler partitioning resource manager.
 */
-typedef struct schedpart_rsrcmgr_fnctbl_s
-{
-	part_id_t 	(*create)(part_id_t parent_spid, const char *name, schedpart_cfg_t *child_cfg);
-	int			(*destroy)(part_id_t spid);
-	int			(*config)(part_id_t spid, schedpart_cfg_t *cfg, unsigned key);
-	schedpart_info_t *	(*getinfo)(part_id_t spid, schedpart_info_t *info);
-	PROCESS *	(*find_pid)(pid_t pid_filter, part_id_t spid);
-	int			(*validate_cfg_new)(part_id_t parent_spid, schedpart_cfg_t *cfg);
-	int			(*validate_cfg_change)(part_id_t spid, schedpart_cfg_t *cfg);
+typedef struct schedpart_rsrcmgr_fnctbl_s {
+    part_id_t(*create) (part_id_t parent_spid, const char *name, schedpart_cfg_t * child_cfg);
+    int (*destroy)(part_id_t spid);
+    int (*config)(part_id_t spid, schedpart_cfg_t * cfg, unsigned key);
+    schedpart_info_t *(*getinfo)(part_id_t spid, schedpart_info_t * info);
+    PROCESS *(*find_pid)(pid_t pid_filter, part_id_t spid);
+    int (*validate_cfg_new)(part_id_t parent_spid, schedpart_cfg_t * cfg);
+    int (*validate_cfg_change)(part_id_t spid, schedpart_cfg_t * cfg);
 } schedpart_rsrcmgr_fnctbl_t;
 
 /*
@@ -179,30 +174,31 @@ typedef struct schedpart_rsrcmgr_fnctbl_s
  * It also allows the resource manager to supply a set of interface routines
  * for the scheduler partitioning module to use.
 */
-typedef struct schedpart_fnctbl_s
-{
-	int			(*associate)(PROCESS *prp, part_id_t spid, schedpart_dcmd_flags_t flags, ext_lockfncs_t *lf);
-	int			(*disassociate)(PROCESS *prp, part_id_t, ext_lockfncs_t *lf);
-	schedpart_node_t *	(*get_schedpart)(PROCESS *prp);
-	int			(*get_schedpartlist)(PROCESS *prp, part_list_t *spart_list, int n, schedpart_flags_t flags, struct _cred_info *cred);
-	int			(*validate_association)(part_id_t spid, struct _cred_info *cred);
-	schedpart_rsrcmgr_fnctbl_t *  (*rsrcmgr_attach)(rsrcmgr_schedpart_fnctbl_t *);
+typedef struct schedpart_fnctbl_s {
+    int (*associate)(PROCESS * prp, part_id_t spid, schedpart_dcmd_flags_t flags,
+                     ext_lockfncs_t * lf);
+    int (*disassociate)(PROCESS * prp, part_id_t, ext_lockfncs_t * lf);
+    schedpart_node_t *(*get_schedpart)(PROCESS * prp);
+    int (*get_schedpartlist)(PROCESS * prp, part_list_t * spart_list, int n,
+                             schedpart_flags_t flags, struct _cred_info * cred);
+    int (*validate_association)(part_id_t spid, struct _cred_info * cred);
+    schedpart_rsrcmgr_fnctbl_t *(*rsrcmgr_attach) (rsrcmgr_schedpart_fnctbl_t *);
 } schedpart_fnctbl_t;
 
 
 extern schedpart_fnctbl_t *schedpart_fnctbl;
 extern schedpart_fnctbl_t proxy_schedpart_fnctbl;
 extern schedpart_dcmd_flags_t default_schedpart_flags;
-extern schedpart_t  *sys_schedpart;
-extern void (*schedpart_init)(part_id_t i_spid, sched_aps_partition_info *aps_info);
-extern DISPATCH * (*schedpart_select_dpp)(PROCESS *prp, int id);
+extern schedpart_t *sys_schedpart;
+extern void (*schedpart_init)(part_id_t i_spid, sched_aps_partition_info * aps_info);
+extern DISPATCH *(*schedpart_select_dpp)(PROCESS * prp, int id);
 
-extern part_id_t schedpart_getid(PROCESS *prp);
+extern part_id_t schedpart_getid(PROCESS * prp);
 extern memclass_id_t schedpart_get_classid(part_id_t spid);
 extern int schedpart_validate_id(part_id_t spid);
 extern schedpart_t *schedpart_lookup_spid(part_id_t spid);
 extern schedpart_t *schedpart_vec_del(part_id_t spid);
-extern part_id_t schedpart_vec_add(schedpart_t *spart);
+extern part_id_t schedpart_vec_add(schedpart_t * spart);
 extern bool schedpart_module_loaded(void);
 extern bool apmgr_module_installed(void);
 
@@ -394,20 +390,20 @@ extern bool apmgr_module_installed(void);
 */
 /* remove this when we no longer support WATCOM, or WATCOM supports inlines */
 #if (defined(__WATCOMC__) || !defined(NDEBUG))
-extern void *_select_dpp(PROCESS *prp, part_id_t spid);
-#else	/* (defined(__WATCOMC__) || !defined(NDEBUG)) */
-static __inline__ void *_select_dpp(PROCESS *prp, part_id_t spid)
+extern void *_select_dpp(PROCESS * prp, part_id_t spid);
+#else                           /* (defined(__WATCOMC__) || !defined(NDEBUG)) */
+static __inline__ void *_select_dpp(PROCESS * prp, part_id_t spid)
 {
-	if (!SCHEDPART_INSTALLED() || !apmgr_module_installed() || (schedpart_select_dpp == NULL)) {
-		return NULL;
-	} else {
-		schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
-		CRASHCHECK(spart == NULL);
+    if (!SCHEDPART_INSTALLED() || !apmgr_module_installed() || (schedpart_select_dpp == NULL)) {
+        return NULL;
+    } else {
+        schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
+        CRASHCHECK(spart == NULL);
 
-		return schedpart_select_dpp(prp, spart->info.info.id);
-	}
+        return schedpart_select_dpp(prp, spart->info.info.id);
+    }
 }
-#endif	/* (defined(__WATCOMC__) || !defined(NDEBUG)) */
+#endif                          /* (defined(__WATCOMC__) || !defined(NDEBUG)) */
 #define SCHEDPART_SELECT_DPP(p, spid)		_select_dpp((p), (spid))
 
 
@@ -440,6 +436,6 @@ static __inline__ void *_select_dpp(PROCESS *prp, part_id_t spid)
 
 
 
-#endif	/* _APS_H_ */
+#endif                          /* _APS_H_ */
 
 /* __SRCVERSION("$IQ: aps.h,v 1.91 $"); */

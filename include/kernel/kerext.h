@@ -76,5 +76,3 @@ int		ValidateMpartId(MPART_ID mpid);
 // Kernel calls used by the idle thread
 //
 void        kerext_idle(void *);
-
-/* __SRCVERSION("kerext.h $Rev: 168445 $"); */

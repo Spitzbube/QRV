@@ -45,29 +45,29 @@
 #include <_pack64.h>
 
 union wait {
-        int     w_status;                       /* used in syscall */
-        /*
-         * Terminated process status.
-         */
+    int w_status;               /* used in syscall */
+    /*
+     * Terminated process status.
+     */
 #define w_termsig       w_T.w_Termsig
 #define w_coredump      w_T.w_Coredump
 #define w_retcode       w_T.w_Retcode
-        struct {
-                unsigned short  w_Termsig:7;    /* termination signal */
-                unsigned short  w_Coredump:1;   /* core dump indicator */
-                unsigned short  w_Retcode:8;    /* exit code if w_termsig==0 */
-        } w_T;
-        /*
-         * Stopped process status.  Returned
-         * only for traced children unless requested
-         * with the WUNTRACED option bit.
-         */
+    struct {
+        unsigned short w_Termsig:7; /* termination signal */
+        unsigned short w_Coredump:1;    /* core dump indicator */
+        unsigned short w_Retcode:8; /* exit code if w_termsig==0 */
+    } w_T;
+    /*
+     * Stopped process status.  Returned
+     * only for traced children unless requested
+     * with the WUNTRACED option bit.
+     */
 #define w_stopval       w_S.w_Stopval
 #define w_stopsig       w_S.w_Stopsig
-        struct {
-                unsigned short  w_Stopval:8;    /* == W_STOPPED if stopped */
-                unsigned short  w_Stopsig:8;    /* signal that stopped us */
-        } w_S;
+    struct {
+        unsigned short w_Stopval:8; /* == W_STOPPED if stopped */
+        unsigned short w_Stopsig:8; /* signal that stopped us */
+    } w_S;
 };
 
 #include <_packpop.h>
@@ -80,7 +80,7 @@ typedef void (*sig_t)(int);
 #define sigmask(s)      (1L<<((s)-1))
 
 #ifndef HZ
-#define HZ				_sysconf(3)         /* 3 == _SC_CLK_TCK */
+#define HZ				_sysconf(3) /* 3 == _SC_CLK_TCK */
 #endif
 
 #define L_SET           SEEK_SET
@@ -149,13 +149,12 @@ typedef void (*sig_t)(int);
  */
 
 __BEGIN_DECLS
-
 #ifndef alloca
-extern void *  alloca(unsigned __size);
+extern void *alloca(unsigned __size);
 #endif
-extern char *  re_comp(char *__s);
-extern int     re_exec(char *__s);
-extern int     setlogin(const char *__name);
+extern char *re_comp(char *__s);
+extern int re_exec(char *__s);
+extern int setlogin(const char *__name);
 
 extern int sigblock(int __mask);
 extern int sigsetmask(int __mask);
@@ -164,16 +163,15 @@ extern int sigunblock(int __mask);
 struct winsize;
 struct termios;
 extern int login_tty(int __fd);
-extern int openpty(int *__amaster, int *__aslave, char *__name, struct termios *__termp, struct winsize *__winp);
+extern int openpty(int *__amaster, int *__aslave, char *__name, struct termios *__termp,
+                   struct winsize *__winp);
 extern pid_t forkpty(int *__amaster, char *__name, struct termios *__termp, struct winsize *__winp);
 
-extern int setlinebuf(FILE *__stream);
-extern void setbuffer(FILE *__stream, char *__buf, size_t __size);
+extern int setlinebuf(FILE * __stream);
+extern void setbuffer(FILE * __stream, char *__buf, size_t __size);
 
 extern int rdchk(int __fd);
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("unix.h $Rev: 173156 $"); */

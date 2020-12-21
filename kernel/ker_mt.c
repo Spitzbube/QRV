@@ -18,98 +18,95 @@
 #include "externs.h"
 #include "mt_kertrace.h"
 
-int kdecl
-ker_mt_ctl(THREAD *act, struct kerargs_mt_ctl *kap)
+int kdecl ker_mt_ctl(THREAD * act, struct kerargs_mt_ctl *kap)
 {
-	switch (kap->type)
-	{
+    switch (kap->type) {
 
-	/* Gets the useful data in order to fire the flush pulse */
-	case _MT_CTL_INIT_FLUSH_PULSE:
-	{
-		mtctl_initflush_data_t* data = (mtctl_initflush_data_t*) kap->data;
-		mt_controller_thread = act;
-		mt_flush_evt_channel = data->channel;
-		break;
-	}
+        /* Gets the useful data in order to fire the flush pulse */
+    case _MT_CTL_INIT_FLUSH_PULSE:
+        {
+            mtctl_initflush_data_t *data = (mtctl_initflush_data_t *) kap->data;
+            mt_controller_thread = act;
+            mt_flush_evt_channel = data->channel;
+            break;
+        }
 
-	/* Initializes and start the tracelogger */
-	case _MT_CTL_INIT_TRACELOGGER:
-	{
-		int status;
-		unsigned i;
-		part_id_t mpid;
-		mt_data_ctrl_t *ptbuf;
-		mtctl_inittracelogger_data_t* data = (mtctl_inittracelogger_data_t*) kap->data;
+        /* Initializes and start the tracelogger */
+    case _MT_CTL_INIT_TRACELOGGER:
+        {
+            int status;
+            unsigned i;
+            part_id_t mpid;
+            mt_data_ctrl_t *ptbuf;
+            mtctl_inittracelogger_data_t *data = (mtctl_inittracelogger_data_t *) kap->data;
 
-		/* Initializes the shared memory */
-		status = memmgr.mmap(NULL, 0, _MT_ALLOC_SIZE, PROT_WRITE | PROT_READ,
-				MAP_PHYS | MAP_PRIVATE | MAP_ANON, NULL, 0, 0, 0, NOFD,
-				(void *) &ptbuf, &i, mpid = mempart_getid(NULL, sys_memclass_id));
-		if (status != EOK || MAP_FAILED == (void *) ptbuf)
-			return (ENOMEM);
+            /* Initializes the shared memory */
+            status = memmgr.mmap(NULL, 0, _MT_ALLOC_SIZE, PROT_WRITE | PROT_READ,
+                                 MAP_PHYS | MAP_PRIVATE | MAP_ANON, NULL, 0, 0, 0, NOFD,
+                                 (void *) &ptbuf, &i, mpid = mempart_getid(NULL, sys_memclass_id));
+            if (status != EOK || MAP_FAILED == (void *) ptbuf)
+                return (ENOMEM);
 
-		mt_buffers_init(ptbuf);
-		mt_tracebuf_addr = (uintptr_t) ptbuf;
+            mt_buffers_init(ptbuf);
+            mt_tracebuf_addr = (uintptr_t) ptbuf;
 
-		/* Traces the currently existing tasks information */
-		mt_list_task_info();
+            /* Traces the currently existing tasks information */
+            mt_list_task_info();
 
-		/* returning address to userspace */
-		(void) memmgr.vaddrinfo(aspaces_prp[KERNCPU], mt_tracebuf_addr,
-				data->shared_memory, NULL, VI_NORMAL);
+            /* returning address to userspace */
+            (void) memmgr.vaddrinfo(aspaces_prp[KERNCPU], mt_tracebuf_addr,
+                                    data->shared_memory, NULL, VI_NORMAL);
 
-		/* toggle debug tracing filter */
-		mt_filter_tracing_debug((char) data->filter);
-		break;
-	}
+            /* toggle debug tracing filter */
+            mt_filter_tracing_debug((char) data->filter);
+            break;
+        }
 
-	/* Stops the logger and free the allocated memory */
-	case _MT_CTL_TERMINATE_TRACELOGGER:
-	{
-		if (mt_tracebuf_addr)
-		{
-			if (!kerisroot(act))
-				return (EPERM);
+        /* Stops the logger and free the allocated memory */
+    case _MT_CTL_TERMINATE_TRACELOGGER:
+        {
+            if (mt_tracebuf_addr) {
+                if (!kerisroot(act))
+                    return (EPERM);
 
-			lock_kernel();
+                lock_kernel();
 
-			/////////////////////////////////////////////////////
-			////////////////////  FIX_ME!!  /////////////////////
-			// There is a danger that deallocated buffers might
-			// be in use.
-			/////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////
+                ////////////////////  FIX_ME!!  /////////////////////
+                // There is a danger that deallocated buffers might
+                // be in use.
+                /////////////////////////////////////////////////////
 
-			(void) memmgr.munmap(NULL, mt_tracebuf_addr, (_MT_ALLOC_SIZE), 0, mempart_getid(NULL, sys_memclass_id));
-			mt_tracebuf_addr = (uintptr_t) NULL;
+                (void) memmgr.munmap(NULL, mt_tracebuf_addr, (_MT_ALLOC_SIZE), 0,
+                                     mempart_getid(NULL, sys_memclass_id));
+                mt_tracebuf_addr = (uintptr_t) NULL;
 
-			unlock_kernel();
-		}
-		break;
-	}
+                unlock_kernel();
+            }
+            break;
+        }
 
-	/* For tests only */
-	case _MT_CTL_DUMMY:
-	{
-		PROCESS* pProcess;
-		THREAD* pThread;
-		int iProc, iThread;
+        /* For tests only */
+    case _MT_CTL_DUMMY:
+        {
+            PROCESS *pProcess;
+            THREAD *pThread;
+            int iProc, iThread;
 
-		for (iProc=1; iProc<process_vector.nentries; iProc++)
-			if (VECP(pProcess, &process_vector, iProc))
-			{
-				kprintf("Process %d : %s\n", iProc, pProcess->debug_name);
+            for (iProc = 1; iProc < process_vector.nentries; iProc++)
+                if (VECP(pProcess, &process_vector, iProc)) {
+                    kprintf("Process %d : %s\n", iProc, pProcess->debug_name);
 /*
 				for (iThread=1; iThread<pProcess->threads.nentries; iThread++)
 					if (VECP(pThread, &pProcess->threads, iThread))
 					{
 						kprintf("   Task %d : %s\n", iProc, pThread);
 					}
-*/			}
-	}
-	}
+*/ }
+        }
+    }
 
-	return EOK;
+    return EOK;
 }
 
 __SRCVERSION("ker_mt.c $Rev: 153052 $");

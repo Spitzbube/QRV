@@ -17,34 +17,34 @@
 
 #include "vmm.h"
 
-int
-vmm_debuginfo(PROCESS *prp, struct _mem_debug_info *info) {
-	struct map_set			ms;
-	struct mm_map			*mm;
-	struct mm_object_ref	*or;
-	OBJECT					*obp;
-	int						r;
+int vmm_debuginfo(PROCESS * prp, struct _mem_debug_info *info)
+{
+    struct map_set ms;
+    struct mm_map *mm;
+    struct mm_object_ref *or;
+    OBJECT *obp;
+    int r;
 
-	r = map_isolate(&ms, &prp->memory->map, info->vaddr, info->size, MI_NONE);
-	if(r == EOK) {
-		mm = ms.first;
-		if(mm != NULL) {
-			if(mm->mmap_flags & MAP_ELF) {
-				or = mm->obj_ref;
-				if(or != NULL) {
-					//RUSH3: Do we actually need to store this?
-					//RUSH3: It just appears to be used by the old vmm_mapinfo().
-					mm->reloc = info->vaddr - info->old_vaddr;
-					obp = or->obp;
-					if(obp->hdr.type == OBJECT_MEM_FD) {
-						(void)memmgr_fd_setname(obp, info->path);
-					}
-				}
-			}
-		}
-		map_coalese(&ms);
-	}
-	return r;
+    r = map_isolate(&ms, &prp->memory->map, info->vaddr, info->size, MI_NONE);
+    if (r == EOK) {
+        mm = ms.first;
+        if (mm != NULL) {
+            if (mm->mmap_flags & MAP_ELF) {
+                or = mm->obj_ref;
+                if (or != NULL) {
+                    //RUSH3: Do we actually need to store this?
+                    //RUSH3: It just appears to be used by the old vmm_mapinfo().
+                    mm->reloc = info->vaddr - info->old_vaddr;
+                    obp = or->obp;
+                    if (obp->hdr.type == OBJECT_MEM_FD) {
+                        (void) memmgr_fd_setname(obp, info->path);
+                    }
+                }
+            }
+        }
+        map_coalese(&ms);
+    }
+    return r;
 }
 
 __SRCVERSION("vmm_debuginfo.c $Rev: 153052 $");

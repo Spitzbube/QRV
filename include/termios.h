@@ -26,7 +26,7 @@
 #define _TERMIOS_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED
@@ -34,25 +34,25 @@
 #endif
 
 #ifndef __TYPES_H_INCLUDED
- #include <sys/types.h>
+#include <sys/types.h>
 #endif
 
 #include <_pack64.h>
 
 #define NCCS    40
 
-typedef unsigned char   cc_t;
-typedef long            speed_t;
-typedef unsigned long   tcflag_t;
+typedef unsigned char cc_t;
+typedef long speed_t;
+typedef unsigned long tcflag_t;
 struct termios {
-    tcflag_t        c_iflag;    /* Input Modes */
-    tcflag_t        c_oflag;    /* Ouput modes */
-    tcflag_t        c_cflag;    /* Control Modes */
-    tcflag_t        c_lflag;    /* Local Modes */
-    cc_t            c_cc[NCCS]; /* Control Characters */
-	_Uint32t		reserved[3];
-    speed_t         c_ispeed;   /* Input Baud rate */
-    speed_t         c_ospeed;   /* Output baud rate */
+    tcflag_t c_iflag;           /* Input Modes */
+    tcflag_t c_oflag;           /* Ouput modes */
+    tcflag_t c_cflag;           /* Control Modes */
+    tcflag_t c_lflag;           /* Local Modes */
+    cc_t c_cc[NCCS];            /* Control Characters */
+    _Uint32t reserved[3];
+    speed_t c_ispeed;           /* Input Baud rate */
+    speed_t c_ospeed;           /* Output baud rate */
 };
 /*
  * Input modes
@@ -93,17 +93,17 @@ struct termios {
 #define OFDEL       0x00000080
 #define NLDLY       0x00000100
 #define NL0              0x000
-#define NL1              0x100          /* tty 37 */
+#define NL1              0x100  /* tty 37 */
 #define CRDLY       0x00000600
 #define CR0              0x000
-#define CR1              0x200          /* tn 300 */
-#define CR2              0x400          /* tty 37 */
-#define CR3              0x600          /* concept 100 */
+#define CR1              0x200  /* tn 300 */
+#define CR2              0x400  /* tty 37 */
+#define CR3              0x600  /* concept 100 */
 #define TABDLY      0x00001800
 #define TAB0            0x0000
-#define TAB1            0x0800          /* tty 37 */
+#define TAB1            0x0800  /* tty 37 */
 #define TAB2            0x1000
-#define TAB3            0x1800          /* expand tabs to spaces */
+#define TAB3            0x1800  /* expand tabs to spaces */
 #define BSDLY       0x00002000
 #define BS0             0x0000
 #define BS1             0x2000
@@ -284,38 +284,36 @@ __BEGIN_DECLS
 /*
  *  POSIX 1003.1 Prototypes.
  */
-extern speed_t cfgetispeed(const struct termios * __termios_p);
-extern speed_t cfgetospeed(const struct termios * __termios_p);
-extern int     cfsetispeed(struct termios * __termios_p, speed_t __speed);
-extern int     cfsetospeed(struct termios * __termios_p, speed_t __speed);
-extern int     tcdrain(int __fildes);
-extern int     tcdropline(int __fildes, int __duration);
-extern int     tcflow(int __fildes, int __action);
-extern int     tcflush(int __fildes, int __queue_selector);
-extern int     tcgetattr(int __fildes, struct termios * __termios_p);
-extern int     tcsendbreak(int __fildes, int __duration);
-extern int     tcsetattr(int __fildes, int __opt_act, const struct termios * __termios_p);
+extern speed_t cfgetispeed(const struct termios *__termios_p);
+extern speed_t cfgetospeed(const struct termios *__termios_p);
+extern int cfsetispeed(struct termios *__termios_p, speed_t __speed);
+extern int cfsetospeed(struct termios *__termios_p, speed_t __speed);
+extern int tcdrain(int __fildes);
+extern int tcdropline(int __fildes, int __duration);
+extern int tcflow(int __fildes, int __action);
+extern int tcflush(int __fildes, int __queue_selector);
+extern int tcgetattr(int __fildes, struct termios *__termios_p);
+extern int tcsendbreak(int __fildes, int __duration);
+extern int tcsetattr(int __fildes, int __opt_act, const struct termios *__termios_p);
 
 #if defined(__EXT_UNIX_MISC)
-extern int     cfmakeraw(struct termios * __termios_p);
+extern int cfmakeraw(struct termios *__termios_p);
 #endif
 
 #if defined(__EXT_XOPEN_EX)
-extern pid_t    tcgetsid(int __filedes);
-extern int      tcsetsid(int __filedes, pid_t __pid);
+extern pid_t tcgetsid(int __filedes);
+extern int tcsetsid(int __filedes, pid_t __pid);
 #endif
 
 #if defined(__EXT_QNX)
-extern int     tcinject(int __fildes, char *__buf, int __n);
-extern int     tcischars(int __filedes);
-extern int     tcgetsize(int __fildes, int *__prows, int *__pcols);
-extern int     tcsetsize(int __fildes, int __rows, int __cols);
+extern int tcinject(int __fildes, char *__buf, int __n);
+extern int tcischars(int __filedes);
+extern int tcgetsize(int __fildes, int *__prows, int *__pcols);
+extern int tcsetsize(int __fildes, int __rows, int __cols);
 #endif
 
 #include <_packpop.h>
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("termios.h $Rev: 153052 $"); */

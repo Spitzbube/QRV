@@ -114,7 +114,9 @@ struct callout_slot {
 
 #define PTR_DIFF(a,b)	((uint8_t *)(a) - (uint8_t *)(b))
 
+#ifndef NUM_ELTS
 #define NUM_ELTS(__array)	(sizeof(__array)/sizeof(__array[0]))
+#endif
 
 #define COMMON_OPTIONS_STRING   CPU_COMMON_OPTIONS_STRING "ACD:F:f:I:i:K:M:N:P:R:S:Tvr:j:Z"
 
@@ -232,7 +234,7 @@ void cpu_startup(void);
 void cpu_one_startup(int __cpu);
 void cpu_init_syspage_memory(void);
 struct syspage_entry *cpu_alloc_syspage_memory(paddr32_t *, paddr32_t *, unsigned);
-void cpu_write_syspage_memory(paddr32_t, unsigned, unsigned);
+void cpu_write_syspage_memory(paddr_t sys_paddr, unsigned sysp_size);
 void cpu_print_callout(struct callout_entry *call);
 void cpu_startnext(uintptr_t eip, unsigned cpu);
 void elf_map(uintptr_t vaddr, paddr32_t paddr, size_t size, int flags);
@@ -572,12 +574,4 @@ void init_ringbuffers(const char *name, paddr_t ringbuffer_addr, size_t ringbuff
 /* Temp definition until all the header files are caught up 2008/08/20 */
 #ifndef CACHE_FLAG_VIRT_IDX
 #define CACHE_FLAG_VIRT_IDX 0x800
-#endif
-
-/* __SRCVERSION("startup.h $Rev: 759590 $"); */
-
-#if defined(__QNXNTO__) && defined(__USESRCVERSION)
-#include <sys/srcversion.h>
-__SRCVERSION
-    ("$URL: http://svn/product/branches/6.6.0/trunk/hardware/startup/lib/startup.h $ $Rev: 759590 $")
 #endif

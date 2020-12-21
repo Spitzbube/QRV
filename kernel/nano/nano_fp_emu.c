@@ -24,33 +24,33 @@
  * user stack pointer is good.
  */
 
-static void
-prep_fault(THREAD *thp, CPU_REGISTERS *regs, unsigned sig) {
-	usr_fault(sig, thp, KSP(thp));
-	__ker_exit();
+static void prep_fault(THREAD * thp, CPU_REGISTERS * regs, unsigned sig)
+{
+    usr_fault(sig, thp, KSP(thp));
+    __ker_exit();
 }
 
 static const struct fault_handlers prep_fault_handlers = {
-	prep_fault, 0
+    prep_fault, 0
 };
 
-uintptr_t rdecl
-fpu_emulation_prep(CPU_REGISTERS *src, THREAD *act, int size) {
-	uintptr_t		sp = REGSP(src);
-	CPU_REGISTERS	*dst;
+uintptr_t rdecl fpu_emulation_prep(CPU_REGISTERS * src, THREAD * act, int size)
+{
+    uintptr_t sp = REGSP(src);
+    CPU_REGISTERS *dst;
 
-	STACK_ALLOC(dst, sp, sp, size);
+    STACK_ALLOC(dst, sp, sp, size);
 
-	if(!WITHIN_BOUNDRY(sp, sp, act->aspace_prp->boundry_addr)) {
-		usr_fault(MAKE_SIGCODE(SIGSEGV,SEGV_MAPERR,FLTPAGE), act, sp);
-		__ker_exit();
-	}
+    if (!WITHIN_BOUNDRY(sp, sp, act->aspace_prp->boundry_addr)) {
+        usr_fault(MAKE_SIGCODE(SIGSEGV, SEGV_MAPERR, FLTPAGE), act, sp);
+        __ker_exit();
+    }
 
-	SET_XFER_HANDLER(&prep_fault_handlers);
-	*(CPU_REGISTERS *)dst = *src;
-	SET_XFER_HANDLER(NULL);
+    SET_XFER_HANDLER(&prep_fault_handlers);
+    *(CPU_REGISTERS *) dst = *src;
+    SET_XFER_HANDLER(NULL);
 
-	return sp;
+    return sp;
 }
 
 
@@ -58,17 +58,17 @@ fpu_emulation_prep(CPU_REGISTERS *src, THREAD *act, int size) {
  * turn off single stepping while we're in the floating point emulator
  */
 
-int rdecl
-begin_fp_emulation(THREAD *act) {
-	if(act->flags & _NTO_TF_SSTEP) {
-		DEBUG	*dep = act->process->debugger;
+int rdecl begin_fp_emulation(THREAD * act)
+{
+    if (act->flags & _NTO_TF_SSTEP) {
+        DEBUG *dep = act->process->debugger;
 
-		debug_detach_brkpts(dep);
-		act->internal_flags |= _NTO_ITF_SSTEP_SUSPEND;
-		debug_attach_brkpts(dep);
-		return 1;
-	}
-	return 0;
+        debug_detach_brkpts(dep);
+        act->internal_flags |= _NTO_ITF_SSTEP_SUSPEND;
+        debug_attach_brkpts(dep);
+        return 1;
+    }
+    return 0;
 }
 
 __SRCVERSION("nano_fp_emu.c $Rev: 153052 $");

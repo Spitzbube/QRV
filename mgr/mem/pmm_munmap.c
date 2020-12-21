@@ -17,22 +17,22 @@
 
 #include "pmm.h"
 
-int
-pmm_munmap(PROCESS *prp, uintptr_t addr, size_t len, int flags, part_id_t mpart_id) {
-	struct mem_phys_entry				*mem, **pmem;
+int pmm_munmap(PROCESS * prp, uintptr_t addr, size_t len, int flags, part_id_t mpart_id)
+{
+    struct mem_phys_entry *mem, **pmem;
 
-	for(pmem = (struct mem_phys_entry **)&prp->memory; (mem = *pmem); pmem = &mem->next) {
-		if(addr == (uintptr_t)(mem + 1) && len == mem->size) {
-			*pmem = mem->next;
-			MemobjDestroyed((void *)_syspage_ptr,
-				(unsigned)CPU_V2P(addr),
-				(unsigned)CPU_V2P((uintptr_t)addr + len - 1), 0, 0);
-			mem_free_size += (sizeof *mem + mem->size + 3) & ~3;
-			_sfree(mem, sizeof *mem + len);
-			return EOK;
-		}
-	}
-	return EINVAL;
+    for (pmem = (struct mem_phys_entry **) &prp->memory; (mem = *pmem); pmem = &mem->next) {
+        if (addr == (uintptr_t) (mem + 1) && len == mem->size) {
+            *pmem = mem->next;
+            MemobjDestroyed((void *) _syspage_ptr,
+                            (unsigned) CPU_V2P(addr),
+                            (unsigned) CPU_V2P((uintptr_t) addr + len - 1), 0, 0);
+            mem_free_size += (sizeof *mem + mem->size + 3) & ~3;
+            _sfree(mem, sizeof *mem + len);
+            return EOK;
+        }
+    }
+    return EINVAL;
 }
 
 __SRCVERSION("pmm_munmap.c $Rev: 168445 $");

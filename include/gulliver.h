@@ -235,15 +235,11 @@
 #endif
 
 __BEGIN_DECLS
-
 #if 0
 extern int endian_swap(void *__data, void *__instr);
 #else
 #define endian_swap(__x, __y)	(0)
 #endif
-
-__END_DECLS
-
+    __END_DECLS
 #endif
-
 /* __SRCVERSION("gulliver.h $Rev: 153052 $"); */

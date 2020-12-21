@@ -32,15 +32,15 @@
 
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __TYPES_H_INCLUDED
- #include <sys/types.h>
+#include <sys/types.h>
 #endif
 
 #ifndef _SIGNAL_H_INCLUDED
- #include <signal.h>
+#include <signal.h>
 #endif
 
 #if !defined(__EXT_POSIX1_199309) && (defined(__EXT_POSIX1_198808) || defined(__EXT_POSIX1_199009))
@@ -60,66 +60,66 @@ __SCHED_PARAM_INTERNAL;
 #endif
 
 struct aiocb {
-	int					aio_fildes;
-	int					aio_reqprio;
+    int aio_fildes;
+    int aio_reqprio;
 #if _FILE_OFFSET_BITS - 0 == 64
-	off_t				aio_offset;
+    off_t aio_offset;
 #elif !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
 #if defined(__LITTLEENDIAN__)
-	off_t				aio_offset;
-	off_t				aio_offset_hi;
+    off_t aio_offset;
+    off_t aio_offset_hi;
 #elif defined(__BIGENDIAN__)
-	off_t				aio_offset_hi;
-	off_t				aio_offset;
+    off_t aio_offset_hi;
+    off_t aio_offset;
 #else
- #error endian not configured for system
+#error endian not configured for system
 #endif
 #else
- #error _FILE_OFFSET_BITS value is unsupported
+#error _FILE_OFFSET_BITS value is unsupported
 #endif
-	__volatile void*	aio_buf;
-	size_t				aio_nbytes;
-	struct sigevent		aio_sigevent;
-	int					aio_lio_opcode;
-	ssize_t				_aio_reserved;
-	int					_aio_pad[3];
+    __volatile void *aio_buf;
+    size_t aio_nbytes;
+    struct sigevent aio_sigevent;
+    int aio_lio_opcode;
+    ssize_t _aio_reserved;
+    int _aio_pad[3];
 
-	/* used by the library, application shouldn't touch them */
-	struct aiocb        *_aio_next;
-	unsigned            _aio_flag;
-	unsigned            _aio_iotype;
-	unsigned            _aio_result;
-	unsigned            _aio_error;
-	void                *_aio_suspend;
-	void                *_aio_plist;
-	int                 _aio_policy;
-	struct __sched_param  _aio_param;
+    /* used by the library, application shouldn't touch them */
+    struct aiocb *_aio_next;
+    unsigned _aio_flag;
+    unsigned _aio_iotype;
+    unsigned _aio_result;
+    unsigned _aio_error;
+    void *_aio_suspend;
+    void *_aio_plist;
+    int _aio_policy;
+    struct __sched_param _aio_param;
 };
 
 #if _LARGEFILE64_SOURCE - 0 > 0
 struct aiocb64 {
-	int					aio_fildes;
-	int					aio_reqprio;
-	off64_t				aio_offset;
-	__volatile void*	aio_buf;
-	size_t				aio_nbytes;
-	struct sigevent		aio_sigevent;
-	int					aio_lio_opcode;
-	ssize_t				_aio_reserved;
-	int					_aio_pad[3];
+    int aio_fildes;
+    int aio_reqprio;
+    off64_t aio_offset;
+    __volatile void *aio_buf;
+    size_t aio_nbytes;
+    struct sigevent aio_sigevent;
+    int aio_lio_opcode;
+    ssize_t _aio_reserved;
+    int _aio_pad[3];
 
-	/* used by the library, application shouldn't touch them */
-	struct aiocb        *_aio_next;
-	unsigned            _aio_flag;
-	unsigned            _aio_iotype;
-	unsigned            _aio_result;
-	unsigned            _aio_error;
-	void                *_aio_suspend;
-	void                *_aio_plist;
-	unsigned            _aio_policy;
-	struct __sched_param  _aio_param;
+    /* used by the library, application shouldn't touch them */
+    struct aiocb *_aio_next;
+    unsigned _aio_flag;
+    unsigned _aio_iotype;
+    unsigned _aio_result;
+    unsigned _aio_error;
+    void *_aio_suspend;
+    void *_aio_plist;
+    unsigned _aio_policy;
+    struct __sched_param _aio_param;
 };
-#endif /* _LARGEFILE64_SOURCE */
+#endif                          /* _LARGEFILE64_SOURCE */
 
 #if defined(__TIMESPEC)
 __TIMESPEC;
@@ -144,16 +144,17 @@ __TIMESPEC;
  * POSIX 1003.1b-1993 Prototypes.
  */
 __BEGIN_DECLS
-
 #if _LARGEFILE64_SOURCE - 0 > 0
 extern int aio_cancel64(int __fd, struct aiocb64 *__aiocbp);
 extern int aio_error64(__const struct aiocb64 *__aiocbp);
 extern int aio_fsync64(int __operation, struct aiocb64 *__aiocbp);
 extern int aio_read64(struct aiocb64 *__aiocbp);
 extern ssize_t aio_return64(struct aiocb64 *__aiocpb);
-extern int aio_suspend64(__const struct aiocb64 *__const __list[], int __nent,	__const struct timespec *__timeout);
+extern int aio_suspend64(__const struct aiocb64 *__const __list[], int __nent,
+                         __const struct timespec *__timeout);
 extern int aio_write64(struct aiocb64 *__aiocpb);
-extern int lio_listio64(int __mode, struct aiocb64 *__const __list[], int __nent,	struct sigevent *__sig);
+extern int lio_listio64(int __mode, struct aiocb64 *__const __list[], int __nent,
+                        struct sigevent *__sig);
 
 /*
  * These 64 bits functions does not touch the "aio_offset" member,
@@ -189,17 +190,12 @@ extern int aio_error(__const struct aiocb *__aiocbp);
 extern int aio_fsync(int __operation, struct aiocb *__aiocbp);
 extern int aio_read(struct aiocb *__aiocbp) __ALIAS64("aio_read64");
 extern ssize_t aio_return(struct aiocb *__aiocpb);
-extern int aio_suspend(__const struct aiocb *__const __list[], int __nent,	__const struct timespec *__timeout);
+extern int aio_suspend(__const struct aiocb *__const __list[], int __nent,
+                       __const struct timespec *__timeout);
 extern int aio_write(struct aiocb *__aiocpb) __ALIAS64("aio_write64");
-extern int lio_listio(int __mode, struct aiocb *__const __list[], int __nent, struct sigevent *__sig) __ALIAS64("lio_listio64");
+extern int lio_listio(int __mode, struct aiocb *__const __list[], int __nent,
+                      struct sigevent *__sig) __ALIAS64("lio_listio64");
 
 __END_DECLS
-
 #endif
-
-
-
-
-
-
 /* __SRCVERSION("aio.h $Rev: 154597 $"); */

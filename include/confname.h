@@ -26,42 +26,42 @@
 #ifndef _CONFNAME_H_INCLUDED
 #define _CONFNAME_H_INCLUDED
 
-#define _CS_NONE			0		/* End of lists in syspage */
-#define _CS_SET				256		/* Bit for SET commands (after subracting 1 from command) */
+#define _CS_NONE			0   /* End of lists in syspage */
+#define _CS_SET				256 /* Bit for SET commands (after subracting 1 from command) */
 
 /* 1-256 are Unix International GET commands */
 #if defined(__EXT_POSIX2)
-#define _CS_PATH			1		/* default path to find system utilities */
+#define _CS_PATH			1   /* default path to find system utilities */
 #endif
 #if defined(__EXT_UNIX_MISC)
-#define _CS_HOSTNAME		2		/* Name of this node within the communications network */
-#define _CS_RELEASE			3		/* Current release level of this implementation */
-#define _CS_VERSION			4		/* Current version of this release */
-#define _CS_MACHINE			5		/* Name of the hardware type on which the system is running */
-#define _CS_ARCHITECTURE	6		/* Name of the instructions set architechure */
-#define _CS_HW_SERIAL		7		/* A serial number assiciated with the hardware */
-#define _CS_HW_PROVIDER		8		/* The name of the hardware manufacturers */
-#define _CS_SRPC_DOMAIN		9		/* The secure RPC domain */
-#define _CS_SYSNAME			11		/* Name of this implementation of the operating system */
+#define _CS_HOSTNAME		2   /* Name of this node within the communications network */
+#define _CS_RELEASE			3   /* Current release level of this implementation */
+#define _CS_VERSION			4   /* Current version of this release */
+#define _CS_MACHINE			5   /* Name of the hardware type on which the system is running */
+#define _CS_ARCHITECTURE	6   /* Name of the instructions set architechure */
+#define _CS_HW_SERIAL		7   /* A serial number assiciated with the hardware */
+#define _CS_HW_PROVIDER		8   /* The name of the hardware manufacturers */
+#define _CS_SRPC_DOMAIN		9   /* The secure RPC domain */
+#define _CS_SYSNAME			11  /* Name of this implementation of the operating system */
 /* 257 - 512 are Unix International SET commands */
-#define _CS_SET_HOSTNAME	(_CS_SET+_CS_HOSTNAME)		/* Set the node name within the communications network */
-#define _CS_SET_SRPC_DOMAIN	(_CS_SET+_CS_SRPC_DOMAIN)	/* Set the secure RPC domain name */
+#define _CS_SET_HOSTNAME	(_CS_SET+_CS_HOSTNAME)  /* Set the node name within the communications network */
+#define _CS_SET_SRPC_DOMAIN	(_CS_SET+_CS_SRPC_DOMAIN)   /* Set the secure RPC domain name */
 
-#define _CS_VENDOR			513		/* Start of vendor specific commands */
+#define _CS_VENDOR			513 /* Start of vendor specific commands */
 #endif
 #if defined(__EXT_QNX)
 
-#define _CS_LIBPATH			200		/* default path for runtime to find standard shared objects */
+#define _CS_LIBPATH			200 /* default path for runtime to find standard shared objects */
 
-#define _CS_DOMAIN			201		/* Domain of this node within the communications network */
-#define _CS_RESOLVE			202		/* In memory /etc/resolve.conf */
-#define _CS_TIMEZONE		203		/* timezone string (TZ style) */
-#define _CS_LOCALE			204		/* locale string */
+#define _CS_DOMAIN			201 /* Domain of this node within the communications network */
+#define _CS_RESOLVE			202 /* In memory /etc/resolve.conf */
+#define _CS_TIMEZONE		203 /* timezone string (TZ style) */
+#define _CS_LOCALE			204 /* locale string */
 
-#define _CS_SET_DOMAIN		(_CS_SET+_CS_DOMAIN)	/* Set the domain for this node */
-#define _CS_SET_RESOLVE		(_CS_SET+_CS_RESOLVE)	/* Set the in-memory /etc/resolve.conf */
-#define _CS_SET_TIMEZONE	(_CS_SET+_CS_TIMEZONE)	/* Set the timezone for this node */
-#define _CS_SET_LOCALE		(_CS_SET+_CS_LOCALE)	/* Set the locale for this node */
+#define _CS_SET_DOMAIN		(_CS_SET+_CS_DOMAIN)    /* Set the domain for this node */
+#define _CS_SET_RESOLVE		(_CS_SET+_CS_RESOLVE)   /* Set the in-memory /etc/resolve.conf */
+#define _CS_SET_TIMEZONE	(_CS_SET+_CS_TIMEZONE)  /* Set the timezone for this node */
+#define _CS_SET_LOCALE		(_CS_SET+_CS_LOCALE)    /* Set the locale for this node */
 
 /* 16385-16640 are QNX GET commands */
 #define _CS_DANH			16385
@@ -348,7 +348,7 @@
 #endif
 
 #if defined(__EXT_QNX)
-#define _PC_DOS_SHARE			10 /* test for dos share support */
+#define _PC_DOS_SHARE			10  /* test for dos share support */
 #define _PC_IMAGE_VADDR			11
 #endif
 

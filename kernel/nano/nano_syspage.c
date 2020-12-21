@@ -18,14 +18,17 @@
 #include "externs.h"
 
 
-int rdecl
-within_syspage(uintptr_t vaddr, unsigned size) {
-	uintptr_t	end   = vaddr + size - 1;
+int rdecl within_syspage(uintptr_t vaddr, unsigned size)
+{
+    uintptr_t end = vaddr + size - 1;
 
-	if(end <= vaddr) return 0;
-	if(vaddr < (uintptr_t)privateptr->user_syspageptr) return 0;
-	if(end > ((uintptr_t)privateptr->user_syspageptr + _syspage_ptr->total_size - 1)) return 0;
-	return 1;
+    if (end <= vaddr)
+        return 0;
+    if (vaddr < (uintptr_t) privateptr->user_syspageptr)
+        return 0;
+    if (end > ((uintptr_t) privateptr->user_syspageptr + _syspage_ptr->total_size - 1))
+        return 0;
+    return 1;
 }
 
 __SRCVERSION("nano_syspage.c $Rev: 153052 $");

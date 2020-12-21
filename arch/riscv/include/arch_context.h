@@ -104,4 +104,14 @@ typedef struct riscv_fpu_registers {
     uint64_t	fpr[32];
 } RISCV_FPU_REGISTERS;
 
+typedef struct riscv_alt_registers {
+    /* Currently don't use any alternative registers */
+    uint64_t dummy;
+} RISCV_ALT_REGISTERS;
+
+typedef struct riscv_perf_registers {
+    /* Currently don't use any performance registers */
+    uint64_t dummy;
+} RISCV_PERF_REGISTERS;
+
 #endif /* __RISCV_CONTEXT_H_INCLUDED */

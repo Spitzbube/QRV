@@ -32,14 +32,12 @@
 #endif
 
 _C_STD_BEGIN
-
 #if defined(__SIZE_T)
-typedef __SIZE_T	size_t;
+    typedef __SIZE_T size_t;
 #undef __SIZE_T
 #endif
 
 _C_STD_END
-
 /*
  * regcomp() cflags argument
  */
@@ -47,14 +45,12 @@ _C_STD_END
 #define	REG_ICASE	0002
 #define	REG_NOSUB	0004
 #define	REG_NEWLINE	0010
-
 #if defined(__EXT_QNX)
 #define	REG_BASIC	0000
 #define	REG_NOSPEC	0020
 #define	REG_PEND	0040
 #define	REG_DUMP	0200
 #endif
-
 /*
  * regcomp() and regexec() return values
  */
@@ -71,11 +67,9 @@ _C_STD_END
 #define	REG_ERANGE	11
 #define	REG_ESPACE	12
 #define	REG_BADRPT	13
-
 #if defined(__EXT_XOPEN_EX)
 #define REG_ENOSYS	17
 #endif
-
 #if defined(__EXT_QNX)
 #define REG_OK		0
 #define	REG_EMPTY	14
@@ -84,49 +78,41 @@ _C_STD_END
 #define	REG_ATOI	255
 #define	REG_ITOA	0400
 #endif
-
 /*
  * regexec() eflags argument
  */
 #define	REG_NOTBOL	00001
 #define	REG_NOTEOL	00002
-
 #if defined(__EXT_QNX)
 #define	REG_STARTEND	00004
 #define	REG_TRACE	00400
 #define	REG_LARGE	01000
 #define	REG_BACKR	02000
 #endif
-
-
 #include <_pack64.h>
-
 typedef _Int32t regoff_t;
 
 typedef struct {
-	int re_magic;
-	_CSTD size_t re_nsub;
-	__const char *re_endp;
-	struct re_guts *re_g;
+    int re_magic;
+    _CSTD size_t re_nsub;
+    __const char *re_endp;
+    struct re_guts *re_g;
 } regex_t;
 
 typedef struct {
-	regoff_t rm_so;
-	regoff_t rm_eo;
+    regoff_t rm_so;
+    regoff_t rm_eo;
 } regmatch_t;
 
 #include <_packpop.h>
 
 
-__BEGIN_DECLS
-extern  int     regcomp( regex_t *__preg, __const char *__pattern, int __cflags );
-extern  int     regexec( __const regex_t *__preg, __const char *__str,
-                         _CSTD size_t __nmatch, regmatch_t *__pmatch, int __eflags );
-extern  _CSTD size_t  regerror( int __errcode, __const regex_t *__preg, char *__errbuf,
-                            _CSTD size_t __errbuf_size);
-extern  void    regfree( regex_t *__preg );
+__BEGIN_DECLS extern int regcomp(regex_t * __preg, __const char *__pattern, int __cflags);
+extern int regexec(__const regex_t * __preg, __const char *__str,
+                   _CSTD size_t __nmatch, regmatch_t * __pmatch, int __eflags);
+extern _CSTD size_t regerror(int __errcode, __const regex_t * __preg, char *__errbuf,
+                             _CSTD size_t __errbuf_size);
+extern void regfree(regex_t * __preg);
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("regex.h $Rev: 153052 $"); */

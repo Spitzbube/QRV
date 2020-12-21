@@ -23,40 +23,41 @@
  * it is overridden by a cpu-specific one. Look in the memmgr/$CPU dir
  * for the src.
  */
-OBJECT *
-vmm_vaddr_to_memobj(PROCESS *prp, void *vaddr, unsigned *offset, int create) {
-	paddr_t						paddr;
-	struct pa_quantum			*pq;
-	unsigned					prot;
+OBJECT *vmm_vaddr_to_memobj(PROCESS * prp, void *vaddr, unsigned *offset, int create)
+{
+    paddr_t paddr;
+    struct pa_quantum *pq;
+    unsigned prot;
 
-	//RUSH3: This won't work once we start swapping out. Problem
-	//RUSH3: With using object & offset though - offset is 64 bits and we
-	//RUSH3: only have room for 32. Also, this is be called from the
-	//RUSH3: kernel. Will we have race conditions walking the structures?
-	prot = cpu_vmm_vaddrinfo(prp, (uintptr_t)vaddr, &paddr, NULL);
+    //RUSH3: This won't work once we start swapping out. Problem
+    //RUSH3: With using object & offset though - offset is 64 bits and we
+    //RUSH3: only have room for 32. Also, this is be called from the
+    //RUSH3: kernel. Will we have race conditions walking the structures?
+    prot = cpu_vmm_vaddrinfo(prp, (uintptr_t) vaddr, &paddr, NULL);
 #ifndef NDEBUG
-	if(prot == PROT_NONE) crash();
+    if (prot == PROT_NONE)
+        crash();
 #endif
 
-	if(create) {
-		//RUSH3: Turn on a bit in the object saying that it has sync objects
-		//RUSH3: in it? Would allow us to handle MAP_LAZY/paged out stuff better.
+    if (create) {
+        //RUSH3: Turn on a bit in the object saying that it has sync objects
+        //RUSH3: in it? Would allow us to handle MAP_LAZY/paged out stuff better.
 
-		// whack in our sync flag, so on free we can avoid MemobjDestroy stuff
-		pq = pa_paddr_to_quantum(paddr);
-		if(pq != NULL) {
+        // whack in our sync flag, so on free we can avoid MemobjDestroy stuff
+        pq = pa_paddr_to_quantum(paddr);
+        if (pq != NULL) {
 #ifndef NDEBUG
-			if(!(pq->flags & PAQ_FLAG_INITIALIZED)
-				&& WITHIN_BOUNDRY((uintptr_t)vaddr, (uintptr_t)vaddr, user_boundry_addr)) {
-				crash();
-			}
+            if (!(pq->flags & PAQ_FLAG_INITIALIZED)
+                && WITHIN_BOUNDRY((uintptr_t) vaddr, (uintptr_t) vaddr, user_boundry_addr)) {
+                crash();
+            }
 #endif
-			pq->flags |= PAQ_FLAG_HAS_SYNC;
-		}
-	}
+            pq->flags |= PAQ_FLAG_HAS_SYNC;
+        }
+    }
 
-	*offset = PADDR_TO_SYNC_OFF(paddr);
-	return PADDR_TO_SYNC_OBJ(paddr);
+    *offset = PADDR_TO_SYNC_OFF(paddr);
+    return PADDR_TO_SYNC_OBJ(paddr);
 }
 
 __SRCVERSION("vmm_vaddr_to_memobj.c $Rev: 153052 $");

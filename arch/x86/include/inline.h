@@ -87,10 +87,10 @@ _Uint16t    _es(void);
    	/* return the current value of the 'fs' register */
 _Uint16t    _fs(void);
 
-   	/* return the current value of the 'gs' register */
+	/* return the current value of the 'gs' register */
 _Uint16t    _gs(void);
 
-   	/* return the current value of the 'ss' register */
+	/* return the current value of the 'ss' register */
 _Uint16t    _ss(void);
 
 	/* load segment registers register */
@@ -111,19 +111,19 @@ _Uint16t    swapw(_Uint16t __val);
 	/* swaps byte ordering of a long */
 _Uint32t   swapl(_Uint32t __lval);
 
-	/*
-    	memcopies by 8,16 and 32 bits resp.
-    	note nbytes is BYTES and is expected to be an even
-        multiple of the copy size (ie 16 or 32).
-	*/
+/*
+ * memcopies by 8,16 and 32 bits resp.
+ * note nbytes is BYTES and is expected to be an even
+ * multiple of the copy size (ie 16 or 32).
+ */
 memcpy8(void __far *__dst, const void __far *__src, unsigned __nbytes);
 memcpy16(void __far *__dst, const void __far *__src, unsigned __nbytes);
 memcpy32(void __far *__dst, const void __far *__src, unsigned __nbytes);
 
-	/* Read the Pentium's real time counter */
+/* Read the Pentium's real time counter */
 void rdtsc(void *__ptr);
 
-	/* Various floating point thingies */
+/* Various floating point thingies */
 void fninit(void);
 int fsw(void);
 int fnclex(void);
@@ -131,16 +131,16 @@ void fsave(void *__addr);
 void fnsave(void *__addr);
 void frstor(void *__addr);
 
-	/* Find high order on bit */
+/* Find high order on bit */
 int bsr(long unsigned __eax);
 
-	/* Find high order on bit, handling case where nothing's on */
+/* Find high order on bit, handling case where nothing's on */
 int bsr0(long unsigned __eax);
 
-	/* SMP Atomic or'ing of memory */
+/* SMP Atomic or'ing of memory */
 unsigned smp_locked_or(unsigned *__addr, unsigned __value);
 
-	/* SMP Atomic anding'ing of memory */
+/* SMP Atomic anding'ing of memory */
 unsigned smp_locked_and(unsigned *__addr, unsigned __value);
 
 #pragma aux breakpoint = "int 0x03" parm nomemory [] modify nomemory exact []

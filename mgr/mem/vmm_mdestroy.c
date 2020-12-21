@@ -17,20 +17,20 @@
 
 #include "vmm.h"
 
-void
-vmm_mdestroy(PROCESS *prp) {
-	ADDRESS		*adp;
+void vmm_mdestroy(PROCESS * prp)
+{
+    ADDRESS *adp;
 
-	if((prp == NULL) || (prp->pid == SYSMGR_PID)) {
-		crash();
-	}
-	adp = prp->memory;
-	if(adp != NULL) {
-		pathmgr_object_done(adp->anon);
-		cpu_vmm_mdestroy(prp);
-		(void)map_fini(&adp->map);
-		prp->memory = NULL;
-	}
+    if ((prp == NULL) || (prp->pid == SYSMGR_PID)) {
+        crash();
+    }
+    adp = prp->memory;
+    if (adp != NULL) {
+        pathmgr_object_done(adp->anon);
+        cpu_vmm_mdestroy(prp);
+        (void) map_fini(&adp->map);
+        prp->memory = NULL;
+    }
 }
 
 __SRCVERSION("vmm_mdestroy.c $Rev: 174147 $");

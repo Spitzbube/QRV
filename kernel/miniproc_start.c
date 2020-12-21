@@ -154,8 +154,8 @@ static void do_miniproc(void)
                     switch (msp->open.connect.extra_type) {
                     case _IO_CONNECT_EXTRA_RESMGR_LINK:
                         err = path_link((char *) msp->open.connect.path,
-                                        (void *) &msp->open.connect.path[msp->open.connect.
-                                                                         path_len]);
+                                        (void *) &msp->open.connect.path[msp->open.
+                                                                         connect.path_len]);
                         break;
                     case _IO_CONNECT_EXTRA_PROC_SYMLINK:
                         //NYI: handle creation of a symlink....

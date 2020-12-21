@@ -24,19 +24,19 @@
 // a -1 vector number is a request to synchronize with that global
 // state.
 //
-void rdecl
-interrupt_smp_sync(unsigned flag) {
-	struct intrinfo_entry	*iip;
-	unsigned				i;
+void rdecl interrupt_smp_sync(unsigned flag)
+{
+    struct intrinfo_entry *iip;
+    unsigned i;
 
-	CPU_SLOCK_LOCK(&intr_slock);
-	iip = intrinfoptr;
-	for(i = 0; i < intrinfo_num; ++i, ++iip) {
-		if(iip->flags & flag) {
-			(void)iip->mask(_syspage_ptr, -1);
-		}
-	}
-	CPU_SLOCK_UNLOCK(&intr_slock);
+    CPU_SLOCK_LOCK(&intr_slock);
+    iip = intrinfoptr;
+    for (i = 0; i < intrinfo_num; ++i, ++iip) {
+        if (iip->flags & flag) {
+            (void) iip->mask(_syspage_ptr, -1);
+        }
+    }
+    CPU_SLOCK_UNLOCK(&intr_slock);
 }
 
 __SRCVERSION("nano_smp_interrupt.c $Rev: 153052 $");

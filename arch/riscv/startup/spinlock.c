@@ -1,12 +1,10 @@
 // Mutual exclusion spin locks.
 
-#include "types.h"
-#include "param.h"
-#include "memlayout.h"
-#include "spinlock.h"
-#include "riscv.h"
-#include "proc.h"
-#include "defs.h"
+#include <kernel/startup.h>
+#include <riscv.h>
+#include <spinlock.h>
+
+#include "task.h"
 
 void initlock(struct spinlock *lk, char *name)
 {
@@ -21,7 +19,7 @@ void acquire(struct spinlock *lk)
 {
     push_off();                 // disable interrupts to avoid deadlock.
     if (holding(lk))
-        panic("acquire");
+        crash("acquire");
 
     // On RISC-V, sync_lock_test_and_set turns into an atomic swap:
     //   a5 = 1
@@ -43,7 +41,7 @@ void acquire(struct spinlock *lk)
 void release(struct spinlock *lk)
 {
     if (!holding(lk))
-        panic("release");
+        crash("release");
 
     lk->cpu = 0;
 
@@ -94,9 +92,9 @@ void pop_off(void)
 {
     struct cpu *c = mycpu();
     if (intr_get())
-        panic("pop_off - interruptible");
+        crash("pop_off - interruptible");
     if (c->noff < 1)
-        panic("pop_off");
+        crash("pop_off");
     c->noff -= 1;
     if (c->noff == 0 && c->intena)
         intr_on();

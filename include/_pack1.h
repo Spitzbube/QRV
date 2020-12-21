@@ -24,20 +24,20 @@
  */
 
 #if defined(__WATCOMC__)
- #pragma pack(__push,1);
+#pragma pack(__push,1);
 #elif defined(__HIGHC__)
- #pragma push_align_members(1);
+#pragma push_align_members(1);
 #elif defined(__GNUC__)
- #if defined(__PRAGMA_PACK_PUSH_POP__)
-  #pragma pack(push, 1)
- #else
-  #pragma pack(1)
- #endif
+#if defined(__PRAGMA_PACK_PUSH_POP__)
+#pragma pack(push, 1)
+#else
+#pragma pack(1)
+#endif
 #elif defined(__INTEL_COMPILER)
- #pragma pack(push, 1)
+#pragma pack(push, 1)
 #elif defined(__MWERKS__)
 #else
- #error Compiler not supported
+#error Compiler not supported
 #endif
 
 /* __SRCVERSION("_pack1.h $Rev: 167275 $"); */

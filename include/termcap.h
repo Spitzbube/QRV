@@ -30,22 +30,18 @@
 #include <sys/platform.h>
 #endif
 
-__BEGIN_DECLS
-
-extern int tgetent(char *, char *);
+__BEGIN_DECLS extern int tgetent(char *, char *);
 extern char *tgetstr(char *, char **);
 extern int tgetnum(char *);
 extern int tgetflag(char *);
 extern char *tgoto(char *, int, int);
 extern int tputs(char *, int, int (*)(int));
 
-extern  char PC;
-extern  char *BC;
-extern  char *UP;
-extern  short ospeed;
+extern char PC;
+extern char *BC;
+extern char *UP;
+extern short ospeed;
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("termcap.h $Rev: 165622 $"); */

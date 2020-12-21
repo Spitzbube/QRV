@@ -33,18 +33,13 @@
 _C_STD_BEGIN
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ < 199901L) || \
     (defined(__GNUC__) && __GNUC__ < 3)
-typedef char	_Bool;
+    typedef char _Bool;
 #endif
 _C_STD_END
-
 #define bool	_Bool
 #define false	0
 #define true	1
-
 #endif
-
 #define __bool_true_false_are_defined	1
-
 #endif
-
 /* __SRCVERSION("stdbool.h $Rev: 157817 $"); */

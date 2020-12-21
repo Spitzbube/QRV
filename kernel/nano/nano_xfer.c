@@ -19,12 +19,12 @@
 #include <setjmp.h>
 #include "externs.h"
 
-#define XFER_IOV_NUM		32		/* Number of iov's to copy at a time */
-#define XFER_IOV_LIMIT		((4*1024*1024)/8)		/* Maximum number of iov allowed */
+#define XFER_IOV_NUM		32  /* Number of iov's to copy at a time */
+#define XFER_IOV_LIMIT		((4*1024*1024)/8)   /* Maximum number of iov allowed */
 
 #define XFER_PREEMPT(act)	if(NEED_PREEMPT(act)) { xfer_preempt(act); }
 
-jmp_buf					*xfer_env;
+jmp_buf *xfer_env;
 
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
 /*
@@ -32,65 +32,68 @@ jmp_buf					*xfer_env;
  *	kernel is locked before this rutine is entered.
  *
  */
- void xfer_restorestate(THREAD *act) {
-	 THREAD *thp;
+void xfer_restorestate(THREAD * act)
+{
+    THREAD *thp;
 
-	lock_kernel();
-	if(act->internal_flags & _NTO_ITF_MSG_DELIVERY) {
-		act->internal_flags &= ~_NTO_ITF_MSG_DELIVERY;
+    lock_kernel();
+    if (act->internal_flags & _NTO_ITF_MSG_DELIVERY) {
+        act->internal_flags &= ~_NTO_ITF_MSG_DELIVERY;
 
-		/* AsyncMsg store a cop in act->restart */
-		if (act->restart && ((CONNECT *)(act->restart))->type == TYPE_CONNECTION) {
-			((CONNECT *)(act->restart))->cd =
-			  (struct _asyncmsg_connection_descriptor *)act->args.ms.rparts;
-			return;
-		}
+        /* AsyncMsg store a cop in act->restart */
+        if (act->restart && ((CONNECT *) (act->restart))->type == TYPE_CONNECTION) {
+            ((CONNECT *) (act->restart))->cd =
+                (struct _asyncmsg_connection_descriptor *) act->args.ms.rparts;
+            return;
+        }
 
-		if((thp = act->blocked_on)) {
-			act->blocked_on = 0;
+        if ((thp = act->blocked_on)) {
+            act->blocked_on = 0;
 #ifndef NDEBUG
-		if((TYPE_MASK(thp->type) != TYPE_THREAD) && (TYPE_MASK(thp->type) != TYPE_VTHREAD)) {
-			kprintf("\nWrong type: thp %p type %x act %p act->state %x act->type %x\n",thp, thp->type, act, act->state, act->type);
-			return;
-		}
+            if ((TYPE_MASK(thp->type) != TYPE_THREAD) && (TYPE_MASK(thp->type) != TYPE_VTHREAD)) {
+                kprintf("\nWrong type: thp %p type %x act %p act->state %x act->type %x\n", thp,
+                        thp->type, act, act->state, act->type);
+                return;
+            }
 #endif
-			if(thp->internal_flags & _NTO_ITF_MSG_DELIVERY) {
-			 	thp->internal_flags &= ~_NTO_ITF_MSG_DELIVERY;
-				if(thp->internal_flags & _NTO_ITF_MSG_FORCE_RDY) {
-					force_ready(thp,KSTATUS(thp));
-					thp->internal_flags &= ~_NTO_ITF_MSG_FORCE_RDY;
-				}
-			} else {
+            if (thp->internal_flags & _NTO_ITF_MSG_DELIVERY) {
+                thp->internal_flags &= ~_NTO_ITF_MSG_DELIVERY;
+                if (thp->internal_flags & _NTO_ITF_MSG_FORCE_RDY) {
+                    force_ready(thp, KSTATUS(thp));
+                    thp->internal_flags &= ~_NTO_ITF_MSG_FORCE_RDY;
+                }
+            } else {
 #ifndef NDEBUG
-//					kprintf("\nblocked thread has not set flag in restart act %x thp %x state %x type %x\n",act,thp,thp->state,thp->type);
+//                  kprintf("\nblocked thread has not set flag in restart act %x thp %x state %x type %x\n",act,thp,thp->state,thp->type);
 #endif
-			}
-		} else {
+            }
+        } else {
 #ifndef NDEBUG
-			kprintf("\nrestart:  %p %p\n",act,thp);
+            kprintf("\nrestart:  %p %p\n", act, thp);
 #endif
-		}
-	}
- }
+        }
+    }
+}
 #endif
 
 /*
  * This routine is used by the XFER_PREEMPT macro in xfermsg()
  *
  */
-static void xfer_preempt(THREAD *thp) {
-	lock_kernel();
-	if(get_inkernel() & INKERNEL_SPECRET) {
-		unspecret_kernel();
-	} else {
-		CRASHCHECK(TYPE_MASK(thp->type) != TYPE_THREAD);
-		SETKIP(thp, KIP(thp) - KER_ENTRY_SIZE);
-	}
+static void xfer_preempt(THREAD * thp)
+{
+    lock_kernel();
+    if (get_inkernel() & INKERNEL_SPECRET) {
+        unspecret_kernel();
+    } else {
+        CRASHCHECK(TYPE_MASK(thp->type) != TYPE_THREAD);
+        SETKIP(thp, KIP(thp) - KER_ENTRY_SIZE);
+    }
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
-	xfer_restorestate(thp);
+    xfer_restorestate(thp);
 #endif
-	SET_XFER_HANDLER(NULL);
-	__ker_exit();
+    SET_XFER_HANDLER(NULL);
+    __ker_exit();
 }
 
 /*
@@ -114,16 +117,18 @@ static void xfer_preempt(THREAD *thp) {
  *   thp->restart->args.ms.msglen
  *      Updated using regs to more accurate number (if possible)
  */
-void xfer_restart(THREAD *thp, CPU_REGISTERS *regs) {
-	if((thp = thp->restart)) {
-		thp->args.ms.msglen += xferiov_pos(regs);
-	}
-	__ker_exit();
+void xfer_restart(THREAD * thp, CPU_REGISTERS * regs)
+{
+    if ((thp = thp->restart)) {
+        thp->args.ms.msglen += xferiov_pos(regs);
+    }
+    __ker_exit();
 }
 
-void xfer_async_restart(THREAD *thp, CPU_REGISTERS *regs) {
-	thp->args.ms.msglen += xferiov_pos(regs);
-	__ker_exit();
+void xfer_async_restart(THREAD * thp, CPU_REGISTERS * regs)
+{
+    thp->args.ms.msglen += xferiov_pos(regs);
+    __ker_exit();
 }
 
 /*
@@ -221,340 +226,348 @@ void xfer_async_restart(THREAD *thp, CPU_REGISTERS *regs) {
 	}while(0)
 
 
-int xfermsg(THREAD *dthp, THREAD *sthp, int doff, int soff) {
-	IOV						*dst, *src;
-	int						dparts, sparts;
-	PROCESS					*prp, *sprp,*dprp;
-	unsigned				sflags, dflags;
-	int						status;
-	IOV						diov[1], siov[1];
+int xfermsg(THREAD * dthp, THREAD * sthp, int doff, int soff)
+{
+    IOV *dst, *src;
+    int dparts, sparts;
+    PROCESS *prp, *sprp, *dprp;
+    unsigned sflags, dflags;
+    int status;
+    IOV diov[1], siov[1];
 
-	XFER_PREEMPT(actives[KERNCPU]);
+    XFER_PREEMPT(actives[KERNCPU]);
 
-	/* If restarted, and threads match, continue where we left off */
-	if(dthp->restart != sthp || sthp->restart != sthp || sthp->args.ms.dthp != dthp) {
-		sthp->args.ms.msglen = 0;
-		sthp->args.ms.dthp = dthp;
-		// CAREFUL!  The above operations have to happen before dthp->restart gets updated
-		// here.  The compiler can rearrange code, and if it rearranges the assignment to
-		// dthp->restart so that it comes before the above, a preemption at a bad time can lead
-		// to failure in the xfer.  We need to keep the compiler from rearranging things
-		// here, hence we use atomic_order().
-		atomic_order(sthp->restart = dthp->restart = sthp);
-	} else {
-		soff += sthp->args.ms.msglen;
-		doff += sthp->args.ms.msglen;
-	}
+    /* If restarted, and threads match, continue where we left off */
+    if (dthp->restart != sthp || sthp->restart != sthp || sthp->args.ms.dthp != dthp) {
+        sthp->args.ms.msglen = 0;
+        sthp->args.ms.dthp = dthp;
+        // CAREFUL!  The above operations have to happen before dthp->restart gets updated
+        // here.  The compiler can rearrange code, and if it rearranges the assignment to
+        // dthp->restart so that it comes before the above, a preemption at a bad time can lead
+        // to failure in the xfer.  We need to keep the compiler from rearranging things
+        // here, hence we use atomic_order().
+        atomic_order(sthp->restart = dthp->restart = sthp);
+    } else {
+        soff += sthp->args.ms.msglen;
+        doff += sthp->args.ms.msglen;
+    }
 
-	/* Special case for 1 part source messages. */
-	if((sparts = sthp->args.ms.sparts) == 0) {
-		return 0;
-	}
+    /* Special case for 1 part source messages. */
+    if ((sparts = sthp->args.ms.sparts) == 0) {
+        return 0;
+    }
 
-	if(sparts < 0) {
-		SETIOV(siov, sthp->args.ms.smsg, -sparts);
-		src = siov;
-		sparts = 1;
-		sflags = MAPADDR_FLAGS_IOVKERNEL;
-	} else {
-		if(sparts > XFER_IOV_LIMIT) {
-			return XFER_SRC_FAULT;
-		}
-		src = sthp->args.ms.smsg;
-		sflags = 0;
-	}
+    if (sparts < 0) {
+        SETIOV(siov, sthp->args.ms.smsg, -sparts);
+        src = siov;
+        sparts = 1;
+        sflags = MAPADDR_FLAGS_IOVKERNEL;
+    } else {
+        if (sparts > XFER_IOV_LIMIT) {
+            return XFER_SRC_FAULT;
+        }
+        src = sthp->args.ms.smsg;
+        sflags = 0;
+    }
 
-	if(sthp->process->pid == SYSMGR_PID) {
-		sflags |= MAPADDR_FLAGS_SYSPRP;
-	}
-	sprp = sthp->aspace_prp;
+    if (sthp->process->pid == SYSMGR_PID) {
+        sflags |= MAPADDR_FLAGS_SYSPRP;
+    }
+    sprp = sthp->aspace_prp;
 
-	/* Same special case for 1 part dst messages */
-	if((dparts = dthp->args.ms.rparts) == 0) {
-		return 0;
-	}
+    /* Same special case for 1 part dst messages */
+    if ((dparts = dthp->args.ms.rparts) == 0) {
+        return 0;
+    }
 
-	if(dparts < 0) {
-		SETIOV(diov, dthp->args.ms.rmsg, -dparts);
-		dst = diov;
-		dparts = 1;
-		dflags = MAPADDR_FLAGS_WRITE | MAPADDR_FLAGS_IOVKERNEL;
-	} else {
-		if(dparts > XFER_IOV_LIMIT) {
-			return XFER_DST_FAULT;
-		}
-		dst = dthp->args.ms.rmsg;
-		dflags = MAPADDR_FLAGS_WRITE;
-	}
+    if (dparts < 0) {
+        SETIOV(diov, dthp->args.ms.rmsg, -dparts);
+        dst = diov;
+        dparts = 1;
+        dflags = MAPADDR_FLAGS_WRITE | MAPADDR_FLAGS_IOVKERNEL;
+    } else {
+        if (dparts > XFER_IOV_LIMIT) {
+            return XFER_DST_FAULT;
+        }
+        dst = dthp->args.ms.rmsg;
+        dflags = MAPADDR_FLAGS_WRITE;
+    }
 
-	if(dthp->process->pid == SYSMGR_PID) {
-		dflags |= MAPADDR_FLAGS_SYSPRP;
-	}
-	dprp = dthp->aspace_prp;
+    if (dthp->process->pid == SYSMGR_PID) {
+        dflags |= MAPADDR_FLAGS_SYSPRP;
+    }
+    dprp = dthp->aspace_prp;
 
-	prp = aspaces_prp[KERNCPU];
+    prp = aspaces_prp[KERNCPU];
 
-	/* Find the translation or change address spaces as nessessary */
-	/*
-	 * dst_aspace  src_aspace  aspace  <=> aspace
-	 *    1            2       !(1|2)      1 could not happen (for pipe case, prepare the aspace in read_writev)
-	 *    1            NULL    !1          1
-	 *    1            2       2           2(NC)*	++
-	 *    1            1       1           1(NC)
-	 *    1            2       1           1(NC)*
-	 *    1            NULL    1           1(NC)
-	 *    NULL         NULL    any         same(NC)
-	 *    NULL         2       2           2(NC)
-	 *    NULL         2       !2          2
-	 */
-	if(dprp) {
-		if(sprp == prp) {
-			if(dprp != prp) {
-				IOV						iovlist[XFER_IOV_NUM];
-				int						parts;
-				int						nbytes;
+    /* Find the translation or change address spaces as nessessary */
+    /*
+     * dst_aspace  src_aspace  aspace  <=> aspace
+     *    1            2       !(1|2)      1 could not happen (for pipe case, prepare the aspace in read_writev)
+     *    1            NULL    !1          1
+     *    1            2       2           2(NC)*   ++
+     *    1            1       1           1(NC)
+     *    1            2       1           1(NC)*
+     *    1            NULL    1           1(NC)
+     *    NULL         NULL    any         same(NC)
+     *    NULL         2       2           2(NC)
+     *    NULL         2       !2          2
+     */
+    if (dprp) {
+        if (sprp == prp) {
+            if (dprp != prp) {
+                IOV iovlist[XFER_IOV_NUM];
+                int parts;
+                int nbytes;
 
-				/* Check for a src offset and skip over it. */
-				if(soff) {
-					OFFSET_SKIP(soff, src, sparts);
-				}
+                /* Check for a src offset and skip over it. */
+                if (soff) {
+                    OFFSET_SKIP(soff, src, sparts);
+                }
 
-				do {
-					XFER_PREEMPT(actives[KERNCPU]);
-					SET_XFER_HANDLER(&xfer_dst_handlers);
-					parts = sizeof iovlist / sizeof *iovlist;
-					nbytes = memmgr.map_xfer(prp, dprp, (IOV **)&dst, &dparts, &doff, iovlist, &parts, dflags);
-					if(nbytes <= 0) {
-						if(nbytes == 0) {
-							break;
-						} else {
-							XFER_FAULTRET(XFER_DST_FAULT);
-						}
-					}
-					dflags |= MAPADDR_FLAGS_NOTFIRST;
+                do {
+                    XFER_PREEMPT(actives[KERNCPU]);
+                    SET_XFER_HANDLER(&xfer_dst_handlers);
+                    parts = sizeof iovlist / sizeof *iovlist;
+                    nbytes =
+                        memmgr.map_xfer(prp, dprp, (IOV **) & dst, &dparts, &doff, iovlist, &parts,
+                                        dflags);
+                    if (nbytes <= 0) {
+                        if (nbytes == 0) {
+                            break;
+                        } else {
+                            XFER_FAULTRET(XFER_DST_FAULT);
+                        }
+                    }
+                    dflags |= MAPADDR_FLAGS_NOTFIRST;
 
-					SET_XFER_HANDLER(&xfer_src_handlers);
-					if((status = xferiov(sthp, iovlist, src, parts, sparts, 0, soff)) != 0) {
-						XFER_FAULTRET(status);
-					}
-					if(dparts == 0 ) {
-						break;
-					}
-					soff += nbytes;
-					OFFSET_SKIP_BR(soff,src,sparts);
-				} while(sparts);
-				SET_XFER_HANDLER(0);
-				return 0;
-			} else { /* end for (dprp != prp) */
-				/* sprp == dprp == prp */
-			}
-		} else if(sprp) { /* end for (sprp == prp) */
-			IOV							iovlist[XFER_IOV_NUM];
-			int							parts;
-			int							nbytes;
-
-
-			/* Check for a dst offset and skip over it. */
-			if(doff) {
-				OFFSET_SKIP(doff, dst, dparts);
-			}
+                    SET_XFER_HANDLER(&xfer_src_handlers);
+                    if ((status = xferiov(sthp, iovlist, src, parts, sparts, 0, soff)) != 0) {
+                        XFER_FAULTRET(status);
+                    }
+                    if (dparts == 0) {
+                        break;
+                    }
+                    soff += nbytes;
+                    OFFSET_SKIP_BR(soff, src, sparts);
+                } while (sparts);
+                SET_XFER_HANDLER(0);
+                return 0;
+            } else {            /* end for (dprp != prp) */
+                /* sprp == dprp == prp */
+            }
+        } else if (sprp) {      /* end for (sprp == prp) */
+            IOV iovlist[XFER_IOV_NUM];
+            int parts;
+            int nbytes;
 
 
-			do {
-				XFER_PREEMPT(actives[KERNCPU]);
-				SET_XFER_HANDLER(&xfer_src_handlers);
-
-				parts = sizeof iovlist / sizeof *iovlist;
-				nbytes = memmgr.map_xfer(prp, sprp, (IOV**)&src, &sparts, &soff, iovlist, &parts, sflags);
-
-				if(nbytes <= 0) {
-					if(nbytes == 0) {
-						break;
-					} else {
-						XFER_FAULTRET(XFER_SRC_FAULT);
-					}
-				}
-				sflags |= MAPADDR_FLAGS_NOTFIRST;
-
-				if((status = xferiov(sthp, dst, iovlist, dparts, parts, doff, 0)) != 0) {
-					XFER_FAULTRET(status);
-				}
-				if(sparts == 0) {
-					break;
-				}
-				doff += nbytes;
-				OFFSET_SKIP_BR(doff,dst,dparts);
-
-			} while(dparts);
-			SET_XFER_HANDLER(0);
-			return 0;
-		} else { /* end for (sprp) */
-			if(dprp != prp) {
-				lock_kernel();
-				memmgr.aspace(dprp, &aspaces_prp[KERNCPU]);
-				unlock_kernel();
-				XFER_PREEMPT(actives[KERNCPU]);
-			}
-		}
-	} else {
-		if(sprp != prp) {
-			if(sprp) {
-				lock_kernel();
-				memmgr.aspace(sprp, &aspaces_prp[KERNCPU]);
-				unlock_kernel();
-				XFER_PREEMPT(actives[KERNCPU]);
-		 	}
-		}
-	}
+            /* Check for a dst offset and skip over it. */
+            if (doff) {
+                OFFSET_SKIP(doff, dst, dparts);
+            }
 
 
-	/* Check for a dst offset and skip over it. */
-	if(doff) {
-		SET_XFER_HANDLER(&xfer_dst_handlers);
-		OFFSET_SKIP(doff, dst, dparts);
-	}
+            do {
+                XFER_PREEMPT(actives[KERNCPU]);
+                SET_XFER_HANDLER(&xfer_src_handlers);
 
-	SET_XFER_HANDLER(&xfer_src_handlers);
+                parts = sizeof iovlist / sizeof *iovlist;
+                nbytes =
+                    memmgr.map_xfer(prp, sprp, (IOV **) & src, &sparts, &soff, iovlist, &parts,
+                                    sflags);
 
-	/* Check for a src offset and skip over it. */
-	if(soff) {
-		OFFSET_SKIP(soff, src, sparts);
-	}
+                if (nbytes <= 0) {
+                    if (nbytes == 0) {
+                        break;
+                    } else {
+                        XFER_FAULTRET(XFER_SRC_FAULT);
+                    }
+                }
+                sflags |= MAPADDR_FLAGS_NOTFIRST;
 
-	status = xferiov(sthp, dst, src, dparts, sparts, doff, soff);
+                if ((status = xferiov(sthp, dst, iovlist, dparts, parts, doff, 0)) != 0) {
+                    XFER_FAULTRET(status);
+                }
+                if (sparts == 0) {
+                    break;
+                }
+                doff += nbytes;
+                OFFSET_SKIP_BR(doff, dst, dparts);
+
+            } while (dparts);
+            SET_XFER_HANDLER(0);
+            return 0;
+        } else {                /* end for (sprp) */
+            if (dprp != prp) {
+                lock_kernel();
+                memmgr.aspace(dprp, &aspaces_prp[KERNCPU]);
+                unlock_kernel();
+                XFER_PREEMPT(actives[KERNCPU]);
+            }
+        }
+    } else {
+        if (sprp != prp) {
+            if (sprp) {
+                lock_kernel();
+                memmgr.aspace(sprp, &aspaces_prp[KERNCPU]);
+                unlock_kernel();
+                XFER_PREEMPT(actives[KERNCPU]);
+            }
+        }
+    }
 
 
-	SET_XFER_HANDLER(0);
-	return status;
+    /* Check for a dst offset and skip over it. */
+    if (doff) {
+        SET_XFER_HANDLER(&xfer_dst_handlers);
+        OFFSET_SKIP(doff, dst, dparts);
+    }
+
+    SET_XFER_HANDLER(&xfer_src_handlers);
+
+    /* Check for a src offset and skip over it. */
+    if (soff) {
+        OFFSET_SKIP(soff, src, sparts);
+    }
+
+    status = xferiov(sthp, dst, src, dparts, sparts, doff, soff);
+
+
+    SET_XFER_HANDLER(0);
+    return status;
 }
 
 /* for aysnc msg receive */
-int rcvmsg(THREAD *dthp, PROCESS *sprp, void *destp, int destparts, void *srcp, int srcparts) {
-	IOV						*dst, *src;
-	int						sparts, dparts;
-	PROCESS					*dprp;
-	unsigned				sflags;
-	int						status;
-	IOV						diov[1], siov[1];
-	int 					soff, doff;
+int rcvmsg(THREAD * dthp, PROCESS * sprp, void *destp, int destparts, void *srcp, int srcparts)
+{
+    IOV *dst, *src;
+    int sparts, dparts;
+    PROCESS *dprp;
+    unsigned sflags;
+    int status;
+    IOV diov[1], siov[1];
+    int soff, doff;
 
-	/* restart check */
-	soff = doff = dthp->args.ms.msglen;
+    /* restart check */
+    soff = doff = dthp->args.ms.msglen;
 
-	if(srcparts == 0 || destparts == 0) {
-		return 0;
-	}
+    if (srcparts == 0 || destparts == 0) {
+        return 0;
+    }
 
-	/* Special case for 1 part source messages. */
-	if(srcparts < 0) {
-		SETIOV(siov, srcp, -srcparts);
-		src = siov;
-		sparts = 1;
-		sflags = MAPADDR_FLAGS_IOVKERNEL;
-	} else {
-		if(srcparts > XFER_IOV_LIMIT) {
-			return XFER_SRC_FAULT;
-		}
-		src = srcp;
-   		sparts = srcparts;
-		sflags = 0;
-	}
+    /* Special case for 1 part source messages. */
+    if (srcparts < 0) {
+        SETIOV(siov, srcp, -srcparts);
+        src = siov;
+        sparts = 1;
+        sflags = MAPADDR_FLAGS_IOVKERNEL;
+    } else {
+        if (srcparts > XFER_IOV_LIMIT) {
+            return XFER_SRC_FAULT;
+        }
+        src = srcp;
+        sparts = srcparts;
+        sflags = 0;
+    }
 
-	/* Same special case for 1 part dst messages */
-	if(destparts < 0) {
-		SETIOV(diov, destp, -destparts);
-		dst = diov;
-		dparts = 1;
-	} else {
-		if(destparts > XFER_IOV_LIMIT) {
-			return XFER_DST_FAULT;
-		}
-		dst = destp;
-		dparts = destparts;
-	}
+    /* Same special case for 1 part dst messages */
+    if (destparts < 0) {
+        SETIOV(diov, destp, -destparts);
+        dst = diov;
+        dparts = 1;
+    } else {
+        if (destparts > XFER_IOV_LIMIT) {
+            return XFER_DST_FAULT;
+        }
+        dst = destp;
+        dparts = destparts;
+    }
 
-	dprp = dthp->aspace_prp;
+    dprp = dthp->aspace_prp;
 
-	/* act is receiver */
-	if (dprp != sprp) {
-		IOV							iovlist[XFER_IOV_NUM];
-		int							parts = 0;
-		int							nbytes;
+    /* act is receiver */
+    if (dprp != sprp) {
+        IOV iovlist[XFER_IOV_NUM];
+        int parts = 0;
+        int nbytes;
 
-		/* check dst iov addresses */
-		SET_XFER_HANDLER(&xfer_dst_handlers);
-		if(dprp->pid != SYSMGR_PID) {
-			BOUNDRY_CHECK(dprp->boundry_addr, dst, dparts, XFER_DST_FAULT);
-		}
+        /* check dst iov addresses */
+        SET_XFER_HANDLER(&xfer_dst_handlers);
+        if (dprp->pid != SYSMGR_PID) {
+            BOUNDRY_CHECK(dprp->boundry_addr, dst, dparts, XFER_DST_FAULT);
+        }
 
-		/* Check for a dst offset and skip over it. */
-		if(doff) {
-			OFFSET_SKIP(doff, dst, dparts);
-		}
+        /* Check for a dst offset and skip over it. */
+        if (doff) {
+            OFFSET_SKIP(doff, dst, dparts);
+        }
 
-		do {
-			XFER_PREEMPT(actives[KERNCPU]);
-			SET_XFER_HANDLER(&xfer_async_handlers);
+        do {
+            XFER_PREEMPT(actives[KERNCPU]);
+            SET_XFER_HANDLER(&xfer_async_handlers);
 
-			if(sprp->pid != SYSMGR_PID) {
-				BOUNDRY_CHECK(sprp->boundry_addr, src, sparts, XFER_DST_FAULT);
-			}
+            if (sprp->pid != SYSMGR_PID) {
+                BOUNDRY_CHECK(sprp->boundry_addr, src, sparts, XFER_DST_FAULT);
+            }
 
-			parts = sizeof iovlist / sizeof *iovlist;
-			nbytes = memmgr.map_xfer(dprp, sprp, (IOV**)&src, &sparts, &soff, iovlist, &parts, sflags);
-			if(nbytes <= 0) {
-				if(nbytes == 0) {
-					break;
-				} else {
-					XFER_FAULTRET(XFER_SRC_FAULT);
-				}
-			}
-			sflags |= MAPADDR_FLAGS_NOTFIRST;
+            parts = sizeof iovlist / sizeof *iovlist;
+            nbytes =
+                memmgr.map_xfer(dprp, sprp, (IOV **) & src, &sparts, &soff, iovlist, &parts,
+                                sflags);
+            if (nbytes <= 0) {
+                if (nbytes == 0) {
+                    break;
+                } else {
+                    XFER_FAULTRET(XFER_SRC_FAULT);
+                }
+            }
+            sflags |= MAPADDR_FLAGS_NOTFIRST;
 
-			if((status = xferiov(dthp, dst, iovlist, dparts, parts, doff, soff)) != 0) {
-				XFER_FAULTRET(status);
-			}
-			if(sparts == 0) {
-				break;
-			}
-			doff += nbytes;
-			OFFSET_SKIP_BR(doff,dst,dparts);
+            if ((status = xferiov(dthp, dst, iovlist, dparts, parts, doff, soff)) != 0) {
+                XFER_FAULTRET(status);
+            }
+            if (sparts == 0) {
+                break;
+            }
+            doff += nbytes;
+            OFFSET_SKIP_BR(doff, dst, dparts);
 
-		} while(dparts);
-		SET_XFER_HANDLER(0);
-	} else {
-		/* dprp == sprp */
+        } while (dparts);
+        SET_XFER_HANDLER(0);
+    } else {
+        /* dprp == sprp */
 
-		/* check dst iov addresses */
-		if(dprp->pid != SYSMGR_PID) {
-			SET_XFER_HANDLER(&xfer_dst_handlers);
-			BOUNDRY_CHECK(dprp->boundry_addr, dst, dparts, XFER_DST_FAULT);
-		}
+        /* check dst iov addresses */
+        if (dprp->pid != SYSMGR_PID) {
+            SET_XFER_HANDLER(&xfer_dst_handlers);
+            BOUNDRY_CHECK(dprp->boundry_addr, dst, dparts, XFER_DST_FAULT);
+        }
 
-		/* Check for a dst offset and skip over it. */
-		if(doff) {
-			SET_XFER_HANDLER(&xfer_dst_handlers);
-			OFFSET_SKIP(doff, dst, dparts);
-		}
+        /* Check for a dst offset and skip over it. */
+        if (doff) {
+            SET_XFER_HANDLER(&xfer_dst_handlers);
+            OFFSET_SKIP(doff, dst, dparts);
+        }
 
-		if(sprp->pid != SYSMGR_PID) {
-			SET_XFER_HANDLER(&xfer_src_handlers);
-			BOUNDRY_CHECK(sprp->boundry_addr, src, sparts, XFER_DST_FAULT);
-		}
+        if (sprp->pid != SYSMGR_PID) {
+            SET_XFER_HANDLER(&xfer_src_handlers);
+            BOUNDRY_CHECK(sprp->boundry_addr, src, sparts, XFER_DST_FAULT);
+        }
 
-		/* Check for a dst offset and skip over it. */
-		if(soff) {
-			SET_XFER_HANDLER(&xfer_src_handlers);
-			OFFSET_SKIP(soff, src, sparts);
-		}
+        /* Check for a dst offset and skip over it. */
+        if (soff) {
+            SET_XFER_HANDLER(&xfer_src_handlers);
+            OFFSET_SKIP(soff, src, sparts);
+        }
 
-		/* xfer */
-		SET_XFER_HANDLER(&xfer_async_handlers);
-		status = xferiov(dthp, dst, src, dparts, sparts, doff, soff);
-		SET_XFER_HANDLER(0);
-	}
+        /* xfer */
+        SET_XFER_HANDLER(&xfer_async_handlers);
+        status = xferiov(dthp, dst, src, dparts, sparts, doff, soff);
+        SET_XFER_HANDLER(0);
+    }
 
-	return EOK;
+    return EOK;
 }
 
 __SRCVERSION("nano_xfer.c $Rev: 199078 $");

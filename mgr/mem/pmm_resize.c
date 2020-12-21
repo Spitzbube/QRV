@@ -17,18 +17,18 @@
 
 #include "pmm.h"
 
-int
-pmm_resize(OBJECT *obp, size_t size) {
-	void				*ptr;
+int pmm_resize(OBJECT * obp, size_t size)
+{
+    void *ptr;
 
-	ptr = _srealloc(obp->mem.mm.pmem, obp->mem.mm.size, size);
-	if(ptr == NULL && size != 0) {
-		return ENOMEM;
-	}
-	mem_free_size += (unsigned)ROUNDUP(obp->mem.mm.size, 4) - ROUNDUP(size, 4);
-	obp->mem.mm.pmem = ptr;
-	obp->mem.mm.size = size;
-	return EOK;
+    ptr = _srealloc(obp->mem.mm.pmem, obp->mem.mm.size, size);
+    if (ptr == NULL && size != 0) {
+        return ENOMEM;
+    }
+    mem_free_size += (unsigned) ROUNDUP(obp->mem.mm.size, 4) - ROUNDUP(size, 4);
+    obp->mem.mm.pmem = ptr;
+    obp->mem.mm.size = size;
+    return EOK;
 }
 
 __SRCVERSION("pmm_resize.c $Rev: 153052 $");

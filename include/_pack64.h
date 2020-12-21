@@ -22,11 +22,11 @@
  */
 
 #ifdef __GNUC__
- #if defined (__PRAGMA_PACK_PUSH_POP__)
-  #pragma pack(push, 0)
- #else
-  #pragma pack()
- #endif
+#if defined (__PRAGMA_PACK_PUSH_POP__)
+#pragma pack(push, 0)
 #else
- #error Compiler not supported
+#pragma pack()
+#endif
+#else
+#error Compiler not supported
 #endif

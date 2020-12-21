@@ -19,12 +19,11 @@
 // FIX ME #include <sys/mempart.h>
 #include "kernel/mempart.h"
 
-int
-emm_munmap(PROCESS *prp, uintptr_t addr, size_t len, int flags, part_id_t mpart_id) {
-	MemobjDestroyed((void *)_syspage_ptr,
- 			CPU_V2P(addr), CPU_V2P(addr) + len - 1, 0, 0);
-	_sfree((void *)addr, len);
-	return EOK;
+int emm_munmap(PROCESS * prp, uintptr_t addr, size_t len, int flags, part_id_t mpart_id)
+{
+    MemobjDestroyed((void *) _syspage_ptr, CPU_V2P(addr), CPU_V2P(addr) + len - 1, 0, 0);
+    _sfree((void *) addr, len);
+    return EOK;
 }
 
 __SRCVERSION("emm_munmap.c $Rev: 168445 $");

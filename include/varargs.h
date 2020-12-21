@@ -32,13 +32,13 @@
 #error "Revise your code to use <stdarg.h>."
 #endif
 
-#ifndef _STDARG_H_INCLUDED /* ignore if stdarg.h already used */
+#ifndef _STDARG_H_INCLUDED      /* ignore if stdarg.h already used */
 
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
 
-typedef	__NTO_va_list			va_list;
+typedef __NTO_va_list va_list;
 #define va_alist			__NTO_va_alist
 #define va_dcl				__NTO_va_dcl
 #define va_start(__p1)		__NTO_va_start_vararg(__p1)

@@ -37,20 +37,16 @@
 #include <_pack64.h>
 
 struct ustat {
-    daddr_t f_tfree;        /* total free blocks */
-    ino_t   f_tinode;       /* number of free inodes */
-    char    f_fname[6];     /* file system name */
-    char    f_fpack[6];     /* file system pack name */
+    daddr_t f_tfree;            /* total free blocks */
+    ino_t f_tinode;             /* number of free inodes */
+    char f_fname[6];            /* file system name */
+    char f_fpack[6];            /* file system pack name */
 };
 
 #include <_packpop.h>
 
-__BEGIN_DECLS
-
-extern int ustat(dev_t __dev, struct ustat *__ub);
+__BEGIN_DECLS extern int ustat(dev_t __dev, struct ustat *__ub);
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("ustat.h $Rev: 153052 $"); */

@@ -15,38 +15,41 @@
  * $
  */
 
+#ifndef _RISCV_CPU_DEF_H
+#define _RISCV_CPU_DEF_H
+
 #include <cpu.h>
 #include <inline.h>
 #include <smpxchg.h>
 
 #define FAULT_ISWRITE(_n)	((_n) & SIGCODE_STORE)
 
-typedef RISCV_CPU_REGISTERS CPU_REGISTERS;
-typedef RISCV_FPU_REGISTERS FPU_REGISTERS;
-typedef RISCV_ALT_REGISTERS ALT_REGISTERS;
-typedef RISCV_PERFREGS PERF_REGISTERS;
+typedef RISCV_CPU_REGISTERS     CPU_REGISTERS;
+typedef RISCV_FPU_REGISTERS     FPU_REGISTERS;
+typedef RISCV_ALT_REGISTERS     ALT_REGISTERS;
+typedef RISCV_PERF_REGISTERS    PERF_REGISTERS;
 #define CPU_STRINGNAME		RISCV_STRINGNAME
 
 #define STARTUP_STACK_NBYTES		4096
-#define KER_STACK_NBYTES			4096
-#define IDLE_STACK_NBYTES			512
+#define KER_STACK_NBYTES		4096
+#define IDLE_STACK_NBYTES		512
 #define DEF_MAX_THREAD_STACKSIZE	32768
 
 #define DEF_VIRTUAL_THREAD_STACKSIZE		131072
 #define DEF_PHYSICAL_THREAD_STACKSIZE		4096
 #define DEF_VIRTUAL_FIRST_THREAD_STACKSIZE	131072
-#define DEF_PHYSICAL_FIRST_THREAD_STACKSIZE 4096
+#define DEF_PHYSICAL_FIRST_THREAD_STACKSIZE	4096
 
 #define VM_USER_SPACE_BOUNDRY		0xbfffffff
 #define VM_KERN_SPACE_BOUNDRY		0xffffffff
 
-#define STACK_ALIGNMENT						16
+#define STACK_ALIGNMENT				16
 #define STACK_INITIAL_CALL_CONVENTION_USAGE	0
 
-#define CPU_P2V(p)				((uintptr_t)(p))
+#define CPU_P2V(p)			((uintptr_t)(p))
 #define CPU_P2V_NOCACHE(p)		CPU_P2V(p)
-#define CPU_V2P(v)				((paddr_t)(uintptr_t)(v))
-#define CPU_VADDR_IN_RANGE(v)	1
+#define CPU_V2P(v)			((paddr_t)(uintptr_t)(v))
+#define CPU_VADDR_IN_RANGE(v)		1
 
 /* registers that need to be saved for interrupt routine invocation */
 struct cpu_intrsave {
@@ -64,7 +67,7 @@ struct cpu_intrsave {
 
 /* CPU specific fields in the thread entry structure */
 struct cpu_thread_entry {
-    RISCV_PERFREGS *pcr;
+    RISCV_PERF_REGISTERS *pcr;
     struct riscv_alt_registers alt; // WARNING: must be last field
 };
 
@@ -80,3 +83,5 @@ struct cpu_extra_state {
 };
 
 extern void mmu_set_domain(unsigned);
+
+#endif

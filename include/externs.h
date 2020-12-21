@@ -59,43 +59,46 @@
 #undef INITSOUL
 
 #ifndef PROCHDR
-	#define EXT extern
-	#define INIT1(a)
-	#define INIT2(a,b)
-	#define INIT7(a,b,c,d,e,f,g)
-	#define INITSOUL(a,b,c,d,e)
+#define EXT extern
+#define INIT1(a)
+#define INIT2(a,b)
+#define INIT7(a,b,c,d,e,f,g)
+#define INITSOUL(a,b,c,d,e)
 #else
-	#define EXT
-	#define INIT1(a)				= a
-	#define INIT2(a,b)				= { a,b }
-	#define INIT7(a,b,c,d,e,f,g)	= { a,b,c,d,e,f,g }
-	#define INITSOUL(a,b,c,d,e)		= { 0, a, 0, 0, sizeof(b), 0, c, c }
+#define EXT
+#define INIT1(a)				= a
+#define INIT2(a,b)				= { a,b }
+#define INIT7(a,b,c,d,e,f,g)	= { a,b,c,d,e,f,g }
+#define INITSOUL(a,b,c,d,e)		= { 0, a, 0, 0, sizeof(b), 0, c, c }
 #endif
 
-EXT int						root_id;
-EXT int						link_root_id;
-EXT paddr_t					mem_free_size;
-EXT dispatch_t				*dpp;
-EXT const char *			shell_path;
+EXT int root_id;
+EXT int link_root_id;
+EXT paddr_t mem_free_size;
+EXT dispatch_t *dpp;
+EXT const char *shell_path;
 
-EXT dev_t					path_devno;
+EXT dev_t path_devno;
 
-EXT unsigned				guardpagesize;
+EXT unsigned guardpagesize;
 extern int procmgr_scoid;
 
-EXT int						(rdecl *procfs_devctl_check_hook)(resmgr_context_t *ctp, io_devctl_t *msg, struct procfs_ocb *ocb);
-EXT	int						(rdecl *procfs_devctl_hook)(resmgr_context_t *ctp, io_devctl_t *msg, struct procfs_ocb *ocb);
+EXT int (rdecl * procfs_devctl_check_hook) (resmgr_context_t * ctp, io_devctl_t * msg,
+                                            struct procfs_ocb * ocb);
+EXT int (rdecl * procfs_devctl_hook) (resmgr_context_t * ctp, io_devctl_t * msg,
+                                      struct procfs_ocb * ocb);
 
 struct loader_startup;
-EXT	int (*elf_load_hook)(int fd, const char *path, struct loader_startup *lsp, struct stat *statlocal, struct inheritance *parms);
-EXT	int (*sys_vendor_handler_hook)(message_context_t *ctp);
+EXT int (*elf_load_hook)(int fd, const char *path, struct loader_startup * lsp,
+                         struct stat * statlocal, struct inheritance * parms);
+EXT int (*sys_vendor_handler_hook)(message_context_t * ctp);
 
 //These two variables automatically created every link in the timestamp.c
 //file.
-extern const char			timestamp[];
-extern const char			os_version_string[];
+extern const char timestamp[];
+extern const char os_version_string[];
 
-extern unsigned				__cpu_flags;
+extern unsigned __cpu_flags;
 
 #undef INITSOUL
 #define INITSOUL(a,b,c,d,e)		= { 0, a, 0, 0, sizeof(b), 0, c, c }

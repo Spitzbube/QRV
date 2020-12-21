@@ -18,13 +18,11 @@
 #ifndef __KERNEL_PROCTYPES_H_INCLUDED
 #define __KERNEL_PROCTYPES_H_INCLUDED
 
-typedef union object			OBJECT;
-typedef struct node_entry		NODE;
+typedef union object OBJECT;
+typedef struct node_entry NODE;
 
 /* Add the scheduler pointers */
-typedef struct _ss_schedinfo	SSINFO;
-typedef struct _ss_replenish	SSREPLENISH;
+typedef struct _ss_schedinfo SSINFO;
+typedef struct _ss_replenish SSREPLENISH;
 
 #endif
-
-/* __SRCVERSION("proctypes.h $Rev: 153052 $"); */

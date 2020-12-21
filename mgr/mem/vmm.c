@@ -18,14 +18,14 @@
 #include "vmm.h"
 
 
-MEMMGR	memmgr_virtual = {
-	__PAGESIZE,
-	0,
-	sizeof(ADDRESS),
+MEMMGR memmgr_virtual = {
+    __PAGESIZE,
+    0,
+    sizeof(ADDRESS),
 
-	#undef MMF
-	#define MMF(r,f,p,e)	MMF_DEFN(r,f,p,e)
-	MM_FUNCS(vmm)
+#undef MMF
+#define MMF(r,f,p,e)	MMF_DEFN(r,f,p,e)
+    MM_FUNCS(vmm)
 };
 
 __SRCVERSION("vmm.c $Rev: 153052 $");

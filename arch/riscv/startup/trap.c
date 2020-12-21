@@ -1,11 +1,28 @@
+#include <sys/kdebug.h>
+#include <sys/neutrino.h>
+
+#include <kernel/types.h>
+
 #include <kernel/startup.h>
+
+#include <sys/states.h>
+
 #include <platform/qemu_virt.h>
 #include <riscv.h>
+#include <intr_controller.h>
+#include <spinlock.h>
+
+#include "task.h"
 
 struct spinlock tickslock;
 unsigned ticks;
 
 extern char trampoline[], uservec[], userret[];
+
+// TODO
+void syscall(void) {}
+void yield(void) {}
+void wakeup(unsigned *t) {}
 
 // in kernelvec.S, calls kerneltrap().
 void kernelvec();
@@ -23,64 +40,12 @@ void trapinithart(void)
     w_stvec((uint64_t) kernelvec);
 }
 
-//
-// handle an interrupt, exception, or system call from user space.
-// called from trampoline.S
-//
-void usertrap(void)
-{
-    int which_dev = 0;
-
-    if ((r_sstatus() & SSTATUS_SPP) != 0)
-        panic("usertrap: not from user mode");
-
-    // send interrupts and exceptions to kerneltrap(),
-    // since we're now in the kernel.
-    w_stvec((uint64_t) kernelvec);
-
-    struct proc *p = myproc();
-
-    // save user program counter.
-    p->trapframe->epc = r_sepc();
-
-    if (r_scause() == 8) {
-        // system call
-
-        if (p->killed)
-            exit(-1);
-
-        // sepc points to the ecall instruction,
-        // but we want to return to the next instruction.
-        p->trapframe->epc += 4;
-
-        // an interrupt will change sstatus &c registers,
-        // so don't enable until done with those registers.
-        intr_on();
-
-        syscall();
-    } else if ((which_dev = devintr()) != 0) {
-        // ok
-    } else {
-        printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
-        printf("            sepc=%p stval=%p\n", r_sepc(), r_stval());
-        p->killed = 1;
-    }
-
-    if (p->killed)
-        exit(-1);
-
-    // give up the CPU if this is a timer interrupt.
-    if (which_dev == 2)
-        yield();
-
-    usertrapret();
-}
-
-//
-// return to user space
-//
+/**
+ * return to user space
+ */
 void usertrapret(void)
 {
+#if 0 //TODO
     struct proc *p = myproc();
 
     // we're about to switch the destination of traps from
@@ -118,7 +83,66 @@ void usertrapret(void)
     // and switches to user mode with sret.
     uint64_t fn = TRAMPOLINE + (userret - trampoline);
     ((void (*)(uint64_t, uint64_t)) fn) (TRAPFRAME, satp);
+#endif
 }
+
+//
+// handle an interrupt, exception, or system call from user space.
+// called from trampoline.S
+//
+void usertrap(void)
+{
+    int which_dev = 0;
+
+    if ((r_sstatus() & SSTATUS_SPP) != 0)
+        crash("usertrap: not from user mode");
+
+    // send interrupts and exceptions to kerneltrap(),
+    // since we're now in the kernel.
+    w_stvec((uint64_t) kernelvec);
+
+/* TODO
+    struct proc *p = myproc();
+
+    // save user program counter.
+    p->trapframe->epc = r_sepc();
+*/
+
+    if (r_scause() == 8) {
+        // system call
+	crash("system call requested");
+/*
+        if (p->killed)
+            exit(-1);
+
+        // sepc points to the ecall instruction,
+        // but we want to return to the next instruction.
+        p->trapframe->epc += 4;
+*/
+        // an interrupt will change sstatus &c registers,
+        // so don't enable until done with those registers.
+        intr_on();
+
+        syscall();
+    } else if ((which_dev = devintr()) != 0) {
+        // ok
+    } else {
+        kprintf("usertrap(): unexpected scause %p\n", r_scause());
+        kprintf("            sepc=%p stval=%p\n", r_sepc(), r_stval());
+        /*p->killed = 1;*/
+    }
+/*
+    if (p->killed)
+        exit(-1);
+*/
+    // give up the CPU if this is a timer interrupt.
+    if (which_dev == 2)
+        yield();
+
+    usertrapret();
+}
+
+
 
 // interrupts and exceptions from kernel code go here via kernelvec,
 // on whatever the current kernel stack is.
@@ -130,17 +154,17 @@ void kerneltrap()
     uint64_t scause = r_scause();
 
     if ((sstatus & SSTATUS_SPP) == 0)
-        panic("kerneltrap: not from supervisor mode");
+        crash("kerneltrap: not from supervisor mode");
     if (intr_get() != 0)
-        panic("kerneltrap: interrupts enabled");
+        crash("kerneltrap: interrupts enabled");
 
     if ((which_dev = devintr()) == 0) {
-        printf("scause %p\n", scause);
-        printf("sepc=%p stval=%p\n", r_sepc(), r_stval());
-        panic("kerneltrap");
+        kprintf("scause %p\n", scause);
+        kprintf("sepc=%p stval=%p\n", r_sepc(), r_stval());
+        crash("kerneltrap");
     }
     // give up the CPU if this is a timer interrupt.
-    if (which_dev == 2 && myproc() != 0 && myproc()->state == RUNNING)
+    if (which_dev == 2 && myproc() != 0 && myproc()->state == STATE_RUNNING)
         yield();
 
     // the yield() may have caused some traps to occur,
@@ -177,7 +201,7 @@ int devintr()
         } else if (irq == VIRTIO0_IRQ) {
             virtio_disk_intr();
         } else if (irq) {
-            printf("unexpected interrupt irq=%d\n", irq);
+            kprintf("unexpected interrupt irq=%d\n", irq);
         }
         // the PLIC allows each device to raise at most one
         // interrupt at a time; tell the PLIC the device is

@@ -19,13 +19,8 @@
  * $
  */
 
-#include <sys/srcversion.h>
-
-
-
-
-
-
+#ifndef _HW_8250_H
+#define _HW_8250_H
 
 /*
  * Definitions for an 8250 style serial device
@@ -105,7 +100,4 @@
 #define FCR_RX_TRIG_8		0x80
 #define FCR_RX_TRIG_14		0xC0
 
-
-
-__SRCVERSION
-    ("$URL: http://svn.ott.qnx.com/product/branches/deckard/BB10_2_0X/hardware/devc/public/hw/8250.h $ $Rev: 238074 $")
+#endif

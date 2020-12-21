@@ -23,15 +23,14 @@
 struct syspage_entry;
 
 struct pa_restrict {
-	struct pa_restrict	*next;
-	int					(*checker)(struct syspage_entry *, paddr64_t *,
-									paddr64_t *, size_t, size_t);
-	paddr_t				start;
-	paddr_t				end;
+    struct pa_restrict *next;
+    int (*checker)(struct syspage_entry *, paddr64_t *, paddr64_t *, size_t, size_t);
+    paddr_t start;
+    paddr_t end;
 };
 
 #ifndef QUANTUM_BITS
-	#define	QUANTUM_BITS	12
+#define	QUANTUM_BITS	12
 #endif
 #define QUANTUM_SIZE	(1 << QUANTUM_BITS)
 
@@ -49,11 +48,11 @@ struct pa_restrict {
 #define PAQ_FLAG_HAS_SYNC		0x0400
 #define PAQ_FLAG_LOCKED			0x0200
 #define PAQ_FLAG_MODIFIED		0x0100
-#define PAQ_FLAG_INIT_REQUIRED	0x0080 // Only used with pa_quantum's.
-#define PAQ_FLAG_RDB			0x0080 // Only used with pa_quantum_fake's.
+#define PAQ_FLAG_INIT_REQUIRED	0x0080  // Only used with pa_quantum's.
+#define PAQ_FLAG_RDB			0x0080  // Only used with pa_quantum_fake's.
 #define PAQ_FLAG_SYSTEM			0x0040
 #define PAQ_FLAG_ACTIVE         0x0020
-#define PAQ_FLAG_COLOUR_MASK	0x000f // Allow up to 15 colours
+#define PAQ_FLAG_COLOUR_MASK	0x000f  // Allow up to 15 colours
 //RUSH3: flags for anon or private memory? For mem with multiple refs?
 
 #define PAQ_COLOUR_NONE			(~0 & PAQ_FLAG_COLOUR_MASK)
@@ -61,28 +60,28 @@ struct pa_restrict {
 #define PAQ_BLK_FAKE			((_Uint16t)~0)
 
 struct pa_free_link {
-	struct pa_quantum	*next; // must be first entry
-	struct pa_quantum	*prev;
+    struct pa_quantum *next;    // must be first entry
+    struct pa_quantum *prev;
 };
 
 struct pa_inuse_link {
-	struct pa_quantum	*next; // must be first entry
-	_Uint32t			qpos;
+    struct pa_quantum *next;    // must be first entry
+    _Uint32t qpos;
 };
 
 struct pa_quantum {
-	union {
-		struct pa_inuse_link	inuse;
-		struct pa_free_link		flink;
-	}			u;
-	_Int32t		run;	// run size if > 0, run backup if < 0, search if 0
-	_Uint16t	blk;	// if == PAQ_BLK_FAKE, fake entry (see below)
-	_Uint16t	flags;
+    union {
+        struct pa_inuse_link inuse;
+        struct pa_free_link flink;
+    } u;
+    _Int32t run;                // run size if > 0, run backup if < 0, search if 0
+    _Uint16t blk;               // if == PAQ_BLK_FAKE, fake entry (see below)
+    _Uint16t flags;
 };
 
 struct pa_quantum_fake {
-	struct pa_quantum	q;
-	paddr_t				paddr;
+    struct pa_quantum q;
+    paddr_t paddr;
 };
 
 #define PAQ_GET_COLOUR(pq)		((pq)->flags & PAQ_FLAG_COLOUR_MASK)
@@ -112,20 +111,20 @@ struct pa_quantum_fake {
 // dumper.
 
 struct block_head {
-	union {
-		paddr32_t	paddr32;
-		paddr64_t	paddr64;
-		paddr_t		paddr;
-	}					start;
-	union {
-		paddr32_t	paddr32;
-		paddr64_t	paddr64;
-		paddr_t		paddr;
-	}					end;
-	unsigned			generation;
-	unsigned			num_to_clean;
-	unsigned			num_quanta;
-	unsigned			max_free_run;
-	struct pa_quantum	*quanta;
-	struct pa_free_link	free[PA_FREE_QUEUES];
+    union {
+        paddr32_t paddr32;
+        paddr64_t paddr64;
+        paddr_t paddr;
+    } start;
+    union {
+        paddr32_t paddr32;
+        paddr64_t paddr64;
+        paddr_t paddr;
+    } end;
+    unsigned generation;
+    unsigned num_to_clean;
+    unsigned num_quanta;
+    unsigned max_free_run;
+    struct pa_quantum *quanta;
+    struct pa_free_link free[PA_FREE_QUEUES];
 };

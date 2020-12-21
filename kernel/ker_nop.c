@@ -20,9 +20,9 @@
 /*
 	This is used for async_flags processing in the SMP kernel
 */
-int kdecl
-ker_nop(THREAD *act,struct kerargs_null *kap) {
-	return ENOERROR;
+int kdecl ker_nop(THREAD * act, struct kerargs_null *kap)
+{
+    return ENOERROR;
 }
 
 __SRCVERSION("ker_nop.c $Rev: 153052 $");

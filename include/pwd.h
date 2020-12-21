@@ -26,7 +26,7 @@
 #define _PWD_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __TYPES_H_INCLUDED
@@ -40,41 +40,40 @@
 #include <_pack64.h>
 
 struct passwd {
-    char  *pw_name;     /*  User's login name           */
-    char  *pw_passwd;
-    uid_t  pw_uid;      /*  User ID number              */
-    gid_t  pw_gid;      /*  Group ID number             */
-    char  *pw_age;
-    char  *pw_comment;
-    char  *pw_gecos;
-    char  *pw_dir;      /*  Initial Working Directory   */
-    char  *pw_shell;    /*  Initial User Program        */
+    char *pw_name;              /*  User's login name           */
+    char *pw_passwd;
+    uid_t pw_uid;               /*  User ID number              */
+    gid_t pw_gid;               /*  Group ID number             */
+    char *pw_age;
+    char *pw_comment;
+    char *pw_gecos;
+    char *pw_dir;               /*  Initial Working Directory   */
+    char *pw_shell;             /*  Initial User Program        */
 };
 
 #include <_packpop.h>
 
 __BEGIN_DECLS
-
 /*
  *  POSIX 1003.1 Prototypes.
  */
 #ifdef __EXT_POSIX1_198808
-extern struct passwd *getpwent( void );
-extern struct passwd *getpwnam( const char * name );
-extern struct passwd *getpwuid( uid_t uid );
-extern void endpwent( void );
-extern void setpwent( void );
+extern struct passwd *getpwent(void);
+extern struct passwd *getpwnam(const char *name);
+extern struct passwd *getpwuid(uid_t uid);
+extern void endpwent(void);
+extern void setpwent(void);
 #endif
 #ifdef __EXT_POSIX1_199506
-extern int getpwnam_r(const char *name, struct passwd *pwd, char *buffer, size_t bufsize, struct passwd **result);
-extern int getpwuid_r(uid_t uid, struct passwd *pwd, char *buffer, size_t bufsize, struct passwd **result);
+extern int getpwnam_r(const char *name, struct passwd *pwd, char *buffer, size_t bufsize,
+                      struct passwd **result);
+extern int getpwuid_r(uid_t uid, struct passwd *pwd, char *buffer, size_t bufsize,
+                      struct passwd **result);
 #endif
 #ifdef __EXT_UNIX_MISC
 extern int getpwent_r(struct passwd *pwd, char *buffer, int bufsize, struct passwd **result);
 #endif
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("pwd.h $Rev: 212726 $"); */

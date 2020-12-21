@@ -17,13 +17,13 @@
 
 #include "pmm.h"
 
-int
-pmm_msync(PROCESS *prp, uintptr_t addr, size_t len, int flags) {
-	if(flags & MS_ASYNC) {
-		flags = (flags & ~MS_ASYNC) | MS_SYNC;
-	}
-	CacheControl((void *)addr, len, flags);
-	return EOK;
+int pmm_msync(PROCESS * prp, uintptr_t addr, size_t len, int flags)
+{
+    if (flags & MS_ASYNC) {
+        flags = (flags & ~MS_ASYNC) | MS_SYNC;
+    }
+    CacheControl((void *) addr, len, flags);
+    return EOK;
 }
 
 __SRCVERSION("pmm_msync.c $Rev: 153052 $");

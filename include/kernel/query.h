@@ -46,5 +46,3 @@
 */
 #define _QUERY_MEMORY_PARTITION		4
 #define _QUERY_SCHEDULER_PARTITION	5
-
-/* __SRCVERSION("query.h $Rev: 168445 $"); */

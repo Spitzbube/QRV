@@ -18,63 +18,65 @@
 #include "externs.h"
 
 char *optarg;
-int  optind;
-int  optopt;
-int  opterr;
+int optind;
+int optopt;
+int opterr;
 
-int
-getopt(int argc, char * const argv[], const char *opts) {
-    static	char	*cp;
-    static	int		last_optind;
+int getopt(int argc, char *const argv[], const char *opts)
+{
+    static char *cp;
+    static int last_optind;
 
-	if (optind == -1) {
-		last_optind = 0;
+    if (optind == -1) {
+        last_optind = 0;
         optind = 1;
-	}
-	if (optind == 0) {
-		optind = 1;
-	}
-	if (optind >= argc) {
-		return -1;
-	}
-	if (last_optind != optind) {
-		cp = argv [optind];
-		last_optind = optind;
-		if (*cp++ != '-' || *cp == 0) {
-			return -1;
-		}
-	}
-	if (*cp == '-') {
-		++optind;
-		return -1;
-	}
-	for (; *opts; ++opts) {
-		if (*opts == ':') continue;
-		if (*cp == *opts) break;
-	}
-	optarg = cp;
-	++optind;
-	if ((optopt = *opts++)) {
-		if (*++cp) {
-			if (*opts == ':') {
-				optarg = cp;
-			} else {
-				--optind;
-			}
-		} else {
-			if (*opts == ':') {
-				if (optind < argc) {
-				    optarg = argv [optind];
-					optind++;
-				} else {
-					optopt = '?';
-				}
-			}
-		}
-	} else {
-		optopt = '?';
-	}
-	return optopt;
+    }
+    if (optind == 0) {
+        optind = 1;
+    }
+    if (optind >= argc) {
+        return -1;
+    }
+    if (last_optind != optind) {
+        cp = argv[optind];
+        last_optind = optind;
+        if (*cp++ != '-' || *cp == 0) {
+            return -1;
+        }
+    }
+    if (*cp == '-') {
+        ++optind;
+        return -1;
+    }
+    for (; *opts; ++opts) {
+        if (*opts == ':')
+            continue;
+        if (*cp == *opts)
+            break;
+    }
+    optarg = cp;
+    ++optind;
+    if ((optopt = *opts++)) {
+        if (*++cp) {
+            if (*opts == ':') {
+                optarg = cp;
+            } else {
+                --optind;
+            }
+        } else {
+            if (*opts == ':') {
+                if (optind < argc) {
+                    optarg = argv[optind];
+                    optind++;
+                } else {
+                    optopt = '?';
+                }
+            }
+        }
+    } else {
+        optopt = '?';
+    }
+    return optopt;
 }
 
 __SRCVERSION("kgetopt.c $Rev: 153052 $");

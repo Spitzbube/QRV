@@ -52,9 +52,9 @@
 
 #define PRIdMAX			"lld"
 #if __PTR_BITS__ <= 32
-  #define PRIdPTR PRId32
+#define PRIdPTR PRId32
 #else
-  #define PRIdPTR PRId64
+#define PRIdPTR PRId64
 #endif
 
 #define PRIi8			"hhi"
@@ -74,9 +74,9 @@
 
 #define PRIiMAX			"lli"
 #if __PTR_BITS__ <= 32
-  #define PRIiPTR PRIi32
+#define PRIiPTR PRIi32
 #else
-  #define PRIiPTR PRIi64
+#define PRIiPTR PRIi64
 #endif
 
 #define PRIo8			"hho"
@@ -96,9 +96,9 @@
 
 #define PRIoMAX			"llo"
 #if __PTR_BITS__ <= 32
-  #define PRIoPTR PRIo32
+#define PRIoPTR PRIo32
 #else
-  #define PRIoPTR PRIo64
+#define PRIoPTR PRIo64
 #endif
 
 #define PRIu8			"hhu"
@@ -118,9 +118,9 @@
 
 #define PRIuMAX			"llu"
 #if __PTR_BITS__ <= 32
-  #define PRIuPTR PRIu32
+#define PRIuPTR PRIu32
 #else
-  #define PRIuPTR PRIu64
+#define PRIuPTR PRIu64
 #endif
 
 #define PRIx8			"hhx"
@@ -140,9 +140,9 @@
 
 #define PRIxMAX			"llx"
 #if __PTR_BITS__ <= 32
-  #define PRIxPTR PRIx32
+#define PRIxPTR PRIx32
 #else
-  #define PRIxPTR PRIx64
+#define PRIxPTR PRIx64
 #endif
 
 #define PRIX8			"hhX"
@@ -162,9 +162,9 @@
 
 #define PRIXMAX			"llX"
 #if __PTR_BITS__ <= 32
-  #define PRIXPTR PRIX32
+#define PRIXPTR PRIX32
 #else
-  #define PRIXPTR PRIX64
+#define PRIXPTR PRIX64
 #endif
 
 #define SCNd8			"hhd"
@@ -184,9 +184,9 @@
 
 #define SCNdMAX			"lld"
 #if __PTR_BITS__ <= 32
-  #define SCNdPTR SCNd32
+#define SCNdPTR SCNd32
 #else
-  #define SCNdPTR SCNd64
+#define SCNdPTR SCNd64
 #endif
 
 #define SCNi8			"hhi"
@@ -206,9 +206,9 @@
 
 #define SCNiMAX			"lli"
 #if __PTR_BITS__ <= 32
-  #define SCNiPTR SCNi32
+#define SCNiPTR SCNi32
 #else
-  #define SCNiPTR SCNi64
+#define SCNiPTR SCNi64
 #endif
 
 #define SCNo8			"hho"
@@ -228,9 +228,9 @@
 
 #define SCNoMAX			"llo"
 #if __PTR_BITS__ <= 32
-  #define SCNoPTR SCNo32
+#define SCNoPTR SCNo32
 #else
-  #define SCNoPTR SCNo64
+#define SCNoPTR SCNo64
 #endif
 
 #define SCNu8			"hhu"
@@ -250,9 +250,9 @@
 
 #define SCNuMAX			"llu"
 #if __PTR_BITS__ <= 32
-  #define SCNuPTR SCNu32
+#define SCNuPTR SCNu32
 #else
-  #define SCNuPTR SCNu64
+#define SCNuPTR SCNu64
 #endif
 
 #define SCNx8			"hhx"
@@ -272,9 +272,9 @@
 
 #define SCNxMAX			"llx"
 #if __PTR_BITS__ <= 32
-  #define SCNxPTR SCNx32
+#define SCNxPTR SCNx32
 #else
-  #define SCNxPTR SCNx64
+#define SCNxPTR SCNx64
 #endif
 
 #define SCNX8			"hhX"
@@ -294,72 +294,69 @@
 
 #define SCNXMAX			"llX"
 #if __PTR_BITS__ <= 32
-  #define SCNXPTR SCNX32
+#define SCNXPTR SCNX32
 #else
-  #define SCNXPTR SCNX64
+#define SCNXPTR SCNX64
 #endif
 
-_C_STD_BEGIN
-
-typedef struct {
-	intmax_t quot, rem;
+_C_STD_BEGIN typedef struct {
+    intmax_t quot, rem;
 } imaxdiv_t;
 
-__BEGIN_DECLS
-intmax_t imaxabs(intmax_t __i);
+__BEGIN_DECLS intmax_t imaxabs(intmax_t __i);
 imaxdiv_t imaxdiv(intmax_t __numer, intmax_t __denom);
 
 intmax_t strtoimax(__const char *__restrict __s, char **__restrict __endptr, int __base);
 uintmax_t strtoumax(__const char *__restrict s, char **__restrict __endptr, int __base);
-intmax_t wcstoimax(__const _Wchart *__restrict s, _Wchart **__restrict __endptr, int __base);
-uintmax_t wcstoumax(__const _Wchart *__restrict s, _Wchart **__restrict __endptr, int __base);
+intmax_t wcstoimax(__const _Wchart * __restrict s, _Wchart ** __restrict __endptr, int __base);
+uintmax_t wcstoumax(__const _Wchart * __restrict s, _Wchart ** __restrict __endptr, int __base);
 
 
 #if defined(__LITTLEENDIAN__)
 struct __byte {
-	uint8_t		__lo;
-	uint8_t		__hi;
+    uint8_t __lo;
+    uint8_t __hi;
 };
 
 struct __short {
-	uint16_t	__lo;
-	uint16_t	__hi;
+    uint16_t __lo;
+    uint16_t __hi;
 };
 
 struct __long {
-	uint32_t	__lo;
-	uint32_t	__hi;
+    uint32_t __lo;
+    uint32_t __hi;
 };
 #elif defined(__BIGENDIAN__)
 struct __byte {
-	uint8_t		__hi;
-	uint8_t		__lo;
+    uint8_t __hi;
+    uint8_t __lo;
 };
 
 struct __short {
-	uint16_t	__hi;
-	uint16_t	__lo;
+    uint16_t __hi;
+    uint16_t __lo;
 };
 
 struct __long {
-	uint32_t	__hi;
-	uint32_t	__lo;
+    uint32_t __hi;
+    uint32_t __lo;
 };
 #else
- #error endian not configured for system
+#error endian not configured for system
 #endif
 
-__END_DECLS
-_C_STD_END
-
+__END_DECLS _C_STD_END
 #endif
-
 #ifdef _STD_USING
-using std::imaxdiv_t;
-using std::imaxabs; using std::imaxdiv;
-using std::strtoimax; using std::strtoumax;
-using std::wcstoimax; using std::wcstoumax;
-#endif /* _STD_USING */
+ using std::imaxdiv_t;
+using std::imaxabs;
+using std::imaxdiv;
+using std::strtoimax;
+using std::strtoumax;
+using std::wcstoimax;
+using std::wcstoumax;
+#endif                          /* _STD_USING */
 #endif
 
 /* __SRCVERSION("inttypes.h $Rev: 158726 $"); */

@@ -27,7 +27,7 @@
 #define _GRP_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __TYPES_H_INCLUDED
@@ -42,9 +42,9 @@
 
 
 struct group {
-    char  *gr_name;
-    char  *gr_passwd;
-    gid_t  gr_gid;
+    char *gr_name;
+    char *gr_passwd;
+    gid_t gr_gid;
     char **gr_mem;
 };
 
@@ -54,19 +54,17 @@ struct group {
 
 #include <_packpop.h>
 
-__BEGIN_DECLS
-
-extern void endgrent( void );
-extern int getgrgid_r(gid_t __gid, struct group *__grp, char *__buffer, size_t __bufsize, struct group **__result);
-extern int getgrnam_r(const char *__name, struct group *__grp, char *__buffer, size_t __bufsize, struct group **__result);
-extern struct group *getgrnam( const char * __name );
-extern struct group *getgrgid( gid_t __gid );
-extern struct group *getgrent( void );
-extern int initgroups( const char *__name, gid_t __basegid );
-extern void setgrent( void );
+__BEGIN_DECLS extern void endgrent(void);
+extern int getgrgid_r(gid_t __gid, struct group *__grp, char *__buffer, size_t __bufsize,
+                      struct group **__result);
+extern int getgrnam_r(const char *__name, struct group *__grp, char *__buffer, size_t __bufsize,
+                      struct group **__result);
+extern struct group *getgrnam(const char *__name);
+extern struct group *getgrgid(gid_t __gid);
+extern struct group *getgrent(void);
+extern int initgroups(const char *__name, gid_t __basegid);
+extern void setgrent(void);
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("grp.h $Rev: 171385 $"); */

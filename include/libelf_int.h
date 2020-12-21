@@ -46,62 +46,62 @@
 /* add ELF_ARNAME_ALLOCED */
 
 typedef struct {
-	Elf_Data		*d_data;
-	unsigned long	d_flags;
+    Elf_Data *d_data;
+    unsigned long d_flags;
 } Elf_Data_Ref;
 
 struct Elf_Scn {
-	unsigned short	s_ndx;
-	unsigned short	s_fragments;
-	Elf_Data_Ref	*s_data;
-	unsigned long	s_flags;
-	Elf				*s_elf;		/* back-pointer to the Elf descriptor */
+    unsigned short s_ndx;
+    unsigned short s_fragments;
+    Elf_Data_Ref *s_data;
+    unsigned long s_flags;
+    Elf *s_elf;                 /* back-pointer to the Elf descriptor */
 };
 
 struct Elf {
-	int				e_fd;
-	int				e_refcnt;	/* number of activations (elf_begin) */
-	int				xlat;		/* endianess */
+    int e_fd;
+    int e_refcnt;               /* number of activations (elf_begin) */
+    int xlat;                   /* endianess */
 
-	off_t			e_offset;
-	off_t			e_curroffset;		/* RK 961206 for bogus seek elimination */
+    off_t e_offset;
+    off_t e_curroffset;         /* RK 961206 for bogus seek elimination */
 
-	unsigned long	e_flags;
+    unsigned long e_flags;
 
-	off_t			e_arstrings;
-	char			*e_arlntp;		/* pointer to hold longname table */
-	unsigned		e_arlntsize;		/* number of bytes in longname table */
+    off_t e_arstrings;
+    char *e_arlntp;             /* pointer to hold longname table */
+    unsigned e_arlntsize;       /* number of bytes in longname table */
 
-	char			*e_rawfile;
+    char *e_rawfile;
 
-	Elf_Arsym		*e_arsymp;
-	unsigned		e_numsyms;
+    Elf_Arsym *e_arsymp;
+    unsigned e_numsyms;
 
-	Elf_Arhdr		*e_arhdrp;
-	Elf				*e_archive;
+    Elf_Arhdr *e_arhdrp;
+    Elf *e_archive;
 
-	Elf32_Ehdr		*e_ehdrp;
-	unsigned long	e_ehdr_flags;
+    Elf32_Ehdr *e_ehdrp;
+    unsigned long e_ehdr_flags;
 
-	Elf32_Phdr		*e_phdrp;
-	unsigned long	e_phdr_flags;
+    Elf32_Phdr *e_phdrp;
+    unsigned long e_phdr_flags;
 
-	Elf32_Shdr		*e_shdrp;
-	unsigned long	e_shdr_flags;
+    Elf32_Shdr *e_shdrp;
+    unsigned long e_shdr_flags;
 
-	unsigned int	e_scns;
-	Elf_Scn			**e_scnp;
+    unsigned int e_scns;
+    Elf_Scn **e_scnp;
 
-	Elf_Cmd			e_cmd;
+    Elf_Cmd e_cmd;
 };
 
-int Elf32_swapEhdr( Elf *elf, Elf32_Ehdr *ehdr );
-int Elf32_swapShdr( Elf *elf, Elf32_Shdr *shdr, int count );
-int Elf32_swapPhdr( Elf *elf );
-int Elf32_swapSym( Elf *elf, Elf32_Sym *sym, long size );
-int Elf32_swapRela( Elf *elf, char *buf, long size, int use_rela );
-int Elf32_swapDyn( Elf *elf, Elf32_Dyn *dyn );
-void swap_16( void *ptr );
-void swap_32( void *ptr );
+int Elf32_swapEhdr(Elf * elf, Elf32_Ehdr * ehdr);
+int Elf32_swapShdr(Elf * elf, Elf32_Shdr * shdr, int count);
+int Elf32_swapPhdr(Elf * elf);
+int Elf32_swapSym(Elf * elf, Elf32_Sym * sym, long size);
+int Elf32_swapRela(Elf * elf, char *buf, long size, int use_rela);
+int Elf32_swapDyn(Elf * elf, Elf32_Dyn * dyn);
+void swap_16(void *ptr);
+void swap_32(void *ptr);
 
 #endif

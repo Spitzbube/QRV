@@ -18,53 +18,55 @@
 #include "externs.h"
 
 
-static void
-kerext_process_bind(void *data) {
-	PROCESS	*prp;
-	pid_t	pid = *(pid_t *)data;
-	THREAD	*act = actives[KERNCPU];
+static void kerext_process_bind(void *data)
+{
+    PROCESS *prp;
+    pid_t pid = *(pid_t *) data;
+    THREAD *act = actives[KERNCPU];
 
-	// Verify the target process and thread exists.
-	if(pid <= 0) {
-		prp = NULL;
-	} else if((prp = lookup_pid(pid)) == NULL) {
-		kererr(act, ESRCH);
-		return;
-	}
+    // Verify the target process and thread exists.
+    if (pid <= 0) {
+        prp = NULL;
+    } else if ((prp = lookup_pid(pid)) == NULL) {
+        kererr(act, ESRCH);
+        return;
+    }
 
-	lock_kernel();
+    lock_kernel();
 
 #ifndef NDEBUG
-	if(prp != NULL) {
-		if(act->aspace_prp != NULL) crash();
-		if(prp->pid != pid) crash();
-	}
-	if(act != actives[KERNCPU]) {
-		crash();
-	}
+    if (prp != NULL) {
+        if (act->aspace_prp != NULL)
+            crash();
+        if (prp->pid != pid)
+            crash();
+    }
+    if (act != actives[KERNCPU]) {
+        crash();
+    }
 
-	{
-		PROCESS	*child = act->process;
+    {
+        PROCESS *child = act->process;
 
-		if((child->pid != SYSMGR_PID) && !(child->flags & _NTO_PF_VFORKED)) {
-			crash();
-		}
-	}
+        if ((child->pid != SYSMGR_PID) && !(child->flags & _NTO_PF_VFORKED)) {
+            crash();
+        }
+    }
 #endif
 
-	// If pid >= 0, we're setting it, otherwise querying
-	if(pid >= 0) {
-		act->aspace_prp = prp;
-	} else {
-		prp = act->aspace_prp;
-	}
+    // If pid >= 0, we're setting it, otherwise querying
+    if (pid >= 0) {
+        act->aspace_prp = prp;
+    } else {
+        prp = act->aspace_prp;
+    }
 
-	SETKSTATUS(act, prp ? prp->pid : 0);
+    SETKSTATUS(act, prp ? prp->pid : 0);
 }
 
-int
-ProcessBind(pid_t pid) {
-	return(__Ring0(kerext_process_bind, &pid));
+int ProcessBind(pid_t pid)
+{
+    return (__Ring0(kerext_process_bind, &pid));
 }
 
 __SRCVERSION("kerext_bind.c $Rev: 153052 $");

@@ -3,23 +3,23 @@ NOTE: This file is not kept up-to-date with reality but should be close.
 inkernel   U K I L    Page Fault   Irq Event    Notes
 --------   -------    ----------   ---------    -----
   00       x . . .    Action A     ---------    Running in user space
-          
+
   80       . x . .    Action B     ---------    Kernel call
-          
+
   c0       . x . x    Action D     ---------    Kernel call (non-abortable)
-          
+
   01       . . 1 .    Action C     Action E     Non-nested interrupt
-          
+
   02       . . 2 .    Action C     Action F     Nested interrupt
-          
+
   81       . x 1 .    Action C     Action G     Interrupt in kernel
-                  
+
   82       . x 2 .    Action C     Action G     Nested interrupt in kernel
-                  
+
   c1       . x 1 x    Action D     Action H     Interrupt in kernel (non-abortable)
-          
+
   c2       . x 2 x    Action D     Action H     Nested interrupt in kernel (non-abortable)
-                  
+
   40      impossible
 
 

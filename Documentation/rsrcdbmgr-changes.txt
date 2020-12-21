@@ -7,20 +7,20 @@ TF ADDED 02/10/2001:
 	is a limitation that within a single call to the resource
 	database you must use either all names or all enumerated
 	types (ie mixing and matching will produce an unspecified
-	behaviour).  
+	behaviour).
 
 Overview
 --------
 
-The resource database is a system wide information database 
+The resource database is a system wide information database
 which tracks resource usage.  The database is seeded with
-information at start-up (from hwinfo and friends) and through 
+information at start-up (from hwinfo and friends) and through
 various specialty programs (seedres).  The information in
 the database concerns things such as: physical memory addresses,
 i/o addresses, irq lines, DMA channels etc.  The database allows
 programs to make requests for resource and be granted access to
 use these resources.  This is an advisory system only, meaning
-that if a process asks for interrupt 5, is denied access to that 
+that if a process asks for interrupt 5, is denied access to that
 interrupt, it _can_ still go and use interrupt 5.  Client which
 play by the rules however should request their resources as
 they need them and behave differently if the request can not
@@ -58,25 +58,25 @@ In order to enhance and extend the functionality of the resource
 database the enumerated types are now deprecated in favour of
 the string based access.  Resources are created and stored as
 a tree.  For example where a previous request may have been made
-for RSRCDBMGR_MEMORY, it would now be made using the string 
+for RSRCDBMGR_MEMORY, it would now be made using the string
 "memory". (TODO: A mapping function)  What is now possible using
-a string based classification system is to allocate a resource 
+a string based classification system is to allocate a resource
 with multiple sub-classifications.  For example if we had several
 different classes of memory:
 "memory"
 "memory/fast"
 "memory/fast/expensive"
 
-As a resource classification narrows (ie memory->fast->fast & 
-expensive) it is less likely that an allocation will come from 
+As a resource classification narrows (ie memory->fast->fast &
+expensive) it is less likely that an allocation will come from
 that area unless it was expressly requested.  This scheme
 is much more powerful then the simple "reservation" policy which
-was in place with the previous enumerated types.  
+was in place with the previous enumerated types.
 
 API Review/Changes
 ------------------
 
-The same functionality in terms of creation of a 
+The same functionality in terms of creation of a
 resource must be available.  The existing system
 allows the following in a creation of a resource:
 
@@ -86,9 +86,9 @@ end        -> Required
 reserve    -> Optional (reserve a block for exact use)
 detach     -> Optional (block not released on process death)
 
-The new system should expand these options to provide 
-the caller with the ability to mark a resource as being 
-in a certain hierarchy based class.  For example 
+The new system should expand these options to provide
+the caller with the ability to mark a resource as being
+in a certain hierarchy based class.  For example
 
 memory = slow + fast = 0x0000 - 0xFFFF
  -> slow 0x0000 - 0x00FF
@@ -97,7 +97,7 @@ memory = slow + fast = 0x0000 - 0xFFFF
 This will be done using a traditional path based
 allocation string of "memory/fast" and "memory/slow".
 
-The API for creating and deleting resources is 
+The API for creating and deleting resources is
 currently as follows:
 
 int rsrcdbmgr_create(rsrc_alloc_t *item, int count);
@@ -105,14 +105,14 @@ int rsrcdbmgr_destroy(rsrc_alloc_t *item, int count);
 
 The rsrc_alloc_t structure will now include a name field
 where the string for the resource can be placed.  This replaces
-4 bytes of padding which were previously unused.  Doing 
+4 bytes of padding which were previously unused.  Doing
 this allows us to maintain backward compatability without
 changing the API.
 
 The "name" fields will be structured like pathnames
 with "/" being the delimiter between the levels in
 the hierarcy.  The support for the existing nameless
-calls would be through a library change which would 
+calls would be through a library change which would
 map calls with no name into their corresponding root
 level type: RSRCDBMGR_MEMORY -> "memory"
 
@@ -123,7 +123,7 @@ class      -> Required
 length	   -> Required
 range      -> Optional
 alignment  -> Optional
-direction  -> Optional 
+direction  -> Optional
 scattered  -> Optional (Choose best from multiple ranges)
 
 through the API calls
@@ -142,7 +142,7 @@ The sub-classes are not required to be unique and may
 overlap.  A request to use the resource of a certain
 class will constrain the search to only use the resource
 of that class and of any of its children.  It will of
-course continue to favour the least specific category 
+course continue to favour the least specific category
 of resource.
 
 For example if we have an allocation of:

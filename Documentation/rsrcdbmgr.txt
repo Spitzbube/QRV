@@ -27,7 +27,7 @@ typedef struct _rsrc_request {
 	uint32_t			zero[3];	/* Reserved */
 } rsrc_request_t;
 
-Mandatory fields are 'length' and a resource type ored into 
+Mandatory fields are 'length' and a resource type ored into
 the 'flags' field.  For example:
 
 	rsrc_request_t req;
@@ -36,16 +36,16 @@ the 'flags' field.  For example:
 
 Will select one DMA Channel out of the available free
 resources, remove that channel from use by others,
-and return the selected channel to you in the req.start 
-field. For lengths greater than 1, the range 
+and return the selected channel to you in the req.start
+field. For lengths greater than 1, the range
 req.start-req.end is the area provided to you.
 
 When you are finished with your resource, you must
 return it to the system by issuing a rsrcdbmgr_detach
 with the same start, end and type that you were issued.
-The easiest way to do this is to just return the 
+The easiest way to do this is to just return the
 object your were allocated ie for the above:
-	
+
 	rsrcdbmgr_detach(&req, 1);
 
 If the resource request can't be filled (or
@@ -55,21 +55,21 @@ occurs then -1 is returned.
 Valid flags (in addition to the resource types)
 are:
 
-RSRCDBMGR_FLAG_ALIGN		
+RSRCDBMGR_FLAG_ALIGN
 	The 'align' field is valid and any resource
 	request should start with the given alignment.
 
-RSRCDBMGR_FLAG_RANGE		
+RSRCDBMGR_FLAG_RANGE
 	The 'start' and 'end' fields are valid and any
-	resource request should only return a value 
+	resource request should only return a value
 	between start and end inclusive.
 
-RSRCDBMGR_FLAG_SHARE		
+RSRCDBMGR_FLAG_SHARE
 	When a resource is allocated, don't remove the
 	resource from the system database, but allow
 	other requests to have access to this resource.
 
-RSRCDBMGR_FLAG_TOPDOWN		
+RSRCDBMGR_FLAG_TOPDOWN
 	When searching for a free resource block, search
 	starting at the 'end' and look to 'start' rather
 	than searching from 'start' to 'end'
@@ -80,11 +80,11 @@ Examples:
 	 list.align = 4 list.length = 50;
 	 list.flags = RSRCMGR_FLAG_ALIGN | RSRMGR_IO_PORT
 	 rsrcmgr_attach(&list, 1);
- 
+
  ie) 1 IO port (io port 0) and 1 IRQ (In range 10-12)
-   list[0].start = list[0].end = 0; list[0].length = 1; 
+   list[0].start = list[0].end = 0; list[0].length = 1;
    list[0].flags = RSRCMGR_FLAG_RANGE | RSRCMGR_IO_PORT;
-   list[1].start = 10; list[1].end = 12; list[1].length = 1; 
+   list[1].start = 10; list[1].end = 12; list[1].length = 1;
    list[1].flags =  RSRCMGR_FLAG_RANGE | RSRCMGR_IRQ;
    rsrcmgr_attach(list, 2);
 
@@ -96,9 +96,9 @@ The two functions for minor number management are:
 int rsrcdbmgr_attach_minor(int major, int minor_request);
 int rsrcdbmgr_detach_minor(int major, int minor);
 
-In order to request minor numbers, you must first 
-have a valid major number.  To obtain a specific 
-minor number specify that number as your 'minor_request', 
+In order to request minor numbers, you must first
+have a valid major number.  To obtain a specific
+minor number specify that number as your 'minor_request',
 otherwise specify -1 and the system will allocate a
 free minor number.  The function returns -1 on
 error otherwise it returns your minor number.
@@ -127,17 +127,17 @@ typedef struct _rsrc_alloc {
 	uint32_t			flags;		/* Resource type | Resource flags */
 } rsrc_alloc_t;
 
-Currently the only flags which are valid are the 
+Currently the only flags which are valid are the
 
 RSRCDBMGR_FLAG_RSVP
 	Used for creating a resource which has a higher
 	priority than other resources and is in effect
 	"reserved".  It is only given out when there are
-	no other valid ranges to give. Only valid for 
+	no other valid ranges to give. Only valid for
 	create.
 
 RSRCDBMGR_FLAG_USED
-	Used for query's to indicate that you want to 
+	Used for query's to indicate that you want to
 	query the resources which have been used by
 	this process (as opposed to free resources in
 	the system).
@@ -153,7 +153,7 @@ int rsrcdbmgr_destroy(rsrc_alloc_t *item, int32_t count);
 ie	Create a 0-4K Memory Allocation and 5 DMA Channels
 
 	rsrc_allo_t alloc[2];
-	alloc[0].start = 0; alloc[0].end = 4*1024; 
+	alloc[0].start = 0; alloc[0].end = 4*1024;
 	alloc[0].flag = RSRCDBMGR_MEMORY;
 	alloc[1].start = 1; alloc[1].end = 5;
 	alloc[1].flag = RSRCDBMGR_DMA_CHANNEL;
@@ -167,10 +167,10 @@ For querying resources use:
 int rsrcdbmgr_query(rsrc_alloc_t *list, int listcnt, int start, uint32_t type);
 
 This returns a list of resources from the database in
-the user supplied array list.  If list = NULL or 
+the user supplied array list.  If list = NULL or
 listcnt = 0 then just the count of elements is returned.
 Otherwise store listcnt number of elements starting
-at a zero based start (as many as possible before the 
+at a zero based start (as many as possible before the
 either the end of the resource list, or array is full).
 
 Returns: The number of elements in the resource database
@@ -182,7 +182,7 @@ This example lists all of the MEMORY resource blocks:
 
 	while (1) {
 		count = rsrcdbmgr_query(&list, 20, start, RSRCDBMGR_MEMORY);
-		if (count == -1) 
+		if (count == -1)
 			break;
 
 		size = MIN(count-start, 20);
@@ -190,7 +190,7 @@ This example lists all of the MEMORY resource blocks:
 			    size, count);
 
 		for (count=0; count<size; count++) {
-			printf("RSRC[%d] Start %d End %d \n", 
+			printf("RSRC[%d] Start %d End %d \n",
 				start+count, list[count].start, list[count].end);
 		}
 		start += size;
@@ -198,17 +198,17 @@ This example lists all of the MEMORY resource blocks:
 
 TODO: Proc interface doced .....
 /*
- Command can be any of 
-	RSRCDBMGR_REQ_QUERY,  RSRCDBMGR_REQ_CREATE,  RSRCDBMGR_REQ_DESTROY,  
+ Command can be any of
+	RSRCDBMGR_REQ_QUERY,  RSRCDBMGR_REQ_CREATE,  RSRCDBMGR_REQ_DESTROY,
 
  If command is RSRCDBMGR_REQ_QUERY | type :
 	*list is an array into which count elements can be copied.
-	The type of resource is or'ed into the command and can include 
+	The type of resource is or'ed into the command and can include
 	RSRCDB_FLAG_USED for used resources. -1 is returned on failure,
 	otherwise the number of elements stored in the array is returned.
-	By specifying a NULL list and/or count you can retreive the 
+	By specifying a NULL list and/or count you can retreive the
 	number of elements in a given list.
-	By specifying a NULL prp you can get the system list (read free) of 
+	By specifying a NULL prp you can get the system list (read free) of
 	elements.
 
  If command is RSRCDBMGR_REQ_CREATE/DESTROY
@@ -217,8 +217,8 @@ TODO: Proc interface doced .....
 	Returns -1 on failure
 
 */
-int rsrcdbmgr_proc_interface(PROCESS *prp, 
-                             rsrc_alloc_t *list, 
-							 int count, 
-							 int start, 
+int rsrcdbmgr_proc_interface(PROCESS *prp,
+                             rsrc_alloc_t *list,
+							 int count,
+							 int start,
 							 int command);

@@ -11,9 +11,9 @@ Description:
 	Search the system address space for a free range of virtual address
 	of at least 'size' bytes. As a hint, start the search at vaddr
 	'start'. Note that 'start' may not be in the valid range for
-	a system space virtual address. 
-	
-Returns:	
+	a system space virtual address.
+
+Returns:
 	The start of the free virtual address range, or VA_INVALID if none available.
 
 Note:
@@ -38,20 +38,20 @@ Description:
 
 		*l2mem -= __PAGESIZE; // Or whatever size is needed
 		l2paddr = *l2mem + 1;
-		
+
 	If no vaddrs are available, the routine should call crash().
 
-Returns:	
+Returns:
 	A pointer that, when referenced, will access the given physical
-	address. 
-	
+	address.
+
 Note:
 	This routine doesn't have to be as sophisticated as it used to
 	be. The upper levels now arrange that it is only called with
 	QUANTUM_SIZE aligned paddr's and sizes. Also, it no longer has
 	to search to see if there's an already existing mapping for
 	the paddr - the upper level takes care of that as well.
-	
+
 
 =====================================================================
 unsigned
@@ -72,7 +72,7 @@ Returns:
 
 
 =====================================================================
-int 
+int
 cpu_vmm_fault(struct fault_info *info);
 
 Calling environment:
@@ -118,14 +118,14 @@ Calling environment:
 Description:
 	Do the CPU specific actions required to destroy an address space
 	for the process 'prp'. Typically, freeing the L1 & L2 page table
-	entries.	
+	entries.
 
 Returns:
 	None.
 
 
 =====================================================================
-int 
+int
 cpu_pte_manipulate(struct mm_pte_manipulate *data);
 
 Calling environment:
@@ -162,7 +162,7 @@ Note:
 
 
 =====================================================================
-int 
+int
 cpu_pte_split(uintptr_t split, struct mm_pte_manipulate *data);
 
 Calling environment:
@@ -179,7 +179,7 @@ Description:
 Returns:
 	EOK if everything went OK, an appropriate errno value if something
 	went wrong. If PTE_OP_PREEMPT is specified and a preemption is
-	needed, return EINTR. Set the data->split_end field to the end vaddr 
+	needed, return EINTR. Set the data->split_end field to the end vaddr
 	of the highest PTE being split. That is:
 
 		pte_vaddr = <starting vaddr of the PTE>;
@@ -194,7 +194,7 @@ Note:
 
 
 =====================================================================
-int 
+int
 cpu_pte_merge(struct mm_pte_manipulate *data);
 
 Calling environment:
@@ -202,8 +202,8 @@ Calling environment:
 
 Description:
 	We've just called cpu_pte_manipulate(data). Examine the data->start to
-	data->split_end range of the page tables and look for opportunities to 
-	merge PTE's into larger sizes. Remember to scan in front of data->start 
+	data->split_end range of the page tables and look for opportunities to
+	merge PTE's into larger sizes. Remember to scan in front of data->start
 	and beyond data->split_end when checking for contiguous ranges of PTE's.
 
 Returns:
@@ -217,7 +217,7 @@ Note:
 
 
 =====================================================================
-unsigned 
+unsigned
 cpu_vmm_vaddrinfo(PROCESS *prp, uintptr_t vaddr, paddr_t *paddrp, size_t *lenp);
 
 Calling Environment:
@@ -228,7 +228,7 @@ Description:
 	information PTE entry. "*paddrp" should be filled in with the
 	paddr of the vaddr (including page offset). The lenp parm may
 	be NULL. If not, "*lenp" should be filled in with the number of
-	bytes that the vaddr=>paddr translation is valid for. 
+	bytes that the vaddr=>paddr translation is valid for.
 
 Returns:
 	A bitset of PROT_READ, PROT_WRITE, PROT_EXEC indicating the
@@ -241,9 +241,9 @@ Notes:
 	is a valid mapping for the vaddr, but there are no valid access
 	permissions (mprotect(....,PROT_NONE) was done), the return
 	should be MAP_PHYS|PROT_NONE (it's OK to turn on MAP_PHYS
-	for other valid mapping returns as well if that makes the 
+	for other valid mapping returns as well if that makes the
 	code easier).
-	
+
 
 
 =====================================================================
@@ -271,7 +271,7 @@ Notes:
 
 
 =====================================================================
-void 
+void
 vmm_init_mem(int phase);
 
 Calling environment:
@@ -287,7 +287,7 @@ Returns:
 
 
 =====================================================================
-int 
+int
 vmm_aspace(PROCESS *actprp, PROCESS **pactprp);
 
 Calling Environment:
@@ -301,15 +301,15 @@ Returns:
 
 
 =====================================================================
-int 
-vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts, 
+int
+vmm_map_xfer(PROCESS *actprp, PROCESS *prp,  IOV **piov, int *pparts,
 		int *poff, IOV *pniov, int *pnparts, unsigned flags);
 
 Calling Environment:
 	Kernel.
 
 Description:
-	Set things up so that a portion of a non-active's address space 
+	Set things up so that a portion of a non-active's address space
 	is accessable from the active address space for message passing.
 
 Returns:
@@ -362,7 +362,7 @@ The following macros and structures need to be defined in the
 	First legal virtual address for a user process (usually 0).
 
 #define CPU_USER_VADDR_END		?
-	Last legal virtual address for a user process (must be last byte of 
+	Last legal virtual address for a user process (must be last byte of
 	a page).
 
 #define CPU_SO_VADDR_START 		?
@@ -395,7 +395,7 @@ The following macros and structures need to be defined in the
 #define CPU_GBL_VADDR_END		? [optional]
 	First and last legal virtual addresses for globally accessable memory.
 	Leave undefined if there is no such space for the CPU.
-	
+
 
 struct cpu_mm_aspace 			?
 	Structure containing all CPU specific fields needed for

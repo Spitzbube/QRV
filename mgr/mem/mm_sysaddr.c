@@ -21,20 +21,20 @@
 // if we're on a CPU where CPU_SYSTEM_PADDR_MUST == 0
 
 
-void
-sysaddr_map(void *d) {
-	struct mm_pte_manipulate *data = d;
-	uintptr_t	va;
+void sysaddr_map(void *d)
+{
+    struct mm_pte_manipulate *data = d;
+    uintptr_t va;
 
-	KerextLock();
-	va = cpu_sysvaddr_find(va_rover, data->end);
-	if(va != VA_INVALID) {
-		va_rover = va + (size_t)data->end;
-		if(pte_map(NULL, va, va_rover-1, data->prot, NULL, data->paddr, 0) != EOK) {
-			va = VA_INVALID;
-		}
-	}
-	data->start = va;
+    KerextLock();
+    va = cpu_sysvaddr_find(va_rover, data->end);
+    if (va != VA_INVALID) {
+        va_rover = va + (size_t) data->end;
+        if (pte_map(NULL, va, va_rover - 1, data->prot, NULL, data->paddr, 0) != EOK) {
+            va = VA_INVALID;
+        }
+    }
+    data->start = va;
 }
 
 __SRCVERSION("mm_sysaddr.c $Rev: 153052 $");

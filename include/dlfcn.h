@@ -27,7 +27,7 @@
 #define _DLFCN_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED
@@ -37,16 +37,15 @@
 #ifdef __EXT_UNIX_MISC
 #include <_pack64.h>
 typedef struct dl_info {
-	const char				*dli_fname;
-	void					*dli_fbase;
-	const char				*dli_sname;
-	void					*dli_saddr;
-}						Dl_info;
+    const char *dli_fname;
+    void *dli_fbase;
+    const char *dli_sname;
+    void *dli_saddr;
+} Dl_info;
 #include <_packpop.h>
 #endif
 
 __BEGIN_DECLS
-
 #define RTLD_LAZY		0x0001
 #define RTLD_NOW		0x0002
 #define RTLD_NOLOAD		0x0004
@@ -58,23 +57,19 @@ __BEGIN_DECLS
 #ifdef __EXT_QNX
 #define RTLD_NOSHARE	0x2000
 #endif
-
 #define RTLD_DEFAULT	((void *) -2)
 #define RTLD_NEXT		((void *) -3)
-
-extern char	*dlerror(void);
-extern void	*dlopen(const char *__pathname, int __mode);
-extern void	*dlsym(void *__handle, const char *__name);
+extern char *dlerror(void);
+extern void *dlopen(const char *__pathname, int __mode);
+extern void *dlsym(void *__handle, const char *__name);
 #ifdef __EXT_UNIX_MISC
-extern int	dladdr(void *__addr, Dl_info *__info);
+extern int dladdr(void *__addr, Dl_info * __info);
 #endif
 #ifdef __EXT_QNX
-extern int	_dladdr(void *__addr, Dl_info *__info);
+extern int _dladdr(void *__addr, Dl_info * __info);
 #endif
-extern int	dlclose(void *__handle);
+extern int dlclose(void *__handle);
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("dlfcn.h $Rev: 200851 $"); */

@@ -30,79 +30,79 @@
 #endif
 
 #if defined(__X86__)
-	#ifndef __X86_CONTEXT_H_INCLUDED
-		#include <x86/context.h>
-	#endif
-	typedef struct {
-		X86_CPU_REGISTERS	cpu;
-		X86_FPU_REGISTERS	fpu;
-	} mcontext_t;
-	#define SET_REGIP	X86_SET_REGIP
-	#define SET_REGSP	X86_SET_REGSP
-	#define GET_REGIP	X86_GET_REGIP
-	#define GET_REGSP	X86_GET_REGSP
+#ifndef __X86_CONTEXT_H_INCLUDED
+#include <x86/context.h>
+#endif
+typedef struct {
+    X86_CPU_REGISTERS cpu;
+    X86_FPU_REGISTERS fpu;
+} mcontext_t;
+#define SET_REGIP	X86_SET_REGIP
+#define SET_REGSP	X86_SET_REGSP
+#define GET_REGIP	X86_GET_REGIP
+#define GET_REGSP	X86_GET_REGSP
 #elif defined(__PPC__)
-	#ifndef __PPC_CONTEXT_H_INCLUDED
-		#include <ppc/context.h>
-	#endif
-	typedef struct {
-		PPC_CPU_REGISTERS	cpu;
-		PPC_FPU_REGISTERS	fpu;
-	} mcontext_t;
-	#define SET_REGIP	PPC_SET_REGIP
-	#define SET_REGSP	PPC_SET_REGSP
-	#define GET_REGIP	PPC_GET_REGIP
-	#define GET_REGSP	PPC_GET_REGSP
+#ifndef __PPC_CONTEXT_H_INCLUDED
+#include <ppc/context.h>
+#endif
+typedef struct {
+    PPC_CPU_REGISTERS cpu;
+    PPC_FPU_REGISTERS fpu;
+} mcontext_t;
+#define SET_REGIP	PPC_SET_REGIP
+#define SET_REGSP	PPC_SET_REGSP
+#define GET_REGIP	PPC_GET_REGIP
+#define GET_REGSP	PPC_GET_REGSP
 #elif defined(__MIPS__)
-	#ifndef __MIPS_CONTEXT_H_INCLUDED
-		#include <mips/context.h>
-	#endif
-	typedef struct {
-		MIPS_CPU_REGISTERS	cpu;
-		MIPS_FPU_REGISTERS	fpu;
-	} mcontext_t;
-	#define SET_REGIP	MIPS_SET_REGIP
-	#define SET_REGSP	MIPS_SET_REGSP
-	#define GET_REGIP	MIPS_GET_REGIP
-	#define GET_REGSP	MIPS_GET_REGSP
+#ifndef __MIPS_CONTEXT_H_INCLUDED
+#include <mips/context.h>
+#endif
+typedef struct {
+    MIPS_CPU_REGISTERS cpu;
+    MIPS_FPU_REGISTERS fpu;
+} mcontext_t;
+#define SET_REGIP	MIPS_SET_REGIP
+#define SET_REGSP	MIPS_SET_REGSP
+#define GET_REGIP	MIPS_GET_REGIP
+#define GET_REGSP	MIPS_GET_REGSP
 #elif defined(__SH__)
-	#ifndef __SH_CONTEXT_H_INCLUDED
-		#include <sh/context.h>
-	#endif
-	typedef struct {
-		SH_CPU_REGISTERS	cpu;
-		SH_FPU_REGISTERS	fpu;
-	} mcontext_t;
-	#define SET_REGIP	SH_SET_REGIP
-	#define SET_REGSP	SH_SET_REGSP
-	#define GET_REGIP	SH_GET_REGIP
-	#define GET_REGSP	SH_GET_REGSP
+#ifndef __SH_CONTEXT_H_INCLUDED
+#include <sh/context.h>
+#endif
+typedef struct {
+    SH_CPU_REGISTERS cpu;
+    SH_FPU_REGISTERS fpu;
+} mcontext_t;
+#define SET_REGIP	SH_SET_REGIP
+#define SET_REGSP	SH_SET_REGSP
+#define GET_REGIP	SH_GET_REGIP
+#define GET_REGSP	SH_GET_REGSP
 #elif defined(__ARM__)
-	#ifndef __ARM_CONTEXT_H_INCLUDED
-		#include <arm/context.h>
-	#endif
-	typedef struct {
-		ARM_CPU_REGISTERS	cpu;
-		ARM_FPU_REGISTERS	fpu;
-	} mcontext_t;
-	#define SET_REGIP	ARM_SET_REGIP
-	#define SET_REGSP	ARM_SET_REGSP
-	#define GET_REGIP	ARM_GET_REGIP
-	#define GET_REGSP	ARM_GET_REGSP
+#ifndef __ARM_CONTEXT_H_INCLUDED
+#include <arm/context.h>
+#endif
+typedef struct {
+    ARM_CPU_REGISTERS cpu;
+    ARM_FPU_REGISTERS fpu;
+} mcontext_t;
+#define SET_REGIP	ARM_SET_REGIP
+#define SET_REGSP	ARM_SET_REGSP
+#define GET_REGIP	ARM_GET_REGIP
+#define GET_REGSP	ARM_GET_REGSP
 #elif defined(__RISCV__)
-	#ifndef __RISCV_CONTEXT_H_INCLUDED
-		#include <riscv/context.h>
-	#endif
-	typedef struct {
-		RISCV_CPU_REGISTERS	cpu;
-		RISCV_FPU_REGISTERS	fpu;
-	} mcontext_t;
-	#define SET_REGIP	RISCV_SET_REGIP
-	#define SET_REGSP	RISCV_SET_REGSP
-	#define GET_REGIP	RISCV_GET_REGIP
-	#define GET_REGSP	RISCV_GET_REGSP
+#ifndef __RISCV_CONTEXT_H_INCLUDED
+#include <riscv/context.h>
+#endif
+typedef struct {
+    RISCV_CPU_REGISTERS cpu;
+    RISCV_FPU_REGISTERS fpu;
+} mcontext_t;
+#define SET_REGIP	RISCV_SET_REGIP
+#define SET_REGSP	RISCV_SET_REGSP
+#define GET_REGIP	RISCV_GET_REGIP
+#define GET_REGSP	RISCV_GET_REGSP
 #else
-	#error Context structure not defined
+#error Context structure not defined
 #endif
 
 #ifndef __SIGNAL_H_INCLUDED
@@ -110,40 +110,35 @@
 #endif
 
 #if defined(__SIGSET_T)
-typedef __SIGSET_T	sigset_t;
+typedef __SIGSET_T sigset_t;
 #undef __SIGSET_T
 #endif
 
 #if defined(__STACK_T)
-typedef __STACK_T	stack_t;
+typedef __STACK_T stack_t;
 #undef __STACK_T
 #endif
 
 #if defined(__UCONTEXT_T)
-typedef __UCONTEXT_T	ucontext_t;
+typedef __UCONTEXT_T ucontext_t;
 #undef __UCONTEXT_T
 #endif
 
 #include <_pack64.h>
 
 struct __ucontext_t {
-  	struct __ucontext_t 	*uc_link;
-  	sigset_t    			uc_sigmask;
-	stack_t	    			uc_stack;
-	mcontext_t  			uc_mcontext;
+    struct __ucontext_t *uc_link;
+    sigset_t uc_sigmask;
+    stack_t uc_stack;
+    mcontext_t uc_mcontext;
 };
 
 __BEGIN_DECLS
-
 /* int	getcontext(ucontext_t *); */
 /* int	setcontext(const ucontext_t *); */
 /* void	makecontext(ucontext_t *, void (*)(), int, ...); */
 /* int	swapcontext(ucontext_t *, const ucontext_t *); */
-
 #include <_packpop.h>
-
-
-__END_DECLS
+    __END_DECLS
 #endif
-
 /* __SRCVERSION("ucontext.h $Rev: 153052 $"); */

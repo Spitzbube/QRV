@@ -18,51 +18,51 @@
 #include "externs.h"
 
 
-void
-KerextLock(void) {
+void KerextLock(void)
+{
 #ifndef NDEBUG
-	if(!(get_inkernel() & INKERNEL_NOW)) {
-		crash();
-	}
+    if (!(get_inkernel() & INKERNEL_NOW)) {
+        crash();
+    }
 #if defined(VARIANT_smp)
-	if((RUNCPU != KERNCPU) && (qtimeptr != NULL) && (qtimeptr->nsec_inc != 0)) {
-		crash();
-	}
+    if ((RUNCPU != KERNCPU) && (qtimeptr != NULL) && (qtimeptr->nsec_inc != 0)) {
+        crash();
+    }
 #endif
 #endif
-	lock_kernel();
+    lock_kernel();
 }
 
-void
-KerextUnlock(void) {
-	unlock_kernel();
-}
-
-
-int
-KerextAmInKernel(void) {
-	return(am_inkernel());
+void KerextUnlock(void)
+{
+    unlock_kernel();
 }
 
 
-void
-KerextStatus(THREAD *thp, int status) {
-	if(!thp) {
-		thp = actives[KERNCPU];
-	}
-	lock_kernel();
-	SETKSTATUS(thp, status);
+int KerextAmInKernel(void)
+{
+    return (am_inkernel());
 }
 
 
-int
-KerextNeedPreempt(void) {
-	return NEED_PREEMPT(actives[RUNCPU]) ? 1 : 0;
+void KerextStatus(THREAD * thp, int status)
+{
+    if (!thp) {
+        thp = actives[KERNCPU];
+    }
+    lock_kernel();
+    SETKSTATUS(thp, status);
 }
 
-int
-KerextSyncOwner(pid_t pid, int tid) {
-	return SYNC_OWNER_BITS(pid, tid-1);
+
+int KerextNeedPreempt(void)
+{
+    return NEED_PREEMPT(actives[RUNCPU]) ? 1 : 0;
+}
+
+int KerextSyncOwner(pid_t pid, int tid)
+{
+    return SYNC_OWNER_BITS(pid, tid - 1);
 }
 
 __SRCVERSION("kerext_misc.c $Rev: 202687 $");

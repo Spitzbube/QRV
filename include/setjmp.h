@@ -25,7 +25,7 @@
 #ifndef _SETJMP_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED
@@ -41,20 +41,15 @@
 
 #include <_pack64.h>
 
-__BEGIN_DECLS
-
-_C_STD_BEGIN
-typedef struct _jmp_buf {
-	union {
-		unsigned int 	__savearea[__JMPBUFSIZE];
-		__jmpbufalign	__alignment;
-	}				__jmpbuf_un;
-	int				__flg;
-	long			__msk[2];
+__BEGIN_DECLS _C_STD_BEGIN typedef struct _jmp_buf {
+    union {
+        unsigned int __savearea[__JMPBUFSIZE];
+        __jmpbufalign __alignment;
+    } __jmpbuf_un;
+    int __flg;
+    long __msk[2];
 } jmp_buf[1];
-_C_STD_END
-
-extern int  _setjmp(_CSTD jmp_buf __env);
+_C_STD_END extern int _setjmp(_CSTD jmp_buf __env);
 extern void _longjmp(_CSTD jmp_buf __env, int __val) __attribute__((__noreturn__));
 
 extern void longjmp(_CSTD jmp_buf __env, int __val) __attribute__((__noreturn__));
@@ -64,11 +59,11 @@ extern void longjmp(_CSTD jmp_buf __env, int __val) __attribute__((__noreturn__)
  * definition or defining an external identifier with the name setjmp
  * will cause undefined behaviour
  */
-extern int  setjmp(_CSTD jmp_buf);
-extern int  sigsetjmp(_CSTD jmp_buf __env, int __msk);
+extern int setjmp(_CSTD jmp_buf);
+extern int sigsetjmp(_CSTD jmp_buf __env, int __msk);
 #endif
 
-typedef _CSTD jmp_buf		sigjmp_buf;
+typedef _CSTD jmp_buf sigjmp_buf;
 extern void __sigjmp_prolog(sigjmp_buf __env, int __msk);
 extern void siglongjmp(sigjmp_buf __env, int __val) __attribute__((__noreturn__));
 
@@ -79,12 +74,10 @@ extern void siglongjmp(sigjmp_buf __env, int __val) __attribute__((__noreturn__)
 #include <_packpop.h>
 
 __END_DECLS
-
 #endif
-
 #ifdef _STD_USING
-using std::jmp_buf;
-#endif /* _STD_USING */
+    using std::jmp_buf;
+#endif                          /* _STD_USING */
 
 #endif
 

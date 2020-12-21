@@ -36,18 +36,18 @@
 #define UT_LINESIZE 14
 
 struct utmp {
-	char    ut_user[UT_NAMESIZE]; /*  login name */
+    char ut_user[UT_NAMESIZE];  /*  login name */
 #define ut_name ut_user
-	char    ut_id[4];             /*  line # */
-	char    ut_line[UT_LINESIZE]; /*  device name (console) */
-	pid_t   ut_pid;               /*  process id */
-	short   ut_type;              /*  entry type */
-	struct exit_status {
-		short   e_termination;      /* termination status */
-		short   e_exit;             /* exit status */
-	} ut_exit;
-	short	ut_spare;
-	time_t  ut_time;
+    char ut_id[4];              /*  line # */
+    char ut_line[UT_LINESIZE];  /*  device name (console) */
+    pid_t ut_pid;               /*  process id */
+    short ut_type;              /*  entry type */
+    struct exit_status {
+        short e_termination;    /* termination status */
+        short e_exit;           /* exit status */
+    } ut_exit;
+    short ut_spare;
+    time_t ut_time;
 };
 
 #define EMPTY           0
@@ -63,7 +63,6 @@ struct utmp {
 
 
 __BEGIN_DECLS
-
 /* Sys V type utmp access functions */
 extern struct utmp *getutent(void);
 extern struct utmp *getutid(struct utmp *__id);
@@ -75,11 +74,9 @@ extern void utmpname(char *__filename);
 
 /* BSD type access functions */
 void login(struct utmp *__utmp);
-int  logout(const char *__line);
+int logout(const char *__line);
 void logwtmp(const char *__line, const char *__name, const char *__host);
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("utmp.h $Rev: 153052 $"); */

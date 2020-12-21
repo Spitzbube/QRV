@@ -26,15 +26,15 @@
 #define _SCHED_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __TYPES_H_INCLUDED
- #include <sys/types.h>
+#include <sys/types.h>
 #endif
 
 #ifndef _TIME_H_INCLUDED
- #include <time.h>
+#include <time.h>
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED
@@ -46,58 +46,52 @@
 #endif
 
 __BEGIN_DECLS
-
 #include <_pack64.h>
-
 #if defined(__EXT_QNX)
 #define SCHED_NOCHANGE	0
 #endif
 #define SCHED_FIFO      1
 #define SCHED_RR        2
 #define SCHED_OTHER     3
-#if defined(__EXT_POSIX1_200112)	/* Approved 1003.1d D14 */
+#if defined(__EXT_POSIX1_200112)    /* Approved 1003.1d D14 */
 #define SCHED_SPORADIC	4
 #endif
 #if defined(__EXT_QNX)
-#define SCHED_ADJTOHEAD	5	/* Move to head of ready queue */
-#define SCHED_ADJTOTAIL	6   /* Move to tail of ready queue */
-#define SCHED_SETPRIO	7	/* pthread_setschedprio operation */
-#define SCHED_MAXPOLICY 7	/* Maximum valid policy entry */
-
+#define SCHED_ADJTOHEAD	5       /* Move to head of ready queue */
+#define SCHED_ADJTOTAIL	6       /* Move to tail of ready queue */
+#define SCHED_SETPRIO	7       /* pthread_setschedprio operation */
+#define SCHED_MAXPOLICY 7       /* Maximum valid policy entry */
 #endif
-
 #if defined(__EXT_QNX)
 #define SCHED_EXT_NONE	0
-#define SCHED_EXT_APS	1	/* APS scheduller */
-
+#define SCHED_EXT_APS	1       /* APS scheduller */
 #define SCHED_EXT_CMD_BASE		  0
 #define SCHED_EXT_APS_CMD_BASE	200
-
-enum {
-	SCHED_QUERY_SCHED_EXT = SCHED_EXT_CMD_BASE,
+    enum {
+    SCHED_QUERY_SCHED_EXT = SCHED_EXT_CMD_BASE,
 };
 struct sched_query {
-	_Uint32t		extsched;
-	_Uint32t		reserved;
+    _Uint32t extsched;
+    _Uint32t reserved;
 };
 #endif
 
 #if defined(__SCHED_PARAM_T)
-typedef __SCHED_PARAM_T	sched_param_t;
+typedef __SCHED_PARAM_T sched_param_t;
 #undef __SCHED_PARAM_T
 #endif
 
 #if defined(__EXT_QNX) || defined(__EXT_POSIX1_200112)
-	#define sched_ss_low_priority	__sched_ss_low_priority
-	#define sched_ss_max_repl		__sched_ss_max_repl
-	#define sched_ss_repl_period	__sched_ss_repl_period
-	#define sched_ss_init_budget	__sched_ss_init_budget
+#define sched_ss_low_priority	__sched_ss_low_priority
+#define sched_ss_max_repl		__sched_ss_max_repl
+#define sched_ss_repl_period	__sched_ss_repl_period
+#define sched_ss_init_budget	__sched_ss_init_budget
 #endif
 
 #if defined(__EXT_QNX)
 /* 1003.4 Draft 9 : These two are so convenient we include them. */
-extern int  getprio(pid_t __pid);
-extern int  setprio(pid_t __pid, int __priority);
+extern int getprio(pid_t __pid);
+extern int setprio(pid_t __pid, int __priority);
 #endif
 
 /* 1003.1b */
@@ -116,17 +110,11 @@ extern int sched_get_priority_adjust(int __prio, int __alg, int __adjust);
 #include <_packpop.h>
 
 __END_DECLS
-
 #if defined(__EXT_QNX) && defined(__INLINE_FUNCTIONS__)
-
 #ifndef __NEUTRINO_H_INCLUDED
 #include <sys/neutrino.h>
 #endif
-
 #define sched_yield SchedYield
-
 #endif
-
 #endif
-
 /* __SRCVERSION("sched.h $Rev: 169304 $"); */

@@ -1,16 +1,17 @@
 Adaptive Partitioning Scheduler
 ===============================
+
 An optional fair-share thread scheduler that guarantees groups of threads
 guaranteed minimum percentage shares of cpu time.
 
 http://os.ott.qnx.com/wiki/index.php/Adaptive_partitioning:Contents
 
-file structure:
+File structure:
 
 aps_alg.c, .h
 	algorithm for which partition to schedule a thread from
 
-aps_application_erro.c
+aps_application_error.c
         once function for forcing reboots when a partition goes bankrupt.
 	(just so the crash message will say "application error" rather than "nano_aps.c")
 
@@ -46,8 +47,3 @@ nano_aps.c
 
 proto_aps.h
 	function prototypes for all of aps.
-
-
-readme
-	this file
-

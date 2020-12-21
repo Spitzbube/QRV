@@ -38,21 +38,23 @@
 */
 static VECTOR memclass_vector;
 
-static pthread_mutex_t		memclass_list_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t memclass_list_lock = PTHREAD_MUTEX_INITIALIZER;
 
 /* default allocator access functions */
-static void memclass_resv_adjust(memsize_t size, int sign, memclass_info_t *info);
-static memsize_t memclass_unreserve(memsize_t size, memsize_t adjust, int adjust_dir, memclass_info_t *info);
-static memsize_t memclass_reserve(memsize_t size, memsize_t adjust, int adjust_dir, memclass_info_t *info);
-static memclass_sizeinfo_t *memclass_get_sizeinfo(memclass_sizeinfo_t *s, memclass_info_t *info);
+static void memclass_resv_adjust(memsize_t size, int sign, memclass_info_t * info);
+static memsize_t memclass_unreserve(memsize_t size, memsize_t adjust, int adjust_dir,
+                                    memclass_info_t * info);
+static memsize_t memclass_reserve(memsize_t size, memsize_t adjust, int adjust_dir,
+                                  memclass_info_t * info);
+static memclass_sizeinfo_t *memclass_get_sizeinfo(memclass_sizeinfo_t * s, memclass_info_t * info);
 
-static allocator_accessfncs_t  _dflt_memclass_fncs =
-{
-	STRUCT_FLD(reserve) memclass_reserve,
-	STRUCT_FLD(unreserve) memclass_unreserve,
-	STRUCT_FLD(size_info) memclass_get_sizeinfo,
-	STRUCT_FLD(resv_adjust) memclass_resv_adjust,
+static allocator_accessfncs_t _dflt_memclass_fncs = {
+    STRUCT_FLD(reserve) memclass_reserve,
+    STRUCT_FLD(unreserve) memclass_unreserve,
+    STRUCT_FLD(size_info) memclass_get_sizeinfo,
+    STRUCT_FLD(resv_adjust) memclass_resv_adjust,
 };
+
 allocator_accessfncs_t *dflt_memclass_fncs = &_dflt_memclass_fncs;
 
 /*
@@ -96,8 +98,8 @@ allocator_accessfncs_t *dflt_memclass_fncs = &_dflt_memclass_fncs;
  * manager module is installed.
 */
 
-void (*memclass_event)(struct apmmgr_attr_s *attr, memclass_evttype_t evtype,
-						memclass_sizeinfo_t *cur, memclass_sizeinfo_t *prev) = NULL;
+void (*memclass_event)(struct apmmgr_attr_s * attr, memclass_evttype_t evtype,
+                       memclass_sizeinfo_t * cur, memclass_sizeinfo_t * prev) = NULL;
 
 /*******************************************************************************
  * memclass_find
@@ -116,25 +118,23 @@ void (*memclass_event)(struct apmmgr_attr_s *attr, memclass_evttype_t evtype,
 */
 memclass_entry_t *memclass_find(const char *name, memclass_id_t id)
 {
-	memclass_entry_t *entry = NULL;
+    memclass_entry_t *entry = NULL;
 
-	MUTEX_LOCK(&memclass_list_lock);
-	if (id != memclass_id_t_INVALID) {
-		entry = vector_lookup(&memclass_vector, id);
-	}
-	else if ((name != NULL) && (*name != '\0'))
-	{
-		/* search */
-		unsigned i;
-		for (i=0; i<memclass_vector.nentries; i++)
-		{
-			entry = vector_lookup(&memclass_vector, i);
-			if ((entry != NULL) && (strcmp(name, entry->name) == 0)) break;
-		}
-	}
-	MUTEX_UNLOCK(&memclass_list_lock);
-	CRASHCHECK((entry != NULL) && (entry->data.signature != MEMCLASS_SIGNATURE));
-	return entry;
+    MUTEX_LOCK(&memclass_list_lock);
+    if (id != memclass_id_t_INVALID) {
+        entry = vector_lookup(&memclass_vector, id);
+    } else if ((name != NULL) && (*name != '\0')) {
+        /* search */
+        unsigned i;
+        for (i = 0; i < memclass_vector.nentries; i++) {
+            entry = vector_lookup(&memclass_vector, i);
+            if ((entry != NULL) && (strcmp(name, entry->name) == 0))
+                break;
+        }
+    }
+    MUTEX_UNLOCK(&memclass_list_lock);
+    CRASHCHECK((entry != NULL) && (entry->data.signature != MEMCLASS_SIGNATURE));
+    return entry;
 }
 
 
@@ -155,70 +155,64 @@ memclass_entry_t *memclass_find(const char *name, memclass_id_t id)
  * The memory for the class structures always comes from the internal heap
  * since it may need to live beyond the existence of the creating process
 */
-memclass_id_t memclass_add(const char *memclass_name, memclass_attr_t *attr,
-									allocator_accessfncs_t *f)
+memclass_id_t memclass_add(const char *memclass_name, memclass_attr_t * attr,
+                           allocator_accessfncs_t * f)
 {
-	memclass_entry_t  *mclass_entry;
-	int					id;
+    memclass_entry_t *mclass_entry;
+    int id;
 
-	/* first make sure that the memory class has not already been added */
-	if ((mclass_entry = memclass_find(memclass_name, memclass_id_t_INVALID)) != NULL)
-	{
+    /* first make sure that the memory class has not already been added */
+    if ((mclass_entry = memclass_find(memclass_name, memclass_id_t_INVALID)) != NULL) {
 #ifndef NDEBUG
-		if (ker_verbose > 1)
-		{
-			kprintf("memory class '%s' with class id 0x%x already present\n",
-					mclass_entry->name, mclass_entry->data.info.id);
-		}
-#endif	/* NDEBUG */
-	}
-	/* not found, add a new entry */
-	else if ((mclass_entry = calloc(1, sizeof(*mclass_entry))) == NULL)
-		return memclass_id_t_INVALID;
-	else
-	{
-		mclass_entry->data.signature = MEMCLASS_SIGNATURE;
-		STRLCPY(mclass_entry->name, memclass_name, sizeof(mclass_entry->name));
-		MUTEX_INIT(NULL, &mclass_entry->lock);
+        if (ker_verbose > 1) {
+            kprintf("memory class '%s' with class id 0x%x already present\n",
+                    mclass_entry->name, mclass_entry->data.info.id);
+        }
+#endif                          /* NDEBUG */
+    }
+    /* not found, add a new entry */
+    else if ((mclass_entry = calloc(1, sizeof(*mclass_entry))) == NULL)
+        return memclass_id_t_INVALID;
+    else {
+        mclass_entry->data.signature = MEMCLASS_SIGNATURE;
+        STRLCPY(mclass_entry->name, memclass_name, sizeof(mclass_entry->name));
+        MUTEX_INIT(NULL, &mclass_entry->lock);
 
-		if (attr)
-			mclass_entry->data.info.attr = *attr;
-		else
-		{
-			memclass_attr_t  a = MEMCLASS_DEFAULT_ATTR;
-			mclass_entry->data.info.attr = a;
-		}
-		if (f != NULL) {
-			mclass_entry->data.allocator = *f;
-		}
-		else {
-			mclass_entry->data.allocator = _dflt_memclass_fncs;
-		}
+        if (attr)
+            mclass_entry->data.info.attr = *attr;
+        else {
+            memclass_attr_t a = MEMCLASS_DEFAULT_ATTR;
+            mclass_entry->data.info.attr = a;
+        }
+        if (f != NULL) {
+            mclass_entry->data.allocator = *f;
+        } else {
+            mclass_entry->data.allocator = _dflt_memclass_fncs;
+        }
 
-		memset(&mclass_entry->data.info.size, 0, sizeof(mclass_entry->data.info.size));
-		mclass_entry->data.info.size.unreserved.free = mclass_entry->data.info.attr.size;
+        memset(&mclass_entry->data.info.size, 0, sizeof(mclass_entry->data.info.size));
+        mclass_entry->data.info.size.unreserved.free = mclass_entry->data.info.attr.size;
 
 #ifndef NDEBUG
-		if (ker_verbose > 1)
-		{
-			kprintf("added memory class '%s' with class id 0x%x, sz = %P\n",
-						mclass_entry->name, mclass_entry->data.info.id,
-						(paddr_t)mclass_entry->data.info.size.unreserved.free);
-		}
-#endif	/* NDEBUG */
+        if (ker_verbose > 1) {
+            kprintf("added memory class '%s' with class id 0x%x, sz = %P\n",
+                    mclass_entry->name, mclass_entry->data.info.id,
+                    (paddr_t) mclass_entry->data.info.size.unreserved.free);
+        }
+#endif                          /* NDEBUG */
 
-		/* add the entry to the list */
-		MUTEX_LOCK(&memclass_list_lock);
-		id = vector_add(&memclass_vector, mclass_entry, 0);
-		if(id < 0) {
-			MUTEX_UNLOCK(&memclass_list_lock);
-			free(mclass_entry);
-			return memclass_id_t_INVALID;
-		}
-		mclass_entry->data.info.id = id;
-		MUTEX_UNLOCK(&memclass_list_lock);
-	}
-	return mclass_entry->data.info.id;
+        /* add the entry to the list */
+        MUTEX_LOCK(&memclass_list_lock);
+        id = vector_add(&memclass_vector, mclass_entry, 0);
+        if (id < 0) {
+            MUTEX_UNLOCK(&memclass_list_lock);
+            free(mclass_entry);
+            return memclass_id_t_INVALID;
+        }
+        mclass_entry->data.info.id = id;
+        MUTEX_UNLOCK(&memclass_list_lock);
+    }
+    return mclass_entry->data.info.id;
 }
 
 
@@ -239,22 +233,22 @@ memclass_id_t memclass_add(const char *memclass_name, memclass_attr_t *attr,
 */
 int memclass_delete(const char *name, memclass_id_t id)
 {
-	memclass_entry_t  *entry;
+    memclass_entry_t *entry;
 
-	if ((name == NULL) && (id == memclass_id_t_INVALID))
-		return EINVAL;
+    if ((name == NULL) && (id == memclass_id_t_INVALID))
+        return EINVAL;
 
-	if ((entry = memclass_find(name, id)) == NULL)
-		return ENOENT;
+    if ((entry = memclass_find(name, id)) == NULL)
+        return ENOENT;
 
-	MUTEX_LOCK(&memclass_list_lock);
-	vector_rem(&memclass_vector, entry->data.info.id);
-	MUTEX_UNLOCK(&memclass_list_lock);
+    MUTEX_LOCK(&memclass_list_lock);
+    vector_rem(&memclass_vector, entry->data.info.id);
+    MUTEX_UNLOCK(&memclass_list_lock);
 
-	MUTEX_DESTROY(&entry->lock.mutex);
-	free(entry);
+    MUTEX_DESTROY(&entry->lock.mutex);
+    free(entry);
 
-	return EOK;
+    return EOK;
 }
 
 /*******************************************************************************
@@ -262,15 +256,16 @@ int memclass_delete(const char *name, memclass_id_t id)
  *
  *
 */
-memclass_info_t *memclass_info(memclass_id_t id, memclass_info_t *info_buf)
+memclass_info_t *memclass_info(memclass_id_t id, memclass_info_t * info_buf)
 {
-	memclass_entry_t *e = memclass_find(NULL, id);
+    memclass_entry_t *e = memclass_find(NULL, id);
 
-	if (e == NULL) return NULL;
-	CRASHCHECK(info_buf == NULL);
-	(void)e->data.allocator.size_info(&e->data.info.size, &e->data.info);
-	*info_buf = e->data.info;
-	return info_buf;
+    if (e == NULL)
+        return NULL;
+    CRASHCHECK(info_buf == NULL);
+    (void) e->data.allocator.size_info(&e->data.info.size, &e->data.info);
+    *info_buf = e->data.info;
+    return info_buf;
 }
 
 /*
@@ -286,13 +281,13 @@ memclass_info_t *memclass_info(memclass_id_t id, memclass_info_t *info_buf)
  *
  * default access function to obtain the size information for the memory class
 */
-static memclass_sizeinfo_t *memclass_get_sizeinfo(memclass_sizeinfo_t *s, memclass_info_t *info)
+static memclass_sizeinfo_t *memclass_get_sizeinfo(memclass_sizeinfo_t * s, memclass_info_t * info)
 {
-	CRASHCHECK(s == NULL);
-	CRASHCHECK(info == NULL);
+    CRASHCHECK(s == NULL);
+    CRASHCHECK(info == NULL);
 
-	*s = info->size;
-	return s;
+    *s = info->size;
+    return s;
 }
 
 /*
@@ -328,62 +323,60 @@ static memclass_sizeinfo_t *memclass_get_sizeinfo(memclass_sizeinfo_t *s, memcla
  * the reasons described below.
  *
 */
-static memsize_t memclass_reserve(memsize_t size, memsize_t adjust, int adjust_dir, memclass_info_t *info)
+static memsize_t memclass_reserve(memsize_t size, memsize_t adjust, int adjust_dir,
+                                  memclass_info_t * info)
 {
-	memclass_t *mclass;
-	memclass_sizeinfo_t cur, prev = info->size;
-	memclass_evttype_t  evt1 = memclass_evttype_t_INVALID;
-	memclass_evttype_t  evt2 = memclass_evttype_t_INVALID;
+    memclass_t *mclass;
+    memclass_sizeinfo_t cur, prev = info->size;
+    memclass_evttype_t evt1 = memclass_evttype_t_INVALID;
+    memclass_evttype_t evt2 = memclass_evttype_t_INVALID;
 
-	CRASHCHECK((size == 0) && (adjust == 0));	// what are we doing here ?
+    CRASHCHECK((size == 0) && (adjust == 0));   // what are we doing here ?
 
-	switch(adjust_dir)
-	{
-		case +1:
-			if (size > adjust)
-			{
-				/* a net reservation increase */
-				evt1 = memclass_evttype_t_DELTA_RF_INCR;
-				CRASHCHECK((size - adjust) > info->size.unreserved.free);
-				info->size.unreserved.free -= (size - adjust);
-				info->size.reserved.free += (size - adjust);
-			}
-			else
-			{
-				/* a net reservation decrease */
-				evt1 = memclass_evttype_t_DELTA_RF_DECR;
-				CRASHCHECK((adjust - size) > info->size.reserved.free);
-				info->size.unreserved.free += (adjust - size);
-				info->size.reserved.free -= (adjust - size);
-			}
-			CRASHCHECK(adjust > info->size.unreserved.used);
-			evt2 = memclass_evttype_t_DELTA_RU_INCR;
-			info->size.reserved.used += adjust;
-			info->size.unreserved.used -= adjust;
-			break;
+    switch (adjust_dir) {
+    case +1:
+        if (size > adjust) {
+            /* a net reservation increase */
+            evt1 = memclass_evttype_t_DELTA_RF_INCR;
+            CRASHCHECK((size - adjust) > info->size.unreserved.free);
+            info->size.unreserved.free -= (size - adjust);
+            info->size.reserved.free += (size - adjust);
+        } else {
+            /* a net reservation decrease */
+            evt1 = memclass_evttype_t_DELTA_RF_DECR;
+            CRASHCHECK((adjust - size) > info->size.reserved.free);
+            info->size.unreserved.free += (adjust - size);
+            info->size.reserved.free -= (adjust - size);
+        }
+        CRASHCHECK(adjust > info->size.unreserved.used);
+        evt2 = memclass_evttype_t_DELTA_RU_INCR;
+        info->size.reserved.used += adjust;
+        info->size.unreserved.used -= adjust;
+        break;
 
-		case -1:
-			/* a net reservation decrease */
-			evt1 = memclass_evttype_t_DELTA_RF_INCR;
-			evt2 = memclass_evttype_t_DELTA_RU_DECR;
+    case -1:
+        /* a net reservation decrease */
+        evt1 = memclass_evttype_t_DELTA_RF_INCR;
+        evt2 = memclass_evttype_t_DELTA_RU_DECR;
 
-			CRASHCHECK((size + adjust) > info->size.unreserved.free);
-			CRASHCHECK(adjust > info->size.reserved.used);
-			info->size.unreserved.free -= (size + adjust);
-			info->size.reserved.free += (size + adjust);
-			info->size.reserved.used -= adjust;
-			info->size.unreserved.used += adjust;
-			break;
+        CRASHCHECK((size + adjust) > info->size.unreserved.free);
+        CRASHCHECK(adjust > info->size.reserved.used);
+        info->size.unreserved.free -= (size + adjust);
+        info->size.reserved.free += (size + adjust);
+        info->size.reserved.used -= adjust;
+        info->size.unreserved.used += adjust;
+        break;
 
-		default: crash();
-	}
-	cur = info->size;
-	mclass = (memclass_t *)((unsigned int)info - offsetof(memclass_t, info));
-	MEMCLASSMGR_EVENT(mclass, evt1, &cur, &prev);
-	if (evt2 != memclass_evttype_t_INVALID) {
-		MEMCLASSMGR_EVENT(mclass, evt2, &cur, &prev);
-	}
-	return size;
+    default:
+        crash();
+    }
+    cur = info->size;
+    mclass = (memclass_t *) ((unsigned int) info - offsetof(memclass_t, info));
+    MEMCLASSMGR_EVENT(mclass, evt1, &cur, &prev);
+    if (evt2 != memclass_evttype_t_INVALID) {
+        MEMCLASSMGR_EVENT(mclass, evt2, &cur, &prev);
+    }
+    return size;
 }
 
 /*
@@ -419,62 +412,60 @@ static memsize_t memclass_reserve(memsize_t size, memsize_t adjust, int adjust_d
  * the reasons described below.
  *
 */
-static memsize_t memclass_unreserve(memsize_t size, memsize_t adjust, int adjust_dir, memclass_info_t *info)
+static memsize_t memclass_unreserve(memsize_t size, memsize_t adjust, int adjust_dir,
+                                    memclass_info_t * info)
 {
-	memclass_t *mclass;
-	memclass_sizeinfo_t cur, prev = info->size;
-	memclass_evttype_t  evt1 = memclass_evttype_t_INVALID;
-	memclass_evttype_t  evt2 = memclass_evttype_t_INVALID;
+    memclass_t *mclass;
+    memclass_sizeinfo_t cur, prev = info->size;
+    memclass_evttype_t evt1 = memclass_evttype_t_INVALID;
+    memclass_evttype_t evt2 = memclass_evttype_t_INVALID;
 
-	CRASHCHECK((size == 0) && (adjust == 0));	// what are we doing here ?
+    CRASHCHECK((size == 0) && (adjust == 0));   // what are we doing here ?
 
-	switch(adjust_dir)
-	{
-		case -1:
-			if (size > adjust)
-			{
-				/* a net reservation decrease */
-				evt1 = memclass_evttype_t_DELTA_RF_DECR;
-				CRASHCHECK((size - adjust) > info->size.reserved.free);
-				info->size.unreserved.free += (size - adjust);
-				info->size.reserved.free -= (size - adjust);
-			}
-			else
-			{
-				/* a net reservation increase */
-				evt1 = memclass_evttype_t_DELTA_RF_INCR;
-				CRASHCHECK((adjust - size) > info->size.unreserved.free);
-				info->size.unreserved.free -= (adjust - size);
-				info->size.reserved.free += (adjust - size);
-			}
-			CRASHCHECK(adjust > info->size.reserved.used);
-			evt2 = memclass_evttype_t_DELTA_RU_DECR;
-			info->size.reserved.used -= adjust;
-			info->size.unreserved.used += adjust;
-			break;
+    switch (adjust_dir) {
+    case -1:
+        if (size > adjust) {
+            /* a net reservation decrease */
+            evt1 = memclass_evttype_t_DELTA_RF_DECR;
+            CRASHCHECK((size - adjust) > info->size.reserved.free);
+            info->size.unreserved.free += (size - adjust);
+            info->size.reserved.free -= (size - adjust);
+        } else {
+            /* a net reservation increase */
+            evt1 = memclass_evttype_t_DELTA_RF_INCR;
+            CRASHCHECK((adjust - size) > info->size.unreserved.free);
+            info->size.unreserved.free -= (adjust - size);
+            info->size.reserved.free += (adjust - size);
+        }
+        CRASHCHECK(adjust > info->size.reserved.used);
+        evt2 = memclass_evttype_t_DELTA_RU_DECR;
+        info->size.reserved.used -= adjust;
+        info->size.unreserved.used += adjust;
+        break;
 
-		case +1:
-			/* a net reservation decrease */
-			evt1 = memclass_evttype_t_DELTA_RF_DECR;
-			evt2 = memclass_evttype_t_DELTA_RU_DECR;
+    case +1:
+        /* a net reservation decrease */
+        evt1 = memclass_evttype_t_DELTA_RF_DECR;
+        evt2 = memclass_evttype_t_DELTA_RU_DECR;
 
-			CRASHCHECK((size + adjust) > info->size.reserved.free);
-			CRASHCHECK(adjust > info->size.unreserved.used);
-			info->size.unreserved.free += (size + adjust);
-			info->size.reserved.free -= (size + adjust);
-			info->size.reserved.used += adjust;
-			info->size.unreserved.used -= adjust;
-			break;
+        CRASHCHECK((size + adjust) > info->size.reserved.free);
+        CRASHCHECK(adjust > info->size.unreserved.used);
+        info->size.unreserved.free += (size + adjust);
+        info->size.reserved.free -= (size + adjust);
+        info->size.reserved.used += adjust;
+        info->size.unreserved.used -= adjust;
+        break;
 
-		default: crash();
-	}
-	cur = info->size;
-	mclass = (memclass_t *)((unsigned int)info - offsetof(memclass_t, info));
-	MEMCLASSMGR_EVENT(mclass, evt1, &cur, &prev);
-	if (evt2 != memclass_evttype_t_INVALID) {
-		MEMCLASSMGR_EVENT(mclass, evt2, &cur, &prev);
-	}
-	return size;
+    default:
+        crash();
+    }
+    cur = info->size;
+    mclass = (memclass_t *) ((unsigned int) info - offsetof(memclass_t, info));
+    MEMCLASSMGR_EVENT(mclass, evt1, &cur, &prev);
+    if (evt2 != memclass_evttype_t_INVALID) {
+        MEMCLASSMGR_EVENT(mclass, evt2, &cur, &prev);
+    }
+    return size;
 }
 
 /*
@@ -486,55 +477,55 @@ static memsize_t memclass_unreserve(memsize_t size, memsize_t adjust, int adjust
  * This function is called to re-account allocated memory from either reserved
  * to unreserved (-1) or unreserved to reserved (+1)
 */
-static void memclass_resv_adjust(memsize_t size, int sign, memclass_info_t *info)
+static void memclass_resv_adjust(memsize_t size, int sign, memclass_info_t * info)
 {
-	memclass_t *mclass;
-	memclass_sizeinfo_t cur, prev = info->size;
-	memclass_evttype_t evt = memclass_evttype_t_INVALID;
+    memclass_t *mclass;
+    memclass_sizeinfo_t cur, prev = info->size;
+    memclass_evttype_t evt = memclass_evttype_t_INVALID;
 
-	if (size == 0)
-		return;
-	else if (sign == +1) {
-		/* transfer used unreserved to used reserved (while keeping totals constant) */
-		info->size.unreserved.used -= size;
-		info->size.reserved.used += size;
+    if (size == 0)
+        return;
+    else if (sign == +1) {
+        /* transfer used unreserved to used reserved (while keeping totals constant) */
+        info->size.unreserved.used -= size;
+        info->size.reserved.used += size;
 
-		/* ... and fix up free's to keep config constant */
-		info->size.unreserved.free += size;
-		info->size.reserved.free -= size;
-		evt = memclass_evttype_t_DELTA_RU_DECR;
-	}
-	else if (sign == -1) {
-		/* transfer used reserved to used unreserved (while keeping totals constant) */
-		info->size.reserved.used -= size;
-		info->size.unreserved.used += size;
+        /* ... and fix up free's to keep config constant */
+        info->size.unreserved.free += size;
+        info->size.reserved.free -= size;
+        evt = memclass_evttype_t_DELTA_RU_DECR;
+    } else if (sign == -1) {
+        /* transfer used reserved to used unreserved (while keeping totals constant) */
+        info->size.reserved.used -= size;
+        info->size.unreserved.used += size;
 
-		/* ... and fix up free's to keep config constant */
-		info->size.reserved.free += size;
-		info->size.unreserved.free -= size;
-		evt = memclass_evttype_t_DELTA_RU_INCR;
-	}
+        /* ... and fix up free's to keep config constant */
+        info->size.reserved.free += size;
+        info->size.unreserved.free -= size;
+        evt = memclass_evttype_t_DELTA_RU_INCR;
+    }
 #ifndef NDEBUG
-	else crash();
-#endif	/* NDEBUG */
+    else
+        crash();
+#endif                          /* NDEBUG */
 
-	cur = info->size;
-	mclass = (memclass_t *)((unsigned int)info - offsetof(memclass_t, info));
-	MEMCLASSMGR_EVENT(mclass, evt, &cur, &prev);
+    cur = info->size;
+    mclass = (memclass_t *) ((unsigned int) info - offsetof(memclass_t, info));
+    MEMCLASSMGR_EVENT(mclass, evt, &cur, &prev);
 }
 
 #ifndef NDEBUG
 /* implement real, gdb breakable functions */
-void _memclass_pid_use(PROCESS *prp, memclass_id_t mclass_id, memsize_t size)
+void _memclass_pid_use(PROCESS * prp, memclass_id_t mclass_id, memsize_t size)
 {
-	_MEMCLASS_PID_USE(prp, mclass_id, size);
+    _MEMCLASS_PID_USE(prp, mclass_id, size);
 }
 
-void _memclass_pid_free(PROCESS *prp, memclass_id_t mclass_id, memsize_t size)
+void _memclass_pid_free(PROCESS * prp, memclass_id_t mclass_id, memsize_t size)
 {
-	_MEMCLASS_PID_FREE(prp, mclass_id, size);
+    _MEMCLASS_PID_FREE(prp, mclass_id, size);
 }
-#endif	/* NDEBUG */
+#endif                          /* NDEBUG */
 
 
 __SRCVERSION("mm_class.c $Rev$");

@@ -23,27 +23,25 @@
 #define PROC_CODE_CONT			(SI_MINAVAIL + 3)
 
 struct wait_entry {
-	struct wait_entry				*next;
-	int								rcvid;
-	id_t							id;
-	short 							idtype;
-	short							options;
+    struct wait_entry *next;
+    int rcvid;
+    id_t id;
+    short idtype;
+    short options;
 };
 
 struct vfork_info {
-	int								rcvid;
-	struct _thread_local_storage	tls;
-	void							*frame_base;
-	unsigned						frame_size;
-	unsigned						frame[1];
+    int rcvid;
+    struct _thread_local_storage tls;
+    void *frame_base;
+    unsigned frame_size;
+    unsigned frame[1];
 };
 
-extern SOUL	wait_souls;
+extern SOUL wait_souls;
 
 #include "procmgr_proto.h"
 
-extern void	procmgr_context_init(void);
+extern void procmgr_context_init(void);
 
 #endif
-
-/* __SRCVERSION("procmgr_internal.h $Rev: 164352 $"); */

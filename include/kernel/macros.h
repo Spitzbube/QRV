@@ -31,7 +31,7 @@
  * #define LIBMOD_VERSION_CHECK	43	// trinity rc6
  * #define LIBMOD_VERSION_CHECK	44	// trinity 2/pre-gcc
  */
-#define LIBMOD_VERSION_CHECK	45	// trinity 2
+#define LIBMOD_VERSION_CHECK	45  // trinity 2
 
 /* Total number of priorities (including IDLE which users can not use) */
 #ifndef NUM_PRI
@@ -40,10 +40,11 @@
 
 #define _NTO_SF_NOJOBCTL			0x00000001
 
-#define COF_NETCON			0x0001
+#define COF_NETCON		0x0001
 #define COF_VCONNECT		0x0002
-#define COF_ASYNC			0x0400
+#define COF_ASYNC		0x0400
 #define COF_ASYNC_QUEUED	0x4000
+
 /*
  * Define the private flags of a thread THREAD.flags
  * The low order 16 bits are reserved to trigger special actions when
@@ -59,38 +60,38 @@
  */
 #define _NTO_TF_SPECRET_MASK	0x0000ffff
 
-#define _NTO_TF_KILLSELF		0x00000001
+#define _NTO_TF_KILLSELF	0x00000001
 #define _NTO_TF_TO_BE_STOPPED	0x00000002
-#define _NTO_TF_RCVINFO			0x00000004
-#define _NTO_TF_SHORT_MSG		0x00000008
-#define _NTO_TF_NANOSLEEP		0x00000010
-#define _NTO_TF_JOIN			0x00000020
-#define _NTO_TF_WAAA			0x00000040
-#define _NTO_TF_SIGWAITINFO		0x00000080
-#define _NTO_TF_SIG_ACTIVE		0x00000100
-#define _NTO_TF_SIGSUSPEND		0x00000200
+#define _NTO_TF_RCVINFO		0x00000004
+#define _NTO_TF_SHORT_MSG	0x00000008
+#define _NTO_TF_NANOSLEEP	0x00000010
+#define _NTO_TF_JOIN		0x00000020
+#define _NTO_TF_WAAA		0x00000040
+#define _NTO_TF_SIGWAITINFO	0x00000080
+#define _NTO_TF_SIG_ACTIVE	0x00000100
+#define _NTO_TF_SIGSUSPEND	0x00000200
 #define _NTO_TF_ACQUIRE_MUTEX	0x00000400
-#define _NTO_TF_CANCELSELF		0x00000800
-#define _NTO_TF_PULSE			0x00001000
+#define _NTO_TF_CANCELSELF	0x00000800
+#define _NTO_TF_PULSE		0x00001000
 #define _NTO_TF_MUTEX_CEILING	0x00002000
 #define _NTO_TF_ASYNC_RECEIVE	0x00004000
 
-//public _NTO_TF_INTR_PENDING	0x00010000
-//public _NTO_TF_DETACHED		0x00020000
-//unused						0x00040000
+//public _NTO_TF_INTR_PENDING   0x00010000
+//public _NTO_TF_DETACHED       0x00020000
+//unused                        0x00040000
 #define _NTO_TF_KCALL_ACTIVE	0x00080000
-//public _NTO_TF_THREADS_HOLD	0x00100000
+//public _NTO_TF_THREADS_HOLD   0x00100000
 #define _NTO_TF_ONLYME		 	0x00200000
-//public _NTO_TF_UNBLOCK_REQ	0x00400000
+//public _NTO_TF_UNBLOCK_REQ    0x00400000
 #define _NTO_TF_KERERR_SET		0x00800000
-//public _NTO_TF_ALIGN_FAULT	0x01000000
-//public _NTO_TF_SSTEP			0x02000000
-//public _NTO_TF_ALLOCED_STACK	0x04000000
-//public _NTO_TF_NOMULTISIG		0x08000000
-//public _NTO_TF_FROZEN			0x10000000
+//public _NTO_TF_ALIGN_FAULT    0x01000000
+//public _NTO_TF_SSTEP          0x02000000
+//public _NTO_TF_ALLOCED_STACK  0x04000000
+//public _NTO_TF_NOMULTISIG     0x08000000
+//public _NTO_TF_FROZEN         0x10000000
 #define _NTO_TF_V86				0x20000000
 #define _NTO_TF_BUFF_MSG		0x40000000
-//public _NTO_TF_IOPRIV			0x80000000
+//public _NTO_TF_IOPRIV         0x80000000
 #define _NTO_TF_PUBLIC_MASK		(_NTO_TF_INTR_PENDING | \
 								_NTO_TF_DETACHED | \
 								_NTO_TF_THREADS_HOLD | \
@@ -109,28 +110,28 @@
 #define MAKE_SIGCODE(signo,code,fault) ((signo) | ((code)<<8) | ((fault)<<16))
 #define SIGCODE_FLAGS_MASK			0xff000000
 #define SIGCODE_FATAL				0x01000000
-#define SIGCODE_INXFER				0x01000000 /* for use in fault handling */
+#define SIGCODE_INXFER				0x01000000  /* for use in fault handling */
 #define SIGCODE_INTR				0x02000000
-#define SIGCODE_KEREXIT				0x02000000 /* for use in fault handling */
+#define SIGCODE_KEREXIT				0x02000000  /* for use in fault handling */
 #define SIGCODE_KERNEL				0x04000000
 #define SIGCODE_USER				0x08000000
 #define SIGCODE_PROC				0x10000000
 #define SIGCODE_BDSLOT				0x20000000
 #define SIGCODE_STORE				0x80000000
-#define SIGCODE_SSTEP				0x80000000 /* for use with F.P. emulator */
+#define SIGCODE_SSTEP				0x80000000  /* for use with F.P. emulator */
 
 #if VM_USER_SPACE_BOUNDRY < VM_KERN_SPACE_BOUNDRY
-	// kernel/ProcNto is in high memory
-	#define WITHIN_BOUNDRY(first, last, boundry) ((first) <= (boundry) && (last) <= (boundry))
+    // kernel/ProcNto is in high memory
+#define WITHIN_BOUNDRY(first, last, boundry) ((first) <= (boundry) && (last) <= (boundry))
 #else
-	// kernel/ProcNto is in low memory
-	#define WITHIN_BOUNDRY(first, last, boundry) ((first) >= (boundry) && (last) >= (boundry))
+    // kernel/ProcNto is in low memory
+#define WITHIN_BOUNDRY(first, last, boundry) ((first) >= (boundry) && (last) >= (boundry))
 #endif
 
 /* flags for soul entries */
 #define	SOUL_CRITICAL					0x01
-#define	SOUL_NOFREE						0x02
-#define	SOUL_PROC						0x04
+#define	SOUL_NOFREE					0x02
+#define	SOUL_PROC					0x04
 
 /* flags for memmgr.vaddrinfo() */
 #define VI_NORMAL					0x00
@@ -259,12 +260,10 @@
 #define KILO(x)			((x) * 1024)
 
 #ifdef NDEBUG
-	#define CRASHCHECK(e)
+#define CRASHCHECK(e)
 #elif defined(_lint)
 #include <stdlib.h>
-	#define CRASHCHECK(e)	do{if(e)exit(-1);}while(0)
+#define CRASHCHECK(e)	do{if(e)exit(-1);}while(0)
 #else
-	#define CRASHCHECK(e)	if(e) crash()
+#define CRASHCHECK(e)	if(e) crash()
 #endif
-
-/* __SRCVERSION("macros.h $Rev: 199396 $"); */

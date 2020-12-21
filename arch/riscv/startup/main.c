@@ -49,6 +49,9 @@ void cpu_startup(void)
     crash("Not yet.\n");
 }
 
+void uartintr() {}
+void virtio_disk_intr() {}
+
 
 extern void rvq_putc_ser_dbg(int c);
 

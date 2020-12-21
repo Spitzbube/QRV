@@ -74,5 +74,3 @@ extern int					munmap_flags_default;
 extern mode_t				procfs_umask;
 
 #endif
-
-/* __SRCVERSION("nto.h $Rev: 168445 $"); */

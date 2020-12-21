@@ -37,44 +37,51 @@
 #include <sys/stat.h>
 #endif
 
-#define FTW_CHDIR	0x0001		/* chdir() into each directory       */
-#define FTW_DEPTH	0x0002		/* report directory after contents   */
-#define FTW_MOUNT	0x0004		/* stay within the same mountpoint   */
-#define FTW_PHYS	0x0008		/* physical walk (no symlink follow) */
+#define FTW_CHDIR	0x0001      /* chdir() into each directory       */
+#define FTW_DEPTH	0x0002      /* report directory after contents   */
+#define FTW_MOUNT	0x0004      /* stay within the same mountpoint   */
+#define FTW_PHYS	0x0008      /* physical walk (no symlink follow) */
 
 enum {
-	FTW_F,						/* object is a file                  */
-	FTW_D,						/* object is a directory             */
-	FTW_DNR,					/* object is unreadable directory    */
-	FTW_DP,						/* object is a directory (FTW_DEPTH) */
-	FTW_NS,						/* stat details undefined/invalid    */
-	FTW_SL,						/* object is a symlink (FTW_PHYS)    */
-	FTW_SLN,					/* object is broken symlink          */
+    FTW_F,                      /* object is a file                  */
+    FTW_D,                      /* object is a directory             */
+    FTW_DNR,                    /* object is unreadable directory    */
+    FTW_DP,                     /* object is a directory (FTW_DEPTH) */
+    FTW_NS,                     /* stat details undefined/invalid    */
+    FTW_SL,                     /* object is a symlink (FTW_PHYS)    */
+    FTW_SLN,                    /* object is broken symlink          */
 };
 
 enum {
-	FTW_SKR,					/* skip remainder of directory       */
-	FTW_SKD,					/* do not enter the directory object */
+    FTW_SKR,                    /* skip remainder of directory       */
+    FTW_SKD,                    /* do not enter the directory object */
 };
 
 #include <_pack64.h>
 struct FTW {
-	int				base;		/* offset of object filename in path */
-	int				level;		/* depth relative to walk root       */
-	int				quit;		/* FTW_SK* action (extension)        */
+    int base;                   /* offset of object filename in path */
+    int level;                  /* depth relative to walk root       */
+    int quit;                   /* FTW_SK* action (extension)        */
 };
 #include <_packpop.h>
 
 __BEGIN_DECLS
-
 #if _LARGEFILE64_SOURCE - 0 > 0
-extern int ftw64(const char *__path, int (*__fn)(const char *__fname, const struct stat64 *__sbuf, int __flag), int __ndirs);
-extern int nftw64(const char *__path, int (*__fn)(const char *__fname, const struct stat64 *__sbuf, int __flag, struct FTW *__ftw), int __ndirs, int __flags);
+extern int ftw64(const char *__path,
+                 int (*__fn)(const char *__fname, const struct stat64 * __sbuf, int __flag),
+                 int __ndirs);
+extern int nftw64(const char *__path,
+                  int (*__fn)(const char *__fname, const struct stat64 * __sbuf, int __flag,
+                              struct FTW * __ftw), int __ndirs, int __flags);
 #endif
 
 #if defined(__EXT_XOPEN_EX)
-extern int ftw(const char *__path, int (*__fn)(const char *__fname, const struct stat *__sbuf, int __flag), int __ndirs) __ALIAS64("ftw64");
-extern int nftw(const char *__path, int (*__fn)(const char *__fname, const struct stat *__sbuf, int __flag, struct FTW *__ftw), int __ndirs, int __flags) __ALIAS64("nftw64");
+extern int ftw(const char *__path,
+               int (*__fn)(const char *__fname, const struct stat * __sbuf, int __flag),
+               int __ndirs) __ALIAS64("ftw64");
+extern int nftw(const char *__path,
+                int (*__fn)(const char *__fname, const struct stat * __sbuf, int __flag,
+                            struct FTW * __ftw), int __ndirs, int __flags) __ALIAS64("nftw64");
 #endif
 
 #if _FILE_OFFSET_BITS - 0 == 64
@@ -93,8 +100,5 @@ extern int nftw(const char *__path, int (*__fn)(const char *__fname, const struc
 #endif
 
 __END_DECLS
-
 #endif
-
-
 /* __SRCVERSION("ftw.h $Rev: 154597 $"); */

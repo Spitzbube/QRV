@@ -22,22 +22,22 @@
  * Make the system reboot itself.
  */
 
-static void
-reboot(void *abnormal) {
-	lock_kernel();
-	cpu_reboot();
-	calloutptr->reboot(_syspage_ptr, (int)abnormal);
+static void reboot(void *abnormal)
+{
+    lock_kernel();
+    cpu_reboot();
+    calloutptr->reboot(_syspage_ptr, (int) abnormal);
 }
 
 
-void
-RebootSystem(int abnormal) {
-	if(!am_inkernel()) {
-		__Ring0(reboot, (void *)abnormal);
-	}
-	reboot((void *)abnormal);
-	for(;;) {
-	}
+void RebootSystem(int abnormal)
+{
+    if (!am_inkernel()) {
+        __Ring0(reboot, (void *) abnormal);
+    }
+    reboot((void *) abnormal);
+    for (;;) {
+    }
 }
 
 __SRCVERSION("kerext_reboot.c $Rev: 153052 $");

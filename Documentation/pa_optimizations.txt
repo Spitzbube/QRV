@@ -50,7 +50,7 @@ PA Optimizations:
 	none of them will be set.
 
 5.	pa_findhunk() removal:
-	
+
 	Remove the pa_findhunk() call - this allows us to avoid the normal sanity checks
 	and function call over head on a very often called function.  Reduced code size also
 	gave us a very small speed up.
@@ -77,7 +77,7 @@ PA Optimizations:
 	We now free by 'hunk' seperated by either a break in the run.
 
 9.	Avoid mem_obj_destory on each page in alloc_entry_free:
-	
+
 	We should use the sync flag so that we don't need to call this on each page
 
 TODO:

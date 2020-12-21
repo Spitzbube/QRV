@@ -27,7 +27,7 @@
 #define _MQUEUE_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED
@@ -47,22 +47,20 @@
 #endif
 
 __BEGIN_DECLS
-
 #include <_pack64.h>
-
-struct mq_attr {
-	long mq_maxmsg;   /* maximum number of messages stored */
-	long mq_msgsize;  /* maximum message length */
-	long mq_flags;
-	long mq_curmsgs;  /* current number of messages stored */
-	long mq_sendwait; /* number of processes waiting to send */
-	long mq_recvwait; /* number of processes waiting to receive */
+    struct mq_attr {
+    long mq_maxmsg;             /* maximum number of messages stored */
+    long mq_msgsize;            /* maximum message length */
+    long mq_flags;
+    long mq_curmsgs;            /* current number of messages stored */
+    long mq_sendwait;           /* number of processes waiting to send */
+    long mq_recvwait;           /* number of processes waiting to receive */
 };
 
 /* Flag definitions */
 /* #define MQ_NONBLOCK         O_NONBLOCK */
 #if (O_NONBLOCK & 0x1f)
-    #error O_NONBLOCK overlaps other flags
+#error O_NONBLOCK overlaps other flags
 #endif
 
 /* The following flags are used internally */
@@ -72,22 +70,19 @@ struct mq_attr {
 typedef int mqd_t;
 
 extern mqd_t mq_open(const char *__name, int __oflag, ...);
-extern int   mq_close(mqd_t __mqdes);
-extern int   mq_send(mqd_t __mqdes, const char *__msg_ptr, size_t __msg_len,
-                      unsigned __msg_prio);
-extern ssize_t   mq_receive(mqd_t __mqdes, char *__msg_ptr, size_t __msg_len,
-                      unsigned *__msg_prio);
-extern int   mq_notify(mqd_t __mqdes, const struct sigevent *__notification);
-extern int   mq_getattr(mqd_t __mqdes, struct mq_attr *__mqstat);
-extern int   mq_setattr(mqd_t __mqdes, const struct mq_attr *__mqstat,
-                      struct mq_attr *__omqstat);
-extern int   mq_unlink (const char *__name);
-#if defined(__EXT_POSIX1_200112)		/* Approved 1003.1d D14 */
+extern int mq_close(mqd_t __mqdes);
+extern int mq_send(mqd_t __mqdes, const char *__msg_ptr, size_t __msg_len, unsigned __msg_prio);
+extern ssize_t mq_receive(mqd_t __mqdes, char *__msg_ptr, size_t __msg_len, unsigned *__msg_prio);
+extern int mq_notify(mqd_t __mqdes, const struct sigevent *__notification);
+extern int mq_getattr(mqd_t __mqdes, struct mq_attr *__mqstat);
+extern int mq_setattr(mqd_t __mqdes, const struct mq_attr *__mqstat, struct mq_attr *__omqstat);
+extern int mq_unlink(const char *__name);
+#if defined(__EXT_POSIX1_200112)    /* Approved 1003.1d D14 */
 struct timespec;
-extern int   mq_timedsend(mqd_t __mqdes, const char *__msg_ptr, size_t __msg_len,
-                      unsigned __msg_prio, const struct timespec *__abs_timeout);
-extern ssize_t   mq_timedreceive(mqd_t __mqdes, char *__msg_ptr, size_t __msg_len,
-                      unsigned *__msg_prio, const struct timespec *__abs_timeout);
+extern int mq_timedsend(mqd_t __mqdes, const char *__msg_ptr, size_t __msg_len,
+                        unsigned __msg_prio, const struct timespec *__abs_timeout);
+extern ssize_t mq_timedreceive(mqd_t __mqdes, char *__msg_ptr, size_t __msg_len,
+                               unsigned *__msg_prio, const struct timespec *__abs_timeout);
 #endif
 
 /* non posix versions of timed send and timed receive. These are not affected by a Time-of-Day (TOD) change
@@ -100,17 +95,16 @@ extern ssize_t   mq_timedreceive(mqd_t __mqdes, char *__msg_ptr, size_t __msg_le
  *
  */
 #ifdef __EXT_QNX
-extern int   mq_timedsend_monotonic(mqd_t __mqdes, const char *__msg_ptr, size_t __msg_len,
-                      unsigned __msg_prio, const struct timespec *__abs_mono_timeout);
-extern ssize_t   mq_timedreceive_monotonic(mqd_t __mqdes, char *__msg_ptr, size_t __msg_len,
-                      unsigned *__msg_prio, const struct timespec *__abs_mono_timeout);
+extern int mq_timedsend_monotonic(mqd_t __mqdes, const char *__msg_ptr, size_t __msg_len,
+                                  unsigned __msg_prio, const struct timespec *__abs_mono_timeout);
+extern ssize_t mq_timedreceive_monotonic(mqd_t __mqdes, char *__msg_ptr, size_t __msg_len,
+                                         unsigned *__msg_prio,
+                                         const struct timespec *__abs_mono_timeout);
 
 #endif
 
 #include <_packpop.h>
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("mqueue.h $Rev: 199491 $"); */

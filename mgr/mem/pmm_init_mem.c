@@ -18,18 +18,18 @@
 #include "pmm.h"
 
 
-static int
-add_mem(struct asinfo_entry *as, char *name, void *data) {
-	(void) pmm_pmem_add(as->start, (as->end - as->start) + 1);
-	return 1;
+static int add_mem(struct asinfo_entry *as, char *name, void *data)
+{
+    (void) pmm_pmem_add(as->start, (as->end - as->start) + 1);
+    return 1;
 }
 
 
-void
-pmm_init_mem(int phase) {
-	if(phase == 0) {
-		walk_asinfo("sysram", add_mem, NULL);
-	}
+void pmm_init_mem(int phase)
+{
+    if (phase == 0) {
+        walk_asinfo("sysram", add_mem, NULL);
+    }
 }
 
 __SRCVERSION("pmm_init_mem.c $Rev: 153052 $");

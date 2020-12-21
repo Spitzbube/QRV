@@ -8,6 +8,8 @@
 
 #include <kernel/startup.h>
 
+void dummy_print_char(int c) {}
+
 static void (*print_char)(int) = dummy_print_char;
 
 static void one_char(char c)

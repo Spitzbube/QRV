@@ -17,18 +17,19 @@
 
 #include "vmm.h"
 
-int
-vmm_memobj_phys(OBJECT *obp, paddr_t pa) {
-	struct pa_quantum	*pq;
-	int					r;
+int vmm_memobj_phys(OBJECT * obp, paddr_t pa)
+{
+    struct pa_quantum *pq;
+    int r;
 
-	pq = pa_alloc_fake(pa, obp->mem.mm.size);
-	if(pq == NULL) return ENOMEM;
-	r = memobj_pmem_add_pq(obp, 0, pq);
-	if(r != EOK) {
-		pa_free_fake(pq);
-	}
-	return r;
+    pq = pa_alloc_fake(pa, obp->mem.mm.size);
+    if (pq == NULL)
+        return ENOMEM;
+    r = memobj_pmem_add_pq(obp, 0, pq);
+    if (r != EOK) {
+        pa_free_fake(pq);
+    }
+    return r;
 }
 
 __SRCVERSION("vmm_memobj_phys.c $Rev: 153052 $");

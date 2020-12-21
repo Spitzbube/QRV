@@ -17,22 +17,21 @@
 
 #include "pmm.h"
 
-void
-pmm_mdestroy(PROCESS *prp) {
-	struct mem_phys_entry			*mem;
+void pmm_mdestroy(PROCESS * prp)
+{
+    struct mem_phys_entry *mem;
 
-	if(!prp || prp->pid == SYSMGR_PID) {
-		crash();
-	}
+    if (!prp || prp->pid == SYSMGR_PID) {
+        crash();
+    }
 
-	while((mem = (struct mem_phys_entry *)prp->memory)) {
-		prp->memory = (ADDRESS *)mem->next;
-		MemobjDestroyed((void *)_syspage_ptr,
-			CPU_V2P(mem + 1),
-			CPU_V2P((mem + 1) + mem->size - 1), 0, 0);
-		mem_free_size += (sizeof *mem + mem->size + 3) & ~3;
-		_sfree(mem, sizeof *mem + mem->size);
-	}
+    while ((mem = (struct mem_phys_entry *) prp->memory)) {
+        prp->memory = (ADDRESS *) mem->next;
+        MemobjDestroyed((void *) _syspage_ptr,
+                        CPU_V2P(mem + 1), CPU_V2P((mem + 1) + mem->size - 1), 0, 0);
+        mem_free_size += (sizeof *mem + mem->size + 3) & ~3;
+        _sfree(mem, sizeof *mem + mem->size);
+    }
 }
 
 __SRCVERSION("pmm_mdestroy.c $Rev: 153052 $");

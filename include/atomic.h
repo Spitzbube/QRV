@@ -30,9 +30,7 @@
 #include <sys/platform.h>
 #endif
 
-__BEGIN_DECLS
-
-extern void atomic_add(volatile unsigned *__loc, unsigned __incr);
+__BEGIN_DECLS extern void atomic_add(volatile unsigned *__loc, unsigned __incr);
 extern void atomic_clr(volatile unsigned *__loc, unsigned __bits);
 extern void atomic_set(volatile unsigned *__loc, unsigned __bits);
 extern void atomic_sub(volatile unsigned *__loc, unsigned __decr);
@@ -50,7 +48,5 @@ extern unsigned atomic_sub_value(volatile unsigned *__loc, unsigned __decr);
 extern unsigned atomic_toggle_value(volatile unsigned *__loc, unsigned __bits);
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("atomic.h $Rev: 153052 $"); */

@@ -26,7 +26,7 @@ zero pages.
 Map page tables/directories uncached.
 
 Move the mdestroy out of kernel time, or split up ProcessDestroy in
-a series of subcalls. The mdestroy is quite costly, especially if we 
+a series of subcalls. The mdestroy is quite costly, especially if we
 additionally need to zero memory.
 
 Split the Proc malloc() into a kernel one (used only to grow
@@ -48,4 +48,4 @@ that, allow a higher priority process attempting to get into the kernel
 to preempt a message pass in process.
 
 Have fast interrupt identification entry sequences, which only save a subset
-of CPU registers. 
+of CPU registers.

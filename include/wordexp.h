@@ -31,16 +31,12 @@
 #endif
 
 _C_STD_BEGIN
-
 #if defined(__SIZE_T)
-typedef __SIZE_T	size_t;
+    typedef __SIZE_T size_t;
 #undef __SIZE_T
 #endif
 
-_C_STD_END
-
-__BEGIN_DECLS
-
+_C_STD_END __BEGIN_DECLS
 #define WRDE_DOOFFS	0x00000001
 #define WRDE_APPEND	0x00000002
 #define WRDE_NOCMD	0x00000004
@@ -48,29 +44,24 @@ __BEGIN_DECLS
 #define WRDE_SHOWERR	0x00000010
 #define WRDE_UNDEF	0x00000020
 #define __WRDE_FLAGS	(WRDE_DOOFFS | WRDE_APPEND | WRDE_NOCMD | WRDE_REUSE | WRDE_SHOWERR | WRDE_UNDEF)
-
 #define WRDE_NOSYS	-1
 #define WRDE_NOSPACE	1
 #define WRDE_BADCHAR	2
 #define WRDE_BADVAL	3
 #define WRDE_CMDSUB	4
 #define WRDE_SYNTAX	5
-
 #include <_pack64.h>
-
-typedef struct {
-	_CSTD size_t		we_wordc;
-	char				**we_wordv;
-	_CSTD size_t		we_offs;
-}					wordexp_t;
+    typedef struct {
+    _CSTD size_t we_wordc;
+    char **we_wordv;
+    _CSTD size_t we_offs;
+} wordexp_t;
 
 #include <_packpop.h>
 
-extern int wordexp(const char *__words, wordexp_t *__pwordexp, int __flags);
-extern void wordfree(wordexp_t *__pwordexp);
+extern int wordexp(const char *__words, wordexp_t * __pwordexp, int __flags);
+extern void wordfree(wordexp_t * __pwordexp);
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("wordexp.h $Rev: 153052 $"); */

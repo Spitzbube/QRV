@@ -17,47 +17,47 @@
 
 #include "externs.h"
 
-int kdecl
-ker_sys_cpupage_get(THREAD *act, struct kerargs_sys_cpupage_get *kap) {
-	intptr_t			status;
+int kdecl ker_sys_cpupage_get(THREAD * act, struct kerargs_sys_cpupage_get *kap)
+{
+    intptr_t status;
 
-	if(kap->index == CPUPAGE_ADDR) {
-		status = (intptr_t)privateptr->user_cpupageptr;
-	} else if(kap->index >= 0 && kap->index < CPUPAGE_MAX) {
-		intptr_t	*cpupage = (intptr_t *)cpupageptr[KERNCPU];
+    if (kap->index == CPUPAGE_ADDR) {
+        status = (intptr_t) privateptr->user_cpupageptr;
+    } else if (kap->index >= 0 && kap->index < CPUPAGE_MAX) {
+        intptr_t *cpupage = (intptr_t *) cpupageptr[KERNCPU];
 
-		status = cpupage[kap->index];
-	} else {
-		return EINVAL;
-	}
-	lock_kernel();
-	SETKSTATUS(act, status);
-	return ENOERROR;
+        status = cpupage[kap->index];
+    } else {
+        return EINVAL;
+    }
+    lock_kernel();
+    SETKSTATUS(act, status);
+    return ENOERROR;
 }
 
-int kdecl
-ker_sys_cpupage_set(THREAD *act, struct kerargs_sys_cpupage_set *kap) {
-	PROCESS					*prp;
+int kdecl ker_sys_cpupage_set(THREAD * act, struct kerargs_sys_cpupage_set *kap)
+{
+    PROCESS *prp;
 
-	if(kap->index != CPUPAGE_PLS) {
-		return EINVAL;
-	}
+    if (kap->index != CPUPAGE_PLS) {
+        return EINVAL;
+    }
 
-	lock_kernel();
-	act->process->pls = (void *)kap->value;
+    lock_kernel();
+    act->process->pls = (void *) kap->value;
 
-	// Force a reload of PLS
-	prp = actives_prp[KERNCPU];
-	if(prp->debugger && debug_detach_brkpts) {
-		debug_detach_brkpts(prp->debugger);
-	}
-	//RUSH3: If we instead assign "sysmgr_prp", we can probably remove
-	//RUSH3: NULL pointer tests in the kernel.S files when they check
-	//RUSH3: to see if they have to remove breakpoints from the old
-	//RUSH3: process in the ker_exit code.
-	actives_prp[KERNCPU] = 0;
+    // Force a reload of PLS
+    prp = actives_prp[KERNCPU];
+    if (prp->debugger && debug_detach_brkpts) {
+        debug_detach_brkpts(prp->debugger);
+    }
+    //RUSH3: If we instead assign "sysmgr_prp", we can probably remove
+    //RUSH3: NULL pointer tests in the kernel.S files when they check
+    //RUSH3: to see if they have to remove breakpoints from the old
+    //RUSH3: process in the ker_exit code.
+    actives_prp[KERNCPU] = 0;
 
-	return EOK;
+    return EOK;
 }
 
 __SRCVERSION("ker_sys.c $Rev: 153052 $");

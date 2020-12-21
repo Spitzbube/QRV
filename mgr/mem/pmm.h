@@ -23,15 +23,14 @@
 #undef MMF
 #define MMF(r, f, p, e)		MMF_PROTO(r, f, p, e)
 MM_FUNCS(pmm)
-
 struct mem_phys_entry {
-	struct mem_phys_entry			*next;
-	size_t							size;
-	unsigned						flags;
-	int								reloc;
+    struct mem_phys_entry *next;
+    size_t size;
+    unsigned flags;
+    int reloc;
 };
 
-extern uintptr_t	user_addr;
-extern uintptr_t	user_addr_end;
+extern uintptr_t user_addr;
+extern uintptr_t user_addr_end;
 
 /* __SRCVERSION("pmm.h $Rev: 153052 $"); */

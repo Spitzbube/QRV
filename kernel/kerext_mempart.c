@@ -19,26 +19,24 @@
 #include "apm.h"
 
 
-struct kerargs_memclass_pid_acct
-{
-	memsize_t  size;
-	pid_t  pid;
-	part_id_t  mpid;
-	int  dir;	// _FREE if < 0, else _USE
+struct kerargs_memclass_pid_acct {
+    memsize_t size;
+    pid_t pid;
+    part_id_t mpid;
+    int dir;                    // _FREE if < 0, else _USE
 };
 
-static void
-kerext_memclass_pid_acct(void *data)
+static void kerext_memclass_pid_acct(void *data)
 {
-	struct kerargs_memclass_pid_acct  *kap = data;
-	PROCESS *prp = lookup_pid(kap->pid);
-	memclass_id_t mclass_id = mempart_get_classid(kap->mpid);
-	lock_kernel();
-	if (kap->dir < 0) {
-		MEMCLASS_PID_FREE(prp, mclass_id, kap->size);
-	} else {
-		MEMCLASS_PID_USE(prp, mclass_id, kap->size);
-	}
+    struct kerargs_memclass_pid_acct *kap = data;
+    PROCESS *prp = lookup_pid(kap->pid);
+    memclass_id_t mclass_id = mempart_get_classid(kap->mpid);
+    lock_kernel();
+    if (kap->dir < 0) {
+        MEMCLASS_PID_FREE(prp, mclass_id, kap->size);
+    } else {
+        MEMCLASS_PID_USE(prp, mclass_id, kap->size);
+    }
 }
 
 /*
@@ -50,53 +48,49 @@ kerext_memclass_pid_acct(void *data)
  * avoid entering the kernel first to obtain the class id in preparation for the
  * call to MemclassPidUse/Free()
 */
-void
-MemclassPidUse(pid_t pid, part_id_t mpart_id, memsize_t size)
+void MemclassPidUse(pid_t pid, part_id_t mpart_id, memsize_t size)
 {
-	struct kerargs_memclass_pid_acct  data;
+    struct kerargs_memclass_pid_acct data;
 
-	data.pid = pid;
-	data.size = size;
-	data.mpid = mpart_id;
-	data.dir = 1;
-	__Ring0(kerext_memclass_pid_acct, &data);
+    data.pid = pid;
+    data.size = size;
+    data.mpid = mpart_id;
+    data.dir = 1;
+    __Ring0(kerext_memclass_pid_acct, &data);
 }
 
-void
-MemclassPidFree(pid_t pid, part_id_t mpart_id, memsize_t size)
+void MemclassPidFree(pid_t pid, part_id_t mpart_id, memsize_t size)
 {
-	struct kerargs_memclass_pid_acct  data;
+    struct kerargs_memclass_pid_acct data;
 
-	data.pid = pid;
-	data.mpid = mpart_id;
-	data.size = size;
-	data.dir = -1;
-	__Ring0(kerext_memclass_pid_acct, &data);
+    data.pid = pid;
+    data.mpid = mpart_id;
+    data.size = size;
+    data.dir = -1;
+    __Ring0(kerext_memclass_pid_acct, &data);
 }
 
 
-struct kerargs_mempart_associate
-{
-	bool  associate;
-	bool  disassociate;
-	mempart_dcmd_flags_t  associate_flags;
-	part_id_t  mempart_id;
-	PROCESS *  prp;
-	int  err;
+struct kerargs_mempart_associate {
+    bool associate;
+    bool disassociate;
+    mempart_dcmd_flags_t associate_flags;
+    part_id_t mempart_id;
+    PROCESS *prp;
+    int err;
 };
 
-static void
-kerext_mempart_associate(void *data)
+static void kerext_mempart_associate(void *data)
 {
-	struct kerargs_mempart_associate  *kap = data;
+    struct kerargs_mempart_associate *kap = data;
 
-	/* always process disassociations first */
-	if (kap->disassociate) {
-		kap->err = MEMPART_DISASSOCIATE(kap->prp, kap->mempart_id);
-	}
-	if ((kap->err == EOK) && (kap->associate)) {
-		kap->err = MEMPART_ASSOCIATE(kap->prp, kap->mempart_id, kap->associate_flags);
-	}
+    /* always process disassociations first */
+    if (kap->disassociate) {
+        kap->err = MEMPART_DISASSOCIATE(kap->prp, kap->mempart_id);
+    }
+    if ((kap->err == EOK) && (kap->associate)) {
+        kap->err = MEMPART_ASSOCIATE(kap->prp, kap->mempart_id, kap->associate_flags);
+    }
 }
 
 /*
@@ -106,20 +100,20 @@ kerext_mempart_associate(void *data)
  * be associated with a partition of the same memory class as <mpid>
  * otherwise an error will be returned
 */
-int ProcessAssociate(PROCESS *prp, part_id_t mpid, mempart_dcmd_flags_t flags)
+int ProcessAssociate(PROCESS * prp, part_id_t mpid, mempart_dcmd_flags_t flags)
 {
-	struct kerargs_mempart_associate  data;
+    struct kerargs_mempart_associate data;
 
-	data.prp = prp;
-	data.mempart_id = mpid;
-	data.err = EOK;
-	data.associate = bool_t_TRUE;
-	data.disassociate = bool_t_FALSE;
-	data.associate_flags = flags;
+    data.prp = prp;
+    data.mempart_id = mpid;
+    data.err = EOK;
+    data.associate = bool_t_TRUE;
+    data.disassociate = bool_t_FALSE;
+    data.associate_flags = flags;
 
-	__Ring0(kerext_mempart_associate, &data);
+    __Ring0(kerext_mempart_associate, &data);
 
-	return data.err;
+    return data.err;
 }
 
 /*
@@ -127,20 +121,20 @@ int ProcessAssociate(PROCESS *prp, part_id_t mpid, mempart_dcmd_flags_t flags)
  *
  * Disassociate process <prp> from partition <mpid>
 */
-int ProcessDisassociate(PROCESS *prp, part_id_t mpid)
+int ProcessDisassociate(PROCESS * prp, part_id_t mpid)
 {
-	struct kerargs_mempart_associate  data;
+    struct kerargs_mempart_associate data;
 
-	data.prp = prp;
-	data.mempart_id = mpid;
-	data.err = EOK;
-	data.associate = bool_t_FALSE;
-	data.disassociate = bool_t_TRUE;
-	data.associate_flags = part_flags_NONE;
+    data.prp = prp;
+    data.mempart_id = mpid;
+    data.err = EOK;
+    data.associate = bool_t_FALSE;
+    data.disassociate = bool_t_TRUE;
+    data.associate_flags = part_flags_NONE;
 
-	__Ring0(kerext_mempart_associate, &data);
+    __Ring0(kerext_mempart_associate, &data);
 
-	return data.err;
+    return data.err;
 }
 
 /*
@@ -150,20 +144,20 @@ int ProcessDisassociate(PROCESS *prp, part_id_t mpid)
  * be associated with a partition of the same memory class as <mempart_id>
  * otherwise an error will be returned
 */
-int ProcessReassociate(PROCESS *prp, part_id_t mpid, mempart_dcmd_flags_t flags)
+int ProcessReassociate(PROCESS * prp, part_id_t mpid, mempart_dcmd_flags_t flags)
 {
-	struct kerargs_mempart_associate  data;
+    struct kerargs_mempart_associate data;
 
-	data.prp = prp;
-	data.mempart_id = mpid;
-	data.err = EOK;
-	data.associate = bool_t_TRUE;
-	data.disassociate = bool_t_TRUE;
-	data.associate_flags = flags;
+    data.prp = prp;
+    data.mempart_id = mpid;
+    data.err = EOK;
+    data.associate = bool_t_TRUE;
+    data.disassociate = bool_t_TRUE;
+    data.associate_flags = flags;
 
-	__Ring0(kerext_mempart_associate, &data);
+    __Ring0(kerext_mempart_associate, &data);
 
-	return data.err;
+    return data.err;
 }
 
 

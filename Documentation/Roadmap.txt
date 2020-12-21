@@ -7,7 +7,7 @@ Kernel Tech Roadmap
 
 *KERNEL ITEMS*
 
-AM, mqueue 
+AM, mqueue
     - no QNET yet, Phase I
 
 phys alloc (BS, AM, 4wks/ea, 2wks/SK,HZ)
@@ -18,7 +18,7 @@ sync hash table opt
 
 Dinkum C/C++
 
-malloc 
+malloc
 
 SH memcpy opt
 
@@ -27,7 +27,7 @@ NAND
 
 *TOOLS ENABLING*
 
-Performance counters 
+Performance counters
 
 SAT tweaks
 
@@ -44,7 +44,7 @@ PAST 6.3
 ********
 
 *KERNEL ITEMS*
- 
+
 AM, mqueue
 
 kernel and proc slim down:
@@ -78,8 +78,8 @@ resmgr improvement
 
 revisit _connect function, which can cause stack overflow
 
-Thread pool opts/algorithms 
- 
+Thread pool opts/algorithms
+
 *Filesystems*
 
 New file system features
@@ -102,7 +102,7 @@ XScale/Arm
 BCM1400 and future
 
 Hyperthreading optimizations
- 
+
 *Tools enabling*
 
 SAT
@@ -110,19 +110,19 @@ SAT
 Remote debug through serial support (8wks)
 
 Advanced breakpoints
- 
+
 *Other items*
 
-HAT 2.0 
+HAT 2.0
 
 Persistence store (6wks, first stage)
 
 Config mgr
 
-RapidIO 
+RapidIO
 
-Hypertransport 
+Hypertransport
 
 kernel test coverage and critical path
- 
- 
+
+

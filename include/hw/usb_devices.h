@@ -628,9 +628,3 @@
 
 #define USB_VENDOR_PLEXTOR		0x093b
 #define USB_PRODUCT_PLEXTOR_B120U	0x002f
-
-#ifdef __QNXNTO__
-#include <sys/srcversion.h>
-__SRCVERSION
-    ("$URL: http://svn.ott.qnx.com/product/branches/deckard/BB10_2_0X/lib/usbdi/public/hw/usb_devices.h $ $Rev: 656216 $")
-#endif

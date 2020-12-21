@@ -28,24 +28,24 @@ extern void miniproc_start(void);
  */
 main(int argc, char *argv[])
 {
-	unsigned	len;
+    unsigned len;
 
-	kprintf( "starting her up\n" );
-	miniproc_start();
-	kprintf( "miniproc running\n" );
-	sleep(1);
-	len = (argc == 1) ? 10 : strtoul(argv[1], NULL, 0);
-	kprintf("sleep(%u)\n", len);
-	sleep( len );
-	kprintf("back\n");
-	write( 1, "Quick test\n", 11 );
-	printf("Hello, %s%s\n", "world", "." );
-	kprintf("said 'hi'\n");
-	for( ;; ) {
-		putchar( '.' );
-		fflush( stdout );
-		sleep( 1 );
-	}
+    kprintf("starting her up\n");
+    miniproc_start();
+    kprintf("miniproc running\n");
+    sleep(1);
+    len = (argc == 1) ? 10 : strtoul(argv[1], NULL, 0);
+    kprintf("sleep(%u)\n", len);
+    sleep(len);
+    kprintf("back\n");
+    write(1, "Quick test\n", 11);
+    printf("Hello, %s%s\n", "world", ".");
+    kprintf("said 'hi'\n");
+    for (;;) {
+        putchar('.');
+        fflush(stdout);
+        sleep(1);
+    }
 }
 
 __SRCVERSION("ktest.c $Rev: 201493 $");

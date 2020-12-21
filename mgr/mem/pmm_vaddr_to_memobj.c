@@ -17,10 +17,10 @@
 
 #include "pmm.h"
 
-OBJECT *
-pmm_vaddr_to_memobj(PROCESS *prp, void *vaddr, unsigned *offset, int create) {
-	*offset = CPU_V2P(vaddr);
-	return (void *)_syspage_ptr;
+OBJECT *pmm_vaddr_to_memobj(PROCESS * prp, void *vaddr, unsigned *offset, int create)
+{
+    *offset = CPU_V2P(vaddr);
+    return (void *) _syspage_ptr;
 }
 
 __SRCVERSION("pmm_vaddr_to_memobj.c $Rev: 153052 $");

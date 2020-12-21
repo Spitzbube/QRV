@@ -17,8 +17,8 @@
 #include <stdbool.h>
 
 #ifdef __WATCOMC__
-typedef char _Bool;	// not done in stdbool.h for watcom
-#endif	/* __WATCOMC__ */
+typedef char _Bool;             // not done in stdbool.h for watcom
+#endif                          /* __WATCOMC__ */
 
 /*
  * this file contains external interfaces for the memory partitioning module
@@ -72,7 +72,7 @@ typedef char _Bool;	// not done in stdbool.h for watcom
 #include <kernel/mempart.h>
 
 #ifndef EXTERN
-	#define EXTERN	extern
+#define EXTERN	extern
 #endif
 
 /*
@@ -88,29 +88,27 @@ extern int mpid_unique;
  * mempart_flags_t
  *
 */
-typedef enum
-{
-	/* flags used to filter returns from MEMPART_GETLIST()
-	 *  The flags which can be specified are
-	 * 	mempart_flags_t_GETLIST_ALL			- no filtering, return all associated partitions
-	 *	mempart_flags_t_GETLIST_INHERITABLE	- filter out those partitions which have the
-	 * 										  part_flags_NO_INHERIT flag set
-	 *	mempart_flags_t_GETLIST_CREDENTIALS	- filter out those partitions which do not have
-	 * 										  appropriate credentials
-	*/
-	mempart_flags_t_GETLIST_ALL = 0,
-	mempart_flags_t_GETLIST_INHERITABLE = 0x01,
-	mempart_flags_t_GETLIST_CREDENTIALS = 0x02,
+typedef enum {
+    /* flags used to filter returns from MEMPART_GETLIST()
+     *  The flags which can be specified are
+     *  mempart_flags_t_GETLIST_ALL         - no filtering, return all associated partitions
+     *  mempart_flags_t_GETLIST_INHERITABLE - filter out those partitions which have the
+     *                                        part_flags_NO_INHERIT flag set
+     *  mempart_flags_t_GETLIST_CREDENTIALS - filter out those partitions which do not have
+     *                                        appropriate credentials
+     */
+    mempart_flags_t_GETLIST_ALL = 0,
+    mempart_flags_t_GETLIST_INHERITABLE = 0x01,
+    mempart_flags_t_GETLIST_CREDENTIALS = 0x02,
 } mempart_flags_t;
 
 #ifdef USE_PROC_OBJ_LISTS
 /* obj_node_t */
-typedef struct obj_node_s
-{
-	part_qnode_t	hdr;
-	OBJECT *	obj;
+typedef struct obj_node_s {
+    part_qnode_t hdr;
+    OBJECT *obj;
 } obj_node_t;
-#endif	/* USE_PROC_OBJ_LISTS */
+#endif                          /* USE_PROC_OBJ_LISTS */
 
 /*
  * mempart_t
@@ -139,29 +137,28 @@ typedef struct obj_node_s
 */
 #define MEMPART_SIGNATURE		0x13991187
 struct memclass_entry_s;
-typedef struct mempart_s
-{
-	_Uint32t		signature;		// used to help ensure not looking at a bogus mempart_t
+typedef struct mempart_s {
+    _Uint32t signature;         // used to help ensure not looking at a bogus mempart_t
 
-	struct memclass_entry_s  *memclass;// pointer to the class to which this partition belongs
+    struct memclass_entry_s *memclass;  // pointer to the class to which this partition belongs
 
-	struct mempart_s  *parent;	// pointer to the partition from which this partition
-								// was derived (for the purpose of establishing creation
-								// attributes)
-	kerproc_lock_t	info_lock;	// protection for mempart_info_t
-	mempart_info_t	info;		// (public) accounting and configuration data
-	memsize_t child_resv_size;	// amount of info.cur_size that is for child reservations
-								// this number can NEVER be greater than info.cur_size
+    struct mempart_s *parent;   // pointer to the partition from which this partition
+    // was derived (for the purpose of establishing creation
+    // attributes)
+    kerproc_lock_t info_lock;   // protection for mempart_info_t
+    mempart_info_t info;        // (public) accounting and configuration data
+    memsize_t child_resv_size;  // amount of info.cur_size that is for child reservations
+    // this number can NEVER be greater than info.cur_size
 
 #ifdef USE_PROC_OBJ_LISTS
-	kerproc_lock_t	prplist_lock;	// protects the 'prp_list'
-	part_qnodehdr_t	prp_list;	// associated process list
-	kerproc_lock_t	objlist_lock;	// protects the 'obj_list'
-	part_qnodehdr_t	obj_list;	// associated object list
-#endif	/* USE_PROC_OBJ_LISTS */
+    kerproc_lock_t prplist_lock;    // protects the 'prp_list'
+    part_qnodehdr_t prp_list;   // associated process list
+    kerproc_lock_t objlist_lock;    // protects the 'obj_list'
+    part_qnodehdr_t obj_list;   // associated object list
+#endif                          /* USE_PROC_OBJ_LISTS */
 
-	void 			*rmgr_attr_p;	// back pointer to resource manager structure
-	unsigned		create_key;		// used to establish initial partition creation configuration
+    void *rmgr_attr_p;          // back pointer to resource manager structure
+    unsigned create_key;        // used to establish initial partition creation configuration
 } mempart_t;
 
 /*
@@ -175,22 +172,21 @@ typedef struct mempart_s
  * the process. This also allows a partition to "reside" on several (process)
  * lists.
 */
-typedef struct mempart_node_s
-{
-	part_qnode_t			hdr;
-	struct mempart_s *		mempart;
-	mempart_dcmd_flags_t	flags;		// per process partition flags
+typedef struct mempart_node_s {
+    part_qnode_t hdr;
+    struct mempart_s *mempart;
+    mempart_dcmd_flags_t flags; // per process partition flags
 #if (_PADDR_BITS == 64) || defined(__PPC__)
-	/* note that this conditionally compiled lock cannot be conditional on
-	 * VARIANT_smp (even though it's only used in that case) because
-	 * mempart_node_t is used both inside and outside of modules and modules
-	 * are always compiled for SMP. Also for reason described in kernel/types.h
-	 * we must always have this variable for PPC family */
-	struct intrspin 		lock;		// for atomic update of mem_used
-#endif	/* (_PADDR_BITS == 64)  || defined(__PPC__)*/
-	memsize_t				mem_used;	// amount of physical memory used by the
-										// process for the associated memory
-										// class partition
+    /* note that this conditionally compiled lock cannot be conditional on
+     * VARIANT_smp (even though it's only used in that case) because
+     * mempart_node_t is used both inside and outside of modules and modules
+     * are always compiled for SMP. Also for reason described in kernel/types.h
+     * we must always have this variable for PPC family */
+    struct intrspin lock;       // for atomic update of mem_used
+#endif                          /* (_PADDR_BITS == 64)  || defined(__PPC__) */
+    memsize_t mem_used;         // amount of physical memory used by the
+    // process for the associated memory
+    // class partition
 } mempart_node_t;
 
 /*
@@ -200,12 +196,11 @@ typedef struct mempart_node_s
  * partitioning resource manager for use by the memory partitioning module.
 */
 struct apmmgr_attr_s;
-typedef struct rsrcmgr_mempart_fnctbl_s
-{
-	int		(*validate_association)(struct apmmgr_attr_s *attr, struct _cred_info *cred);
-	void	(*mpart_event_handler)(struct apmmgr_attr_s *attr, mempart_evttype_t evtType, ...);
-	void	(*mclass_event_handler)(struct apmmgr_attr_s *attr, memclass_evttype_t evtType,
-										memclass_sizeinfo_t *cur, memclass_sizeinfo_t *prev);
+typedef struct rsrcmgr_mempart_fnctbl_s {
+    int (*validate_association)(struct apmmgr_attr_s * attr, struct _cred_info * cred);
+    void (*mpart_event_handler)(struct apmmgr_attr_s * attr, mempart_evttype_t evtType, ...);
+    void (*mclass_event_handler)(struct apmmgr_attr_s * attr, memclass_evttype_t evtType,
+                                 memclass_sizeinfo_t * cur, memclass_sizeinfo_t * prev);
 } rsrcmgr_mempart_fnctbl_t;
 
 /*
@@ -214,15 +209,14 @@ typedef struct rsrcmgr_mempart_fnctbl_s
  * This type defines the table of interface functions provided by the memory
  * partitioning module for use by the memory partitioning resource manager.
 */
-typedef struct mempart_rsrcmgr_fnctbl_s
-{
-	part_id_t 	(*create)(part_id_t parent_mpid, mempart_cfg_t *child_cfg, memclass_id_t memclass);
-	int			(*destroy)(part_id_t mpid);
-	int			(*config)(part_id_t mpid, mempart_cfg_t *cfg, unsigned create_key);
-	mempart_info_t *	(*getinfo)(part_id_t mpid, mempart_info_t *info);
-	PROCESS *	(*find_pid)(pid_t pid_filter, part_id_t mpid);
-	int			(*validate_cfg_new)(part_id_t parent_mpid, mempart_cfg_t *cfg, memclass_id_t memclass_id);
-	int			(*validate_cfg_change)(part_id_t mpid, mempart_cfg_t *cfg);
+typedef struct mempart_rsrcmgr_fnctbl_s {
+    part_id_t(*create) (part_id_t parent_mpid, mempart_cfg_t * child_cfg, memclass_id_t memclass);
+    int (*destroy)(part_id_t mpid);
+    int (*config)(part_id_t mpid, mempart_cfg_t * cfg, unsigned create_key);
+    mempart_info_t *(*getinfo)(part_id_t mpid, mempart_info_t * info);
+    PROCESS *(*find_pid)(pid_t pid_filter, part_id_t mpid);
+    int (*validate_cfg_new)(part_id_t parent_mpid, mempart_cfg_t * cfg, memclass_id_t memclass_id);
+    int (*validate_cfg_change)(part_id_t mpid, mempart_cfg_t * cfg);
 } mempart_rsrcmgr_fnctbl_t;
 
 /*
@@ -236,20 +230,21 @@ typedef struct mempart_rsrcmgr_fnctbl_s
  * It also allows the resource manager to supply a set of interface routines
  * for the memory partitioning module to use.
 */
-typedef struct mempart_fnctbl_s
-{
-	int			(*associate)(PROCESS *prp, part_id_t mpid, mempart_dcmd_flags_t flags, ext_lockfncs_t *lf);
-	int			(*disassociate)(PROCESS *prp, part_id_t, ext_lockfncs_t *lf);
-	int			(*obj_associate)(OBJECT *obj, part_id_t mpid);
-	void		(*obj_disassociate)(OBJECT *o);
-	int			(*chk_and_incr)(part_id_t mpid, memsize_t incr, memsize_t *resv_size);
-	memsize_t	(*decr)(part_id_t mpid, memsize_t decr);
-	int			(*incr)(part_id_t mpid, memsize_t incr);
-	void		(*undo_incr)(part_id_t mpid, memsize_t incr, memsize_t resv_size);
-	mempart_node_t *	(*get_mempart)(PROCESS *prp, memclass_id_t memclass_id);
-	int			(*get_mempartlist)(PROCESS *prp, part_list_t *mpart_list, int n, mempart_flags_t flags, struct _cred_info *cred);
-	int			(*validate_association)(part_id_t mpid, struct _cred_info *cred);
-	mempart_rsrcmgr_fnctbl_t *  (*rsrcmgr_attach)(rsrcmgr_mempart_fnctbl_t *);
+typedef struct mempart_fnctbl_s {
+    int (*associate)(PROCESS * prp, part_id_t mpid, mempart_dcmd_flags_t flags,
+                     ext_lockfncs_t * lf);
+    int (*disassociate)(PROCESS * prp, part_id_t, ext_lockfncs_t * lf);
+    int (*obj_associate)(OBJECT * obj, part_id_t mpid);
+    void (*obj_disassociate)(OBJECT * o);
+    int (*chk_and_incr)(part_id_t mpid, memsize_t incr, memsize_t * resv_size);
+     memsize_t(*decr) (part_id_t mpid, memsize_t decr);
+    int (*incr)(part_id_t mpid, memsize_t incr);
+    void (*undo_incr)(part_id_t mpid, memsize_t incr, memsize_t resv_size);
+    mempart_node_t *(*get_mempart)(PROCESS * prp, memclass_id_t memclass_id);
+    int (*get_mempartlist)(PROCESS * prp, part_list_t * mpart_list, int n, mempart_flags_t flags,
+                           struct _cred_info * cred);
+    int (*validate_association)(part_id_t mpid, struct _cred_info * cred);
+    mempart_rsrcmgr_fnctbl_t *(*rsrcmgr_attach) (rsrcmgr_mempart_fnctbl_t *);
 } mempart_fnctbl_t;
 
 extern mempart_fnctbl_t *mempart_fnctbl;
@@ -521,30 +516,31 @@ extern mempart_dcmd_flags_t default_mempart_flags;
 #ifdef _MEMSIZE_and_memsize_are_different_
 #define MEMSIZE_OFLOW(s) \
 		(((s) != memsize_t_INFINITY) && (((s) & 0xFFFFFFFF00000000ULL) != 0ULL))
-#else	/* _MEMSIZE_and_memsize_are_different_ */
+#else                           /* _MEMSIZE_and_memsize_are_different_ */
 #define MEMSIZE_OFLOW(s)		bool_t_FALSE
-#endif	/* _MEMSIZE_and_memsize_are_different_ */
+#endif                          /* _MEMSIZE_and_memsize_are_different_ */
 
 
 memsize_t free_mem(pid_t pid, part_id_t mpid);
 
 /* mm_mempart.c */
 extern void (*mempart_init)(memsize_t sysmem_size, memclass_id_t memclass_id);
-part_id_t mempart_getid(PROCESS *prp, memclass_id_t mclass);
+part_id_t mempart_getid(PROCESS * prp, memclass_id_t mclass);
 memclass_id_t mempart_get_classid(part_id_t mpid);
 int mempart_validate_id(part_id_t mpid);
 mempart_t *mempart_lookup_mpid(part_id_t mpid);
 mempart_t *mempart_vec_del(part_id_t mpid);
-part_id_t mempart_vec_add(mempart_t *mpart);
+part_id_t mempart_vec_add(mempart_t * mpart);
 bool mempart_module_loaded(void);
 
 /* mm_memclass.c */
-memclass_id_t memclass_add(const char *memclass_name, memclass_attr_t *attr, allocator_accessfncs_t *f);
+memclass_id_t memclass_add(const char *memclass_name, memclass_attr_t * attr,
+                           allocator_accessfncs_t * f);
 memclass_entry_t *memclass_find(const char *name, memclass_id_t id);
 int memclass_delete(const char *name, memclass_id_t id);
-memclass_info_t *memclass_info(memclass_id_t id, memclass_info_t *info);
+memclass_info_t *memclass_info(memclass_id_t id, memclass_info_t * info);
 
 
-#endif	/* _APM_H_ */
+#endif                          /* _APM_H_ */
 
 /* __SRCVERSION("$IQ: apm.h,v 1.91 $"); */

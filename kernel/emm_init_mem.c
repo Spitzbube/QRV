@@ -19,17 +19,17 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-static int
-add_mem(struct asinfo_entry *as, char *name, void *data) {
-	(void) emm_pmem_add(as->start, (as->end - as->start) + 1);
-	return 1;
+static int add_mem(struct asinfo_entry *as, char *name, void *data)
+{
+    (void) emm_pmem_add(as->start, (as->end - as->start) + 1);
+    return 1;
 }
 
-void
-emm_init_mem(int phase) {
-	if(phase == 0) {
-		walk_asinfo("sysram", add_mem, NULL);
-	}
+void emm_init_mem(int phase)
+{
+    if (phase == 0) {
+        walk_asinfo("sysram", add_mem, NULL);
+    }
 }
 
 __SRCVERSION("emm_init_mem.c $Rev: 153052 $");

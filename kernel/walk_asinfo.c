@@ -17,23 +17,25 @@
 
 #include "externs.h"
 
-int
-walk_asinfo(const char *name, int (*func)(struct asinfo_entry *, char *, void *), void *data) {
-	char					*str = SYSPAGE_ENTRY(strings)->data;
-	struct asinfo_entry		*as = SYSPAGE_ENTRY(asinfo);
-	char					*curr;
-	unsigned				num;
+int walk_asinfo(const char *name, int (*func)(struct asinfo_entry *, char *, void *), void *data)
+{
+    char *str = SYSPAGE_ENTRY(strings)->data;
+    struct asinfo_entry *as = SYSPAGE_ENTRY(asinfo);
+    char *curr;
+    unsigned num;
 
-	num = _syspage_ptr->asinfo.entry_size / sizeof(*as);
-	for( ;; ) {
-		if(num == 0) return 1;
-		curr = &str[as->name];
-		if(name == NULL || strcmp(curr, name) == 0) {
-			if(!func(as, curr, data)) return 0;
-		}
-		++as;
-		--num;
-	}
+    num = _syspage_ptr->asinfo.entry_size / sizeof(*as);
+    for (;;) {
+        if (num == 0)
+            return 1;
+        curr = &str[as->name];
+        if (name == NULL || strcmp(curr, name) == 0) {
+            if (!func(as, curr, data))
+                return 0;
+        }
+        ++as;
+        --num;
+    }
 }
 
 __SRCVERSION("walk_asinfo.c $Rev: 153052 $");

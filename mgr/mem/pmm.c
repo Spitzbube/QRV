@@ -35,13 +35,13 @@
 #define pmm_memobj_phys		smm_memobj_phys
 
 MEMMGR memmgr_phys = {
-	sizeof(void *),		// no paging so use size of a pointer for pagesize
-	0,					// fault_pulse_code
-	0,					// sizeof ADDRESS
+    sizeof(void *),             // no paging so use size of a pointer for pagesize
+    0,                          // fault_pulse_code
+    0,                          // sizeof ADDRESS
 
-	#undef MMF
-	#define MMF(r,f,p,e)	MMF_DEFN(r,f,p,e)
-	MM_FUNCS(pmm)
+#undef MMF
+#define MMF(r,f,p,e)	MMF_DEFN(r,f,p,e)
+    MM_FUNCS(pmm)
 };
 
 __SRCVERSION("pmm.c $Rev: 153052 $");

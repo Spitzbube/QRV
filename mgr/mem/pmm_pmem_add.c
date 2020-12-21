@@ -17,28 +17,30 @@
 
 #include "pmm.h"
 
-uintptr_t		user_addr = ~(uintptr_t)0;
-uintptr_t		user_addr_end = 0;
+uintptr_t user_addr = ~(uintptr_t) 0;
+uintptr_t user_addr_end = 0;
 
 
 #define MEM_ALIGNMENT	(sizeof(uint64_t))
-int
-pmm_pmem_add(paddr_t start, paddr_t len) {
-	uintptr_t	addr;
-	uintptr_t	end;
-	uintptr_t	size;
+int pmm_pmem_add(paddr_t start, paddr_t len)
+{
+    uintptr_t addr;
+    uintptr_t end;
+    uintptr_t size;
 
-	// adjust to make sure addr and size fits within a page
-	addr = ((uintptr_t)start + MEM_ALIGNMENT - 1) & ~(MEM_ALIGNMENT - 1);
-	if(addr < user_addr) user_addr = addr;
-	end = ((uintptr_t)(start + len) & ~(MEM_ALIGNMENT - 1)) - 1;
-	if(end > user_addr_end) user_addr_end = end;
-	if(end > addr) {
-		size = (end - addr) + 1;
-		mem_free_size += size;
-		_sfree((void *)CPU_P2V(addr), size);
-	}
-	return EOK;
+    // adjust to make sure addr and size fits within a page
+    addr = ((uintptr_t) start + MEM_ALIGNMENT - 1) & ~(MEM_ALIGNMENT - 1);
+    if (addr < user_addr)
+        user_addr = addr;
+    end = ((uintptr_t) (start + len) & ~(MEM_ALIGNMENT - 1)) - 1;
+    if (end > user_addr_end)
+        user_addr_end = end;
+    if (end > addr) {
+        size = (end - addr) + 1;
+        mem_free_size += size;
+        _sfree((void *) CPU_P2V(addr), size);
+    }
+    return EOK;
 }
 
 

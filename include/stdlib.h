@@ -25,15 +25,15 @@
 #ifndef _STDLIB_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED
- #include <sys/platform.h>
+#include <sys/platform.h>
 #endif
 
 #ifndef _MALLOC_H_INCLUDED
- #include <malloc.h>
+#include <malloc.h>
 #endif
 
 #if !defined(__cplusplus) || defined(_STD_USING) || defined(_GLOBAL_USING)
@@ -47,27 +47,25 @@
  * UNIX98 needs the exit status macros from <sys/wait.h>
  */
 #if defined(__EXT_XOPEN_EX) && !defined(__WAIT_H_INCLUDED)
- #include <sys/wait.h>
+#include <sys/wait.h>
 #endif
 
 #include <_pack64.h>
 
 _C_STD_BEGIN
-
 #if defined(__EXT_ANSIC_199012)
-
 #if defined(__SIZE_T)
-typedef __SIZE_T	size_t;
+    typedef __SIZE_T size_t;
 #undef __SIZE_T
 #endif
 
 #if defined(__WCHAR_T)
-typedef __WCHAR_T	wchar_t;
+typedef __WCHAR_T wchar_t;
 #undef __WCHAR_T
 #endif
 
 #ifndef NULL
- #define NULL   _NULL
+#define NULL   _NULL
 #endif
 
 
@@ -76,33 +74,27 @@ typedef __WCHAR_T	wchar_t;
 #define EXIT_FAILURE    1
 #define MB_CUR_MAX		_CSTD _Mbcurmax
 
-typedef struct  {
-        int     quot;
-        int     rem;
+typedef struct {
+    int quot;
+    int rem;
 } div_t;
 
-typedef struct  {
-        long    quot;
-        long    rem;
+typedef struct {
+    long quot;
+    long rem;
 } ldiv_t;
 
-typedef struct  {
-        _Longlong    quot;
-        _Longlong    rem;
+typedef struct {
+    _Longlong quot;
+    _Longlong rem;
 } lldiv_t;
 
 typedef lldiv_t _Lldiv_t;
 
 #endif
 _C_STD_END
-
 #include <_packpop.h>
-
-__BEGIN_DECLS
-
-_C_STD_BEGIN
-
-extern char _Mbcurmax;
+__BEGIN_DECLS _C_STD_BEGIN extern char _Mbcurmax;
 
 /* library private functions */
 #define _STOINT_SIGNED		0x1
@@ -118,53 +110,51 @@ extern _ULonglong _Stoull(const char *, char **, int);
 typedef int _Cmpfun(const void *, const void *);
 
 #if defined(__EXT_ANSIC_199012)
-extern void      abort( void ) __attribute__((__noreturn__));
-extern int       abs( int __j );
-extern int       atexit( register void ( *__func )( void ) );
+extern void abort(void) __attribute__((__noreturn__));
+extern int abs(int __j);
+extern int atexit(register void (*__func)(void));
 #if __GNUC__ >= 4
-extern void      *__dso_handle __attribute__((__visibility__("hidden")));
+extern void *__dso_handle __attribute__((__visibility__("hidden")));
 #else
-extern void      *__dso_handle;
+extern void *__dso_handle;
 #endif
-extern int       __cxa_atexit( void ( *__func )( void * ), void *, void * );
-extern double    atof( const char *__nptr );
-extern int       atoi( const char *__nptr );
-extern long int  atol( const char *__nptr );
-extern void     *bsearch( const void *__key, const void *__base,
-                    size_t __nmemb, size_t __size,
-                    int ( *__compar )( const void *__pkey, const void *__pbase ) );
-extern div_t     div( int __numer, int __denom );
-extern void      exit( int __status ) __attribute__((__noreturn__));
-extern char     *getenv( const char *__name );
-extern long int  labs( long int __j );
-extern ldiv_t    ldiv( long int __numer, long int __denom );
-extern int       mblen( const char *__s, size_t __n );
-extern size_t    mbstowcs( wchar_t *__pwcs, const char *__s, size_t __n );
-extern int       mbtowc( wchar_t *__pwc, const char *__s, size_t __n );
-extern void      qsort( void *__base, size_t __nmemb, size_t __size,
-                    int (*__compar)( const void *, const void * ) );
-extern int       rand( void );
-extern void      srand( unsigned int __seed );
-extern double      strtod( const char *__nptr, char **__endptr );
-extern float       strtof( const char *__nptr, char **__endptr );
-extern long double strtold( const char *__nptr, char **__endptr );
-extern long int  strtol( const char *__nptr, char **__endptr, int __base );
-extern unsigned long int     strtoul( const char *__nptr, char **__endptr, int __base );
-extern size_t    wcstombs( char *__s, const wchar_t *__pwcs, size_t __n );
-extern int       wctomb( char *__s, wchar_t __wchar );
+extern int __cxa_atexit(void (*__func)(void *), void *, void *);
+extern double atof(const char *__nptr);
+extern int atoi(const char *__nptr);
+extern long int atol(const char *__nptr);
+extern void *bsearch(const void *__key, const void *__base,
+                     size_t __nmemb, size_t __size,
+                     int (*__compar)(const void *__pkey, const void *__pbase));
+extern div_t div(int __numer, int __denom);
+extern void exit(int __status) __attribute__((__noreturn__));
+extern char *getenv(const char *__name);
+extern long int labs(long int __j);
+extern ldiv_t ldiv(long int __numer, long int __denom);
+extern int mblen(const char *__s, size_t __n);
+extern size_t mbstowcs(wchar_t *__pwcs, const char *__s, size_t __n);
+extern int mbtowc(wchar_t *__pwc, const char *__s, size_t __n);
+extern void qsort(void *__base, size_t __nmemb, size_t __size,
+                  int (*__compar)(const void *, const void *));
+extern int rand(void);
+extern void srand(unsigned int __seed);
+extern double strtod(const char *__nptr, char **__endptr);
+extern float strtof(const char *__nptr, char **__endptr);
+extern long double strtold(const char *__nptr, char **__endptr);
+extern long int strtol(const char *__nptr, char **__endptr, int __base);
+extern unsigned long int strtoul(const char *__nptr, char **__endptr, int __base);
+extern size_t wcstombs(char *__s, const wchar_t *__pwcs, size_t __n);
+extern int wctomb(char *__s, wchar_t __wchar);
 extern int system(const char *__cmd);
 #endif
 _C_STD_END
-
 #if defined(__EXT_XOPEN_EX)
-
 #if defined (__NYI)
 extern long a64l(const char *__s);
 extern char *l64a(long __value);
 extern int ttyslot(void);
 #endif
 
-extern int getsubopt(char **__optionp, char * const *__tokens, char **__valuep);
+extern int getsubopt(char **__optionp, char *const *__tokens, char **__valuep);
 extern char *initstate(unsigned int __seed, char *__state, _CSTD size_t __size);
 extern long int jrand48(unsigned short int __xsubi[3]);
 extern void lcong48(unsigned short int __param[7]);
@@ -198,13 +188,13 @@ extern int daemon(int __nochdir, int __noclose);
 
 #if defined(__EXT_XOPEN_EX)
 extern double drand48(void);
-extern double  erand48(unsigned short int x[3]);
+extern double erand48(unsigned short int x[3]);
 extern long int lrand48(void);
 extern long int nrand48(unsigned short int x[3]);
-extern void    srand48(long seed);
+extern void srand48(long seed);
 
-extern int     mkstemp(char *__template);
-extern char *  mktemp(char *__template);
+extern int mkstemp(char *__template);
+extern char *mktemp(char *__template);
 
 /*
 -- Not currently supported --
@@ -214,23 +204,23 @@ extern char     *fcvt( double __val, int __ndig, int *__dec, int *__sign );
 extern char     *gcvt( double __val, int __ndig, char *__buf );
 */
 
-extern int       putenv(char *__string);
+extern int putenv(char *__string);
 #endif
 
 #if defined(__EXT_ANSIC_199901) || defined(__EXT_POSIX1_200112)
 extern void _Exit(int __status);
-extern _Longlong	 llabs(_Longlong __j);
+extern _Longlong llabs(_Longlong __j);
 extern _CSTD lldiv_t lldiv(_Longlong __numer, _Longlong _denom);
 #endif
 #if defined(__EXT_QNX) || defined(__EXT_ANSIC_199901) || defined(__EXT_POSIX1_200112)
-extern _Longlong strtoll( const char *__nptr, char **__endptr, int __base );
-extern _ULonglong strtoull( const char *__nptr, char **__endptr, int __base );
-extern _Longlong  atoll( const char *__nptr );
+extern _Longlong strtoll(const char *__nptr, char **__endptr, int __base);
+extern _ULonglong strtoull(const char *__nptr, char **__endptr, int __base);
+extern _Longlong atoll(const char *__nptr);
 #endif
 #if defined(__EXT_QNX)
 /* long long operations */
-extern char     *lltoa( _Longlong __value, char *__buf, int __radix );
-extern char     *ulltoa( _ULonglong __value, char *__buf, int __radix );
+extern char *lltoa(_Longlong __value, char *__buf, int __radix);
+extern char *ulltoa(_ULonglong __value, char *__buf, int __radix);
 
 int clearenv(void);
 
@@ -253,62 +243,80 @@ int clearenv(void);
 #if defined(__EXT_PCDOS)
 
 #if defined(__WATCOMC__) && defined(__INLINE_FUNCTIONS__)
- #pragma intrinsic(abs,div,labs)
- #ifdef __386__
-  #pragma intrinsic(ldiv)
- #endif
+#pragma intrinsic(abs,div,labs)
+#ifdef __386__
+#pragma intrinsic(ldiv)
+#endif
 #endif
 
 #ifndef __cplusplus
 #define atof(p)  strtod(p,(char **)NULL)
 #endif
 
-extern unsigned  atoh( const char *__nptr );
+extern unsigned atoh(const char *__nptr);
 
-extern char     *itoa( int __value, char *__buf, int __radix );
-extern char     *ltoa( long int __value, char *__buf, int __radix );
+extern char *itoa(int __value, char *__buf, int __radix);
+extern char *ltoa(long int __value, char *__buf, int __radix);
 
-extern char     *_fullpath( char *__buf, const char *__path, _CSTD size_t __size );
-extern void      searchenv( const char *__name, const char *__env_var, char *__buf );
-extern char     *ultoa( unsigned long int __value, char *__buf, int __radix );
-extern char     *utoa( unsigned int __value, char *__buf, int __radix );
+extern char *_fullpath(char *__buf, const char *__path, _CSTD size_t __size);
+extern void searchenv(const char *__name, const char *__env_var, char *__buf);
+extern char *ultoa(unsigned long int __value, char *__buf, int __radix);
+extern char *utoa(unsigned int __value, char *__buf, int __radix);
 
 
 #if defined(__SLIB_DATA_INDIRECT) && !defined(_amblksiz) && !defined(__SLIB)
-  extern unsigned *__get_amblksiz_ptr(void);
-  #define _amblksiz *(__get_amblksiz_ptr())
+extern unsigned *__get_amblksiz_ptr(void);
+#define _amblksiz *(__get_amblksiz_ptr())
 #else
-  extern unsigned _amblksiz;  /*  mallocs done in multiples of    */
+extern unsigned _amblksiz;      /*  mallocs done in multiples of    */
 #endif
 
 
 #endif
 
 __END_DECLS
-
 #endif
-
 #ifdef __cplusplus
 #ifdef _MATH_H_INCLUDED
-inline int abs( int __j ) { return _CSTD abs(__j); };
+inline int abs(int __j)
+{
+    return _CSTD abs(__j);
+};
 #endif
 #endif
 
 #ifdef _STD_USING
 #ifndef __GCC_BUILTIN
-using std::abort; using std::abs;
-using std::exit; using std::labs;
+using std::abort;
+using std::abs;
+using std::exit;
+using std::labs;
 #endif
-using std::size_t; using std::div_t; using std::ldiv_t;
-using std::atexit; using std::__cxa_atexit; using std::getenv;
-using std::atof; using std::atoi; using std::atol;
-using std::bsearch; using std::div; using std::ldiv;
-using std::mblen; using std::mbstowcs; using std::mbtowc;
-using std::qsort; using std::rand;
-using std::srand; using std::strtod; using std::strtol;
-using std::strtoul; using std::system;
-using std::wcstombs; using std::wctomb;
-#endif /* _STD_USING */
+using std::size_t;
+using std::div_t;
+using std::ldiv_t;
+using std::atexit;
+using std::__cxa_atexit;
+using std::getenv;
+using std::atof;
+using std::atoi;
+using std::atol;
+using std::bsearch;
+using std::div;
+using std::ldiv;
+using std::mblen;
+using std::mbstowcs;
+using std::mbtowc;
+using std::qsort;
+using std::rand;
+using std::srand;
+using std::strtod;
+using std::strtol;
+using std::strtoul;
+using std::system;
+using std::wcstombs;
+using std::wctomb;
+#endif                          /* _STD_USING */
 
 #endif
 

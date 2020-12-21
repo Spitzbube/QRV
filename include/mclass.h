@@ -24,7 +24,7 @@
 
 
 #ifndef EXTERN
-	#define EXTERN	extern
+#define EXTERN	extern
 #endif
 
 /*
@@ -34,12 +34,11 @@
  * utilizing a 'memclass_info_t *', the same allocator can be used for multiple
  * memory classes
 */
-typedef struct allocator_accessfncs_s
-{
-	memsize_t				(*reserve)(memsize_t s, memsize_t adjust, int adjust_dir, memclass_info_t *i);
-	memsize_t				(*unreserve)(memsize_t s, memsize_t adjust, int adjust_dir, memclass_info_t *i);
-	memclass_sizeinfo_t *	(*size_info)(memclass_sizeinfo_t *si, memclass_info_t *i);
-	void					(*resv_adjust)(memsize_t adjust, int sign, memclass_info_t *i);
+typedef struct allocator_accessfncs_s {
+    memsize_t(*reserve) (memsize_t s, memsize_t adjust, int adjust_dir, memclass_info_t * i);
+    memsize_t(*unreserve) (memsize_t s, memsize_t adjust, int adjust_dir, memclass_info_t * i);
+    memclass_sizeinfo_t *(*size_info)(memclass_sizeinfo_t * si, memclass_info_t * i);
+    void (*resv_adjust)(memsize_t adjust, int sign, memclass_info_t * i);
 } allocator_accessfncs_t;
 
 extern allocator_accessfncs_t *dflt_memclass_fncs;
@@ -54,14 +53,13 @@ extern allocator_accessfncs_t *dflt_memclass_fncs;
  * class list.
 */
 #define MEMCLASS_SIGNATURE		(~0x13991187U)
-typedef struct memclass_s
-{
-	_Uint32t		signature;		// used to help ensure not looking at a bogus memclass_t
+typedef struct memclass_s {
+    _Uint32t signature;         // used to help ensure not looking at a bogus memclass_t
 
-	memclass_info_t		info;		// (public) accounting and configuration data
-	allocator_accessfncs_t	allocator;
+    memclass_info_t info;       // (public) accounting and configuration data
+    allocator_accessfncs_t allocator;
 
-	void 			*rmgr_attr_p;	// back pointer to resource manager structure
+    void *rmgr_attr_p;          // back pointer to resource manager structure
 } memclass_t;
 
 
@@ -85,16 +83,15 @@ typedef struct memclass_s
  * the syspage name
  *
 */
-typedef struct memclass_entry_s
-{
-	kerproc_lock_t	lock;
-	memclass_t		data;
-	char			name[NAME_MAX+1];	// the syspage name by which the meory is known
+typedef struct memclass_entry_s {
+    kerproc_lock_t lock;
+    memclass_t data;
+    char name[NAME_MAX + 1];    // the syspage name by which the meory is known
 } memclass_entry_t;
 
 struct apmmgr_attr_s;
-extern void (*memclass_event)(struct apmmgr_attr_s *attr, memclass_evttype_t evtype,
-						memclass_sizeinfo_t *cur, memclass_sizeinfo_t *prev);
+extern void (*memclass_event)(struct apmmgr_attr_s * attr, memclass_evttype_t evtype,
+                              memclass_sizeinfo_t * cur, memclass_sizeinfo_t * prev);
 
 
 /*==============================================================================
@@ -128,10 +125,10 @@ extern void (*memclass_event)(struct apmmgr_attr_s *attr, memclass_evttype_t evt
 			(mp)->mem_used -= (y); \
 			if (alives[0] != 0) {INTR_UNLOCK(&(mp)->lock);} \
 		} while(0)
-#else	/* (_PADDR_BITS == 64)  || defined(__PPC__) */
+#else                           /* (_PADDR_BITS == 64)  || defined(__PPC__) */
 #define MEMCLASS_ATOMIC_MEM_USED_ADD(mp, y)	atomic_add((volatile unsigned *)(&(mp)->mem_used), (y))
 #define MEMCLASS_ATOMIC_MEM_USED_SUB(mp, y)	atomic_sub((volatile unsigned *)(&(mp)->mem_used), (y))
-#endif	/* (_PADDR_BITS == 64)  || defined(__PPC__) */
+#endif                          /* (_PADDR_BITS == 64)  || defined(__PPC__) */
 
 #define _MEMCLASS_PID_USE(p, mc, sz) \
 		do { \
@@ -153,8 +150,8 @@ extern void (*memclass_event)(struct apmmgr_attr_s *attr, memclass_evttype_t evt
 
 #if ENABLE_MEMCLASS_PID_USE
 #ifndef NDEBUG
-extern void _memclass_pid_use(PROCESS *prp, memclass_id_t mclass_id, memsize_t size);
-extern void _memclass_pid_free(PROCESS *prp, memclass_id_t mclass_id, memsize_t size);
+extern void _memclass_pid_use(PROCESS * prp, memclass_id_t mclass_id, memsize_t size);
+extern void _memclass_pid_free(PROCESS * prp, memclass_id_t mclass_id, memsize_t size);
 #define MEMCLASS_PID_USE(p, mc, sz) \
 		do { \
 			PROCESS *_prp = (p); \
@@ -167,7 +164,7 @@ extern void _memclass_pid_free(PROCESS *prp, memclass_id_t mclass_id, memsize_t 
 			memsize_t _size = (sz); \
 			if ((_prp != NULL) && (_size > 0)) {_memclass_pid_free(_prp, (mc), _size);} \
 		} while(0)
-#else	/* NDEBUG */
+#else                           /* NDEBUG */
 #define MEMCLASS_PID_USE(p, mc, sz) \
 		do { \
 			PROCESS *_prp = (p); \
@@ -180,7 +177,7 @@ extern void _memclass_pid_free(PROCESS *prp, memclass_id_t mclass_id, memsize_t 
 			memsize_t _size = (sz); \
 			if ((_prp != NULL) && (_size > 0)) {_MEMCLASS_PID_FREE(_prp, (mc), _size);} \
 		} while(0)
-#endif	/* NDEBUG */
+#endif                          /* NDEBUG */
 #else
 #define MEMCLASS_PID_USE(p, mc, sz)
 #define MEMCLASS_PID_FREE(p, mc, sz)
@@ -253,14 +250,14 @@ extern void _memclass_pid_free(PROCESS *prp, memclass_id_t mclass_id, memsize_t 
 */
 #ifdef MEMPART_NO_EVENTS
 #define MEMCLASSMGR_EVENT(mc, etype, c, p)	{}
-#else	/* MEMPART_NO_EVENTS */
+#else                           /* MEMPART_NO_EVENTS */
 #define MEMCLASSMGR_EVENT(mc, etype, c, p) \
 		do { \
 			if ((memclass_event != NULL) && ((mc) != NULL)) \
 				memclass_event((mc)->rmgr_attr_p, (etype) , (c), (p)); \
 		} while(0)
-#endif	/* MEMPART_NO_EVENTS */
+#endif                          /* MEMPART_NO_EVENTS */
 
-#endif	/* _MCLASS_H_ */
+#endif                          /* _MCLASS_H_ */
 
 /* __SRCVERSION("$IQ: memclass.h,v 1.91 $"); */

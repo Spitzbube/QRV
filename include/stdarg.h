@@ -30,7 +30,7 @@
 #include <sys/platform.h>
 #endif
 
-typedef	__NTO_va_list			va_list;
+typedef __NTO_va_list va_list;
 #define va_start(__p1,__p2)	__NTO_va_start_stdarg(__p1,__p2)
 #define va_arg(__p1,__p2)	__NTO_va_arg(__p1,__p2)
 #define __va_arg(__p1,__p2)	__NTO_va_arg(__p1,__p2)

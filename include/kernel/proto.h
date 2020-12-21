@@ -283,7 +283,3 @@ extern void	(rdecl *clock_handler_hook_exit)(uint64_t id_hook_context); /* parm 
 extern uint64_t	 (rdecl *intrevent_drain_hook_enter)(void);
 extern void	(rdecl *intrevent_drain_hook_exit)(uint64_t id_hook_context); /* parm is output of interevent_drain_hook_enter */
 extern void	(rdecl *timer_expiry_hook_max_timer_fires)( unsigned int nfires);
-
-
-
-/* __SRCVERSION("proto.h $Rev: 206838 $"); */

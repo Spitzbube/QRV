@@ -19,24 +19,24 @@
 #include <sys/trace.h>
 #include "externs.h"
 
-int
-memmgr_debug_info(resmgr_context_t *ctp, PROCESS *prp, mem_debug_info_t *msg) {
-	int ret;
+int memmgr_debug_info(resmgr_context_t * ctp, PROCESS * prp, mem_debug_info_t * msg)
+{
+    int ret;
 
-	ret = memmgr.debuginfo(prp, &msg->i);
+    ret = memmgr.debuginfo(prp, &msg->i);
 
 #if defined(VARIANT_instr)
-	if(ret == EOK) {
-		iov_t iov[4];
-		SETIOV(iov, &prp->pid, sizeof(prp->pid));
-		SETIOV(iov + 1, &msg->i.vaddr, sizeof(msg->i.vaddr));
-		SETIOV(iov + 2, &msg->i.size, sizeof(msg->i.size));
-		SETIOV(iov + 3, msg->i.path, strlen(msg->i.path));
-		(void)KerextAddTraceEventIOV(_TRACE_SYSTEM_C, _NTO_TRACE_SYS_MAPNAME, iov, 4);
-	}
+    if (ret == EOK) {
+        iov_t iov[4];
+        SETIOV(iov, &prp->pid, sizeof(prp->pid));
+        SETIOV(iov + 1, &msg->i.vaddr, sizeof(msg->i.vaddr));
+        SETIOV(iov + 2, &msg->i.size, sizeof(msg->i.size));
+        SETIOV(iov + 3, msg->i.path, strlen(msg->i.path));
+        (void) KerextAddTraceEventIOV(_TRACE_SYSTEM_C, _NTO_TRACE_SYS_MAPNAME, iov, 4);
+    }
 #endif
 
-	return ret;
+    return ret;
 }
 
 __SRCVERSION("memmgr_debug_info.c $Rev: 153052 $");

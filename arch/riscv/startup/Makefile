@@ -10,9 +10,13 @@ LDFLAGS = -z max-page-size=4096
 OBJECTS = entry.o \
           vectors.o \
           trampoline.o \
+          spinlock.o \
+          plic.o \
           trap.o \
+          task.o \
           start.o \
           common_options.o \
+          syspage_memory.o \
           _main.o \
           main.o
 

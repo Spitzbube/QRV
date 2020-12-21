@@ -31,8 +31,8 @@
 //RUSH3: (when there are write requests, but no read). That would allow us
 //RUSH3: to avoid waking up a whack of threads for no purpose.
 
-static pthread_mutex_t mm_mux  = PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t  mm_cond = PTHREAD_COND_INITIALIZER;
+static pthread_mutex_t mm_mux = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t mm_cond = PTHREAD_COND_INITIALIZER;
 
 
 /*
@@ -52,161 +52,167 @@ static pthread_cond_t  mm_cond = PTHREAD_COND_INITIALIZER;
 #define _PENDING			0x80000000
 
 
-int rdecl
-proc_rlock_adp(PROCESS *prp) {
-	ADDRESS	*adp = prp->memory;
-	int		r;
+int rdecl proc_rlock_adp(PROCESS * prp)
+{
+    ADDRESS *adp = prp->memory;
+    int r;
 
-	if(adp == NULL) return -1;
+    if (adp == NULL)
+        return -1;
 
-	r = pthread_mutex_lock(&mm_mux);
-	CRASHCHECK(r != EOK);
-	//RUSH3: Should this wait for the _PROMOTE_REQ bit to be off as well?
-	while(adp->rwlock.lock & _WLOCK_BIT) {
-		adp->rwlock.lock |= _PENDING;
-		r = pthread_cond_wait(&mm_cond, &mm_mux);
-		CRASHCHECK(r != EOK);
-		CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
-	}
+    r = pthread_mutex_lock(&mm_mux);
+    CRASHCHECK(r != EOK);
+    //RUSH3: Should this wait for the _PROMOTE_REQ bit to be off as well?
+    while (adp->rwlock.lock & _WLOCK_BIT) {
+        adp->rwlock.lock |= _PENDING;
+        r = pthread_cond_wait(&mm_cond, &mm_mux);
+        CRASHCHECK(r != EOK);
+        CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+    }
 
-	adp->rwlock.lock++;
-	if(adp->rwlock.lock & _WLOCK_BIT) crash();
+    adp->rwlock.lock++;
+    if (adp->rwlock.lock & _WLOCK_BIT)
+        crash();
 
-	CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
-	r = pthread_mutex_unlock(&mm_mux);
-	CRASHCHECK(r != EOK);
-	return 0;
+    CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+    r = pthread_mutex_unlock(&mm_mux);
+    CRASHCHECK(r != EOK);
+    return 0;
 }
 
 
-int rdecl
-proc_wlock_adp(PROCESS *prp) {
-	ADDRESS	*adp = prp->memory;
-	int		r;
+int rdecl proc_wlock_adp(PROCESS * prp)
+{
+    ADDRESS *adp = prp->memory;
+    int r;
 
-	if(adp == NULL) return -1;
+    if (adp == NULL)
+        return -1;
 
-	r = pthread_mutex_lock(&mm_mux);
-	CRASHCHECK(r != EOK);
-	while(adp->rwlock.lock != 0) {
-		adp->rwlock.lock |= _PENDING;
-		r = pthread_cond_wait(&mm_cond, &mm_mux);
-		CRASHCHECK(r != EOK);
-		CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
-	}
-	adp->rwlock.lock = _WLOCK_BIT;
+    r = pthread_mutex_lock(&mm_mux);
+    CRASHCHECK(r != EOK);
+    while (adp->rwlock.lock != 0) {
+        adp->rwlock.lock |= _PENDING;
+        r = pthread_cond_wait(&mm_cond, &mm_mux);
+        CRASHCHECK(r != EOK);
+        CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+    }
+    adp->rwlock.lock = _WLOCK_BIT;
 
-	CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
-	r = pthread_mutex_unlock(&mm_mux);
-	CRASHCHECK(r != EOK);
-	return 0;
+    CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+    r = pthread_mutex_unlock(&mm_mux);
+    CRASHCHECK(r != EOK);
+    return 0;
 }
 
 
-int rdecl
-proc_rlock_promote_adp(PROCESS *prp) {
-	int		r;
-	int		ret;
-	ADDRESS	*adp = prp->memory;
+int rdecl proc_rlock_promote_adp(PROCESS * prp)
+{
+    int r;
+    int ret;
+    ADDRESS *adp = prp->memory;
 
-	if(adp == NULL) return -1;
+    if (adp == NULL)
+        return -1;
 
-	r = pthread_mutex_lock(&mm_mux);
-	CRASHCHECK(r != EOK);
+    r = pthread_mutex_lock(&mm_mux);
+    CRASHCHECK(r != EOK);
 
-	if(adp->rwlock.lock & _PROMOTE_REQ) {
-		ret = -1;
-	} else {
-		adp->rwlock.lock |= _PROMOTE_REQ;
-		adp->rwlock.lock--;
-		while((adp->rwlock.lock & (_WLOCK_BIT|_RLOCK_MASK)) != 0) {
-			adp->rwlock.lock |= _PENDING;
-			r = pthread_cond_wait(&mm_cond, &mm_mux);
-			CRASHCHECK(r != EOK);
-			CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
-		}
-		adp->rwlock.lock = _WLOCK_BIT;
-		ret = 0;
-	}
+    if (adp->rwlock.lock & _PROMOTE_REQ) {
+        ret = -1;
+    } else {
+        adp->rwlock.lock |= _PROMOTE_REQ;
+        adp->rwlock.lock--;
+        while ((adp->rwlock.lock & (_WLOCK_BIT | _RLOCK_MASK)) != 0) {
+            adp->rwlock.lock |= _PENDING;
+            r = pthread_cond_wait(&mm_cond, &mm_mux);
+            CRASHCHECK(r != EOK);
+            CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+        }
+        adp->rwlock.lock = _WLOCK_BIT;
+        ret = 0;
+    }
 
-	CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
-	r = pthread_mutex_unlock(&mm_mux);
-	CRASHCHECK(r != EOK);
-	return ret;
+    CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+    r = pthread_mutex_unlock(&mm_mux);
+    CRASHCHECK(r != EOK);
+    return ret;
 }
 
-int rdecl
-proc_unlock_adp(PROCESS *prp) {
-	ADDRESS		*adp = prp->memory;
-	unsigned	locked;
+int rdecl proc_unlock_adp(PROCESS * prp)
+{
+    ADDRESS *adp = prp->memory;
+    unsigned locked;
 
-	if(adp == NULL) crash();
+    if (adp == NULL)
+        crash();
 
-	adp->fault_owner = 0;
-	pthread_mutex_lock(&mm_mux);
+    adp->fault_owner = 0;
+    pthread_mutex_lock(&mm_mux);
 
-	locked = adp->rwlock.lock;
-	if(locked & _WLOCK_BIT) {
-		locked &= ~_WLOCK_BIT;
-	} else {
-		unsigned count = (locked & _RLOCK_MASK);
+    locked = adp->rwlock.lock;
+    if (locked & _WLOCK_BIT) {
+        locked &= ~_WLOCK_BIT;
+    } else {
+        unsigned count = (locked & _RLOCK_MASK);
 
-		if(count != 0) {
-			locked = (locked & ~_RLOCK_MASK) | (count - 1);
-		}
-		CRASHCHECK(adp->fault_owner != 0);
-	}
-	if((locked & (_WLOCK_BIT|_RLOCK_MASK|_PENDING)) == _PENDING) {
-		locked &= ~_PENDING;
-		pthread_cond_broadcast(&mm_cond);
-	}
-	adp->rwlock.lock = locked;
+        if (count != 0) {
+            locked = (locked & ~_RLOCK_MASK) | (count - 1);
+        }
+        CRASHCHECK(adp->fault_owner != 0);
+    }
+    if ((locked & (_WLOCK_BIT | _RLOCK_MASK | _PENDING)) == _PENDING) {
+        locked &= ~_PENDING;
+        pthread_cond_broadcast(&mm_cond);
+    }
+    adp->rwlock.lock = locked;
 
-	CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
-	pthread_mutex_unlock(&mm_mux);
-	return 0;
+    CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+    pthread_mutex_unlock(&mm_mux);
+    return 0;
 }
 
-void rdecl
-proc_lock_owner_mark(PROCESS *prp) {
-	ADDRESS		*adp;
+void rdecl proc_lock_owner_mark(PROCESS * prp)
+{
+    ADDRESS *adp;
 
-	adp = prp->memory;
-	CRASHCHECK(!(adp->rwlock.lock & _WLOCK_BIT));
-	if(adp->fault_owner == 0) {
-		adp->fault_owner = __tls()->__owner;
-	}
+    adp = prp->memory;
+    CRASHCHECK(!(adp->rwlock.lock & _WLOCK_BIT));
+    if (adp->fault_owner == 0) {
+        adp->fault_owner = __tls()->__owner;
+    }
 
 }
 
-int rdecl
-proc_lock_owner_check(PROCESS *prp, pid_t pid, unsigned tid) {
-	return prp->memory->fault_owner == KerextSyncOwner(pid, tid);
-}
-
-
-void rdecl
-memobj_lock(OBJECT *obp) {
-	pathmgr_object_clone(obp);
-	proc_mux_lock(&obp->mem.mm.mux);
-}
-
-int rdecl
-memobj_cond_lock(OBJECT *obp) {
-	struct proc_mux_lock **ml = &obp->mem.mm.mux;
-
-	if(proc_mux_haslock(ml, 0)) return 1;
-	pathmgr_object_clone(obp);
-	proc_mux_lock(ml);
-	return 0;
+int rdecl proc_lock_owner_check(PROCESS * prp, pid_t pid, unsigned tid)
+{
+    return prp->memory->fault_owner == KerextSyncOwner(pid, tid);
 }
 
 
-void rdecl
-memobj_unlock(OBJECT *obp) {
-	VERIFY_OBJ_LOCK(obp);
-	proc_mux_unlock(&obp->mem.mm.mux);
-	pathmgr_object_done(obp);
+void rdecl memobj_lock(OBJECT * obp)
+{
+    pathmgr_object_clone(obp);
+    proc_mux_lock(&obp->mem.mm.mux);
+}
+
+int rdecl memobj_cond_lock(OBJECT * obp)
+{
+    struct proc_mux_lock **ml = &obp->mem.mm.mux;
+
+    if (proc_mux_haslock(ml, 0))
+        return 1;
+    pathmgr_object_clone(obp);
+    proc_mux_lock(ml);
+    return 0;
+}
+
+
+void rdecl memobj_unlock(OBJECT * obp)
+{
+    VERIFY_OBJ_LOCK(obp);
+    proc_mux_unlock(&obp->mem.mm.mux);
+    pathmgr_object_done(obp);
 }
 
 __SRCVERSION("memmgr_support.c $Rev: 174147 $");

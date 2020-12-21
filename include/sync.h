@@ -26,11 +26,11 @@
 #define _SYNC_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef _PTHREAD_H_INCLUDED
- #include <pthread.h>
+#include <pthread.h>
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED
@@ -38,21 +38,14 @@
 #endif
 
 __BEGIN_DECLS
-
 #include <_pack64.h>
-
-
-#if defined(__EXT_QNX)		/* not approved P1003.1j/D5 */
+#if defined(__EXT_QNX)          /* not approved P1003.1j/D5 */
 /* From posix 1003.1j D5 !!!!!!!!!!!!! USE pthread_* calls instead !!!!!!!!! */
-
 /* Map these calls to the approved POSIX ones */
-
 #define BARRIER_SERIAL_THREAD		PTHREAD_BARRIER_SERIAL_THREAD
-
 #define BARRIER_INITIALIZER(__b)	PTHREAD_BARRIER_INITIALIZER(__b)
-
-typedef pthread_barrierattr_t			barrier_attr_t;
-typedef pthread_barrier_t				barrier_t;
+typedef pthread_barrierattr_t barrier_attr_t;
+typedef pthread_barrier_t barrier_t;
 
 #define barrier_attr_init(__a)				pthread_barrierattr_init(__a)
 #define barrier_attr_destroy(__a)			pthread_barrierattr_destroy(__a)
@@ -62,7 +55,7 @@ typedef pthread_barrier_t				barrier_t;
 #define barrier_init(__b, __a, __c)			pthread_barrier_init((__b), (__a), (__c))
 #define barrier_wait(__b)					pthread_barrier_wait(__b)
 
-typedef pthread_spinlock_t		spinlock_t;
+typedef pthread_spinlock_t spinlock_t;
 
 #define spin_init(__l)			pthread_spin_init((__l), PTHREAD_PROCESS_SHARED)
 #define spin_destroy(__l)		pthread_spin_destroy(__l)
@@ -75,7 +68,5 @@ typedef pthread_spinlock_t		spinlock_t;
 #include <_packpop.h>
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("sync.h $Rev: 153052 $"); */

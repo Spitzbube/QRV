@@ -25,7 +25,7 @@
 #ifndef _STDDEF_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED
@@ -40,19 +40,18 @@
 #define _STDDEF_H_DECLARED
 
 _STD_BEGIN
-
 #if defined(__SIZE_T)
-typedef __SIZE_T	size_t;
+    typedef __SIZE_T size_t;
 #undef __SIZE_T
 #endif
 
 #if defined(__PTRDIFF_T)
-typedef __PTRDIFF_T	ptrdiff_t;
+typedef __PTRDIFF_T ptrdiff_t;
 #undef __PTRDIFF_T
 #endif
 
 #if defined(__WCHAR_T)
-typedef __WCHAR_T	wchar_t;
+typedef __WCHAR_T wchar_t;
 #undef __WCHAR_T
 #endif
 
@@ -61,7 +60,6 @@ typedef __WCHAR_T	wchar_t;
 #endif
 
 _STD_END
-
 #if (__GNUC__ >= 4)
 #define offsetof(__typ,__id) __builtin_offsetof(__typ,__id)
 #elif defined(__cplusplus) && (__GNUC__ == 3 && __GNUC_MINOR__ == 4)
@@ -72,12 +70,11 @@ _STD_END
 #else
 #define offsetof(__typ,__id) ((_CSTD size_t)&(((__typ*)0)->__id))
 #endif
-
 #endif
-
 #ifdef _STD_USING
-using std::ptrdiff_t; using std::size_t;
-#endif /* _STD_USING */
+    using std::ptrdiff_t;
+using std::size_t;
+#endif                          /* _STD_USING */
 
 #endif
 

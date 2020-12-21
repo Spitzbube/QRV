@@ -41,9 +41,7 @@
 #define FNM_NOMATCH  1
 
 
-__BEGIN_DECLS
-extern int fnmatch(const char *__expr, const char *__str, int __flags);
+__BEGIN_DECLS extern int fnmatch(const char *__expr, const char *__str, int __flags);
 __END_DECLS
 #endif
-
 /* __SRCVERSION("fnmatch.h $Rev: 153052 $"); */

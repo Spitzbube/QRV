@@ -28,7 +28,7 @@
 #endif
 
 #if defined(__PTRDIFF_T)
-typedef __PTRDIFF_T	ptrdiff_t;
+typedef __PTRDIFF_T ptrdiff_t;
 #undef __PTRDIFF_T
 #endif
 

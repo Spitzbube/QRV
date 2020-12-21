@@ -33,8 +33,7 @@ static void syspage_init()
     struct cpupage_entry *cpupage;
     struct kdebug_callback *kdcall;
 
-    _syspage_ptr->num_cpu = num_processors =
-        min(PROCESSORS_MAX, _syspage_ptr->num_cpu);
+    _syspage_ptr->num_cpu = num_processors = min(PROCESSORS_MAX, _syspage_ptr->num_cpu);
 
     __cpu_flags = SYSPAGE_ENTRY(cpuinfo)->flags;
 
@@ -48,19 +47,15 @@ static void syspage_init()
     cpupage->tls = &intr_tls;
     for (i = 0; i < NUM_PROCESSORS; ++i) {
         cpupageptr[i] = cpupage;
-        cpupage =
-            (void *) ((uint8_t *) cpupage + privateptr->cpupage_spacing);
+        cpupage = (void *) ((uint8_t *) cpupage + privateptr->cpupage_spacing);
     }
 
-    kercallptr =
-        &_SYSPAGE_ENTRY(privateptr->user_syspageptr,
-                        system_private)->kercall;
+    kercallptr = &_SYSPAGE_ENTRY(privateptr->user_syspageptr, system_private)->kercall;
 
     qtimeptr = SYSPAGE_ENTRY(qtime);
 
     intrinfoptr = SYSPAGE_ENTRY(intrinfo);
-    intrinfo_num =
-        _syspage_ptr->intrinfo.entry_size / sizeof(*intrinfoptr);
+    intrinfo_num = _syspage_ptr->intrinfo.entry_size / sizeof(*intrinfoptr);
 
     calloutptr = SYSPAGE_ENTRY(callout);
     callout_timer_value = calloutptr->timer_value;

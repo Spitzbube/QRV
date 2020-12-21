@@ -17,20 +17,21 @@
 
 #include "vmm.h"
 
-int
-vmm_madvise(PROCESS *prp, uintptr_t vaddr, size_t len, int flags) {
-	int						r;
-	struct map_set			ms;
-	struct mm_map			*mm;
+int vmm_madvise(PROCESS * prp, uintptr_t vaddr, size_t len, int flags)
+{
+    int r;
+    struct map_set ms;
+    struct mm_map *mm;
 
-	r = map_isolate(&ms, &prp->memory->map, vaddr, len, MI_SPLIT);
-	if(r != EOK) return r;
+    r = map_isolate(&ms, &prp->memory->map, vaddr, len, MI_SPLIT);
+    if (r != EOK)
+        return r;
 
-	for(mm = ms.first; mm != ms.last->next; mm = mm->next) {
-		mm->extra_flags = (mm->extra_flags & ~EXTRA_FLAG_MADV_MASK) | flags;
-	}
-	map_coalese(&ms);
-	return EOK;
+    for (mm = ms.first; mm != ms.last->next; mm = mm->next) {
+        mm->extra_flags = (mm->extra_flags & ~EXTRA_FLAG_MADV_MASK) | flags;
+    }
+    map_coalese(&ms);
+    return EOK;
 }
 
 __SRCVERSION("vmm_madvise.c $Rev: 153052 $");

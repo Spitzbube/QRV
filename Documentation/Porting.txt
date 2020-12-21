@@ -1,5 +1,5 @@
 This document attempts to describe, in excruciating detail, the steps
-someone has to go through in order to port Neutrino to a new CPU 
+someone has to go through in order to port Neutrino to a new CPU
 architecture. People should add any extra notes or discoveries as they
 do a port.
 
@@ -38,18 +38,18 @@ should be prefixed with XYZ_ABC. Examples:
 	PPC_FPSCR_VE		- PPC floating point status/control reg VE bit
 	PPC403_BESR_DSES	- PPC 403 bus error syndrome register DSES bit
 	S2681_CSR_S1BAUD75	- Signetics 2681 serial chip clock select reg
-	
+
 Also, separate the definitions into appropriately named files. For example,
 all definitions about generic PPC CPU registers appear in <ppc/cpu.h>.
 Definitions specific to the PPC 403 chip appear in <ppc/403cpu.h>. Note that
 this is not a hard and fast rule. If there are only one or two additional
-registers/bits for a particular processor, it might be more efficient to 
+registers/bits for a particular processor, it might be more efficient to
 just include the definitions in the main file (but still using the more
 explicit prefix!). Use your own judgment on this.
 
-If you see something prefixed with "cpu_*", that's an indication that 
+If you see something prefixed with "cpu_*", that's an indication that
 the interface is CPU independant, but the actual implementation is CPU
-specific. For example, there's a function in the kernel called 
+specific. For example, there's a function in the kernel called
 "cpu_thread_priv" which is called whenever the user wants to make a thread
 privledged and able to control hardware. The function does whatever's
 required on the particular processor to make that happen.
@@ -59,13 +59,13 @@ don't commit any variant directories to the SVN repository before they're
 ready to be used. For example, don't check in any "so" variant directories
 before you're ready to make shared objects.
 
-When you add a #ifdef <cpu> chain to something, always terminate it 
+When you add a #ifdef <cpu> chain to something, always terminate it
 with a:
 		...
 	#else
 		#error CPU not supported
 	#endif
-	
+
 True, it means that the next guy might get errors when he first compiles
 something, but better to make him look at the code and decide what to
 do than let it silently go through and spend a day or so trying to figure
@@ -75,7 +75,7 @@ test for that condition, put in an #error report. For example, I once
 spent a week trying to make a startup program go, only to discover
 that memcpy() didn't work on little endian systems (it was an optimized
 version for big endian only).
-	
+
 Note that assembly files are given as *.S - this is not required.
 They could be "*.s" if they don't need to go through the C preprocessor
 first - it depends on how you decided to do things (specifically, the
@@ -120,7 +120,7 @@ Make and install the updated mkxfs program.
 
 Go to the tools/mkfiles directory.
 
-Edit qconf-<hostOS>.mk. Add the appropriate  
+Edit qconf-<hostOS>.mk. Add the appropriate
 	CC_...
 	AS_...
 	LR_...
@@ -131,7 +131,7 @@ macro definitions. Initially the "LD_..." macro should create relocatable
 objects rather than final executables (for GNU ld, add the "-r" switch).
 This will change when you start supporting virtual memory.
 
-Implement the "nto_<cpu>.mk" file. 
+Implement the "nto_<cpu>.mk" file.
 
 Install the updated support make files.
 
@@ -144,33 +144,33 @@ with at least the following files:
 
 inline.h
 	Contains inline functions to perform generally useful operations.
-		
+
 inout.h
 	Contains the in*() and out*() functions for the CPU.
-	
+
 platform.h
 	Defines the stdarg/vararg macros and types:
 		__NTO_va_list/__NTO_va_start_stdarg/__NTO_va_arg/__NTO_va_end
 		__NTO_va_alist/__NTO_va_dcl/__NTO_va_start_vararg
 	Defines __JMPBUFSIZE macro and __jmpbufalign type.
-	
+
 smpxchg.h
 	Defines the _smp_cmpxchg and _smp_xchg inline functions.
-	
-Add the hardware/startup/lib/public/<cpu> directory to the repository. 
+
+Add the hardware/startup/lib/public/<cpu> directory to the repository.
 Populate it with at least the following files:
-		
+
 intr.h
-	Contains the logical interrupt numbers definitions for any 
+	Contains the logical interrupt numbers definitions for any
 	interrupt controllers that are actually implemented by the CPU.
 
 priv.h
 	Contains inline function definitions that are only of use to startup,
 	kdebug and the kernel (things executing at the processor's highest
 	privledge level). There are no required definitions.
-	
+
 Additional files can be added as required. For example, there's a
-hardware/startup/lib/public/ppc/400intr.h which defines the logical 
+hardware/startup/lib/public/ppc/400intr.h which defines the logical
 interrupt numbers for controllers on the PPC 400 series family.
 
 Perform the following command to identify #ifdef <cpu> chains in the
@@ -178,7 +178,7 @@ main include files:
 
 	cd lib/c/public/include
 	find -name \*.h | xargs fgrep -l __PPC__
-		
+
 and add the new CPU to them. At the current time the list is:
 
 	ucontext.h
@@ -186,13 +186,13 @@ and add the new CPU to them. At the current time the list is:
 	sys/auxv.h
 	sys/mman.h
 	sys/platform.h
-	
+
 Do the same thing for lib/elf/public. Currently the list is:
 
 	sys/elf_nto.h
 	sys/elf.h
-	
-	
+
+
 =======================
 The C library (stage 1)
 =======================
@@ -205,7 +205,7 @@ LIBC_TLS()
 CONDITION_CYCLES()
 
 The macro L2V_CHEAT should be defined or undefined depending on
-what the calling conventions are for vararg functions - check the 
+what the calling conventions are for vararg functions - check the
 lib/c/inc/cvtl2v.h file for details.
 
 Add the <cpu> directories to all the sections *except* "watcom". Implement
@@ -222,7 +222,7 @@ the following CPU specific files:
 	startup/<cpu>/crtn.S
 	unix/<cpu>/vfork.S
 
-Implement the kercalls/<cpu>/template file to add the CPU specific support 
+Implement the kercalls/<cpu>/template file to add the CPU specific support
 for generating the kernel call sequences.
 
 Be sure to add the appropriate svn:ignore property value to the kercalls/<cpu>
@@ -249,21 +249,21 @@ The kernel (stage 1)
 ====================
 
 Add the <cpu> directory to the services/system/ker tree. Use the
-"addvariant -c" command to add the <cpu> and initial variant directory 
+"addvariant -c" command to add the <cpu> and initial variant directory
 (one of "o", "be", "le") to the services/system/proc tree.
 
-Add services/system/public/<cpu> to the tree and populate it with at 
+Add services/system/public/<cpu> to the tree and populate it with at
 least the following files:
 
 context.h
 	Defines <cpu>_CPU_REGISTERS and <cpu>_FPU_REGISTERS typedefs.
-	
+
 cpu.h
 	Defines all CPU register definitions.
-	
+
 fault.h
 	Defines CPU specific fault codes.
-	
+
 neutrino.h
 	Defines the following inline functions:
 		__inline_InterruptEnable
@@ -274,11 +274,11 @@ neutrino.h
 		__inline_DebugKDBreak
 		__inline_DebugKDOutput
 		ClockCycles
-		
+
 syspage.h
 	Defines "struct <cpu>_syspage_entry" and "struct <cpu>_kernel_entry".
-	
-	
+
+
 Implement the services/system/public/kernel/cpu_<cpu>.h source file.
 
 Perform the following command to identify #ifdef <cpu> chains in the
@@ -286,13 +286,13 @@ kernel public include files:
 
 	cd services/system/public
 	find -name \*.h | xargs fgrep -l __PPC__
-		
+
 and add the new CPU to them. At the current time the list is:
 
 	kernel/nto.h
 	kernel/proto.h
 	sys/syspage.h
-	
+
 At this time, a "make hinstall" in the various include trees should
 allow you to start compiling the libraries:
 
@@ -320,11 +320,11 @@ Implement the following files in the services/system/ker/<cpu> directory:
 	out_trace_event.S
 	out_kd_request.S
 	(These last two may not be needed - check nano_kerdebug.c to see
-	 if info->debug_path and info->vaddr_to_paddr2 are still being filled 
+	 if info->debug_path and info->vaddr_to_paddr2 are still being filled
 	 in or not)
 	out_vtop.S
 	out_kdebug_path.S
-	
+
 At this time (assuming you've done a "make install" in libc) you should
 be able to issue the following commands to create a standalone test kernel:
 
@@ -333,7 +333,7 @@ be able to issue the following commands to create a standalone test kernel:
 
 Depending on how energetic you are, you may want to implement cpu_debug.c
 in the ker/<cpu> directory. Without it, you won't be able to do any process
-debugging (kernel debugging doesn't need it). If you don't do it now, 
+debugging (kernel debugging doesn't need it). If you don't do it now,
 remember that it'll need to be implemented later.
 
 You can skimp on a couple of things at this time in kernel.S. E.g.: you
@@ -395,11 +395,11 @@ Build the startup library for your cpu:
 	make CPULIST=<cpu>
 
 Now, go to the hardware/startup/boards directory and create a <boardname>
-directory. In it, you'll need a "main.c" and most likely "init_raminfo.c" 
-and "init_intrinfo.c" files. Typing "make" should get you a startup 
+directory. In it, you'll need a "main.c" and most likely "init_raminfo.c"
+and "init_intrinfo.c" files. Typing "make" should get you a startup
 program (assuming you've done a "make" in the startup library as well).
 
-Add a "build" file to the directory. This is an example build script that 
+Add a "build" file to the directory. This is an example build script that
 will be copied to "/<cpudir>/boot/build/<boardname>.build". It should
 be copiously documented with what the logical interrupt numbers are for
 the boards, what drivers and what command lines should be used to invoke
@@ -410,7 +410,7 @@ program and download it to the board. Debug until you get the startup program
 building and displaying a proper system page.
 
 At this point you can add the standalone kernel test
-("services/system/proc/<cpu>/<variant>/tnto") that was built earlier to 
+("services/system/proc/<cpu>/<variant>/tnto") that was built earlier to
 the build script and debug until it's running.
 
 
@@ -424,7 +424,7 @@ operational (I would).
 Go to the (no longer hypothetical) tools group and make sure they've got
 a host debugger for the CPU (most likely gdb).
 
-Go to the lib/kdutil/ tree and add a <cpu> and initial variant 
+Go to the lib/kdutil/ tree and add a <cpu> and initial variant
 (one of "a", "a.le" or "a.be") directories.
 
 Implement (at least) the following files:
@@ -432,7 +432,7 @@ Implement (at least) the following files:
 	cpu_get_cpunum.c
 	cpu_map.c
 and "make install".
-	
+
 Go to the services/kdebug/gdb tree (assuming the host debugger is gdb)
 and add a <cpu> and initial variant (one of "o", "le" or "be") directories.
 
@@ -457,8 +457,8 @@ Go to the services/system/memmgr tree and add the <cpu> directory.
 Implement the following files in cvs/services/system/proc/<cpu>:
 	cpudeps.h
 	special_init.c
-	
-Implement stub versions of the following files in 
+
+Implement stub versions of the following files in
 cvs/services/system/memmgr/<cpu>:
 	cpu_mm_internal.h
 	cpu_pa.c
@@ -468,12 +468,12 @@ cvs/services/system/memmgr/<cpu>:
 	vmm_map_xfer.c
 Look at the "mm-cpu-specific" file in the same directory as this file
 for details on the functions and macros that need to be defined.
-	
-Type "make" in services/system/proc/<cpu>/<variant> and then create a 
-build file that just has startup, kdebug, procnto and a startup script 
+
+Type "make" in services/system/proc/<cpu>/<variant> and then create a
+build file that just has startup, kdebug, procnto and a startup script
 that just does a "display_msg" command.
 
-Once that's running, compile a "hello, world" style program. Include the 
+Once that's running, compile a "hello, world" style program. Include the
 test program in the build file and get starting an external program going.
 
 
@@ -481,7 +481,7 @@ A serial driver
 ===============
 
 Once procnto can run a simple test program with the polled driver from
-startup (I'm assuming the output is coming out a serial port here), the 
+startup (I'm assuming the output is coming out a serial port here), the
 next step is usually to get a real device driver running. If you're lucky
 the serial device on the board is one that we've already implemented.
 In that case, go to lib/io-char, add the <cpu> and <variant> trees
@@ -498,7 +498,7 @@ The process manager (stage 2)
 
 Once you have a interrupt driven serial driver going and have run a few
 tests to prove that things seem to be working in physical mode, it's
-now time to get virtual memory going. 
+now time to get virtual memory going.
 
 Go to services/system/memmgr/<cpu> and replace the stub
 implementions of the macros/functions described in "mm-cpu-specific"
@@ -544,18 +544,18 @@ that QA needs compiled and operational in order to run the tests:
 The C library (stage 2)
 =======================
 
-It's now time to support shared objects. Decide how they're to be 
-implemented on this CPU (follow the System V ABI if possible). 
+It's now time to support shared objects. Decide how they're to be
+implemented on this CPU (follow the System V ABI if possible).
 
 Implement the lib/c/ldd/<cpu>/relocs.ci file. You can find an
 initial template of it in lib/c/ldd/relocs.ci.
 
-Go through all the assembly files for the CPU in the library (not 
+Go through all the assembly files for the CPU in the library (not
 forgetting "c/kercalls/<cpu>/template") and make sure that code is PIC,
-or conditionally compilable for PIC.	
+or conditionally compilable for PIC.
 
 Add one of the "so", "so.be", "so.le" variants to all the sections
-except "startup", "watcom" and "prof". 
+except "startup", "watcom" and "prof".
 
 Get the system loading libc.so.
 
@@ -569,7 +569,7 @@ The C library (stage 3)
 
 Add the lib/c/prof/<cpu>/<variants> trees.
 
-Implement the lib/c/prof/<cpu>/profile.h and 
+Implement the lib/c/prof/<cpu>/profile.h and
 lib/c/startup/<cpu>/mcrt1.S files.
 
 Add optimized versions of versions of the string functions (esp. memcpy()).
@@ -578,12 +578,12 @@ Add optimized versions of versions of the string functions (esp. memcpy()).
 The kernel (stage 2)
 ====================
 
-If you didn't implement services/system/ker/<cpu>/cpu_debug.c earlier, 
+If you didn't implement services/system/ker/<cpu>/cpu_debug.c earlier,
 now's the time.
 
 Implement all the stuff you skimped on in kernel.S (e.g. F.P. support).
 
-Implement optimized versions of nano_xfer_len.c, nano_xfer_msg.c, 
+Implement optimized versions of nano_xfer_len.c, nano_xfer_msg.c,
 nano_xfer_pulse.c, nano_xfer_cpy.c.
 
 

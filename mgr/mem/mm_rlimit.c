@@ -18,15 +18,17 @@
 #include "vmm.h"
 
 
-int rdecl
-rlimit_blown(PROCESS *prp, int which, size_t new) {
-	//RUSH3: There probably should be an rlimit_t type for when we
-	//RUSH3: support 64bit machines.
-	uint32_t	rlimit = prp->rlimit_vals_soft[which];
+int rdecl rlimit_blown(PROCESS * prp, int which, size_t new)
+{
+    //RUSH3: There probably should be an rlimit_t type for when we
+    //RUSH3: support 64bit machines.
+    uint32_t rlimit = prp->rlimit_vals_soft[which];
 
-	if(rlimit == RLIM_INFINITY) return 0;
-	if(new < rlimit) return 0;
-	return 1;
+    if (rlimit == RLIM_INFINITY)
+        return 0;
+    if (new < rlimit)
+        return 0;
+    return 1;
 }
 
 __SRCVERSION("mm_rlimit.c $Rev: 153052 $");

@@ -17,10 +17,10 @@
 
 #include "vmm.h"
 
-int
-vmm_swapper(PROCESS *prp, unsigned *offset, size_t len, int action) {
-	//FUTURE: Stub implementation
-	return ENOTSUP;
+int vmm_swapper(PROCESS * prp, unsigned *offset, size_t len, int action)
+{
+    //FUTURE: Stub implementation
+    return ENOTSUP;
 }
 
 __SRCVERSION("vmm_swapper.c $Rev: 153052 $");

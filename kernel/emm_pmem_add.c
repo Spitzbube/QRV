@@ -20,19 +20,19 @@
 #include <unistd.h>
 
 #define MEM_ALIGNMENT	(sizeof(uint64_t))
-int
-emm_pmem_add(paddr_t start, paddr_t len) {
-	uintptr_t	addr;
-	uintptr_t	end;
+int emm_pmem_add(paddr_t start, paddr_t len)
+{
+    uintptr_t addr;
+    uintptr_t end;
 
-	// adjust to make sure addr and size fits within a page
-	addr = ((uintptr_t)start + MEM_ALIGNMENT - 1) & ~(MEM_ALIGNMENT - 1);
-	end = ((uintptr_t)(start + len) & ~(MEM_ALIGNMENT - 1));
+    // adjust to make sure addr and size fits within a page
+    addr = ((uintptr_t) start + MEM_ALIGNMENT - 1) & ~(MEM_ALIGNMENT - 1);
+    end = ((uintptr_t) (start + len) & ~(MEM_ALIGNMENT - 1));
 
-	if((end > addr) && (end != 0)) {
-		_sfree((void *)CPU_P2V(addr), end - addr);
-	}
-	return EOK;
+    if ((end > addr) && (end != 0)) {
+        _sfree((void *) CPU_P2V(addr), end - addr);
+    }
+    return EOK;
 }
 
 __SRCVERSION("emm_pmem_add.c $Rev: 153052 $");

@@ -17,32 +17,32 @@
 
 #include "externs.h"
 
-void
-kerext_idle(void *data) {
-	INTERRUPT		*itp = data;
-	THREAD			*act = actives[KERNCPU];
-	uint64_t		tspec;
+void kerext_idle(void *data)
+{
+    INTERRUPT *itp = data;
+    THREAD *act = actives[KERNCPU];
+    uint64_t tspec;
 
-	timer_next(&tspec);
+    timer_next(&tspec);
 
-	if((itp != NULL) && (itp->handler != NULL) && (RUNCPU == 0)) {
-		THREAD	*thp;
+    if ((itp != NULL) && (itp->handler != NULL) && (RUNCPU == 0)) {
+        THREAD *thp;
 
-		thp = itp->thread;
-		if(thp->aspace_prp != NULL && thp->aspace_prp != aspaces_prp[KERNCPU]) {
-			/*
-			 * FIXME: some implementations require the kernel locked
-			 */
-			lock_kernel();
-			memmgr.aspace(thp->aspace_prp, &aspaces_prp[KERNCPU]);
-		}
-		hook_idle(&tspec, qtimeptr, itp);
-	} else {
-		halt();
-	}
+        thp = itp->thread;
+        if (thp->aspace_prp != NULL && thp->aspace_prp != aspaces_prp[KERNCPU]) {
+            /*
+             * FIXME: some implementations require the kernel locked
+             */
+            lock_kernel();
+            memmgr.aspace(thp->aspace_prp, &aspaces_prp[KERNCPU]);
+        }
+        hook_idle(&tspec, qtimeptr, itp);
+    } else {
+        halt();
+    }
 
-	lock_kernel();
-	SETKSTATUS(act,0);
+    lock_kernel();
+    SETKSTATUS(act, 0);
 }
 
 __SRCVERSION("kerext_idle.c $Rev: 153052 $");

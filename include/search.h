@@ -30,30 +30,30 @@
 #endif
 
 _C_STD_BEGIN
-
 #if defined(__SIZE_T)
-typedef __SIZE_T    size_t;
+    typedef __SIZE_T size_t;
 #undef __SIZE_T
 #endif
-_C_STD_END
-
-typedef struct {
-        char    *key;
-	void    *data;
+_C_STD_END typedef struct {
+    char *key;
+    void *data;
 
 } ENTRY;
 
 typedef enum { FIND, ENTER } ACTION;
 typedef enum { preorder, postorder, endorder, leaf } VISIT;
 
-__BEGIN_DECLS
-
-extern ENTRY *hsearch (ENTRY __item, ACTION __action);
-extern void *lfind(const void *__key, const void *__base, size_t *__num, size_t __width, int (* __compare)(const void *, const void *));
-extern void *lsearch(const void *__key, void *__base, size_t *__num, size_t __width, int (* __compare)(const void *, const void *));
-extern void *tdelete(const void *__key, void **__rootp, int (*__compar)(const void *, const void *));
-extern void *tfind(const void *__key, void *const *__rootp, int (*__compar)(const void *, const void *));
-extern void *tsearch(const void *__key, void **__rootp, int (*__compar)(const void *, const void *));
+__BEGIN_DECLS extern ENTRY *hsearch(ENTRY __item, ACTION __action);
+extern void *lfind(const void *__key, const void *__base, size_t *__num, size_t __width,
+                   int (*__compare)(const void *, const void *));
+extern void *lsearch(const void *__key, void *__base, size_t *__num, size_t __width,
+                     int (*__compare)(const void *, const void *));
+extern void *tdelete(const void *__key, void **__rootp,
+                     int (*__compar)(const void *, const void *));
+extern void *tfind(const void *__key, void *const *__rootp,
+                   int (*__compar)(const void *, const void *));
+extern void *tsearch(const void *__key, void **__rootp,
+                     int (*__compar)(const void *, const void *));
 extern int hcreate(_CSTD size_t __nel);
 extern void hdestroy(void);
 #if defined(__EXT_XOPEN_EX)
@@ -64,7 +64,5 @@ extern void twalk(const void *__root, void (*__action)(const void *, VISIT, int)
 
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("search.h $Rev: 161592 $"); */

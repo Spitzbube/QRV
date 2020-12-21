@@ -28,14 +28,13 @@
 #endif
 
 _C_STD_BEGIN
-
 #undef assert
-
 #ifdef NDEBUG
- #define assert(__ignore) ((void)0)
+#define assert(__ignore) ((void)0)
 #else
 __BEGIN_DECLS
-extern void __assert(const char *__expr, const char *__file, unsigned __line, const char *__func);
+    extern void __assert(const char *__expr, const char *__file, unsigned __line,
+                         const char *__func);
 __END_DECLS
 #if (defined(__GNUC__) && (2 <= __GNUC__) && (!__STRICT_ANSI__)) || defined(__EXT_ANSIC_199901)
 #define assert(__expr)   ((__expr)?(void)0: _CSTD __assert(#__expr,__FILE__,__LINE__,__func__))
@@ -43,7 +42,5 @@ __END_DECLS
 #define assert(__expr)   ((__expr)?(void)0: _CSTD __assert(#__expr,__FILE__,__LINE__,0))
 #endif
 #endif
-
-_C_STD_END
-
+    _C_STD_END
 /* __SRCVERSION("assert.h $Rev: 167935 $"); */

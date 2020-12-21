@@ -17,8 +17,8 @@
 #include <stdbool.h>
 
 #ifdef __WATCOMC__
-typedef char _Bool;	// not done in stdbool.h for watcom
-#endif	/* __WATCOMC__ */
+typedef char _Bool;             // not done in stdbool.h for watcom
+#endif                          /* __WATCOMC__ */
 
 /*
  * this file contains common interfaces, types and definitions for the
@@ -63,21 +63,19 @@ typedef char _Bool;	// not done in stdbool.h for watcom
 */
 #define evtflags_DEACTIVATE		(0x80000000 & evtflags_RESERVED)
 
-typedef struct ext_lockfncs_s
-{
-	int (*rdlock)(void *);
-	int (*rdunlock)(void *);
-	int (*wrlock)(void *);
-	int (*wrunlock)(void *);
+typedef struct ext_lockfncs_s {
+    int (*rdlock)(void *);
+    int (*rdunlock)(void *);
+    int (*wrlock)(void *);
+    int (*wrunlock)(void *);
 } ext_lockfncs_t;
 
 
-typedef LINK4_NODE		part_qnode_t;
-typedef LINK4_HDR		part_qnodehdr_t;
-typedef struct
-{
-	part_qnodehdr_t		list;
-	struct intrspin		lock;
+typedef LINK4_NODE part_qnode_t;
+typedef LINK4_HDR part_qnodehdr_t;
+typedef struct {
+    part_qnodehdr_t list;
+    struct intrspin lock;
 } part_qnodehdr2_t;
 
 /*
@@ -86,28 +84,25 @@ typedef struct
  * evtdest_t
  * part_evtlist_t
 */
-typedef struct
-{
-	int					rcvid;		// who to send the event to
-	pid_t				pid;		// the process wishing to receive the events
-	bool				in_progress;// break recursion for allocations during event delivery
+typedef struct {
+    int rcvid;                  // who to send the event to
+    pid_t pid;                  // the process wishing to receive the events
+    bool in_progress;           // break recursion for allocations during event delivery
 } evtdest_t;
 
-typedef struct
-{
-	part_qnodehdr2_t	active;
-	part_qnodehdr2_t	inactive;
+typedef struct {
+    part_qnodehdr2_t active;
+    part_qnodehdr2_t inactive;
 } part_evtlist_t;
 
 
 #ifdef USE_PROC_OBJ_LISTS
 /* prp_node_t */
-typedef struct prp_node_s
-{
-	part_qnode_t	hdr;
-	PROCESS *	prp;
+typedef struct prp_node_s {
+    part_qnode_t hdr;
+    PROCESS *prp;
 } prp_node_t;
-#endif	/* USE_PROC_OBJ_LISTS */
+#endif                          /* USE_PROC_OBJ_LISTS */
 
 
 /*
@@ -115,9 +110,9 @@ typedef struct prp_node_s
 */
 #ifdef __GNUC__
 #define TYPEOF(t)	typeof(t)
-#else	/* __GNUC__ */
-#define TYPEOF(t)	// ok for now because the LINKx macros don't current use the type anyway
-#endif	/* __GNUC__ */
+#else                           /* __GNUC__ */
+#define TYPEOF(t)               // ok for now because the LINKx macros don't current use the type anyway
+#endif                          /* __GNUC__ */
 #define LIST_INIT(_q)		LINK4_INIT((_q))
 #define LIST_FIRST(_q)		(_q).head
 #define LIST_LAST(_q)		(_q).tail
@@ -127,6 +122,6 @@ typedef struct prp_node_s
 #define LIST_NEXT(_n)		((_n)->hdr.next)
 #define LIST_PREV(_n)		((part_qnode_t *)((((char *)((_n)->hdr.prev))) - offsetof(part_qnode_t, next)))
 
-#endif	/* _AP_H_ */
+#endif                          /* _AP_H_ */
 
 /* __SRCVERSION("$IQ: ap.h,v 1.91 $"); */

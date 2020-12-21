@@ -39,16 +39,16 @@
 #include <sys/platform.h>
 #endif
 
-struct    spwd {
-        char    *sp_namp;     /* name */
-        char    *sp_pwdp;     /* encrypted password */
-        long    sp_lstchg;    /* last changed */
-        long    sp_max;       /* #days (min) to change */
-        long    sp_min;       /* #days (max) to change */
-        long    sp_warn;      /* #days to warn */
-        long    sp_inact;     /* #days of inactivity */
-        long    sp_expire;    /* date to auto-expire */
-        long    sp_flag;      /* reserved */
+struct spwd {
+    char *sp_namp;              /* name */
+    char *sp_pwdp;              /* encrypted password */
+    long sp_lstchg;             /* last changed */
+    long sp_max;                /* #days (min) to change */
+    long sp_min;                /* #days (max) to change */
+    long sp_warn;               /* #days to warn */
+    long sp_inact;              /* #days of inactivity */
+    long sp_expire;             /* date to auto-expire */
+    long sp_flag;               /* reserved */
 };
 
 #define SPFIELDS 9
@@ -62,21 +62,17 @@ struct    spwd {
 #define OPASSWD        "/etc/opasswd"
 #define NPASSWD        "/etc/npasswd"
 
-__BEGIN_DECLS
+__BEGIN_DECLS extern struct spwd *fgetspent(FILE * f);
+extern struct spwd *getspent(void);
+extern struct spwd *getspent_r(struct spwd *result, char *buffer, int buflen);
+extern struct spwd *getspnam(char *name);
+extern struct spwd *getspnam_r(const char *name, struct spwd *result, char *buffer, int buflen);
 
-extern struct spwd   *fgetspent(FILE *f);
-extern struct spwd   *getspent(void);
-extern struct spwd   *getspent_r(struct spwd *result, char *buffer, int buflen);
-extern struct spwd   *getspnam(char *name);
-extern struct spwd   *getspnam_r(const char *name, struct spwd *result, char *buffer, int buflen);
-
-extern void  endspent(void);
-extern int   putspent(const struct spwd *,FILE *);
-extern void  setspent(void);
+extern void endspent(void);
+extern int putspent(const struct spwd *, FILE *);
+extern void setspent(void);
 
 
 __END_DECLS
-
 #endif
-
 /* __SRCVERSION("shadow.h $Rev: 153052 $"); */

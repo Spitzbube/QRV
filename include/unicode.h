@@ -180,7 +180,7 @@
 #define UCS_LATIN_CAPITAL_LETTER_I_WITH_ACUTE               0x00cd
 #define UCS_LATIN_CAPITAL_LETTER_I_WITH_CIRCUMFLEX          0x00ce
 #define UCS_LATIN_CAPITAL_LETTER_I_WITH_DIAERESIS           0x00cf
-#define UCS_LATIN_CAPITAL_LETTER_ETH                        0x00d0       /* Icelandic */
+#define UCS_LATIN_CAPITAL_LETTER_ETH                        0x00d0  /* Icelandic */
 #define UCS_LATIN_CAPITAL_LETTER_N_WITH_TILDE               0x00d1
 #define UCS_LATIN_CAPITAL_LETTER_O_WITH_GRAVE               0x00d2
 #define UCS_LATIN_CAPITAL_LETTER_O_WITH_ACUTE               0x00d3
@@ -194,8 +194,8 @@
 #define UCS_LATIN_CAPITAL_LETTER_U_WITH_CIRCUMFLEX          0x00db
 #define UCS_LATIN_CAPITAL_LETTER_U_WITH_DIAERESIS           0x00dc
 #define UCS_LATIN_CAPITAL_LETTER_Y_WITH_ACUTE               0x00dd
-#define UCS_LATIN_CAPITAL_LETTER_THORN                      0x00de       /* Icelandic */
-#define UCS_LATIN_SMALL_LETTER_SHARP_S                      0x00df       /* German */
+#define UCS_LATIN_CAPITAL_LETTER_THORN                      0x00de  /* Icelandic */
+#define UCS_LATIN_SMALL_LETTER_SHARP_S                      0x00df  /* German */
 #define UCS_LATIN_SMALL_LETTER_A_WITH_GRAVE                 0x00e0
 #define UCS_LATIN_SMALL_LETTER_A_WITH_ACUTE                 0x00e1
 #define UCS_LATIN_SMALL_LETTER_A_WITH_CIRCUMFLEX            0x00e2
@@ -212,7 +212,7 @@
 #define UCS_LATIN_SMALL_LETTER_I_WITH_ACUTE                 0x00ed
 #define UCS_LATIN_SMALL_LETTER_I_WITH_CIRCUMFLEX            0x00ee
 #define UCS_LATIN_SMALL_LETTER_I_WITH_DIAERESIS             0x00ef
-#define UCS_LATIN_SMALL_LETTER_ETH                          0x00f0       /* Icelandic */
+#define UCS_LATIN_SMALL_LETTER_ETH                          0x00f0  /* Icelandic */
 #define UCS_LATIN_SMALL_LETTER_N_WITH_TILDE                 0x00f1
 #define UCS_LATIN_SMALL_LETTER_O_WITH_GRAVE                 0x00f2
 #define UCS_LATIN_SMALL_LETTER_O_WITH_ACUTE                 0x00f3
@@ -226,34 +226,34 @@
 #define UCS_LATIN_SMALL_LETTER_U_WITH_CIRCUMFLEX            0x00fb
 #define UCS_LATIN_SMALL_LETTER_U_WITH_DIAERESIS             0x00fc
 #define UCS_LATIN_SMALL_LETTER_Y_WITH_ACUTE                 0x00fd
-#define UCS_LATIN_SMALL_LETTER_THORN                        0x00fe       /* Icelandic */
+#define UCS_LATIN_SMALL_LETTER_THORN                        0x00fe  /* Icelandic */
 #define UCS_LATIN_SMALL_LETTER_Y_WITH_DIAERESIS             0x00ff
 #endif
 
 #ifdef UNICODE_COMBINING_DIACRITICAL_MARKS
 #define UNICODE_COMBINING_DIACRITICAL_MARKS_FIRST           0x0300
 #define UNICODE_COMBINING_DIACRITICAL_MARKS_LAST            0x036f
-#define UCS_COMBINING_GRAVE_ACCENT                          0x0300       /* Varia */
-#define UCS_COMBINING_ACUTE_ACCENT                          0x0301       /* Oxia */
+#define UCS_COMBINING_GRAVE_ACCENT                          0x0300  /* Varia */
+#define UCS_COMBINING_ACUTE_ACCENT                          0x0301  /* Oxia */
 #define UCS_COMBINING_CIRCUMFLEX_ACCENT                     0x0302
 #define UCS_COMBINING_TILDE                                 0x0303
 #define UCS_COMBINING_MACRON                                0x0304
 #define UCS_COMBINING_OVERLINE                              0x0305
-#define UCS_COMBINING_BREVE                                 0x0306       /* Vrachy */
+#define UCS_COMBINING_BREVE                                 0x0306  /* Vrachy */
 #define UCS_COMBINING_DOT_ABOVE                             0x0307
-#define UCS_COMBINING_DIAERESIS                             0x0308       /* Dialytika */
+#define UCS_COMBINING_DIAERESIS                             0x0308  /* Dialytika */
 #define UCS_COMBINING_HOOK_ABOVE                            0x0309
 #define UCS_COMBINING_RING_ABOVE                            0x030a
 #define UCS_COMBINING_DOUBLE_ACUTE_ACCENT                   0x030b
 #define UCS_COMBINING_CARON                                 0x030c
-#define UCS_COMBINING_VERTICAL_LINE_ABOVE                   0x030d       /* Tonos */
+#define UCS_COMBINING_VERTICAL_LINE_ABOVE                   0x030d  /* Tonos */
 #define UCS_COMBINING_DOUBLE_VERTICAL_LINE_ABOVE            0x030e
 #define UCS_COMBINING_DOUBLE_GRAVE_ACCENT                   0x030f
 #define UCS_COMBINING_CANDRABINDU                           0x0310
 #define UCS_COMBINING_INVERTED_BREVE                        0x0311
 #define UCS_COMBINING_TURNED_COMMA_ABOVE                    0x0312
-#define UCS_COMBINING_COMMA_ABOVE                           0x0313       /* Psili */
-#define UCS_COMBINING_REVERSED_COMMA_ABOVE                  0x0314       /* Dasia */
+#define UCS_COMBINING_COMMA_ABOVE                           0x0313  /* Psili */
+#define UCS_COMBINING_REVERSED_COMMA_ABOVE                  0x0314  /* Dasia */
 #define UCS_COMBINING_COMMA_ABOVE_RIGHT                     0x0315
 #define UCS_COMBINING_GRAVE_ACCENT_BELOW                    0x0316
 #define UCS_COMBINING_ACUTE_ACCENT_BELOW                    0x0317
@@ -297,8 +297,8 @@
 #define UCS_COMBINING_X_ABOVE                               0x033d
 #define UCS_COMBINING_VERTICAL_TILDE                        0x033e
 #define UCS_COMBINING_DOUBLE_OVERLINE                       0x033f
-#define UCS_COMBINING_GRAVE_TONE_MARK                       0x0340       /* Vietnamese */
-#define UCS_COMBINING_ACUTE_TONE_MARK                       0x0341       /* Vietnamese */
+#define UCS_COMBINING_GRAVE_TONE_MARK                       0x0340  /* Vietnamese */
+#define UCS_COMBINING_ACUTE_TONE_MARK                       0x0341  /* Vietnamese */
 #define UCS_COMBINING_GREEK_PEROSPOMENI                     0x0342
 #define UCS_COMBINING_GREEK_KORONIS                         0x0343
 #define UCS_COMBINING_GREEK_DIALYTIKA                       0x0344

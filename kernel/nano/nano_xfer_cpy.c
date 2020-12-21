@@ -19,7 +19,7 @@
 #include <setjmp.h>
 #include "externs.h"
 
-extern jmp_buf					*xfer_env;
+extern jmp_buf *xfer_env;
 
 /*
  * This routine is used to do memcpy between a kernel buffer and a user buffer
@@ -27,29 +27,30 @@ extern jmp_buf					*xfer_env;
  * buffer can not be accessed.
  *
  */
-int xfer_memcpy(void *dst, const void *src, size_t len) {
-	void *old_handler;
-	register uint8_t *d;
-	register const uint8_t *s;
+int xfer_memcpy(void *dst, const void *src, size_t len)
+{
+    void *old_handler;
+    register uint8_t *d;
+    register const uint8_t *s;
 
-	if(!(old_handler = (void*) GET_XFER_HANDLER())) {
-		jmp_buf					env;
-		int						status;
+    if (!(old_handler = (void *) GET_XFER_HANDLER())) {
+        jmp_buf env;
+        int status;
 
-		/* Setup the jump buffer for all exiting of this function */
-		xfer_env = &env;
-		if(status=xfer_setjmp(*xfer_env)) {
-			return status;
-		}
-		SET_XFER_HANDLER(&xfer_src_handlers);
-	}
-	d = dst;
-	s = src;
-	while(len--) {
-		*d++ = *s++;
-	}
-	SET_XFER_HANDLER(old_handler);
-	return 0;
+        /* Setup the jump buffer for all exiting of this function */
+        xfer_env = &env;
+        if (status = xfer_setjmp(*xfer_env)) {
+            return status;
+        }
+        SET_XFER_HANDLER(&xfer_src_handlers);
+    }
+    d = dst;
+    s = src;
+    while (len--) {
+        *d++ = *s++;
+    }
+    SET_XFER_HANDLER(old_handler);
+    return 0;
 }
 
 /*
@@ -58,68 +59,69 @@ int xfer_memcpy(void *dst, const void *src, size_t len) {
  * buffer or iov set can not be accessed.
  *
  */
-int xfer_cpy_diov(THREAD* thpd, IOV *dst, uint8_t *saddr, int dparts, unsigned slen) {
-	jmp_buf				env;
-	int					status;
-	char				*daddr;
-	unsigned			dlen;
+int xfer_cpy_diov(THREAD * thpd, IOV * dst, uint8_t * saddr, int dparts, unsigned slen)
+{
+    jmp_buf env;
+    int status;
+    char *daddr;
+    unsigned dlen;
 
 
-	/* Setup the jump buffer for all exiting of this function */
-	xfer_env = &env;
-	if(status=xfer_setjmp(*xfer_env)) {
-		return status;
-	}
+    /* Setup the jump buffer for all exiting of this function */
+    xfer_env = &env;
+    if (status = xfer_setjmp(*xfer_env)) {
+        return status;
+    }
 
-	if(dparts < 0) {
-		if(!WR_PROBE_PTR(thpd, dst, -dparts)) {
-			return XFER_DST_FAULT;
-		}
-		SET_XFER_HANDLER(&xfer_src_handlers);
-		xfer_memcpy(dst, saddr, min(slen,-dparts));
-		SET_XFER_HANDLER(0);
-		return 0;
-	} else
-		if(dparts == 0) return 0;
+    if (dparts < 0) {
+        if (!WR_PROBE_PTR(thpd, dst, -dparts)) {
+            return XFER_DST_FAULT;
+        }
+        SET_XFER_HANDLER(&xfer_src_handlers);
+        xfer_memcpy(dst, saddr, min(slen, -dparts));
+        SET_XFER_HANDLER(0);
+        return 0;
+    } else if (dparts == 0)
+        return 0;
 
-	SET_XFER_HANDLER(&xfer_dst_handlers);
-	daddr = (char *)GETIOVBASE(dst);
-	dlen = GETIOVLEN(dst);
-	if(!WR_PROBE_PTR(thpd, daddr, dlen)) {
-		return XFER_DST_FAULT;
-	}
+    SET_XFER_HANDLER(&xfer_dst_handlers);
+    daddr = (char *) GETIOVBASE(dst);
+    dlen = GETIOVLEN(dst);
+    if (!WR_PROBE_PTR(thpd, daddr, dlen)) {
+        return XFER_DST_FAULT;
+    }
 
-	SET_XFER_HANDLER(&xfer_src_handlers);
+    SET_XFER_HANDLER(&xfer_src_handlers);
 
-	/* Now we move the data. */
-	if(slen <= dlen) {
-			xfer_memcpy(daddr, saddr, slen);
-	} else {
-		// rare case
-		while(1) {
-			xfer_memcpy(daddr, saddr, dlen);
-			if(--dparts == 0) {
-				break;
-			}
-			saddr += dlen;
-			slen -= dlen;
-			++dst;
-			SET_XFER_HANDLER(&xfer_dst_handlers);
-			daddr = (char *)GETIOVBASE(dst);
-			dlen  = GETIOVLEN(dst);
-			if(!WR_PROBE_PTR(thpd, daddr, dlen)) {
-				return XFER_DST_FAULT;
-			}
-			SET_XFER_HANDLER(&xfer_src_handlers);
-			if(slen <= dlen) {
-				xfer_memcpy(daddr, saddr, slen);
-				break;
-			}
-		}
-	}
+    /* Now we move the data. */
+    if (slen <= dlen) {
+        xfer_memcpy(daddr, saddr, slen);
+    } else {
+        // rare case
+        while (1) {
+            xfer_memcpy(daddr, saddr, dlen);
+            if (--dparts == 0) {
+                break;
+            }
+            saddr += dlen;
+            slen -= dlen;
+            ++dst;
+            SET_XFER_HANDLER(&xfer_dst_handlers);
+            daddr = (char *) GETIOVBASE(dst);
+            dlen = GETIOVLEN(dst);
+            if (!WR_PROBE_PTR(thpd, daddr, dlen)) {
+                return XFER_DST_FAULT;
+            }
+            SET_XFER_HANDLER(&xfer_src_handlers);
+            if (slen <= dlen) {
+                xfer_memcpy(daddr, saddr, slen);
+                break;
+            }
+        }
+    }
 
-	SET_XFER_HANDLER(0);
-	return 0;
+    SET_XFER_HANDLER(0);
+    return 0;
 }
 
 __SRCVERSION("nano_xfer_cpy.c $Rev: 164239 $");

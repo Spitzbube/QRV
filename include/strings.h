@@ -26,7 +26,7 @@
 #define _STRINGS_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef _STRING_H_INCLUDED
@@ -34,42 +34,52 @@
 #endif
 
 #ifdef __cplusplus
-__BEGIN_DECLS
+__BEGIN_DECLS extern int ffs(int);
+extern int strcasecmp(const char *, const char *);
+extern int strncasecmp(const char *, const char *, _CSTD size_t);
 
-extern int  ffs(int);
-extern int  strcasecmp(const char *, const char *);
-extern int  strncasecmp(const char *, const char *, _CSTD size_t);
+__END_DECLS inline int bcmp(const void *_Str1, const void *_Str2, _CSTD size_t _Num)
+{
+    return _CSTD memcmp(_Str1, _Str2, _Num);
+}
 
-__END_DECLS
-
-inline int bcmp(const void *_Str1, const void *_Str2, _CSTD size_t _Num)
-  { return _CSTD memcmp(_Str1, _Str2, _Num); }
 inline void bcopy(const void *_Src, void *_Dst, _CSTD size_t _Num)
-  { (void) _CSTD memmove(_Dst, _Src, _Num); return; }
+{
+    (void) _CSTD memmove(_Dst, _Src, _Num);
+    return;
+}
+
 inline void bzero(void *_Dst, _CSTD size_t _Num)
-  { (void) _CSTD memset(_Dst, 0, _Num); return; }
+{
+    (void) _CSTD memset(_Dst, 0, _Num);
+    return;
+}
+
 inline const char *index(const char *_Src, int _Cnt)
-  { return _CSTD strchr(_Src, _Cnt); }
+{
+    return _CSTD strchr(_Src, _Cnt);
+}
+
 inline const char *rindex(const char *_Src, int _Cnt)
-  { return _CSTD strrchr(_Src, _Cnt); }
+{
+    return _CSTD strrchr(_Src, _Cnt);
+}
 
-#else /* __cplusplus */
+#else                           /* __cplusplus */
 __BEGIN_DECLS
-
 #undef bcmp
 #undef bcopy
 #undef bzero
 #undef index
 #undef rindex
-
-extern int  bcmp(const void *, const void *, size_t);
+extern int bcmp(const void *, const void *, size_t);
 extern void bcopy(const void *, void *, size_t);
 extern void bzero(void *, size_t);
-extern int  ffs(int);
+extern int ffs(int);
 extern char *index(const char *, int);
 extern char *rindex(const char *, int);
-extern int  strcasecmp(const char *, const char *);
-extern int  strncasecmp(const char *, const char *, size_t);
+extern int strcasecmp(const char *, const char *);
+extern int strncasecmp(const char *, const char *, size_t);
 
 #define bcmp(s1,s2,n)	(_CSTD memcmp(s1,s2,n))
 #define bcopy(s,d,n)	((void)_CSTD memmove(d,s,n))
@@ -78,8 +88,6 @@ extern int  strncasecmp(const char *, const char *, size_t);
 #define rindex(s,c)		(_CSTD strrchr(s,c))
 
 __END_DECLS
-#endif /* __cplusplus */
-
+#endif                          /* __cplusplus */
 #endif
-
 /* __SRCVERSION("strings.h $Rev: 199673 $"); */
