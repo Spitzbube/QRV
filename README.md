@@ -4,6 +4,7 @@ at keeping the Transparent Distributed Processing in the system.
 
 Key differences from the standard QNX 6.4:
 
+ * All code is 64-bit (LP64 model)
  * re-organized source tree
  * integration of startup into the same source tree
  * (planned) configuration system, same as in Linux

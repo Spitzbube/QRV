@@ -36,8 +36,8 @@
 	#error ENDIAN Not defined for system
 #endif
 
-#define REGTYPE(rs)		((rs)->regs[MIPS_CREG(RISCV_REG_V0)])
-#define REGSTATUS(rs)	((rs)->regs[RISCV_CREG(RISCV_REG_V0)])
+#define REGTYPE(rs)		((rs)->regs[RISCV_CREG(RISCV_REG_V0)])
+#define REGSTATUS(rs)		((rs)->regs[RISCV_CREG(RISCV_REG_V0)])
 #define REGIP(rs)		((rs)->regs[RISCV_CREG(RISCV_REG_PC)])
 #define REGSP(rs)		((rs)->regs[RISCV_CREG(RISCV_REG_SP)])
 
@@ -57,7 +57,6 @@
  */
 #define PHYS_TO_PTR(phys)		((void *)RISCV_PHYS_TO_KSEG0(phys))
 #define PTR_TO_PHYS(ptr)		((uintptr_t)RISCV_KSEG0_TO_PHYS(ptr))
-
 
 #define rd_probe_1(ptr)	({ __attribute__((unused)) uint32_t dummy = *(const volatile uint32_t *)(ptr); })
 

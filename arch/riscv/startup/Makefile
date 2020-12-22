@@ -4,7 +4,7 @@
 
 include ../../../def.mk
 
-CFLAGS += -nostdinc -I../../../include -I../include
+CFLAGS += -nostdinc -I../include -I../../../include
 LDFLAGS = -z max-page-size=4096
 
 OBJECTS = entry.o \
@@ -17,6 +17,7 @@ OBJECTS = entry.o \
           start.o \
           common_options.o \
           syspage_memory.o \
+          cpu_syspage_memory.o \
           _main.o \
           main.o
 

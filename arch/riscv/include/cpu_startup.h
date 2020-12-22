@@ -1,22 +1,9 @@
-/*
- * $QNXLicenseC:
- * Copyright 2008, QNX Software Systems.
+/**
+ * \brief CPU specific definitions for startup.
  *
- * Licensed under the Apache License, Version 2.0 (the "License"). You
- * may not reproduce, modify or distribute this software except in
- * compliance with the License. You may obtain a copy of the License
- * at: http://www.apache.org/licenses/LICENSE-2.0
+ * \license Apache 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" basis,
- * WITHOUT WARRANTIES OF ANY KIND, either express or implied.
- *
- * This file may contain contributions from others, either as
- * contributors under the License or as licensors under other terms.
- * Please review this entire file for other proprietary rights or license
- * notices, as well as the QNX Development Suite License Guide at
- * http://licensing.qnx.com/license-guide/ for other information.
- * $
+ * \copyright (c) 2008 QNX Software Systems.
  */
 
 #ifndef _RISCV_CPU_STARTUP_H
@@ -24,36 +11,29 @@
 
 #include <inline.h>
 
-#define KERCALL_SEQUENCE(name)	uint32_t name[] = {			\
-			0xef000000,		/* swi (syscall no. in ip)	*/	\
-			0xe7ffffef		/* undefined instruction	*/	\
-}
+#define RISCV_MAP_SYSPAGE	0xffffffff	/* Syspage */
+#define RISCV_MAP_SYSPAGE_RO	0xfffffffe	/* Syspage/CPUpage read-only */
+#define RISCV_MAP_NOEXEC	0x80000000	/* No execute */
+#define RISCV_MAP_DEVICE	0x40000000	/* Memory-mapped I/O */
+#define RISCV_MAP_STORDER	0x20000000	/* Strongly ordered memory (TODO) */
+#define RISCV_MAP_NOCACHE	0x10000000	/* Non-cacheable memory */
 
-#define CPU_SYSPAGE_TYPE	SYSPAGE_ARM
+#define CPU_SYSPAGE_TYPE SYSPAGE_RISCV
 
 struct cpu_local_syspage {
-	SYSPAGE_SECTION(arm_boxinfo);
-	SYSPAGE_SECTION(arm_cpu);
+    SYSPAGE_SECTION(riscv_cpu);
 };
 
-#define BOOTSTRAPS_RUN_ONE_TO_ONE	0
+#define BOOTSTRAPS_RUN_ONE_TO_ONE 1
 
-#if (_PADDR_BITS-0) != 64
-#define CPU_COMMON_OPTIONS_STRING	"w:"
-#else
-// We use -x to enable LPAE in the 64-bit kernel variant
-#define CPU_COMMON_OPTIONS_STRING	"w:x"
-#endif
+extern uintptr_t riscv_map(uintptr_t va, paddr_t pa, size_t sz, int flags);
 
-extern void		board_cpu_startup(void);
-extern void		board_cpu_startnext(void);
+extern void board_cpu_startup(void);
+extern void board_cpu_startnext(void);
 
-extern unsigned		trap_vectors;
-extern unsigned		mmu_cr_set;
-extern unsigned		mmu_cr_clr;
-extern int		cycles_per_loop;
-extern paddr32_t	startup_base;
-extern unsigned		startup_size;
-
+extern unsigned trap_vectors;
+extern int cycles_per_loop;
+extern paddr_t startup_base;
+extern unsigned startup_size;
 
 #endif

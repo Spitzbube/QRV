@@ -233,7 +233,7 @@ void init_mmu(void);
 void cpu_startup(void);
 void cpu_one_startup(int __cpu);
 void cpu_init_syspage_memory(void);
-struct syspage_entry *cpu_alloc_syspage_memory(paddr32_t *, paddr32_t *, unsigned);
+struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *, paddr_t *, unsigned);
 void cpu_write_syspage_memory(paddr_t sys_paddr, unsigned sysp_size);
 void cpu_print_callout(struct callout_entry *call);
 void cpu_startnext(uintptr_t eip, unsigned cpu);

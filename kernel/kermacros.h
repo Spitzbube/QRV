@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -283,9 +283,10 @@
 #endif
 
 #ifndef atomic_order
-    // atomic_order() makes sure that the compiler doesn't re-order things
-    // across the given statement. Otherwise we might end up modifying kernel 
-    // state before we've actually locked the kernel.
+/* atomic_order() makes sure that the compiler doesn't re-order things
+ * across the given statement. Otherwise we might end up modifying kernel
+ * state before we've actually locked the kernel.
+ */
 #if (defined(__GNUC__) || defined(__ICC))
 static __inline__ void __attribute__((__unused__)) atomic_boundry()
 {
@@ -333,7 +334,7 @@ static __inline__ void __attribute__((__unused__)) atomic_boundry()
 #define _FORCE_NO_UNBLOCK		(_TOPBIT>>2)
 // If another _FORCE_* flag is added, be sure to add it to the _FORCE_BITS
 // definition below and make sure that nano_sched.c is recompiled so that
-// we properly mask all these bits off before passing the errno to kererr()     
+// we properly mask all these bits off before passing the errno to kererr()
 #define _FORCE_BITS				(_FORCE_SET_ERROR|_FORCE_KILL_SELF|_FORCE_NO_UNBLOCK)
 
 //
@@ -459,9 +460,9 @@ static __inline__ void __attribute__((__unused__)) atomic_boundry()
 **/
 #define SS_STOP_RUNNING(thp, preempted) if(IS_SCHED_SS((thp))) { sched_ss_block((thp), (preempted)); }
 
-/** 
+/**
  Note the time that this thread was first made read/running.  This is used for
- later scheduling the replenishment operations.  
+ later scheduling the replenishment operations.
 **/
 #define SS_MARK_ACTIVATION(thp) 	if(IS_SCHED_SS((thp))) { sched_ss_queue((thp)); }
 
@@ -479,7 +480,7 @@ static __inline__ void __attribute__((__unused__)) atomic_boundry()
 									}
 
 
-//For identifying which external scheduler is loaded. assign to externs.h: scheduler_type 
+//For identifying which external scheduler is loaded. assign to externs.h: scheduler_type
 #define SCHEDULER_TYPE_DEFAULT	0
 #define SCHEDULER_TYPE_APS 		1
 
@@ -507,19 +508,19 @@ static __inline__ void __attribute__((__unused__)) atomic_boundry()
 /* The following macro and flag is to allow intrevent_add to deterimine if it's being called from an IO interrupt.
  * (If * intrevent_add is called from IO, it will set the SIGEV_FLAG_CRITICAL bit to make the final receiving thread run
  * critical.) Use the following macro to pass the thp parameter to intrevent_add. ex:
- * intrevent_add(evp, AP_INTREVENT_FROM_IO(thp), 1); 
+ * intrevent_add(evp, AP_INTREVENT_FROM_IO(thp), 1);
  */
 #define AP_INTREVENT_FROM_IO_FLAG 1
 #define AP_INTREVENT_FROM_IO(thp) ( (THREAD*)((uintptr_t)(thp) | AP_INTREVENT_FROM_IO_FLAG) )
 
 
-// end APS macros 
+// end APS macros
 
 
-// flag options for nano_pulse.c:: pulse_deliver() 
+// flag options for nano_pulse.c:: pulse_deliver()
 #define PULSE_DELIVER_APS_CRITICAL_FLAG 0x00000001
 
-//flag options for nano_thread.c :: thread_create() 
+//flag options for nano_thread.c :: thread_create()
 #define THREAD_CREATE_BLOCK_FLAG			0x00000001
 #define THREAD_CREATE_APS_CRITICAL_FLAG	0x00000002
 
