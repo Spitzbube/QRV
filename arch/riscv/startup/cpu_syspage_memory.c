@@ -77,7 +77,7 @@ struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *cpupagep, paddr_t *syspa
     }
 
     int i;
-    paddr32_t cpupaddr = sp_phys + spsize;
+    paddr_t cpupaddr = sp_phys + spsize;
 
     //int cpu_map_flag = (paddr_bits != 32) ? RISCV_MAP_SYSPAGE_RO : RISCV_MAP_SYSPAGE;
 
