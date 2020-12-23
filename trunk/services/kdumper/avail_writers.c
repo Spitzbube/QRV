@@ -12,6 +12,6 @@
 #define WRITER(w)	{#w, write_##w},
 
 struct writer available_writers[] = {
-#include "avail_writers.gh"	
+#include "avail_writers.gh"
 	{NULL, 0}
 };

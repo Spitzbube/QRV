@@ -32,10 +32,9 @@
  * schedpart_attr_t
  *
 */
-typedef struct schedpart_attr_s
-{
-	_Uint16t	budget_percent;
-	_Int16t		critical_budget_ms;	/*milliseconds. optional: set to -1 or 0 to skip */
+typedef struct schedpart_attr_s {
+    _Uint16t budget_percent;
+    _Int16t critical_budget_ms; /*milliseconds. optional: set to -1 or 0 to skip */
 
 } schedpart_attr_t;
 
@@ -54,11 +53,10 @@ typedef struct schedpart_attr_s
  * 					  cannot be changed
  * 		permanent - if TRUE, the partition cannot be destroyed
 */
-typedef struct schedpart_policy_s
-{
-	ap_bool_t				terminal;		// child partitions are permitted (T/F) ?
-	ap_bool_t				config_lock;	// configuration is locked (T/F) ?
-	ap_bool_t				permanent;		// partition is permanent (T/F) ?
+typedef struct schedpart_policy_s {
+    ap_bool_t terminal;         // child partitions are permitted (T/F) ?
+    ap_bool_t config_lock;      // configuration is locked (T/F) ?
+    ap_bool_t permanent;        // partition is permanent (T/F) ?
 
 } schedpart_policy_t;
 
@@ -76,11 +74,10 @@ typedef struct schedpart_policy_s
  * This type is used both to return the configuration state of the partition as
  * well as to allow the configuration to be changed (see schedpart_cfgchg_t)
 */
-typedef struct schedpart_cfg_s
-{
-	schedpart_policy_t	policy;
-	schedpart_attr_t	attr;
-	_Uint32t			pinfo_flags;
+typedef struct schedpart_cfg_s {
+    schedpart_policy_t policy;
+    schedpart_attr_t attr;
+    _Uint32t pinfo_flags;
 } schedpart_cfg_t;
 
 /*
@@ -92,37 +89,34 @@ typedef struct schedpart_cfg_s
  * policies and therefore does not require knowledge of the partition's current
  * configuration
 */
-typedef struct schedpart_cfgchg_s
-{
-	_Uint32t		valid;
-	schedpart_cfg_t	val;
+typedef struct schedpart_cfgchg_s {
+    _Uint32t valid;
+    schedpart_cfg_t val;
 } schedpart_cfgchg_t;
 
 /*
  * schedpart_info_t
  *
 */
-typedef struct schedpart_info_s
-{
-	sched_aps_partition_info	info;	// FIX ME - currently just same as defined in sched_aps.h even though redundant
-	sched_aps_partition_stats	stats;
-	schedpart_cfg_t				cre_cfg;// configuration at partition creation
-	schedpart_cfg_t				cur_cfg;// configuration at partition creation
-	part_id_t					id;		// partition identifier
-	_Uint32t					num_children;	// number of (immediate) children this partition has
-												// Don't need 32 bits but want to use atomic_() operations
-	_Uint32t					reserved[2];
+typedef struct schedpart_info_s {
+    sched_aps_partition_info info;  // FIX ME - currently just same as defined in sched_aps.h even though redundant
+    sched_aps_partition_stats stats;
+    schedpart_cfg_t cre_cfg;    // configuration at partition creation
+    schedpart_cfg_t cur_cfg;    // configuration at partition creation
+    part_id_t id;               // partition identifier
+    _Uint32t num_children;      // number of (immediate) children this partition has
+    // Don't need 32 bits but want to use atomic_() operations
+    _Uint32t reserved[2];
 } schedpart_info_t;
 
 
 /*
  * schedpart_dcmd_flags_t
 */
-typedef part_dcmd_flags_t	schedpart_dcmd_flags_t;
-#if 0	// no scheduler specific partitioning flags yet
-typedef enum
-{
-	/* scheduler partitioning flags are defined in byte 2 (see part.h) */
+typedef part_dcmd_flags_t schedpart_dcmd_flags_t;
+#if 0                           // no scheduler specific partitioning flags yet
+typedef enum {
+    /* scheduler partitioning flags are defined in byte 2 (see part.h) */
 
 } schedpart_dcmd_flags_t_val;
 #endif
@@ -177,4 +171,4 @@ typedef enum
 #define SCHEDPART_GET_INFO			__DIOTF(_DCMD_PARTITION, _DCMD_SCHEDPART_OFFSET + 1, schedpart_info_t)
 
 
-#endif	/* _SCHEDPART_H_ */
+#endif                          /* _SCHEDPART_H_ */

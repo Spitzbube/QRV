@@ -43,7 +43,7 @@ struct kdump_note {
 	_Uint8t			sig_num;
 	_Uint8t			sig_code;
 	_Uint8t			fault_num;
-	_Uint16t		num_cpus; 
+	_Uint16t		num_cpus;
 	_Uint16t		faulting_cpu;
 	_Uint32t		regset_size;
 	_Uint32t		cpu_info;

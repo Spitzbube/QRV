@@ -94,8 +94,10 @@ enum {
     SYSPAGE_RISCV
 };
 
-#define QTIME_FLAG_TIMER_ON_CPU0	0x00000001
-#define QTIME_FLAG_CHECK_STABLE		0x00000002
+#define QTIME_FLAG_TIMER_ON_CPU0	1u
+#define QTIME_FLAG_CHECK_STABLE		2u
+#define QTIME_FLAG_TICKLESS		4u
+#define QTIME_FLAG_GLOBAL_CLOCKCYCLES	8u /* clockcycles is synchronized between all processors */
 
 struct qtime_entry {
     _Uint64t cycles_per_sec;    /* for ClockCycles */
@@ -119,12 +121,6 @@ struct qtime_entry {
 
 struct intrspin;
 
-struct debug_callout {
-    void (*display_char)(struct syspage_entry *, char);
-    int (*poll_key)(struct syspage_entry *);
-    int (*break_detect)(struct syspage_entry *);
-};
-
 typedef enum {
     DEBUG_WATCHDOG_STOP = 0,
     DEBUG_WATCHDOG_CONTINUE,
@@ -140,13 +136,6 @@ enum {
     MEMTYPE_RESERVED,
     MEMTYPE_IOMEM,
     MEMTYPE_FLASHFSYS
-};
-
-struct meminfo_entry {
-    _Paddr32t addr;
-    _Uint32t size;
-    _Uint32t type;
-    _Uint32t spare;
 };
 
 #define AS_NULL_OFF		((_Uint16t)-1)
@@ -207,7 +196,9 @@ struct cpuinfo_entry {
     _Uint32t cpu;
     _Uint32t speed;
     _Uint32t flags;
-    _Uint32t spare[4];
+    _Uint32t spare0;
+    _Uint64t idle_history;
+    _Uint32t spare1;
     _Uint16t name;
     _Uint8t ins_cache;
     _Uint8t data_cache;
@@ -351,8 +342,6 @@ struct syspage_entry {
     syspage_entry_info cpuinfo;
     syspage_entry_info cacheattr;
     syspage_entry_info qtime;
-    syspage_entry_info callout;
-    syspage_entry_info callin;
     syspage_entry_info typed_strings;
     syspage_entry_info strings;
     syspage_entry_info intrinfo;

@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -209,7 +209,7 @@ readjob()
 			(void) readfile(dfname, size);
 			continue;
 		}
-frecverr("%20c", cp-10);	
+frecverr("%20c", cp-10);
 		frecverr("protocol screwup");
 	}
 }
@@ -226,7 +226,7 @@ readfile(file, size)
 	long i, j, amt;
 	int fd, err;
 
-	if (lflag > 1) 
+	if (lflag > 1)
 		syslog(LOG_INFO, "Received file %s of size %d", file, size);
 	fd = open(file, O_CREAT|O_EXCL|O_WRONLY, FILMOD);
 	if (fd < 0)
@@ -361,7 +361,7 @@ rcleanup()
 
 #include <stdarg.h>
 //void
-void frecverr(signed char *msg, ... ) 
+void frecverr(signed char *msg, ... )
 //	signed char *msg;
 {
 	va_list ap;

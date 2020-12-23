@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -223,20 +223,20 @@ getq(namelist)
 
 	if ((dirp = opendir(SD)) == NULL)
 		return(-1);
-	
+
 	if ((stat(SD,&stbuf)) == -1)
 		goto errdone;
-	
+
 	/*
 	 * Estimate the array size by taking the size of the directory file
-	 * and dividing it by a multiple of the minimum size entry. 
+	 * and dividing it by a multiple of the minimum size entry.
 	 */
 
 	arraysz = (stbuf.st_size / 24);
 	queue = (struct queue **)malloc(arraysz * sizeof(struct queue *));
 	if (queue == NULL)
 		goto errdone;
-	
+
 	nitems = 0;
 	while ((d = readdir(dirp)) != NULL) {
 		if (d->d_name[0] != 'c' || d->d_name[1] != 'f')
@@ -246,7 +246,7 @@ getq(namelist)
 		q = (struct queue *)malloc(sizeof(time_t)+strlen(d->d_name)+1);
 		if (q == NULL)
 			goto errdone;
-	        
+
 		q->q_time = stbuf.st_mtime;
 		strcpy(q->q_name, d->d_name);
 		/*
@@ -266,7 +266,7 @@ getq(namelist)
 
 			if (queue == NULL)
 				goto errdone;
-			
+
 		}
 		queue[nitems-1] = q;
 	}

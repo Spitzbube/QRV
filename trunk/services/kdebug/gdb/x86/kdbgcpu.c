@@ -42,7 +42,7 @@ gdb_show_exception_info(ulong_t signal, CPU_REGISTERS *ctx) {
 
 /*
  * gdb_get_cpuregs:
- * Write the cpu registers into the buffer, and return them 
+ * Write the cpu registers into the buffer, and return them
  * to our gdb client
  */
 void
@@ -103,7 +103,7 @@ gdb_set_cpuregs(CPU_REGISTERS *ctx, FPU_REGISTERS *ftx) {
  */
 void
 gdb_proc_continue(CPU_REGISTERS *ctx, int step) {
-    /* 
+    /*
      * try to read optional parameter, addr unchanged if no parm
      */
     parsehexnum(&inbuf[1], (int *)&ctx->eip);

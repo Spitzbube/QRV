@@ -1,32 +1,17 @@
-/*
- * Copyright (c) 2006-2020 Frans Kaashoek, Robert Morris, Russ Cox,
- *                         Massachusetts Institute of Technology
-
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+/**
+ * \brief Machine mode initialization, called from the assembly code (entry.S)
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * \license MIT (https://opensource.org/licenses/mit-license.php)
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * \copyright (c) 2006-2020 Frans Kaashoek, Robert Morris, Russ Cox,
+ *                          Massachusetts Institute of Technology
  */
 
 #include <kernel/startup.h>
 #include <platform/qemu_virt.h>
 #include <riscv.h>
 
-void main();
+extern void _main();
 void timerinit();
 
 // entry.S needs one stack per CPU.
@@ -42,32 +27,32 @@ extern void timervec();
 // entry.S jumps here in machine mode on stack0.
 void start()
 {
-    // set M Previous Privilege mode to Supervisor, for mret.
+    // Set M Previous Privilege mode to Supervisor, for mret.
     unsigned long x = r_mstatus();
     x &= ~MSTATUS_MPP_MASK;
     x |= MSTATUS_MPP_S;
     w_mstatus(x);
 
-    // set M Exception Program Counter to main, for mret.
-    // requires gcc -mcmodel=medany
-    w_mepc((uint64_t) main);
+    // Set M Exception Program Counter to _main(), for mret.
+    // Requires gcc -mcmodel=medany
+    w_mepc((uint64_t) _main);
 
-    // disable paging for now.
+    // Disable paging for now.
     w_satp(0);
 
-    // delegate all interrupts and exceptions to supervisor mode.
+    // Delegate all interrupts and exceptions to supervisor mode.
     w_medeleg(0xffff);
     w_mideleg(0xffff);
     w_sie(r_sie() | SIE_SEIE | SIE_STIE | SIE_SSIE);
 
-    // ask for clock interrupts.
+    // Ask for clock interrupts.
     timerinit();
 
-    // keep each CPU's hartid in its tp register, for cpuid().
+    // Keep each CPU's hartid in its tp register, for cpuid().
     int id = r_mhartid();
     w_tp(id);
 
-    // switch to supervisor mode and jump to main().
+    // Switch to supervisor mode and jump to main().
     asm volatile ("mret");
 }
 

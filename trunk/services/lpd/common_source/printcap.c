@@ -111,7 +111,7 @@ getprent(bp)
 		switch (c) {
 #endif
 		switch (c = getc(pfp)) {
-		case EOF: 
+		case EOF:
 			fclose(pfp);
 			pfp = NULL;
 			return(0);
@@ -230,7 +230,7 @@ tgetent(bp, name)
 			return(tnchktc());
 		}
 	}
-syslog(0,"it failed 3 %m");	
+syslog(0,"it failed 3 %m");
 }
 
 /*

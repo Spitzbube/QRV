@@ -24,7 +24,7 @@ typedef struct receive_msg_hdr {
 	enum receive_msg_type_e	type;
 	pid_t					senders_pid;
 } receive_msg_hdr_t;
-				
+
 typedef struct receive_from_proxy_msg {
 	int           nbytes;
 	/* the data follows here for a size of nbytes */

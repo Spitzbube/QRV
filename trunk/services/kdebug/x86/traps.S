@@ -1,43 +1,43 @@
-	.extern	handle_exception 
-	.extern	kdebug_timer_reload 
-	.extern	_stack_base 
-	.extern	_stack_top 
-	.extern	kerdebug_reg 
-	.extern	ker_ds 
-	.extern	__ds 
-	.extern	__es 
-	.extern	__fs 
-	.extern	__gs 
-	.extern	spinlock 
+	.extern	handle_exception
+	.extern	kdebug_timer_reload
+	.extern	_stack_base
+	.extern	_stack_top
+	.extern	kerdebug_reg
+	.extern	ker_ds
+	.extern	__ds
+	.extern	__es
+	.extern	__fs
+	.extern	__gs
+	.extern	spinlock
 
-	.global	__trp_entry 
-	.global	__msg_entry 
-	.global	__dbg_entry 
-	.global	__brk_entry 
-	.global	__exc_entry 
-	.global	outside_timer_reload 
+	.global	__trp_entry
+	.global	__msg_entry
+	.global	__dbg_entry
+	.global	__brk_entry
+	.global	__exc_entry
+	.global	outside_timer_reload
 	.global kdbg
 
 #include "asmoff.def"
 #include "local-traps.h"
 
-.macro SPIN_ENTER  
+.macro SPIN_ENTER
 	push	%eax
 	movb	$1,%al
 99:
 	cmpb	$0,spinlock
-	jnz 	99b	
+	jnz 	99b
 	xchgb	spinlock,%al
 	orb		%al,%al
 	jnz		99b
 	pop		%eax
 .endm
 
-.macro SPIN_EXIT  
+.macro SPIN_EXIT
 	movb	$0,spinlock
 .endm
 
-.macro DEBUG_ENTER  
+.macro DEBUG_ENTER
 	pushal
 	SPIN_ENTER
 #ifdef	__SEGMENTS__
@@ -77,7 +77,7 @@
 	mov		$0,%ecx
 .endm
 
-.macro DEBUG_LEAVE  
+.macro DEBUG_LEAVE
 	cli
 	mov		$kerdebug_reg,%esp
 #ifdef	__SEGMENTS__
@@ -136,11 +136,11 @@ __exc_entry:
 
 	mov		EXC_ENTRY_CODE,%eax
 	// fall through
-	
+
 dbg:
 //ulong_t handle_exception(ulong_t sigcode, CPU_REGISTERS *ctx, struct kdebug_entry *entry);
 	cli
-	
+
 	//TF ADD pass on args on stack (R->L)
 	pushl	%ecx					//Entry (ecx)
 	pushl	%edx					//Register (edx)
@@ -151,7 +151,7 @@ dbg:
 	addl	$0xc, %esp				//3*4 = 12 bytes
 
 	DEBUG_LEAVE					//Return and don't come back
-	
+
 
 kdbg:							//This is where the outside_fault entry come in
 	SPIN_ENTER
@@ -161,9 +161,9 @@ kdbg:							//This is where the outside_fault entry come in
 	push	%esi
 	push	%edi
 	pushfl
-	
+
 	//REG in edx, CODE in eax, ENTRY in ecx
-	
+
 	mov		%esp,%ebx
 	mov		%cs:_stack_top,%esp
 	push	%ss
@@ -195,7 +195,7 @@ kdbg:							//This is where the outside_fault entry come in
 	jmp		dbg
 
 full_save:
-	
+
 //ulong_t handle_exception(ulong_t sigcode, CPU_REGISTERS *ctx, struct kdebug_entry *entry);
 	//TF ADD pass on args on stack (R->L)
 	pushl 	%ecx					//Entry (ecx)

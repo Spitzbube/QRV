@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -40,10 +40,10 @@
 #include <time.h>
 #include <unistd.h>
 
-#include "utils.h" 
+#include "utils.h"
 
 int verbosity = VERBOSITY_NONE;
- 
+
 int info( const char *fmt, ... )
 {
 va_list arglist;
@@ -109,11 +109,11 @@ unsigned discover_num_colours(void)
 
 struct attributes *g_extra_attributes = 0;
 
-/* 
+/*
  Extract the user's command line additions to the attributes,
  User attributes are specified as KEY=VALUE pairs and if the
  input string contains characters that are special to the formatting
- (ie delimiters) then the entry is ignored and a warning is 
+ (ie delimiters) then the entry is ignored and a warning is
  logged.
 */
 int add_user_attribute(const char *str) {
@@ -126,14 +126,14 @@ int add_user_attribute(const char *str) {
 		info("Invalid use of %s characters in attribute %s \n", _TRACE_HEADER_POSTFIX, str);
 		return -1;
 	}
-	
+
 	if((c = strstr(str, _TRACE_HEADER_PREFIX)) != NULL) {
 		info("Invalid use of %s characters in attribute %s \n", _TRACE_HEADER_PREFIX, str);
 		return -1;
 	}
 
 	//Entry looks good, make a local copy instead of messing with the arguments
-	buffer = strdup(str);	
+	buffer = strdup(str);
 	if(buffer == NULL) {
 		return -1;
 	}
@@ -153,12 +153,12 @@ int add_user_attribute(const char *str) {
 	}
 
 	newattr->key = buffer;
-	newattr->value = c; 
+	newattr->value = c;
 	newattr->next = g_extra_attributes;
 	g_extra_attributes = newattr;
 
 	return 0;
 }
-   
+
 
 __SRCVERSION("utils.c $Rev: 153052 $");

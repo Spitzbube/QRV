@@ -2,17 +2,17 @@
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable 
- * license fees to QNX Software Systems before you may reproduce, 
- * modify or distribute this software, or any work that includes 
- * all or part of this software.   Free development licenses are 
- * available for evaluation and non-commercial purposes.  For more 
- * information visit http://licensing.qnx.com or email 
+ * You must obtain a written license from and pay applicable
+ * license fees to QNX Software Systems before you may reproduce,
+ * modify or distribute this software, or any work that includes
+ * all or part of this software.   Free development licenses are
+ * available for evaluation and non-commercial purposes.  For more
+ * information visit http://licensing.qnx.com or email
  * licensing@qnx.com.
- * 
- * This file may contain contributions from others.  Please review 
- * this entire file for other proprietary rights or license notices, 
- * as well as the QNX Development Suite License Guide at 
+ *
+ * This file may contain contributions from others.  Please review
+ * this entire file for other proprietary rights or license notices,
+ * as well as the QNX Development Suite License Guide at
  * http://licensing.qnx.com/license-guide/ for other information.
  * $
  */
@@ -35,7 +35,7 @@ extern char * argv0;
 /*  Location of crontabs */
 char * crondir = "/var/spool/cron";
 
-void cleanup(int signo) 
+void cleanup(int signo)
 {
 	shm_unlink(SHM_CRON);
 	message(EVENT, "shutdown");
@@ -50,7 +50,7 @@ void cleanup(int signo)
 #define STDERR2 4 /* fcloseall() is called in main, so 3 should be lowest */
 
 void trigger(cron_job * job) {
-	char * shell = "SHELL=/bin/sh"; 
+	char * shell = "SHELL=/bin/sh";
 	pid_t pid = pid;
 	char *inputstr;
 	char command[TAB_BUFFER_SIZE];
@@ -97,7 +97,7 @@ void trigger(cron_job * job) {
 		fputc('\n', input);
 		rewind(input);
 	} else {
-		if(fopen("/dev/null", "r") == NULL)	
+		if(fopen("/dev/null", "r") == NULL)
 			message(FATAL_FORKED, "%s: %s: %s", strerror(errno), "/dev/null", command);
 	}
 
@@ -113,7 +113,7 @@ void trigger(cron_job * job) {
 	dup2(fileno(output), STDERR_FILENO);
 	fcntl(fileno(output), F_SETFD, fcntl(fileno(output), F_GETFD) | FD_CLOEXEC);
 
-	for(attempt = 5; 
+	for(attempt = 5;
 	  attempt > 0 && (pid = spawnl(P_NOWAIT, shell+6, shell+11, "-c", command, NULL)) == -1;
 	  --attempt) {
 		sleep(10);
@@ -125,7 +125,7 @@ void trigger(cron_job * job) {
 		message(LOG, "> pid %d: %s %s", pid, pwent->pw_name, command);
 		waitpid(pid, &result, 0);
 
-		/* MAIL SUPPORT: would mail output instead */ 
+		/* MAIL SUPPORT: would mail output instead */
 		rewind(output);
 		while(fgets(command, IO_WIDTH, output)) {
 			if(inputstr = strchr(command, '\n')) /* Aprox 75 char line wrap */
@@ -187,7 +187,7 @@ extern int main(int argc, char **argv) {
     if(chdir(crondir) != 0)
 	message(FATAL, "%s: %s", strerror(errno), crondir);
 
-    /* check if cron server already running and set up shared memory 
+    /* check if cron server already running and set up shared memory
      * area that advertises our pid.
      */
     if ((fd = shm_open(SHM_CRON, O_RDWR|O_CREAT|O_EXCL, S_IRWXU)) == -1) {
@@ -199,7 +199,7 @@ extern int main(int argc, char **argv) {
     /* set size of memory area */
     if (ftruncate(fd, sizeof(pid_t)) != -1 &&
       MAP_FAILED != (advertisement = mmap(0, sizeof(pid_t), PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0))) {
-	if(is_already_shmem && (kill(*(pid_t *)advertisement, 0) != -1 || errno != ESRCH)) { 
+	if(is_already_shmem && (kill(*(pid_t *)advertisement, 0) != -1 || errno != ESRCH)) {
 		message(FATAL_FORKED, "already running");
 	} /* If the kill fails, assume cron died without removing "Cron" */
 

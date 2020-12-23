@@ -33,16 +33,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -180,7 +180,7 @@ char scnkey[][HEIGHT] =	/* this is relatively easy to modify */
  	  c_1___1_,
  	  c1___1_1,
  	  c_____1_ },			/* % */
- 
+
  	{ c_11____,
  	  c1__1___,
  	  c1___1__,
@@ -190,7 +190,7 @@ char scnkey[][HEIGHT] =	/* this is relatively easy to modify */
  	  c1___11_,
  	  c1___11_,
  	  c_111__1 },			/* & */
- 
+
  	{ c___11__,
  	  c___11__,
  	  c___1___,
@@ -200,7 +200,7 @@ char scnkey[][HEIGHT] =	/* this is relatively easy to modify */
  	  c_______,
  	  c_______,
  	  c_______ },			/* ' */
- 
+
  	{ c____1__,
  	  c___1___,
  	  c__1____,
@@ -210,7 +210,7 @@ char scnkey[][HEIGHT] =	/* this is relatively easy to modify */
  	  c__1____,
  	  c___1___,
  	  c____1__ },			/* ( */
- 
+
  	{ c__1____,
  	  c___1___,
  	  c____1__,
@@ -220,7 +220,7 @@ char scnkey[][HEIGHT] =	/* this is relatively easy to modify */
  	  c____1__,
  	  c___1___,
  	  c__1____ },			/* ) */
- 
+
  	{ c_______,
  	  c___1___,
  	  c1__1__1,
@@ -230,7 +230,7 @@ char scnkey[][HEIGHT] =	/* this is relatively easy to modify */
  	  c1__1__1,
  	  c___1___,
  	  c_______ },			/* * */
- 
+
  	{ c_______,
  	  c___1___,
  	  c___1___,
@@ -240,7 +240,7 @@ char scnkey[][HEIGHT] =	/* this is relatively easy to modify */
  	  c___1___,
  	  c___1___,
  	  c_______ },			/* + */
- 
+
  	{ c_______,
  	  c_______,
  	  c_______,
@@ -250,7 +250,7 @@ char scnkey[][HEIGHT] =	/* this is relatively easy to modify */
  	  c__1____,
  	  c_1_____,
  	  c_______ },			/* , */
- 
+
  	{ c_______,
  	  c_______,
  	  c_______,
@@ -260,7 +260,7 @@ char scnkey[][HEIGHT] =	/* this is relatively easy to modify */
  	  c_______,
  	  c_______,
  	  c_______ },			/* - */
- 
+
  	{ c_______,
 	  c_______,
 	  c_______,

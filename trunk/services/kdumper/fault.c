@@ -28,9 +28,9 @@ parkit(void) {
 	}
 
 }
- 
 
-unsigned long 
+
+unsigned long
 fault_entry(struct kdebug_entry *entry, unsigned long sigcode, void *ctx) {
     if(!(sigcode & interesting_faults)) {
 		return old_fault_entry(entry, sigcode, ctx);
@@ -64,7 +64,7 @@ fault_entry(struct kdebug_entry *entry, unsigned long sigcode, void *ctx) {
 		}
 
 		//Force the system to do an 'abnormal' reboot
-		SYSPAGE_ENTRY(callout)->reboot(_syspage_ptr, 1);	
+		SYSPAGE_ENTRY(callout)->reboot(_syspage_ptr, 1);
     }
 	return sigcode;
 }

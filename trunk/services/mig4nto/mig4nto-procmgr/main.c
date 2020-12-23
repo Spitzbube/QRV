@@ -2,17 +2,17 @@
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable 
- * license fees to QNX Software Systems before you may reproduce, 
- * modify or distribute this software, or any work that includes 
- * all or part of this software.   Free development licenses are 
- * available for evaluation and non-commercial purposes.  For more 
- * information visit http://licensing.qnx.com or email 
+ * You must obtain a written license from and pay applicable
+ * license fees to QNX Software Systems before you may reproduce,
+ * modify or distribute this software, or any work that includes
+ * all or part of this software.   Free development licenses are
+ * available for evaluation and non-commercial purposes.  For more
+ * information visit http://licensing.qnx.com or email
  * licensing@qnx.com.
- * 
- * This file may contain contributions from others.  Please review 
- * this entire file for other proprietary rights or license notices, 
- * as well as the QNX Development Suite License Guide at 
+ *
+ * This file may contain contributions from others.  Please review
+ * this entire file for other proprietary rights or license notices,
+ * as well as the QNX Development Suite License Guide at
  * http://licensing.qnx.com/license-guide/ for other information.
  * $
  */
@@ -36,13 +36,13 @@
 
 unsigned char   *progname;        		/* argv[0]                */
 unsigned char   verbose;          		/* Handle -v option       */
-										 
+
 static char *msg_type_strs[] = {
 	"QNX_NAME_ATTACH",
 	"QNX_NAME_DETACH",
 	"QNX_NAME_LOCATE",
 	"QNX_NAME_QUERY",
-	"QNX_VC_ATTACH", 
+	"QNX_VC_ATTACH",
 	"QNX_VC_DETACH",
 	"QNX_VC_NAME_ATTACH",
 	"GET_NID",
@@ -64,7 +64,7 @@ extern void do_qnx_name_query(procmgr_msg_t *msg, procmgr_reply_t *reply);
 extern int proxy_init(int n);
 extern void proxy_handle_close_ocb(int nd, pid_t pid);
 extern void do_qnx_proxy_attach(procmgr_msg_t *msg, procmgr_reply_t *reply);
-extern void do_qnx_proxy_detach(procmgr_msg_t *msg, 
+extern void do_qnx_proxy_detach(procmgr_msg_t *msg,
 		procmgr_reply_t *reply, struct _msg_info *info);
 extern void do_qnx_proxy_rem_attach(procmgr_msg_t *msg, procmgr_reply_t *reply);
 extern void do_qnx_proxy_rem_detach(procmgr_msg_t *msg, procmgr_reply_t *reply);
@@ -106,10 +106,10 @@ main(int argc, char *argv[])
 
 	if (proxy_init(numtrigthreads) == -1)
 		exit(EXIT_FAILURE);
-	
+
 	if (name_init() == -1)
 		exit(EXIT_FAILURE);
-	
+
 	if ((dpp = dispatch_create()) == NULL) {
 		fprintf(stderr, "%s: Unable to allocate dispatch context.\n", progname);
 		exit(EXIT_FAILURE);
@@ -154,12 +154,12 @@ static int
 io_close_ocb(resmgr_context_t *ctp, void *none, RESMGR_OCB_T *ocb)
 {
 	if (verbose)
-		printf("%s: close from pid %d; cleaning up.\n", 
+		printf("%s: close from pid %d; cleaning up.\n",
 				progname, ctp->info.pid);
 
 	name_handle_close_ocb(ctp->info.pid);
 	proxy_handle_close_ocb(ctp->info.nd, ctp->info.pid);
-	
+
 
 	return EOK;
 }
@@ -173,7 +173,7 @@ io_msg(resmgr_context_t *ctp, io_msg_t *iomsg, RESMGR_OCB_T *ocb)
 	if (verbose) {
 		if (msg->hdr.subtype >= _PROCMGR_ENUM_BASE
 		 && msg->hdr.subtype < _PROCMGR_MAX_MSG_TYPE) {
-			printf("%s: Message type is %s\n", 
+			printf("%s: Message type is %s\n",
 					progname, msg_type_strs[msg->hdr.subtype-_PROCMGR_ENUM_BASE]);
 		} else {
 			printf("%s: Message type is %d\n", progname, msg->hdr.subtype);
@@ -181,43 +181,43 @@ io_msg(resmgr_context_t *ctp, io_msg_t *iomsg, RESMGR_OCB_T *ocb)
 	}
 
 	switch(msg->hdr.subtype) {
-	case _PROCMGR_QNX_NAME_ATTACH:    
+	case _PROCMGR_QNX_NAME_ATTACH:
 		do_qnx_name_attach(msg, &reply, ctp->info.pid);
 		break;
-	case _PROCMGR_QNX_NAME_DETACH:    
+	case _PROCMGR_QNX_NAME_DETACH:
 		do_qnx_name_detach(msg, &reply, ctp->info.pid);
 		break;
-	case _PROCMGR_QNX_NAME_LOCATE:    
+	case _PROCMGR_QNX_NAME_LOCATE:
 		do_qnx_name_locate(msg, &reply);
 		break;
-	case _PROCMGR_QNX_NAME_QUERY:     
+	case _PROCMGR_QNX_NAME_QUERY:
 		do_qnx_name_query(msg, &reply);
 		break;
-	case _PROCMGR_QNX_VC_ATTACH:     
+	case _PROCMGR_QNX_VC_ATTACH:
 		break; /* Don't get these yet */
-	case _PROCMGR_QNX_VC_DETACH:      
+	case _PROCMGR_QNX_VC_DETACH:
 		break; /* Don't get these yet */
-	case _PROCMGR_QNX_VC_NAME_ATTACH: 
+	case _PROCMGR_QNX_VC_NAME_ATTACH:
 		break; /* Don't get these yet */
-	case _PROCMGR_GET_NID:    
+	case _PROCMGR_GET_NID:
 		do_get_nid(msg, &reply);
 		break;
-	case _PROCMGR_QNX_PROXY_ATTACH:     
+	case _PROCMGR_QNX_PROXY_ATTACH:
 		do_qnx_proxy_attach(msg, &reply);
 		break;
-	case _PROCMGR_QNX_PROXY_DETACH:     
+	case _PROCMGR_QNX_PROXY_DETACH:
 		do_qnx_proxy_detach(msg, &reply, &ctp->info);
 		break;
-	case _PROCMGR_QNX_PROXY_REM_ATTACH: 
+	case _PROCMGR_QNX_PROXY_REM_ATTACH:
 		do_qnx_proxy_rem_attach(msg, &reply);
 		break;
-	case _PROCMGR_QNX_PROXY_REM_DETACH: 
+	case _PROCMGR_QNX_PROXY_REM_DETACH:
 		do_qnx_proxy_rem_detach(msg, &reply);
 		break;
 	case _PROCMGR_GET_TRIGGER_INFO:
 		do_get_trigger_info(msg, &reply);
 		break;
-	default: 
+	default:
 		return ENOSYS;
 	}
 	MsgReply(ctp->rcvid, 0, &reply, sizeof(procmgr_reply_t));

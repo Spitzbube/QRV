@@ -25,21 +25,21 @@
 extern "C" {
 #endif
 
-typedef struct {    
+typedef struct {
 	unsigned		num_records;	/* Current Number of Records          */
 	long			next_record;	/* Number of the last record returned */
 									/* from the get_next_record function  */
 	long			last_record;	/* Number of the last record returned */
 									/* from the get_record function       */
 	long			record_size;	/* The size of each record in bytes   */
-	unsigned char	flags;			/* Flags on how to operate the table  */          
-	int (*search)(const void *p1, const void *p2);                              
+	unsigned char	flags;			/* Flags on how to operate the table  */
+	int (*search)(const void *p1, const void *p2);
 									/* search function for lsearch()      */
 	void			**recs;			/* Dynamic Table Of Record Pointers   */
-} TABLE_T;            
-		   
-short init_table(TABLE_T *table, long record_size, 
-	int (*compare)(const void *p1, const void *p2), unsigned char flags);               
+} TABLE_T;
+
+short init_table(TABLE_T *table, long record_size,
+	int (*compare)(const void *p1, const void *p2), unsigned char flags);
 short add_record(TABLE_T *table, void *record);
 short delete_record(TABLE_T *table, void *key, long rec_num);
 void *get_record(TABLE_T *table, void *key, long *rec_num);

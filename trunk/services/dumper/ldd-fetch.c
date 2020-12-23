@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -50,7 +50,7 @@ static int read_memory(int fd, unsigned offset, void  *buf, size_t size)
 		}
 		if (page == NULL) {
 			page = malloc(sizeof(*page));
-			if (page == NULL) 
+			if (page == NULL)
 				return -1;
 			page->start = page_offset;
 			page->end = page_offset + __PAGESIZE;
@@ -59,7 +59,7 @@ static int read_memory(int fd, unsigned offset, void  *buf, size_t size)
 			npages++;
 		}
 		page_offset += __PAGESIZE;
-	}	
+	}
 
 	if (buf == NULL) {
 		return 0;
@@ -75,7 +75,7 @@ static int read_memory(int fd, unsigned offset, void  *buf, size_t size)
 /*
  * Read in an ehdr and the phdrs from the address space of the process.
  * Return a file descriptor or -1 on error. Space allocated for phdrs iff
- * returning successfully.  
+ * returning successfully.
  */
 static int get_headers(int fd, Elf32_Ehdr * ehdr, Elf32_Phdr ** phdr)
 {
@@ -87,14 +87,14 @@ static int get_headers(int fd, Elf32_Ehdr * ehdr, Elf32_Phdr ** phdr)
 	}
 
 	/*
-	 * Read in elf header.  
+	 * Read in elf header.
 	 */
 	if (read_memory( fd, info.base_address, ehdr, sizeof *ehdr) < sizeof *ehdr) {
 		return -1;
 	}
 
 	/*
-	 * Allocate space and read the phdrs.  
+	 * Allocate space and read the phdrs.
 	 */
 	*phdr = malloc(ehdr->e_phnum * ehdr->e_phentsize);
 	if (!*phdr) {
@@ -112,7 +112,7 @@ static int get_headers(int fd, Elf32_Ehdr * ehdr, Elf32_Phdr ** phdr)
 
 /*
  * Fill lm with the first struct link_map in the process' address space.
- * Returns a file descriptor for future calls, -1 on error.  
+ * Returns a file descriptor for future calls, -1 on error.
  */
 static int lm_first(struct link_map *lm, int fd)
 {
@@ -122,7 +122,7 @@ static int lm_first(struct link_map *lm, int fd)
 	int             n;
 
 	/*
-	 * Read the headers.  They're handy.  
+	 * Read the headers.  They're handy.
 	 */
 	if (get_headers(fd, &ehdr, &phdr) == -1) {
 		return -1;
@@ -130,11 +130,11 @@ static int lm_first(struct link_map *lm, int fd)
 
 	/*
 	 * First we need the r_debug structure which has a pointer to the
-	 * process's link_map.  
+	 * process's link_map.
 	 */
 	for (n = 0; n < ehdr.e_phnum; n++) {
 		/*
-		 * Find the dynamic sections in the phdrs.  
+		 * Find the dynamic sections in the phdrs.
 		 */
 		if (phdr[n].p_type == PT_DYNAMIC) {
 			Elf32_Dyn       d;
@@ -162,7 +162,7 @@ static int lm_first(struct link_map *lm, int fd)
 #else /* !__MIPS__ */
 				/*
 				 * The DT_DEBUG section is the one that has the r_debug
-				 * structure.  
+				 * structure.
 				 */
 				if (d.d_tag == DT_DEBUG) {
 					if (read_memory(fd, d.d_un.d_ptr, &r_debug, sizeof r_debug) < sizeof r_debug) {

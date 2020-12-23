@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -77,7 +77,7 @@ int AddNotifyItem(pid_t rpid, int rcvid, struct sigevent *event)
 	temp = FindPid(rpid);
 	if (!temp) { // create
 		temp = calloc(1,sizeof(NotifyItem));
-		if (!temp) 
+		if (!temp)
 			return(-1);
 		temp->data.rpid = rpid;
 		temp->next = NULL;
@@ -86,7 +86,7 @@ int AddNotifyItem(pid_t rpid, int rcvid, struct sigevent *event)
 			NotifyHead = NotifyTail = temp;
 		}
 		else { // add at the end
-			temp->prev = NotifyTail;	
+			temp->prev = NotifyTail;
 			NotifyTail = temp;
 		}
 	}
@@ -95,8 +95,8 @@ int AddNotifyItem(pid_t rpid, int rcvid, struct sigevent *event)
 	return(0);
 }
 
-// deletes specific item in list, 
-// after deletion, remove is no longer valid to be accessed 
+// deletes specific item in list,
+// after deletion, remove is no longer valid to be accessed
 // in any way
 void DeleteItem(NotifyItem *remove)
 {
@@ -107,7 +107,7 @@ void DeleteItem(NotifyItem *remove)
 		if (NotifyHead == NULL)
 			NotifyTail = NULL;
 		else
-			NotifyHead->prev = NULL;	
+			NotifyHead->prev = NULL;
 	}
 	else if (remove == NotifyTail) {
 		NotifyTail = remove->prev;
@@ -129,7 +129,7 @@ int RemoveNotifyItem(pid_t rpid)
 	// Search for pid, if it exists, remove it
 	NotifyItem *remove=NULL;
 	remove = FindPid(rpid);
-	if (!remove) // no such item found	
+	if (!remove) // no such item found
 		return(-1);
 	DeleteItem(remove);
 	return(0);
@@ -144,7 +144,7 @@ NotifyItem *FindPid(pid_t rpid)
 			return(temp);
 		temp = temp->next;
 	}
-	return(NULL);	
+	return(NULL);
 }
 
 NotifyItem *FindRcvid(int rcvid)
@@ -156,7 +156,7 @@ NotifyItem *FindRcvid(int rcvid)
 			return(temp);
 		temp = temp->next;
 	}
-	return(NULL);	
+	return(NULL);
 }
 
 void RemoveAll(pid_t rpid)
@@ -192,12 +192,12 @@ void DeliverNotifies(pid_t pid)
 			status = MsgDeliverEvent(temp->data.rcvid, &(temp->data.event));
 			temp->data.event.sigev_value.sival_int = value;
 			if (status == EOK) {
-				temp = temp->next;	
+				temp = temp->next;
 				continue;
 			}
 		}
-    	// either the pid that died is the same as the 
-    	// one requesting the event, or the pid requesting the 
+    	// either the pid that died is the same as the
+    	// one requesting the event, or the pid requesting the
     	// event is no longer able to receive the event (deliver failed)
     	// in either case we remove the offending entry from the list
 		remove = temp;
@@ -219,7 +219,7 @@ int dumper_devctl(resmgr_context_t *ctp, io_devctl_t *msg, iofunc_ocb_t *ocb)
 	dptr = _DEVCTL_DATA (msg -> i);
 	switch (msg -> i.dcmd) {
 		case DCMD_DUMPER_NOTIFYEVENT:
-			// request for an add notify event		    
+			// request for an add notify event
 			rpid = ctp->info.pid;
 			AddNotifyItem(rpid, ctp->rcvid, (struct sigevent *)dptr);
 			return(EOK);
@@ -230,7 +230,7 @@ int dumper_devctl(resmgr_context_t *ctp, io_devctl_t *msg, iofunc_ocb_t *ocb)
 			if (!status)
 				return(EINVAL);
 			else
-				return(EOK); 
+				return(EOK);
 		case DCMD_DUMPER_REMOVEALL:
 			rpid = ctp->info.pid;
 			// remove all notifies associated with a process

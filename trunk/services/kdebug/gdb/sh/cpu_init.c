@@ -53,7 +53,7 @@ void
 init_traps(void) {
 	copy_code((void*)((unsigned)_syspage_ptr->un.sh.exceptptr) + SH_EXC_GENERAL, (void*)exc_general_start, (void*)exc_general_end);
 //	copy_code((void*)((unsigned)0xa0000000+0x8040000) + SH_EXC_GENERAL, (void*)exc_general_start, (void*)exc_general_end);
-/*	
+/*
 	set_trap(SH_EXC_BASE_RESET, exc_unexpected, 0x00);
 	set_trap(SH_EXC_TLBMISS, exc_unexpected, 0x00);
 	set_trap(SH_EXC_INTR, exc_unexpected, 0x00);

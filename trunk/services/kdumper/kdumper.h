@@ -22,7 +22,7 @@ struct writer {
 	void		(*func)(void *, unsigned);
 };
 
-	
+
 /*
 	Prototypes
 */

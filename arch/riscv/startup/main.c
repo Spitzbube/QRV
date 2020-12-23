@@ -18,12 +18,12 @@
  */
 
 #include <kernel/startup.h>
+#include <platform/qemu_virt.h>
 
 #define STARTUP_DEBUG_LEVEL 4
 
 extern void init_qtime(void);
 extern void init_clocks(void);
-extern void display_clocks(char *);
 
 /* 5+ cycles per loop */
 #define delay(x) {volatile unsigned _delay = x; while (_delay--); }
@@ -31,12 +31,24 @@ extern void display_clocks(char *);
 #define delay_cy(x) {unsigned _delay = ((x+1)>>1); while (_delay--) asm volatile (""); }
 
 // TODO: empty for now
-void init_riscv_ser(unsigned channel, const char *init, const char *defaults)
+void init_riscv_ser(unsigned channel, const char *init, paddr_t base)
 {
 }
+
 void board_init(void)
 {
 }
+
+void init_asinfo(unsigned mem)
+{
+}
+
+void init_raminfo(void)
+{
+    // TODO: determine memory size automatically
+    add_ram(0x80000000, MEG(128));
+}
+
 int cpu_handle_common_option(int opt)
 {
     return 0;
@@ -49,24 +61,52 @@ void cpu_startup(void)
     crash("Not yet.\n");
 }
 
-void uartintr() {}
-void virtio_disk_intr() {}
+void *startup_memory_map(unsigned size, paddr_t phys, unsigned prot_flags)
+{
+    return (void *)((uintptr_t)phys);
+}
+
+void startup_memory_unmap(void *p)
+{
+}
+
+void init_clocks()
+{
+    kprintf("%s\n", __func__);
+}
+
+void init_intrinfo()
+{
+    kprintf("%s\n", __func__);
+}
+
+void init_cpuinfo()
+{
+    kprintf("%s\n", __func__);
+}
+
+void init_hwinfo()
+{
+    kprintf("%s\n", __func__);
+}
+
+void init_qtime()
+{
+    kprintf("%s\n", __func__);
+}
+
+void uartintr() {kprintf("@");}
+void virtio_disk_intr() {kprintf("$");}
 
 
 extern void rvq_putc_ser_dbg(int c);
 
 const struct debug_device debug_devices[] = {
-    { "8250",
-	{
-	    "0x44E09000^2.0.48000000.16",    // UART0, use the baud rate set by boot loader
-        },
-        init_riscv_ser,
-        rvq_putc_ser_dbg,
-	{
-	    &display_char_8250,
-	    &poll_key_8250,
-	    &break_detect_8250,
-	}
+    {   .name = "8250",
+        .io_separate = 0,
+        .base = UART0_BASE,
+        .init = init_riscv_ser,
+        .put = rvq_putc_ser_dbg,
     },
 };
 
@@ -137,10 +177,6 @@ int main(int argc, char **argv, char **envv)
     init_cpuinfo();
 
     init_hwinfo();
-
-    if (debug_flag > STARTUP_DEBUG_LEVEL) {
-        display_clocks("-------after init_clocks-------\n");
-    }
 
     add_typed_string(_CS_MACHINE, "RISC-V virt");
 

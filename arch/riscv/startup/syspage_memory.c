@@ -10,7 +10,7 @@
 
 static unsigned fixed_size;
 
-paddr32_t syspage_paddr;
+paddr_t syspage_paddr;
 struct local_syspage lsp;
 
 struct unknown;
@@ -33,8 +33,9 @@ void *grow_syspage_section(void *p, unsigned add)
     unsigned max_size;
     unsigned len;
     uint8_t *new;
-
+#ifdef CONFIG_MINIDRIVER
     mdriver_check();
+#endif
     if (add > 0) {
         add = ROUND(add, sizeof(uint64_t));
         new_size = lsp.syspage.p->total_size + add;
@@ -67,7 +68,7 @@ void *set_syspage_section(void *p, unsigned size)
     size = ROUND(size, sizeof(uint64_t));
     sect->p = (void *) ((uint8_t *) lsp.syspage.p + fixed_size);
     fixed_size += size;
-    return (grow_syspage_section(p, size));
+    return grow_syspage_section(p, size);
 }
 
 void init_syspage_memory(void *base, unsigned max_size)
@@ -85,9 +86,7 @@ void init_syspage_memory(void *base, unsigned max_size)
     fixed_size = spsize;
     lsp.syspage.p->total_size = spsize;
     lsp.syspage.p->size = max_size;
-    set_syspage_section(&lsp.callout, sizeof(*lsp.callout.p));
-    set_syspage_section(&lsp.callin, sizeof(*lsp.callin.p));
-//  grow_syspage_section(&lsp.meminfo, sizeof(*lsp.meminfo.p));
+
     grow_syspage_section(&lsp.typed_strings, sizeof(uint32_t));
     grow_syspage_section(&lsp.strings, sizeof(char));
     grow_syspage_section(&lsp.hwinfo, sizeof(struct hwi_prefix));
@@ -113,25 +112,26 @@ void reloc_syspage_memory(void *base, unsigned max_size)
     lsp.syspage.p->size = max_size;
 }
 
-void alloc_syspage_memory()
+void alloc_syspage_memory(void)
 {
     struct syspage_entry *sp;
-    paddr32_t cpupage_paddr;
+    paddr_t cpupage_paddr;
     unsigned i;
     struct cpupage_entry cpu;
     unsigned spsize;
 
-    //Allow for four more asinfo_entry's in case the syspage allocation(s)
-    //splits address range(s).
+    /* Allow for four more asinfo entries in case the syspage allocation(s)
+     * splits address range(s).
+     */
     spsize = lsp.syspage.p->total_size + 4 * sizeof(struct asinfo_entry);
 
     _syspage_ptr = cpu_alloc_syspage_memory(&cpupage_paddr, &syspage_paddr, spsize);
+
     if (debug_flag) {
         kprintf("%s: syspage size:%x _syspage_ptr:%x\n", __func__, spsize, _syspage_ptr);
     }
-#define INIT_ENTRY(field)	\
-			sp->field.entry_size = lsp.field.size;	\
-			sp->field.entry_off = PTR_DIFF(lsp.field.p, sp)
+#define INIT_ENTRY(field) sp->field.entry_size = lsp.field.size; \
+                          sp->field.entry_off = PTR_DIFF(lsp.field.p, sp)
 
     sp = lsp.syspage.p;
     sp->size = sizeof(*lsp.syspage.p);  // disallows further growing
@@ -144,8 +144,6 @@ void alloc_syspage_memory()
     INIT_ENTRY(cpuinfo);
     INIT_ENTRY(cacheattr);
     INIT_ENTRY(qtime);
-    INIT_ENTRY(callout);
-    INIT_ENTRY(callin);
     INIT_ENTRY(typed_strings);
     INIT_ENTRY(strings);
     INIT_ENTRY(intrinfo);
@@ -164,9 +162,6 @@ void alloc_syspage_memory()
         startup_memory_unmap(cp);
         cpupage_paddr += lsp.system_private.p->cpupage_spacing;
     }
-
-    //write the callouts to the syspage.
-    output_callouts(0);
 }
 
 void write_syspage_memory()

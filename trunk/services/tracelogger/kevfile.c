@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -42,7 +42,7 @@
 #include <time.h>
 #include <sys/uio.h>
 #include <unistd.h>
- 
+
 #include "kevfile.h"
 #include "utils.h"
 
@@ -75,7 +75,7 @@ kevfile_t *kevfile_open( const char *path, unsigned flags, size_t max_size, unsi
 	kevfile_t		*new_kevfile;
 	kevfile_buf_t	*kbuf;
 	int				i;
-	
+
 	new_kevfile = malloc( sizeof(kevfile_t) );
 	if ( new_kevfile == NULL ) {
 		return NULL;
@@ -91,19 +91,19 @@ kevfile_t *kevfile_open( const char *path, unsigned flags, size_t max_size, unsi
 			info( "\n" );
 		}
 		new_kevfile->fd = open( path, O_RDWR|O_CREAT|O_TRUNC, 0644 );
-	}	
+	}
 	if ( new_kevfile->fd == -1 ) {
 		free( new_kevfile );
 		return NULL;
-	}	
-	
+	}
+
 	new_kevfile->path = strdup( path );
 	if ( new_kevfile->path == NULL ) {
 		free( new_kevfile );
 		close( new_kevfile->fd );
 		return NULL;
 	}
-	
+
 	new_kevfile->flags = flags;
 	new_kevfile->max_size = max_size;
 	new_kevfile->num_buffers = 0;
@@ -113,7 +113,7 @@ kevfile_t *kevfile_open( const char *path, unsigned flags, size_t max_size, unsi
 	new_kevfile->free_buffers = 0;
 	new_kevfile->write_depth = 0;
 	new_kevfile->write_depth = 0;
-	
+
 	if ( flags & KEVFILE_MAP ) {
 		if ( -1 == ftruncate( new_kevfile->fd, new_kevfile->max_size ) ) {
 			free( (void *)new_kevfile->path );
@@ -128,17 +128,17 @@ kevfile_t *kevfile_open( const char *path, unsigned flags, size_t max_size, unsi
 			free( new_kevfile );
 			return NULL;
 		}
-	}	
-	
+	}
+
 	new_kevfile->current_offset = 0;
-	
-	write_header( new_kevfile, time(NULL) );	
+
+	write_header( new_kevfile, time(NULL) );
 
 	for ( i = 0; i < initial_buffers; i++ ) {
 		kbuf = malloc( sizeof(kevfile_buf_t) );
 		if ( kbuf == NULL ) {
 			break;
-		}	
+		}
 		kbuf->next = new_kevfile->free_buffers;
 		if ( !(new_kevfile->flags & KEVFILE_MAP) ) {
 			kbuf->data = malloc( sizeof(tracebuf_t) );
@@ -156,7 +156,7 @@ kevfile_t *kevfile_open( const char *path, unsigned flags, size_t max_size, unsi
 	}
 	new_kevfile->write_buffers = NULL;
 	new_kevfile->write_tail = NULL;
-	
+
 	return new_kevfile;
 }
 
@@ -192,7 +192,7 @@ int kevfile_flush( kevfile_t *kev )
 	kevfile_buf_t *kbuf, *next, *gather_list = NULL;
 	iov_t	iovs[FLUSH_IOVS]; /* RUSH */
 	int n = 0, niovs, write_depth, buffers_dropped, last_buffers_dropped, nbytes;
-	
+
 	InterruptLock( &kev->buf_spin );
 	write_depth = kev->write_depth;
 	gather_list = kev->write_buffers;
@@ -201,7 +201,7 @@ int kevfile_flush( kevfile_t *kev )
 		kev->write_depth = 0;
 	}
 	InterruptUnlock( &kev->buf_spin );
-	
+
 	debug("start flush, write_depth is %d\n", write_depth );
 	do {
 		for ( nbytes = 0, niovs = 0, kbuf = gather_list; niovs < FLUSH_IOVS && kbuf != NULL; kbuf = kbuf->next ) {
@@ -224,14 +224,14 @@ int kevfile_flush( kevfile_t *kev )
 			InterruptUnlock( &kev->buf_spin );
 		}
 	} while( gather_list != NULL );
-	
+
 	InterruptLock( &kev->buf_spin );
 	write_depth = kev->write_depth;
 	buffers_dropped = kev->buffers_dropped;
 	last_buffers_dropped = kev->last_buffers_dropped;
 	kev->last_buffers_dropped = kev->buffers_dropped;
 	InterruptUnlock( &kev->buf_spin );
-	
+
 	if ( buffers_dropped > last_buffers_dropped ) {
 		fprintf( stderr, "Help, we're dropping buffers! (%d dropped so far!)\n", buffers_dropped );
 	}
@@ -259,7 +259,7 @@ kevfile_buf_t *kevfile_buffer_get( kevfile_t *kev )
 	kbuf->nbytes = 0;
 	kbuf->next = NULL;
 	return kbuf;
-}	
+}
 
 int kevfile_buffer_put( kevfile_t *kev, kevfile_buf_t *buf )
 {
@@ -284,7 +284,7 @@ int kevfile_buffer_put( kevfile_t *kev, kevfile_buf_t *buf )
 	}
 	InterruptUnlock( &kev->buf_spin );
 	return 0;
-}	
+}
 
 unsigned kevfile_space_left( kevfile_t *kev )
 {
@@ -309,7 +309,7 @@ static int write_header_keyvalue( kevfile_t *kev, const char *k, const char *v )
 		return -1;
 	}
 	l += n;
-	
+
 	n = strlen( k );
 	r = kwrite( kev, k, n );
 	if ( r != n ) {
@@ -323,7 +323,7 @@ static int write_header_keyvalue( kevfile_t *kev, const char *k, const char *v )
 		return -1;
 	}
 	l += n;
-	
+
 	n = strlen( v );
 	r = kwrite( kev, v, n );
 	if ( r != n ) {
@@ -337,7 +337,7 @@ static int write_header_keyvalue( kevfile_t *kev, const char *k, const char *v )
 static int write_header_str( kevfile_t *kev, int keyword, const char *s )
 {
 	int l, n, r;
-	
+
 	n = strlen( head_keywords[keyword] );
 	l = strlen( s );
 	r = kwrite( kev, head_keywords[keyword], n );
@@ -402,9 +402,9 @@ char	*syspage_p;
 		}
 	}
 	write_header_str( kev, HEADER_END,     "");
-		
+
 	/* this may look weird, but you can't do a write directly from the syspage_ptr */
-	syspage_p = alloca( _syspage_ptr->total_size );	
+	syspage_p = alloca( _syspage_ptr->total_size );
 	memcpy( syspage_p, (void *)_syspage_ptr, _syspage_ptr->total_size );
 	kwrite( kev, (void*)syspage_p, (size_t)_syspage_ptr->total_size);
 

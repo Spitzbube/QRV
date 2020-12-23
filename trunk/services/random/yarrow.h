@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -31,7 +31,7 @@
 #include "sha1mod.h"
 
 #define MAX_SOURCES       32
-#define ENTROPY_SOURCES   10 
+#define ENTROPY_SOURCES   10
 #define SLOWPOLLSOURCE    0
 #define TOTAL_SOURCES     ENTROPY_SOURCES
 #define COMP_SOURCES      ENTROPY_SOURCES
@@ -40,9 +40,9 @@
 #define THRESHOLD         100
 
 /* Error numbers */
-typedef enum yarrow_ready_status 
+typedef enum yarrow_ready_status
 {
-	YARROW_READY = 33,	
+	YARROW_READY = 33,
 	YARROW_NOT_READY = 0
 } yarrow_ready_status;
 
@@ -68,7 +68,7 @@ typedef struct
 
     uint32_t          max_pool_count;
     uint32_t          pool_count;
-	uint32_t          poolSize[MAX_SOURCES];			
+	uint32_t          poolSize[MAX_SOURCES];
 	uint32_t          poolEstBits[MAX_SOURCES];
 	comp_ctx_t        comp_state[MAX_SOURCES];
 
@@ -103,9 +103,9 @@ yarrow_t *yarrow_create( void );
 int yarrow_destory( yarrow_t *p );
 int yarrow_add_source( yarrow_t *p, uint32_t *pool_no );
 int yarrow_output( yarrow_t *p, uint8_t *outbuf, uint32_t outbuflen );
-int yarrow_stretch( uint8_t *inbuf, uint32_t inbuflen, uint8_t *outbuf, 
+int yarrow_stretch( uint8_t *inbuf, uint32_t inbuflen, uint8_t *outbuf,
                     uint32_t outbuflen );
-int yarrow_input( yarrow_t *p, uint8_t *inbuf, uint32_t inbuflen, 
+int yarrow_input( yarrow_t *p, uint8_t *inbuf, uint32_t inbuflen,
                   uint32_t poolnum, uint32_t estbits );
 int yarrow_force_reseed( yarrow_t *p, uint64_t ticks );
 int yarrow_allow_reseed( yarrow_t *p, uint64_t ticks );

@@ -56,7 +56,7 @@ enum {
 	FAM_DBG_EXIT_CONTINUE,
 	FAM_DBG_EXIT_STEP
 };
-	
+
 
 extern int	family_init_400(unsigned pvr);
 extern int	family_init_600(unsigned pvr);

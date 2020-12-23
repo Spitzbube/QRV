@@ -52,15 +52,14 @@ struct fault_info;
 	MMF(int,	pmem_add,		(paddr_t start, paddr_t len), extra)
 
 struct memmgr_entry {
-	unsigned		pagesize;
-	unsigned		fault_pulse_code;
-	unsigned		sizeof_address_entry;
+    unsigned pagesize;
+    unsigned fault_pulse_code;
+    unsigned sizeof_address_entry;
 
-	#undef MMF
-	#define MMF(r, f, p, e)	r (*f)p;
-	MM_FUNCS(x)
-
-	void			*reserved[2];
+#undef MMF
+#define MMF(r, f, p, e)	r (*f)p;
+     MM_FUNCS(x)
+    void *reserved[2];
 };
 
 #define MMF_PROTO(r, f, p, e)	extern r e##_##f p;
@@ -70,12 +69,13 @@ struct memmgr_entry {
  * Process manager
  */
 struct procmgr_entry {
-	void			(*process_threads_destroyed)(PROCESS *prp, struct sigevent *ev);
-	int 			(*process_stop_or_cont)(PROCESS *prp, int signo, int sigcode, int sigval, int sender, struct sigevent *ev);
-	int				(*process_start)(PROCESS *prp, uintptr_t *start_ip);
-	int				(*process_coredump)(PROCESS *prp, struct sigevent *ev);
-	int				process_stack_code;
-	void			*reserved;
+    void (*process_threads_destroyed)(PROCESS * prp, struct sigevent * ev);
+    int (*process_stop_or_cont)(PROCESS * prp, int signo, int sigcode, int sigval, int sender,
+                                struct sigevent * ev);
+    int (*process_start)(PROCESS * prp, uintptr_t * start_ip);
+    int (*process_coredump)(PROCESS * prp, struct sigevent * ev);
+    int process_stack_code;
+    void *reserved;
 };
 
 /*

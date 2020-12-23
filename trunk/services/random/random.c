@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -66,7 +66,7 @@ static void handle_signals( void )
         if( ret == -1 )
             continue;
 
-        slogf( _SLOGC_CHAR, _SLOG_ERROR, "random: Exiting on signal %d", 
+        slogf( _SLOGC_CHAR, _SLOG_ERROR, "random: Exiting on signal %d",
                sinfo.si_signo );
         break;
     }
@@ -107,7 +107,7 @@ int main( int argc, char **argv )
                 else
                 {
                     fprintf( stderr, "random: Only %d interrupt sources "
-                             "allowed. Ignoring interrupt 0x%lX.\n", MAX_INTR, 
+                             "allowed. Ignoring interrupt 0x%lX.\n", MAX_INTR,
                              strtol( optarg, 0, 0 ) );
                 }
                 break;
@@ -131,7 +131,7 @@ int main( int argc, char **argv )
     ret = start_resmgr();
     if( ret != 0 )
     {
-        fprintf( stderr, "random: Unable to start resmgr: %s\n", 
+        fprintf( stderr, "random: Unable to start resmgr: %s\n",
                  strerror( errno ) );
         return EXIT_FAILURE;
     }
@@ -140,7 +140,7 @@ int main( int argc, char **argv )
     ret = procmgr_daemon( EXIT_SUCCESS, PROCMGR_DAEMON_NOCLOSE );
     if( ret == -1 )
     {
-        slogf( _SLOGC_CHAR, _SLOG_ERROR, 
+        slogf( _SLOGC_CHAR, _SLOG_ERROR,
                "random: Unable to detach from controling terminal." );
     }
 
@@ -148,7 +148,7 @@ int main( int argc, char **argv )
     Yarrow = yarrow_create();
     if( Yarrow == NULL )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
                "random: Unable to create PRNG: %s", strerror( errno ) );
         return EXIT_FAILURE;
     }
@@ -158,7 +158,7 @@ int main( int argc, char **argv )
         ret = start_timer_source();
         if( ret != 0 )
         {
-            slogf( _SLOGC_CHAR, _SLOG_ERROR, 
+            slogf( _SLOGC_CHAR, _SLOG_ERROR,
                    "random: Unable to start timer: %s", strerror( errno ) );
         }
     }
@@ -168,8 +168,8 @@ int main( int argc, char **argv )
         ret = start_interrupt_source( intr_list[c] );
         if( ret != 0 )
         {
-            slogf( _SLOGC_CHAR, _SLOG_ERROR, 
-                   "random: Unable to use interrupt %d: %s", intr_list[c], 
+            slogf( _SLOGC_CHAR, _SLOG_ERROR,
+                   "random: Unable to use interrupt %d: %s", intr_list[c],
                    strerror( errno ) );
         }
     }
@@ -179,7 +179,7 @@ int main( int argc, char **argv )
         ret = start_syspoll_source();
         if( ret != 0 )
         {
-            slogf( _SLOGC_CHAR, _SLOG_ERROR, 
+            slogf( _SLOGC_CHAR, _SLOG_ERROR,
                    "random: Unable to start syspoll: %s", strerror( errno ) );
         }
     }

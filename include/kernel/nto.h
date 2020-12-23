@@ -28,19 +28,19 @@
 #include <kernel/types.h>
 
 #if defined(__X86__)
-	#include <kernel/cpu_x86.h>
+#include <kernel/cpu_x86.h>
 #elif defined(__PPC__)
-	#include <kernel/cpu_ppc.h>
+#include <kernel/cpu_ppc.h>
 #elif defined(__MIPS__)
-	#include <kernel/cpu_mips.h>
+#include <kernel/cpu_mips.h>
 #elif defined(__SH__)
-	#include <kernel/cpu_sh.h>
+#include <kernel/cpu_sh.h>
 #elif defined(__ARM__)
-	#include <kernel/cpu_arm.h>
+#include <kernel/cpu_arm.h>
 #elif defined(__RISCV__)
-	#include <kernel/cpu_riscv.h>
+#include <kernel/cpu_riscv.h>
 #else
-    #error not configured for system
+#error not configured for system
 #endif
 
 #include <sys/fault.h>
@@ -55,22 +55,22 @@
 // FIX ME #include <sys/memclass.h>
 #include "kernel/memclass.h"
 
-extern SOUL					process_souls;
-extern VECTOR				process_vector;
-extern PROCMGR				procmgr;
-extern MEMMGR				memmgr;
-extern unsigned				num_processors;
-extern PROCESS				*procnto_prp;
-extern memclass_id_t		sys_memclass_id;	// generic system ram memory class
-extern VECTOR				mempart_vector;
-extern VECTOR				schedpart_vector;
+extern SOUL process_souls;
+extern VECTOR process_vector;
+extern PROCMGR procmgr;
+extern MEMMGR memmgr;
+extern unsigned num_processors;
+extern PROCESS *procnto_prp;
+extern memclass_id_t sys_memclass_id;   // generic system ram memory class
+extern VECTOR mempart_vector;
+extern VECTOR schedpart_vector;
 
-extern unsigned				user_boundry_addr;
+extern unsigned user_boundry_addr;
 
-extern const long			kernel_conf_table[];
+extern const long kernel_conf_table[];
 
-extern int					ker_verbose;
-extern int					munmap_flags_default;
-extern mode_t				procfs_umask;
+extern int ker_verbose;
+extern int munmap_flags_default;
+extern mode_t procfs_umask;
 
 #endif

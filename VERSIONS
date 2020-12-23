@@ -1,0 +1,10 @@
+Version history
+===============
+
+0.0.1 : first symbol printed to the console + system stop; startup code
+        full of TODOs, kernel not linked in
+
+0.0.2 : syspage printed, memory map (for QEMU virt machine) looks OK
+
+0.0.3 : SMP initialization OK, spin is running on each CPU
+

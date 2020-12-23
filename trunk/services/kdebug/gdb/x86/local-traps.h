@@ -1,4 +1,4 @@
-/* 
+/*
  These are the trap codes which are referenced
  from traps.S.
  The $ signs are important as they tell GAS/

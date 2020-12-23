@@ -28,7 +28,7 @@
 #include "dmgr_priv.h"
 
 //#define DPRINT(P) printf P
-#define DPRINT(P) 
+#define DPRINT(P)
 
 static pid_t mypid;
 
@@ -37,7 +37,7 @@ static int di_bypass(resmgr_context_t *ctp, void *umsg, struct relay_ocb *ocb)
 	struct relay_cb *rcb = ocb->rcb;
 	int    slen, dlen, n;
 	char   *rbuf = NULL;
-	
+
 	slen = ctp->info.srcmsglen;
 	dlen = ctp->info.dstmsglen;
 
@@ -123,23 +123,23 @@ restart:
 	} else {
 		cap = &rcb->ocache;
 	}
-	
+
 	pthread_rwlock_rdlock(&cap->ca_rwlock);
 	if ((rp = o->rp) == NULL) {
 		rp = o->rp = cap->ca_rp;
 		o->rec_off = 0;
 	}
-	
+
 	/* if owner is reading, see if there is a cloner write in buffer */
 	toread = msg->i.nbytes;
 	off = 0;
 	recoff = o->rec_off;
-	
+
 	while (toread && rp->next) {
 		cp = (uint8_t *)((char *)rp + WRECSIZE + recoff);
 		if (cp > cap->ca_end)
 		  cp -= cap->ca_size;
-		
+
 		if (cp + rp->reclen - recoff < cap->ca_end) {
 			SETIOV(riov + 0, cp, rp->reclen - recoff);
 			nriov = 1;
@@ -154,7 +154,7 @@ restart:
 			pthread_rwlock_unlock(&cap->ca_rwlock);
 			return errno;
 		}
-		
+
 		off += n;
 		recoff += n;
 		toread = toread > n ? toread - n : 0;
@@ -163,7 +163,7 @@ restart:
 			o->rec_off = recoff;
 			break;
 		}
-		
+
 		/* move read point for this ocb */
 		o->rp = rp->next;
 		o->rec_off = recoff = 0;
@@ -203,9 +203,9 @@ restart:
 static int distance(struct relay_cache *cap, void *from, void *to, iov_t *wiov, int *nwiov)
 {
 	int dist;
-	
+
 	if (from <= to || to == cap->ca_buf) {
-		if (to == cap->ca_buf) 
+		if (to == cap->ca_buf)
 		  dist = (uint32_t)cap->ca_buf + cap->ca_size - (uint32_t)from - WRECSIZE;
 		else if (from == to)
 		  dist = cap->ca_size - WRECSIZE;
@@ -245,7 +245,7 @@ static int di_write(resmgr_context_t *ctp, io_write_t *msg, void *ocb)
 		}
 		cap = &rcb->ccache;
 	}
-	
+
 	pthread_rwlock_wrlock(&cap->ca_rwlock);
 	off  = sizeof(*msg);
 	left = msg->i.nbytes;
@@ -265,7 +265,7 @@ static int di_write(resmgr_context_t *ctp, io_write_t *msg, void *ocb)
 			for (ocb0 = rcb->cloner; ocb0; ocb0 = ocb0->next)
 			  ocb0->rp = NULL;
 			pthread_mutex_unlock(&rcb->mutex);
-			
+
 			/* write these data to real fd */
 			while (left > cap->ca_size) {
 				if ((n = MsgRead(ctp->rcvid, cap->ca_buf, cap->ca_size, off)) == -1)
@@ -289,25 +289,25 @@ static int di_write(resmgr_context_t *ctp, io_write_t *msg, void *ocb)
 		rp = wp = (struct wrec *)cap->ca_buf;
 		rp->next = NULL;
 	}
-		
+
 	/* the rest part will be write into buffer, also send to real fd */
 	if (left) {
 		uint8_t *wp0;
 		int dist0;
-		
+
 		/* first, find out where the new wp would land */
 		wp0 = (char *)wp + WRECSIZE + left;
 		wp0 = (char *)(((uint32_t)wp0 + sizeof(int) - 1) & ~(sizeof(int) - 1));
-		
+
 		if (wp0 >= cap->ca_end) {
 			wp0 = wp0 - cap->ca_end + cap->ca_buf;
-		} 
-		
+		}
+
 		if ((uint32_t)(cap->ca_end - wp0) < WRECSIZE) {
 			wp0 = cap->ca_buf;
 		}
 		dist0 = distance(cap, wp, wp0, 0, 0) + WRECSIZE;
-		
+
 		/* second, move the cap->ca_rp if necessary */
 		pthread_mutex_lock(&rcb->mutex);
 		while (distance(cap, wp, rp, wiov, &nwiov) < dist0)
@@ -317,7 +317,7 @@ static int di_write(resmgr_context_t *ctp, io_write_t *msg, void *ocb)
 			for (; ocb0; ocb0 = ocb0->next)
 			  if (ocb0->rp == rp)
 				ocb0->rp = NULL;
-			
+
 			if (rp->next)
 			  rp = rp->next;
 		}
@@ -339,7 +339,7 @@ static int di_write(resmgr_context_t *ctp, io_write_t *msg, void *ocb)
 		} else {
 			wiov[1].iov_len = n - wiov[0].iov_len;
 		}
-		
+
 		/* owner's write also send to realfd */
 		if (ctp->id == rcb->resid) {
 			n = writev(o->realfd, wiov, nwiov);
@@ -359,7 +359,7 @@ static int di_write(resmgr_context_t *ctp, io_write_t *msg, void *ocb)
 			for (ocb0 = rcb->cloner; ocb0; ocb0 = ocb0->next)
 			{
 				int ret;
-				
+
 				if (ocb0->rcvid) {
 					if ((ret = MsgWritev(ocb0->rcvid, wiov, nwiov, 0)) == -1)
 					{
@@ -395,7 +395,7 @@ static int di_write(resmgr_context_t *ctp, io_write_t *msg, void *ocb)
 	}
 	wp->next = 0;
 	cap->ca_wp = wp;
-	
+
 	_IO_SET_WRITE_NBYTES(ctp, msg->i.nbytes);
 	pthread_rwlock_unlock(&cap->ca_rwlock);
 
@@ -406,13 +406,13 @@ static int di_closeocb(resmgr_context_t *ctp, void *reserved, void *ocb)
 {
 	struct relay_ocb  *o = ocb, *o0, **ocbp;
 	struct relay_cb *rcb = o->rcb;
-	
+
 	pthread_mutex_lock(&rcb->mutex);
-	if (ctp->id == rcb->resid) 
+	if (ctp->id == rcb->resid)
 	  ocbp = &rcb->owner;
 	else
 	  ocbp = &rcb->cloner;
-	
+
 	for (o0 = *ocbp; o0 && o0 != ocb; ocbp = &o0->next, o0 = *ocbp);
 	if (o0) {
 		*ocbp = o0->next;
@@ -423,7 +423,7 @@ static int di_closeocb(resmgr_context_t *ctp, void *reserved, void *ocb)
 	close(o->realfd);
 	free(o->bpbuf);
 	free(o);
-	
+
 	/* is this device umounted? */
 	if (!rcb->devname && !rcb->owner && !rcb->cloner) {
 		free(rcb->ocache.ca_buf);
@@ -446,7 +446,7 @@ static int di_notify(resmgr_context_t *ctp, io_notify_t *msg, void *ocb)
 	struct relay_cache *cap;
 	int trig = 0;
 	extern int ncoid;
-	
+
 	if (ctp->id == rcb->resid) {
 		cap = &rcb->ccache;
 	} else {
@@ -458,15 +458,15 @@ static int di_notify(resmgr_context_t *ctp, io_notify_t *msg, void *ocb)
 			trig = _NOTIFY_COND_OUTPUT;
 		}
 	}
-	
+
 	if ((o->rp && o->rp->next) || (!o->rp && cap->ca_rp->next))
 	  trig |= _NOTIFY_COND_INPUT;
-	
+
 	/* if a owner can't INPUT, we have to arm real device */
 	if (trig == 0 && ctp->id == rcb->resid) {
 		struct sigevent evt;
 		struct _io_notify_reply msgo;
-		
+
 		memcpy(&evt, &msg->i.event, sizeof(evt));
 		SIGEV_PULSE_INIT(&msg->i.event, ncoid, -1, SI_NOTIFY, rcb->index & 0xffff);
 		if ((trig = MsgSend(o->realfd, msg, sizeof(msg->i), &msgo, sizeof(msgo))) == -1)
@@ -476,21 +476,21 @@ static int di_notify(resmgr_context_t *ctp, io_notify_t *msg, void *ocb)
 		trig = msgo.flags;
 		memcpy(&msg->i.event, &evt, sizeof(evt));
 	}
-	
+
 	return iofunc_notify(ctp, msg, o->notify, trig, 0, 0);
 }
 
 static int di_devctl(resmgr_context_t *ctp, io_devctl_t *msg, void *ocb)
 {
 	struct relay_cb *rcb = ((struct relay_ocb *)ocb)->rcb;
-	
+
 	/* a cloner is not allowed to SET any attribute, return EOK to cheat him */
 	if (ctp->id == rcb->resdid && (get_device_direction(msg->i.dcmd) & DEVDIR_TO) != 0)
 	{
 		msg->o.ret_val = 0;
 		return EOK;
 	}
-	
+
 	return di_bypass(ctp, msg, ocb);
 }
 
@@ -498,13 +498,13 @@ static int di_unblock(resmgr_context_t *ctp, io_pulse_t *msg, void *ocb)
 {
 	struct relay_ocb  *o = ocb;
 	struct relay_cb *rcb = o->rcb;
-	
+
 	DPRINT(("unblock(%d)\n", o->realfd));
 	if (ctp->id == rcb->resdid && o->rcvid) {
 		MsgError(o->rcvid, EINTR);
 		return _RESMGR_NOREPLY;
 	}
-	
+
 	if (o->block_tid) {
 		o->flag |= OCB_FLAG_UNBLOCK;
 		SignalKill(ND_LOCAL_NODE, mypid, o->block_tid, SIGUSR1, 0, 0);
@@ -518,7 +518,7 @@ int di_mgr_init(resmgr_connect_funcs_t *cf, resmgr_io_funcs_t *iof)
 {
 	iofunc_func_init(_RESMGR_CONNECT_NFUNCS, cf, _RESMGR_IO_NFUNCS, iof);
 	cf->open       = di_open;
-	
+
 	iof->read      = di_read;
 	iof->write     = di_write;
 	iof->close_ocb = di_closeocb;
@@ -531,4 +531,4 @@ int di_mgr_init(resmgr_connect_funcs_t *cf, resmgr_io_funcs_t *iof)
 	/* buffer my pid, to be used in SignalKill() */
 	mypid = getpid();
 	return 0;
-}  
+}

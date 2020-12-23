@@ -34,10 +34,10 @@ main(int argc, char **argv) {
                 temp.dump_type = (temp.dump_type & (~KDUMP_MEM_MASK)) | KDUMP_ACTIVE;
 			}
 			break;
-		case 'A':	
+		case 'A':
             temp.dump_type = (temp.dump_type & (~KDUMP_MEM_MASK)) | KDUMP_ALL;
 			break;
-		case 'b':	
+		case 'b':
 			async_channel = strtoul(optarg, NULL, 0);
 			break;
 		case 'B':
@@ -65,7 +65,7 @@ main(int argc, char **argv) {
 		case 'U':
 			interesting_faults |= SIGCODE_USER;
 			break;
-		case 'v':	
+		case 'v':
 			++debug_flag;
 			break;
 		case 'w':
@@ -86,7 +86,7 @@ main(int argc, char **argv) {
 	alloc_size = sizeof(*dip) - 1 + temp.kp_size;
 	private->kdump_info = alloc_pmem(alloc_size, 0);
 	if(debug_flag) {
-		kprintf("Kernel Dumper information structure at paddr %P\n", 
+		kprintf("Kernel Dumper information structure at paddr %P\n",
 					(paddr_t)private->kdump_info);
 	}
 	dip = cpu_map(private->kdump_info, alloc_size, PROT_READ|PROT_WRITE, -1, NULL);

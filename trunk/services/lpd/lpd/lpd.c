@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -256,12 +256,12 @@ main(argc, argv)
 		long readfds = defreadfds;
 
 		nfds = select(20, &readfds, 0, 0, 0);
-		
+
 		if (nfds <= 0) {
 			if (nfds < 0 && (errno == ESRCH || errno == EBADF)) {
 				syslog(LOG_WARNING, "select: %m");
 				exit(1);
-			} 
+			}
 			continue;
 		}
 #if 0
@@ -269,7 +269,7 @@ main(argc, argv)
 			domain = AF_UNIX, fromlen = sizeof(fromunix);
 			s = accept(funix,
 			    (struct sockaddr *)&fromunix, &fromlen);
-		} else 
+		} else
 #endif
 			if ((int)readfds & (1 << finet)) {
 			domain = AF_INET, fromlen = sizeof(frominet);
@@ -475,7 +475,7 @@ startup()
 	int pos;
 
 	int ret, i = 0;
-	
+
 
 	printer = buf;
 
@@ -520,7 +520,7 @@ chkhost(f)
 	int baselen = -1;
 
 	if (g_nocheckhost) return;
-	
+
 	f->sin_port = ntohs(f->sin_port);
 	if (f->sin_family != AF_INET || f->sin_port >= IPPORT_RESERVED)
 		fatal("Malformed from address");

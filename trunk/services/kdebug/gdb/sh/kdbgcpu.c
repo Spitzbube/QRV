@@ -90,7 +90,7 @@ ulong_t pc, pc_valid = 0;
 	if ( pc_valid == 0 )
 		pc += 2;
 #ifdef DEBUG_GDB
-	kprintf("op = %04hx, pc = %08x, target pc = %08x\n", 
+	kprintf("op = %04hx, pc = %08x, target pc = %08x\n",
 		op->op_code, ctx->pc, pc );
 #endif
 	return pc;
@@ -125,7 +125,7 @@ gdb_show_exception_info(ulong_t signal, CPU_REGISTERS *ctx) {
 
 /*
  * gdb_get_cpuregs:
- * Write the cpu registers into the buffer, and return them 
+ * Write the cpu registers into the buffer, and return them
  * to our gdb client
  */
 void
@@ -136,7 +136,7 @@ gdb_get_cpuregs(CPU_REGISTERS *ctx, FPU_REGISTERS *ftx) {
 	kprintf("get_cpuregs: pc = %x\n", ctx->pc);
 #endif
 	memcpy( buf.gr, ctx->gr, sizeof( buf.gr ) );
-	if(ftx != NULL) {	
+	if(ftx != NULL) {
 		buf.fpul = ftx->fpul;
 		buf.fpscr = ftx->fpscr;
 		if(ftx->fpscr & SH_FPSCR_FR)
@@ -176,7 +176,7 @@ gdb_set_cpuregs(CPU_REGISTERS *ctx, FPU_REGISTERS *ftx) {
     hex2mem(&inbuf[1], (char *)&buf, sizeof(buf));
 
 	memcpy( ctx->gr, buf.gr, sizeof( ctx->gr ) );
-	if(ftx != NULL) {	
+	if(ftx != NULL) {
 		ftx->fpul = buf.fpul;
 		ftx->fpscr = buf.fpscr;
 		if(ftx->fpscr & SH_FPSCR_FR)
@@ -205,7 +205,7 @@ gdb_set_cpuregs(CPU_REGISTERS *ctx, FPU_REGISTERS *ftx) {
 void
 gdb_proc_continue(CPU_REGISTERS *ctx, int step) {
 uintptr_t addr;
-    /* 
+    /*
      * try to read optional parameter, addr unchanged if no parm
      */
     parsehexnum(&inbuf[1], (int *)&ctx->pc);

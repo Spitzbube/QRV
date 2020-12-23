@@ -9,7 +9,7 @@ typedef uint16_t			break_opcode;
 
 #define	KDEBUG_STACK_SIZE	0x1000
 
-#undef OPCODE_BREAK			
+#undef OPCODE_BREAK
 #define OPCODE_BREAK		0xfffd
 #define ROUNDPG(p)			p
 

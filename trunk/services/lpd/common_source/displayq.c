@@ -125,7 +125,7 @@ displayq(format)
 				(void) flock(fd, LOCK_SH);
 #else
 
-#endif                        
+#endif
 				while ((i = read(fd, line, sizeof(line))) > 0)
 					(void) fwrite(line, 1, i, stdout);
 				(void) close(fd);	/* unlocks as well */

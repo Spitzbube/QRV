@@ -43,17 +43,17 @@ static int path_init(char *devname, dispatch_t *dpp, int cloner_key)
 	char              ldevname[PATH_MAX + 1];
 	int               fd, i;
 	struct stat       sb;
-	
+
 	if ((fd = open(devname, O_RDWR|O_NOCTTY)) == -1 || fstat(fd, &sb) != 0)
 	  return errno;
-	
+
 	/* make sure this is a CHR device */
 	if (!S_ISCHR(sb.st_mode))
 	  return EINVAL;
-	
+
 	if ((rcbp = malloc(sizeof(*rcbp))) == 0)
 	  return errno;
-	
+
 	memset(rcbp, 0, sizeof(*rcbp));
 	iofunc_attr_init(&rcbp->attr, 0666 | S_IFCHR, 0, 0);
 	pthread_mutex_init(&rcbp->mutex, 0);
@@ -62,15 +62,15 @@ static int path_init(char *devname, dispatch_t *dpp, int cloner_key)
 	rcbp->dpp = dpp;
 	rcbp->rcoid = fd;
 	rcbp->cloner_key = cloner_key;
-	
-	if ((rcbp->ocache.ca_buf = malloc(obufsize)) == 0 || 
+
+	if ((rcbp->ocache.ca_buf = malloc(obufsize)) == 0 ||
 		(rcbp->ccache.ca_buf = malloc(obufsize)) == 0)
 	{
 		free(rcbp);
 		return errno;
 	}
 	rcbp->bpbuf_size     = obufsize;
-	
+
 	rcbp->ocache.ca_size = obufsize;
 	rcbp->ocache.ca_end  = rcbp->ocache.ca_buf + rcbp->ocache.ca_size;
 	rcbp->ocache.ca_rp   = rcbp->ocache.ca_wp = (struct wrec *)rcbp->ocache.ca_buf;
@@ -95,7 +95,7 @@ static int path_init(char *devname, dispatch_t *dpp, int cloner_key)
 
 	ldevname[PATH_MAX] = 0;
 	snprintf(ldevname, PATH_MAX, "%s.ditto", devname);
-	if ((rcbp->resdid = 
+	if ((rcbp->resdid =
 		 resmgr_attach(dpp, &res_attr, ldevname, _FTYPE_ANY,
 					   0, &di_connect_funcs, &di_io_funcs, rcbp)) == -1)
 	{
@@ -112,7 +112,7 @@ static int path_init(char *devname, dispatch_t *dpp, int cloner_key)
 	for (i = 0; i < rcb_total; i++)
 	  if (rcb_list[i] == NULL)
 		break;
-	
+
 	if (i == rcb_total) {
 		rcb_list = realloc(rcb_list, sizeof(rcb_list) * (rcb_total + RCB_GROW));
 		if (!rcb_list) {
@@ -130,7 +130,7 @@ static int path_init(char *devname, dispatch_t *dpp, int cloner_key)
 	rcbp->index = i;
 	rcb_list[i] = rcbp;
 	pthread_rwlock_unlock(&rcb_list_rwlock);
-	
+
 	return EOK;
 }
 
@@ -138,18 +138,18 @@ static int mt_mount(resmgr_context_t *ctp, io_mount_t *msg, void *handle, io_mou
 {
 	struct relay_cb  *rcb = handle;
 	struct _client_info cinfo;
-	
-	if((extra->flags & _MFLAG_OCB) && 
+
+	if((extra->flags & _MFLAG_OCB) &&
 	   strcmp(extra->extra.srv.type, "clone") &&  strcmp(extra->extra.srv.type, "ditto"))
 	  return ENOSYS;
 
 	/* only root allow to mount/umount */
 	if (ConnectClientInfo(ctp->info.scoid, &cinfo, 0) == -1)
 	  return errno;
-	
+
 	if (cinfo.cred.euid != 0)
 	  return EPERM;
-	
+
 	if(extra->flags & _MFLAG_OCB)
 	{
 		int optkey = cloner_key;
@@ -162,12 +162,12 @@ static int mt_mount(resmgr_context_t *ctp, io_mount_t *msg, void *handle, io_mou
 			else if (strnicmp(opt, "input", 5) == 0)
 			  optkey = 1;
 		}
-		
+
 		if (path_init(extra->extra.srv.special, ctp->dpp, optkey) == -1)
 		  return errno;
 		return EOK;
 	}
-	
+
 	if(extra->flags & _MOUNT_UNMOUNT)
 	{
 		/* detach the name */
@@ -180,7 +180,7 @@ static int mt_mount(resmgr_context_t *ctp, io_mount_t *msg, void *handle, io_mou
 		if (rcb->index < rcb_total && rcb_list[rcb->index] == rcb)
 		  rcb_list[rcb->index] = NULL;
 		pthread_rwlock_unlock(&rcb_list_rwlock);
-		
+
 		if (!rcb->owner && !rcb->cloner) {
 			rcb_list[rcb->index] = 0;
 			free(rcb->ocache.ca_buf);
@@ -188,7 +188,7 @@ static int mt_mount(resmgr_context_t *ctp, io_mount_t *msg, void *handle, io_mou
 			free(rcb);
 			return EOK;
 		}
-		
+
 	}
 	return EOK;
 }
@@ -215,7 +215,7 @@ int di_notify_pulse(message_context_t *ctp, int code, unsigned flag, void *hdl)
 	}
 	iofunc_attr_lock(&rcb->attr);
 	pthread_rwlock_unlock(&rcb_list_rwlock);
-	
+
 	if (value & _NOTIFY_COND_INPUT)
 	  trig |= IOFUNC_NOTIFY_INPUT;
 	if (value & _NOTIFY_COND_OUTPUT)
@@ -241,7 +241,7 @@ int main(int argc, char **argv)
 	thread_pool_attr_t     pool_attr;
 	thread_pool_t          *tpp;
 	resmgr_connect_funcs_t mt_connect_funcs;
-	
+
 	while ((ch = getopt(argc, argv, "ko:")) != -1) {
 		switch (ch) {
 		  case 'o':
@@ -254,22 +254,22 @@ int main(int argc, char **argv)
 			break;
 		}
 	}
-	
+
 	argc -= optind;
 	argv += optind;
 
 	memset(&res_attr, 0, sizeof(res_attr));
 	res_attr.nparts_max = 10;
-	
+
 	di_mgr_init(&di_connect_funcs, &di_io_funcs);
 	di_connect_funcs.mount  = mt_mount;
-	
+
 	if ((chid = ChannelCreate(_NTO_CHF_UNBLOCK | _NTO_CHF_DISCONNECT | _NTO_CHF_REPLY_LEN | _NTO_CHF_SENDER_LEN)) == -1)
 	{
 		perror("ChannelCreate");
 		return EXIT_FAILURE;
 	}
-	
+
 	memset(&pool_attr, 0x00, sizeof pool_attr);
 	if(!(pool_attr.handle = dpp = _dispatch_create(chid, 0))) {
 		perror("dispatch_create");
@@ -283,7 +283,7 @@ int main(int argc, char **argv)
 	pool_attr.hi_water      = 5;
 	pool_attr.increment     = 2;
 	pool_attr.maximum       = 10;
-	
+
 	if(!(tpp = thread_pool_create(&pool_attr, POOL_FLAG_EXIT_SELF))) {
 		perror("thread_pool_create");
 		return EXIT_FAILURE;
@@ -293,18 +293,18 @@ int main(int argc, char **argv)
 		perror("ConnectAttach");
 		return EXIT_FAILURE;
 	}
-	
+
 	memset(&mt_connect_funcs, 0, sizeof(mt_connect_funcs));
 	mt_connect_funcs.nfuncs = _RESMGR_CONNECT_NFUNCS;
 	mt_connect_funcs.mount  = mt_mount;
 	if(resmgr_attach(dpp, &res_attr, 0, _FTYPE_MOUNT,
-					 _RESMGR_FLAG_FTYPEONLY | _RESMGR_FLAG_DIR, 
-					 &mt_connect_funcs, 0, 0) == -1) 
+					 _RESMGR_FLAG_FTYPEONLY | _RESMGR_FLAG_DIR,
+					 &mt_connect_funcs, 0, 0) == -1)
 	{
 		perror("resmgr_attach(0)");
 		return EXIT_FAILURE;
 	}
-	
+
 	while (argc--) {
 		if (argv[0][0] != '/') {
 			fprintf(stderr, "Warning: Devicename '%s' must start with /\n", argv[0]);
@@ -322,14 +322,14 @@ int main(int argc, char **argv)
 		return errno;
 	}
 	signal(SIGUSR1, sigio_handle);
-	
+
 #ifdef NDEBUG
 	if (procmgr_daemon(EXIT_SUCCESS, PROCMGR_DAEMON_NOCLOSE | PROCMGR_DAEMON_NODEVNULL) == -1)
 	{
 		perror("procmgr_daemon");
 		return -1;
 	}
-#endif	
+#endif
 
 	return thread_pool_start(tpp);
 }

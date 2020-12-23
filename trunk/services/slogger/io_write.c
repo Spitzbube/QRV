@@ -1,23 +1,23 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
 
 
 
- 
+
 #include "externs.h"
 
 #define _SLOG_MINSIZE (3 * sizeof(int))
@@ -84,7 +84,7 @@ _io_write_log(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *ocb, unsigne
 	}
 	cnt -= _SLOG_HDRINTS;
 	trp->cnt += _SLOG_HDRINTS;
-	
+
 	// Check for a wrap in the buffer and if so copy in two pieces
 	if(trp->put + cnt >= trp->end) {
 		n = trp->end - trp->put;
@@ -97,9 +97,9 @@ _io_write_log(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *ocb, unsigne
 	}
 	trp->cnt += cnt;
 
-	/* 
+	/*
 		PR 8029
-		
+
 		Technically it's possible for the put pointer to wrap around and a log to fit exactly into
 		the remaining slot, causing put == get.  This causes a false positive on the read side, which
 		uses the condition to trigger "empty buffer" and other calculations.  These other calculations
@@ -107,7 +107,7 @@ _io_write_log(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *ocb, unsigne
 		there is always a non-zero amount of room between put and get, except at start (the empty buffer).
 
 	*/
-	
+
 	/* if we've hit this PR 8029 special case, remove an extra entry */
 	if (trp->put == trp->get) {
 		n = _SLOG_GETCOUNT(*trp->get) + _SLOG_HDRINTS;
@@ -118,7 +118,7 @@ _io_write_log(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *ocb, unsigne
 			trp->get = trp->beg + (trp->get-trp->end);
 		}
 	}
-	
+
 	/*
 	PR 26878
 	To avoid priority inversion 'readers' waiting list has to be in order of decreased priority.
@@ -221,7 +221,7 @@ io_console_write(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *ocb) {
 	cptr = (char *) (sizeof(msg->i) + (char *)&msg->i);
 	off = 0;
 	len = msg->i.nbytes;
-	
+
 	// Is device open for write?
 	if((status = iofunc_write_verify(ctp, msg, ocb, &nonblock)) != EOK)
 		return status;
@@ -229,9 +229,9 @@ io_console_write(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *ocb) {
 	// No special xtypes
 	if((msg->i.xtype & _IO_XTYPE_MASK) != _IO_XTYPE_NONE)
 		return(EINVAL);
-	
+
 	while(off < len) {
-		
+
 		/* Limit write to max payload, NULL terminate the string,
 		 * and figure out how many ints we're writing.
 		 */
@@ -243,15 +243,15 @@ io_console_write(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *ocb) {
 		ret = _io_write_log(ctp, msg, ocb, cnt, 1);
 		if(ret != EOK)
 			break;
-	
+
 		off += n;
 
 		//skip the MsgRead() if we're done.
 		if (off == len)
 			break;
-		
+
 		ret = MsgRead(ctp->rcvid, cptr, n, off + sizeof(msg->i));
-		if(ret <= 0) 
+		if(ret <= 0)
 			break;
 	}
 

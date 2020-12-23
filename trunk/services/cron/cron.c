@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -42,10 +42,10 @@ void trigger(cron_job * job);
 
 /* Offsets of the time fields (struct tm names). */
 #define MIN_LO 0
-#define HOUR   1 
-#define MDAY   2 
+#define HOUR   1
+#define MDAY   2
 #define MON    3
-#define WDAY   4 
+#define WDAY   4
 #define MIN_HI 5 /* Not a time for the purposes of iteration */
 #define NUM_TIMES 5
 
@@ -72,7 +72,7 @@ char * argv0;
 void message(int stream, char *fmt, ...) {
     va_list ap;
 	char buf[TAB_BUFFER_SIZE];
-	
+
     if(stream != LOG || is_logging) {
 	    va_start(ap, fmt);
 		vsprintf( buf, fmt, ap);
@@ -86,7 +86,7 @@ void message(int stream, char *fmt, ...) {
 	exit(-1);
 }
 
-char * cronstrtime() 
+char * cronstrtime()
 {
 	static char buf[20];
 	time_t tim;
@@ -100,7 +100,7 @@ char * cronstrtime()
 /*  Loads one line of the crontab into the provided crtime array.
  *  The cron_time structure is assumed to be zeroed out.
  *  The expected format is in the crontab man page.
- *  If the operation is succesful, a pointer to the command portion 
+ *  If the operation is succesful, a pointer to the command portion
  *  is returned.  Otherwise NULL is returned.  Bulletproof.
  */
 static char * parse_ctab(char * line, unsigned long * crtime) {
@@ -269,7 +269,7 @@ void ctab_load(int signo) {
 				if(comptr == NULL && !feof(fp)) {
 					message(LOG, "line too long in crontab: %s %d", dent->d_name, lineno);
 					while(fgets(entrybuf, TAB_BUFFER_SIZE, fp) != NULL) {
-						if(NULL != strchr(entrybuf, '\n')) 
+						if(NULL != strchr(entrybuf, '\n'))
 							break;
 					}
 					continue; /* Couldn't use this entry */
@@ -291,7 +291,7 @@ void ctab_load(int signo) {
 				}
 
 				job_tmp->next = cron_jobs; /* Enlist job */
-				cron_jobs = job_tmp; 
+				cron_jobs = job_tmp;
 
 				memcpy(job_tmp->time, crtime, sizeof crtime);
 
@@ -310,7 +310,7 @@ void ctab_load(int signo) {
 #define INF INT_MAX
 
 /*  Returns INF if no bit is set at or beyond the 'time' bit in current_lo
- *  or 'time - 32' in current_hi. 
+ *  or 'time - 32' in current_hi.
  *  Returns the 'time' for to the set bit otherwise.
  */
 static int nexttime(int crtime, unsigned long current_hi, unsigned long current_lo, unsigned size) {
@@ -357,14 +357,14 @@ long do_jobs() {
 	long unsigned now_time[TIMES_ELEMENTS];
 	struct tm * now_tm; /* Used for formulating current_time */
 	time_t gmtm;
-	
+
 	time(&gmtm); /* place time in same array as used for jobs */
 	now_tm = localtime(&gmtm);
 	/* make a copy of these two since '*now_tm' data gets overwritten */
-	nowhr = now_tm->tm_hour; 
+	nowhr = now_tm->tm_hour;
 	nowmin = now_tm->tm_min;
-	now_time[MDAY] = value_to_bit(now_tm->tm_mday, long unsigned); 
-	now_time[WDAY] = value_to_bit(now_tm->tm_wday, long unsigned); 
+	now_time[MDAY] = value_to_bit(now_tm->tm_mday, long unsigned);
+	now_time[WDAY] = value_to_bit(now_tm->tm_wday, long unsigned);
 	now_time[MON]  = value_to_bit(now_tm->tm_mon + 1, long unsigned);
 	now_time[HOUR] = value_to_bit(now_tm->tm_hour, long unsigned);
 	if(now_tm->tm_min < 32) {
@@ -388,7 +388,7 @@ long do_jobs() {
 				  trigger(job_index);
 			}
 
-			/* Check if this job is the next ready */ 
+			/* Check if this job is the next ready */
 			nextmin = INF;
 			tryhr = nowhr;
 			for(;;) {
@@ -399,7 +399,7 @@ long do_jobs() {
 				++tryhr;
 			}
 
-			if((nexthr < best_nexthr) 
+			if((nexthr < best_nexthr)
 			  || ((nexthr == best_nexthr) && (nextmin < best_nextmin))) {
 				best_nexthr  = nexthr;
 				best_nextmin = nextmin;
@@ -409,12 +409,12 @@ long do_jobs() {
 
 	time(&gmtm); /* recalculate time in case loop above took a long time */
 	now_tm = localtime(&gmtm);
-	
+
 	nexthr  = best_nexthr  - now_tm->tm_hour;
 	nextmin = best_nextmin - now_tm->tm_min;
 
 	/* Correct for seconds to avoid all but recent drifting */
-	return nextmin * 60 + nexthr * ((long)60 * 60) - now_tm->tm_sec; 
+	return nextmin * 60 + nexthr * ((long)60 * 60) - now_tm->tm_sec;
 }
 
 #ifdef EXTENDED_DIAGNOSTICS /* Left as a debugging aid */

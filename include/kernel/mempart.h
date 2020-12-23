@@ -49,12 +49,11 @@
  * setting for the memory class. That is, values must be chosen which are modulo
  * the memclass_limits_t.alloc.min
 */
-typedef struct mempart_attr_s
-{
-	struct {
-		_MEMSIZE_T_		min;
-		_MEMSIZE_T_		max;
-	} size;
+typedef struct mempart_attr_s {
+    struct {
+        _MEMSIZE_T_ min;
+        _MEMSIZE_T_ max;
+    } size;
 } mempart_attr_t;
 
 
@@ -63,33 +62,32 @@ typedef struct mempart_attr_s
  *
  * Valid memory partition allocation policies
 */
-typedef _Uint32t	mempart_alloc_policy_t;
-typedef enum
-{
-	/*
-	 * mempart_alloc_policy_t_ROOT
-	 *	  -	all allocations (including reservations) are autonomous and not
-	 * 		accounted for in a partition hierarchy. The parent/child partition
-	 * 		relationship exists to constrain partition creation. A hieracrhy may
-	 * 		exist in the namespace, however child partitions operate independently
-	 * 		for the purpose of accounting allocations
-	*/
-	mempart_alloc_policy_t_ROOT = 1,
+typedef _Uint32t mempart_alloc_policy_t;
+typedef enum {
+    /*
+     * mempart_alloc_policy_t_ROOT
+     *    - all allocations (including reservations) are autonomous and not
+     *      accounted for in a partition hierarchy. The parent/child partition
+     *      relationship exists to constrain partition creation. A hieracrhy may
+     *      exist in the namespace, however child partitions operate independently
+     *      for the purpose of accounting allocations
+     */
+    mempart_alloc_policy_t_ROOT = 1,
 
-	/*
-	 * mempart_alloc_policy_t_HIERARCHICAL
-	 * 	  -	all allocations (including reservations) are accounted for in the
-	 * 		partition hierarchy. This allocation policy results in a completely
-	 * 		hierarchical relationship in which memory allocated by a process
-	 * 		associated with a given partition must be available in all partitions
-	 * 		higher in the tree up to and including the root partition and
-	 * 		associated memory class allocator
-	*/
-	mempart_alloc_policy_t_HIERARCHICAL,
+    /*
+     * mempart_alloc_policy_t_HIERARCHICAL
+     *    - all allocations (including reservations) are accounted for in the
+     *      partition hierarchy. This allocation policy results in a completely
+     *      hierarchical relationship in which memory allocated by a process
+     *      associated with a given partition must be available in all partitions
+     *      higher in the tree up to and including the root partition and
+     *      associated memory class allocator
+     */
+    mempart_alloc_policy_t_HIERARCHICAL,
 
-mempart_alloc_policy_t_last,
-mempart_alloc_policy_t_first = mempart_alloc_policy_t_ROOT,
-mempart_alloc_policy_t_DEFAULT = mempart_alloc_policy_t_HIERARCHICAL,
+    mempart_alloc_policy_t_last,
+    mempart_alloc_policy_t_first = mempart_alloc_policy_t_ROOT,
+    mempart_alloc_policy_t_DEFAULT = mempart_alloc_policy_t_HIERARCHICAL,
 } mempart_alloc_policy_t_val;
 
 
@@ -108,12 +106,11 @@ mempart_alloc_policy_t_DEFAULT = mempart_alloc_policy_t_HIERARCHICAL,
  * 					  cannot be changed
  * 		permanent - if TRUE, the partition cannot be destroyed
 */
-typedef struct mempart_policy_s
-{
-	ap_bool_t				terminal;	// child partitions are permitted (T/F) ?
-	ap_bool_t				config_lock;		// configuration is locked (T/F) ?
-	ap_bool_t				permanent;			// partition is permanent (T/F) ?
-	mempart_alloc_policy_t	alloc;				// the partition allocation policy
+typedef struct mempart_policy_s {
+    ap_bool_t terminal;         // child partitions are permitted (T/F) ?
+    ap_bool_t config_lock;      // configuration is locked (T/F) ?
+    ap_bool_t permanent;        // partition is permanent (T/F) ?
+    mempart_alloc_policy_t alloc;   // the partition allocation policy
 
 } mempart_policy_t;
 
@@ -132,10 +129,9 @@ typedef struct mempart_policy_s
  * This type is used both to return the configuration state of the partition as
  * well as to allow the configuration to be changed (see mempart_cfgchg_t)
 */
-typedef struct mempart_cfg_s
-{
-	mempart_policy_t	policy;
-	mempart_attr_t		attr;
+typedef struct mempart_cfg_s {
+    mempart_policy_t policy;
+    mempart_attr_t attr;
 } mempart_cfg_t;
 
 /*
@@ -147,10 +143,9 @@ typedef struct mempart_cfg_s
  * policies and therefore does not require knowledge of the partition's current
  * configuration
 */
-typedef struct mempart_cfgchg_s
-{
-	cfgchg_t		valid;
-	mempart_cfg_t	val;
+typedef struct mempart_cfgchg_s {
+    cfgchg_t valid;
+    mempart_cfg_t val;
 } mempart_cfgchg_t;
 
 /*
@@ -189,16 +184,15 @@ typedef struct mempart_cfgchg_s
  *
  * id		- partition identifier
 */
-typedef struct mempart_meminfo_s
-{
-	_MEMSIZE_T_		cur_size;		// current partition size
-	_MEMSIZE_T_		hi_size;		// largest cur_size that this partition has ever been
-	mempart_cfg_t	cre_cfg;		// configuration at partition creation
-	mempart_cfg_t	cur_cfg;		// current configuration
-	part_id_t	id;					// partition identifier
-	_Uint32t		num_children;	// number of (immediate) children this partition has
-									// Don't need 32 bits but want to use atomic_() operations
-	_Uint32t		reserved[2];
+typedef struct mempart_meminfo_s {
+    _MEMSIZE_T_ cur_size;       // current partition size
+    _MEMSIZE_T_ hi_size;        // largest cur_size that this partition has ever been
+    mempart_cfg_t cre_cfg;      // configuration at partition creation
+    mempart_cfg_t cur_cfg;      // current configuration
+    part_id_t id;               // partition identifier
+    _Uint32t num_children;      // number of (immediate) children this partition has
+    // Don't need 32 bits but want to use atomic_() operations
+    _Uint32t reserved[2];
 } mempart_info_t;
 
 
@@ -208,18 +202,16 @@ typedef struct mempart_meminfo_s
  * structure used to retrieve the list of objects associated with a memory
  * partition
 */
-typedef struct mempart_olist_s
-{
-	_Int32t		num_entries;		// number of 'obj' information structures
-	_Uint32t	reserved;
-	struct obj_info_s
-	{
-		_Uint8t					type;
-		_Uint8t					size;
-		_Uint16t				flags;
-		part_id_t				mpid;
-		_Uint32t				reserved[2];
-	} obj[1];
+typedef struct mempart_olist_s {
+    _Int32t num_entries;        // number of 'obj' information structures
+    _Uint32t reserved;
+    struct obj_info_s {
+        _Uint8t type;
+        _Uint8t size;
+        _Uint16t flags;
+        part_id_t mpid;
+        _Uint32t reserved[2];
+    } obj[1];
 } mempart_olist_t;
 /*
  * MEMPART_OLIST_T_SIZE
@@ -274,16 +266,15 @@ typedef struct mempart_olist_s
  * ensuring that the the appropriate paremeters to posize_spawn() are provided.
  *
 */
-typedef part_dcmd_flags_t	mempart_dcmd_flags_t;
-typedef enum
-{
-	/* memory partitioning flags are defined in byte 1 (see part.h) */
+typedef part_dcmd_flags_t mempart_dcmd_flags_t;
+typedef enum {
+    /* memory partitioning flags are defined in byte 1 (see part.h) */
 
-	mempart_flags_HEAP_CREATE	= (0x01 << 8) & part_flags_MEM_MASK,
-	// create a process private kernel HEAP for the memory class represented by the partition
+    mempart_flags_HEAP_CREATE = (0x01 << 8) & part_flags_MEM_MASK,
+    // create a process private kernel HEAP for the memory class represented by the partition
 
-	mempart_flags_HEAP_SHARE	= (0x02 << 8) & part_flags_MEM_MASK,
-	// find (or create) a common heap for the memory class represented by the partition
+    mempart_flags_HEAP_SHARE = (0x02 << 8) & part_flags_MEM_MASK,
+    // find (or create) a common heap for the memory class represented by the partition
 
 } mempart_dcmd_flags_t_val;
 
@@ -373,4 +364,4 @@ typedef enum
 #define MEMPART_GET_ASSOC_OLIST	__DIOTF(_DCMD_PARTITION, _DCMD_MEMPART_OFFSET + 3, mempart_olist_t)
 
 
-#endif	/* _MEMPART_H_ */
+#endif                          /* _MEMPART_H_ */

@@ -2,17 +2,17 @@
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable 
- * license fees to QNX Software Systems before you may reproduce, 
- * modify or distribute this software, or any work that includes 
- * all or part of this software.   Free development licenses are 
- * available for evaluation and non-commercial purposes.  For more 
- * information visit http://licensing.qnx.com or email 
+ * You must obtain a written license from and pay applicable
+ * license fees to QNX Software Systems before you may reproduce,
+ * modify or distribute this software, or any work that includes
+ * all or part of this software.   Free development licenses are
+ * available for evaluation and non-commercial purposes.  For more
+ * information visit http://licensing.qnx.com or email
  * licensing@qnx.com.
- * 
- * This file may contain contributions from others.  Please review 
- * this entire file for other proprietary rights or license notices, 
- * as well as the QNX Development Suite License Guide at 
+ *
+ * This file may contain contributions from others.  Please review
+ * this entire file for other proprietary rights or license notices,
+ * as well as the QNX Development Suite License Guide at
  * http://licensing.qnx.com/license-guide/ for other information.
  * $
  */
@@ -97,11 +97,11 @@ const char * const sig_to_name[] = {
   EXTRA_INFO("SIG") "TTOU" EXTRA_INFO(", Attempted background tty write"),
   EXTRA_INFO("SIG") "DEV" EXTRA_INFO(", Dev event")
 };
-	
+
 
 /*
  * gdb_putstr - low level string output routine
- */ 
+ */
 void
 gdb_putstr(const char *text, int len) {
 	int i;
@@ -113,10 +113,10 @@ gdb_putstr(const char *text, int len) {
 
 /*
  * gdb_printf - gdb debugging information printout routine.
- * 
+ *
  * It prints out message to the same port as gdb
  * target-host communication port.
- */ 
+ */
 int
 gdb_printf(const char *fmt, ... ) {
 	char				buffer[100];
@@ -129,49 +129,49 @@ gdb_printf(const char *fmt, ... ) {
 	va_end(ap);
 	return(len);
 }
-	
+
 
 /*
  *
  *    The following gdb commands are supported:
- * 
+ *
  * command          function                               Return value
- * 
+ *
  *    g             return the value of the CPU registers  hex data or ENN
  *    G             set the value of the CPU registers     OK or ENN
  *
  *    i				get target information                 hex data or ENN
- * 
+ *
  *    mAA..AA,LLLL  Read LLLL bytes at address AA..AA      hex data or ENN
  *    MAA..AA,LLLL: Write LLLL bytes at address AA.AA      OK or ENN
- * 
+ *
  *    c             Resume at current address              SNN   ( signal NN)
  *    cAA..AA       Continue at address AA..AA             SNN
- * 
+ *
  *    s             Step one instruction                   SNN
  *    sAA..AA       Step one instruction from AA..AA       SNN
- * 
+ *
  *    k             kill
  *
  *    ?             What was the last sigval ?             SNN   (signal NN)
- * 
- * All commands and responses are sent with a packet which includes a 
- * checksum.  A packet consists of 
- * 
+ *
+ * All commands and responses are sent with a packet which includes a
+ * checksum.  A packet consists of
+ *
  * $<packet info>#<checksum>.
- * 
+ *
  * where
  * <packet info> :: <characters representing the command or response>
  * <checksum>    :: < two hex digits computed as modulo 256 sum of <packetinfo>>
- * 
+ *
  * When a packet is received, it is first acknowledged with either '+' or '-'.
  * '+' indicates a successful transfer.  '-' indicates a failed transfer.
- * 
+ *
  * Example:
- * 
+ *
  * Host:                  Reply:
  * $m0,10#2a               +$00010203040506070809101112131415#42
- * 
+ *
  ****************************************************************************/
 
 /*
@@ -181,7 +181,7 @@ gdb_printf(const char *fmt, ... ) {
  * is used by the 'parse' routines to actually perform the conversion.
  *
  * Entry : srcstr	- Pointer to string to convert
- *	   retstr	- Pointer to cell which will contain the address 
+ *	   retstr	- Pointer to cell which will contain the address
  *			  of the first byte not converted
  *			- Pointer to cell to return value
  */
@@ -195,21 +195,21 @@ gethexnum(char *srcstr, char **retstr, int *retvalue) {
 
     while(*str && (((*str >= 'a') && (*str <= 'f')) ||
 		    ((*str >= '0') && (*str <= '9')))) {
-		value = value*16 + (*str <= '9' ? (*str++ -'0') : 
+		value = value*16 + (*str <= '9' ? (*str++ -'0') :
 					(*str++ -'a'+10));
     }
-    
+
     /* Return failure if we are still pointing at the start */
-    
+
     if(str == srcstr) return(FALSE);
-    
+
     /* Set up the return values and return success */
-    
+
     *retvalue = value;
     *retstr = str;
     return(TRUE);
 }
-
+
 /*
  * parsehexnum - Parse a single hex number
  *
@@ -221,10 +221,10 @@ gethexnum(char *srcstr, char **retstr, int *retvalue) {
 boolean
 parsehexnum(char *srcstr, int *retvalue) {
     char *dummy;
-    
+
     return(gethexnum(srcstr, &dummy, retvalue));
 }
-
+
 /*
  * parse2hexnum - Parse two hex numbers
  *
@@ -237,18 +237,18 @@ boolean
 parse2hexnum(char *srcstr, int *retvalue1, int *retvalue2) {
     char *str;
     int value1, value2;
-    
+
     if(!gethexnum(srcstr, &str, &value1) || (*str++ != ',') ||
 	  !gethexnum(str, &str, &value2)) {
 		return(FALSE);
     }
-    
+
     *retvalue1 = value1;
     *retvalue2 = value2;
     return(TRUE);
 }
 
-/* 
+/*
  * scan for the sequence $<data>#<checksum>
  */
 boolean
@@ -261,7 +261,7 @@ getpacket() {
 	int cs1;
 	int cs2;
 	int	(*init_getc)(void);
-  
+
  	init_getc = connected ? dbg_getc : dbg_getc_connect_check;
     for( ;; ) {
 try_again:
@@ -271,11 +271,11 @@ try_again:
 			if(ch == -1) return(FALSE);
 		} while(ch != '$');
 
-try_again2:		
+try_again2:
 		checksum = 0;
 		count = 0;
 		cs1 = cs2 = 0;
-		
+
 		/* now, read until a # or end of buffer is found */
 		for( ;; ) {
 			if(count >= BUFMAX) goto try_again;
@@ -294,15 +294,15 @@ try_again2:
 
 		scratch[count] = 0;
 		gdb_expand(scratch, inbuf);
-		
+
 		xmitcsum = (chartohex(cs1) << 4) + chartohex(cs2);
 		if(checksum == xmitcsum) break;
 		if(gdb_debug) {
 			gdb_printf("bad checksum.  My count = 0x%x, sent=0x%x. buf=%s\n",
 			   checksum,xmitcsum,inbuf);
 		}
-		dbg_putc('-');  /* failed checksum */ 
-    } 
+		dbg_putc('-');  /* failed checksum */
+    }
 	dbg_putc('+');  /* successful transfer */
 	/* if a sequence char is present, reply the sequence ID */
 	if(inbuf[2] == ':') {
@@ -315,12 +315,12 @@ try_again2:
 			if(inbuf[i] == '\0') break;
 			++i;
 		}
-	} 
+	}
     return(TRUE);
 }
 
-/* 
- * send the packet in buffer.  The host gets one chance to read it.  
+/*
+ * send the packet in buffer.  The host gets one chance to read it.
  * This routine does not wait for a positive acknowledge.
  */
 
@@ -331,29 +331,29 @@ putpacket(void) {
     char ch;
 
     gdb_compress(outbuf, scratch);
-  
+
 #ifdef DEBUG_GDB
 	kprintf("Response packet '%s'\n", scratch);
-#endif	
+#endif
 
     /*  $<packet info>#<checksum>. */
 
     dbg_putc('$');
     checksum = 0;
     count    = 0;
-  
+
     while((ch = scratch[count])) {
 		dbg_putc(ch);
 		checksum += ch;
 		count += 1;
     }
-	
+
     dbg_putc('#');
     dbg_putc(tohexchar(checksum >> 4));
     dbg_putc(tohexchar(checksum));
 }
 
-/* 
+/*
  * convert the memory pointed to by mem into hex, placing result in buf
  * return a pointer to the last char put in buf (null)
  */
@@ -373,7 +373,7 @@ mem2hex(char *mem, char *buf, int count) {
 
 	if(cpu_handle_alignment(mem, count)) {
 		switch(count) {
-		case 1:	
+		case 1:
 			if(MAP_IN_RANGE(inout, mem)) {
 				temp.u8 = in8(MAP_OFFSET(inout, mem));
 			} else {
@@ -381,7 +381,7 @@ mem2hex(char *mem, char *buf, int count) {
 			}
 			mem = (void *)&temp;
 			break;
-		case 2:	
+		case 2:
 			if(MAP_IN_RANGE(inout, mem)) {
 				temp.u16 = in16(MAP_OFFSET(inout, mem));
 			} else {
@@ -407,7 +407,7 @@ mem2hex(char *mem, char *buf, int count) {
 		*buf++ = tohexchar(ch >> 4);
 		*buf++ = tohexchar(ch);
     }
-    *buf = 0; 
+    *buf = 0;
     return(buf);
 }
 
@@ -436,8 +436,8 @@ hex2mem(char *buf, char *mem, int count) {
 	out = mem;
 	if(cpu_handle_alignment(mem, count)) {
 		switch(count) {
-		case 1:	
-		case 2:	
+		case 1:
+		case 2:
 		case 4:
 			special = 1;
 			out = (void *)&temp;
@@ -455,14 +455,14 @@ hex2mem(char *buf, char *mem, int count) {
 
 	if(special) {
 		switch(count) {
-		case 1:	
+		case 1:
 			if(MAP_IN_RANGE(inout, mem)) {
 				out8(MAP_OFFSET(inout, mem), temp.u8);
 			} else {
 				*(uint8_t *)mem = temp.u8;
 			}
 			break;
-		case 2:	
+		case 2:
 			if(MAP_IN_RANGE(inout, mem)) {
 				out16(MAP_OFFSET(inout, mem), temp.u16);
 			} else {
@@ -542,8 +542,8 @@ gdb_mapping_add(uintptr_t vaddr, unsigned len, unsigned prot, size_t *valid) {
 
 static void
 gdb_mapping_del(void *p, size_t len) {
-	if(  !MAP_IN_RANGE(inout, p) 
-	  && !MAP_IN_RANGE(raw, p) 
+	if(  !MAP_IN_RANGE(inout, p)
+	  && !MAP_IN_RANGE(raw, p)
 	  && !MAP_IN_RANGE(direct, p)) {
 		mapping_del(p, len);
 	}
@@ -588,7 +588,7 @@ gdb_read_membytes(CPU_REGISTERS *ctx) {
     } else {
 		strcpy(outbuf,"E01");
 		if(gdb_debug) gdb_printf("malformed read memory command: %s", inbuf);
-    }     
+    }
 }
 
 /*
@@ -630,7 +630,7 @@ gdb_write_membytes(CPU_REGISTERS *ctx) {
     } else {
 		strcpy(outbuf,"E02");
 		if(gdb_debug) gdb_printf("malformed write memory command: %s",inbuf);
-    } 
+    }
 }
 
 /*
@@ -650,13 +650,13 @@ gdb_get_info(void) {
 
     kinfo = private->kdebug_info;
     if(kinfo == NULL || (kprivate = kinfo->kdbg_private) == NULL) {
-		strcpy(outbuf, "E00");		
+		strcpy(outbuf, "E00");
 		return;
     }
 	//NYI: what about SMP?
 	thread = ((void **)kprivate->actives)[0];
 	if(thread == NULL) {
-		strcpy(outbuf, "E00");		
+		strcpy(outbuf, "E00");
 		return;
 	}
     switch (inbuf[1]) {
@@ -669,10 +669,10 @@ gdb_get_info(void) {
 	    mem2hex(scratch, &outbuf[1], len);
 	    break;
 	case '0':
-	    strcpy(outbuf, "E00");		
+	    strcpy(outbuf, "E00");
 	    break;
 	default:
-	    strcpy(outbuf, "E00");		
+	    strcpy(outbuf, "E00");
 		break;
     }
 }
@@ -722,9 +722,9 @@ monitor_mem(char *p) {
 		return;
 	}
 	if(debug_flag > 1) {
-		kprintf("mon mem nocache,dir,raw,inout=%x/%x %x/%x %x/%x %x/%x\n", 
-			nocache.start, nocache.end, 
-			direct.start, direct.end, 
+		kprintf("mon mem nocache,dir,raw,inout=%x/%x %x/%x %x/%x %x/%x\n",
+			nocache.start, nocache.end,
+			direct.start, direct.end,
 			raw.start, raw.end,
 			inout.start, inout.end);
 	}
@@ -743,7 +743,7 @@ struct kdebug_info		*kinfo;
 const struct kdebug_private	*kprivate;
 THREAD *thread;
 
-    /* 
+    /*
      * Indicate that we've gone back to debug mode
      */
     for (length = 0; length < 4; length++) dbg_putc('|');
@@ -760,7 +760,7 @@ THREAD *thread;
 		outbuf[0] = 0;
 
 #ifdef DEBUG_GDB
-kprintf("Processing packet '%s'\n", inbuf);		
+kprintf("Processing packet '%s'\n", inbuf);
 #endif
         switch(inbuf[0]) {
 
@@ -770,7 +770,7 @@ kprintf("Processing packet '%s'\n", inbuf);
 				paddr_t					base;
 				char					*str = SYSPAGE_ENTRY(strings)->data;
 				struct asinfo_entry		*as = SYSPAGE_ENTRY(asinfo);
-		
+
 				while(strcmp(&str[as->name], "imagefs") != 0) {
 					++as;
 				}
@@ -781,21 +781,21 @@ kprintf("Processing packet '%s'\n", inbuf);
 			} else {
 				ksprintf(outbuf,"S%02xk", (unsigned)signal);
 			}
-	
+
 			for(length=1;outbuf[length];length++) {
-				if((outbuf[length] >= 'A') && 
+				if((outbuf[length] >= 'A') &&
 					(outbuf[length] <='Z'))
 					outbuf[length]=outbuf[length]+('a'-'A');
 			}
 			if(gdb_debug) gdb_printf("%s", outbuf);
-	
+
 			break;
-	
+
 		/* toggle debug flag */
 		case 'd' :
 			gdb_debug = !(gdb_debug);
-			break; 
-		
+			break;
+
 		/* return the value of the CPU registers */
 		case 'g' :
 /* temp solution, need to add an offset item in kdebug_private for fpu data	*/
@@ -806,9 +806,9 @@ kprintf("Processing packet '%s'\n", inbuf);
 				gdb_get_cpuregs(ctx,thread->fpudata);
 			}
 			break;
-	
+
 		/* set the value of the CPU registers - return OK */
-		case 'G' : 
+		case 'G' :
 /* temp solution, need to add an offset item in kdebug_private for fpu data	*/
 			if((kinfo = private->kdebug_info)== NULL || (kprivate = kinfo->kdbg_private) == NULL ||
 				(thread = ((void **)kprivate->actives)[0]) == NULL) {
@@ -823,30 +823,30 @@ kprintf("Processing packet '%s'\n", inbuf);
 		case 'i':
 			gdb_get_info();
 			break;
-		  
+
 		/* mAA..AA,LLLL  Read LLLL bytes at address AA..AA */
-		case 'm' : 
+		case 'm' :
 			gdb_read_membytes(ctx);
 			break;
-		  
+
 		/* MAA..AA,LLLL: Write LLLL bytes at address AA.AA return OK */
-		case 'M' : 
+		case 'M' :
 			gdb_write_membytes(ctx);
 			break;
-		 
+
 		/* cAA..AA    Continue at address AA..AA(optional) */
-		case 'c' : 
+		case 'c' :
 			gdb_proc_continue(ctx, 0);	/* continue the process */
 			return(TRUE);
-	
+
 		/* sAA..AA   Step one instruction from AA..AA(optional) */
-		case 's' : 
+		case 's' :
 			gdb_proc_continue(ctx, 1);	/* step one instruction */
 			return(TRUE);
 
-		/* q???? Generic query */	
+		/* q???? Generic query */
 
-		case 'q': 
+		case 'q':
 			if(memcmp(&inbuf[1], "Rcmd,", 5) == 0) {
 				// remote command
 				char	*p;
@@ -871,9 +871,9 @@ kprintf("Processing packet '%s'\n", inbuf);
 		case 'D' :
 			connected = FALSE;
 			return(FALSE);
-			  
-		} /* switch */ 
-		
+
+		} /* switch */
+
 		/* reply to the request */
 		putpacket();
     }

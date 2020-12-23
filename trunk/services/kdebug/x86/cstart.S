@@ -1,13 +1,13 @@
-	.extern	_main 
-	.extern	_stack_top 
-	.extern	_syspage_ptr 
+	.extern	_main
+	.extern	_stack_top
+	.extern	_syspage_ptr
 
 	.global	_cstart_
 	.global	_start
 
 #include "asmoff.def"
 
-// Must be just in front of "_start" label	
+// Must be just in front of "_start" label
 	.extern	bootstrap
 .long	IFS_BOOTSTRAP_SIGNATURE
 .long	bootstrap

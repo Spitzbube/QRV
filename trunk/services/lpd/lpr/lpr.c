@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -99,7 +99,7 @@ int	tfd;			/* control file descriptor */
 int     mailflg;		/* send mail */
 int	qflag;			/* q job, but don't exec daemon */
 char	format = 'f';		/* format char for printing files */
-int	rflag;			/* remove files upon completion */	
+int	rflag;			/* remove files upon completion */
 int	sflag;			/* symbolic link flag */
 int	inchar;			/* location to increment char in file names */
 int     ncopies = 1;		/* # of copies to make */
@@ -130,7 +130,7 @@ extern	short	SC;			/* suppress multiple copies */
 char	*getenv();
 #ifndef __QNXNTO__
 char	*rindex();
-#endif 
+#endif
 char	*linked();
 void cleanup();
 void chkprinter(char *);
@@ -321,7 +321,7 @@ main(argc, argv)
 		fatal("only %d copies are allowed", MC);
 	/*
 	 * Get the identity of the person doing the lpr using the same
-	 * algorithm as lprm. 
+	 * algorithm as lprm.
 	 */
 	userid = getuid();
 	if (userid != DU || person == 0) {
@@ -418,7 +418,7 @@ main(argc, argv)
 	}
 
 	if (nact) {
-	
+
 		(void) close(tfd);
 		tfname[inchar]--;
 		/*
@@ -497,7 +497,7 @@ void copy(f, n)
 		}
 	}
 	(void) close(fd);
-	if (nc==0 && nr==0) 
+	if (nc==0 && nr==0)
 		printf("%s: %s: empty input file\n", name, f ? n : "stdin");
 	else
 		nact++;

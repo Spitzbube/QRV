@@ -2,17 +2,17 @@
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable 
- * license fees to QNX Software Systems before you may reproduce, 
- * modify or distribute this software, or any work that includes 
- * all or part of this software.   Free development licenses are 
- * available for evaluation and non-commercial purposes.  For more 
- * information visit http://licensing.qnx.com or email 
+ * You must obtain a written license from and pay applicable
+ * license fees to QNX Software Systems before you may reproduce,
+ * modify or distribute this software, or any work that includes
+ * all or part of this software.   Free development licenses are
+ * available for evaluation and non-commercial purposes.  For more
+ * information visit http://licensing.qnx.com or email
  * licensing@qnx.com.
- * 
- * This file may contain contributions from others.  Please review 
- * this entire file for other proprietary rights or license notices, 
- * as well as the QNX Development Suite License Guide at 
+ *
+ * This file may contain contributions from others.  Please review
+ * this entire file for other proprietary rights or license notices,
+ * as well as the QNX Development Suite License Guide at
  * http://licensing.qnx.com/license-guide/ for other information.
  * $
  */
@@ -24,7 +24,7 @@
  *  call by looking in the table for the corresponding name and nid,
  *  then returning the PID as needed. If the node is not the local node,
  *  it will (in the future) set up a connection to the process on the
- *  remote node. It handles qnx_name_query by returning messages one at 
+ *  remote node. It handles qnx_name_query by returning messages one at
  *  a time with the matching table info. And it handles qnx_name_detach
  *  by removing an entry from the internal table.
  */
@@ -55,7 +55,7 @@ typedef struct {
 
 extern unsigned char   *progname;        	/* argv[0]                */
 extern unsigned char   verbose;          	/* Handle -v option       */
-										 
+
 static TABLE_T         name_table;
 static int             current_name_id = 1;
 static pthread_mutex_t ntable_mutex;		/* mutex to control access */
@@ -83,7 +83,7 @@ void
 name_handle_close_ocb(pid_t pid)
 {
 	name_table_t *scan;
-	long         rec_num;   
+	long         rec_num;
 
 	pthread_mutex_lock(&ntable_mutex);
 	get_next_record(&name_table, T_FORWARD, S_RESET, &rec_num);
@@ -152,7 +152,7 @@ do_qnx_name_detach(procmgr_msg_t *msg, procmgr_reply_t *reply, pid_t from_pid)
 	reply->set_errno_to_this = EINVAL;
 
 	pthread_mutex_lock(&ntable_mutex);
-	get_next_record(&name_table, T_FORWARD, S_RESET, &rec_num);    
+	get_next_record(&name_table, T_FORWARD, S_RESET, &rec_num);
 	scan = get_next_record(&name_table, T_FORWARD, S_NEXT, &rec_num);
 	while (scan) {
 		if (verbose > 1)
@@ -161,9 +161,9 @@ do_qnx_name_detach(procmgr_msg_t *msg, procmgr_reply_t *reply, pid_t from_pid)
 				   msg->un.detach.name_id,
 				   (int) msg->un.detach.nid,
 				   from_pid,
-				   scan->name_id, scan->nid, scan->pid, 
+				   scan->name_id, scan->nid, scan->pid,
 				   scan->name);
-		
+
 		/* We must find it, and you must be the "owner" to detach it. */
 		if (scan->name_id == msg->un.detach.name_id
 		 && scan->nid == msg->un.detach.nid
@@ -205,7 +205,7 @@ do_qnx_name_locate(procmgr_msg_t *msg, procmgr_reply_t *reply)
 				   msg->un.locate.name,
 				   (int) msg->un.locate.nid,
 				   scan->nid, scan->pid, scan->name );
-		
+
 		if (!strcmp(msg->un.locate.name, scan->name)) {
 			reply->set_errno_to_this = EOK;
 			reply->un.locate.pid = scan->pid;
@@ -247,7 +247,7 @@ do_qnx_name_query(procmgr_msg_t *msg, procmgr_reply_t *reply)
 		/* that is the smallest greater or equal.                 */
 		if (msg->un.name_query.name_id <= scan->name_id
 		 && scan->name_id - msg->un.name_query.name_id < min_difference) {
-			min_difference = scan->name_id - 
+			min_difference = scan->name_id -
 							 msg->un.name_query.name_id;
 			reply->set_errno_to_this = EOK;
 			reply->un.name_query.name_id = scan->name_id;
@@ -289,7 +289,7 @@ static int
 find_entry(const void *l, const void *r)
 {
 	name_table_t *left, *right;
-	
+
 	left = *((name_table_t **) l);
 	right = *((name_table_t **) r);
 	if (left->nid != right->nid)

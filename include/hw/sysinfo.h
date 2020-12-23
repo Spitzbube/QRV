@@ -307,8 +307,14 @@ unsigned hwi_find_tag(unsigned __start, int __curr_item, const char *__tagname);
 unsigned hwi_find_item(unsigned __start, ...);
 unsigned hwi_next_tag(unsigned __off, int __curr_item);
 unsigned hwi_next_item(unsigned __off);
-unsigned hwi_tag2off(void *);
-void *hwi_off2tag(unsigned);
+
+static inline unsigned hwi_tag2off(void *tag) {
+    return (uintptr_t)tag - (uintptr_t)__hwi_base();
+}
+
+static inline void *hwi_off2tag(unsigned off) {
+    return((uint8_t *)__hwi_base() + off);
+}
 
 __END_DECLS
 #include <_packpop.h>

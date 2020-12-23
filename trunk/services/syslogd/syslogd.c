@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -85,9 +85,9 @@ static char sccsid[] = "@(#)syslogd.c	5.45 (Berkeley) 3/2/91";
  */
 
 //	What's different is we accept QNX native msg.  This is done
-//	within the select_recieve call.  The original UDP stuff is 
+//	within the select_recieve call.  The original UDP stuff is
 //	still in here, so this will work with original syslog()
-//	lib routines.  When hit with SIGHUP, we also try to 
+//	lib routines.  When hit with SIGHUP, we also try to
 //	establish the UDP port -- we stay up for QNX msgs if
 //	we can't do this originally.  This allows syslogd to
 //	be started before Socket, and attach to it latter if necessary.
@@ -261,7 +261,7 @@ int printline(char *hname, char *msg);
 int logmsg(int pri, char *msg, char *from, int flags);
 int wallmsg(struct filed *f, struct iovec *iov);
 int cfline(char *line, struct filed *f);
-  
+
 int
 main(argc, argv)
 	int argc;
@@ -390,7 +390,7 @@ if (!InetInuse){
 			dprintf("socket open...\n");
 		}
 	}
-	} //InetInuse	
+	} //InetInuse
 	dprintf("off & running....\n");
 
 
@@ -449,7 +449,7 @@ out:
 				printline(cvthname(&frominet), line);
 			} else if (i < 0 && errno != EINTR)
 				logerror("recvfrom inet");
-		} 
+		}
 	}
 	return 0;
 }
@@ -764,8 +764,8 @@ fprintlog(f, flags, msg)
 			errno = 0;
 			logerror("possible duplicate message");
 		} else break;
-       } while( i++ < 4 );		
-     
+       } while( i++ < 4 );
+
      //if ( i >= 4 )
      //  f->f_type= F_UNUSED;
 		break;
@@ -896,7 +896,7 @@ wallmsg(f, iov)
 			if (nid_stat[i])
 				write_message( (nid_t)i, (f->f_type == F_WALL) ? NULL : f, message, message_len );
 		exit(0);
-		}	
+		}
 	else{
 		reenter = 0;
 		free(message);
@@ -932,7 +932,7 @@ int write_message(nid_t node, struct filed *f, char *msg, int msg_len){
 
 	    if ((sid = qnx_sid_query(vid, sid, &sidinfo)) == -1)
 			break;
-	
+
 	    tty = sidinfo.tty_name;
 	    if (*tty == 0 || strcmp(tty, "none") == 0)
 			continue;
@@ -950,31 +950,31 @@ int write_message(nid_t node, struct filed *f, char *msg, int msg_len){
 			}
 		else	// f was NULL -- send to all users
 			match++;
-	
+
 		if (!match){
-//fprintf(stderr,"m[%s] node[%d] sid[%d]\n", msg, nid, sid); 
+//fprintf(stderr,"m[%s] node[%d] sid[%d]\n", msg, nid, sid);
 			continue;
 			}
 
-//fprintf(stderr,"MATCH: m[%s] node[%d] sid[%d]\n", msg, nid, sid); 
+//fprintf(stderr,"MATCH: m[%s] node[%d] sid[%d]\n", msg, nid, sid);
 
 	    if ((tfp = fopen(tty, "w")) == 0) {
 			i=sprintf(usr_msgs, "%s: cannot send to %s (%s)\n", "write_message()", sidinfo.name, tty);
 			logerror(usr_msgs);
 			continue;
 		    }
-	
+
 		if (!test_mode) {
 		    fcntl(fileno(tfp), F_SETFL, O_NONBLOCK | fcntl(fileno(tfp), F_GETFL));
 		 //   fprintf(tfp, "\a\aBroadcast message from %s (%s) at %s...\r\n", user, term, stamp);
 		    fprintf(tfp, msg);
 		    fputs("EOT\r\n", tfp);
-			} 
+			}
 
 		fclose(tfp);
     	}
 	qnx_vc_detach(vid);
-	return (errs?-1:0);	
+	return (errs?-1:0);
 }
 #endif
 
@@ -1523,7 +1523,7 @@ nto_main(void *x){
 	iofunc_io_funcs_default.write= io_write;
 
 	if( resmgr_attach( dpp, &resmgr_attr, _PATH_LOG, _FTYPE_ANY,
-		   0, &iofunc_connect_funcs_default, 
+		   0, &iofunc_connect_funcs_default,
 		   &iofunc_io_funcs_default, &attr) == -1) {
 		perror("resmgr_attach");
 		exit(1);

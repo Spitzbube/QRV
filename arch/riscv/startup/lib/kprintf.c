@@ -14,7 +14,9 @@ static void (*print_char)(int) = dummy_print_char;
 
 static void one_char(char c)
 {
+#ifdef CONFIG_MINIDRIVER
     mdriver_check();
+#endif
     if (c == '\n')
         print_char('\r');
     print_char(c);
@@ -133,7 +135,7 @@ void crash(const char *fmt, ...)
     va_start(args, fmt);
     vmsg(fmt, args);
     va_end(args);
-    crash_done();
+    for (;;) ;
 }
 
 void set_print_char(void (*prt)(int))

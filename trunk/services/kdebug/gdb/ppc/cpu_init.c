@@ -13,7 +13,7 @@ family_dummy(int type, CPU_REGISTERS *ctx) {
 
 void	(*family_stuff)(int type, CPU_REGISTERS *ctx) = family_dummy;
 
-void 	
+void
 standard_flusher(uintptr_t mapped_vaddr, uintptr_t real_vaddr, unsigned len) {
 	cache_flush(mapped_vaddr, len);
 }

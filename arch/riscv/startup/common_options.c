@@ -99,26 +99,21 @@ void handle_common_option(int opt)
     }
 }
 
+/**
+ * \brief Set debug device.
+ * \note TODO
+ */
 void set_debug(unsigned channel, const struct debug_device *dev, const char *options)
 {
-    unsigned base;
-    unsigned i;
+    dev->init(channel, options, dev->base);
 
-    dev->init(channel, options, dev->defaults[channel]);
     if (channel == 0)
         set_print_char(dev->put);
-    base = offsetof(struct callout_entry, debug);
-    base += channel * sizeof(struct debug_callout);
-    for (i = 0; i < NUM_ELTS(dev->callouts); ++i) {
-        const struct callout_rtn *rtn = dev->callouts[i];
-
-        if (rtn != NULL) {
-	    // TODO: equivalent code
-            //add_callout(base + i * sizeof(callout_fp_t), rtn);
-        }
-    }
 }
 
+/**
+ * \brief Select debug device and channel.
+ */
 static void select_one(const struct debug_device *dev, unsigned size, unsigned channel)
 {
     unsigned len;
@@ -132,7 +127,7 @@ static void select_one(const struct debug_device *dev, unsigned size, unsigned c
         for (;;) {
             if (dev >= end)
                 return;
-            if (dev->defaults[channel] != NULL)
+            if (dev->base)
                 break;
             ++dev;
         }
@@ -141,12 +136,10 @@ static void select_one(const struct debug_device *dev, unsigned size, unsigned c
     }
     selected = NULL;
     for (;;) {
-        const char *defaults;
-
         if (dev >= end)
             break;
-        defaults = dev->defaults[channel];
-        if (defaults != NULL) {
+        paddr_t base = dev->base;
+        if (base) {
             char ch;
 
             len = strlen(dev->name);
@@ -159,7 +152,7 @@ static void select_one(const struct debug_device *dev, unsigned size, unsigned c
                     ++arg;
                 break;
             }
-            if ((selected == NULL) && (defaults[0] != '\0')) {
+            if ((selected == NULL) && base) {
                 //If we don't match any of the names, the first device
                 //in the list with actual options the default device.
                 selected = dev;

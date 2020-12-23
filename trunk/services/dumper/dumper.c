@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -92,7 +92,7 @@ off_t dump_tell( FILE *fp )
 
 static int dump_write(FILE *core_fp, const void *addr, int nr, long *size)
 {
-	int n; 		
+	int n;
 	int wsize;  /* Size to be written. */
 
 	/* According to Posix specs, if the file size "limit is exceeded, the
@@ -105,7 +105,7 @@ static int dump_write(FILE *core_fp, const void *addr, int nr, long *size)
 	}
 
 	*size -= wsize;
-	
+
 	if (gzlevel == -1) {
 		n = fwrite(addr, 1, wsize, core_fp );
 	} else {
@@ -167,7 +167,7 @@ Elf32_Nhdr en;
 
     if(dump_write( core_fp, men->name, en.n_namesz, size) == -1)
 		return 1;
-	
+
     dump_seek( core_fp, roundup(dump_tell(core_fp), sizeof (Elf32_Word)));  /* XXX */
 
     if(dump_write( core_fp, men->data, men->datasz, size) == -1)
@@ -186,7 +186,7 @@ int		num, i, max, min, base;
 off_t	here, there;
 
 	if ( (mem->flags & PG_HWMAPPED) == 0 ) {
-		dprintf(("Ignoring non-mapped stack region: %#llx @ %#llx\n", 
+		dprintf(("Ignoring non-mapped stack region: %#llx @ %#llx\n",
 			mem->size, mem->vaddr ));
 		return;
 	}
@@ -231,7 +231,7 @@ off_t	here, there;
 		}
 		return;
 	}
-	
+
 	memset( membuf, 0, sizeof membuf );
 	for (i = 0; i < mem->size; i+= pagesize ) {
 		if(dump_write( fp, membuf, min( pagesize, mem->size - i ), size) == -1)
@@ -302,7 +302,7 @@ uint64_t vaddr, size;
 			if ( (mapinfos[i].flags & MAP_STACK) == 0 )
 				continue;
 
-			
+
 			vaddr = thread->sp & ~(pagesize-1);
 			size = mapinfos[i].size - (vaddr - mapinfos[i].vaddr);
 
@@ -327,12 +327,12 @@ void slog_tid( procfs_status *status, const char *path )
 	case _DEBUG_WHY_SIGNALLED:
 	case _DEBUG_WHY_FAULTED:
 		slogf( _SLOG_SETCODE( _SLOGC_DUMPER, 0 ), _SLOG_INFO,
-			"run fault pid %d tid %d signal %d code %d ip %#llx %s", 
+			"run fault pid %d tid %d signal %d code %d ip %#llx %s",
 				(int)status->pid, (int)status->tid, (int)status->info.si_signo, (int)status->info.si_code, (uint64_t)status->ip, path ?:"" );
 		break;
 	default:
 		slogf( _SLOG_SETCODE( _SLOGC_DUMPER, 0 ), _SLOG_INFO,
-			"run fault pid %d tid %d why %d what %d ip %#llx %s", 
+			"run fault pid %d tid %d why %d what %d ip %#llx %s",
 				(int)status->pid, (int)status->tid, (int)status->why, (int)status->what, (uint64_t)status->ip, path ?:"" );
 		break;
 	}
@@ -390,7 +390,7 @@ uint64_t			cur_tid_base = 0, cur_tid_size = 0;
 #if defined (__ARM__)
 	elf.e_ident[EI_OSABI] = ELFOSABI_ARM;
 #endif
-	
+
 	memset(elf.e_ident+EI_PAD, 0, EI_NIDENT-EI_PAD);
 
 	if((ret = devctl(fd, DCMD_PROC_PAGEDATA, NULL, 0, &num)) != EOK) {
@@ -441,7 +441,7 @@ uint64_t			cur_tid_base = 0, cur_tid_size = 0;
 		}
 
 		/* if we only want to dump the offending tid's stack */
-		if(cur_tid_only && (mapinfos[i].flags & MAP_STACK) && 
+		if(cur_tid_only && (mapinfos[i].flags & MAP_STACK) &&
 			!OFFENDING_THREAD(cur_tid_base, cur_tid_size, &mapinfos[i])) {
 			continue;
 		}
@@ -498,7 +498,7 @@ uint64_t			cur_tid_base = 0, cur_tid_size = 0;
 
 	if(dump_write( fp, &elf, sizeof elf, &coresize ) == -1)
 		goto bailout;
-	
+
 	offset += sizeof elf;
 	offset += (elf.e_phnum) * sizeof phdr;
 
@@ -689,13 +689,13 @@ static char corepath[PATH_MAX+1];
 static char savepath[PATH_MAX+1];
 int n;
 	char suf[20];
-	
+
 	if (gzlevel == -1) {
 		sprintf(suf, "core");
 	} else {
 		sprintf(suf, "core.gz");
 	}
-	
+
 	sprintf( corepath, "%s.%s", base, suf );
 
 	if ( sequential_dumps ) {
@@ -746,7 +746,7 @@ int dump(uint32_t nd, pid_t pid, long size ) {
 	sprintf(buff, "/proc/%d/as", pid);
 	if ( requested ) {
 		if((fd = open(buff, O_RDWR|O_NONBLOCK)) == -1) {
-			fprintf(stderr,"dumper: error attaching to process %d - %s\n", pid, strerror(errno) ); 
+			fprintf(stderr,"dumper: error attaching to process %d - %s\n", pid, strerror(errno) );
 			return errno;
 		}
 		if ((ret = devctl(fd, DCMD_PROC_STOP, NULL, 0, 0)) != EOK) {
@@ -774,7 +774,7 @@ int dump(uint32_t nd, pid_t pid, long size ) {
 			return EPERM;
 		}
 		uid = info.euid;
-		
+
 		if(uid != info.uid) /* suid binary */
 			gid=0;
 		else
@@ -808,7 +808,7 @@ int dump(uint32_t nd, pid_t pid, long size ) {
 		if (fp)
 		  gzsetparams((gzFile)fp, gzlevel, 0);
 	}
-	
+
 	if(!fp) {
 		perror(dump_path);
 		close(fd);
@@ -817,7 +817,7 @@ int dump(uint32_t nd, pid_t pid, long size ) {
 	chown( dump_path, uid, gid );
 	chmod( dump_path, world_readable ? 0644 : S_IRUSR|S_IWUSR );
 	ret = elfcore(fd, fp, map->path, size);
-	
+
 	if (gzlevel == -1) {
 		fclose(fp);
 	} else {
@@ -868,8 +868,8 @@ int dumper_write(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *ocb) {
 		if(size > max_core_size)
 			size = max_core_size;
 	}
-	
-	DeliverNotifies(pid); // send all notifications first, 
+
+	DeliverNotifies(pid); // send all notifications first,
                         // since the call to dump might return an error
 	if((status = dump(ctp->info.nd, pid, size)) != EOK) {
 		return status;
@@ -911,7 +911,7 @@ int main(int argc, char *argv[])
 
 	/* We also want some physical memory for our stack.  */
 	init_stack();
-	
+
 	while ( (c = getopt( argc, argv, "Dd:p:ns:vmPwtz:" )) != -1 ) {
 		switch(c) {
 		case 'd':
@@ -983,8 +983,8 @@ int main(int argc, char *argv[])
 
 	iofunc_func_init(_RESMGR_CONNECT_NFUNCS, &connect, _RESMGR_IO_NFUNCS, &io);
 	io.write = dumper_write;
-	io.devctl = dumper_devctl; 
-	io.close_ocb = dumper_close_ocb; 
+	io.devctl = dumper_devctl;
+	io.close_ocb = dumper_close_ocb;
 
 	iofunc_attr_init(&attr, S_IFNAM | 0600, 0, 0);
 
@@ -998,7 +998,7 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	if ( -1 == procmgr_daemon(EXIT_SUCCESS, verbose ? 
+	if ( -1 == procmgr_daemon(EXIT_SUCCESS, verbose ?
 		PROCMGR_DAEMON_NODEVNULL | PROCMGR_DAEMON_KEEPUMASK :
 		PROCMGR_DAEMON_KEEPUMASK) ) {
 		fprintf(stderr, "%s: Couldn't become daemon.\n",argv[0]);

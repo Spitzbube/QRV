@@ -33,12 +33,12 @@
  * these array element and structure field "safe" initializations are not
  * supported by the WATCOM compiler.
 */
-	#define ARRAY_EL(e)		[(e)] =
-	#define STRUCT_FLD(e)	.e =
+#define ARRAY_EL(e)		[(e)] =
+#define STRUCT_FLD(e)	.e =
 #else
-	#define ARRAY_EL(e)
-	#define STRUCT_FLD(e)
-#endif	/* __GNUC__ */
+#define ARRAY_EL(e)
+#define STRUCT_FLD(e)
+#endif                          /* __GNUC__ */
 
 /*
  * memsize_t
@@ -52,7 +52,7 @@
 */
 #ifndef _MEMSIZE_T_
 #define _MEMSIZE_T_		_Uint64t
-typedef _MEMSIZE_T_		memsize_t;
+typedef _MEMSIZE_T_ memsize_t;
 #endif
 
 /*
@@ -71,7 +71,7 @@ typedef _MEMSIZE_T_		memsize_t;
  * This identifier is used to specify the class of memory for which the
  * configuration attributes and/or information sizes refer to.
 */
-typedef _Uint32t	memclass_id_t;
+typedef _Uint32t memclass_id_t;
 #define memclass_id_t_INVALID	((memclass_id_t)0xFFFFFFFF)
 
 /*
@@ -85,14 +85,13 @@ typedef _Uint32t	memclass_id_t;
  * For example, the allocation sub-structure indicates the smallest and largest
  * allocatable unit supported by the allocator for the class.
 */
-typedef struct memclass_limits_s
-{
-	struct {
-		struct {
-			_MEMSIZE_T_		min;		// minimum size of an allocation unit
-			_MEMSIZE_T_		max;		// maximum size of an allocation unit
-		} size;
-	} alloc;
+typedef struct memclass_limits_s {
+    struct {
+        struct {
+            _MEMSIZE_T_ min;    // minimum size of an allocation unit
+            _MEMSIZE_T_ max;    // maximum size of an allocation unit
+        } size;
+    } alloc;
 
 } memclass_limits_t;
 
@@ -101,10 +100,9 @@ typedef struct memclass_limits_s
  *
  * This structure defines the attributes of a memory class
 */
-typedef struct memclass_attr_s
-{
-	_MEMSIZE_T_			size;		// the amount of available memory
-	memclass_limits_t	limits;		// limits as defined above
+typedef struct memclass_attr_s {
+    _MEMSIZE_T_ size;           // the amount of available memory
+    memclass_limits_t limits;   // limits as defined above
 } memclass_attr_t;
 /*
  * MEMCLASS_DEFAULT_ATTR
@@ -132,16 +130,15 @@ typedef struct memclass_attr_s
  * The sum of all fields will always be equivalent to the size attribute
  * defined in memclass_attr_t.
 */
-typedef struct memclass_sizeinfo_s
-{
-	struct {
-		_MEMSIZE_T_	free;
-		_MEMSIZE_T_	used;
-	} reserved;
-	struct {
-		_MEMSIZE_T_	free;
-		_MEMSIZE_T_	used;
-	} unreserved;
+typedef struct memclass_sizeinfo_s {
+    struct {
+        _MEMSIZE_T_ free;
+        _MEMSIZE_T_ used;
+    } reserved;
+    struct {
+        _MEMSIZE_T_ free;
+        _MEMSIZE_T_ used;
+    } unreserved;
 } memclass_sizeinfo_t;
 
 /*
@@ -150,12 +147,11 @@ typedef struct memclass_sizeinfo_s
  * This structure defines the information that may be retrieved from the
  * allocator for a memory class.
 */
-typedef struct memclass_info_s
-{
-	memclass_id_t		id;
-	_Uint32t			reserved;
-	memclass_attr_t		attr;
-	memclass_sizeinfo_t	size;
+typedef struct memclass_info_s {
+    memclass_id_t id;
+    _Uint32t reserved;
+    memclass_attr_t attr;
+    memclass_sizeinfo_t size;
 } memclass_info_t;
 
 /*
@@ -177,19 +173,17 @@ typedef struct memclass_info_s
  *
  * num_entries >= 0 indicates the number of entries actually returned.
 */
-typedef struct proc_memclass_sizeinfo_t
-{
-	_Int32t	num_entries;	// number of mempart_evtparam_t structures which follow
-	_Uint32t	reserved[3];
-	struct per_class_sizeinfo_s
-	{
-		memclass_id_t	mclass_id;	// memory class id to which the size pertains
-		_MEMSIZE_T_	used;			// the amount of memory class 'mclass_id' in use by the process
-		_MEMSIZE_T_ free;			// the amount of memory class 'mclass_id' available to the process
-									// Note that the sum of 'used' + 'free' DOES NOT necessarily reflect
-									// the size of the partition of 'mclass_id'. Check the respective
-									// partition (of 'mclass_id') for that data
-	} si[1];
+typedef struct proc_memclass_sizeinfo_t {
+    _Int32t num_entries;        // number of mempart_evtparam_t structures which follow
+    _Uint32t reserved[3];
+    struct per_class_sizeinfo_s {
+        memclass_id_t mclass_id;    // memory class id to which the size pertains
+        _MEMSIZE_T_ used;       // the amount of memory class 'mclass_id' in use by the process
+        _MEMSIZE_T_ free;       // the amount of memory class 'mclass_id' available to the process
+        // Note that the sum of 'used' + 'free' DOES NOT necessarily reflect
+        // the size of the partition of 'mclass_id'. Check the respective
+        // partition (of 'mclass_id') for that data
+    } si[1];
 } proc_memclass_sizeinfo_t;
 #define PROC_MEMCLASS_SIZEINFO_T_SIZE(n) \
 		((sizeof(proc_memclass_sizeinfo_t) - sizeof(struct per_class_sizeinfo_s)) + \
@@ -253,4 +247,4 @@ typedef struct proc_memclass_sizeinfo_t
 #define APMGR_GET_PROC_MEMINFO   __DIOTF(_DCMD_MEMCLASS, 10, proc_memclass_sizeinfo_t)
 
 
-#endif	/* _MEMCLASS_H_ */
+#endif                          /* _MEMCLASS_H_ */

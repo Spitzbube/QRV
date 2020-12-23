@@ -80,7 +80,7 @@ gdb_prep_reboot(void) {
 	do {
 		curr = getcp0_count();
 	} while((curr - start) < one_tenth);
-#endif	
+#endif
 
 	setcp0_sreg(getcp0_sreg() & ~MIPS_SREG_IE);
 	setcp0_sreg(getcp0_sreg() & ~MIPS_SREG_IMASK);
@@ -120,7 +120,7 @@ void
 gdb_show_exception_info(ulong_t signal, CPU_REGISTERS *ctx) {
     uint32_t *regs = ctx->regs;
 
-    gdb_printf("signal=%d, sr=%x, sp=%x, gp=%x, epc=%x\n", 
+    gdb_printf("signal=%d, sr=%x, sp=%x, gp=%x, epc=%x\n",
 		signal,
 		regs[MIPS_CREG(MIPS_REG_SREG)],
 		regs[MIPS_CREG(MIPS_REG_SP)],
@@ -130,7 +130,7 @@ gdb_show_exception_info(ulong_t signal, CPU_REGISTERS *ctx) {
 
 /*
  * gdb_get_cpuregs:
- * Write the cpu registers into the buffer, and return them 
+ * Write the cpu registers into the buffer, and return them
  * to our gdb client
  */
 void
@@ -195,7 +195,7 @@ branch_predict (CPU_REGISTERS *ctx) {
 	uint32_t		data;
 	uint32_t		*p;
 	size_t			valid;
- 
+
 #ifdef DEBUG_GDB
     kprintf("\nPredict: %x\n", epc);
 #endif
@@ -220,13 +220,13 @@ branch_predict (CPU_REGISTERS *ctx) {
     switch( op->i_t.op ) {
 
     case OPCODE_SPECIAL:
-	
+
 		switch ( op->r_t.func ) {
-			
+
 		case OPCODE_JALR:
 		case OPCODE_JR:
 			return(r4k_get_cpu_reg(ctx, op->r_t.rs));
-	
+
 		default:
 			return(epc + 4);
 		}
@@ -235,7 +235,7 @@ branch_predict (CPU_REGISTERS *ctx) {
     case OPCODE_REGIMM:
 
 		switch ( op->r_t.rt ) {
-	
+
 		case OPCODE_BGEZAL:
 		case OPCODE_BGEZALL:
 		case OPCODE_BGEZ:
@@ -244,7 +244,7 @@ branch_predict (CPU_REGISTERS *ctx) {
 				return(epc + 8);
 			else
 				return(epc + (4 + (op->i_t.s_imd << 2)));
-	
+
 		case OPCODE_BLTZAL:
 		case OPCODE_BLTZALL:
 		case OPCODE_BLTZ:
@@ -253,7 +253,7 @@ branch_predict (CPU_REGISTERS *ctx) {
 				return(epc + 8);
 			else
 				return(epc + (4 + (op->i_t.s_imd << 2)));
-	
+
 		default:
 			return(epc + 4);
 		}
@@ -262,7 +262,7 @@ branch_predict (CPU_REGISTERS *ctx) {
     case OPCODE_JAL:
     case OPCODE_J:
 		return((epc & MIPS_R4K_HI_ADDR_MASK) + (op->j_t.target << 2));
-	
+
     case OPCODE_BEQ:
     case OPCODE_BEQL:
 		if (r4k_get_cpu_reg(ctx, op->i_t.rs) != r4k_get_cpu_reg(ctx, op->i_t.rt))
@@ -276,7 +276,7 @@ branch_predict (CPU_REGISTERS *ctx) {
 			return(epc + 8);
 		else
 			return(epc + (4 + (op->i_t.s_imd << 2)));
-	
+
     case OPCODE_BLEZ:
     case OPCODE_BLEZL:
 		if ((int)r4k_get_cpu_reg(ctx, op->i_t.rs) > 0)
@@ -304,14 +304,14 @@ void
 gdb_proc_continue(CPU_REGISTERS *ctx, int step) {
     uintptr_t addr;
 
-    /* 
+    /*
      * try to read optional parameter, addr unchanged if no parm
      */
     parsehexnum(&inbuf[1], (int *)&ctx->regs[MIPS_CREG(MIPS_REG_EPC)]);
 
     /*
-     * If we are stepping, we must write a "breakpoint" into 
-     * the next instruction and note that we have done this. 
+     * If we are stepping, we must write a "breakpoint" into
+     * the next instruction and note that we have done this.
      * The breakpoint handler will check to see if we hit one
      * of these stepping breaks and restore the code
      * appropriately.
@@ -411,10 +411,10 @@ ulong_t handle_exception(struct kdebug_entry *entry, ulong_t sigcode, CPU_REGIST
 
 /*
  * mips_signal_handler
- * 
+ *
  * Interface between the kdebugger assembly exception wrapper
- * and C entry call. 
- */ 
+ * and C entry call.
+ */
 void mips_signal_handler(ulong_t cause, CPU_REGISTERS *ctx) {
 	ulong_t sigcode;
 

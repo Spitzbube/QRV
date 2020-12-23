@@ -18,6 +18,13 @@ OBJECTS = entry.o \
           common_options.o \
           syspage_memory.o \
           cpu_syspage_memory.o \
+          private.o \
+          print_syspage.o \
+          hwi.o \
+          ram.o \
+          addr_space.o \
+          mmu.o \
+          debug.o \
           _main.o \
           main.o
 
@@ -30,7 +37,9 @@ OBJECTS += lib/mem.o \
            lib/util.o
 
 # Platform-dependent
-OBJECTS += ../platform/qemu_virt/dbg_uart.o
+PLAT = ../platform/qemu_virt
+OBJECTS += $(PLAT)/dbg_uart.o \
+           $(PLAT)/mem.o
 
 kernel: $(OBJECTS) kernel.ld
 	$(LD) $(LDFLAGS) -T kernel.ld -o kernel $(OBJECTS)
@@ -40,4 +49,4 @@ kernel: $(OBJECTS) kernel.ld
 all: $(OBJECTS)
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) kernel kernel.asm kernel.sym

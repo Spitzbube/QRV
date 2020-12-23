@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -53,7 +53,7 @@ static void *timer_thread( void *p )
     ret = yarrow_add_source( Yarrow, &pool_id );
     if( ret != 0 )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
                "random: Unable to get pool_id for timer thread." );
         return NULL;
     }
@@ -105,7 +105,7 @@ static void *syspoll_thread( void *p )
     ret = yarrow_add_source( Yarrow, &pool_id );
     if( ret != 0 )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
                "random: Unable to get pool_id for syspoll thread." );
         return NULL;
     }
@@ -132,7 +132,7 @@ static void *syspoll_thread( void *p )
         dir_entry = readdir( dir );
         while( dir_entry != NULL )
         {
-            SHA1Update( &context, (uint8_t *)dir_entry, 
+            SHA1Update( &context, (uint8_t *)dir_entry,
                         sizeof( struct dirent ) + dir_entry->d_namelen - 1 );
 
             if( dir_entry->d_name[0] < '0' || dir_entry->d_name[1] > '9' )
@@ -146,24 +146,24 @@ static void *syspoll_thread( void *p )
             while( fd != -1 )
             {
                 memset( &debug_pid, 0, sizeof( debug_pid ) );
-                ret = devctl( fd, DCMD_PROC_INFO, &debug_pid, 
+                ret = devctl( fd, DCMD_PROC_INFO, &debug_pid,
                               sizeof( debug_pid ), NULL );
                 if( ret == -1 )
                     break;
 
-                SHA1Update( &context, (uint8_t *)&debug_pid, 
+                SHA1Update( &context, (uint8_t *)&debug_pid,
                             sizeof( debug_pid ) );
 
                 for( i=0; i<debug_pid.num_threads; i++ )
                 {
                     memset( &debug_tid, 0, sizeof( debug_tid ) );
                     debug_tid.tid = i + 1;
-                    ret = devctl( fd, DCMD_PROC_TIDSTATUS, &debug_tid, 
+                    ret = devctl( fd, DCMD_PROC_TIDSTATUS, &debug_tid,
                                   sizeof( debug_tid ), NULL );
                     if( ret == -1 )
                         continue;
 
-                    SHA1Update( &context, (uint8_t *)&debug_tid, 
+                    SHA1Update( &context, (uint8_t *)&debug_tid,
                                 sizeof( debug_tid ) );
                 }
 
@@ -176,7 +176,7 @@ static void *syspoll_thread( void *p )
             dir_entry = readdir( dir );
         }
         closedir( dir );
-       
+
         SHA1Update( &context, (uint8_t *)&rdata, sizeof( rdata ) );
 
         ClockTime( CLOCK_REALTIME, NULL, &clk );
@@ -188,7 +188,7 @@ static void *syspoll_thread( void *p )
         if( Yarrow )
         {
             /* Assume 1 bit in every 8 is random */
-            yarrow_input( Yarrow, digest, sizeof( digest ), pool_id, 
+            yarrow_input( Yarrow, digest, sizeof( digest ), pool_id,
                           sizeof( digest ) );
         }
     }
@@ -221,7 +221,7 @@ static void *interrupt_thread( void *p )
     ret = ThreadCtl( _NTO_TCTL_IO, 0 );
     if( ret != 0 )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
                "random: Unable to gain IO privs: %s",
                strerror( errno ) );
         return NULL;
@@ -230,7 +230,7 @@ static void *interrupt_thread( void *p )
     chid = ChannelCreate( 0 );
     if( chid == -1 )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
                "random: ChannelCreate() failed: %s",
                strerror( errno ) );
         return NULL;
@@ -239,7 +239,7 @@ static void *interrupt_thread( void *p )
     coid = ConnectAttach( 0, 0, chid, _NTO_SIDE_CHANNEL, 0 );
     if( coid == -1 )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
                "random: ConnectAttach() failed: %s",
                strerror( errno ) );
         return NULL;
@@ -248,7 +248,7 @@ static void *interrupt_thread( void *p )
     ret = yarrow_add_source( Yarrow, &pool_id );
     if( ret != 0 )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
                "random: Unable to get pool_id for interrupt %d thread.", intr );
         return NULL;
     }
@@ -260,8 +260,8 @@ static void *interrupt_thread( void *p )
     intr_id = InterruptAttachEvent( intr, &event, _NTO_INTR_FLAGS_TRK_MSK );
     if( intr_id == -1 )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
-               "random: Unable to attach event to intr %d: %s", 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
+               "random: Unable to attach event to intr %d: %s",
                intr, strerror( errno ) );
         return NULL;
     }
@@ -298,10 +298,10 @@ static void *interrupt_thread( void *p )
 
                     if( Yarrow )
                     {
-                        yarrow_input( Yarrow, (uint8_t *)&clk, sizeof( clk ), 
+                        yarrow_input( Yarrow, (uint8_t *)&clk, sizeof( clk ),
                                       pool_id, 8 );
 
-                        yarrow_output( Yarrow, (uint8_t *)&rdata, 
+                        yarrow_output( Yarrow, (uint8_t *)&rdata,
                                        sizeof( rdata ) );
                     }
 
@@ -314,7 +314,7 @@ static void *interrupt_thread( void *p )
                 if( rcvid )
                     MsgError( rcvid, ENOTSUP );
         }
-        
+
     }
 
     return NULL;

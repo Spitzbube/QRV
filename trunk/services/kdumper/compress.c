@@ -79,7 +79,7 @@ compress_write(void *p, unsigned len) {
 			putLong( crc);
 			putLong( stream.total_in );
 			raw_write( p, 1 );
-			kprintf("COMPRESS DONE - total in %d total out %d %d%%\n",  
+			kprintf("COMPRESS DONE - total in %d total out %d %d%%\n",
 				stream.total_in, stream.total_out, stream.total_out*100/stream.total_in );
 		}
 	} else {
@@ -140,6 +140,6 @@ compress_init(void) {
 		kprintf("Couldn't initialize compression library\n");
 		return;
 	}
-	
+
 	compress_enabled = 1;
 }

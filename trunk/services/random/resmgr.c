@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -36,7 +36,7 @@
 
 extern yarrow_t *Yarrow;
 
-static int dev_random_read( resmgr_context_t *ctp, io_read_t *msg, 
+static int dev_random_read( resmgr_context_t *ctp, io_read_t *msg,
                             RESMGR_OCB_T *ocb )
 {
     int status;
@@ -84,8 +84,8 @@ static void * resmgr_thread( void *p )
     dispatch = dispatch_create();
     if( dispatch == NULL )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
-               "random: Unable to create dispatch context: %s.", 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
+               "random: Unable to create dispatch context: %s.",
                strerror( errno ) );
         return NULL;
     }
@@ -94,30 +94,30 @@ static void * resmgr_thread( void *p )
     res_attr.nparts_max = 10;
     res_attr.msg_max_size = 0;
 
-    iofunc_func_init( _RESMGR_CONNECT_NFUNCS, &connect_funcs, 
+    iofunc_func_init( _RESMGR_CONNECT_NFUNCS, &connect_funcs,
                       _RESMGR_IO_NFUNCS, &io_funcs );
 
     io_funcs.read = dev_random_read;
 
     iofunc_attr_init( &io_attr, S_IFNAM | 0666, 0, 0 );
-    
-    id1 = resmgr_attach( dispatch, &res_attr, "/dev/random", _FTYPE_ANY, 
+
+    id1 = resmgr_attach( dispatch, &res_attr, "/dev/random", _FTYPE_ANY,
                          0, &connect_funcs, &io_funcs, &io_attr );
-    id2 = resmgr_attach( dispatch, &res_attr, "/dev/urandom", _FTYPE_ANY, 
+    id2 = resmgr_attach( dispatch, &res_attr, "/dev/urandom", _FTYPE_ANY,
                          0, &connect_funcs, &io_funcs, &io_attr );
     if( id1 == -1 || id2 == -1  )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
                "random: Unable to attach resmgr: %s.", strerror( errno ) );
         return NULL;
     }
 
-    
+
     ctp = resmgr_context_alloc( dispatch );
     if( ctp == NULL )
     {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
-               "random: Unable to allocate resmgr context: %s.", 
+        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
+               "random: Unable to allocate resmgr context: %s.",
                strerror( errno ) );
         return NULL;
     }
@@ -127,7 +127,7 @@ static void * resmgr_thread( void *p )
         ctp = resmgr_block( ctp );
         if( ctp == NULL )
         {
-            slogf( _SLOGC_CHAR, _SLOG_CRITICAL, 
+            slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
                    "random: resmgr_block() failed: %s.", strerror( errno ) );
             return NULL;
         }

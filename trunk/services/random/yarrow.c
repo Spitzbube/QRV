@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -47,7 +47,7 @@
 /* Utility functions forward declerations */
 static void yarrow_slow_init( yarrow_t *p );
 static void yarrow_do_sha1( yarrow_t *p, yarrow_gen_ctx_t *ctx );
-static void yarrow_make_new_state( yarrow_t *p, yarrow_gen_ctx_t *ctx, 
+static void yarrow_make_new_state( yarrow_t *p, yarrow_gen_ctx_t *ctx,
                                    uint8_t *state);
 static void trash_mem(void* mem,uint32_t len);
 static void bubble_sort(uint32_t* data,uint32_t len);
@@ -133,7 +133,7 @@ int yarrow_slow_poll( uint8_t *buffer, int buffer_size )
 
 
 
-yarrow_t * yarrow_create( void ) 
+yarrow_t * yarrow_create( void )
 {
     yarrow_t *p;
 	uint32_t i;
@@ -155,13 +155,13 @@ yarrow_t * yarrow_create( void )
     pthread_mutex_lock( &p->mutex );
 
     /* Does a slow poll and then calls yarrow_make_state(...) */
-    yarrow_slow_init( p );	
+    yarrow_slow_init( p );
 
     /* Initialize compression routines */
-    for(i=0;i<COMP_SOURCES;i++) 
+    for(i=0;i<COMP_SOURCES;i++)
     {
         ret = comp_init( ( p->comp_state ) + i );
-        if( ret != COMP_SUCCESS) 
+        if( ret != COMP_SUCCESS)
         {
             pthread_mutex_destroy( &p->mutex );
             free( p );
@@ -179,7 +179,7 @@ yarrow_t * yarrow_create( void )
 }
 
 
-int yarrow_destroy( yarrow_t *p ) 
+int yarrow_destroy( yarrow_t *p )
 {
 	uint32_t i;
 
@@ -189,7 +189,7 @@ int yarrow_destroy( yarrow_t *p )
     pthread_mutex_lock( &p->mutex );
 
 	p->ready = YARROW_NOT_READY;
-	
+
 	for(i=0;i<COMP_SOURCES;i++)
 	{
 		comp_end((p->comp_state)+i);
@@ -197,7 +197,7 @@ int yarrow_destroy( yarrow_t *p )
 
     pthread_mutex_destroy( &p->mutex );
 	free( p );
-	
+
 	return YARROW_SUCCESS;
 }
 
@@ -216,7 +216,7 @@ int yarrow_add_source( yarrow_t *p, uint32_t *pool_no )
 
     p->poolSize[idx] = 0;
     p->poolEstBits[idx] = 0;
-    
+
     pthread_mutex_unlock( &p->mutex );
 
     *pool_no = idx;
@@ -225,23 +225,23 @@ int yarrow_add_source( yarrow_t *p, uint32_t *pool_no )
 
 
 /* Provide output */
-int yarrow_output( yarrow_t *p, uint8_t *outbuf, uint32_t outbuflen ) 
+int yarrow_output( yarrow_t *p, uint8_t *outbuf, uint32_t outbuflen )
 {
 	uint32_t i;
 
     pthread_mutex_lock( &p->mutex );
 
-	for( i=0; i<outbuflen; i++,p->index++,p->numout++ ) 
+	for( i=0; i<outbuflen; i++,p->index++,p->numout++ )
 	{
 		/* Check backtracklimit */
-		if(p->numout > BACKTRACKLIMIT) 
+		if(p->numout > BACKTRACKLIMIT)
 		{
-			yarrow_do_sha1( p, &p->outstate );	
+			yarrow_do_sha1( p, &p->outstate );
 			yarrow_make_new_state( p, &p->outstate, p->outstate.out );
 		}
 
 		/* Check position in iv */
-		if( p->index >= 20 ) 
+		if( p->index >= 20 )
 		{
 			yarrow_do_sha1( p, &p->outstate );
 		}
@@ -257,13 +257,13 @@ int yarrow_output( yarrow_t *p, uint8_t *outbuf, uint32_t outbuflen )
 
 
 /* Take some "random" data and make more "random-looking" data from it */
-int yarrow_stretch( uint8_t *inbuf, uint32_t inbuflen, uint8_t *outbuf, uint32_t outbuflen ) 
+int yarrow_stretch( uint8_t *inbuf, uint32_t inbuflen, uint8_t *outbuf, uint32_t outbuflen )
 {
 	long int left,prev;
 	sha1_ctx_t ctx;
 	uint8_t dig[20];
 
-	if(inbuflen >= outbuflen) 
+	if(inbuflen >= outbuflen)
 	{
 		memcpy(outbuf,inbuf,outbuflen);
 		return YARROW_SUCCESS;
@@ -273,14 +273,14 @@ int yarrow_stretch( uint8_t *inbuf, uint32_t inbuflen, uint8_t *outbuf, uint32_t
 		SHA1Init(&ctx);
 		SHA1Update(&ctx,inbuf,inbuflen);
 		SHA1Final(dig,&ctx);
-		for(prev=0,left=outbuflen;left>0;prev+=20,left-=20) 
+		for(prev=0,left=outbuflen;left>0;prev+=20,left-=20)
 		{
 			SHA1Update(&ctx,dig,20);
 			SHA1Final(dig,&ctx);
 			memcpy(outbuf+prev,dig,(left>20)?20:left);
 		}
 		trash_mem(dig,20*sizeof(uint8_t));
-		
+
 		return YARROW_SUCCESS;
 	}
 
@@ -289,19 +289,19 @@ int yarrow_stretch( uint8_t *inbuf, uint32_t inbuflen, uint8_t *outbuf, uint32_t
 
 
 /* Add entropy to the YARROW from a source */
-int yarrow_input( yarrow_t *p, uint8_t *inbuf, uint32_t inbuflen, 
-                  uint32_t poolnum, uint32_t estbits ) 
+int yarrow_input( yarrow_t *p, uint8_t *inbuf, uint32_t inbuflen,
+                  uint32_t poolnum, uint32_t estbits )
 {
 	int resp;
 
-	if( poolnum >= p->pool_count ) 
+	if( poolnum >= p->pool_count )
         return YARROW_ERR_OUT_OF_BOUNDS;
 
     pthread_mutex_lock( &p->mutex );
 
 	/* Add to entropy pool */
 	SHA1Update(&p->pool,inbuf,inbuflen);
-	
+
 	/* Update pool size, pool user estimate and pool compression context */
 	p->poolSize[poolnum] += inbuflen;
 	p->poolEstBits[poolnum] += estbits;
@@ -323,7 +323,7 @@ int yarrow_input( yarrow_t *p, uint8_t *inbuf, uint32_t inbuflen,
 
 
 
-int yarrow_force_reseed( yarrow_t *p, uint64_t ticks ) 
+int yarrow_force_reseed( yarrow_t *p, uint64_t ticks )
 {
 	int i;
 	uint64_t start;
@@ -349,7 +349,7 @@ int yarrow_force_reseed( yarrow_t *p, uint64_t ticks )
 		SHA1Update( &p->pool,buf, 64 );
 		yarrow_output( p, buf, 64 );
 		SHA1Update( &p->pool, buf, 64 );
-	
+
         /* Set up now */
         ClockTime( CLOCK_REALTIME, NULL, &now );
         now = ( now / 1000000 );
@@ -357,7 +357,7 @@ int yarrow_force_reseed( yarrow_t *p, uint64_t ticks )
 	} while ( ( now - start ) < ticks );
 
 	SHA1Final(dig,&p->pool);
-	SHA1Update(&p->pool,dig,20); 
+	SHA1Update(&p->pool,dig,20);
 	SHA1Final(dig,&p->pool);
 
 	/* Reset secret state */
@@ -365,7 +365,7 @@ int yarrow_force_reseed( yarrow_t *p, uint64_t ticks )
 	yarrow_make_new_state( p, &p->outstate, dig );
 
 	/* Clear counter variables */
-	for( i=0; i<p->pool_count; i++) 
+	for( i=0; i<p->pool_count; i++)
 	{
 		p->poolSize[i] = 0;
 		p->poolEstBits[i] = 0;
@@ -382,7 +382,7 @@ int yarrow_force_reseed( yarrow_t *p, uint64_t ticks )
 
 
 /* If we have enough entropy, allow a reseed of the system */
-int yarrow_allow_reseed( yarrow_t *p, uint64_t ticks ) 
+int yarrow_allow_reseed( yarrow_t *p, uint64_t ticks )
 {
 	uint32_t temp[MAX_SOURCES];
 	uint32_t i,sum;
@@ -399,18 +399,18 @@ int yarrow_allow_reseed( yarrow_t *p, uint64_t ticks )
 		if(resp!=COMP_SUCCESS) {return YARROW_ERR_COMPRESSION;}
 
 		/* Use 4 instead of 8 to half compression estimate */
-		temp[i] = _MIN( (int)( ratio*p->poolSize[i]*4), (int)p->poolEstBits[i] ); 
+		temp[i] = _MIN( (int)( ratio*p->poolSize[i]*4), (int)p->poolEstBits[i] );
 	}
 
 	bubble_sort( temp, MAX_SOURCES );
 
-	for( i=K,sum=0; i<MAX_SOURCES; sum+=temp[i++] ); 
-    
+	for( i=K,sum=0; i<MAX_SOURCES; sum+=temp[i++] );
+
     pthread_mutex_unlock( &p->mutex );
 
-	if( sum>THRESHOLD ) 
+	if( sum>THRESHOLD )
 		return yarrow_force_reseed( p, ticks );
-	else 
+	else
 		return YARROW_ERR_NOT_ENOUGH_ENTROPY;
 
 	return YARROW_ERR_PROGRAM_FLOW;
@@ -423,7 +423,7 @@ int yarrow_allow_reseed( yarrow_t *p, uint64_t ticks )
  ******************************************************************************/
 
 /* All error checking should be done in the function that calls these */
-static void yarrow_do_sha1( yarrow_t *p, yarrow_gen_ctx_t *ctx ) 
+static void yarrow_do_sha1( yarrow_t *p, yarrow_gen_ctx_t *ctx )
 {
 	sha1_ctx_t sha;
 
@@ -436,8 +436,8 @@ static void yarrow_do_sha1( yarrow_t *p, yarrow_gen_ctx_t *ctx )
 
 
 
-static void yarrow_make_new_state( yarrow_t *p, yarrow_gen_ctx_t *ctx, 
-                                   uint8_t *state ) 
+static void yarrow_make_new_state( yarrow_t *p, yarrow_gen_ctx_t *ctx,
+                                   uint8_t *state )
 {
 	sha1_ctx_t sha;
 
@@ -498,17 +498,17 @@ static void trash_mem(void* mem,uint32_t len)
 }
 
 /* In-place modifed bubble sort */
-static void bubble_sort(uint32_t *data,uint32_t len) 
+static void bubble_sort(uint32_t *data,uint32_t len)
 {
 	uint32_t i,last,newlast,temp;
 
-	last = len-1; 
-	while(last!=-1) 
+	last = len-1;
+	while(last!=-1)
 	{
 		newlast = -1;
-		for(i=0;i<last;i++) 
+		for(i=0;i<last;i++)
 		{
-			if(data[i+1] > data[i]) 
+			if(data[i+1] > data[i])
 			{
 				newlast = i;
 				temp = data[i];
@@ -517,5 +517,5 @@ static void bubble_sort(uint32_t *data,uint32_t len)
 			}
 		}
 		last = newlast;
-	}		
+	}
 }

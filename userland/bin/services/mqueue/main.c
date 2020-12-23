@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -108,7 +108,7 @@ main(int argc, char *argv[]) {
 	 The maximum number of semaphores/mqueues that the system can support
 	 is actually limited by the number of fd connections it can establish
 	 to proc (each resmgr_attach() is equivalent to an open()).  At some
-	 future point we will be able to boost our limit to match if it is 
+	 future point we will be able to boost our limit to match if it is
 	 lower.  Note that it must be the _sum_ of the MAX_NUM_SEM and MAX_NUM_MQ
 	 that we boost to since a user might want to use all of those together.
 

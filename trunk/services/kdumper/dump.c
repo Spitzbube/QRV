@@ -104,7 +104,7 @@ static void
 pm_count_segs(paddr_t paddr, paddr_t len, int colour, void *d) {
 	struct walk_data	*data = d;
 	paddr_t				end = paddr + len - 1;
-	
+
 	if((data->ip_paddr >= paddr) && (data->ip_paddr <= end)) {
 		data->ip_included = 1;
 	}
@@ -143,7 +143,7 @@ pm_write_segment_data(paddr_t paddr, paddr_t len, int colour, void *d) {
 #define PQ_TO_PADDR(bh, pq)	(BH_PADDR(bh,start) + (((paddr_t)(unsigned)((pq) - (bh)->quanta)) << QUANTUM_BITS))
 
 static void
-dump_quanta(struct block_head *bh, struct pa_quantum *start, struct pa_quantum *end, 
+dump_quanta(struct block_head *bh, struct pa_quantum *start, struct pa_quantum *end,
 			void (*func)(paddr_t, paddr_t, int, void *), void *d) {
 	struct walk_data	*data = d;
 	paddr_t				paddr;
@@ -252,7 +252,7 @@ as_count_segs(struct asinfo_entry *as, char *name, void *d) {
 	struct image_header	*ifs;
 	union image_dirent	*dir;
 	int ifs_dump_type = dip->dump_type & KDUMP_IFS_MASK;
-	
+
 	if((data->ip_paddr >= as->start) && (data->ip_paddr <= as->end)) {
 		data->ip_included = 1;
 	}
@@ -353,12 +353,12 @@ as_write_segment_header(struct asinfo_entry *as, char *name, void *d) {
 		/* This is the bootable IFS that contains procnto. */
 		procnto_paddr = as->start + proc_ifs_off;
 		save_offset = data->data_offset;
-		
+
 		ehdr = cpu_map(procnto_paddr, sizeof(*ehdr), PROT_READ, -1, NULL);
 		phnum = ehdr->e_phnum;
 		phoff = ehdr->e_phoff;
 		cpu_unmap(ehdr, sizeof(*ehdr));
-		
+
 		phdr = cpu_map(procnto_paddr + phoff, sizeof(*phdr) * phnum,
 					   PROT_READ, -1, NULL);
 		for(i = 0; i < phnum; ++i) {
@@ -378,7 +378,7 @@ as_write_segment_header(struct asinfo_entry *as, char *name, void *d) {
 			}
 		}
 		cpu_unmap(phdr, sizeof(*phdr) * phnum);
-		
+
 		// restore original data_offset
 		data->data_offset = save_offset;
 	}
@@ -396,7 +396,7 @@ as_write_segment_data(struct asinfo_entry *as, char *name, void *d) {
 	unsigned long  dir_offset;
 	unsigned long  file_offset;
 	unsigned long  file_size;
-	
+
 	if (ifs_dump_type == KDUMP_IFS_FULL) {
 		write_memory(as->start, as->end - as->start + 1, -1, d);
 	} else if (ifs_dump_type == KDUMP_IFS_BOOTSTRAP) {
@@ -450,7 +450,7 @@ write_note_cpu(unsigned cpu, CPU_REGISTERS *ctx, struct walk_data *data) {
 	name = *(char **)((uintptr_t)tmp + kdbgp->pr_debug_name_off);
 	if(name == NULL) name = "<no name>";
 	if(debug_flag > 0) {
-		kprintf("CPU %d process: '%s'\n", cpu, name);		
+		kprintf("CPU %d process: '%s'\n", cpu, name);
 	}
 
 	kdumpp = private->kdebug_info->kdump_private;
@@ -475,8 +475,8 @@ write_note_cpu(unsigned cpu, CPU_REGISTERS *ctx, struct walk_data *data) {
 }
 
 /**
- * 
- * paddr32_to_quantum - find the quantum for the physical address 
+ *
+ * paddr32_to_quantum - find the quantum for the physical address
  *
  * This routine finds the quantum associated with the 32-bit physical address
  * if such a quantum exists.
@@ -491,7 +491,7 @@ paddr32_to_quantum (paddr64_t  physAddr, struct block_head ** blk_head) {
     struct block_head	**rover;
     struct block_head	**start;
 	unsigned            idx;
-										
+
     bhp = blk_head;
     start = rover = bhp + last_blk;
     do {
@@ -507,13 +507,13 @@ paddr32_to_quantum (paddr64_t  physAddr, struct block_head ** blk_head) {
         if (*++rover == NULL)
 			rover = bhp;
     } while(rover != start);
-	
+
     return (NULL);
 }
 
 /**
- * 
- * paddr64_to_quantum - find the quantum for the physical address 
+ *
+ * paddr64_to_quantum - find the quantum for the physical address
  *
  * This routine finds the quantum associated with the 64-bit physical address
  * if such a quantum exists.
@@ -528,7 +528,7 @@ paddr64_to_quantum (paddr64_t  physAddr, struct block_head ** blk_head) {
     struct block_head	**rover;
     struct block_head	**start;
 	unsigned            idx;
-										
+
     bhp = blk_head;
     start = rover = bhp + last_blk;
     do {
@@ -544,7 +544,7 @@ paddr64_to_quantum (paddr64_t  physAddr, struct block_head ** blk_head) {
         if (*++rover == NULL)
 			rover = bhp;
     } while(rover != start);
-	
+
     return (NULL);
 }
 
@@ -602,7 +602,7 @@ dump_system(unsigned sigcode, void *ctx, void (*write_func)(void *, unsigned)) {
 	paddr_t						cp_paddr;
 	uint8_t						*cp_vaddr;
 	unsigned					len;
-	
+
 	memset(&note, 0, sizeof(note));
 	memset(&data, 0, sizeof(data));
 
@@ -633,9 +633,9 @@ dump_system(unsigned sigcode, void *ctx, void (*write_func)(void *, unsigned)) {
 	    active_memory_scan (bhp);
 	}
 
-	// The 'ctx' parm is only pointing at a copy of the CPU register set, 
+	// The 'ctx' parm is only pointing at a copy of the CPU register set,
 	// but that's always the first thing in a mcontext_t, and we don't care
-	// about anything following. 
+	// about anything following.
 	if(cpu_vaddrinfo((void *)GET_REGIP(&((mcontext_t *)ctx)->cpu), &data.ip_paddr, &len) == PROT_NONE) {
 		// If the instruction pointer vaddr doesn't have a translation,
 		// we don't want to try to write it specially
@@ -655,11 +655,11 @@ dump_system(unsigned sigcode, void *ctx, void (*write_func)(void *, unsigned)) {
 	data.num_segs += _syspage_ptr->num_cpu; // One segment for each cpupage
 	note.syspage_segnum  = data.num_segs + 0;
 	note.dumpinfo_segnum = data.num_segs + 1;
-	// extra segment entries: syspage, dump_info, note 
+	// extra segment entries: syspage, dump_info, note
 	data.num_segs += 1 + 1 + 1;
 	if(debug_flag > 0) {
 		kprintf("Number of segments:%d, procnto=%d, syspage=%d, dumpinfo=%d\n",
-				data.num_segs, 
+				data.num_segs,
 				note.procnto_segnum, note.syspage_segnum, note.dumpinfo_segnum);
 	}
 
@@ -710,7 +710,7 @@ dump_system(unsigned sigcode, void *ctx, void (*write_func)(void *, unsigned)) {
 		cp_paddr += private->cpupage_spacing;
 	}
 
-	//write syspage segment header 
+	//write syspage segment header
 	write_phdr(vaddr_to_paddr(_syspage_ptr), _syspage_ptr->total_size,
 			PT_LOAD, PF_R|PF_W|PF_X, &data);
 
@@ -720,7 +720,7 @@ dump_system(unsigned sigcode, void *ctx, void (*write_func)(void *, unsigned)) {
 
 	//write note header
 	//ALTERNATE: write out note_cpu's for each cpu
-	write_phdr(0, sizeof(note) + (sizeof(struct kdump_note_cpu)+sizeof(CPU_REGISTERS)) * 1, 
+	write_phdr(0, sizeof(note) + (sizeof(struct kdump_note_cpu)+sizeof(CPU_REGISTERS)) * 1,
 				PT_NOTE, 0, &data);
 
 	// Don't set this any sooner - if you do, it will cause more segments
@@ -742,7 +742,7 @@ dump_system(unsigned sigcode, void *ctx, void (*write_func)(void *, unsigned)) {
 		write_func(cp_vaddr, sizeof(*_cpupage_ptr));
 		cp_vaddr += private->cpupage_spacing;
 	}
-				
+
 	write_func(_syspage_ptr, _syspage_ptr->total_size);
 
 	write_func(dip, offsetof(struct kdump, kp_buff));
@@ -751,13 +751,13 @@ dump_system(unsigned sigcode, void *ctx, void (*write_func)(void *, unsigned)) {
 		write_func(dip->kp_buff, dip->kp_size);
 	} else {
 		// unmangle the ring buffer so the oldest stuff comes out first
-		write_func(&dip->kp_buff[dip->kp_idx], 
+		write_func(&dip->kp_buff[dip->kp_idx],
 					dip->kp_size - dip->kp_idx);
 		write_func(dip->kp_buff, dip->kp_idx);
 	}
 
 
-	//write note segment data 
+	//write note segment data
 	note.note_version = NOTE_VERSION_CURRENT;
 	note.sig_num   = SIGCODE_SIGNO(sigcode);
 	note.sig_code  = SIGCODE_CODE(sigcode);
@@ -769,7 +769,7 @@ dump_system(unsigned sigcode, void *ctx, void (*write_func)(void *, unsigned)) {
 	note.regset_size = sizeof(CPU_REGISTERS);
 	cpu_note(&note);
 	write_func(&note, sizeof(note));
-	//ALTERNATE: for(i = 0; i < _syspage_ptr->num_cpu; ++i) 
+	//ALTERNATE: for(i = 0; i < _syspage_ptr->num_cpu; ++i)
 	write_note_cpu(current_cpunum(), ctx, &data);
 
 	//finalize write function

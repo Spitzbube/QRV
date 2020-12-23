@@ -77,23 +77,23 @@
 
 /* TraceEvent() - external classes */
 enum {
-	_NTO_TRACE_EMPTY,
-	_NTO_TRACE_CONTROL,
-	_NTO_TRACE_KERCALL,
-	_NTO_TRACE_KERCALLENTER,
-	_NTO_TRACE_KERCALLEXIT,
-	_NTO_TRACE_KERCALLINT,
-	_NTO_TRACE_INT,
-	_NTO_TRACE_INTENTER,
-	_NTO_TRACE_INTEXIT,
-	_NTO_TRACE_PROCESS,
-	_NTO_TRACE_THREAD,
-	_NTO_TRACE_VTHREAD,
-	_NTO_TRACE_USER,
-	_NTO_TRACE_SYSTEM,
-	_NTO_TRACE_COMM,
-	_NTO_TRACE_INT_HANDLER_ENTER,
-	_NTO_TRACE_INT_HANDLER_EXIT,
+    _NTO_TRACE_EMPTY,
+    _NTO_TRACE_CONTROL,
+    _NTO_TRACE_KERCALL,
+    _NTO_TRACE_KERCALLENTER,
+    _NTO_TRACE_KERCALLEXIT,
+    _NTO_TRACE_KERCALLINT,
+    _NTO_TRACE_INT,
+    _NTO_TRACE_INTENTER,
+    _NTO_TRACE_INTEXIT,
+    _NTO_TRACE_PROCESS,
+    _NTO_TRACE_THREAD,
+    _NTO_TRACE_VTHREAD,
+    _NTO_TRACE_USER,
+    _NTO_TRACE_SYSTEM,
+    _NTO_TRACE_COMM,
+    _NTO_TRACE_INT_HANDLER_ENTER,
+    _NTO_TRACE_INT_HANDLER_EXIT,
 };
 
 /* TraceEvent() - external events */
@@ -169,7 +169,7 @@ enum {
 #define _NTO_TRACE_SYS_PATHMGR      (0x00000002)
 #define _NTO_TRACE_SYS_APS_NAME		(0x00000003)
 #define _NTO_TRACE_SYS_APS_BUDGETS  (0x00000004)
-#define _NTO_TRACE_SYS_APS_BNKR     (0x00000005) /* when APS scheduler detects bankruptcy */
+#define _NTO_TRACE_SYS_APS_BNKR     (0x00000005)    /* when APS scheduler detects bankruptcy */
 #define _NTO_TRACE_SYS_MMAP      	(0x00000006)
 #define _NTO_TRACE_SYS_MUNMAP    	(0x00000007)
 #define _NTO_TRACE_SYS_MAPNAME    	(0x00000008)
@@ -208,9 +208,9 @@ enum {
 
 /* feature index parameters */
 enum {
-	_NTO_TRACE_FIPID,
-	_NTO_TRACE_FITID,
-	_NTO_TRACE_FI_NUM
+    _NTO_TRACE_FIPID,
+    _NTO_TRACE_FITID,
+    _NTO_TRACE_FI_NUM
 };
 
 /* feature parameter masks */
@@ -220,17 +220,17 @@ enum {
 
 #define _TRACE_MAX_EVENT_NUM        (0x00000400)
 
-enum _TRACE_THREAD_STATE { /* Two add. thread-states */
-	_TRACE_THREAD_CREATE = STATE_MAX,
-	_TRACE_THREAD_DESTROY,
-	_TRACE_MAX_TH_STATE_NUM
+enum _TRACE_THREAD_STATE {      /* Two add. thread-states */
+    _TRACE_THREAD_CREATE = STATE_MAX,
+    _TRACE_THREAD_DESTROY,
+    _TRACE_MAX_TH_STATE_NUM
 };
 
 typedef _Uint32t __traceentry;
 
 typedef struct traceevent {
-	__traceentry header;  /* CPU, event, format */
-	__traceentry data[3]; /* event data         */
+    __traceentry header;        /* CPU, event, format */
+    __traceentry data[3];       /* event data         */
 } traceevent_t;
 
 /* tracefile header keywords */
@@ -278,12 +278,12 @@ typedef struct traceevent {
 
 /* event data filled by an event handler */
 typedef struct {
-	__traceentry header;      /* same as traceevent header       */
-	_Uint32t*    data_array;  /* initialized by the user         */
-	_Uint32t     el_num;      /* number of elements returned     */
-	void*        area;        /* user data                       */
-	_Uint32t     feature_mask;/* bits indicate valid features    */
-	_Uint32t     feature[_NTO_TRACE_FI_NUM]; /* feature array - additional data */
+    __traceentry header;        /* same as traceevent header       */
+    _Uint32t *data_array;       /* initialized by the user         */
+    _Uint32t el_num;            /* number of elements returned     */
+    void *area;                 /* user data                       */
+    _Uint32t feature_mask;      /* bits indicate valid features    */
+    _Uint32t feature[_NTO_TRACE_FI_NUM];    /* feature array - additional data */
 } event_data_t;
 
 /* S-simple, C-comb., CC-comb.-cont, B-begin, E-end */
@@ -299,8 +299,8 @@ typedef struct {
 #define _TRACE_KER_CALL_C           (0x00000002<<10)
 #define _TRACE_INT_C                (0x00000003<<10)
 #define _TRACE_PR_TH_C              (0x00000004<<10)
-#define _TRACE_SYSTEM_C          	(0x00000005<<10)
-#define _TRACE_CONTAINER_C          _TRACE_SYSTEM_C		//Container class never defined
+#define _TRACE_SYSTEM_C             (0x00000005<<10)
+#define _TRACE_CONTAINER_C          _TRACE_SYSTEM_C //Container class never defined
 #define _TRACE_USER_C               (0x00000006<<10)
 #define _TRACE_COMM_C               (0x00000007<<10)
 #define _TRACE_TOT_CLASS_NUM        (8)
@@ -326,7 +326,7 @@ typedef struct {
 #define _TRACE_PR_TH_CREATE_P_NAME  (0x00000003<<6)
 #define _TRACE_PR_TH_DESTROY_P_NAME (0x00000004<<6)
 /* additional thread information */
-#define _TRACE_PR_TH_NAME_T   		(0x00000005<<6)
+#define _TRACE_PR_TH_NAME_T         (0x00000005<<6)
 
 /* size of individual trace buffers */
 #define _TRACEBUFSIZE               (16*1024)
@@ -349,40 +349,38 @@ typedef struct {
 #endif
 
 typedef struct tracebuf {
-	struct traceheader{
-		struct tracebuf* baseaddr;    /* base address of the trace buffer  */
-		struct tracebuf* next;        /* pointer to the next trace buffer  */
-		_Uint32t         flags;       /* event mask, locking states, ...   */
-		_Uint32t         num_events;  /* number of events in the buffer    */
-		_Uint32t         seq_buff_num;/* buffer number in the sequence     */
-		_Uint32t         ls13_rb_num; /* 13 pos left-shifted ring buff num */
-		struct intrspin  spin;        /* spin lock (assume 32-bit length)  */
-		traceevent_t volatile* begin_ptr;/* begin of the traceevent chain  */
-		traceevent_t volatile* tail_ptr; /* end of the traceevent chain    */
-		_Uint32t         reserved[31];/* reserved for future expansions    */
-	} h;
-	struct traceevent data[_TRACELEMENTS];
+    struct traceheader {
+        struct tracebuf *baseaddr;  /* base address of the trace buffer  */
+        struct tracebuf *next;      /* pointer to the next trace buffer  */
+        _Uint32t flags;             /* event mask, locking states, ...   */
+        _Uint32t num_events;        /* number of events in the buffer    */
+        _Uint32t seq_buff_num;      /* buffer number in the sequence     */
+        _Uint32t ls13_rb_num;       /* 13 pos left-shifted ring buff num */
+        struct intrspin spin;       /* spin lock (assume 32-bit length)  */
+        traceevent_t volatile *begin_ptr;   /* begin of the traceevent chain  */
+        traceevent_t volatile *tail_ptr;    /* end of the traceevent chain    */
+        _Uint32t reserved[31];      /* reserved for future expansions    */
+    } h;
+    struct traceevent data[_TRACELEMENTS];
 } tracebuf_t;
 
-__BEGIN_DECLS
+__BEGIN_DECLS extern int trace_vnlogf(int __code, int __max, const char *__fmt, va_list __arglist);
+extern int trace_logf(int __code, const char *__fmt, ...) __attribute__((format(__printf__, 2, 3)));
+extern int trace_nlogf(int __code, int __max, const char *__fmt, ...)
+    __attribute__((format(__printf__, 3, 4)));
+extern int trace_logi(int __code, unsigned __d1, unsigned __d2);
+extern int trace_logbc(int __class, int __event, const void *__data, size_t __nbytes);
+extern int trace_logb(int __code, const void *__buf, size_t __nbytes);
+extern int trace_func_enter(void *__this_fn, void *__call_site);
+extern int trace_func_exit(void *__this_fn, void *__call_site);
 
-extern int trace_vnlogf( int __code, int __max, const char *__fmt, va_list __arglist );
-extern int trace_logf( int __code, const char *__fmt, ...) __attribute__ ((format (__printf__, 2, 3)));
-extern int trace_nlogf( int __code, int __max, const char *__fmt, ... ) __attribute__ ((format (__printf__, 3, 4)));
-extern int trace_logi( int __code, unsigned __d1, unsigned __d2 );
-extern int trace_logbc( int __class, int __event, const void *__data, size_t __nbytes);
-extern int trace_logb( int __code, const void *__buf, size_t __nbytes );
-extern int trace_func_enter( void *__this_fn, void *__call_site );
-extern int trace_func_exit( void *__this_fn, void *__call_site );
-
-static __inline__ int trace_here( void )
+static __inline__ int trace_here(void)
 {
-	unsigned pc = (unsigned)__builtin_return_address(0);
-	return TraceEvent( _NTO_TRACE_INSERTSCLASSEVENT, _NTO_TRACE_SYSTEM, _NTO_TRACE_SYS_ADDRESS, (unsigned)pc, (unsigned)0 );
+    void *pc = __builtin_return_address(0);
+    return TraceEvent(_NTO_TRACE_INSERTSCLASSEVENT,
+                      _NTO_TRACE_SYSTEM, _NTO_TRACE_SYS_ADDRESS, (uintptr_t)pc, 0);
 }
 
 __END_DECLS
-
 #endif
-
 #endif

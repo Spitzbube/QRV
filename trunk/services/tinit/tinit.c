@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -214,7 +214,7 @@ void read_ttys(void) {
 				while(*cp == ' ')
 					++cp;
 			}
-				
+
 			if(i == 2) {		//No terminal, make it qansi
 				argv[i++] = (getenv("TERM")) ? getenv("TERM") : "qansi";
 			}
@@ -312,7 +312,7 @@ pid_t start(struct tty_entry *ttp, int session) {
 		sigprocmask(SIG_BLOCK, NULL, &inherit.sigmask);
 		sigaddset(&inherit.sigmask, SIGTSTP);
 	}
-			
+
 	if(session != 0)
 		inherit.flags |= SPAWN_TCSETPGROUP | SPAWN_SETSID;
 
@@ -344,7 +344,7 @@ void options(int argc, char *argv[]) {
 
 		case 't':
 			tstop = 1;
-			break;	
+			break;
 
 		case 'f':
 			strcpy (ttys_file, optarg);

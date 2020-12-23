@@ -2,17 +2,17 @@
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable 
- * license fees to QNX Software Systems before you may reproduce, 
- * modify or distribute this software, or any work that includes 
- * all or part of this software.   Free development licenses are 
- * available for evaluation and non-commercial purposes.  For more 
- * information visit http://licensing.qnx.com or email 
+ * You must obtain a written license from and pay applicable
+ * license fees to QNX Software Systems before you may reproduce,
+ * modify or distribute this software, or any work that includes
+ * all or part of this software.   Free development licenses are
+ * available for evaluation and non-commercial purposes.  For more
+ * information visit http://licensing.qnx.com or email
  * licensing@qnx.com.
- * 
- * This file may contain contributions from others.  Please review 
- * this entire file for other proprietary rights or license notices, 
- * as well as the QNX Development Suite License Guide at 
+ *
+ * This file may contain contributions from others.  Please review
+ * this entire file for other proprietary rights or license notices,
+ * as well as the QNX Development Suite License Guide at
  * http://licensing.qnx.com/license-guide/ for other information.
  * $
  */
@@ -43,10 +43,10 @@
  *  3. we can pass on the trigger message to the ultimate recipient
  *     without worrying too much about being send blocked.
  *
- *  There is also code here to hand out VIDs for virtual circuits 
+ *  There is also code here to hand out VIDs for virtual circuits
  *  (in the future) and PIDs for proxies. The proxies are unique to a node,
- *  and this manager keeps track of them in order to make sure that there 
- *  is no possibility of a proxy ID and a VID overlapping, or of one of 
+ *  and this manager keeps track of them in order to make sure that there
+ *  is no possibility of a proxy ID and a VID overlapping, or of one of
  *  these overlapping with a PID that is currently in use in the machine.
  */
 
@@ -98,9 +98,9 @@ static pthread_mutex_t	ptable_mutex;		/* mutex to control access */
 											/* to proxy_table          */
 static int            	numtrigthreads = NUMTRIGTHREADS_DEFAULT;
 
-static unsigned char or_on[] = 
+static unsigned char or_on[] =
 	{ 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
-static unsigned char and_off[] = 
+static unsigned char and_off[] =
 	{ 0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xBF, 0x7F };
 static unsigned char	proxy_map[PROXY_BITMAP_SIZE];
 
@@ -124,11 +124,11 @@ proxy_init(int n)
 {
 	int				i;
 	pthread_attr_t	attr;
-	
+
 	setup_proxy_map();
 
 	pthread_mutex_init(&ptable_mutex, NULL);
-	
+
 	if (n != -1) {
 		numtrigthreads = n;
 		if (numtrigthreads < 1) {
@@ -136,7 +136,7 @@ proxy_init(int n)
 			return -1;
 		}
 	}
-	
+
 	/* Set up so that workers are detached from us. */
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
@@ -151,7 +151,7 @@ proxy_init(int n)
 			fprintf(stderr, "%s: Unable to create thread %d\n", progname, i);
 			exit(EXIT_FAILURE);
 		}
-	}		
+	}
 	return 0;
 }
 
@@ -185,7 +185,7 @@ proxy_handle_close_ocb(int nd, pid_t pid)
 			found_one = 1;
 			if (verbose > 1)
 				printf("%s: table[%d] nd %d pid %d proxy %d removed.\n",
-					   progname, hint, nd, pid, 
+					   progname, hint, nd, pid,
 					   proxy_table[hint]->proxy_pid);
 			ConnectDetach(proxy_table[hint]->coid);
 			release_proxy_pid(proxy_table[hint]->proxy_pid);
@@ -217,7 +217,7 @@ do_qnx_proxy_attach(procmgr_msg_t *msg, procmgr_reply_t *reply)
 		reply->set_errno_to_this = EAGAIN;
 		return;
 	}
-	
+
 	pthread_mutex_lock(&ptable_mutex);
 
 	spot = hash(new_proxy);
@@ -266,7 +266,7 @@ do_qnx_proxy_attach(procmgr_msg_t *msg, procmgr_reply_t *reply)
 		printf("%s: Filling in proxy table[%d] with nd %d pid %d "
 			   "proxy %d prio %d coid %d\n",
 			   progname, spot, msg->un.proxy.hit_this_nd,
-			   msg->un.proxy.hit_this_pid, new_proxy, 
+			   msg->un.proxy.hit_this_pid, new_proxy,
 			   msg->un.proxy.priority,
 			   proxy_table[spot]->coid);
 
@@ -282,7 +282,7 @@ do_qnx_proxy_rem_attach(procmgr_msg_t *msg, procmgr_reply_t *reply)
 }
 
 void
-do_qnx_proxy_detach(procmgr_msg_t *msg, procmgr_reply_t *reply, 
+do_qnx_proxy_detach(procmgr_msg_t *msg, procmgr_reply_t *reply,
 		struct _msg_info *info)
 {
 	reply->un.proxy_pid = -1;
@@ -329,7 +329,7 @@ do_qnx_proxy_detach(procmgr_msg_t *msg, procmgr_reply_t *reply,
 			}
 		}
 	}
-	
+
 	pthread_mutex_unlock(&ptable_mutex);
 }
 
@@ -404,7 +404,7 @@ release_proxy_pid(pid_t proxy_pid)
  *	Find and clear a bit in the specified bitmap.
  *
  *	bitmap     Bitmap to use.
- *	length     Length of bitmap 
+ *	length     Length of bitmap
  */
 static unsigned
 find_and_clear(unsigned char *bitmap, unsigned length)
@@ -429,7 +429,7 @@ find_and_clear(unsigned char *bitmap, unsigned length)
  *	Find and Set a bit in the specified bitmap.
  *
  *	bitmap     Bitmap to use.
- *	length     Length of bitmap 
+ *	length     Length of bitmap
  *	bit        bit to set.
  */
 static unsigned
@@ -451,7 +451,7 @@ find_and_set(unsigned char *bitmap, unsigned length, unsigned bit)
  *	id. (Note that we could have one numbered 2047, but they are never
  *	generated past 1999.)
  *
- *  Returns: A number from 0..PROXY_TABLE_MAX that is the table entry 
+ *  Returns: A number from 0..PROXY_TABLE_MAX that is the table entry
  *           for this one
  */
 static unsigned
@@ -471,16 +471,16 @@ trigger_thread(void *data)
 	proxy_data_t	pdata;
 	int				parts;
 	iov_t			iov[2];
-	
+
 	for (;;) {
 		if ((rcvid = MsgReceive(trigger_chid, &msg, sizeof(msg), NULL)) == -1) {
 			if (verbose)
 				printf("%s: Error receiving message %s.\n", progname, strerror(errno));
 			continue;
 		}
-		
+
 		pnum = hash(msg.un.proxy.hit_this_pid);
-		
+
 		pthread_mutex_lock(&ptable_mutex);
 
 		if (!proxy_table) {
@@ -502,17 +502,17 @@ trigger_thread(void *data)
 			pthread_mutex_unlock(&ptable_mutex);
 			continue;
 		}
-		
+
 		/* copy so that we can unlock mutex soonest */
 		memcpy(&pdata, proxy_table[pnum], sizeof(proxy_data_t));
 
 		pthread_mutex_unlock(&ptable_mutex);
-		
+
 		/* proxy exists at least, let the Trigger() return */
 		reply.un.proxy_pid = pdata.pid;
 		reply.set_errno_to_this = EOK;
 		MsgReply(rcvid, 0, &reply, sizeof(reply));
-		
+
 		parts = 1;
 		outgoing.hdr.type = _RCVMSG_FROM_PROXY;
 		outgoing.hdr.senders_pid = pdata.proxy_pid;
@@ -521,14 +521,14 @@ trigger_thread(void *data)
 		if (pdata.nbytes) {
 			parts++;
 			SETIOV(&iov[1], pdata.data, pdata.nbytes);
-		}                  
-		 
+		}
+
 		/* send the proxy message */
 		ret = MsgSendv(pdata.coid, iov, parts, NULL, 0);
 
 		if (verbose > 1)
 			printf("%s: proxy MsgSend to coid %d returned %d, error %s\n",
-				   progname, pdata.coid, 
+				   progname, pdata.coid,
 				   ret, strerror(errno));
 	}
 }
@@ -541,14 +541,14 @@ trigger_thread(void *data)
  *	than we actually need at a given time.
  *
  *	Inputs:  table_ptr  The address of the pointer to the table
- *			 table_size Pointer to an unsigned; this is the number of 
- *						entries in the table (not the number of bytes). 
+ *			 table_size Pointer to an unsigned; this is the number of
+ *						entries in the table (not the number of bytes).
  *						Note that some may be used, some not used, depending...
  *			 entry_size The number of bytes in one table entry
  *			 current_size
  *						The number of the largest table entry in use + 1.
  *						For example, if the biggest entry is #5, pass a
- *						current_size of 6 (0..5). 
+ *						current_size of 6 (0..5).
  *	Outputs: table_ptr  May change if the table moves in memory
  *			 table_size May change if the table is grown (shrunk) OK
  *			 current_size

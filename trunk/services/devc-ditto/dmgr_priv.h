@@ -59,7 +59,7 @@ struct relay_cb {
 	int              bpbuf_size;  /* bypass buffer (per ocb) size */
 	int              index;       /* index in the rcb_list */
 	int              cloner_key;  /* is cloner allowed to write ? */
-	
+
 	pthread_mutex_t  mutex;       /* mutex to protect owner/cloner list */
 	struct relay_ocb *owner;      /* owner of real device */
 	struct relay_ocb *cloner;     /* ocbs for .ditto device */

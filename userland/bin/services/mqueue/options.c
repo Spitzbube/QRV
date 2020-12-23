@@ -18,12 +18,33 @@
 
 
 
-#include <inttypes.h>
-#include <hw/sysinfo.h>
 
-void *
-hwi_off2tag(unsigned off) {
-	return((uint8_t *)__hwi_base() + off);
+#include "externs.h"
+
+
+/*
+#ifdef __USAGE
+%C - POSIX message queue and named semaphore manager
+
+%C	[-d]
+
+  -d    Do not daemonize
+#endif
+*/
+
+void
+options(int argc, char *argv[]) {
+	int opt;
+
+	while((opt = getopt(argc, argv, "p:d")) != -1) {
+		switch(opt) {
+		case 'p':
+			break;
+		case 'd':
+			nodaemon = 1;
+			break;
+		}
+	}
 }
 
-__SRCVERSION("hwi_off2tag.c $Rev: 153052 $");
+__SRCVERSION("options.c $Rev: 169544 $");

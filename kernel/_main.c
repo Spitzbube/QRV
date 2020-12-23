@@ -28,7 +28,6 @@ struct ifs_bootstrap_data bootstrap = {
 
 static void syspage_init()
 {
-    struct callin_entry *callin;
     unsigned i;
     struct cpupage_entry *cpupage;
     struct kdebug_callback *kdcall;
@@ -56,14 +55,6 @@ static void syspage_init()
 
     intrinfoptr = SYSPAGE_ENTRY(intrinfo);
     intrinfo_num = _syspage_ptr->intrinfo.entry_size / sizeof(*intrinfoptr);
-
-    calloutptr = SYSPAGE_ENTRY(callout);
-    callout_timer_value = calloutptr->timer_value;
-
-    callin = SYSPAGE_ENTRY(callin);
-    callin->trace_event = outside_trace_event;
-    callin->interrupt_mask = outside_intr_mask;
-    callin->interrupt_unmask = outside_intr_unmask;
 
     cpu_syspage_init();
 }
@@ -108,7 +99,7 @@ void _main(struct syspage_entry *sysp)
 
 void __exit(int status)
 {
-    (void) ThreadDestroy_r(0, -1, (void *) status);
+    (void) ThreadDestroy_r(0, -1, (void *)(long)status);
 #ifdef __GNUC__
     for (;;) {
         /* nothing to do */

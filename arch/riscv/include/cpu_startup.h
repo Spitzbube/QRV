@@ -31,9 +31,10 @@ extern uintptr_t riscv_map(uintptr_t va, paddr_t pa, size_t sz, int flags);
 extern void board_cpu_startup(void);
 extern void board_cpu_startnext(void);
 
-extern unsigned trap_vectors;
 extern int cycles_per_loop;
 extern paddr_t startup_base;
 extern unsigned startup_size;
+
+#define CPU_COMMON_OPTIONS_STRING ""
 
 #endif

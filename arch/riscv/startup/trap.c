@@ -15,14 +15,27 @@
 #include "task.h"
 
 struct spinlock tickslock;
-unsigned ticks;
+unsigned long ticks;
 
 extern char trampoline[], uservec[], userret[];
 
 // TODO
 void syscall(void) {}
-void yield(void) {}
-void wakeup(unsigned *t) {}
+void yield(void)
+{
+    static unsigned long counter = 0;
+
+    if (counter++ % 20) {
+	kprintf("YIELD--");
+    }
+}
+
+void wakeup(unsigned long *t)
+{
+    if (ticks % 25) {
+	kprintf("CLK++");
+    }
+}
 
 // in kernelvec.S, calls kerneltrap().
 void kernelvec();

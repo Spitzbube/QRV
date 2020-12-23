@@ -1,0 +1,755 @@
+ QNXMomentics Non-Commercial (NC) End User License Agreement
+ ===========================================================
+
+ This QNX Momentics Non-Commercial (NC) End User License Agreement
+ (comprising Part A – Background, Part B – Standard Terms & Conditions, and
+ Part C – Supplementary / Alternative Third Party Software Terms,
+ collectively “this Agreement”) is a legal agreement between you and QSS,
+ and is made effective as of the date of your acceptance of this Agreement,
+ as defined above. The parties agree as follows.
+
+
+ Part A -  Background.
+
+ A1   QSS has developed and licenses a general purpose modular real-time
+ operating system known as the QNX Neutrino RTOS (“Neutrino RTOS” ). Its
+ microkernel architecture provides an extensible operating system
+ framework, which is based on the foundational components of the Core OS
+ technology. Additional operating system services are implemented by
+ plugging in modules from other elements of the Neutrino RTOS (e.g.,
+ Networking, File Systems, GUI, Web Client (browsers), etc.).
+
+ QSS also offers bundles of related software development tools (together
+ with the relevant Neutrino RTOS components, collectively the “QNX
+ Momentics Development Suites”), for developers to use to create Neutrino
+ RTOS-based devices (“Target Systems”, as further defined below). These
+ development suites include a variety of development tools, including
+ compilers, debuggers, libraries, headers, utilities, sample source code,
+ etc. See the QNX Momentics Development Suite License Guide at
+ http://licensing.qnx.com/published/eula/QDSLG1_03.html (“License Guide” )
+ for a description of what’s included and how it’s bundled. You can also
+ contact QSS for a hardcopy. Embedded system developers typically build
+ Target Systems using the QNX Momentics development suits by:
+
+ (a)     developing the requisite code to make the Neutrino RTOS
+ operational on their target hardware (i.e., a board support package
+ comprising IPL, start-up and drivers – various parts of which may be
+ available from QSS in binary form for supported processors and peripherals
+ or, alternatively, which may be developed from scratch or derived from
+ QSS-supplied sample source code); and
+
+ (b)     integrating Neutrino RTOS object code programs, libraries and
+ utilities with files they generate using QNX Momentics Development Suite
+ tools in order to define the operating system’s operational constraints,
+ to tailor its functionality and, if equipped with a GUI, to tailor its
+ appearance, in order to satisfy the requirements of the intended device.
+
+ Over the course of a Target System’s life cycle, developers typically
+ change hardware platforms (requiring a repetition of step (a) above)
+ and/or upgrade software stacks (e.g., to adopt new versions of the
+ Neutrino RTOS, or of third party software and/or custom components) in
+ order to enhance the device’s performance and functionality, or to reduce
+ its cost.
+
+
+
+ A2   This Agreement is intended to provide you with license rights to a
+ copy of the non-commercial version of the QNX Momentics Development Suite
+ (“QNX Momentics NC”) solely for use for Non-Commercial Purposes (as
+ defined below).  This Agreement does not offer any support or custom
+ engineering services (see http://www.qnx.com/suppor t/index.html  for an
+ explanation of  QSS’s Standard and Priority Support Plan offerings), nor
+ does it authorize any Software distribution. Contact your authorized QNX
+ sales representative for more information about a commercial license and
+ related QSS support plans, or to inquire about your custom engineering
+ service and runtime distribution license options.
+
+
+
+ Part B - Standard Terms & Conditions
+
+
+
+ B1    General Definitions.   In this Agreement:
+
+
+
+ (a)     “Commercially Released” means formally released, generally
+ available, and fully supported by QSS. It does not include “Experimental”,
+ “engineering”, “beta”, “trial” or “unsupported” components.
+
+ (b)     “Derivative Work” means any modification, adaptation, enhancement,
+ translation, or combination of software source code that, in the absence
+ of this Agreement or other authorization from QSS or its licensors, would
+ constitute infringement of their Intellectual Property under applicable
+ law.
+
+ (c)     “Documentation” means any developer documentation, read-me files
+ and release notes that are provided in or for Commercially Released
+ Software.
+
+ (d)     “Error” means when the Commercially Released Software does not
+ behave the way the associated Documentation says it should and the problem
+ can be reproduced on a Reference Target.  It does not include problems
+ resulting from modifications to, or incorrect or improper use of, the
+ Software.
+
+ (e)     “Intellectual Property” means all patent rights, copyrights and
+ rights relating to the protection of confidential information arising
+ under statutory or common law, and whether or not perfected.
+
+ (f)      “License Guide” means version QDSLG1_03 of the QNX Momentics
+ Development Suite License Guide published at
+ http://licensing.qnx.com/published/eula/QDSLG1_03.html.  Copies may also
+ be obtained directly from QSS.
+
+ (g)     “Licensed Seat” means one developer using the Software on one
+ development host computer to perform Neutrino RTOS development. It does
+ not include two or more developers using one or more computers to share
+ the same Software (e.g., using QNX Phindows or otherwise), even if their
+ use is only part-time and/or is not concurrent.
+
+ (h)     “Non-Commercial Purposes” means:
+
+ (i)     to evaluate the Software and to do exploratory development and
+ "proof of concept" prototyping of Target Systems, Neutrino RTOS software
+ applications and Neutrino RTOS device drivers, whether at home for
+ personal use or at work as a prototyping tool.  However, if you or your
+ employer get serious about developing a commercial version of such items,
+ and you want to continue using the QNX Momentics Development Suite for
+ your development, then you will need to purchase a commercial license;
+
+ (ii)      to use the Software to develop new and to port existing software
+ applications and device drivers to the Neutrino RTOS, provided that such
+ software applications and device drivers are solely for your own personal
+ use, or provided that they are made available for free use and
+ distribution by other QNX Momentics Development Suite users under terms
+ equivalent to the QNX Public License (“QPL”, as published at
+ http://licensing.qnx.com). A commercial QNX Momentics Development Suite
+ license is required for porting software applications for commercial
+ distribution (contact QSS’s Alliances group for more details); and
+
+ (iii)     to use the Runtime Components as an end-user, provided that it
+ is only for personal use by an individual and not for the purpose of
+ generating revenue or in-kind consideration, or for productive use of the
+ Neutrino RTOS in the operation of a business or enterprise.
+
+ (i)       “Object Code” means computer programming code substantially in
+ binary form, and includes header files of the type necessary for use or
+ interoperation with other computer programs.  It is directly executable by
+ a computer or may require processing or linking (but without compilation
+ or assembly).
+
+ (j)       “Reference Target” means, in respect of a particular Software
+ version, a hardware platform on which QSS commercially supports the
+ Commercially Released Software. See  http://qdn.qnx.com/support/sd_hardwar
+ e/ or contact support@qnx.com for a current list.
+
+ (k)      “Software” means all of the Object Code and Source Code included
+ in the version of QNX Momentics NC that you have or intend to download. It
+ includes associated Documentation, any Software updates or supplemental
+ releases that are made available to licensees of QNX Momentics NC free of
+ charge, and any Solutions provided to you pursuant to Section B6 (Limited
+ Warranty). The contents and characteristics of QNX Momentics NC are
+ further described in the License Guide.
+
+ (i)       “Type I Software” means any Commercially Released Software other
+ than Type II or Type III Software.  It includes QSS proprietary code and
+ may include some third party proprietary code and/or open source code.
+
+ (ii)      “Type II Software” means any Commercially Released Software
+ identified as “Type II” or Collateral Code” in the License  Guide.  Type
+ II Software may be licensed to you under alternative, or sublicensed to
+ you under amended, end user license terms – as referenced in Part C. It
+ may include third party proprietary and open source code.
+
+ (iii)     “Type III Software” means any Commercially Released Software
+ identified as “Type III” or “As Is Code” in the License  Guide and all
+ Software that is not Commercially Released. Type III Software is licensed,
+ or sublicensed to you strictly on an “as is” basis, and may be licensed to
+ you under alternative, or sublicensed to you under amended, end user
+ license terms – as referenced in Part C. It may include third party
+ proprietary code and/or open source code.
+
+ (iv)    “Runtime Components” means any Software components that are
+ intended to be integrated into, and to be distributed as an integral part
+ of, Target Systems – as described in applicable Documentation.  Runtime
+ Components of the Software are also described in the QNX Neutrino Runtime
+ Operating System Runtime Technologies section of the License Guide.
+
+ (v)     “Development Tool Components” means any Software components other
+ than Runtime Components.
+
+ (l)       “Solution” means an explanation, workaround or patch that
+ addresses an Error.
+
+ (m)    “Source Code” means computer programming code that is human
+ readable when printed out or displayed.
+
+ (n)     “Target System” means any product into which any Runtime
+ Components have been wholly or partially integrated, provided that the
+ product: (i) significantly enhances the function and value of the Runtime
+ Components, and (ii) has a substantially different principal purpose than
+ that of the Runtime Components, or any other Runtime Components offered by
+ QSS as part of its products..
+
+ (o)     Other capitalized terms defined in any part of this Agreement will
+ have their indicated meaning throughout this Agreement.
+
+
+
+ B2    License Rights.
+
+
+
+ (a)     Grant of Software License.  Subject to the terms of this Agreement
+ and during the applicable term, QSS hereby grants to you, for one Licensed
+ Seat, and solely for Non-Commercial Purposes, a non-exclusive, personal
+ and non-transferable license to:
+
+ (i)       copy the Software as required to install it on and to follow
+ normal back-up and archiving practices for, one development host;
+
+ (ii)      use, execute, display and perform the Software, on the
+ development host and in accordance with associated Documentation, for the
+ purpose of developing, testing and maintaining Target Systems;
+
+ (iii)     create Derivative Works of Software Source Code and, subject to
+ the provisions of Section B4 (Confidential Information), copy, compile,
+ link, use, execute, display and perform such Derivative Works, on the
+ development host and in accordance with associated Documentation, for the
+ purpose of developing, testing and maintaining Target Systems;
+
+ (iv)    copy, link, use, execute, display and perform the Runtime
+ Components, and the Object Code of any Derivative Works created pursuant
+ to (iii) above, as required to install and use them on a  Target System.
+
+ You may demonstrate QNX Momentics NC, or any Target System or ported
+ application based thereon, provided that you clearly qualify it as
+ “Demonstration Only”.  You hereby agree to indemnify and hold QSS harmless
+ from and against any claim or action arising out of any such use of the
+ Software. This Agreement does not authorize the sub-licensing, transfer or
+ distribution of any part of the Software to any third party. Full
+ commercial development and OEM distribution licenses are available from
+ QSS. Contact your sales representative or sales@qnx.com for more
+ information.
+
+
+
+ (b)     NC License Limitations.  You do not qualify for any Software
+ license rights if you were a former QNX Momentics NC licensee whose
+ license terminated for breach of your license agreement terms.  All rights
+ not expressly granted are reserved to QSS and its licensors.  Except as
+ expressly provided herein, this Agreement does not authorise the
+ sub-licensing, transfer or distribution of any part of the Software to any
+ third party.
+
+ (c)     License for Software Source Code. Certain Software Source Code may
+ contain license headers that refer to the QNX Open Community License
+ (“OCL”), QNX Community License (“QCL”), and/ or QNX Confidential Source
+ License (“CSL”, collectively the “QNX Source Code Licenses”).
+ Notwithstanding reference to the QNX Source Code Licenses, the Software
+ Source Code is subject to the terms of this Agreement.
+
+
+
+ (d)     Third Party Software.  Parts of the Software may contain third
+ party code. Type I Software is licensed (or sublicensed) to you under the
+ standard terms of this Agreement and may include additional license terms.
+ Type II Software and Type III Software may be licensed to you under
+ amended or alternative terms. Those terms, and any Software authorship
+ attribution and like notices that QSS is obliged to provide to you, are
+ referenced in Part C or the License Guide and  are published in the
+ corresponding Third Party Open Source license Terms Guide at http://licen
+ sing.qnx.com/published/eula/index/html.  Unless expressly provided
+ otherwise, all third party code is provided to you solely for use in
+ association with the Neutrino RTOS and, in the case of hardware-specific
+ components, only for use in association with hardware from that
+ manufacturer (e.g., any third party code in Epson printer drivers is
+ restricted to use in association with Epson printers only).
+
+
+
+ (e)  Use Restrictions.  Unless expressly permitted by this Agreement, by
+ applicable law, or by QSS in writing, you agree not to:
+
+ (i)       alter, remove, or cover any trademark, logo, proprietary or
+ licensing notices, labels or marks in or on any part of the Software,
+ including in any "about" box, "flash" / "splash" screen or documentation.
+ You agree to use reasonable efforts to ensure that all copies of the
+ Software bear any notices, labels or marks contained in or on the
+ original;
+
+ (ii) &nbs p;    decompile, disassemble, decrypt, extract, unbundle,
+ translate or otherwise attempt or assist others to reverse engineer any
+ part of the Software, including circumventing any license key activation
+ or evaluation period expiry mechanisms, except as necessary, when
+ permitted by an applicable law, to correct defects or achieve
+ inter-operability with complementary programs, for your purposes only, but
+ only if QSS has refused to provide the necessary information or
+ assistance; or
+
+ (iii)     directly or indirectly, export, import or transmit the Software
+ to any country in contravention of the laws of that country or the laws of
+ Canada or the United States. Without restricting the foregoing, the
+ Software contains encryption capabilities and certain governments may
+ regulate the export or import of the Software.
+
+         Unless QSS has provided you with express written consent, the
+ Software may not be used in any application in which death, personal
+ injury, or severe physical or property damage  is a foreseeable
+ consequence of a Software failure (collectively, "High-Risk
+ Applications"), including but not limited to the operation of nuclear
+ facilities, mass transit systems, aircraft navigation or aircraft
+ communication systems, air traffic control, weapon systems, and direct
+ life support machines. QSS expressly disclaims any express or implied
+ warranty or condition of fitness for High-Risk Applications.
+
+ (f)    Restricted Rights. If you are a U.S. government or quasi-government
+ entity, then you should be aware that the Software is a "commercial item",
+ as that term is defined in 48 C.F.R. 2.101 (Oct. 1995), consisting of
+ "commercial computer software" and "commercial computer software
+ documentation", as such terms are used in 48 CFR 12.1212 (Sept. 1995).
+ Consistent with 48 C.F.R. 12.1212 and 48 C.F.R. 227.7202-1 through
+ 227.7202-4 (June 1995), all such customers acquire the Software with only
+ those rights set forth herein. Use, duplication, or disclosure by the U.S.
+ government is subject to restrictions as provided in DFARS 227.7202-1(a)
+ and 227.7202-3(a) (1995), DFARS 252.227-7013 (c)(1)(ii) (OCT 1988), FAR
+ 12.212(a)(1995), FAR 52.227-19, or FAR 52.227-14 (ALT III), as applicable.
+ QNX Software Systems Ltd.
+
+
+
+ B3  Ownership.
+
+ (a)     Software.  QSS and its suppliers retain all right, title and
+ interest in and to the Software, including all Intellectual Property
+ therein.  All copies will be considered Software for the purpose of this
+ Agreement and shall remain the property of QSS and its suppliers. Subject
+ to any underlying rights in the Software, and any Feedback provided under
+ subsection (b) below, you retain all right, title and interest in and to
+ any Derivative Works and application software that you develop pursuant to
+ this Agreement.
+
+
+
+ (b)     Feedback.  At your option, QSS would like to get feedback about
+ its products (i.e., regarding their utility, reliability, performance,
+ user acceptance, and any features or functionality that you would like to
+ see in future versions). QSS would also like to hear about any problems
+ that you have encountered.  In order to incorporate suggested
+ improvements, QSS requires, and you hereby agree, to assign and waive all
+ right, title and interest (if any) in and to any QSS-specific
+ Improvements, including any associated Intellectual Property and moral
+ rights, to and on behalf of QSS. In this paragraph "QSS-specific
+ Improvements" means any work-arounds, error corrections, enhancements or
+ other suggestions or improvements to the Software that you provide to QSS.
+
+
+
+ B4    Confidential Information.
+
+
+
+ (a)     Definition.  “Confidential Information” means any information
+ disclosed by one party (“Discloser”) to another party (“Recipient”) for
+ the purpose of performing or exercising rights under this Agreement
+ (“Purpose”): (i) in source code, (ii) in a document clearly marked
+ “Confidential” (or equivalent), or (c) otherwise in any manner or form,
+ provided it is clearly identified at disclosure as confidential and,
+ within thirty (30) days of disclosure, is summarized and delivered to
+ Recipient in a document marked “Confidential” (or equivalent).
+ Confidential Information does not include any information which is:
+
+ (i)       available to the public other than by reason of Recipient’s
+ breach of this Agreement;
+
+ (ii)      rightfully received by Recipient from a third party without
+ disclosure or use restrictions;
+
+ (iii)     independently developed by or on behalf of Recipient;
+
+ (iv)    previously known to Recipient other than by reason of a prior
+ confidential disclosure from or on behalf of Discloser;
+
+ (v)     hereinafter disclosed by Discloser to a third party without
+ disclosure restrictions;  or
+
+ (vi)    compelled to be disclosed in a public manner pursuant to legal,
+ judicial or administrative proceedings or otherwise as required by law,
+ subject to Recipient giving all reasonable prior notice to Discloser  to
+ allow it  to seek protective or other court orders.
+
+ (b)     Use and Disclosure Restrictions.  Recipient shall only:
+
+ (i)       use Discloser’s Confidential Information as necessary to achieve
+ the Purpose for which it was disclosed, and
+
+ (ii)      disclose Discloser’s Confidential Information to persons who
+ have a need to know to achieve the Purpose for which it was disclosed, and
+ who are employees of Recipient, or of Recipient’s affiliates, or of
+ Recipient’s and Recipient’s affiliates’ Consultants or professional
+ advisors, provided that all recipients within such classes are bound by
+ law or are subject to agreements that provide obligations at least as
+ protective of the Confidential Information as the provisions of this
+ Section B4.
+
+         Recipient shall protect the Confidential Information of Discloser
+ by using the same degree of care, but no less than reasonable care, to
+ prevent the unauthorized dissemination or publication and unauthorized use
+ of the Confidential Information as Recipient uses to protect its own
+ confidential information of like nature. Recipient shall only make copies
+ of the Confidential Information as necessary to achieve the Purpose for
+ which it was disclosed. Recipient shall reproduce Discloser’s proprietary
+ rights notices on all copies in the same manner in which such notices were
+ set forth in or on the original. The mingling of Confidential Information
+ with information that falls within one or more of the exceptions in this
+ Section B4 shall not impair the status of, or the obligations of
+ confidence and non-use respecting, the confidential parts.
+
+
+
+ (c)     Duration of Obligations.   The provisions of this Section B4 shall
+ only apply to Confidential Information first disclosed on or after the
+ date of this Agreement.  Each Recipient’s duty to protect Confidential
+ Information disclosed to it will survive termination of this Agreement
+ indefinitely in respect of source code, but will end on the third
+ anniversary of the date of termination of this Agreement in respect of all
+ other Confidential Information. All Confidential Information furnished by
+ Discloser to Recipient, and all copies thereof, which are in the
+ possession or control of Recipient or its disclosees shall be and remain
+ the property of Discloser and shall be promptly returned to Discloser or
+ destroyed on termination of this Agreement. Recipient may retain one copy
+ of Discloser's Confidential Information in the confidential, restricted
+ access files of its legal department for use only to prove compliance with
+ the terms of this Agreement.
+
+
+
+ B5    Intellectual Property 
+
+    (a)     No Knowledge of Infringement. To the best of QSS’ knowledge, the
+    Software does not infringe the Intellectual Property rights of any third
+    party.
+
+    (b)     Remedy.   Upon QSS’ reasonable belief that an infringement of
+    third party rights may occur, QSS may, at its sole expense and option: (i)
+    procure for you the right to continue using the infringing Software; (ii)
+    replace the infringing Software with non-infringing software of comparable
+    function; (iii) modify the infringing Software to be non-infringing; or
+    (iv) if in the sole discretion of QSS none of the foregoing alternatives
+    is found to be reasonably available, QSS may terminate your rights to the
+    Software.
+
+    (c)   Exclusive Remedy. This Section B5 states your exclusive remedy for
+    infringement of intellectual property rights by the Software.
+
+                
+
+ B6    Limited Warranty.
+
+ (a)     Background.  As indicated in Part A, the Neutrino RTOS Software is
+ a general purpose modular realtime operating system. You will select a
+ subset of its modules for use in a unique hardware and software
+ environment to achieve certain functionality and performance. Ultimately,
+ you may find that you cannot achieve your desired results.  While QSS is
+ committed to providing a versatile and reliable product, it does not
+ warrant that the Software will function in accordance with corresponding
+ Documentation in every combination of hardware platform, software
+ environment and Software configuration. You acknowledge that software bugs
+ are likely to be encountered when Software is used in your particular
+ application. You therefore accept the responsibility of satisfying
+ yourself that the Software is suitable for your intended use. This
+ includes conducting rigorous testing of the Software in combination with
+ your value-added software application(s) on your target hardware platform
+ prior to its initial release, as well as prior to the release of any
+ related software or hardware modifications or enhancements. QSS offers a
+ Priority Support Plan and custom engineering services to help developers
+ identify and solve particular Software implementation issues.
+
+ (b)     Limited Warranty. If you paid to receive a copy of the Software on
+ CDROM, then QSS warrants that this media will be free from defects in
+ material and workmanship under normal use for a period of ninety (90) days
+ from the date of QSS’s corresponding invoice. QSS is not responsible for
+ media defects that result from accident or abuse. Your sole remedy for any
+ breach of this limited warranty will be to receive replacement media.
+
+ As your Licensed Seat for the Software is free (or essentially free), QSS 
+ OFFERS NO OTHER WARRANTY ON THE SOFTWARE under this Agreement.  If
+ notwithstanding this section B6(b) or section B6(c), a court implies any
+ warranty or condition then your sole remedy, and QSS' sole obligation, for
+ any breach of such a term will be, at QSS's option, to either:
+
+ (i)       provide you with a free Solution for use as an interim fix until
+ QSS provides you with a free Commercially Released Software update that
+ corrects the problem; or
+
+ (ii)      terminate this Agreement pursuant to Section B8 (Term &
+ Termination) and,  upon confirmation that you have complied with Section
+ B8(c) (Implication of Termination), QSS will provide a refund of any fees
+ that you paid to QSS for your Licensed Seat.
+
+ (c)     Warranty Disclaimer.
+
+ EXCEPT AS EXPRESSLY PROVIDED HEREIN, THE SOFTWARE PRODUCTS AND ANY
+ SERVICES PROVIDED UNDER THIS AGREEMENT ARE PROVIDED “AS IS” WITHOUT ANY
+ WARRANTIES OF ANY KIND, INCLUDING IMPLIED WARRANTIES AND CONDITIONS OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON- INFRINGEMENT.
+  NOTHING STATED IN THIS AGREEMENT WILL IMPLY THAT THE OPERATION OF ANY
+ SOFTWARE WILL BE UNINTTERUPTED OR ERROR FREE OR THAT ERRORS WILL BE
+ CORRECTED. OTHER WRITTEN OR ORAL STATEMENTS BY QSS, ITS REPRESENATITVES OR
+ OTHERS DO NOT CONSTITUTE WARRANTIES OF QSS.
+
+
+ B7    Limitation of Liability.
+
+ (a)     Limitation.
+
+ IN NO EVENT WILL QSS OR ITS SUBSIDIARIES, OR THEIR OFFICERS, EMPLOYEES,
+ AGENTS, SUPPLIERS, DISTRIBUTORS, OR LICENSORS, (COLLECTIVELY, QSS AND ITS
+ REPRESENTATIVES) BE LIABLE TO YOU, YOUR CONSULTANTS, OR ANY OTHER THIRD
+ PARTY FOR ANY INDIRECT, INCIDENTAL SPECIAL OR CONSEQUENTIAL DAMAGES
+ WHATSOEVER, INCLUDING BUT NOT LIMITED TO LOST REVENUE, LOST OR DAMAGED
+ DATA, OR OTHER COMMERCIAL OR ECONOMIC LOSS, ARISING OUT OF OR RELATING TO
+ ANY BREACH OF THIS AGREEMENT, ANY USE OR INABILITY TO USE SOFTWARE
+ PRODUCTS, OR ANY SERVICES PROVIDED OR INABILITY TO OBTAIN SERVICES, EVEN
+ IF QSS HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE OR CLAIM.
+
+ IN NO EVENT WILL THE AGGREGATE LIABILITY OF QSS AND ITS REPRESENTATIVES
+ FOR ANY DAMAGES ARISING OUT OF OR RELATING TO THIS AGREEMENT, WHETHER IN
+ CONTRACT, TORT, OR OTHERWISE, EXCEED THE TOTAL FEES YOU HAVE PAID TO QSS
+ FOR USE OF THE SOFTWARE UNDER THIS AGREEMENT. THE PROVISIONS OF SECTIONS
+ B6(c) (WARRANTY DICSCLAIMER) AND THIS SECTION B7 SHALL SURVIVE AND APPLY
+ NOTWITHSTANDING THE FAILURE OF ESSENTIAL PURPOSE OF ANY LIMITED REMEDY.
+
+ (b)   Third Party Beneficiaries.  Certain licensors of QSS, a full list of
+ which is available upon request, are third-party beneficiaries to this
+ Agreement to the extent that this Agreement contains provisions that
+ relate to your use of software in which such licensors have an interest.
+ These provisions are made expressly for the benefit of such licensors and
+ are enforceable by them in addition to QSS. NEITHER QSS NOR ANY OF ITS
+ REPRESENTATIVES MAKES OR PASSES ON TO YOU OR OTHER THIRD PARTIES, ANY
+ WARRANTY OR  REPRESENTATION ON BEHALF OF QSS'S LICENSORS.
+
+
+
+ B8     Term & Termination.
+
+ (a)     Term of this Agreement.  This term of this Agreement will commence
+ on the date of your acceptance of this Agreement, as indicated above, and
+ will continue indefinitely thereafter until terminated under subsections
+ (b) below.
+
+ (b)     Termination.  You may terminate this Agreement at any time.  It
+ will be deemed to terminate immediately if you fail to comply with any
+ material term herein.
+
+ (c)     Implication of Termination.  The provisions of this Agreement that
+ are expressed or by their sense and context are intended to survive the
+ termination of this Agreement will survive, including Section B3
+ (Ownership), B4 (Confidential Information), B5 (Intellectual Property), B6
+ (Limited Warranty), B7(Limitation of Liability), this Section B8 and
+ Section B9 (General). Upon termination your license rights end any you
+ shall immediately destroy all whole or partial copies of the Software that
+ are in your possession or control. Termination is without prejudice to any
+ right or remedy that may have accrued, or be accruing to either party
+ prior to termination.
+
+ B9    General
+
+ (a)     Entire Agreement.  This Agreement, comprising Parts A, B and C,
+ along with the License Guide and any other terms expressly referenced by
+ this Agreement (including third party terms referenced in Part C or in the
+ License Guide), constitutes the entire agreement between the parties
+ pertaining to its subject matter and supercedes any prior or
+ contemporaneous agreement, representation, statement, negotiation or
+ undertaking dealing with the same subject matter. No amendment,
+ modification or waiver of any part of this Agreement will be binding
+ unless in a written document that expressly refers to this Agreement and
+ that is signed by both parties. Except as otherwise expressly contemplated
+ in Part A, the terms and conditions of this Agreement will prevail over
+ any inconsistent or additional terms or conditions of either party’s
+ purchase orders or invoices.
+
+ (b)     Assignment.  Subject to the export restrictions in Section B2(e),
+ you may not assign this Agreement to any third party. Any attempted
+ assignment or delegation in violation of the foregoing will be void and of
+ no effect. This Agreement will inure to the benefit of and be binding upon
+ the parties and their respective successors and permitted assigns.
+
+ (c)     Governing Law.  This Agreement will be governed by and construed
+ in accordance with the laws in force in the Province of Ontario, Canada
+ without regard to the conflicts of laws provisions thereof. The parties
+ hereby irrevocably waive: (1) the provisions of the United Nations
+ Convention on Contracts for the International Sale of Goods, and (2) any
+ right to a trial by jury regarding the resolution of any dispute between
+ the parties hereto arising out of or in connection with this Agreement.
+
+
+ PART C - Supplementary / Alternative Third Party Software Terms.
+
+ C1   Supplementary Terms.
+
+ (a)     Open Source Terms.   QSS and its licensors have used various open
+ source contributions in parts of the Software (e.g., the full TCP/IP
+ protocol stack and many of the TCP/IP utilities are based on the TCP/IP
+ protocol stack and utilities from the popular NetBSD 1.5 distribution).
+ These are referenced in the License Guide and the corresponding license
+ terms are published at licensing.qnx.com. To the extent it is entitled,
+ QSS sublicenses these derivative works to you as Type I, Type II or Type
+ III Software, as indicated in the License Guide.  Any terms of this
+ Agreement that differ from the terms of these open licenses are offered to
+ you by QSS alone, and not by any other licensor.
+
+ (b)     Momentics IDE.  If the Software that you license includes the
+ Momentics Integrated Development Environment, then you are hereby advised
+ that the Momentics IDE is based in part on software developed for
+ eclipse.org. Source code for these components is available from
+ www.eclipse.org, under the Common Public License (“CPL”, see
+ http://www.eclipse.org/legal/cpl-v05.html).  As a requirement of the CPL,
+ QSS hereby:
+
+ (i)     disclaims on behalf of all Eclipse.org Contributors all warranties
+ and conditions, express and implied, including warranties or conditions of
+ title and non-infringement, and implied warranties or conditions of
+ merchantability and fitness for a particular purpose;
+
+ (ii)    excludes on behalf of all Contributors all liability for damages,
+ including direct, indirect, special, incidental and consequential damages,
+ such as lost profits; and
+
+ (iii)   states that any provisions which differ from the Common Public
+ License are offered by QSS alone and not by any other party.
+
+ (c)     Mozilla Browser. If the Software that you install includes the
+ Mozilla browser then the Software includes software licensed under the
+ Mozilla and Netscape Public Licenses, version 1.1 ("MPL/NPL"). To meet its
+ obligations under the MPL/NPL, QSS provides source code for all of its
+ modifications to the Mozilla organization for posting and download at
+ www.mozilla.org for use under the terms of the MPL/NPL. Any terms of this
+ Agreement that differ from the terms of the MPL/NPL are offered to you by
+ QSS alone, and not by any other Initial Developer or Contributor (as
+ defined in the MPL/NPL).
+
+ (d)     Early Access.  In order to give you the earliest possible access
+ to the latest QNX Momentics Development Suite technology QSS may provide
+ you with access to “Experimental” and “Beta” Software components. This
+ Software may not been fully optimised and tested.  As such it shall be
+ deemed to be Type III Software for the purpose of this Agreement and you
+ acknowledge that you are not authorised to use any such Software: (i) in a
+ live operating environment, (ii) with data that has not been sufficiently
+ backed up, or (iii) for benchmark or performance testing. You should
+ expect such Software to be somewhat unreliable. It is your responsibility
+ to take adequate precautions to prevent damage to your resources in the
+ event Beta or Experimental Software fails. QSS intends that all Beta (but
+ not necessarily Experimental) Software components will be offered as
+ commercial versions; however, we cannot guarantee if or when this will
+ happen. You should also be aware that significant changes may be made to
+ such components before they are commercially released. Beta and
+ Experimental Software code will be clearly identified as such during
+ installation, or will be clearly marked by QSS in corresponding release
+ notes and/or in associated headers.  Contact QSS is you have any questions
+ regarding the release status of any Software.
+
+ (e)     Trial Software.   QSS may include certain QNX Neutrino RTOS
+ applications in the Software solely for demonstration and internal
+ evaluation/trial purposes (e.g., Macromedia Flash 4).  Such Software is
+ identified in the License Guide as “Trial Software” and shall be deemed to
+ be Type III Software for the purpose of this Agreement.  QSS may require
+ that you obtain distribution and/or support services for such trial
+ Software directly from QSS’s licensor.
+
+ (f)      Multiple Copies of Software.  Notwithstanding the provisions of
+ Section B2 (License Rights) you are not authorized to make multiple copies
+ of the following software programs, in whole or in part, except as
+ required under Section B2(a)(i):
+
+ (i)     Truetype Font Renderer software;
+
+ (ii)    Japanese and Chinese language supplement software;
+
+ (iii)   EMANATE and EMANATE/Lite software;
+
+ (iv)   Websphere Studio Device Developer; and
+
+ (v)   any Software provided under subsection (e) (Trial Software) above.
+
+ (g)   Limited Patent License.  Certain Software products noted in the
+ License Guide (including the QNX Momentics Multimedia Development Kit, the
+ Automotive Development Bundle, the MOST Networking Drivers and the MOST
+ Driver Development Kit, the Infotainment Source Kit, the Framework for
+ multimedia applications, the Media Player Application, and Multimedia
+ Filters and Codecs) provide software for implementing products or systems
+ that may require additional patent license rights.  QSS only licenses to
+ you the Intellectual Property interests in such Software that it owns,
+ patent license rights (if any) that it expressly identifies in the License
+ Guide for such Software, and any third party copyright interests in these
+ Software Products.  It is your responsibility to obtain any additional
+ rights, from individuals or from patent consortia, before making, using or
+ selling any infringing product or system that contains or uses such
+ Software.
+
+ (h)   Copyright Notices and Attributions.   Some of QSS’s licensors
+ require the reproduction of certain copyright notices and authorship
+ attributions in QSS documentation. Those that relate to software
+ referenced in the License Guide and are published at licensing.qnx.com,
+ along with the related license terms. Those relating to other Software are
+ as follows:
+
+ (i)       Dinkum C/C++ or Abridged C++ Library: Copyright (c) 1989-2000 by
+ P.J. Plauger with portions derived from books copyright 1992-2000 by P.J.
+ Plauger. All rights reserved.
+
+ (ii)    SNMP Software (EMANATE / EMANATE/Lite and related tools). Copying
+ and distribution is by permission of SNMP Research International, Inc.
+
+
+   Alternative Terms.
+
+ (a)     GPL & LGPL.  Notwithstanding any fees paid by you for a Software
+ license, no license fees are payable for any components identified in the
+ License Guide as licensed under the GPL or LGPL and Source Code for all of
+ this GPL/LGPL software is available for free download at:
+ ftp://ftp.qnx.com/usr/free.  We are not allowed to sub-license the GNU
+ Libraries to you.  Instead, you are deemed to have your own direct license
+ from the original licensee, as follows.  Any terms of this Agreement that
+ differ from the terms of these licenses are offered to you by QSS alone.
+
+ (i)     The GNU development tools and certain other utilities noted in the
+ License Guide are licensed to you under the GNU General Public License -
+ Version 2, a copy of which has been reproduced in the Documentation and
+ has been published in the corresponding Third Party Open Source License
+ Terms Guide at http://licen sing.qnx.com/published/eula/index.html.
+
+ (ii)    Certain libraries (e.g., GNU C++) noted in the License Guide are
+ licensed to you under the terms of the GNU Lesser General Public License -
+ Version 2.1, a copy of which has been reproduced in the Documentation and
+ has been published in the corresponding Third Party Open Source License
+ Terms Guide at http://licen sing.qnx.com/published/eula/index.html. To
+ meet its obligations under the GNU LGPL, QSS only dynamically links to
+ such libraries. 
+
+
+ You are prohibited from statically linking any part of the Software to any
+ code licensed under the LGPL or otherwise using any GPL or LGPL licensed
+ code with other parts of the Software in a manner that would require
+ redistribution of such Software under either of those licenses.
+
+ (b)     Third Party Software – Unsupported.  As a convenience to
+ developers, QSS offers access to certain software (e.g., mail editors,
+ email clients, utilities, games, etc.) that has been ported to the QNX
+ Neutrino RTOS.  This software, which is provided on a CD ROM labeled
+ “Third Party Software – Unsupported” (or which may be provided for
+ download with the same markings), is not licensed under this Agreement. 
+ To the extent license terms are known, they have been included in the
+ license files packaged with the software.  Any source code that we are
+ willing or obliged to provide has also been included.  The origin of this
+ software may or may not be clear. Third Party Software – Unsupported
+ software is intended to work in conjunction with QNX Neutrino RTOS;
+ however, it is not supported by QSS.  If you decide to use this code, your
+ use is entirely at your own risk with no representations, warranties,
+ guarantees or otherwise by QSS. You may not use the QSS name or trademarks
+ in or otherwise associate QSS with any use or further distribution of this
+ software.  You hereby agree to indemnify and hold QSS harmless from and
+ against any claim or action arising out of any use or distribution of such
+ software.

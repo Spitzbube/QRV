@@ -84,13 +84,13 @@ cpu_walk_extra_pmem(void (*func)(paddr_t, paddr_t, int, void *), void *data) {
 		}
 	}
 
-	// Some of the L2 page tables in the system space are allocated by 
-	// startup rather than procnto and, as such, they're not in the 
+	// Some of the L2 page tables in the system space are allocated by
+	// startup rather than procnto and, as such, they're not in the
 	// physical allocator structures.
 	// We look for L2 page tables that aren't in an asinfo sysram
 	// region - those are the ones that startup created and have to
 	// be written out specially.
-	
+
 	if(pae_enabled) {
 		pdep = (uintptr_t)V2TOPDIRP(CPU_SYSTEM_VADDR_START);
 		end  = (uintptr_t)V2TOPDIRP(0xffffffff) - 8*sizeof(uint64_t);

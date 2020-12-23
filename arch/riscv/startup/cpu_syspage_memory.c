@@ -13,6 +13,12 @@ void cpu_init_syspage_memory()
     set_syspage_section(&lsp.cpu.riscv_cpu, sizeof(*lsp.cpu.riscv_cpu.p));
 }
 
+/**
+ * \begin Allocate CPU syspage memory.
+ * \param[out] cpupagep		Variable to store CPU page address
+ * \param[out] syspagep		Variable to store syspage address
+ * \param[in]  spsize		Syspage size
+ */
 struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *cpupagep, paddr_t *syspagep,
                                                unsigned spsize)
 {
@@ -20,7 +26,6 @@ struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *cpupagep, paddr_t *syspa
     struct system_private_entry *private;
     unsigned size;
     unsigned cpsize;
-    paddr32_t syspage_paddr;
     unsigned spacing;
 
 #define	SP_OFFSET(field)	PTR_DIFF(lsp.cpu.field.p, sp)
@@ -52,42 +57,33 @@ struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *cpupagep, paddr_t *syspa
      */
     size = spsize + cpsize;
 
-    syspage_paddr = alloc_ram(NULL_PADDR, size, lsp.system_private.p->pagesize);
-    if (syspage_paddr == NULL_PADDR32) {
+    paddr_t sp_phys = alloc_ram(NULL_PADDR, size, lsp.system_private.p->pagesize);
+    if (sp_phys == NULL_PADDR) {
         crash("could not allocate 0x%l bytes for syspage/cpupage\n", size);
     }
 
     private = lsp.system_private.p;
 
     //TODO: add
-    private->kern_syspageptr = riscv_map(~0L, ((paddr_t) syspage_paddr), size, RISCV_MAP_SYSPAGE);
-    private->kern_cpupageptr = private->kern_syspageptr + spsize;
+    private->kern_syspageptr = TOPTR(riscv_map(~0L, sp_phys, size, RISCV_MAP_SYSPAGE));
+    private->kern_cpupageptr = TOPTR(private->kern_syspageptr + spsize);
 
     if (paddr_bits != 32) {
         // For LPAE, we don't have an option for kern-rw/user-ro mapping
         // So we'll create a separate user-ro/kern-ro mapping for syspage
-        private->user_syspageptr =  riscv_map(~0L, ((paddr_t) syspage_paddr), size, RISCV_MAP_SYSPAGE_RO);
+        private->user_syspageptr = TOPTR(riscv_map(~0L, sp_phys, size, RISCV_MAP_SYSPAGE_RO));
     } else {
-        private->user_syspageptr = private->kern_syspageptr;
+        private->user_syspageptr = (void *)private->kern_syspageptr;
     }
 
     int i;
-    paddr32_t cpupaddr = syspage_paddr + spsize;
-    int cpu_map_flag;
+    paddr32_t cpupaddr = sp_phys + spsize;
 
-    if (paddr_bits != 32) {
-        cpu_map_flag = RISCV_MAP_SYSPAGE_RO;
-    } else {
-        cpu_map_flag = RISCV_MAP_SYSPAGE;
-    }
-
-    /*
-     * We have mapped the trap vector page using a per-cpu page table
-     */
-    private->user_cpupageptr = TOPTR(trap_vectors + __PAGESIZE);
+    //int cpu_map_flag = (paddr_bits != 32) ? RISCV_MAP_SYSPAGE_RO : RISCV_MAP_SYSPAGE;
 
     for (i = 0; i < sp->num_cpu; i++, cpupaddr += spacing) {
-        riscv_map_cpu(i, (uintptr_t) private->user_cpupageptr, (paddr_t) cpupaddr, cpu_map_flag);
+        kprintf("TODO TODO: user_cpupageptr\n");
+        //riscv_map_cpu(i, (uintptr_t) private->user_cpupageptr, (paddr_t) cpupaddr, cpu_map_flag);
     }
 
     /*
@@ -98,15 +94,15 @@ struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *cpupagep, paddr_t *syspa
 
     private->cpupage_spacing = spacing;
 
-    *syspagep = syspage_paddr;
-    *cpupagep = syspage_paddr + spsize;
+    *syspagep = sp_phys;
+    *cpupagep = sp_phys + spsize;
 
     sp->riscv.startup_base = startup_base;
     sp->riscv.startup_size = startup_size;
 
     INIT_ENTRY(riscv, cpu);
 
-    return ((void *) syspage_paddr);
+    return (void *)sp_phys;
 }
 
 /*
