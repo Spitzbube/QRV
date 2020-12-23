@@ -52,11 +52,11 @@ static void ws_init(void)
     ram_list->size = 0;
     ram_list_size = sizeof(struct ram_entry);
 
-    //Avoid using memory covered by startup
+    // Avoid using memory covered by startup
     avoid_ram(shdr->ram_paddr, shdr->startup_size);
 
 #ifdef CPU_MEM_AVOID_START
-    //Avoid using memory that might have something interesting
+    // Avoid using memory that might have something interesting
     avoid_ram(CPU_MEM_AVOID_START, CPU_MEM_AVOID_SIZE);
 #endif
 }
@@ -415,10 +415,12 @@ void add_sysram()
     sysram_added = 1;
 }
 
-
+/**
+ * \brief TODO
+ */
 void *ws_alloc(size_t size)
 {
-    paddr32_t paddr;
+    paddr_t paddr;
 
     if (avoid_list == NULL) {
         ws_init();
@@ -426,16 +428,17 @@ void *ws_alloc(size_t size)
 
     size = ROUND(size, sizeof(uint64_t));
     if (ram_list_size <= sizeof(struct ram_entry)) {
-        // no add_ram()'s have been done yet.
+        // No add_ram()'s have been done yet
         paddr = ws_early_next;
         ws_early_next += size;
     } else {
-        // we've been told where memory is.
+        // We've been told where memory is
         paddr = find_ram(size, sizeof(uint64_t), 0, 0);
         if (paddr == NULL_PADDR) {
             return NULL;
         }
     }
+
     avoid_ram(paddr, size);
     return MAKE_1TO1_PTR(paddr);
 }
@@ -481,9 +484,3 @@ void reserve_ram(unsigned size, unsigned align, unsigned pagesize)
     alloc_ram(reserved, size, align ? align : pagesize);
     as_add_containing(reserved, (reserved + size - 1), AS_ATTR_RAM, "reserved", "ram");
 }
-
-#if defined(__QNXNTO__) && defined(__USESRCVERSION)
-#include <sys/srcversion.h>
-__SRCVERSION
-    ("$URL: http://svn/product/branches/6.6.0/trunk/hardware/startup/lib/ram.c $ $Rev: 759590 $")
-#endif
