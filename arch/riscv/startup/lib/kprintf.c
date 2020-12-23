@@ -22,7 +22,7 @@ static void one_char(char c)
     print_char(c);
 }
 
-const static char c[] = "0123456789abcdef";
+static const char c[] = "0123456789abcdef";
 
 static void vmsg(const char *fmt, va_list args)
 {
