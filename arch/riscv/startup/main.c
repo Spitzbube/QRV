@@ -45,6 +45,7 @@ void init_asinfo(unsigned mem)
 
 void init_raminfo(void)
 {
+    pr_info("%s\n", __func__);
     // TODO: determine memory size automatically
     add_ram(0x80000000, MEG(128));
 }
@@ -56,10 +57,7 @@ int cpu_handle_common_option(int opt)
 void tweak_cmdline(struct bootargs_entry *bap, const char *name)
 {
 }
-void cpu_startup(void)
-{
-    crash("Not yet.\n");
-}
+
 
 void *startup_memory_map(unsigned size, paddr_t phys, unsigned prot_flags)
 {
@@ -129,11 +127,7 @@ int main(int argc, char **argv, char **envv)
 
     while ((opt = getopt(argc, argv, COMMON_OPTIONS_STRING "d")) != -1) {
         switch (opt) {
-        case 'd':
-            /* Enable WDT */
-            //wdt_enable();
-            break;
-        default:
+          default:
             handle_common_option(opt);
             break;
         }
@@ -156,7 +150,7 @@ int main(int argc, char **argv, char **envv)
      * Set CPU frequency
      */
     if (cpu_freq == 0) {
-        crash("cpu_freq = 0");
+        pr_warn("cpu_freq = 0\n");
     }
 
     /*
@@ -171,8 +165,6 @@ int main(int argc, char **argv, char **envv)
     init_intrinfo();
 
     init_qtime();
-
-    //init_cacheattr();
 
     init_cpuinfo();
 
