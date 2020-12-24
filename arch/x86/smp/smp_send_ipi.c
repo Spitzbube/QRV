@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -42,7 +42,7 @@ static unsigned	cpu_remap[PROCESSORS_MAX];
 static unsigned	reservAPICICRH[PROCESSORS_MAX];
 static unsigned	reservAPICICRL[PROCESSORS_MAX];
 
-static void 
+static void
 set_cpunum(unsigned new) {
 	apic_write(LAPIC_ID, (apic_read(LAPIC_ID) & 0x00ffffff) | (new << 24));
 }
@@ -69,7 +69,7 @@ find_smp_intr() {
 			cpu_intr += (iip->num_vectors-1)*iip->cpu_intr_stride;
 		}
 		if(cpu_intr > max_intr) max_intr = cpu_intr;
-	}	
+	}
 
 	sidt(&idt);
 	/*lint -e{530} */
@@ -79,7 +79,7 @@ find_smp_intr() {
 	} else {
 		smp_intr = num_intrs - 2;
 	}
-//kprintf("Using %x for IPI's (num_intrs=%d)\n", smp_intr, num_intrs);	
+//kprintf("Using %x for IPI's (num_intrs=%d)\n", smp_intr, num_intrs);
 
 	set_trap(smp_intr+0, __ipi1);
 	set_trap(smp_intr+1, __ipi2);
@@ -88,7 +88,7 @@ find_smp_intr() {
 }
 
 // Enable the local APIC
-unsigned 
+unsigned
 init_send_ipi() {
 	unsigned		apic_id;
 	unsigned		cpu;
@@ -99,7 +99,7 @@ init_send_ipi() {
 	}
 	if(smp_intr == 0) {
 		smp_intr = find_smp_intr();
-	}	
+	}
 	if(_syspage_ptr->smp.entry_size > 0) {
 		lapicid_addr = (void *)(0x20 + SYSPAGE_ENTRY(smp)->cpu);
 	} else {
@@ -132,7 +132,7 @@ init_send_ipi() {
 
    	apic_write(LAPIC_TPR, 0);
 	apic_write(LAPIC_SPIV, apic_read(LAPIC_SPIV) | 0x100);
-	
+
 	// save the reserved bits in APIC cmd reg
 	reservAPICICRH[cpu] = apic_read(LAPIC_ICRH) & 0x00ffffff;
 	reservAPICICRL[cpu] = (apic_read(LAPIC_ICRL) & 0xfff33000)
@@ -165,7 +165,7 @@ send_ipi(int cpu, int ipi_cmd) {
 			prev_flags = disable();
 			if(!(apic_read(LAPIC_ICRL) & (1 << 12))) break;
 			restore(prev_flags);
-		} 
+		}
 
 		apic_write(LAPIC_ICRH, dst);
 		apic_write(LAPIC_ICRL, cmd); // Send command

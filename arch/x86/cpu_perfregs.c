@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -64,7 +64,7 @@ mode switch from sum to set) every few ms and the potential worst failure
 case is if > (2^31 - 1) events occur in between the interrupts (which is
 highly unlikely).  However, in the SMP case, if the thread isn't running on
 the boot processor then there's no guarantee of a regular context save/
-restore so the interrupt on overflow case becomes more possible.  For that 
+restore so the interrupt on overflow case becomes more possible.  For that
 reason, a limitation will be documented in which it is recommended that the
 initial counter value be set to >= 0xFF800000000 for interrupt on overflow
 in the SMP case (this guarantees that the counter value can be read / written
@@ -293,8 +293,8 @@ static void rdecl restore_perfregs_pentium4xeon(X86_PERFREGS *pcr)
 	wrmsr(973 ,pcr->pentium4xeon.cru_escr[3]);
 	wrmsr(992 ,pcr->pentium4xeon.cru_escr[4]);
 	wrmsr(993 ,pcr->pentium4xeon.cru_escr[5]);
-	
-	/* Restore Control registers last so that 
+
+	/* Restore Control registers last so that
 	 * config changes don't take effect until
 	 * other registers have been set up. */
 	wrmsr(864 ,pcr->pentium4xeon.bpu_cccr[0]);
@@ -326,13 +326,13 @@ static void rdecl restore_perfregs_pentium4xeon(X86_PERFREGS *pcr)
 
 #define P4XEON_OVF		(1U<<31)
 /* Mask off both OVF_PMI0 and OVF_PMI1 in case HyperThreading being used*/
-#define P4XEON_OVF_PMI	(3U<<26) 
+#define P4XEON_OVF_PMI	(3U<<26)
 
 
 static const struct sigevent *
 perfregs_handler_pentium4xeon(void *dummy, int id) {
 	THREAD *thp = actives_pcr[RUNCPU];
-	
+
 	if ( thp != NULL ) {
 		X86_PERFREGS *pcr = (X86_PERFREGS *)thp->cpu.pcr;
 
@@ -406,7 +406,7 @@ perfregs_handler_pentium4xeon(void *dummy, int id) {
 static const struct sigevent *
 perfregs_handler_p6family(void *dummy, int id) {
 	THREAD *thp = actives_pcr[RUNCPU];
-	
+
 
 	if ( thp != NULL ) {
 		X86_PERFREGS *pcr = (X86_PERFREGS *)thp->cpu.pcr;
@@ -507,7 +507,7 @@ non-instrumented kernel. */
 static int rdecl cpu_alloc_perfregs( THREAD *thp )
 {
 	X86_PERFREGS *pcr;
-	
+
 	if((pcr = _smalloc(sizeof(*pcr))) == NULL) {
 		return ENOMEM;
 	}
@@ -531,7 +531,7 @@ _Uint32t cpu_perfreg_id(void)
 	if ( hw_cpuid(0,id,0) < 1 ) {
 		return 0;
 	}
-	
+
 	id[sizeof id - 1] = 0;
 
 	c = hw_cpuid(1,0,&features);
@@ -539,7 +539,7 @@ _Uint32t cpu_perfreg_id(void)
 	if ( !(features & X86_FEATURE_MSR) ) { /* must have rdmsr/wrmsr */
 		return 0;
 	}
-	
+
 	family = (c >> 8) & 0xf;
 
 	c = 0;
@@ -567,7 +567,7 @@ void rdecl cpu_free_perfregs( THREAD *thp )
 	if ( thp->cpu.pcr == &disabled_perfregs ) {
 		return;
 	}
-	
+
 	_sfree(thp->cpu.pcr,sizeof(*thp->cpu.pcr));
 	thp->cpu.pcr = &disabled_perfregs;
 }
@@ -577,7 +577,7 @@ void rdecl cpu_save_perfregs(void *vpcr)
 {
 	X86_PERFREGS *pcr = vpcr;
 
-	if ((pcr->id & PERFREGS_ENABLED_FLAG) && 
+	if ((pcr->id & PERFREGS_ENABLED_FLAG) &&
 		!(pcr->id & PERFREGS_SAVED_FLAG) && save_perfregs_p ) {
 
 		pcr->id |= PERFREGS_SAVED_FLAG;
@@ -590,7 +590,7 @@ void rdecl cpu_save_perfregs(void *vpcr)
 void rdecl cpu_restore_perfregs(void *vpcr)
 {
 	X86_PERFREGS *pcr = vpcr;
-	
+
 	if ((pcr->id & PERFREGS_ENABLED_FLAG) && restore_perfregs_p ) {
 		(restore_perfregs_p)(pcr);
 		pcr->id &= ~PERFREGS_SAVED_FLAG;
@@ -612,7 +612,7 @@ int	rdecl cpu_debug_set_perfregs(THREAD *thp, debug_perfreg_t *regs)
 	if ( !attached ) {
 		attach_irq();
 		attached = 1;
-	}	
+	}
 
 	return EOK;
 #else

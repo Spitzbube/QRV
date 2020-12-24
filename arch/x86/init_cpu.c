@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -103,7 +103,7 @@ set_trap(unsigned trapnum, void (*func)()) {
 //RUSH3: the fault flags. Make sure that gets fixed when removing the shim.
 
 //RUSH3: Shim code to be removed later
-unsigned 
+unsigned
 vmm_fault_shim(PROCESS *prp, void *vaddr, unsigned flags) {
 	struct fault_info	info;
 	unsigned			sc;
@@ -149,7 +149,7 @@ vmm_fault_shim(PROCESS *prp, void *vaddr, unsigned flags) {
 		break;
 	case 1:		// access OK and corrected, retry instruction
 		break;
-	default: break;	
+	default: break;
 	}
 	return 0;
 }
@@ -358,7 +358,7 @@ calculate_combines(struct level_label *labels) {
 					labels[slevel].combine = next;
 					next = &labels[slevel];
 				}
-			} 
+			}
 			labels[level].combine = next;
 		}
 	}
@@ -390,7 +390,7 @@ add_code(const void *start, unsigned size) {
 #define REGNO_EBP	5
 #define REGNO_ESI	6
 #define REGNO_EDI	7
-	
+
 static void
 gen_load(unsigned reg, uintptr_t value) {
 	uint8_t	buff[5];
@@ -587,7 +587,7 @@ gen_intr(struct level_label *labels, unsigned level, struct intrinfo_entry *iip)
 			} else {
 				/* cascaded */
 	 			struct intrinfo_entry *iip2 = interrupt_level[primary].info;
-	
+
 				if(!(iip2->flags & INTR_FLAG_CASCADE_IMPLICIT_EOI)) {
 					gen_burst(&iip2->eoi, primary, 1);
 				}
@@ -600,14 +600,14 @@ gen_intr(struct level_label *labels, unsigned level, struct intrinfo_entry *iip)
 
 			for(i = 0; i < iip->num_vectors; ++i) {
 				struct level_label	*cascade = llp[i].cascade;
-		
+
 				if(cascade != NULL) {
 					gen_cond_branch(i, cascade->off);
 				}
 			}
 		} else {
 			struct level_label	*cascade = llp->cascade;
-		
+
 			if(cascade != NULL) {
 				gen_transfer(0, (uintptr_t)intrentry_base + cascade->off);
 			}
