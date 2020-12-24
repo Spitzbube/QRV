@@ -159,7 +159,7 @@ LDFLAGS += timestamp.o $(LDF_$(COMPILER_TYPE)_$(COMPILER_DRIVER)) \
 # kernel symbol file to contain enough debug info on the main kernel data
 # structures for hardware tool vendors to provide OS awareness. On
 # the X86, force the compiler type to be "gcc" so that we have a consistant
-# debugging format for all platforms. 
+# debugging format for all platforms.
 #
 TIMESTAMP_CCPREF=$(CCPREF)
 TIMESTAMP_COMPILER_TYPE=$(COMPILER_TYPE)
@@ -230,7 +230,7 @@ install: all
 	$(TARGET_NINSTALL)
 	-$(TARGET_INSTALL)
 
-qinstall: 
+qinstall:
 	$(TARGET_HINSTALL)
 	$(TARGET_NINSTALL)
 	-$(TARGET_INSTALL)

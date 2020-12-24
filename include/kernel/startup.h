@@ -22,9 +22,14 @@
 #include <sys/startup.h>
 #include <sys/neutrino.h>
 #include <sys/syspage.h>
-#include <elf/elf.h>
+#include <sys/elf.h>
 #include <hw/sysinfo.h>
 #include <confname.h>
+
+/* For debugging. Set to empty definition when done */
+#define DBG1(x...) kprintf(x)
+#define pr_info(x...) kprintf(x)
+#define pr_warn(x...) kprintf(x)
 
 #define PROCESSORS_MAX	8       // set this to match kernel (at least a search will find this now)
 

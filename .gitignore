@@ -4,3 +4,4 @@
 *.d
 *.sym
 *.img
+.gdb_history
