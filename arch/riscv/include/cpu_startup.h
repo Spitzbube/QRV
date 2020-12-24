@@ -9,7 +9,7 @@
 #ifndef _RISCV_CPU_STARTUP_H
 #define _RISCV_CPU_STARTUP_H
 
-#include <inline.h>
+#include <riscv.h>
 
 #define RISCV_MAP_SYSPAGE	0xffffffff	/* Syspage */
 #define RISCV_MAP_SYSPAGE_RO	0xfffffffe	/* Syspage/CPUpage read-only */
