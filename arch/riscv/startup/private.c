@@ -42,7 +42,6 @@ void init_system_private()
     //smp_hook_rtn(); // TODO
 
     /* Add system RAM */
-    //
     add_sysram();
 
     /* Allocate the real storage location for the system & cpu pages.

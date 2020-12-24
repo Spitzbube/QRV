@@ -4,8 +4,8 @@
  *  \note Platform definitions for RISC-V.
  */
 
-#ifndef _RISCV_PLATFORM_H_INCLUDED
-#define _RISCV_PLATFORM_H_INCLUDED
+#ifndef _RISCV_PLATFORM_H
+#define _RISCV_PLATFORM_H
 
 #ifndef __PLATFORM_H_INCLUDED
 #error riscv/platform.h should not be included directly.
@@ -13,5 +13,7 @@
 
 #define __JMPBUFSIZE 32
 typedef unsigned __jmpbufalign;
+
+int cpuid(void);
 
 #endif

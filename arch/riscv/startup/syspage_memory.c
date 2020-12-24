@@ -19,19 +19,20 @@ typedef SYSPAGE_TYPED_SECTION(struct unknown, __attribute__((__may_alias__)) loc
 #define SECTION_START	((local_section *)(void *)&lsp)
 #define SECTION_END		((local_section *)(void *)(&lsp+1))
 
-// We keep the maximum size we're allowed to grow things in
-// the lsp.syspage->p.size field - we'll set it to it's proper value
-// once we're done, that'll also disallow any further growing since
-// it's going to be less than the total_size.
-
+/**
+ * \brief TODO
+ *
+ * \note We keep the maximum size we're allowed to grow things in the
+ *       lsp.syspage->p.size field - we'll set it to it's proper value
+ *       once we're done, that will also disallow any further growing since
+ *       it's going to be less than the total_size.
+ */
 void *grow_syspage_section(void *p, unsigned add)
 {
     local_section *sect = p;
     local_section *s2;
     uint8_t *bottom;
-    unsigned new_size;
-    unsigned max_size;
-    unsigned len;
+    unsigned new_size, max_size, len;
     uint8_t *new;
 #ifdef CONFIG_MINIDRIVER
     mdriver_check();
@@ -92,7 +93,6 @@ void init_syspage_memory(void *base, unsigned max_size)
     grow_syspage_section(&lsp.hwinfo, sizeof(struct hwi_prefix));
 
     lsp.syspage.p->num_cpu = 1;
-
     cpu_init_syspage_memory();
 
     hwi_default();

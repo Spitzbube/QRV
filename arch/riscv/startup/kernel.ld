@@ -28,10 +28,12 @@ ENTRY( _entry )
 SECTIONS
 {
   /*
-   * ensure that entry.S / _entry is at 0x80000000,
-   * where qemu's -kernel jumps.
+   * The following address for _entry can be:
+   *    0x80000000 for QEMU without BIOS;
+   *    0x80200000 for OpenSBI.
    */
   . = 0x80000000;
+  PROVIDE(__start = .);
 
   .text : {
     *(.text .text.*)
@@ -64,5 +66,5 @@ SECTIONS
     *(.bss .bss.*)
   }
 
-  PROVIDE(end = .);
+  PROVIDE(__end = .);
 }

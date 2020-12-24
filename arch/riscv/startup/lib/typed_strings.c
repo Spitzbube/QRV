@@ -75,9 +75,7 @@ unsigned add_string(const char *name)
 {
     char *p = lsp.strings.p->data;
     char *str;
-    unsigned i;
-    unsigned len;
-    unsigned spare;
+    unsigned i, len, spare;
 
     i = 0;
     for (;;) {

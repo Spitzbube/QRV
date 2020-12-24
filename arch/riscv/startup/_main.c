@@ -39,8 +39,6 @@ static void setup_cmdline(void)
     char *args;
     int i, argc, envc;
 
-
-
     /* Find and construct argument and environment vectors for ourselves */
 
     tweak_cmdline(&boot_args, "startup");
@@ -65,7 +63,7 @@ static void setup_cmdline(void)
 
 }
 
-
+extern void rvq_putc_ser_dbg(int);
 /**
  * \brief _main(), a precursor to main()
  * \note This is the first function run in supervisor mode.
@@ -74,6 +72,8 @@ void _main(void)
 {
     paddr_bits = arch_max_paddr_bits();
     shdr = (struct startup_header *) boot_args.shdr_addr;
+
+set_print_char(rvq_putc_ser_dbg);
 
     board_init();
 
@@ -91,18 +91,18 @@ void _main(void)
     main(_argc, _argv, envv);
 
 #ifdef CONFIG_MINIDRIVER
-    //
-    // Tell the mini-drivers that the next time they're called, they're
-    // going to be in the kernel. Also flip the handler & data pointers
-    // to the proper values for that environment.
-    //
+    /*
+     * Tell the mini-drivers that the next time they're called, they're
+     * going to be in the kernel. Also flip the handler & data pointers
+     * to the proper values for that environment.
+     */
     mdriver_hook();
 #endif
 
-    //
-    // Copy the local version of the system page we've built to the real
-    // system page location we allocated in init_system_private().
-    //
+    /*
+     * Copy the local version of the system page we've built to the real
+     * system page location we allocated in init_system_private().
+     */
     write_syspage_memory();
 
     //

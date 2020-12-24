@@ -47,7 +47,7 @@ void init_raminfo(void)
 {
     pr_info("%s\n", __func__);
     // TODO: determine memory size automatically
-    add_ram(0x80000000, MEG(128));
+    add_ram(KERNBASE, MEG(128));
 }
 
 int cpu_handle_common_option(int opt)

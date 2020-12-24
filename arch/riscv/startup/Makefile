@@ -4,10 +4,11 @@
 
 include ../../../def.mk
 
-CFLAGS += -nostdinc -I../include -I../../../include
+CFLAGS += -g -nostdinc -I../include -I../../../include
 LDFLAGS = -z max-page-size=4096
 
 OBJECTS = entry.o \
+          boot_args.o \
           vectors.o \
           trampoline.o \
           spinlock.o \
@@ -23,6 +24,7 @@ OBJECTS = entry.o \
           hwi.o \
           ram.o \
           addr_space.o \
+          smp.o \
           mmu.o \
           debug.o \
           _main.o \
