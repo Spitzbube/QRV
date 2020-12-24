@@ -1,52 +1,38 @@
-/*
- * Copyright (c) 2006-2020 Frans Kaashoek, Robert Morris, Russ Cox,
- *                         Massachusetts Institute of Technology
-
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
+/**
+ * \brief First instructions executed when the kernel starts.
  *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
+ * \license MIT (https://opensource.org/licenses/mit-license.php)
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * \copyright (c) 2006-2020 Frans Kaashoek, Robert Morris, Russ Cox,
+ *                          Massachusetts Institute of Technology
  */
 
-.section .data
-
 /*
- * qemu -kernel loads the kernel at 0x80000000 and causes each CPU to jump there.
- * kernel.ld causes the following code to be placed at 0x80000000.
+ * We link statically and the first address to execute (_entry) is
+ * specified in the linker script. It can be:
+ *      0x80000000 for plain QEMU without BIOS/firmware;
+ *      0x80040000 for OpenSBI's fw_jump.bin
  */
 
 .section .text
 
+/*Each CPU will start from this point */
 .global _entry
 
 _entry:
-	/*
+        /*
          * Set up a stack for C (stack0 is declared in start.c,
          * with a 4096-byte stack per CPU)
          * sp = stack0 + (hartid * 4096)
          */
-        la sp, stack0
-        li a0, 1024*4
-	csrr a1, mhartid
-        addi a1, a1, 1
-        mul a0, a0, a1
-        add sp, sp, a0
+        la      sp, stack0
+        li      a0, 1024*4
+        csrr    a1, mhartid
+        addi    a1, a1, 1
+        mul     a0, a0, a1
+        add     sp, sp, a0
 
-	// jump to start() in start.c
+        // jump to start() in start.c
         call start
 spin:
         j spin
