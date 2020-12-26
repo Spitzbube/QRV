@@ -26,8 +26,6 @@
 #define _SGTTY_H_INCLUDED
 #include <sys/termio.h>
 
-#include <_pack64.h>
-
 /*
  * TIOCGETP/TIOCSETP structure
  */
@@ -63,10 +61,6 @@ struct ltchars {
     char t_lnextc;              /* literal next character */
 };
 
-#include <_packpop.h>
-
 #define gtty(fd, sg)    ioctl(fd, TIOCGETP, sg)
 #define stty(fd, sg)    ioctl(fd, TIOCSETP, sg)
 #endif
-
-/* __SRCVERSION("sgtty.h $Rev: 153052 $"); */

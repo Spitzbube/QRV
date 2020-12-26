@@ -65,5 +65,3 @@
 #include <fcntl.h>
 #endif
 #endif
-
-/* __SRCVERSION("libc.h $Rev: 153052 $"); */

@@ -24,10 +24,6 @@
  */
 #ifndef _SIGNAL_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -66,8 +62,6 @@ typedef __UCONTEXT_T ucontext_t;
 #undef __UCONTEXT_T
 #endif
 
-#include <_pack64.h>
-
 #if defined(__cplusplus) || defined(__STRICT_ANSI__) || defined(__STRICT_PROTYPES__)
 #define _SIG_ARGS	int
 #else
@@ -75,19 +69,12 @@ typedef __UCONTEXT_T ucontext_t;
 #endif
 
 struct sigaction {
-#if defined(__WATCOMC__) && defined(__EXT)
-    union {
-        void (*sa_handler)(_SIG_ARGS);
-        void (*sa_sigaction)(int, siginfo_t *, void *);
-    };
-#else
 #define sa_handler		__sa_un._sa_handler
 #define sa_sigaction	__sa_un._sa_sigaction
     union {
         void (*_sa_handler)(_SIG_ARGS);
         void (*_sa_sigaction)(int, siginfo_t *, void *);
     } __sa_un;
-#endif
     int sa_flags;
     sigset_t sa_mask;
 };
@@ -242,8 +229,6 @@ extern const char *const sys_siglist[];
 extern const int sys_nsig;
 #endif
 
-#include <_packpop.h>
-
 __END_DECLS
 #endif
 #ifdef _STD_USING
@@ -253,5 +238,3 @@ using std::signal;
 #endif                          /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("signal.h $Rev: 172382 $"); */

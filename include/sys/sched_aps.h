@@ -22,10 +22,6 @@
 #ifndef __SCHED_APS_H_INCLUDED
 #define __SCHED_APS_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -802,6 +798,3 @@ struct extsched_aps_dbg_thread {
 __END_DECLS
 
 #endif
-
-
-/* __SRCVERSION("sched_aps.h $Rev: 168521 $"); */

@@ -384,7 +384,3 @@
 #endif
 
 #endif
-
-
-
-/* __SRCVERSION("confname.h $Rev: 153052 $"); */

@@ -80,5 +80,3 @@ __BEGIN_DECLS
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("param.h $Rev: 173156 $"); */

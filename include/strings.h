@@ -25,10 +25,6 @@
 #ifndef _STRINGS_H_INCLUDED
 #define _STRINGS_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef _STRING_H_INCLUDED
 #include <string.h>
 #endif
@@ -90,4 +86,3 @@ extern int strncasecmp(const char *, const char *, size_t);
 __END_DECLS
 #endif                          /* __cplusplus */
 #endif
-/* __SRCVERSION("strings.h $Rev: 199673 $"); */

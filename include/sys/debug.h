@@ -18,10 +18,6 @@
 #ifndef __DEBUG_H_INCLUDED
 #define __DEBUG_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -105,7 +101,7 @@ struct _timer_info __TIMER_INFO;
 #endif
 
 __BEGIN_DECLS
-#include <_pack64.h>
+
 #define _DEBUG_FLAG_STOPPED			0x00000001  /* Thread is not running */
 #define _DEBUG_FLAG_ISTOP			0x00000002  /* Stopped at point of interest */
 #define _DEBUG_FLAG_IPINVAL			0x00000010  /* IP is not valid */
@@ -120,7 +116,8 @@ __BEGIN_DECLS
 #define _DEBUG_FLAG_KLC				0x00020000  /* Kill-on-Last-Close flag is set */
 #define _DEBUG_FLAG_FORK			0x00040000  /* Child inherits flags (Stop on fork/spawn) */
 #define _DEBUG_FLAG_MASK			0x000f0000  /* Flags that can be changed */
-    enum {
+
+enum {
     _DEBUG_WHY_REQUESTED,
     _DEBUG_WHY_SIGNALLED,
     _DEBUG_WHY_FAULTED,
@@ -374,11 +371,11 @@ typedef union _debug_perfregs {
 #endif
 #if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_SH)
     SH_PERFREGS sh;
+#if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_RISCV)
+    RISCV_PERFREGS riscv;
 #endif
     _Uint64t padding[1024];
 } debug_perfreg_t;
-
-#include <_packpop.h>
 
 __END_DECLS
 #endif

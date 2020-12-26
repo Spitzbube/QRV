@@ -25,10 +25,6 @@
 #ifndef __RESOURCE_H_INCLUDED
 #define __RESOURCE_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef _SYS_TIME_H_
 #include <sys/time.h>
 #endif
@@ -75,8 +71,6 @@ typedef unsigned long rlim_t;
 #define RLIM_SAVED_MAX  0x7ffffffe  /* A value of type rlim_t indicating an unrepresentable saved hard limit. */
 #define RLIM_SAVED_CUR  0x7ffffffd  /* A value of type rlim_t indicating an unrepresentable saved soft limit. */
 #endif
-
-#include <_pack64.h>
 
 struct rlimit {
 #if _FILE_OFFSET_BITS - 0 == 64
@@ -145,12 +139,6 @@ extern int getrlimit64(int, struct rlimit64 *);
 extern int setrlimit64(int, const struct rlimit64 *);
 #endif
 #if _FILE_OFFSET_BITS-0 == 64
-#if defined(__WATCOMC__)
-extern int getrlimit(int, struct rlimit *);
-#pragma aux getrlimit "getrlimit64";
-extern int setrlimit(int, const struct rlimit *);
-#pragma aux setrlimit "setrlimit64";
-#else
 static __inline int __attribute__((__unused__)) getrlimit(int __t, struct rlimit *__r)
 {
     return getrlimit64(__t, (struct rlimit64 *) __r);
@@ -160,7 +148,6 @@ static __inline int __attribute__((__unused__)) setrlimit(int __t, const struct 
 {
     return setrlimit64(__t, (const struct rlimit64 *) __r);
 }
-#endif
 #elif !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
 extern int getrlimit(int, struct rlimit *);
 extern int setrlimit(int, const struct rlimit *);
@@ -172,8 +159,5 @@ extern int getpriority(int, id_t);
 extern int getrusage(int, struct rusage *);
 extern int setpriority(int, id_t, int);
 
-#include <_packpop.h>
-
 __END_DECLS
 #endif
-/* __SRCVERSION("resource.h $Rev: 153052 $"); */

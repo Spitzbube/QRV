@@ -42,6 +42,3 @@
 #endif
 
 #endif
-
-
-/* __SRCVERSION("iso646.h $Rev: 153052 $"); */

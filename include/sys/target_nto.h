@@ -389,5 +389,3 @@ typedef _Uint64t _Uintmaxt;
 
 
 #endif
-
-/* __SRCVERSION("target_nto.h $Rev: 173311 $"); */

@@ -406,54 +406,6 @@ extern int getlogin_r(char *__name, _CSTD size_t __namesize);
 extern int ttyname_r(int __fildes, char *__buf, _CSTD size_t __bufsize);
 #endif
 
-#if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__GNUC__)
-/* Use __ALIAS64 define */
-#elif defined(__WATCOMC__)
-#pragma aux lseek "lseek64";
-#pragma aux pread "pread64";
-#pragma aux pwrite "pwrite64";
-#if defined(__EXT_POSIX1_199309)
-#pragma aux ftruncate "ftruncate64";
-#endif
-#if defined(__EXT_QNX)
-#pragma aux tell "tell64";
-#endif
-#if defined(__EXT_XOPEN_EX)
-#pragma aux truncate "truncate64";
-#pragma aux lockf "lockf64";
-#endif
-#elif defined(_PRAGMA_REDEFINE_EXTNAME)
-#pragma redefine_extname lseek lseek64
-#pragma redefine_extname pread pread64
-#pragma redefine_extname pwrite pwrite64
-#if defined(__EXT_POSIX1_199309)
-#pragma redefine_extname ftruncate ftruncate64
-#endif
-#if defined(__EXT_QNX)
-#pragma redefine_extname tell tell64
-#endif
-#if defined(__EXT_XOPEN_EX)
-#pragma redefine_extname truncate truncate64
-#pragma redefine_extname lockf lockf64
-#endif
-#else
-#define lseek lseek64
-#define pread pread64
-#define pwrite pwrite64
-#if defined(__EXT_POSIX1_199309)
-#define ftruncate ftruncate64
-#endif
-#if defined(__EXT_QNX)
-#define tell tell64
-#endif
-#if defined(__EXT_XOPEN_EX)
-#define truncate truncate64
-#define lockf lockf64
-#endif
-#endif
-#endif
-
 #if defined(__EXT_UNIX_MISC)
 extern int sethostname(const char *__buffer, _CSTD size_t __buffer_length);
 extern int setgroups(int __gidsetsize, const gid_t * __grouplist);
@@ -562,4 +514,3 @@ using std::ssize_t;
 
 #endif
 
-/* __SRCVERSION("unistd.h $Rev: 175131 $"); */

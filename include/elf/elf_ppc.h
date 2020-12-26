@@ -30,92 +30,88 @@
 #endif
 
 #ifndef __ELF_H_INCLUDED
-#include _NTO_HDR_(sys/elf.h)
+#include <elf/elf.h>
 #endif
 
-__BEGIN_DECLS
-
-enum Elf_ppc_e_flags {
-	EF_PPC_EMB			= 0x80000000
+__BEGIN_DECLS enum Elf_ppc_e_flags {
+    EF_PPC_EMB = 0x80000000
 };
 
 enum Elf_ppc_s_type {
-	SHT_ORDERED			= SHT_HIPROC
+    SHT_ORDERED = SHT_HIPROC
 };
 
-enum Elf_ppc_s_flags {				/* sh_flags */
-	SHF_EXCLUDE			= 0x80000000
+enum Elf_ppc_s_flags {          /* sh_flags */
+    SHF_EXCLUDE = 0x80000000
 };
 
 enum elf_ppc_e_r {
-	R_PPC_NONE = 0,
-	R_PPC_ADDR32,
-	R_PPC_ADDR24,
-	R_PPC_ADDR16,
-	R_PPC_ADDR16_LO,
-	R_PPC_ADDR16_HI,
-	R_PPC_ADDR16_HA,
-	R_PPC_ADDR14,
-	R_PPC_ADDR14_BRTAKEN,
-	R_PPC_ADDR14_BRNTAKEN,
-	R_PPC_REL24,
-	R_PPC_REL14,
-	R_PPC_REL14_BRTAKEN,
-	R_PPC_REL14_BRNTAKEN,
-	R_PPC_GOT16,
-	R_PPC_GOT16_LO,
-	R_PPC_GOT16_HI,
-	R_PPC_GOT16_HA,
-	R_PPC_PLTREL24,
-	R_PPC_COPY,
-	R_PPC_GLOB_DAT,
-	R_PPC_JMP_SLOT,
-	R_PPC_RELATIVE,
-	R_PPC_LOCAL24PC,
-	R_PPC_UADDR32,
-	R_PPC_UADDR16,
-	R_PPC_REL32,
-	R_PPC_PLT32,
-	R_PPC_PLTREL32,
-	R_PPC_PLT16_LO,
-	R_PPC_PLT16_HI,
-	R_PPC_PLT16_HA,
-	R_PPC_SDAREL16,
-	R_PPC_SECTOFF,
-	R_PPC_SECTOFF_LO,
-	R_PPC_SECTOFF_HI,
-	R_PPC_SECTOFF_HA,
-	R_PPC_ADDR30,		/* 37 */
-	R_PPC_EMB_NADDR32 = 101,
-	R_PPC_EMB_NADDR16,
-	R_PPC_EMB_NADDR16_LO,
-	R_PPC_EMB_NADDR16_HI,
-	R_PPC_EMB_NADDR16_HA,
-	R_PPC_EMB_SDAI16,
-	R_PPC_EMB_SDA2I16,
-	R_PPC_EMB_SDA2REL,
-	R_PPC_EMB_SDA21,
-	R_PPC_EMB_MRKREF,
-	R_PPC_EMB_RELSEC16,
-	R_PPC_EMB_RELST_LO,
-	R_PPC_EMB_RELST_HI,
-	R_PPC_EMB_RELST_HA,
-	R_PPC_EMB_BIT_FLD,
-	R_PPC_EMB_RELSDA	/* 116 */
-
+    R_PPC_NONE = 0,
+    R_PPC_ADDR32,
+    R_PPC_ADDR24,
+    R_PPC_ADDR16,
+    R_PPC_ADDR16_LO,
+    R_PPC_ADDR16_HI,
+    R_PPC_ADDR16_HA,
+    R_PPC_ADDR14,
+    R_PPC_ADDR14_BRTAKEN,
+    R_PPC_ADDR14_BRNTAKEN,
+    R_PPC_REL24,
+    R_PPC_REL14,
+    R_PPC_REL14_BRTAKEN,
+    R_PPC_REL14_BRNTAKEN,
+    R_PPC_GOT16,
+    R_PPC_GOT16_LO,
+    R_PPC_GOT16_HI,
+    R_PPC_GOT16_HA,
+    R_PPC_PLTREL24,
+    R_PPC_COPY,
+    R_PPC_GLOB_DAT,
+    R_PPC_JMP_SLOT,
+    R_PPC_RELATIVE,
+    R_PPC_LOCAL24PC,
+    R_PPC_UADDR32,
+    R_PPC_UADDR16,
+    R_PPC_REL32,
+    R_PPC_PLT32,
+    R_PPC_PLTREL32,
+    R_PPC_PLT16_LO,
+    R_PPC_PLT16_HI,
+    R_PPC_PLT16_HA,
+    R_PPC_SDAREL16,
+    R_PPC_SECTOFF,
+    R_PPC_SECTOFF_LO,
+    R_PPC_SECTOFF_HI,
+    R_PPC_SECTOFF_HA,
+    R_PPC_ADDR30,               /* 37 */
+    R_PPC_EMB_NADDR32 = 101,
+    R_PPC_EMB_NADDR16,
+    R_PPC_EMB_NADDR16_LO,
+    R_PPC_EMB_NADDR16_HI,
+    R_PPC_EMB_NADDR16_HA,
+    R_PPC_EMB_SDAI16,
+    R_PPC_EMB_SDA2I16,
+    R_PPC_EMB_SDA2REL,
+    R_PPC_EMB_SDA21,
+    R_PPC_EMB_MRKREF,
+    R_PPC_EMB_RELSEC16,
+    R_PPC_EMB_RELST_LO,
+    R_PPC_EMB_RELST_HI,
+    R_PPC_EMB_RELST_HA,
+    R_PPC_EMB_BIT_FLD,
+    R_PPC_EMB_RELSDA            /* 116 */
 };
 
 typedef struct {
-	Elf32_Half		sg_indx;
-	Elf32_Half		sg_flags;
-	Elf32_Word		sg_name;
-	Elf32_Word		sg_info;
+    Elf32_Half sg_indx;
+    Elf32_Half sg_flags;
+    Elf32_Word sg_name;
+    Elf32_Word sg_info;
 } Elf32_PPC_EMB_seginfo;
 
 enum Elf_ppc_emg_sg_flags {
-	PPC_EMB_SG_ROMCOPY =			0x0001
+    PPC_EMB_SG_ROMCOPY = 0x0001
 };
 
 __END_DECLS
-
 #endif

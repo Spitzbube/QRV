@@ -44,8 +44,6 @@ typedef __TIME_T	time_t;
 
 _C_STD_END
 
-#include <_pack64.h>
-
 struct timeb {
     _CSTD time_t        time;           /* seconds since Jan 1, 1970 UTC */
     _Uint16t            millitm;        /* milliseconds */
@@ -53,8 +51,6 @@ struct timeb {
     _Int16t             dstflag;        /* nonzero if daylight savings time */
 	_Uint16t			zero;
 };
-
-#include <_packpop.h>
 
 __BEGIN_DECLS
 
@@ -69,5 +65,3 @@ using std::time_t;
 #endif /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("timeb.h $Rev: 153052 $"); */

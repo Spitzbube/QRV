@@ -15,8 +15,6 @@
  * $
  */
 
-
-
 /*
  *  stdint.h Defined system types
  *
@@ -52,28 +50,15 @@ typedef _Uintptrt uintptr_t;
 #define INT8_C(__x)				__x
 #define INT16_C(__x)			__x
 #define INT32_C(__x)			__x ## L
-#if defined(__WATCOM_INT64__)
-#define INT64_C(__x)			__x ## I64
-#else
 #define INT64_C(__x)			__x ## LL
-#endif
 
 #define UINT8_C(__x)			__x ## U
 #define UINT16_C(__x)			__x ## U
 #define UINT32_C(__x)			__x ## UL
-#if defined(__WATCOM_INT64__)
-#define UINT64_C(__x)			__x ## UI64
-#else
 #define UINT64_C(__x)			__x ## ULL
-#endif
 
-#if defined(__WATCOM_INT64__)
-#define INTMAX_C(__x)			__x ## I64
-#define UINTMAX_C(__x)			__x ## UI64
-#else
 #define INTMAX_C(__x)			__x ## LL
 #define UINTMAX_C(__x)			__x ## ULL
-#endif
 
 #if defined(__EXT_QNX)
 /*
@@ -270,4 +255,3 @@ using std::uint_fast64_t;
 
 #endif
 
-/* __SRCVERSION("stdint.h $Rev: 153052 $"); */

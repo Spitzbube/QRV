@@ -224,5 +224,3 @@ _X_STD_END
 #define _Restrict	__restrict
 
 #endif /* !__CDEFS_H_ */
-
-/* __SRCVERSION("cdefs.h $Rev: 167420 $"); */

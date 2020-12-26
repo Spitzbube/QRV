@@ -29,22 +29,19 @@
 #include <sys/platform.h>
 #endif
 
-__BEGIN_DECLS
+__BEGIN_DECLS typedef _Uint32t Elf32_Addr;
+typedef _Uint32t Elf32_Off;
+typedef _Int32t Elf32_Sword;
+typedef _Uint32t Elf32_Word;
+typedef _Uint16t Elf32_Half;
 
-typedef _Uint32t	Elf32_Addr;
-typedef _Uint32t	Elf32_Off;
-typedef _Int32t		Elf32_Sword;
-typedef _Uint32t	Elf32_Word;
-typedef _Uint16t	Elf32_Half;
-
-typedef _Uint64t	Elf64_Addr;
-typedef _Uint64t	Elf64_Off;
-typedef _Int32t		Elf64_Sword;
-typedef _Int64t		Elf64_Sxword;
-typedef _Uint32t	Elf64_Word;
-typedef _Uint64t	Elf64_Xword;
-typedef _Uint16t	Elf64_Half;
+typedef _Uint64t Elf64_Addr;
+typedef _Uint64t Elf64_Off;
+typedef _Int32t Elf64_Sword;
+typedef _Int64t Elf64_Sxword;
+typedef _Uint32t Elf64_Word;
+typedef _Uint64t Elf64_Xword;
+typedef _Uint16t Elf64_Half;
 
 __END_DECLS
-
 #endif

@@ -123,8 +123,6 @@
  * TCGETA/TCSETA structure
  */
 
-#include <_pack64.h>
-
 struct termio {
      unsigned short     c_iflag;        /* input modes */
      unsigned short     c_oflag;        /* output modes */
@@ -135,8 +133,4 @@ struct termio {
      unsigned short     c_cc[NCC];      /* control chars */
 };
 
-#include <_packpop.h>
-
 #endif
-
-/* __SRCVERSION("termio.h $Rev: 153052 $"); */

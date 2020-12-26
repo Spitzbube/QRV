@@ -111,5 +111,3 @@ int __ldd_deregister_eh(void *ehh);
 _C_STD_END
 
 #endif
-
-/* __SRCVERSION("link.h $Rev: 153052 $"); */

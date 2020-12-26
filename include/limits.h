@@ -69,18 +69,12 @@
 
 #if __INT_BITS__-0 == 64
 #define LLONG_MIN   (-9223372036854775807-1)    /*  minimum value of a long long        */
-#define LLONG_MAX   9223372036854775807 /*  maximum value of a long long        */
-#define ULLONG_MAX  18446744073709551615U   /*  maximum value of an unsigned long long */
-#else
-#if defined(__WATCOM_INT64__)
-#define LLONG_MIN   (-9223372036854775807I64-1) /*  minimum value of a long long        */
-#define LLONG_MAX   9223372036854775807I64  /*  maximum value of a long long        */
-#define ULLONG_MAX  18446744073709551615UI64    /*  maximum value of an unsigned long long */
+#define LLONG_MAX   9223372036854775807         /*  maximum value of a long long        */
+#define ULLONG_MAX  18446744073709551615U       /*  maximum value of an unsigned long long */
 #else
 #define LLONG_MIN   (-9223372036854775807LL-1)  /*  minimum value of a long long        */
-#define LLONG_MAX   9223372036854775807LL   /*  maximum value of a long long        */
-#define ULLONG_MAX  18446744073709551615ULL /*  maximum value of an unsigned long long */
-#endif
+#define LLONG_MAX   9223372036854775807LL       /*  maximum value of a long long        */
+#define ULLONG_MAX  18446744073709551615ULL     /*  maximum value of an unsigned long long */
 #endif
 
 #if __INT_BITS__-0 == 16
@@ -384,5 +378,3 @@
 #endif
 
 #endif
-
-/* __SRCVERSION("limits.h $Rev: 153052 $"); */

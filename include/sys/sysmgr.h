@@ -25,16 +25,12 @@
 #ifndef __SYSMGR_H_INCLUDED
 #define __SYSMGR_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
 
 #ifndef _UNISTD_H_INCLUDED
-#include _NTO_HDR_(unistd.h)
+#include <unistd.h>
 #endif
 
 __BEGIN_DECLS
@@ -47,5 +43,3 @@ extern int sysmgr_sysconf_set(int __cmd, int __name, long __value);
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("sysmgr.h $Rev: 153052 $"); */

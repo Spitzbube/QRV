@@ -42,5 +42,4 @@ __END_DECLS
 #define assert(__expr)   ((__expr)?(void)0: _CSTD __assert(#__expr,__FILE__,__LINE__,0))
 #endif
 #endif
-    _C_STD_END
-/* __SRCVERSION("assert.h $Rev: 167935 $"); */
+_C_STD_END

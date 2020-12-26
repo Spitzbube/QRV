@@ -30,34 +30,31 @@
 #endif
 
 #ifndef __ELF_H_INCLUDED
-#include _NTO_HDR_(sys/elf.h)
+#include <sys/elf.h>
 #endif
 
-__BEGIN_DECLS
-
-enum Elf_e_flags_i386 {
-	EF_I386_NONE	= 0x00000000,
-	EF_I386_FP		= 0x00000001,
-	EF_I386_WEITEK	= 0x00000002
+__BEGIN_DECLS enum Elf_e_flags_i386 {
+    EF_I386_NONE = 0x00000000,
+    EF_I386_FP = 0x00000001,
+    EF_I386_WEITEK = 0x00000002
 };
 
 enum elf_386_e_r {
-	R_386_NONE = 0,
-	R_386_32,
-	R_386_PC32,
-	R_386_GOT32,
-	R_386_PLT32,
-	R_386_COPY,
-	R_386_GLOB_DAT,
-	R_386_JMP_SLOT,
-	R_386_RELATIVE,
-	R_386_GOTOFF,
-	R_386_GOTPC,
-	R_386_NUM,
-	R_386_16 = 0x80,
-	R_386_PC16
+    R_386_NONE = 0,
+    R_386_32,
+    R_386_PC32,
+    R_386_GOT32,
+    R_386_PLT32,
+    R_386_COPY,
+    R_386_GLOB_DAT,
+    R_386_JMP_SLOT,
+    R_386_RELATIVE,
+    R_386_GOTOFF,
+    R_386_GOTPC,
+    R_386_NUM,
+    R_386_16 = 0x80,
+    R_386_PC16
 };
 
 __END_DECLS
-
 #endif

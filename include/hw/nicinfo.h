@@ -375,6 +375,3 @@ typedef struct {
 } nic_private_dcmd_t;
 
 #endif
-
-__SRCVERSION
-    ("$URL: http://svn.ott.qnx.com/product/branches/deckard/BB10_2_0X/hardware/devn/public/hw/nicinfo.h $ $Rev: 219612 $")

@@ -27,8 +27,6 @@
 #include <sys/platform.h>
 #endif
 
-#include <_pack64.h>
-
 enum {
     IMAGE_FLAGS_BIGENDIAN = 0x01,   /* header, trailer, dirents in big-endian format  */
     IMAGE_FLAGS_READONLY = 0x02,    /* do not try to write to image (rom/flash) */
@@ -186,7 +184,5 @@ union script_cmd {
         char pname[1];
     } extsched_aps;
 };
-
-#include <_packpop.h>
 
 #endif                          /* __IMAGE_H_INCLUDED */

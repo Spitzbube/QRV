@@ -112,5 +112,3 @@ __END_DECLS
 #endif /* _KERNEL */
 
 #endif /* !__POLL_H_INCLUDED */
-
-/* __SRCVERSION("poll.h $Rev: 153052 $"); */

@@ -25,34 +25,28 @@
 #ifndef __PATHMSG_H_INCLUDED
 #define __PATHMSG_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
 
 #ifndef __SYSMSG_H_INCLUDED
-#include _NTO_HDR_(sys/sysmsg.h)
+#include <sys/sysmsg.h>
 #endif
 
 #ifndef __IOMSG_H_INCLUDED
-#include _NTO_HDR_(sys/iomsg.h)
+#include <sys/iomsg.h>
 #endif
 
-#define PATHMGR_PID				SYSMGR_PID
-#define PATHMGR_CHID			SYSMGR_CHID
-#define PATHMGR_COID			SYSMGR_COID
-#define PATHMGR_HANDLE			SYSMGR_HANDLE
+#define PATHMGR_PID		SYSMGR_PID
+#define PATHMGR_CHID		SYSMGR_CHID
+#define PATHMGR_COID		SYSMGR_COID
+#define PATHMGR_HANDLE		SYSMGR_HANDLE
 #define PATHMGR_HANDLE_REMOTE	(SYSMGR_HANDLE+1)
 
 enum {
-	_PATH_RESOLVE = _PATHMGR_BASE,
-	_PATH_CHDIR,
-	_PATH_CHROOT
+    _PATH_RESOLVE = _PATHMGR_BASE,
+    _PATH_CHDIR,
+    _PATH_CHROOT
 };
 
 #endif
-
-/* __SRCVERSION("pathmsg.h $Rev: 153052 $"); */

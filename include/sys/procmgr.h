@@ -15,8 +15,6 @@
  * $
  */
 
-
-
 /*
  *  sys/procmgr.h
  *
@@ -24,10 +22,6 @@
  */
 #ifndef __PROCMGR_H_INCLUDED
 #define __PROCMGR_H_INCLUDED
-
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
 
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
@@ -71,5 +65,3 @@ extern int procmgr_event_trigger(unsigned __flags);
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("procmgr.h $Rev: 159359 $"); */

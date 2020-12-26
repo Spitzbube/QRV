@@ -47,4 +47,3 @@ extern void vwarnx __P((const char *, __NTO_va_list))
     __attribute__((__format__(__printf__, 1, 0)));
 __END_DECLS
 #endif
-/* __SRCVERSION("err.h $Rev: 164949 $"); */

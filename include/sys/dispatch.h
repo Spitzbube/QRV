@@ -298,5 +298,3 @@ extern thread_pool_attr_t *thread_pool_attr_default;
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("dispatch.h $Rev: 171666 $"); */

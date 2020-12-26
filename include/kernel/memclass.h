@@ -28,17 +28,7 @@
 #include <signal.h>
 #include <devctl.h>
 
-#if defined(__GNUC__)
-/*
- * these array element and structure field "safe" initializations are not
- * supported by the WATCOM compiler.
-*/
 #define ARRAY_EL(e)		[(e)] =
-#define STRUCT_FLD(e)	.e =
-#else
-#define ARRAY_EL(e)
-#define STRUCT_FLD(e)
-#endif                          /* __GNUC__ */
 
 /*
  * memsize_t

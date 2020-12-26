@@ -132,4 +132,3 @@ _END_C_LIB_DECL
  * Copyright (c) 1992-2006 by P.J. Plauger.  ALL RIGHTS RESERVED.
  * Consult your license regarding permissions and restrictions.
 V5.00:1296 */
-/* __SRCVERSION("xwcc.h $Rev: 153052 $"); */

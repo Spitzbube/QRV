@@ -59,4 +59,3 @@ extern char *pathfind(__const char *__path, __const char *__name, __const char *
 
 __END_DECLS
 #endif
-/* __SRCVERSION("libgen.h $Rev: 159968 $"); */

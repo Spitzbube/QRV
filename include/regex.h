@@ -89,7 +89,7 @@ _C_STD_END
 #define	REG_LARGE	01000
 #define	REG_BACKR	02000
 #endif
-#include <_pack64.h>
+
 typedef _Int32t regoff_t;
 
 typedef struct {
@@ -104,8 +104,6 @@ typedef struct {
     regoff_t rm_eo;
 } regmatch_t;
 
-#include <_packpop.h>
-
 
 __BEGIN_DECLS extern int regcomp(regex_t * __preg, __const char *__pattern, int __cflags);
 extern int regexec(__const regex_t * __preg, __const char *__str,
@@ -115,4 +113,3 @@ extern _CSTD size_t regerror(int __errcode, __const regex_t * __preg, char *__er
 extern void regfree(regex_t * __preg);
 __END_DECLS
 #endif
-/* __SRCVERSION("regex.h $Rev: 153052 $"); */

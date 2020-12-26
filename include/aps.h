@@ -16,10 +16,6 @@
 
 #include <stdbool.h>
 
-#ifdef __WATCOMC__
-typedef char _Bool;             // not done in stdbool.h for watcom
-#endif                          /* __WATCOMC__ */
-
 /*
  * this file contains external interfaces for the scheduler partitioning module
  * required outside of the scheduler manager and regardless of whether scheduler
@@ -388,10 +384,10 @@ extern bool apmgr_module_installed(void);
  * If the aps or apmgr modules are not installed, or any other error occurs, NULL
  * will be returned.
 */
-/* remove this when we no longer support WATCOM, or WATCOM supports inlines */
-#if (defined(__WATCOMC__) || !defined(NDEBUG))
+
+#if !defined(NDEBUG)
 extern void *_select_dpp(PROCESS * prp, part_id_t spid);
-#else                           /* (defined(__WATCOMC__) || !defined(NDEBUG)) */
+#else
 static __inline__ void *_select_dpp(PROCESS * prp, part_id_t spid)
 {
     if (!SCHEDPART_INSTALLED() || !apmgr_module_installed() || (schedpart_select_dpp == NULL)) {
@@ -403,7 +399,8 @@ static __inline__ void *_select_dpp(PROCESS * prp, part_id_t spid)
         return schedpart_select_dpp(prp, spart->info.info.id);
     }
 }
-#endif                          /* (defined(__WATCOMC__) || !defined(NDEBUG)) */
+#endif /* !defined(NDEBUG)) */
+
 #define SCHEDPART_SELECT_DPP(p, spid)		_select_dpp((p), (spid))
 
 
@@ -433,9 +430,4 @@ static __inline__ void *_select_dpp(PROCESS * prp, part_id_t spid)
 #define SCHEDPART_INIT(i_spid, i)		if (schedpart_init != NULL) schedpart_init((i_spid), (i))
 
 
-
-
-
 #endif                          /* _APS_H_ */
-
-/* __SRCVERSION("$IQ: aps.h,v 1.91 $"); */

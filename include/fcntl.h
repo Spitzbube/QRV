@@ -25,10 +25,6 @@
 
 #ifndef _FCNTL_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -213,8 +209,6 @@ typedef __PID_T pid_t;
 #define POSIX_FADV_NOREUSE		5   /* Will access specified data once */
 #endif
 
-#include <_pack64.h>
-
 /*
  *  flock structure.
  */
@@ -259,8 +253,6 @@ typedef struct flock64 {
 } flock64_t;
 #endif
 
-#include <_packpop.h>
-
 __BEGIN_DECLS
 /*
  *  POSIX 1003.1 Prototypes.
@@ -274,21 +266,6 @@ extern int creat64(const char *__path, _CSTD mode_t __mode);
 extern int open(const char *__path, int __oflag, ...) __ALIAS64("open64");
 extern int creat(const char *__path, _CSTD mode_t __mode) __ALIAS64("creat64");
 extern int fcntl(int __fildes, int __cmd, ...);
-#endif
-
-#if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__GNUC__)
-/* Use __ALIAS64 define */
-#elif defined(__WATCOMC__)
-#pragma aux open "open64";
-#pragma aux creat "creat64";
-#elif defined(_PRAGMA_REDEFINE_EXTNAME)
-#pragma redefine_extname open open64
-#pragma redefine_extname creat creat64
-#else
-#define open open64
-#define creat creat64
-#endif
 #endif
 
 #if defined(__EXT_UNIX_MISC)
@@ -305,12 +282,6 @@ extern int posix_fallocate64(int __fd, off64_t __offset, off64_t __len);
 #endif
 
 #if _FILE_OFFSET_BITS-0 == 64
-#if defined(__WATCOMC__)
-extern int posix_fadvise(int __fd, off_t __offset, off_t __len, int __advice);
-#pragma aux posix_fadvise "posix_fadvise64";
-extern int posix_fallocate(int __fd, off_t __offset, off_t __len);
-#pragma aux posix_fallocate "posix_fallocate64";
-#else
 static __inline int
     __attribute__((__unused__)) posix_fadvise(int __fd, off_t __offset, off_t __len, int __advice)
 {
@@ -322,7 +293,7 @@ static __inline int
 {
     return posix_fallocate64(__fd, __offset, __len);
 }
-#endif
+
 #elif !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
 extern int posix_fadvise(int __fd, off_t __offset, off_t __len, int __advice);
 extern int posix_fallocate(int __fd, off_t __offset, off_t __len);
@@ -375,5 +346,3 @@ __END_DECLS
 #endif                          /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("fcntl.h $Rev: 173967 $"); */

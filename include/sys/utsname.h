@@ -15,8 +15,6 @@
  * $
  */
 
-
-
 /*
  *  utsname.h   UTSNAME info
  *
@@ -28,19 +26,15 @@
  #include <sys/types.h>
 #endif
 
-#include <_pack64.h>
-
 #define _SYSNAME_SIZE		(256 + 1)
 
 struct utsname {
-    char    sysname[_SYSNAME_SIZE],		/* SI_SYSNAME */
+    char    sysname[_SYSNAME_SIZE],	/* SI_SYSNAME */
             nodename[_SYSNAME_SIZE],	/* SI_HOSTNAME */
-            release[_SYSNAME_SIZE],		/* SI_RELEASE */
-            version[_SYSNAME_SIZE],		/* SI_VERSION */
-            machine[_SYSNAME_SIZE];		/* SI_MACHINE */
+            release[_SYSNAME_SIZE],	/* SI_RELEASE */
+            version[_SYSNAME_SIZE],	/* SI_VERSION */
+            machine[_SYSNAME_SIZE];	/* SI_MACHINE */
 };
-
-#include <_packpop.h>
 
 __BEGIN_DECLS
 
@@ -50,5 +44,3 @@ __END_DECLS
 
 #define __UTSNAME_H_INCLUDED
 #endif
-
-/* __SRCVERSION("utsname.h $Rev: 153052 $"); */

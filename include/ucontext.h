@@ -124,8 +124,6 @@ typedef __UCONTEXT_T ucontext_t;
 #undef __UCONTEXT_T
 #endif
 
-#include <_pack64.h>
-
 struct __ucontext_t {
     struct __ucontext_t *uc_link;
     sigset_t uc_sigmask;
@@ -134,11 +132,13 @@ struct __ucontext_t {
 };
 
 __BEGIN_DECLS
-/* int	getcontext(ucontext_t *); */
-/* int	setcontext(const ucontext_t *); */
-/* void	makecontext(ucontext_t *, void (*)(), int, ...); */
-/* int	swapcontext(ucontext_t *, const ucontext_t *); */
-#include <_packpop.h>
-    __END_DECLS
+
+#if 0
+int	getcontext(ucontext_t *);
+int	setcontext(const ucontext_t *); */
+void	makecontext(ucontext_t *, void (*)(), int, ...);
+int	swapcontext(ucontext_t *, const ucontext_t *);
 #endif
-/* __SRCVERSION("ucontext.h $Rev: 153052 $"); */
+
+__END_DECLS
+#endif

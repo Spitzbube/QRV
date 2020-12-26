@@ -29,13 +29,9 @@
 #include <sys/platform.h>
 #endif
 
-#include <_pack64.h>
-
 typedef struct {
 	long __bits[2];
 } fltset_t;
-
-#include <_packpop.h>
 
 #define	FLTILL		1	/* Illegal instruction */
 #define	FLTPRIV		2	/* Privileged instruction */
@@ -52,7 +48,7 @@ typedef struct {
 /* First CPU specific fault number */
 #define _FIRST_CPU_FAULT	32
 
-#include <arch_fault.h>
+#include <arch/fault.h>
 
 #endif
 

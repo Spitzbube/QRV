@@ -89,5 +89,3 @@
 #define IPI_INTR_MASK  		0x00000100
 #define IPI_CLOCK_LOAD 		0x00000200
 #define IPI_CPU_SPECIFIC	0xffff0000
-
-/* __SRCVERSION("smpswitch.h $Rev: 174913 $"); */

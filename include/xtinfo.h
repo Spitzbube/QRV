@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 1992-2006 by P.J. Plauger.  ALL RIGHTS RESERVED.
+ * Consult your license regarding permissions and restrictions.
+ *  V5.00:1296
+ */
+
 /* xtinfo.h internal header */
 #ifndef _XTINFO
 #define _XTINFO
@@ -41,8 +47,3 @@ extern _Tinfo _Times;
 _Tinfo *_Getptimes(void);
 _END_C_LIB_DECL _C_STD_END
 #endif                          /* _XTINFO */
-/*
- * Copyright (c) 1992-2006 by P.J. Plauger.  ALL RIGHTS RESERVED.
- * Consult your license regarding permissions and restrictions.
-V5.00:1296 */
-/* __SRCVERSION("xtinfo.h $Rev: 153052 $"); */

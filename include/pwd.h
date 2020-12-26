@@ -25,10 +25,6 @@
 #ifndef _PWD_H_INCLUDED
 #define _PWD_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __TYPES_H_INCLUDED
 #include <sys/types.h>
 #endif
@@ -36,8 +32,6 @@
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
-
-#include <_pack64.h>
 
 struct passwd {
     char *pw_name;              /*  User's login name           */
@@ -50,8 +44,6 @@ struct passwd {
     char *pw_dir;               /*  Initial Working Directory   */
     char *pw_shell;             /*  Initial User Program        */
 };
-
-#include <_packpop.h>
 
 __BEGIN_DECLS
 /*
@@ -76,4 +68,3 @@ extern int getpwent_r(struct passwd *pwd, char *buffer, int bufsize, struct pass
 
 __END_DECLS
 #endif
-/* __SRCVERSION("pwd.h $Rev: 212726 $"); */

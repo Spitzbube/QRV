@@ -15,8 +15,6 @@
  * $
  */
 
-
-
 /*
  *  times.h     Process timing definitions (P1003.1)
  *
@@ -32,8 +30,6 @@
 typedef __CLOCK_T	clock_t;
 #undef __CLOCK_T
 #endif
-
-#include <_pack64.h>
 
 struct  tms {
         clock_t tms_utime;
@@ -53,9 +49,5 @@ extern clock_t times( struct tms *__time_info );
 
 __END_DECLS
 
-#include <_packpop.h>
-
 #define __TIMES_H_INCLUDED
 #endif
-
-/* __SRCVERSION("times.h $Rev: 153052 $"); */

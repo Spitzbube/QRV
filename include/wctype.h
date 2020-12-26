@@ -78,5 +78,3 @@ using _CSTD iswblank;
  * Copyright (c) 1992-2006 by P.J. Plauger.  ALL RIGHTS RESERVED.
  * Consult your license regarding permissions and restrictions.
 V5.00:1296 */
-
-/* __SRCVERSION("wctype.h $Rev: 153052 $"); */

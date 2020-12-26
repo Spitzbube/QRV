@@ -69,5 +69,3 @@ OBJECT *object_create(int type, void *extra, PROCESS * prp, memclass_id_t mcid);
 int object_done(OBJECT *);
 size_t object_name(OBJECT *, size_t, char *);
 int object_devctl(resmgr_context_t *, io_devctl_t *, OBJECT *);
-
-/* __SRCVERSION("pathmgr_proto.h $Rev: 198777 $"); */

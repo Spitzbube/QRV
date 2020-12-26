@@ -259,5 +259,3 @@ extern void _memclass_pid_free(PROCESS * prp, memclass_id_t mclass_id, memsize_t
 #endif                          /* MEMPART_NO_EVENTS */
 
 #endif                          /* _MCLASS_H_ */
-
-/* __SRCVERSION("$IQ: memclass.h,v 1.91 $"); */

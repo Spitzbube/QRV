@@ -26,10 +26,6 @@
 #ifndef _INTR_H_INCLUDED
 #define _INTR_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __TYPES_H_INCLUDED
 #include <sys/types.h>
 #endif
@@ -64,4 +60,3 @@ extern int intr_unlock(intr_t __intr);
 
 __END_DECLS
 #endif
-/* __SRCVERSION("intr.h $Rev: 153052 $"); */

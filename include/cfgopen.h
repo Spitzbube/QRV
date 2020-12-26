@@ -69,4 +69,3 @@ FILE *fcfgopen(const char *path, const char *mode, int location,
 
 __END_DECLS
 #endif
-/* __SRCVERSION("cfgopen.h $Rev: 153052 $"); */

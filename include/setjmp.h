@@ -24,10 +24,6 @@
  */
 #ifndef _SETJMP_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -39,9 +35,10 @@
 #ifndef _SETJMP_H_DECLARED
 #define _SETJMP_H_DECLARED
 
-#include <_pack64.h>
 
-__BEGIN_DECLS _C_STD_BEGIN typedef struct _jmp_buf {
+__BEGIN_DECLS
+_C_STD_BEGIN
+typedef struct _jmp_buf {
     union {
         unsigned int __savearea[__JMPBUFSIZE];
         __jmpbufalign __alignment;
@@ -49,7 +46,10 @@ __BEGIN_DECLS _C_STD_BEGIN typedef struct _jmp_buf {
     int __flg;
     long __msk[2];
 } jmp_buf[1];
-_C_STD_END extern int _setjmp(_CSTD jmp_buf __env);
+
+_C_STD_END
+
+extern int _setjmp(_CSTD jmp_buf __env);
 extern void _longjmp(_CSTD jmp_buf __env, int __val) __attribute__((__noreturn__));
 
 extern void longjmp(_CSTD jmp_buf __env, int __val) __attribute__((__noreturn__));
@@ -71,8 +71,6 @@ extern void siglongjmp(sigjmp_buf __env, int __val) __attribute__((__noreturn__)
 #define setjmp(__env)			sigsetjmp(__env, 1)
 #define longjmp(__env, __val)	siglongjmp((__env), (__val))
 
-#include <_packpop.h>
-
 __END_DECLS
 #endif
 #ifdef _STD_USING
@@ -80,5 +78,3 @@ __END_DECLS
 #endif                          /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("setjmp.h $Rev: 153052 $"); */

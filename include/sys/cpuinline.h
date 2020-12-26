@@ -36,5 +36,3 @@
 #include <arch_cpuinline.h>
 
 #endif
-
-/* __SRCVERSION("cpuinline.h $Rev: 153052 $"); */

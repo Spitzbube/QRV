@@ -30,32 +30,30 @@
 #endif
 
 #ifndef __ELFTYPES_H_INCLUDED
-#include _NTO_HDR_(sys/elftypes.h)
+#include <elf/elftypes.h>
 #endif
 
 __BEGIN_DECLS
-
 #define QNX_NOTE_NAME	"QNX"
-
-enum Elf_qnx_note_types {
-	QNT_NULL = 0,
-	QNT_DEBUG_FULLPATH,
-	QNT_DEBUG_RELOC,
-	QNT_STACK,
-	QNT_GENERATOR,
-	QNT_DEFAULT_LIB,
-	QNT_CORE_SYSINFO,
-	QNT_CORE_INFO,
-	QNT_CORE_STATUS,
-	QNT_CORE_GREG,
-	QNT_CORE_FPREG,
-	QNT_NUM
+    enum Elf_qnx_note_types {
+    QNT_NULL = 0,
+    QNT_DEBUG_FULLPATH,
+    QNT_DEBUG_RELOC,
+    QNT_STACK,
+    QNT_GENERATOR,
+    QNT_DEFAULT_LIB,
+    QNT_CORE_SYSINFO,
+    QNT_CORE_INFO,
+    QNT_CORE_STATUS,
+    QNT_CORE_GREG,
+    QNT_CORE_FPREG,
+    QNT_NUM
 };
 
 typedef struct {
-	_Uint8t			major_version;
-	_Uint8t			minor_version;
-	_Uint16t		flags;
+    _Uint8t major_version;
+    _Uint8t minor_version;
+    _Uint16t flags;
 } generator_version;
 
 #define QNXELF_GEN_MAJOR	1
@@ -63,10 +61,9 @@ typedef struct {
 
 /* Generator note flags */
 enum {
-	QNXELF_FLAG_DYNAMIC		= 0x0001,
-	QNXELF_FLAG_PRIVATES	= 0x0002
+    QNXELF_FLAG_DYNAMIC = 0x0001,
+    QNXELF_FLAG_PRIVATES = 0x0002
 };
 
 __END_DECLS
-
 #endif

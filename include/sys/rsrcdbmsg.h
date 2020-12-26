@@ -31,13 +31,13 @@
 #endif
 
 #ifndef __SYSMSG_H_INCLUDED
-#include _NTO_HDR_(sys/sysmsg.h)
+#include <sys/sysmsg.h>
 #endif
 
 #define RSRCDBMGR_COID  SYSMGR_COID
 
 enum _rsrc_command {
-	RSRCDBMGR_RSRC_CMD	= _RSRCDBMGR_BASE
+    RSRCDBMGR_RSRC_CMD = _RSRCDBMGR_BASE
 };
 
 /*
@@ -45,13 +45,13 @@ enum _rsrc_command {
 */
 #define RSRCDBMGR_REQ_MASK	0xfe00
 enum _rsrc_req {
-	RSRCDBMGR_REQ_CREATE	= (2 << 8),
-	RSRCDBMGR_REQ_DESTROY	= (4 << 8),
-	RSRCDBMGR_REQ_ATTACH	= (6 << 8),
-	RSRCDBMGR_REQ_DETACH	= (8 << 8),
-	RSRCDBMGR_REQ_QUERY		= (10 << 8),
-	RSRCDBMGR_RESERVED   	= (12 << 8),
-	RSRCDBMGR_REQ_QUERY_NAME= (14 << 8)
+    RSRCDBMGR_REQ_CREATE = (2 << 8),
+    RSRCDBMGR_REQ_DESTROY = (4 << 8),
+    RSRCDBMGR_REQ_ATTACH = (6 << 8),
+    RSRCDBMGR_REQ_DETACH = (8 << 8),
+    RSRCDBMGR_REQ_QUERY = (10 << 8),
+    RSRCDBMGR_RESERVED = (12 << 8),
+    RSRCDBMGR_REQ_QUERY_NAME = (14 << 8)
 };
 
 
@@ -59,23 +59,21 @@ enum _rsrc_req {
  Structures used to communicate w/ server.
 */
 struct _rsrc_cmd {
-	_Uint16t		type;
-	_Uint16t		subtype;
-	_Uint32t		pid;
-	_Uint32t		nbytes;			/* Size of the message to follow  */
-	_Uint32t		count;			/* Number of elements in the message */
-	_Uint32t		index;			/* Used for query operation, start index */
+    _Uint16t type;
+    _Uint16t subtype;
+    _Uint32t pid;
+    _Uint32t nbytes;            /* Size of the message to follow  */
+    _Uint32t count;             /* Number of elements in the message */
+    _Uint32t index;             /* Used for query operation, start index */
 };
 
 struct _rsrc_cmd_reply {
-	_Uint8t			res[sizeof(struct _rsrc_cmd)];
+    _Uint8t res[sizeof(struct _rsrc_cmd)];
 };
 
 typedef union {
-	struct _rsrc_cmd		i;
-	struct _rsrc_cmd_reply	o;
+    struct _rsrc_cmd i;
+    struct _rsrc_cmd_reply o;
 } rsrc_cmd_t;
 
 #endif
-
-/* __SRCVERSION("rsrcdbmsg.h $Rev: 153052 $"); */

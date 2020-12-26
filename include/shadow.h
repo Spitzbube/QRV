@@ -75,4 +75,3 @@ extern void setspent(void);
 
 __END_DECLS
 #endif
-/* __SRCVERSION("shadow.h $Rev: 153052 $"); */

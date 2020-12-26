@@ -30,8 +30,6 @@
 #include <sys/platform.h>
 #endif
 
-#include <_pack64.h>
-
 #if defined(__FSBLKCNT64_T)
 typedef __FSBLKCNT64_T		fsblkcnt64_t;
 #undef __FSBLKCNT64_T
@@ -120,8 +118,6 @@ struct statvfs64 {
 };
 #endif
 
-#include <_packpop.h>
-
 #define ST_RDONLY        0x01  /* rw read only */
 #define ST_NOEXEC        0x02  /* rw can't exec from filesystem */
 #define ST_NOSUID        0x04  /* rw don't honor setuid bits on fs */
@@ -141,23 +137,6 @@ extern int statvfs(const char *__path, struct statvfs *__buf) __ALIAS64("statvfs
 extern int fstatvfs(int __fildes, struct statvfs *__buf) __ALIAS64("fstatvfs64");
 #endif
 
-#if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__GNUC__)
-/* Use __ALIAS64 define */
-#elif defined(__WATCOMC__)
-#pragma aux statvfs "statvfs64";
-#pragma aux fstatvfs "fstatvfs64";
-#elif defined(_PRAGMA_REDEFINE_EXTNAME)
-#pragma redefine_extname statvfs statvfs64
-#pragma redefine_extname fstatvfs fstatvfs64
-#else
-#define statvfs statvfs64
-#define fstatvfs fstatvfs64
-#endif
-#endif
-
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("statvfs.h $Rev: 154597 $"); */

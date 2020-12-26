@@ -15,18 +15,12 @@
  * $
  */
 
-
-
 /*
  *  stddef.h    Standard definitions
  *
 
  */
 #ifndef _STDDEF_H_INCLUDED
-
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
 
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
@@ -77,5 +71,3 @@ using std::size_t;
 #endif                          /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("stddef.h $Rev: 153052 $"); */

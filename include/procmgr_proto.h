@@ -89,5 +89,3 @@ int procmgr_wait_check(PROCESS * prp, PROCESS * parent, struct wait_entry *wap, 
 int procmgr_wait(resmgr_context_t * ctp, proc_wait_t * msg);
 int procmgr_stop_or_cont(message_context_t * ctp, int code, unsigned flags, void *handle);
 void procmgr_nozombie(PROCESS * prp, int status);
-
-/* __SRCVERSION("procmgr_proto.h $Rev: 174816 $"); */

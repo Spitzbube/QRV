@@ -62,8 +62,8 @@ _C_STD_END
 #define	GLOB_NOSPACE	1       /* Ran out of memory.  */
 #define	GLOB_ABEND		2       /* Read error.  */
 #define	GLOB_NOMATCH	3       /* No matches found.  */
-#include <_pack64.h>
-    struct _dir;
+
+struct _dir;
 struct dirent;
 struct stat;
 typedef struct {
@@ -89,7 +89,6 @@ typedef struct {
     int (*gl_stat)(const char *, struct stat *);
 } glob_t;
 
-#include <_packpop.h>
 
 /* Do glob searching for PATTERN, placing results in PGLOB.
    The bits defined above may be set in FLAGS.
@@ -109,4 +108,3 @@ extern void globfree(glob_t * __pglob);
 
 __END_DECLS
 #endif
-/* __SRCVERSION("glob.h $Rev: 165345 $"); */

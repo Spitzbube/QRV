@@ -24,10 +24,6 @@
  */
 #ifndef __STAT_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -134,8 +130,6 @@ typedef __PID_T		pid_t;
 #undef __PID_T
 #endif
 #endif
-
-#include <_pack64.h>
 
 struct stat {
 #if _FILE_OFFSET_BITS - 0 == 64
@@ -317,24 +311,6 @@ extern int lstat(const char *__path, struct stat *__buf) __ALIAS64("lstat64");
 extern int fstat(int __fildes, struct stat *__buf) __ALIAS64("fstat64");
 #endif
 
-#if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__GNUC__)
-/* Use __ALIAS64 define */
-#elif defined(__WATCOMC__)
-#pragma aux stat "stat64";
-#pragma aux lstat "lstat64";
-#pragma aux fstat "fstat64";
-#elif defined(_PRAGMA_REDEFINE_EXTNAME)
-#pragma redefine_extname stat stat64
-#pragma redefine_extname lstat lstat64
-#pragma redefine_extname fstat fstat64
-#else
-#define stat stat64
-#define lstat lstat64
-#define fstat fstat64
-#endif
-#endif
-
 extern int chmod(const char *__path, _CSTD mode_t __mode);
 extern int fchmod(int __fildes, _CSTD mode_t __mode);
 #if defined(__EXT_QNX)	/* POSIX 1003.1g draft */
@@ -351,8 +327,6 @@ extern _CSTD mode_t umask(_CSTD mode_t __cmask);
 extern _CSTD mode_t _umask(pid_t __pid, _CSTD mode_t __cmask);
 #endif
 
-#include <_packpop.h>
-
 __END_DECLS
 
 #endif
@@ -362,5 +336,3 @@ using std::mode_t; using std::dev_t; using std::time_t;
 #endif
 
 #endif
-
-/* __SRCVERSION("stat.h $Rev: 154597 $"); */

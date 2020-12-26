@@ -30,8 +30,6 @@
 #include <sys/platform.h>
 #endif
 
-#include <_pack64.h>
-
 __BEGIN_DECLS
 /*
  * Thread local storage. This data is at the top of each threads stack.
@@ -74,6 +72,4 @@ struct _process_local_storage {
 };
 
 __END_DECLS
-#include <_packpop.h>
 #endif
-/* __SRCVERSION("storage.h $Rev: 153052 $"); */

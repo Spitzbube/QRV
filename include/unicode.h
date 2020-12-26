@@ -313,5 +313,3 @@
 #endif
 
 #endif
-
-/* __SRCVERSION("unicode.h $Rev: 153052 $"); */

@@ -25,28 +25,24 @@
 #ifndef __PATHMGR_H_INCLUDED
 #define __PATHMGR_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
 
 #ifndef __NEUTRINO_H_INCLUDED
-#include _NTO_HDR_(sys/neutrino.h)
+#include <sys/neutrino.h>
 #endif
 
 #ifndef __FTYPE_H_INCLUDED
-#include _NTO_HDR_(sys/ftype.h)
+#include <sys/ftype.h>
 #endif
 
 #ifndef _UNISTD_H_INCLUDED
-#include _NTO_HDR_(unistd.h)
+#include <unistd.h>
 #endif
 
 #ifndef _FCNTL_H_INCLUDED
-#include _NTO_HDR_(fcntl.h)
+#include <fcntl.h>
 #endif
 
 #if defined(__PID_T)
@@ -54,14 +50,14 @@ typedef __PID_T		pid_t;
 #undef __PID_T
 #endif
 
-#define PATHMGR_FLAG_BEFORE		0x0001	/* Force path to be resolved before others at the same mountpoint. */
-#define PATHMGR_FLAG_AFTER		0x0002	/* Force path to be resolved after others at the same mountpoint. */
-#define PATHMGR_FLAG_OPAQUE		0x0004	/* Don't resolve to mountpoints with shorter pathname matches. */
-#define PATHMGR_FLAG_FTYPEONLY  0x0008  /* Matching ftype is required on the path */
+#define PATHMGR_FLAG_BEFORE	0x0001	/* Force path to be resolved before others at the same mountpoint. */
+#define PATHMGR_FLAG_AFTER	0x0002	/* Force path to be resolved after others at the same mountpoint. */
+#define PATHMGR_FLAG_OPAQUE	0x0004	/* Don't resolve to mountpoints with shorter pathname matches. */
+#define PATHMGR_FLAG_FTYPEONLY	0x0008	/* Matching ftype is required on the path */
 #define PATHMGR_FLAG_FTYPEALL	0x0010	/* Matching all ftypes (for redirecting servers) */
-#define PATHMGR_FLAG_STICKY		0x0020	/* No ID is associated with pathname, must procmgr_unlink() to remove. */
-#define PATHMGR_FLAG_DIR		0x0100	/* Allow resolving of longer pathnames. */
-#define PATHMGR_FLAG_SELF		0x0200	/* Allow resolving names to itself. */
+#define PATHMGR_FLAG_STICKY	0x0020	/* No ID is associated with pathname, must procmgr_unlink() to remove. */
+#define PATHMGR_FLAG_DIR	0x0100	/* Allow resolving of longer pathnames. */
+#define PATHMGR_FLAG_SELF	0x0200	/* Allow resolving names to itself. */
 
 __BEGIN_DECLS
 
@@ -72,5 +68,3 @@ extern int pathmgr_unlink(const char *__path);
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("pathmgr.h $Rev: 153052 $"); */

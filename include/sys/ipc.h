@@ -25,17 +25,11 @@
 #ifndef _IPC_H_INCLUDED
 #define _IPC_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef __TYPES_H_INCLUDED
- #include <sys/types.h>
+#include <sys/types.h>
 #endif
 
 #ifdef __EXT_XOPEN_EX
-
-#include <_pack64.h>
 
 struct ipc_perm {
 	uid_t	uid;
@@ -47,8 +41,6 @@ struct ipc_perm {
 	key_t	key;
 	int		_reserved[4];
 };
-
-#include <_packpop.h>
 
 #define IPC_PRIVATE		((key_t)0)
 
@@ -72,5 +64,3 @@ __END_DECLS
 #endif
 
 #endif
-
-/* __SRCVERSION("ipc.h $Rev: 153052 $"); */

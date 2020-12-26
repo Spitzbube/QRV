@@ -113,5 +113,3 @@ struct loader_startup;
 struct stat;
 int elf_load(int fd, const char *path, struct loader_startup *lsp, struct stat *stat,
              struct inheritance *parms);
-
-/* __SRCVERSION("proto.h $Rev: 211988 $"); */

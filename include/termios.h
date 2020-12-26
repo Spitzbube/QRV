@@ -25,10 +25,6 @@
 #ifndef _TERMIOS_H_INCLUDED
 #define _TERMIOS_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -36,8 +32,6 @@
 #ifndef __TYPES_H_INCLUDED
 #include <sys/types.h>
 #endif
-
-#include <_pack64.h>
 
 #define NCCS    40
 
@@ -207,7 +201,7 @@ struct termios {
  */
 
 #define _TIOS_B0      0
-#define B0		     _TIOS_B0
+#define B0           _TIOS_B0
 #define _TIOS_B50     50
 #define B50          _TIOS_B50
 #define _TIOS_B75     75
@@ -312,8 +306,5 @@ extern int tcgetsize(int __fildes, int *__prows, int *__pcols);
 extern int tcsetsize(int __fildes, int __rows, int __cols);
 #endif
 
-#include <_packpop.h>
-
 __END_DECLS
 #endif
-/* __SRCVERSION("termios.h $Rev: 153052 $"); */

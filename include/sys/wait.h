@@ -115,5 +115,3 @@ __END_DECLS
 
 #define __WAIT_H_INCLUDED
 #endif
-
-/* __SRCVERSION("wait.h $Rev: 153052 $"); */

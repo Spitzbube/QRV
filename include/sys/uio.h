@@ -16,24 +16,17 @@
  */
 
 
-
 /*
  *  uio.h
  *
-
  */
+
 #ifndef __UIO_H_INCLUDED
 #define __UIO_H_INCLUDED
-
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
 
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
-
-#include <_pack64.h>
 
 _C_STD_BEGIN
 
@@ -59,8 +52,6 @@ typedef __IOVEC_T	iov_t;
 #undef __IOVEC_T
 #endif
 
-#include <_packpop.h>
-
 __BEGIN_DECLS
 
 extern _CSTD ssize_t readv(int __fildes, const struct iovec *__iov, int __nparts);
@@ -74,5 +65,3 @@ extern _CSTD ssize_t  _writexv(int __fd, struct iovec *__iovec, int __nparts, un
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("uio.h $Rev: 153052 $"); */

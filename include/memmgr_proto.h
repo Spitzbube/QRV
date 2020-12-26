@@ -61,6 +61,3 @@ int rdecl proc_lock_owner_check(PROCESS *, pid_t, unsigned);
 
 int memmgr_tymem_open(const char *path, int oflags, OBJECT ** obpp, PROCESS * prp);
 void memmgr_tymem_close(OBJECT * obp);
-
-
-/* __SRCVERSION("memmgr_proto.h $Rev: 160168 $"); */

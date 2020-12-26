@@ -93,5 +93,3 @@ extern int _conf_set(long **__list, int __cmd, int __name, long __value, const c
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("conf.h $Rev: 153052 $"); */

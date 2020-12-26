@@ -39,5 +39,3 @@ enum message_type {
 #define DCMD_PROF_MAPPING_REM     __DIOT(_DCMD_MISC, PROF_MAPPING_REM, struct __prof_clientinfo)
 
 #endif
-
-/* __SRCVERSION("dcmd_prof.h $Rev: 153052 $"); */

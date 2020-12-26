@@ -25,10 +25,6 @@
 #ifndef _SYNC_H_INCLUDED
 #define _SYNC_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef _PTHREAD_H_INCLUDED
 #include <pthread.h>
 #endif
@@ -38,7 +34,7 @@
 #endif
 
 __BEGIN_DECLS
-#include <_pack64.h>
+
 #if defined(__EXT_QNX)          /* not approved P1003.1j/D5 */
 /* From posix 1003.1j D5 !!!!!!!!!!!!! USE pthread_* calls instead !!!!!!!!! */
 /* Map these calls to the approved POSIX ones */
@@ -65,8 +61,5 @@ typedef pthread_spinlock_t spinlock_t;
 
 #endif
 
-#include <_packpop.h>
-
 __END_DECLS
 #endif
-/* __SRCVERSION("sync.h $Rev: 153052 $"); */

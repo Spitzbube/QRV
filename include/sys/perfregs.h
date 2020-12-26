@@ -30,12 +30,10 @@
 #endif
 
 #ifndef __TYPES_H_INCLUDED
-#include _NTO_HDR_(sys/types.h)
+#include <sys/types.h>
 #endif
 
-#ifndef _SIGNAL_H_INCLUDED
-#include _NTO_HDR_(inttypes.h)
-#endif
+#include <inttypes.h>
 
 #define PERFREGS_ENABLED_FLAG	0x80000000
 #define PERFREGS_SAVED_FLAG		0x40000000
@@ -61,5 +59,3 @@
 
 
 #endif
-
-/* __SRCVERSION("perfregs.h $Rev: 153052 $"); */

@@ -16,10 +16,6 @@
 
 #include <stdbool.h>
 
-#ifdef __WATCOMC__
-typedef char _Bool;             // not done in stdbool.h for watcom
-#endif                          /* __WATCOMC__ */
-
 /*
  * this file contains external interfaces for the memory partitioning module
  * required outside of the memory manager and regardless of whether memory
@@ -542,5 +538,3 @@ memclass_info_t *memclass_info(memclass_id_t id, memclass_info_t * info);
 
 
 #endif                          /* _APM_H_ */
-
-/* __SRCVERSION("$IQ: apm.h,v 1.91 $"); */

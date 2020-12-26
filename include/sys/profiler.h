@@ -90,5 +90,3 @@ struct __prof_clientinfo {
 
 __END_DECLS
 #endif
-
-/* __SRCVERSION("profiler.h $Rev: 153052 $"); */

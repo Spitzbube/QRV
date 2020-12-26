@@ -146,5 +146,3 @@ enum {
 };
 
 #endif
-
-/* __SRCVERSION("kercalls.h $Rev: 153052 $"); */

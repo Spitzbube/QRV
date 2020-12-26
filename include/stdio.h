@@ -28,10 +28,6 @@
 
 #ifndef _STDIO_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -42,8 +38,6 @@
 
 #ifndef _STDIO_H_DECLARED
 #define _STDIO_H_DECLARED
-
-#include <_pack64.h>
 
 _C_STD_BEGIN
 #define _HAS_DINKUM_CLIB 1
@@ -174,30 +168,6 @@ extern _CSTD FILE *freopen64(const char *__filename, const char *__mode, _CSTD F
 extern _CSTD FILE *tmpfile64(void);
 extern int fseeko64(_CSTD FILE * __fp, off64_t __offset, int __whence);
 extern off64_t ftello64(_CSTD FILE * __fp);
-#endif
-
-#if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__GNUC__)
-/* Use __ALIAS64 define */
-#elif defined(__WATCOMC__)
-#pragma aux fopen "fopen64";
-#pragma aux freopen "freopen64";
-#pragma aux tmpfile "tmpfile64";
-#pragma aux fseeko "fseeko64";
-#pragma aux ftello "ftello64";
-#elif defined(_PRAGMA_REDEFINE_EXTNAME)
-#pragma redefine_extname fopen fopen64
-#pragma redefine_extname freopen freopen64
-#pragma redefine_extname tmpfile tmpfile64
-#pragma redefine_extname fseeko fseeko64
-#pragma redefine_extname ftello ftello64
-#else
-#define fopen fopen64
-#define freopen freopen64
-#define tmpfile tmpfile64
-#define fseeko fseeko64
-#define ftello ftello64
-#endif
 #endif
 
 #if defined(__EXT_UNIX_HIST) || defined(__EXT_POSIX1_200112)
@@ -426,10 +396,9 @@ extern int ftrylockfile(_CSTD FILE * __fp);
 extern void funlockfile(_CSTD FILE * __fp);
 __END_DECLS
 #endif                          /* POSIX 1995 */
-#include <_packpop.h>
 #endif
 #ifdef _STD_USING
-    using std::fdopen;
+using std::fdopen;
 using std::fileno;
 using std::size_t;
 using std::fpos_t;
@@ -479,5 +448,3 @@ using std::vsnprintf;
 #endif                          /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("stdio.h $Rev: 164949 $"); */

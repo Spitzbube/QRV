@@ -47,10 +47,8 @@ typedef __TIME_T	time_t;
 
 _C_STD_END
 
-#include <_pack64.h>
-
 struct timeval {
-	_CSTD time_t	tv_sec;		/* seconds */
+    _CSTD time_t	tv_sec;		/* seconds */
     suseconds_t		tv_usec;	/* microseconds */
 };
 
@@ -106,14 +104,12 @@ struct timezone
 struct timezone;
 #endif
 
-#include <_packpop.h>
-
 /*
  * for the which argument of getitimer() and setitimer()
  */
-#define ITIMER_REAL		0
+#define ITIMER_REAL	0
 #define ITIMER_VIRTUAL	1
-#define ITIMER_PROF		2
+#define ITIMER_PROF	2
 
 __BEGIN_DECLS
 extern int getitimer (int __which, struct itimerval *__value);
@@ -124,5 +120,3 @@ extern int utimes (const char *__path, const struct timeval *__times);
 __END_DECLS
 
 #endif /* !_SYS_TIME_H_ */
-
-/* __SRCVERSION("time.h $Rev: 153052 $"); */

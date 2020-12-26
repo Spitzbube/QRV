@@ -24,10 +24,6 @@
 #ifndef _POSIX_SPAWN_H_INCLUDED
 #define _POSIX_SPAWN_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -109,5 +105,3 @@ void set_factp(posix_spawn_file_actions_t *pp, void *p, unsigned key_mask);
 __END_DECLS
 
 #endif	/* _POSIX_SPAWN_H_INCLUDED */
-
-/* __SRCVERSION("posix_spawn.h $Rev: 169304 $"); */

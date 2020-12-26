@@ -50,18 +50,15 @@ _C_STD_END __BEGIN_DECLS
 #define WRDE_BADVAL	3
 #define WRDE_CMDSUB	4
 #define WRDE_SYNTAX	5
-#include <_pack64.h>
-    typedef struct {
+
+typedef struct {
     _CSTD size_t we_wordc;
     char **we_wordv;
     _CSTD size_t we_offs;
 } wordexp_t;
-
-#include <_packpop.h>
 
 extern int wordexp(const char *__words, wordexp_t * __pwordexp, int __flags);
 extern void wordfree(wordexp_t * __pwordexp);
 
 __END_DECLS
 #endif
-/* __SRCVERSION("wordexp.h $Rev: 153052 $"); */

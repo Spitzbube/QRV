@@ -45,11 +45,9 @@ enum _file_type {
 };
 
 #define _MAJOR_PATHMGR		"pathmgr"	/* Use by path manager only */
-#define _MAJOR_DEV			"dev"		/* Devices in /dev with only one instance (/dev/tty) */
+#define _MAJOR_DEV		"dev"		/* Devices in /dev with only one instance (/dev/tty) */
 #define _MAJOR_BLK_PREFIX	"blk-"		/* All block devices (/dev/hd[0-9]* would be "blk-hd") */
 #define _MAJOR_CHAR_PREFIX	"char-"		/* All char devices (/dev/ser[0-9]* would be "char-ser") */
-#define _MAJOR_FSYS			"fsys"		/* All filesystems */
+#define _MAJOR_FSYS		"fsys"		/* All filesystems */
 
 #endif
-
-/* __SRCVERSION("ftype.h $Rev: 153052 $"); */

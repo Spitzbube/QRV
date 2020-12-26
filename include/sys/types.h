@@ -318,5 +318,3 @@ using _CSTD size_t; using _CSTD ssize_t; using _CSTD time_t;
 #endif /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("types.h $Rev: 173311 $"); */

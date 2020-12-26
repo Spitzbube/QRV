@@ -49,4 +49,3 @@ extern unsigned atomic_toggle_value(volatile unsigned *__loc, unsigned __bits);
 
 __END_DECLS
 #endif
-/* __SRCVERSION("atomic.h $Rev: 153052 $"); */

@@ -25,10 +25,6 @@
 #ifndef _UTIME_H_INCLUDED
 #define _UTIME_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -40,13 +36,14 @@ typedef __TIME_T time_t;
 #endif
 
 _C_STD_END
-#include <_pack64.h>
-    struct utimbuf {
+
+struct utimbuf {
     time_t actime;              /* access time */
     time_t modtime;             /* modification time */
 };
 
 __BEGIN_DECLS
+
 /*
  *  POSIX 1003.1 Prototype
  */
@@ -55,8 +52,5 @@ extern int futime(int __fildes, const struct utimbuf *__times);
 #endif
 extern int utime(const char *__path, const struct utimbuf *__times);
 
-#include <_packpop.h>
-
 __END_DECLS
 #endif
-/* __SRCVERSION("utime.h $Rev: 153052 $"); */

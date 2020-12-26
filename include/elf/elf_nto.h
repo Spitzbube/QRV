@@ -26,25 +26,27 @@
 #define __ELF_NTO_H_INCLUDED
 
 #if defined(__X86__)
-	#define EM_NATIVE		EM_386
+#define EM_NATIVE		EM_386
 #elif defined(__PPC__)
-	#define EM_NATIVE		EM_PPC
+#define EM_NATIVE		EM_PPC
 #elif defined(__MIPS__)
-	#define EM_NATIVE		EM_MIPS
+#define EM_NATIVE		EM_MIPS
 #elif defined(__SH__)
-	#define EM_NATIVE		EM_SH
+#define EM_NATIVE		EM_SH
 #elif defined(__ARM__)
-	#define EM_NATIVE		EM_ARM
+#define EM_NATIVE		EM_ARM
+#elif defined(__RISCV__)
+#define EM_NATIVE		EM_RISCV
 #else
-    #error not configured for system
+#error not configured for system
 #endif
 
 #if defined(__LITTLEENDIAN__)
-	#define ELFDATANATIVE	ELFDATA2LSB
+#define ELFDATANATIVE	ELFDATA2LSB
 #elif defined(__BIGENDIAN__)
-	#define ELFDATANATIVE	ELFDATA2MSB
+#define ELFDATANATIVE	ELFDATA2MSB
 #else
-	#error endian not configured for system
+#error endian not configured for system
 #endif
 
 #endif

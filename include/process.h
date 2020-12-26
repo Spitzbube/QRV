@@ -93,4 +93,3 @@ extern int spawnvpe(int __mode, const char *__path, char *const __argv[], char *
 
 __END_DECLS
 #endif
-/* __SRCVERSION("process.h $Rev: 153052 $"); */

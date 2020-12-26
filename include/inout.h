@@ -66,5 +66,3 @@
 #endif
 
 #endif
-
-/* __SRCVERSION("inout.h $Rev: 153052 $"); */

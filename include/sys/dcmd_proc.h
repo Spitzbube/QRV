@@ -19,35 +19,29 @@
 #ifndef __DCMD_PROC_H_INCLUDED
 #define __DCMD_PROC_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
 
 #ifndef _DEVCTL_H_INCLUDED
-#include _NTO_HDR_(devctl.h)
+#include <devctl.h>
 #endif
 
 __BEGIN_DECLS
 
-#include _NTO_HDR_(_pack64.h)
-
 typedef struct _dcmd_memmgr_memobj_old {
-	off64_t						offset;
-	_Uint64t					size;
-	_Int32t						flags;
-}							dcmd_memmgr_memobj_old;
+    off64_t offset;
+    _Uint64t size;
+    _Int32t flags;
+} dcmd_memmgr_memobj_old;
 
 typedef struct _dcmd_memmgr_memobj {
-	off64_t						offset;
-	_Uint64t					size;
-	_Int32t						flags;
-	_Uint32t					special;
-	_Uint32t					reserved[2];
-}							dcmd_memmgr_memobj;
+    off64_t offset;
+    _Uint64t size;
+    _Int32t flags;
+    _Uint32t special;
+    _Uint32t reserved[2];
+} dcmd_memmgr_memobj;
 
 
 #define __PROC_SUBCMD_PROCFS	0
@@ -62,12 +56,7 @@ typedef struct _dcmd_memmgr_memobj {
  Notes: This function is for internal use and should not be called
  directly.  Instead use the shm_ctl() cover function.  */
 #define DCMD_MEMMGR_MEMOBJ_OLD	__DIOT(_DCMD_PROC, __PROC_SUBCMD_MEMMGR + 0, dcmd_memmgr_memobj_old)
-#define DCMD_MEMMGR_MEMOBJ		__DIOT(_DCMD_PROC, __PROC_SUBCMD_MEMMGR + 0, dcmd_memmgr_memobj)
-
-#include _NTO_HDR_(_packpop.h)
+#define DCMD_MEMMGR_MEMOBJ	__DIOT(_DCMD_PROC, __PROC_SUBCMD_MEMMGR + 0, dcmd_memmgr_memobj)
 
 __END_DECLS
-
 #endif
-
-/* __SRCVERSION("dcmd_proc.h $Rev: 154853 $"); */

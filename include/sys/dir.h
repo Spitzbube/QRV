@@ -45,5 +45,3 @@
 				/* (struct dirent *)->d_ino		*/
 
 #endif
-
-/* __SRCVERSION("dir.h $Rev: 163784 $"); */

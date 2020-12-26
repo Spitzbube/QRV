@@ -42,8 +42,6 @@ typedef __IOVEC_T	iov_t;
 #undef __IOVEC_T
 #endif
 
-#include <_pack64.h>
-
 typedef struct _pulse io_pulse_t;
 
 struct _dispatch;
@@ -297,10 +295,4 @@ extern void *_resmgr_handle(struct _msg_info *rep, void *handle, enum _resmgr_ha
 
 __END_DECLS
 
-#include <_packpop.h>
-
-#define _RESMGR_FLAG_EXCL 0		/* Temporary, this flag does not exist any more */
-
 #endif
-
-/* __SRCVERSION("resmgr_compat.h $Rev: 153052 $"); */

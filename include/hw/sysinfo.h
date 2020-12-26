@@ -25,8 +25,6 @@
 #include <sys/platform.h>
 #endif
 
-#include <_pack64.h>
-
 __BEGIN_DECLS
 #define HWI_NULL_OFF			((_Uint16t)-1)
 /* note that the HWI_ILLEGAL_VECTOR value is selected such that if it is passed
@@ -62,7 +60,8 @@ __BEGIN_DECLS
 #define HWI_ITEM_DEVCLASS_INPUT		"input"
 #define HWI_ITEM_DEVCLASS_NVRAM		"nvram"
 #define HWI_ITEM_DEVCLASS_MISC		"misc"
-    struct hwi_prefix {
+
+struct hwi_prefix {
     _Uint16t size;
     _Uint16t name;
 };
@@ -317,6 +316,6 @@ static inline void *hwi_off2tag(unsigned off) {
 }
 
 __END_DECLS
-#include <_packpop.h>
+
 #define __HWSYSINFO_H_INCLUDED
 #endif

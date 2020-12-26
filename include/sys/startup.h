@@ -32,9 +32,6 @@
 #include <sys/platform.h>
 #endif
 
-#include <_pack64.h>
-
-
 /*
  * In the comments the following letters tell you who uses the info
  *
@@ -193,7 +190,7 @@ Disk/Network
 
 In this case our full IPL is not involved. The image is loaded into memory
 and transfered to by an existing BIOS IPL. Since the existing IPL does not
-know where in startup tp jump it always jumps to the start of the image.
+know where in startup to jump it always jumps to the start of the image.
 We build a tiny IPL on the front of the image which jumps to startup_vaddr.
 
 I jump(startup_vaddr)
@@ -266,29 +263,8 @@ struct startup_info_skip {
 
 struct startup_info_mem {
     struct startup_info_hdr hdr;
-    unsigned long addr;
-    unsigned long size;
-};
-
-/*
- * This structure is used when reporting memory >4G. It uses a
- * STARTUP_INFO_MEM type - you can tell the difference between a
- * startup_info_mem entry and this one by the size field.
- */
-struct startup_info_mem_extended {
-    struct startup_info_mem mem;
-    unsigned long addr_hi;
-    unsigned long size_hi;
-};
-
-struct startup_info_disk {
-    struct startup_info_hdr hdr;
-    unsigned char drive;
-    unsigned char zero;
-    unsigned short heads;
-    unsigned short cylinders;
-    unsigned short sectors;
-    unsigned long blocks;
+    uint64_t addr;
+    uint64_t size;
 };
 
 struct startup_info_time {
@@ -323,7 +299,5 @@ struct bootargs_entry {
 struct startup_trailer {
     unsigned long cksum;        /* Checksum from start of header to start of trailer */
 };
-
-#include <_packpop.h>
 
 #endif                          /* __STARTUP_H_INCLUDED */

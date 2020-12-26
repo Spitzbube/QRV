@@ -170,5 +170,3 @@ struct kdump_private {
 #define KDEBUG_PRIVATE_INDIRECT		0x8000				/* If set in offset, target is a pointer */
 
 #endif
-
-/* __SRCVERSION("kdebug.h $Rev: 193061 $"); */

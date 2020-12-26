@@ -25,10 +25,6 @@
 #ifndef _SCHED_H_INCLUDED
 #define _SCHED_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __TYPES_H_INCLUDED
 #include <sys/types.h>
 #endif
@@ -46,7 +42,7 @@
 #endif
 
 __BEGIN_DECLS
-#include <_pack64.h>
+
 #if defined(__EXT_QNX)
 #define SCHED_NOCHANGE	0
 #endif
@@ -107,8 +103,6 @@ extern int sched_get_priority_max(int __alg);
 extern int sched_get_priority_adjust(int __prio, int __alg, int __adjust);
 #endif
 
-#include <_packpop.h>
-
 __END_DECLS
 #if defined(__EXT_QNX) && defined(__INLINE_FUNCTIONS__)
 #ifndef __NEUTRINO_H_INCLUDED
@@ -117,4 +111,3 @@ __END_DECLS
 #define sched_yield SchedYield
 #endif
 #endif
-/* __SRCVERSION("sched.h $Rev: 169304 $"); */

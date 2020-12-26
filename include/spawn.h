@@ -25,10 +25,6 @@
 #ifndef _SPAWN_H_INCLUDED
 #define _SPAWN_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __TYPES_H_INCLUDED
 #include <sys/types.h>
 #endif
@@ -40,8 +36,6 @@
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
-
-#include <_pack64.h>
 
 __BEGIN_DECLS
 #ifndef _SCHED_H_INCLUDED
@@ -223,8 +217,5 @@ extern pid_t spawnp(const char *__file, int __fd_count, const int __fd_map[],
 #endif                          /* defined(__EXT_QNX) */
 
 
-#include <_packpop.h>
-
 __END_DECLS
 #endif
-/* __SRCVERSION("spawn.h $Rev: 199577 $"); */

@@ -26,10 +26,6 @@
 #if !defined _MQUEUE_H_INCLUDED
 #define _MQUEUE_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -47,8 +43,8 @@
 #endif
 
 __BEGIN_DECLS
-#include <_pack64.h>
-    struct mq_attr {
+
+struct mq_attr {
     long mq_maxmsg;             /* maximum number of messages stored */
     long mq_msgsize;            /* maximum message length */
     long mq_flags;
@@ -103,8 +99,5 @@ extern ssize_t mq_timedreceive_monotonic(mqd_t __mqdes, char *__msg_ptr, size_t 
 
 #endif
 
-#include <_packpop.h>
-
 __END_DECLS
 #endif
-/* __SRCVERSION("mqueue.h $Rev: 199491 $"); */

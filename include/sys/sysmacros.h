@@ -38,5 +38,3 @@ typedef __DEV_T		dev_t;
 #endif
 
 #endif
-
-/* __SRCVERSION("sysmacros.h $Rev$"); */

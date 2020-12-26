@@ -42,8 +42,6 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <_pack64.h>
-
 union wait {
     int w_status;               /* used in syscall */
     /*
@@ -69,8 +67,6 @@ union wait {
         unsigned short w_Stopsig:8; /* signal that stopped us */
     } w_S;
 };
-
-#include <_packpop.h>
 
 typedef void (*sig_t)(int);
 
@@ -174,4 +170,3 @@ extern int rdchk(int __fd);
 
 __END_DECLS
 #endif
-/* __SRCVERSION("unix.h $Rev: 173156 $"); */

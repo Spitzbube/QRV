@@ -30,25 +30,23 @@
 #endif
 
 #ifndef __ELFTYPES_H_INCLUDED
-#include _NTO_HDR_(sys/elftypes.h)
+#include <elf/elftypes.h>
 #endif
 
-__BEGIN_DECLS
-
-typedef struct {
-	Elf32_Sword		d_tag;
-	union {
-		Elf32_Word		d_val;
-		Elf32_Addr		d_ptr;
-	} d_un;
+__BEGIN_DECLS typedef struct {
+    Elf32_Sword d_tag;
+    union {
+        Elf32_Word d_val;
+        Elf32_Addr d_ptr;
+    } d_un;
 } Elf32_Dyn;
 
 typedef struct {
-	Elf64_Xword		d_tag;
-	union {
-		Elf64_Xword		d_val;
-		Elf64_Addr		d_ptr;
-	} d_un;
+    Elf64_Xword d_tag;
+    union {
+        Elf64_Xword d_val;
+        Elf64_Addr d_ptr;
+    } d_un;
 } Elf64_Dyn;
 
 /* This is the info that is needed to parse the dynamic section of the file */
@@ -92,5 +90,4 @@ typedef struct {
 #define DT_HIPROC		0x7fffffff
 
 __END_DECLS
-
 #endif

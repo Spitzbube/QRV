@@ -349,7 +349,7 @@ struct __long {
 __END_DECLS _C_STD_END
 #endif
 #ifdef _STD_USING
- using std::imaxdiv_t;
+using std::imaxdiv_t;
 using std::imaxabs;
 using std::imaxdiv;
 using std::strtoimax;
@@ -358,5 +358,3 @@ using std::wcstoimax;
 using std::wcstoumax;
 #endif                          /* _STD_USING */
 #endif
-
-/* __SRCVERSION("inttypes.h $Rev: 158726 $"); */

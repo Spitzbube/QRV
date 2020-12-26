@@ -28,10 +28,6 @@
 
 #ifndef _WCHAR_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -305,5 +301,3 @@ using std::wcsftime;
 #endif                          /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("wchar.h $Rev: 171322 $"); */

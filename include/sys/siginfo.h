@@ -24,10 +24,6 @@
  */
 #ifndef __SIGINFO_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -40,26 +36,24 @@
 #define __SIGINFO_H_DECLARED
 
 _STD_BEGIN
-
 #if defined(__CLOCK_T)
-typedef __CLOCK_T	clock_t;
+typedef __CLOCK_T clock_t;
 #undef __CLOCK_T
 #endif
 
 #if defined(__TIME_T)
-typedef __TIME_T	time_t;
+typedef __TIME_T time_t;
 #undef __TIME_T
 #endif
 
 _STD_END
-
 #if defined(__PID_T)
-typedef __PID_T		pid_t;
+typedef __PID_T pid_t;
 #undef __PID_T
 #endif
 
 #if defined(__UID_T)
-typedef __UID_T		uid_t;
+typedef __UID_T uid_t;
 #undef __UID_T
 #endif
 
@@ -72,68 +66,48 @@ __TIMESPEC_INTERNAL;
 __SCHED_PARAM_INTERNAL;
 #undef __SCHED_PARAM_INTERNAL
 #endif
-typedef __PTHREAD_ATTR_T	pthread_attr_t;
+typedef __PTHREAD_ATTR_T pthread_attr_t;
 #undef __PTHREAD_ATTR_T
 #endif
 
-#define SIGEV_NONE				0	/* notify */
-#define SIGEV_SIGNAL			1	/* notify, signo, value */
-#define SIGEV_SIGNAL_CODE		2	/* notify, signo, value, code */
-#define SIGEV_SIGNAL_THREAD		3	/* notify, signo, value, code */
-#define SIGEV_PULSE				4	/* notify, coid, priority, code, value */
-#define SIGEV_UNBLOCK			5	/* notify */
-#define SIGEV_INTR				6	/* notify */
-#define SIGEV_THREAD			7	/* notify, notify_function, notify_attributes */
-
-#include <_pack64.h>
+#define SIGEV_NONE			0   /* notify */
+#define SIGEV_SIGNAL			1   /* notify, signo, value */
+#define SIGEV_SIGNAL_CODE		2   /* notify, signo, value, code */
+#define SIGEV_SIGNAL_THREAD		3   /* notify, signo, value, code */
+#define SIGEV_PULSE			4   /* notify, coid, priority, code, value */
+#define SIGEV_UNBLOCK			5   /* notify */
+#define SIGEV_INTR			6   /* notify */
+#define SIGEV_THREAD			7   /* notify, notify_function, notify_attributes */
 
 union sigval {
-    int         sival_int;
-    void       *sival_ptr;
+    int sival_int;
+    void *sival_ptr;
 };
 
 struct sigevent {
-	int				sigev_notify;
-#if defined(__WATCOMC__) && !defined(NO_EXT_KEYS)
-	union {
-		int				sigev_signo;
-		int				sigev_coid;
-		int				sigev_id;
-		void			(*sigev_notify_function)(union sigval);
-	};
-#else
-	union {
-		int				__sigev_signo;
-		int				__sigev_coid;
-		int				__sigev_id;
-		void			(*__sigev_notify_function)(union sigval);
-	}				__sigev_un1;
-#define sigev_signo				__sigev_un1.__sigev_signo
-#define sigev_coid				__sigev_un1.__sigev_coid
-#define sigev_id				__sigev_un1.__sigev_id
+    int sigev_notify;
+    union {
+        int __sigev_signo;
+        int __sigev_coid;
+        int __sigev_id;
+        void (*__sigev_notify_function)(union sigval);
+    } __sigev_un1;
+#define sigev_signo		__sigev_un1.__sigev_signo
+#define sigev_coid		__sigev_un1.__sigev_coid
+#define sigev_id		__sigev_un1.__sigev_id
 #define sigev_notify_function	__sigev_un1.__sigev_notify_function
-#endif
-	union sigval	sigev_value;
-#if defined(__WATCOMC__) && !defined(NO_EXT_KEYS)
-	union {
-		struct {
-			short			sigev_code;
-			short			sigev_priority;
-		};
-		pthread_attr_t	*sigev_notify_attributes;
-	};
-#else
-	union {
-		struct {
-			short			__sigev_code;
-			short			__sigev_priority;
-		} __st;
-		pthread_attr_t	*__sigev_notify_attributes;
-	}				__sigev_un2;
+
+    union sigval sigev_value;
+    union {
+        struct {
+            short __sigev_code;
+            short __sigev_priority;
+        } __st;
+        pthread_attr_t *__sigev_notify_attributes;
+    } __sigev_un2;
 #define sigev_notify_attributes	__sigev_un2.__sigev_notify_attributes
-#define sigev_code				__sigev_un2.__st.__sigev_code
-#define sigev_priority			__sigev_un2.__st.__sigev_priority
-#endif
+#define sigev_code		__sigev_un2.__st.__sigev_code
+#define sigev_priority		__sigev_un2.__st.__sigev_priority
 };
 
 
@@ -250,14 +224,14 @@ struct sigevent {
 /*
  * SIGILL codes (si_addr == address of faulting instruction)
  */
-#define ILL_ILLOPC	1	/* Illegal opcode */
-#define ILL_ILLOPN	2	/* Illegal operand */
-#define ILL_ILLADR	3	/* Illegal addressing mode */
-#define ILL_ILLTRP	4	/* Illegal trap */
-#define ILL_PRVOPC	5	/* Privileged opcode */
-#define ILL_PRVREG	6	/* Privileged register */
-#define ILL_COPROC	7	/* Coprocessor error */
-#define ILL_BADSTK	8	/* internal stack error */
+#define ILL_ILLOPC	1           /* Illegal opcode */
+#define ILL_ILLOPN	2           /* Illegal operand */
+#define ILL_ILLADR	3           /* Illegal addressing mode */
+#define ILL_ILLTRP	4           /* Illegal trap */
+#define ILL_PRVOPC	5           /* Privileged opcode */
+#define ILL_PRVREG	6           /* Privileged register */
+#define ILL_COPROC	7           /* Coprocessor error */
+#define ILL_BADSTK	8           /* internal stack error */
 #if defined(__EXT_QNX)
 #define NSIGILL		8
 #endif
@@ -265,11 +239,11 @@ struct sigevent {
 /*
  * SIGSEGV codes (si_addr == address of faulting memory reference)
  */
-#define SEGV_MAPERR	1	/* Address not mapped */
-#define SEGV_ACCERR	2	/* No permissions */
-#define SEGV_STKERR	3	/* ?? Stack exception */
-#define SEGV_GPERR	4	/* ?? General protection */
-#define SEGV_IRQERR	5	/* ?? Interrupt handler fault */
+#define SEGV_MAPERR	1           /* Address not mapped */
+#define SEGV_ACCERR	2           /* No permissions */
+#define SEGV_STKERR	3           /* ?? Stack exception */
+#define SEGV_GPERR	4           /* ?? General protection */
+#define SEGV_IRQERR	5           /* ?? Interrupt handler fault */
 #if defined(__EXT_QNX)
 #define NSIGSEGV	5
 #endif
@@ -277,9 +251,9 @@ struct sigevent {
 /*
  * SIGBUS codes (si_addr == address of faulting memory reference)
  */
-#define BUS_ADRALN	1	/* Invalid address alignment */
-#define BUS_ADRERR	2	/* Non-existant physical address */
-#define BUS_OBJERR	3	/* Object specific hardware error (e.g. NMI parity error) */
+#define BUS_ADRALN	1           /* Invalid address alignment */
+#define BUS_ADRERR	2           /* Non-existant physical address */
+#define BUS_OBJERR	3           /* Object specific hardware error (e.g. NMI parity error) */
 #if defined(__EXT_QNX)
 #define NSIGBUS		3
 #endif
@@ -287,12 +261,12 @@ struct sigevent {
 /*
  * SIGCHILD codes (si_pid == child pid, si_status == exit value or signal, si_uid == real uid of signaling process)
  */
-#define CLD_EXITED	1	/* Child has exited (si_status == exit value) */
-#define CLD_KILLED	2	/* Child was killed */
-#define CLD_DUMPED	3	/* Child terminated abnormally */
-#define CLD_TRAPPED	4	/* Traced child has trapped */
-#define CLD_STOPPED	5	/* Child has stopped */
-#define CLD_CONTINUED 6	/* Stopped child had continued */
+#define CLD_EXITED	1           /* Child has exited (si_status == exit value) */
+#define CLD_KILLED	2           /* Child was killed */
+#define CLD_DUMPED	3           /* Child terminated abnormally */
+#define CLD_TRAPPED	4           /* Traced child has trapped */
+#define CLD_STOPPED	5           /* Child has stopped */
+#define CLD_CONTINUED	6           /* Stopped child had continued */
 #if defined(__EXT_QNX)
 #define NSIGCLD		6
 #endif
@@ -300,8 +274,8 @@ struct sigevent {
 /*
  * SIGTRAP codes
  */
-#define TRAP_BRKPT	1	/* Break Point */
-#define TRAP_TRACE	2	/* Trace */
+#define TRAP_BRKPT	1           /* Break Point */
+#define TRAP_TRACE	2           /* Trace */
 #if defined(__EXT_QNX)
 #define NSIGTRAP	2
 #endif
@@ -309,48 +283,48 @@ struct sigevent {
 /*
  * SIGFPE signal codes (si_addr == address of faulting instruction)
  */
-#define	FPE_INTDIV	1	/* Integer divide by zero */
-#define	FPE_INTOVF	2	/* Integer overflow */
-#define	FPE_FLTDIV	3	/* Floating point divide by zero */
-#define	FPE_FLTOVF	4	/* Floating point overflow */
-#define	FPE_FLTUND	5	/* Floating point underflow */
-#define	FPE_FLTRES	6	/* Floating point inexact result */
-#define	FPE_FLTINV	7	/* Invalid floating point operation */
-#define	FPE_FLTSUB	8	/* Subscript out of range */
-#define FPE_NOFPU	9	/* ?? No FPU or emulator */
-#define FPE_NOMEM	10	/* ?? No kernel space for FPU save area */
+#define	FPE_INTDIV	1           /* Integer divide by zero */
+#define	FPE_INTOVF	2           /* Integer overflow */
+#define	FPE_FLTDIV	3           /* Floating point divide by zero */
+#define	FPE_FLTOVF	4           /* Floating point overflow */
+#define	FPE_FLTUND	5           /* Floating point underflow */
+#define	FPE_FLTRES	6           /* Floating point inexact result */
+#define	FPE_FLTINV	7           /* Invalid floating point operation */
+#define	FPE_FLTSUB	8           /* Subscript out of range */
+#define FPE_NOFPU	9           /* ?? No FPU or emulator */
+#define FPE_NOMEM	10          /* ?? No kernel space for FPU save area */
 #if defined(__EXT_QNX)
 #define	NSIGFPE		10
 #endif
 
 typedef struct {
-	int				si_signo;
-	int				si_code;		/* if SI_NOINFO, only si_signo is valid */
-	int				si_errno;
-	union {
-		int				__pad[7];
-		struct {
-			pid_t			__pid;
-			union {
-				struct {
-					uid_t			__uid;
-					union sigval	__value;
-				}				__kill;		/* si_code <= 0 SI_FROMUSER */
-				struct {
-					_CSTD clock_t	__utime;
-					int				__status;	/* CLD_EXITED status, else signo */
-					_CSTD clock_t	__stime;
-				}				__chld;		/* si_signo=SIGCHLD si_code=CLD_* */
-			}				__pdata;
-		}				__proc;
-		struct {
-			int				__fltno;
-			void			*__fltip;
-			void			*__addr;
-			int				__bdslot;
-		}				__fault;				/* si_signo=SIGSEGV,ILL,FPE,TRAP,BUS */
-	}				__data;
-}				siginfo_t;
+    int si_signo;
+    int si_code;                /* if SI_NOINFO, only si_signo is valid */
+    int si_errno;
+    union {
+        int __pad[7];
+        struct {
+            pid_t __pid;
+            union {
+                struct {
+                    uid_t __uid;
+                    union sigval __value;
+                } __kill;       /* si_code <= 0 SI_FROMUSER */
+                struct {
+                    _CSTD clock_t __utime;
+                    int __status;   /* CLD_EXITED status, else signo */
+                    _CSTD clock_t __stime;
+                } __chld;       /* si_signo=SIGCHLD si_code=CLD_* */
+            } __pdata;
+        } __proc;
+        struct {
+            int __fltno;
+            void *__fltip;
+            void *__addr;
+            int __bdslot;
+        } __fault;              /* si_signo=SIGSEGV,ILL,FPE,TRAP,BUS */
+    } __data;
+} siginfo_t;
 #define si_pid		__data.__proc.__pid
 #define si_value	__data.__proc.__pdata.__kill.__value
 #define si_uid		__data.__proc.__pdata.__kill.__uid
@@ -363,14 +337,11 @@ typedef struct {
 #define si_fltip	__data.__fault.__fltip
 #define si_bdslot	__data.__fault.__bdslot
 
-#include <_packpop.h>
-
 #endif
 
 #ifdef _STD_USING
-using std::clock_t; using std::time_t;
-#endif /* _STD_USING */
+using std::clock_t;
+using std::time_t;
+#endif                          /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("siginfo.h $Rev: 153052 $"); */

@@ -110,12 +110,5 @@ extern unsigned __cpu_flags;
  * add one for integer division truncation;
  * add one more for a minus sign if the type is signed.
  */
-#ifdef __WATCOMC__
-/* watcom reports a comparison zero warning, so determine size another way */
-#define INT_STRLEN_MAXIMUM(type)     (((sizeof(type) * CHAR_BIT) - (((type)-1)>>1 == -1)) * 302 / 1000 + 1 + (((type)-1)>>1 == -1))
-#else
 #define INT_STRLEN_MAXIMUM(type)     (((sizeof(type) * CHAR_BIT) - (((type)-1) < 0)) * 302 / 1000 + 1 + (((type)-1) < 0))
 #endif
-#endif
-
-/* __SRCVERSION("externs.h $Rev: 172513 $"); */

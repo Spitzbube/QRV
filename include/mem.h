@@ -33,5 +33,3 @@ typedef __PTRDIFF_T ptrdiff_t;
 #endif
 
 #include <string.h>
-
-/* __SRCVERSION("mem.h $Rev: 153052 $"); */

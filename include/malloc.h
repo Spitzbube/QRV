@@ -24,10 +24,6 @@
  */
 #ifndef _MALLOC_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -38,8 +34,6 @@
 
 #ifndef _MALLOC_H_DECLARED
 #define _MALLOC_H_DECLARED
-
-#include <_pack64.h>
 
 _C_STD_BEGIN
 #if defined(__SIZE_T)
@@ -142,15 +136,12 @@ extern int mcheck(void (*__abort_fn)(enum mcheck_status __status));
 extern void *memalign(_CSTD size_t __alignment, _CSTD size_t __size);
 #endif
 __END_DECLS
-#include <_packpop.h>
 #endif
 #ifdef _STD_USING
-    using std::malloc;
+using std::malloc;
 using std::calloc;
 using std::free;
 using std::realloc;
 #endif                          /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("malloc.h $Rev: 153052 $"); */

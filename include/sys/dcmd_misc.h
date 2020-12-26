@@ -29,8 +29,6 @@
  #include <devctl.h>
 #endif
 
-#include <_pack64.h>
-
 #define DCMD_MISC_MQGETATTR		__DIOF(_DCMD_MISC, 1, struct mq_attr)
 #define DCMD_MISC_MQSETATTR		__DIOT(_DCMD_MISC, 2, struct mq_attr)
 #define DCMD_MISC_MQSETCLOSEMSG	__DIOT(_DCMD_MISC, 4, struct { char __data[64];})
@@ -59,8 +57,4 @@ struct _interact_mgr {
 #define _INTERACTTYPE           __DIOF(_DCMD_MISC, 20, struct _interact_device)
 #define _INTERACTFEEDBACK       __DIOF(_DCMD_MISC, 29, unsigned long)
 
-#include <_packpop.h>
-
 #endif
-
-/* __SRCVERSION("dcmd_misc.h $Rev: 153052 $"); */

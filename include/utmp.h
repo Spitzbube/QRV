@@ -79,4 +79,3 @@ void logwtmp(const char *__line, const char *__name, const char *__host);
 
 __END_DECLS
 #endif
-/* __SRCVERSION("utmp.h $Rev: 153052 $"); */

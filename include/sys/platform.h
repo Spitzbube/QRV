@@ -22,7 +22,7 @@
 #ifndef __PLATFORM_H_INCLUDED
 #define __PLATFORM_H_INCLUDED
 
-#include <platform.h>
+#include <arch/platform.h>
 #include <sys/gcc_lp64.h>
 
 #if !defined(__LINT)
@@ -196,8 +196,6 @@
 #define _LARGEFILE64_SOURCE 1
 #endif
 
-#include <_pack64.h>
-
 #if __INT_BITS__ == 32
 #define _INT32		int
 #define _UINT32		unsigned
@@ -323,7 +321,5 @@ _STD_BEGIN
 typedef bool _Bool;
 _STD_END
 #endif /* __cplusplus */
-
-#include <_packpop.h>
 
 #endif

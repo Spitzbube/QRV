@@ -30,73 +30,70 @@
 #endif
 
 #ifndef __SYSMSG_H_INCLUDED
-#include _NTO_HDR_(sys/sysmsg.h)
+#include <sys/sysmsg.h>
 #endif
 
-#include _NTO_HDR_(_pack64.h)
-
 __BEGIN_DECLS
-
 /*
  Basic Resource Types (first byte of flag)
 */
 #define RSRCDBMGR_TYPE_MASK		0xff
-enum _rsrc_types {
-	RSRCDBMGR_MEMORY			= 0,    /* Maps to "memory" */
-	RSRCDBMGR_IRQ,                      /* Maps to "irq" */
-	RSRCDBMGR_IO_PORT,                  /* Maps to "io" */
-	RSRCDBMGR_DMA_CHANNEL,              /* Maps to "dma" */
-	RSRCDBMGR_PCI_MEMORY,               /* Maps to "pcimemory" */
-	RSRCDBMGR_RESERVED_5,
-	RSRCDBMGR_RESERVED_6,
-	RSRCDBMGR_RESERVED_7,
-	RSRCDBMGR_TYPE_COUNT		= 8
+    enum _rsrc_types {
+    RSRCDBMGR_MEMORY = 0,       /* Maps to "memory" */
+    RSRCDBMGR_IRQ,              /* Maps to "irq" */
+    RSRCDBMGR_IO_PORT,          /* Maps to "io" */
+    RSRCDBMGR_DMA_CHANNEL,      /* Maps to "dma" */
+    RSRCDBMGR_PCI_MEMORY,       /* Maps to "pcimemory" */
+    RSRCDBMGR_RESERVED_5,
+    RSRCDBMGR_RESERVED_6,
+    RSRCDBMGR_RESERVED_7,
+    RSRCDBMGR_TYPE_COUNT = 8
 };
 
 /*
  Resource Request Flags
 */
 #define RSRCDBMGR_FLAG_MASK		0xffffff00
-#define RSRCDBMGR_FLAG_USED		0x00000100			/* Used resource (for query) */
+#define RSRCDBMGR_FLAG_USED		0x00000100  /* Used resource (for query) */
 
-#define RSRCDBMGR_FLAG_ALIGN	0x00000200			/* Alignment field is valid */
-#define RSRCDBMGR_FLAG_RANGE	0x00000400			/* Start and End fields are valid */
-#define RSRCDBMGR_FLAG_SHARE	0x00000800			/* Share this resource w/ others */
-#define RSRCDBMGR_FLAG_TOPDOWN	0x00001000			/* Search from the end->start */
-#define RSRCDBMGR_FLAG_NAME		0x00002000			/* Name field is valid, and is a system name */
-#define RSRCDBMGR_FLAG_LIST		0x00004000			/* This is one item is a list to search */
+#define RSRCDBMGR_FLAG_ALIGN	0x00000200  /* Alignment field is valid */
+#define RSRCDBMGR_FLAG_RANGE	0x00000400  /* Start and End fields are valid */
+#define RSRCDBMGR_FLAG_SHARE	0x00000800  /* Share this resource w/ others */
+#define RSRCDBMGR_FLAG_TOPDOWN	0x00001000  /* Search from the end->start */
+#define RSRCDBMGR_FLAG_NAME		0x00002000  /* Name field is valid, and is a system name */
+#define RSRCDBMGR_FLAG_LIST		0x00004000  /* This is one item is a list to search */
 
 /*
  Resource Allocation Flags
 */
-#define RSRCDBMGR_FLAG_RSVP		0x00004000			/* Avoid this block unless only choice (for create) */
-#define RSRCDBMGR_FLAG_NOREMOVE	0x00008000			/* Don't remove this block when the process dies */
+#define RSRCDBMGR_FLAG_RSVP		0x00004000  /* Avoid this block unless only choice (for create) */
+#define RSRCDBMGR_FLAG_NOREMOVE	0x00008000  /* Don't remove this block when the process dies */
 
 /*
  Basic resource request items
 */
 typedef struct _rsrc_alloc {
-	_Uint64t	start;		/* Start of resource range */
-	_Uint64t	end;		/* End of resource range */
-	_Uint32t	flags;		/* Resource type | Resource flags */
-	const char	*name;		/* Future use: the name of the resource */
+    _Uint64t start;             /* Start of resource range */
+    _Uint64t end;               /* End of resource range */
+    _Uint32t flags;             /* Resource type | Resource flags */
+    const char *name;           /* Future use: the name of the resource */
 } rsrc_alloc_t;
 
 typedef struct _rsrc_request {
-	_Uint64t	length;		/* Length of resource desired */
-	_Uint64t	align;		/* Alignment of resource desired */
-	_Uint64t	start;		/* Start of resource range */
-	_Uint64t	end;		/* End of resource range */
-	_Uint32t	flags;		/* Resource type | Resource flags */
-	_Uint32t	zero[2];	/* Reserved */
-	const char *name;		/* Name of resource class (NULL) */
+    _Uint64t length;            /* Length of resource desired */
+    _Uint64t align;             /* Alignment of resource desired */
+    _Uint64t start;             /* Start of resource range */
+    _Uint64t end;               /* End of resource range */
+    _Uint32t flags;             /* Resource type | Resource flags */
+    _Uint32t zero[2];           /* Reserved */
+    const char *name;           /* Name of resource class (NULL) */
 } rsrc_request_t;
 
 typedef struct {
-	_Int32t		major;		/* Major number */
-	_Int32t		minor;		/* Minor number (can only be 8 bits, -1 for choose) */
-	_Int32t		flags;
-	const char *name;		/* Minor name */
+    _Int32t major;              /* Major number */
+    _Int32t minor;              /* Minor number (can only be 8 bits, -1 for choose) */
+    _Int32t flags;
+    const char *name;           /* Minor name */
 } rsrc_minor_request_t;
 
 /**
@@ -109,8 +106,8 @@ typedef struct {
  type in the flags field.
  Returns: EOK on success
 */
-int rsrcdbmgr_create(rsrc_alloc_t *__item, int __count);
-int rsrcdbmgr_destroy(rsrc_alloc_t *__item, int __count);
+int rsrcdbmgr_create(rsrc_alloc_t * __item, int __count);
+int rsrcdbmgr_destroy(rsrc_alloc_t * __item, int __count);
 
 /*
  Earmark resources as being allocated/release to/from a process.
@@ -135,15 +132,15 @@ int rsrcdbmgr_destroy(rsrc_alloc_t *__item, int __count);
  and should be passed to the detach function.
  Returns: EOK on success
 */
-int rsrcdbmgr_attach(rsrc_request_t *__list, int __count);
-int rsrcdbmgr_detach(rsrc_request_t *__list, int __count);
+int rsrcdbmgr_attach(rsrc_request_t * __list, int __count);
+int rsrcdbmgr_detach(rsrc_request_t * __list, int __count);
 
 
 /*
  Returns a list of resources from the database.
  Supersceded by rsrcdbmgr_query_name().
 */
-int rsrcdbmgr_query(rsrc_alloc_t *list, int listcnt, int start, _Uint32t type);
+int rsrcdbmgr_query(rsrc_alloc_t * list, int listcnt, int start, _Uint32t type);
 
 /*
  Returns a list of resources from the database.
@@ -160,7 +157,7 @@ int rsrcdbmgr_query(rsrc_alloc_t *list, int listcnt, int start, _Uint32t type);
  Otherwise return a maximum of 'listcnt' blocks of data from the offset
  'start' (0 based) which match the criteria 'name'.
 */
-int rsrcdbmgr_query_name(rsrc_alloc_t *__list, int __listcnt, int __start,
+int rsrcdbmgr_query_name(rsrc_alloc_t * __list, int __listcnt, int __start,
                          pid_t __pid, char *__name, unsigned __flags);
 
 /*
@@ -177,8 +174,4 @@ int rsrcdbmgr_devno_detach(dev_t __devno, int __flags);
 
 __END_DECLS
 
-#include _NTO_HDR_(_packpop.h)
-
 #endif
-
-/* __SRCVERSION("rsrcdbmgr.h $Rev: 153052 $"); */

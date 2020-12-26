@@ -32,5 +32,3 @@
 #define SH_MASK     0x70        /* mask for standard share modes    */
 
 #define SH_DOS      0x01        /* DOS-like interpretation of open, locks, etc. */
-
-/* __SRCVERSION("share.h $Rev: 153052 $"); */

@@ -57,8 +57,6 @@ typedef __OFF64_T	off64_t;
 #error POSIX Threads needs P1003.1b-1993 or later
 #endif
 
-#include <_pack64.h>
-
 /* Sharing types: Must choose either SHARED, PRIVATE or ANON */
 #define MAP_SHARED      0x00000001     /* share changes          */
 #define MAP_PRIVATE     0x00000002     /* changes are private    */
@@ -174,14 +172,9 @@ extern int posix_madvise(void *__addr, _CSTD size_t __len, int __advice);
 extern void *mmap64(void *__addr, _CSTD size_t __len, int __prot, int __flags, int __fd, off64_t __off);
 #endif
 #if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__WATCOMC__)
-extern void *mmap(void *__addr, _CSTD size_t __len, int __prot, int __flags, int __fd, off_t __off);
-#pragma aux mmap "mmap64";
-#else
 static __inline void * __attribute__((__unused__)) mmap(void *__addr, _CSTD size_t __len, int __prot, int __flags, int __fd, off_t __off) {
     return mmap64(__addr, __len, __prot, __flags, __fd, __off);
 }
-#endif
 #elif !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
 extern void *mmap(void *__addr, _CSTD size_t __len, int __prot, int __flags, int __fd, off_t __off);
 #else
@@ -241,14 +234,9 @@ extern int posix_typed_mem_get_info(int __fd, struct posix_typed_mem_info *__inf
 extern int posix_mem_offset64(__const void *__addr, _CSTD size_t __len, off64_t *__off, _CSTD size_t *__contig_len, int *__fd);
 #endif
 #if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__WATCOMC__)
-extern int posix_mem_offset(__const void *__addr, _CSTD size_t __len, off_t *__off, _CSTD size_t *__contig_len, int *__fd);
-#pragma aux posix_mem_offset "posix_mem_offset64";
-#else
 static __inline int __attribute__((__unused__)) posix_mem_offset(__const void *__addr, _CSTD size_t __len, off_t *__off, _CSTD size_t *__contig_len, int *__fd) {
     return posix_mem_offset64(__addr, __len, __off, __contig_len, __fd);
 }
-#endif
 #elif !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
 extern int posix_mem_offset(__const void *__addr, _CSTD size_t __len, off_t *__off, _CSTD size_t *__contig_len, int *__fd);
 #else
@@ -262,14 +250,9 @@ extern int posix_mem_offset(__const void *__addr, _CSTD size_t __len, off_t *__o
 extern int mem_offset64(__const void *__addr, int __fd, _CSTD size_t __len, off64_t *__off, _CSTD size_t *__contig_len);
 #endif
 #if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__WATCOMC__)
-extern int mem_offset(__const void *__addr, int __fd, _CSTD size_t __len, off_t *__off, _CSTD size_t *__contig_len);
-#pragma aux mem_offset "mem_offset64";
-#else
 static __inline int __attribute__((__unused__)) mem_offset(__const void *__addr, int __fd, _CSTD size_t __len, off_t *__off, _CSTD size_t *__contig_len) {
     return mem_offset64(__addr, __fd, __len, __off, __contig_len);
 }
-#endif
 #elif !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
 extern int mem_offset(__const void *__addr, int __fd, _CSTD size_t __len, off_t *__off, _CSTD size_t *__contig_len);
 #else
@@ -331,10 +314,6 @@ extern int shm_ctl_special(int __fd, int __flags, _Uint64t __physical, _Uint64t 
 #define SHMCTL_FLAG_MASK	0x0000ffff
 #endif
 
-#include <_packpop.h>
-
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("mman.h $Rev: 201352 $"); */

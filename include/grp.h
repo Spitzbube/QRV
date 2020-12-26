@@ -26,10 +26,6 @@
 #ifndef _GRP_H_INCLUDED
 #define _GRP_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __TYPES_H_INCLUDED
 #include <sys/types.h>
 #endif
@@ -37,9 +33,6 @@
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
-
-#include <_pack64.h>
-
 
 struct group {
     char *gr_name;
@@ -51,8 +44,6 @@ struct group {
 /*
  *  POSIX 1003.1 Prototypes.
  */
-
-#include <_packpop.h>
 
 __BEGIN_DECLS extern void endgrent(void);
 extern int getgrgid_r(gid_t __gid, struct group *__grp, char *__buffer, size_t __bufsize,
@@ -67,4 +58,3 @@ extern void setgrent(void);
 
 __END_DECLS
 #endif
-/* __SRCVERSION("grp.h $Rev: 171385 $"); */

@@ -38,5 +38,3 @@ typedef __NTO_va_list va_list;
 #define va_copy(__d,__s)	__NTO_va_copy(__d,__s)
 
 #endif
-
-/* __SRCVERSION("stdarg.h $Rev: 164964 $"); */

@@ -26,10 +26,6 @@
 #ifndef __IOFUNC_H_INCLUDED
 #define __IOFUNC_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef _INTTYPES_H_INCLUDED
  #include <inttypes.h>
 #endif
@@ -39,8 +35,6 @@
 #endif
 
 __BEGIN_DECLS
-
-#include <_pack64.h>
 
 struct _iofunc_attr;
 struct _iofunc_ocb;
@@ -419,10 +413,6 @@ extern void iofunc_notify_remove_strict(resmgr_context_t *__ctp, iofunc_notify_t
 extern void iofunc_notify_trigger(iofunc_notify_t *__nop, int __cnt, int __index);
 extern void iofunc_notify_trigger_strict(resmgr_context_t *__ctp, iofunc_notify_t *__nop, int __cnt, int __index);
 
-#include <_packpop.h>
-
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("iofunc.h $Rev: 153052 $"); */

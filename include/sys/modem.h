@@ -29,8 +29,6 @@
  #include <termios.h>
 #endif
 
-#include <_pack64.h>
-
 /*
  Example script
 */
@@ -96,8 +94,4 @@ extern int modem_write(int __fd, char *__str);
 
 __END_DECLS
 
-#include <_packpop.h>
-
 #endif
-
-/* __SRCVERSION("modem.h $Rev: 153052 $"); */

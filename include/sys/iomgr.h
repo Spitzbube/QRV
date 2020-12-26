@@ -154,5 +154,3 @@ extern int iofdinfo(int __fd, unsigned __flags, struct _fdinfo *__info, char *__
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("iomgr.h $Rev: 153052 $"); */

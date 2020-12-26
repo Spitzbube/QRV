@@ -26,23 +26,17 @@
 #ifndef _DLFCN_H_INCLUDED
 #define _DLFCN_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
 
 #ifdef __EXT_UNIX_MISC
-#include <_pack64.h>
 typedef struct dl_info {
     const char *dli_fname;
     void *dli_fbase;
     const char *dli_sname;
     void *dli_saddr;
 } Dl_info;
-#include <_packpop.h>
 #endif
 
 __BEGIN_DECLS
@@ -72,4 +66,3 @@ extern int dlclose(void *__handle);
 
 __END_DECLS
 #endif
-/* __SRCVERSION("dlfcn.h $Rev: 200851 $"); */

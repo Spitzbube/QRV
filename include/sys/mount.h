@@ -25,10 +25,6 @@
 #ifndef __MOUNT_H_INCLUDED
 #define __MOUNT_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -104,14 +100,13 @@ char * mount_parse_generic_args(char *options, int *flags);
  * Commonly used system mount strings
  */
 
-#define NFS_FS_TYPE				"nfs"
+#define UNIX_FS_TYPE			"unix"
+#define NFS_FS_TYPE			"nfs"
 #define CIFS_FS_TYPE			"cifs"
 #define QNX4_FS_TYPE			"qnx4"
 #define EXT2_FS_TYPE			"ext2"
-#define DOS_FS_TYPE				"dos"
-#define CD_FS_TYPE				"cd"
+#define DOS_FS_TYPE			"dos"
+#define CD_FS_TYPE			"cd"
 #define FLASH_FS_TYPE			"flash"
 
 #endif
-
-/* __SRCVERSION("mount.h $Rev: 153052 $"); */

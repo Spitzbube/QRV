@@ -36,23 +36,17 @@
 #ifndef __IOCTL_H_INCLUDED
 #define __IOCTL_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
 
 #ifndef __TYPES_H_INCLUDED
- #include <sys/types.h>
+#include <sys/types.h>
 #endif
 
-#ifndef	__SOCKIO_H_INCLUDED
+#ifndef __SOCKIO_H_INCLUDED
 #include <sys/sockio.h>
 #endif
-
-#include <_pack64.h>
 
 struct winsize {
 	unsigned short	ws_row;
@@ -70,8 +64,6 @@ struct ttysize {
     unsigned short      ts_xxx;
     unsigned short      ts_yyy;
 };
-#include <_packpop.h>
-
 #define TIOCGSIZE       TIOCGWINSZ
 #define TIOCSSIZE       TIOCSWINSZ
 
@@ -209,5 +201,3 @@ int     ioctl(int __fd, int __cmd, ...);
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("ioctl.h $Rev: 173311 $"); */

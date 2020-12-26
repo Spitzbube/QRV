@@ -26,10 +26,6 @@
 #ifndef _DIRENT_H_INCLUDED
 #define _DIRENT_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -59,8 +55,6 @@ typedef __INO_T ino_t;
 typedef __INO64_T ino64_t;
 #undef __INO64_T
 #endif
-
-#include <_pack64.h>
 
 struct dirent {
 #if _FILE_OFFSET_BITS - 0 == 64
@@ -138,8 +132,6 @@ struct dirent_extra_stat {
 
 typedef struct _dir DIR;
 
-#include <_packpop.h>
-
 
 __BEGIN_DECLS
 /*
@@ -167,18 +159,6 @@ extern int scandir(char *__dirname, struct dirent ***__namelist,
                    int (*__compar)(const void *, const void *));
 #endif
 
-#if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__GNUC__)
-/* use __ALIAS64 define */
-#elif defined(__WATCOMC__)
-#pragma aux readdir "readdir64";
-#elif defined(_PRAGMA_REDEFINE_EXTNAME)
-#pragma redefine_extname readdir readdir64
-#else
-#define readdir readdir64
-#endif
-#endif
-
 #if defined(__EXT_QNX)
 /*
  The following function can be used to control the behaviour
@@ -198,4 +178,3 @@ int dircntl(DIR * __dir, int __cmd, ...);
 
 __END_DECLS
 #endif
-/* __SRCVERSION("dirent.h $Rev: 163784 $"); */

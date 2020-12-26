@@ -30,37 +30,34 @@
 #endif
 
 #ifndef __ELF_H_INCLUDED
-#include _NTO_HDR_(sys/elf.h)
+#include <sys/elf.h>
 #endif
 
-__BEGIN_DECLS
-
-enum elf_68k_e_r {
-	 R_68K_NONE = 0,
-	 R_68K_32,
-	 R_68K_16,
-	 R_68K_8,
-	 R_68K_PC32,
-	 R_68K_PC16,
-	 R_68K_PC8,
-	 R_68K_GOT32,
-	 R_68K_GOT16,
-	 R_68K_GOT8,
-	 R_68K_GOT32O,
-	 R_68K_GOT16O,
-	 R_68K_GOT8O,
-	 R_68K_PLT32,
-	 R_68K_PLT16,
-	 R_68K_PLT8,
-	 R_68K_PLT32O,
-	 R_68K_PLT16O,
-	 R_68K_PLT8O,
-	 R_68K_COPY,
-	 R_68K_GLOB_DAT,
-	 R_68K_JMP_SLOT,
-	 R_68K_RELATIVE
+__BEGIN_DECLS enum elf_68k_e_r {
+    R_68K_NONE = 0,
+    R_68K_32,
+    R_68K_16,
+    R_68K_8,
+    R_68K_PC32,
+    R_68K_PC16,
+    R_68K_PC8,
+    R_68K_GOT32,
+    R_68K_GOT16,
+    R_68K_GOT8,
+    R_68K_GOT32O,
+    R_68K_GOT16O,
+    R_68K_GOT8O,
+    R_68K_PLT32,
+    R_68K_PLT16,
+    R_68K_PLT8,
+    R_68K_PLT32O,
+    R_68K_PLT16O,
+    R_68K_PLT8O,
+    R_68K_COPY,
+    R_68K_GLOB_DAT,
+    R_68K_JMP_SLOT,
+    R_68K_RELATIVE
 };
 
 __END_DECLS
-
 #endif

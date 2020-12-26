@@ -44,4 +44,3 @@ extern short ospeed;
 
 __END_DECLS
 #endif
-/* __SRCVERSION("termcap.h $Rev: 165622 $"); */

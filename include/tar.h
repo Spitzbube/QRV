@@ -63,5 +63,3 @@
 #define TOEXEC  00001           /* execute/search by other */
 
 #endif
-
-/* __SRCVERSION("tar.h $Rev: 153052 $"); */

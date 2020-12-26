@@ -24,10 +24,6 @@
  */
 #ifndef _STDLIB_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -49,8 +45,6 @@
 #if defined(__EXT_XOPEN_EX) && !defined(__WAIT_H_INCLUDED)
 #include <sys/wait.h>
 #endif
-
-#include <_pack64.h>
 
 _C_STD_BEGIN
 #if defined(__EXT_ANSIC_199012)
@@ -93,8 +87,10 @@ typedef lldiv_t _Lldiv_t;
 
 #endif
 _C_STD_END
-#include <_packpop.h>
-__BEGIN_DECLS _C_STD_BEGIN extern char _Mbcurmax;
+
+__BEGIN_DECLS
+_C_STD_BEGIN
+extern char _Mbcurmax;
 
 /* library private functions */
 #define _STOINT_SIGNED		0x1
@@ -242,13 +238,6 @@ int clearenv(void);
 
 #if defined(__EXT_PCDOS)
 
-#if defined(__WATCOMC__) && defined(__INLINE_FUNCTIONS__)
-#pragma intrinsic(abs,div,labs)
-#ifdef __386__
-#pragma intrinsic(ldiv)
-#endif
-#endif
-
 #ifndef __cplusplus
 #define atof(p)  strtod(p,(char **)NULL)
 #endif
@@ -320,4 +309,3 @@ using std::wctomb;
 
 #endif
 
-/* __SRCVERSION("stdlib.h $Rev: 171835 $"); */

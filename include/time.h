@@ -25,10 +25,6 @@
  */
 #ifndef _TIME_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -71,8 +67,6 @@ typedef __CLOCKID_T clockid_t;
 __TIMESPEC;
 #undef __TIMESPEC
 #endif
-
-#include <_pack64.h>
 
 #ifndef NULL
 #define NULL   0
@@ -230,12 +224,10 @@ extern struct _CSTD tm *getdate(const char *__string);
 extern char *strptime(const char *__buf, const char *__format, struct _CSTD tm * __tm);
 #endif
 
-#include <_packpop.h>
-
 __END_DECLS
 #endif
 #ifdef _STD_USING
-    using std::clock_t;
+using std::clock_t;
 using std::size_t;
 using std::time_t;
 using std::tm;
@@ -251,5 +243,3 @@ using std::time;
 #endif                          /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("time.h $Rev: 166190 $"); */

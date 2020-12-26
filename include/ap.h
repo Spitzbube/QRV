@@ -16,10 +16,6 @@
 
 #include <stdbool.h>
 
-#ifdef __WATCOMC__
-typedef char _Bool;             // not done in stdbool.h for watcom
-#endif                          /* __WATCOMC__ */
-
 /*
  * this file contains common interfaces, types and definitions for the
  * partitioning modules.
@@ -123,5 +119,3 @@ typedef struct prp_node_s {
 #define LIST_PREV(_n)		((part_qnode_t *)((((char *)((_n)->hdr.prev))) - offsetof(part_qnode_t, next)))
 
 #endif                          /* _AP_H_ */
-
-/* __SRCVERSION("$IQ: ap.h,v 1.91 $"); */

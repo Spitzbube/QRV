@@ -18,93 +18,87 @@
 #ifndef __PROCFS_H_INCLUDED
 #define __PROCFS_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
 
 #ifndef _DCMD_PROC_H_INCLUDED
-#include _NTO_HDR_(sys/dcmd_proc.h)
+#include <sys/dcmd_proc.h>
 #endif
 
 #ifndef _SIGNAL_H_INCLUDED
-#include _NTO_HDR_(signal.h)
+#include <signal.h>
 #endif
 
 #ifndef __SYSPAGE_H_INCLUDED
- #include _NTO_HDR_(sys/syspage.h)
+#include <sys/syspage.h>
 #endif
 
 #ifndef __DEBUG_H_INCLUDED
- #include _NTO_HDR_(sys/debug.h)
+#include <sys/debug.h>
 #endif
 
 
 __BEGIN_DECLS
 
-#include _NTO_HDR_(_pack64.h)
-
-typedef struct syspage_entry	procfs_sysinfo;
-typedef debug_process_t			procfs_info;
-typedef debug_thread_t			procfs_status;
-typedef debug_run_t				procfs_run;
-typedef debug_break_t			procfs_break;
-typedef debug_greg_t			procfs_greg;
-typedef debug_fpreg_t			procfs_fpreg;
-typedef debug_altreg_t			procfs_altreg;
-typedef debug_irq_t				procfs_irq;
-typedef debug_timer_t			procfs_timer;
-typedef debug_channel_t			procfs_channel;
+typedef struct syspage_entry procfs_sysinfo;
+typedef debug_process_t procfs_info;
+typedef debug_thread_t procfs_status;
+typedef debug_run_t procfs_run;
+typedef debug_break_t procfs_break;
+typedef debug_greg_t procfs_greg;
+typedef debug_fpreg_t procfs_fpreg;
+typedef debug_altreg_t procfs_altreg;
+typedef debug_irq_t procfs_irq;
+typedef debug_timer_t procfs_timer;
+typedef debug_channel_t procfs_channel;
 
 typedef struct _procfs_signal {
-	pthread_t					tid;
-	_Int32t						signo;
-	_Int32t						code;
-	_Intptrt					value;
-}							procfs_signal;
+    pthread_t tid;
+    _Int32t signo;
+    _Int32t code;
+    _Intptrt value;
+} procfs_signal;
 
 typedef struct _procfs_map_info {
-	_Uint64t					vaddr;
-	_Uint64t					size;
-	_Uint32t					flags;
-	dev_t						dev;
+    _Uint64t vaddr;
+    _Uint64t size;
+    _Uint32t flags;
+    dev_t dev;
 #if _FILE_OFFSET_BITS - 0 == 64
-	off_t						offset;
-	ino_t						ino;
+    off_t offset;
+    ino_t ino;
 #elif !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
-	off64_t						offset;
-	ino64_t						ino;
+    off64_t offset;
+    ino64_t ino;
 #else
- #error _FILE_OFFSET_BITS value is unsupported
+#error _FILE_OFFSET_BITS value is unsupported
 #endif
-	_Int64t						reserved;
-}							procfs_mapinfo;
+    _Int64t reserved;
+} procfs_mapinfo;
 
 typedef struct _procfs_debug_info {
-	_Uint64t					vaddr;
-	char						path[1];
-}							procfs_debuginfo;
+    _Uint64t vaddr;
+    char path[1];
+} procfs_debuginfo;
 
 enum {
-	REGSET_GPREGS = 0,
-	REGSET_FPREGS,
-	REGSET_ALTREGS,
-	REGSET_PERFREGS,
+    REGSET_GPREGS = 0,
+    REGSET_FPREGS,
+    REGSET_ALTREGS,
+    REGSET_PERFREGS,
 };
 
 typedef struct _procfs_regset {
-	_Uint32t					id;
-	char						buf[8192];
-}							procfs_regset;
+    _Uint32t id;
+    char buf[8192];
+} procfs_regset;
 
 typedef struct _procfs_threadctl {
-	_Uint32t					tid;
-	_Int32t						cmd;
-	char						data[1024];
-}							procfs_threadctl;
+    _Uint32t tid;
+    _Int32t cmd;
+    char data[1024];
+} procfs_threadctl;
 
 /* This call is made to obtain information stored in the system page.
    To get the whole syspage, two calls would have to be made. The
@@ -348,10 +342,5 @@ typedef struct _procfs_threadctl {
 #define DCMD_PROC_DEL_MEMPARTID	__DIOT(_DCMD_PROC, __PROC_SUBCMD_PROCFS + 32, part_id_t)
 #define DCMD_PROC_CHG_MEMPARTID	__DIOT(_DCMD_PROC, __PROC_SUBCMD_PROCFS + 33, part_id_t)
 
-#include _NTO_HDR_(_packpop.h)
-
 __END_DECLS
-
 #endif
-
-/* __SRCVERSION("procfs.h $Rev: 168445 $"); */

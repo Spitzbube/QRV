@@ -34,8 +34,6 @@ typedef __OFF64_T	off64_t;
 #undef __OFF64_T
 #endif
 
-#include <_pack64.h>
-
 
 /*
  * Desc:  This call gets O_ status flags as described in <fcntl.h>.
@@ -95,8 +93,4 @@ struct _fadvise {
 };
 #define DCMD_ALL_FADVISE __DIOT(_DCMD_ALL, 6, struct _fadvise)
 
-#include <_packpop.h>
-
 #endif
-
-/* __SRCVERSION("dcmd_all.h $Rev: 153052 $"); */

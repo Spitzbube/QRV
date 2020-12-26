@@ -27,10 +27,6 @@
 #define _DEVCTL_H_INCLUDED
 
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __TYPES_H_INCLUDED
 #include <sys/types.h>
 #endif
@@ -92,10 +88,10 @@ extern int set_device_direction(int command, int direction);
  *      Character               0x300 - 0x3ff
  *      Network                 0x400 - 0x4ff
  *      Misc                    0x500 - 0x5ff
- *      IP                  	0x600 - 0x6ff
- *      Mixer					0x700 - 0x7ff
- *		Proc					0x800 - 0x8ff
- *      Memory card				0x900 - 0x9ff
+ *      IP                      0x600 - 0x6ff
+ *      Mixer			0x700 - 0x7ff
+ *      Proc			0x800 - 0x8ff
+ *      Memory card		0x900 - 0x9ff
  *      Input devices           0xA00 - 0xAff
  *      CAM                     0xC00 - 0xCff
  *      USB                     0xD00 - 0xDff
@@ -143,4 +139,3 @@ extern int _devctl(int fd, int dcmd, void *data_ptr, _CSTD size_t nbytes, unsign
 
 __END_DECLS
 #endif
-/* __SRCVERSION("devctl.h $Rev: 168446 $"); */

@@ -26,10 +26,6 @@
 #ifndef _FTW_H_INCLUDED
 #define _FTW_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
@@ -57,13 +53,11 @@ enum {
     FTW_SKD,                    /* do not enter the directory object */
 };
 
-#include <_pack64.h>
 struct FTW {
     int base;                   /* offset of object filename in path */
     int level;                  /* depth relative to walk root       */
     int quit;                   /* FTW_SK* action (extension)        */
 };
-#include <_packpop.h>
 
 __BEGIN_DECLS
 #if _LARGEFILE64_SOURCE - 0 > 0
@@ -84,21 +78,5 @@ extern int nftw(const char *__path,
                             struct FTW * __ftw), int __ndirs, int __flags) __ALIAS64("nftw64");
 #endif
 
-#if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__GNUC__)
-/* Use __ALIAS64 define */
-#elif defined(__WATCOMC__)
-#pragma aux ftw "ftw64";
-#pragma aux nftw "nftw64";
-#elif defined(_PRAGMA_REDEFINE_EXTNAME)
-#pragma redefine_extname ftw ftw64
-#pragma redefine_extname nftw nftw64
-#else
-#define ftw ftw64
-#define nftw nftw64
-#endif
-#endif
-
 __END_DECLS
 #endif
-/* __SRCVERSION("ftw.h $Rev: 154597 $"); */

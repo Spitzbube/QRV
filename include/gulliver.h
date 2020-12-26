@@ -27,25 +27,13 @@
  *                             Jonathan Swift, Gulliver's Travels
  *
  *
-
  */
 
 #ifndef _GULLIVER_H_INCLUDED
 #define _GULLIVER_H_INCLUDED
 
-#ifdef __SOLARIS__
-#include <lib/compat.h>
-#else
-#ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
-#endif
-#endif
-
-#ifdef __QNXNTO__
-#ifndef __CPUINLINE_H_INCLUDED
-#include <sys/cpuinline.h>
-#endif
-#endif
+#include <arch/cpu_inline.h>
 
 #ifdef __CPU_ENDIAN_RET16
 #define ENDIAN_RET16(__x)		__cpu_endian_ret16(__x)
@@ -240,6 +228,5 @@ extern int endian_swap(void *__data, void *__instr);
 #else
 #define endian_swap(__x, __y)	(0)
 #endif
-    __END_DECLS
+__END_DECLS
 #endif
-/* __SRCVERSION("gulliver.h $Rev: 153052 $"); */

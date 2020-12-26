@@ -65,4 +65,3 @@ extern void twalk(const void *__root, void (*__action)(const void *, VISIT, int)
 
 __END_DECLS
 #endif
-/* __SRCVERSION("search.h $Rev: 161592 $"); */

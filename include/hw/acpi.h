@@ -20,12 +20,10 @@
  */
 
 
-
-
 /*
- * hw/acpi.h:	ACPI manifests
+ * \file hw/acpi.h
  *
-
+ * ACPI manifests.
  *
  */
 
@@ -36,10 +34,7 @@
 #include <sys/platform.h>
 #endif
 
-/* Argh, some of the ACPI structures aren't naturally aligned :-( */
-#include _NTO_HDR_(_pack1.h)
-
-typedef struct {
+typedef packedstruct {
     _Uint8t Address_Space_ID;
     _Uint8t Register_Bit_Width;
     _Uint8t Register_Bit_Offset;
@@ -47,7 +42,7 @@ typedef struct {
     union {
         _Paddr64t sm;
         _Paddr64t sio;
-        struct {
+        packedstruct {
             _Uint16t offset;
             _Uint16t pci_function_number;
             _Uint16t pci_device_number;
@@ -60,9 +55,7 @@ typedef struct {
 #define ACPI_GAS_ASID_SYSTEM_IO					1
 #define ACPI_GAS_ASID_PCI_CONFIGURATION_SPACE	2
 
-
-
-typedef struct {
+typedef packedstruct {
     _Uint8t Signature[8];
     _Uint8t Checksum;
     _Uint8t OEMID[6];
@@ -70,7 +63,7 @@ typedef struct {
     _Paddr32t RsdtAddress;
 } acpi_rsdp1_0;
 
-typedef struct {
+typedef packedstruct {
     acpi_rsdp1_0 v1;
     _Uint32t Length;
     _Paddr64t XsdtAddress;
@@ -86,7 +79,7 @@ typedef acpi_rsdp2_0 acpi_rsdp;
 #define ACPI_RSDP_REVISION_2_0	2
 
 
-typedef struct {
+typedef packedstruct {
     _Uint32t Signature;
     _Uint32t Length;
     _Uint8t Revision;
@@ -103,21 +96,21 @@ typedef struct {
 
 
 #define ACPI_RSDT_SIGNATURE	ACPI_SIGNATURE('R','S','D','T')
-typedef struct {
+typedef packedstruct {
     acpi_description_header hdr;
     _Paddr32t Entry[1];         /* Variably sized */
 } acpi_rsdt;
 
 
 #define ACPI_XSDT_SIGNATURE	ACPI_SIGNATURE('X','S','D','T')
-typedef struct {
+typedef packedstruct {
     acpi_description_header hdr;
     _Paddr64t Entry[1];         /* Variably sized */
 } acpi_xsdt;
 
 
 #define ACPI_FADT_SIGNATURE	ACPI_SIGNATURE('F','A','C','P')
-typedef struct {
+typedef packedstruct {
     acpi_description_header hdr;
     _Paddr32t FIRMWARE_CTRL;
     _Paddr32t DSDT;
@@ -200,7 +193,7 @@ typedef struct {
 
 
 #define ACPI_FACS_SIGNATURE	ACPI_SIGNATURE('F','A','C','S')
-typedef struct {
+typedef packedstruct {
     _Uint32t Signature;
     _Uint32t Length;
     _Uint32t Hardware_Signature;
@@ -219,14 +212,14 @@ typedef struct {
 
 
 #define ACPI_DSDT_SIGNATURE	ACPI_SIGNATURE('D','S','D','T')
-typedef struct {
+typedef packedstruct {
     acpi_description_header hdr;
     _Uint8t Definition_Block[1];    /* Variably Sized */
 } acpi_dsdt;
 
 
 #define ACPI_SSDT_SIGNATURE	ACPI_SIGNATURE('S','S','D','T')
-typedef struct {
+typedef packedstruct {
     acpi_description_header hdr;
     _Uint8t Definition_Block[1];    /* Variably Sized */
 } acpi_ssdt;
@@ -247,7 +240,7 @@ typedef acpi_ssdt acpi_psdt;
 #define ACPI_MADT_TYPE_LOCAL_SAPIC					7
 #define ACPI_MADT_TYPE_PLATFORM_INTERRUPT_SOURCES	8
 
-typedef struct {
+typedef packedstruct {
     _Uint8t Type;
     _Uint8t Length;
     _Uint8t ACPI_Processor_ID;
@@ -257,7 +250,7 @@ typedef struct {
 
 #define ACPI_MADT_PLA_FLAGS_ENABLED		_ONEBIT32L(0)
 
-typedef struct {
+typedef packedstruct {
     _Uint8t Type;
     _Uint8t Length;
     _Uint8t IO_APIC_ID;
@@ -266,7 +259,7 @@ typedef struct {
     _Uint32t Global_System_Interrupt_Base;
 } acpi_madt_io_apic;
 
-typedef struct {
+typedef packedstruct {
     _Uint8t Type;
     _Uint8t Length;
     _Uint8t Bus;
@@ -286,7 +279,7 @@ typedef struct {
 #define ACPI_MADT_ISO_FLAGS_TRIGGER_EDGE		_BITFIELD16L(2,0x1)
 #define ACPI_MADT_ISO_FLAGS_TRIGGER_LEVEL		_BITFIELD16L(0,0x3)
 
-typedef struct {
+typedef packedstruct {
     _Uint8t Type;
     _Uint8t Length;
     _Uint16t Flags;
@@ -304,7 +297,7 @@ typedef struct {
 #define ACPI_MADT_NIS_FLAGS_TRIGGER_EDGE		_BITFIELD16L(2,0x1)
 #define ACPI_MADT_NIS_FLAGS_TRIGGER_LEVEL		_BITFIELD16L(0,0x3)
 
-typedef struct {
+typedef packedstruct {
     _Uint8t Type;
     _Uint8t Length;
     _Uint8t ACPI_Processor_ID;
@@ -323,25 +316,25 @@ typedef struct {
 #define ACPI_MADT_LAN_FLAGS_TRIGGER_EDGE		_BITFIELD16L(2,0x1)
 #define ACPI_MADT_LAN_FLAGS_TRIGGER_LEVEL		_BITFIELD16L(0,0x3)
 
-typedef struct {
+typedef packedstruct {
     _Uint8t Type;
     _Uint8t Length;
 } acpi_madt_header;
 
-typedef struct {
+typedef packedstruct {
     acpi_madt_header hdr;
     _Uint16t reserved;
     _Paddr64t Local_APIC_Address;
 } acpi_madt_local_apic_address_override;
 
-typedef struct {
+typedef packedstruct {
     acpi_madt_header hdr;
     _Uint8t IO_APIC_ID;
     _Uint32t Global_System_Interrupt_Base;
     _Paddr64t IO_SAPIC_Address;
 } acpi_madt_io_sapic;
 
-typedef struct {
+typedef packedstruct {
     acpi_madt_header hdr;
     _Uint8t ACPI_Processor_ID;
     _Uint8t Local_SAPIC_ID;
@@ -352,7 +345,7 @@ typedef struct {
 
 #define ACPI_MADT_LS_FLAGS_ENABLED		_ONEBIT32L(0)
 
-typedef struct {
+typedef packedstruct {
     acpi_madt_header hdr;
     _Uint16t Flags;
     _Uint8t Interrupt_Type;
@@ -381,7 +374,7 @@ typedef union {
 } acpi_madt_generic;
 
 #define ACPI_MADT_SIGNATURE	ACPI_SIGNATURE('A','P','I','C')
-typedef struct {
+typedef packedstruct {
     acpi_description_header hdr;
     _Paddr32t Local_APIC_Address;
     _Uint32t Flags;
@@ -390,7 +383,7 @@ typedef struct {
 
 
 #define ACPI_SBST_SIGNATURE	ACPI_SIGNATURE('S','B','S','T')
-typedef struct {
+typedef packedstruct {
     acpi_description_header hdr;
     _Uint32t Warning_Energy_Level;
     _Uint32t Low_Energy_Level;
@@ -399,7 +392,7 @@ typedef struct {
 
 
 #define ACPI_ECDT_SIGNATURE	ACPI_SIGNATURE('E','C','D','T')
-typedef struct {
+typedef packedstruct {
     acpi_description_header hdr;
     acpi_gas EC_CONTROL;
     acpi_gas EC_DATA;
@@ -422,8 +415,4 @@ typedef union {
     acpi_ecdt ecdt;
 } acpi_generic;
 
-#include _NTO_HDR_(_packpop.h)
-
 #endif
-
-/* __SRCVERSION("acpi.h $Rev: 169803 $"); */

@@ -73,5 +73,3 @@ extern int _slogfd;
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("slog.h $Rev: 164949 $"); */

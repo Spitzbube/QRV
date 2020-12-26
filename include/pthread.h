@@ -1,6 +1,10 @@
 /*
- * $QNXLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+ * \file pthread.h
+ *
+ * Thread definitions.
+ *
+ * \license
+ * \copyright (c) 2007, QNX Software Systems. All Rights Reserved.
  *
  * You must obtain a written license from and pay applicable license fees to QNX
  * Software Systems before you may reproduce, modify or distribute this software,
@@ -12,30 +16,13 @@
  * file for other proprietary rights or license notices, as well as the QNX
  * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
- * $
  */
 
-
-
-/*
- *  pthread.h	Thread definitions
- *
-
- */
 #ifndef _PTHREAD_H_INCLUDED
 #define _PTHREAD_H_INCLUDED
 
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
-#ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
-#endif
-
-#ifndef __CPUINLINE_H_INCLUDED
-#include <sys/cpuinline.h>
-#endif
+#include <arch/cpu_inline.h>
 
 #if !defined(__EXT_POSIX1_199309) && (defined(__EXT_POSIX1_198808) || defined(__EXT_POSIX1_199009))
 #error POSIX Threads needs P1003.1b-1993 or later
@@ -119,7 +106,7 @@ typedef __CLOCKID_T clockid_t;
 #endif
 
 __BEGIN_DECLS
-#include <_pack64.h>
+
 /*
  * Synchronization manifests and structures.
  */
@@ -550,8 +537,5 @@ extern int pthread_sleepon_broadcast(const volatile void *__addr);
 
 #endif
 
-#include <_packpop.h>
-
 __END_DECLS
 #endif
-/* __SRCVERSION("pthread.h $Rev: 207498 $"); */

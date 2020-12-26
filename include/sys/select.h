@@ -99,5 +99,3 @@ _C_STD_END
 __END_DECLS
 
 #endif
-
-/* __SRCVERSION("select.h $Rev: 172561 $"); */

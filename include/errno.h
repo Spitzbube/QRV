@@ -218,5 +218,3 @@ __END_DECLS
 #endif                          /* _STD_USING */
 
 #endif
-
-/* __SRCVERSION("errno.h $Rev: 157219 $"); */

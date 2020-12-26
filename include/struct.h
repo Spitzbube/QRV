@@ -131,5 +131,3 @@ struct loader_context {
 #define PID_TO_INO(pid, subtype)	((pid) ^ (subtype ? UINT_MAX : INT_MAX))
 
 #endif
-
-/* __SRCVERSION("struct.h $Rev: 153052 $"); */

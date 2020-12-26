@@ -30,11 +30,6 @@
 #include <sys/platform.h>
 #endif
 
-
-#if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
-#pragma read_only_file;
-#endif
-
 #ifndef __TYPES_H_INCLUDED
 #include <sys/types.h>
 #endif
@@ -46,8 +41,6 @@
 #if !defined(__EXT_POSIX1_199309) && (defined(__EXT_POSIX1_198808) || defined(__EXT_POSIX1_199009))
 #error POSIX Asynchronous Input and Output needs P1003.1b-1993 or later
 #endif
-
-#include <_pack64.h>
 
 #if defined(__TIMESPEC_INTERNAL)
 __TIMESPEC_INTERNAL;
@@ -126,8 +119,6 @@ __TIMESPEC;
 #undef __TIMESPEC
 #endif
 
-#include <_packpop.h>
-
 
 #define AIO_CANCELED	0
 #define AIO_ALLDONE		1
@@ -167,24 +158,6 @@ extern int lio_listio64(int __mode, struct aiocb64 *__const __list[], int __nent
 #define aio_suspend64(__list, __nent, __timeout) aio_suspend((struct aiocb **)__list, __nent, __timeout)
 #endif
 
-#if _FILE_OFFSET_BITS - 0 == 64
-#if defined(__GNUC__)
-/* Use the __ALIAS64 define */
-#elif defined(__WATCOMC__)
-#pragma aux aio_read "aio_read64";
-#pragma aux aio_write "aio_write64";
-#pragma aux lio_listio "lio_listio64";
-#elif defined(_PRAGMA_REDEFINE_EXTNAME)
-#pragma redefine_extname aio_read aio_read64
-#pragma redefine_extname aio_write aio_write64
-#pragma redefine_extname lio_listio lio_listio64
-#else
-#define aio_read aio_read64
-#define aio_write aio_write64
-#define lio_listio lio_listio64
-#endif
-#endif
-
 extern int aio_cancel(int __fd, struct aiocb *__aiocbp);
 extern int aio_error(__const struct aiocb *__aiocbp);
 extern int aio_fsync(int __operation, struct aiocb *__aiocbp);
@@ -198,4 +171,3 @@ extern int lio_listio(int __mode, struct aiocb *__const __list[], int __nent,
 
 __END_DECLS
 #endif
-/* __SRCVERSION("aio.h $Rev: 154597 $"); */
