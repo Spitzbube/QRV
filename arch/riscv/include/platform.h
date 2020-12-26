@@ -16,4 +16,6 @@ typedef unsigned __jmpbufalign;
 
 int cpuid(void);
 
+#define packedstruct struct __attribute__((packed))
+
 #endif

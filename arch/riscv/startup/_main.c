@@ -7,6 +7,7 @@
  */
 
 #include <kernel/startup.h>
+#include <sbi.h>
 
 unsigned paddr_bits;
 int debug_flag = 0;
@@ -63,7 +64,6 @@ static void setup_cmdline(void)
 
 }
 
-extern void rvq_putc_ser_dbg(int);
 /**
  * \brief _main(), a precursor to main()
  * \note This is the first function run in supervisor mode.
@@ -72,8 +72,6 @@ void _main(void)
 {
     paddr_bits = arch_max_paddr_bits();
     shdr = (struct startup_header *) boot_args.shdr_addr;
-
-set_print_char(rvq_putc_ser_dbg);
 
     board_init();
 

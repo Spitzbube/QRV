@@ -3,8 +3,7 @@
 # Number of CPUs to emulate
 CPUS=4
 # Set this to 'none' to run without BIOS
-#BIOS=fw.bin
-BIOS=none
+BIOS=bios/fw.bin
 
 QEMU=qemu-system-riscv64
 

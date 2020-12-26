@@ -35,10 +35,6 @@ void init_riscv_ser(unsigned channel, const char *init, paddr_t base)
 {
 }
 
-void board_init(void)
-{
-}
-
 void init_asinfo(unsigned mem)
 {
 }

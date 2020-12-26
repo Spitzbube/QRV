@@ -34,8 +34,6 @@
 #define		RIFS_FLAG_IFS2_SRC			0x20    /* Manually specify IFS2 source */
 #define		RIFS_FLAG_IFS2_DST			0x40    /* Manually specify IFS2 destination */
 
-#include <_pack64.h>
-
 #define RIFS_SIGNATURE		"rifsboot"
 #define RIFS_SIGNATURE_REV	"toobsfir"
 #define RIFS_MAX_BOOTABLE	5   /* Max bootable executables supported in image */
@@ -44,7 +42,7 @@
 struct restore_ifs_elf {
     unsigned long offset;       /* Offset of writeable elf data region from the start of the IFS */
     unsigned long size;         /* Size of writeable elf data */
-    paddr32_t data;             /* Location to store elf data for compressed images only (must be in 1-to-1 mapping region) */
+    paddr_t data;             /* Location to store elf data for compressed images only (must be in 1-to-1 mapping region) */
 };
 
 /* IFS information stored persistently across boots */
@@ -62,8 +60,6 @@ struct restore_ifs2_info {
     unsigned long cksum;        /* Checksum for this data structure */
     unsigned long image_size;   /* Size of the IFS used for checksum */
 };
-
-#include <_packpop.h>
 
 /* Function prototypes */
 void rifs_set_cksum(struct image_header *ifs_hdr);

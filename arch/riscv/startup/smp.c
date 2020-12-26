@@ -16,11 +16,4 @@ volatile bool syspage_available;
  */
 void cpu_startup(void)
 {
-    /* For now, proceed only on hart 0. Put other CPUs to infinite spin */
-    if (cpuid() != 0) {
-        rvq_putc_ser_dbg('A' + cpuid());
-        while (!syspage_available) {
-
-        }for(;;) ;
-    }
 }

@@ -27,9 +27,12 @@
 #include <confname.h>
 
 /* For debugging. Set to empty definition when done */
-#define DBG1(x...) kprintf(x)
-#define pr_info(x...) kprintf(x)
-#define pr_warn(x...) kprintf(x)
+#define pr_debug(x...) kprintf(x)
+#define pr_info(x...)  kprintf(x)
+#define pr_warn(x...)  kprintf("WARNING: "  x)
+#define pr_err(x...)   kprintf("ERROR: "    x)
+#define pr_alert(x...) kprintf("ALERT: "    x)
+#define pr_crit(x...)  kprintf("CRITICAL: " x)
 
 #define PROCESSORS_MAX	8       // set this to match kernel (at least a search will find this now)
 

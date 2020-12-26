@@ -371,8 +371,9 @@ typedef union _debug_perfregs {
 #endif
 #if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_SH)
     SH_PERFREGS sh;
+#endif
 #if defined(_DEBUG_TARGET_ALL) || defined(_DEBUG_TARGET_RISCV)
-    RISCV_PERFREGS riscv;
+    RISCV_PERF_REGISTERS riscv;
 #endif
     _Uint64t padding[1024];
 } debug_perfreg_t;
