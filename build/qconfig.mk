@@ -39,7 +39,7 @@ FLEX_HOST  := flex
 #
 
 #
-# host system
+# Host system
 #
 CL_HOST = gcc
 CC_HOST = gcc -c
@@ -63,6 +63,12 @@ LR := $(CROSS)gcc
 LD := $(CROSS)gcc
 #UM_qrv_riscv_gcc = $(UM_HOST) -s __USAGENTO -s __USAGE
 OC := $(CROSS)objcopy
+
+CCOPTS := -nostdinc -fno-builtin -nostdlib -DQRV
+# TODO: remove when the porting is finished
+CCOPTS += -D__QNX__ -D__QNXNTO__
+
+LDOPTS = -nostdlib
 
 ifndef QCONF_OVERRIDE
 

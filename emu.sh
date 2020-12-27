@@ -14,5 +14,8 @@ QEMUOPTS="-machine virt -bios $BIOS -kernel arch/riscv/startup/kernel -m 256M -s
 # Add the following to enable remote gdb ("target extended-remote :1234")
 #QEMUOPTS+=" -s -S"
 
+# Append the command line for the system
+CMDLINE="-Dsbi -vvv"
+
 touch fs.img
-$QEMU $QEMUOPTS
+$QEMU $QEMUOPTS -append "$CMDLINE"

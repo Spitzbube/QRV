@@ -16,8 +16,8 @@ void print_syspage(void)
     int opt;
 
     if (debug_flag > 1) {
-        //We enable things here so that this code doesn't get
-        //hauled in unless the user calls print_syspage().
+        /* We enable things here so that this code doesn't get
+         * hauled in unless the user calls print_syspage(). */
         optind = 0;
         while ((opt = getopt(_argc, _argv, "S:")) != -1) {
             if (opt == 'S') {

@@ -31,12 +31,14 @@ static void vmsg(const char *fmt, va_list args)
     unsigned radix;
     int dig;
     char buf[64];
+    bool was_modifier = 0;
 
     for (; *fmt; ++fmt) {
-        if (*fmt != '%') {
+        if (*fmt != '%' && !was_modifier) {
             one_char(*fmt);
             continue;
         }
+        was_modifier = false;
         radix = dig = 0;
         switch (*++fmt) {
         case 'b':
@@ -56,9 +58,18 @@ static void vmsg(const char *fmt, va_list args)
             break;
         case 'x':
         case 'X':
-        case 'l':
-            num = va_arg(args, unsigned long);
-            dig = sizeof(unsigned long) * 2;
+            if (*(fmt - 1) == 'l') {
+                if (*(fmt - 2) == 'l') {
+                    num = va_arg(args, uint64_t);
+                    dig = sizeof(uint64_t) * 2;
+                } else {
+                    num = va_arg(args, unsigned long);
+                    dig = sizeof(unsigned long) * 2;
+                }
+            } else {
+                num = va_arg(args, unsigned);
+                dig = sizeof(unsigned) * 2;
+            }
             radix = 16;
             break;
         case 'L':
@@ -67,6 +78,10 @@ static void vmsg(const char *fmt, va_list args)
             radix = 16;
             break;
         case 'd':
+        case 'i':
+            num = va_arg(args, int);
+            radix = 10;
+            break;
         case 'u':
             num = va_arg(args, unsigned);
             radix = 10;
@@ -77,6 +92,23 @@ static void vmsg(const char *fmt, va_list args)
                 one_char(*vs++);
             }
             continue;
+        case 'c':
+            num = va_arg(args, unsigned);
+            one_char((char)num);
+            continue;
+
+        /* Modifiers */
+        case '#':
+            one_char('0');
+            one_char('x');
+            was_modifier = true;
+            --fmt;
+            continue;
+        case 'l':
+            was_modifier = true;
+            --fmt;
+            continue;
+
         default:
             one_char(*fmt);
             continue;

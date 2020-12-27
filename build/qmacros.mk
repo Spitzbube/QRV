@@ -89,8 +89,6 @@ SRCVPATH := $(PRE_SRCVPATH) $(defsrcvpath)
 endif
 
 SRCVPATH += $(EXTRA_SRCVPATH)
-$(warning ---- SRCVPATH is $(SRCVPATH))
-$(warning ---- defsrcvpath is $(defsrcvpath))
 
 metasrcs=$(foreach dir, $1, $(addprefix $(dir)/*., S c $(EXTRA_SUFFIXES)))
 ifndef SRCS
@@ -107,37 +105,26 @@ raw_objs = $(sort $(addsuffix .o, $(basename $(notdir $(SRCS) $(LATE_SRCS)))))
 OBJS = $(filter-out $(EXCLUDE_OBJS), $(raw_objs)) $(EXTRA_OBJS)
 
 VFLAG_g=-g
-VFLAG_16=-2
 CCVFLAG_shared=-shared
 ASVFLAG_shared=-shared
 LDVFLAG_dll=-Wl,-Bsymbolic
 
-VFLAG_dll=$(VFLAG_shared)
-CCVFLAG_dll=$(CCVFLAG_shared)
-ASVFLAG_dll=$(ASVFLAG_shared)
 VFLAG_so=$(VFLAG_shared)
 CCVFLAG_so=$(CCVFLAG_shared)
 ASVFLAG_so=$(ASVFLAG_shared)
 
 VARIANT_NAMES=$(addprefix VARIANT_,$(VARIANT_LIST)) BUILDENV_$(BUILDENV)
 
-VFLAGS=$(foreach var,$(VARIANT_LIST), $(VFLAG_$(var)) $(VFLAG_$(CPU)_$(var)))
-ASVFLAGS=$(VFLAGS) $(foreach var,$(VARIANT_LIST), $(ASVFLAG_$(var)))
-ARVFLAGS_qcc=$(VFLAGS)
-CCVFLAGS=$(VFLAGS) $(foreach var,$(VARIANT_LIST), $(CCVFLAG_$(var))) $(addprefix -D,$(VARIANT_NAMES))
-LDVFLAGS=$(VFLAGS) $(foreach var,$(VARIANT_LIST), $(LDVFLAG_$(var)))
-
-# Special flags for code that is called from kernel mode
-
-CCVFLAGS_ISR=-D_ISR_SOURCE $(CCFLAGS_ISR_$(CPU)) $(foreach var,$(VARIANT_LIST),$(CCFLAGS_ISR_$(var)) $(CCFLAGS_ISR_$(CPU)_$(var)))
-CCVFLAGS_ISR_EXCLUDE=$(CCFLAGS_ISR_EXCLUDE_$(CPU)) $(foreach var,$(VARIANT_LIST),$(CCFLAGS_ISR_EXCLUDE_$(var)) $(CCFLAGS_ISR_EXCLUDE_$(CPU)_$(var)))
+VFLAGS   = $(foreach var,$(VARIANT_LIST), $(VFLAG_$(var)) $(VFLAG_$(CPU)_$(var)))
+ASVFLAGS = $(VFLAGS) $(foreach var,$(VARIANT_LIST), $(ASVFLAG_$(var)))
+CCVFLAGS = $(VFLAGS) $(foreach var,$(VARIANT_LIST), $(CCVFLAG_$(var))) $(addprefix -D,$(VARIANT_NAMES))
+LDVFLAGS = $(VFLAGS) $(foreach var,$(VARIANT_LIST), $(LDVFLAG_$(var)))
 
 ifndef INCVPATH
 INCVPATH=$(SRCVPATH)
 endif
 orig_incvpath := $(INCVPATH)
 INCVPATH = $(QRV_PROJ_ROOT)/include $(orig_incvpath) $(EXTRA_INCVPATH) $(INCTEST) $(USE_ROOT_INCLUDE)
-$(warning INCVPATH is $(INCVPATH))
 
 ifdef LIBVPATH
 LIBVPATH += $(EXTRA_LIBVPATH)
@@ -173,7 +160,7 @@ silent_variants = o g $(build_extensions) $(memmodel) $(oses) $(cpus) $(silent_v
 
 VARIANT_TAG = $(subst $(space),,$(foreach var,$(filter-out $(silent_variants) $(EXTRA_SILENT_VARIANTS),$(all_variants)),-$(var)))$(foreach var,$(filter g, $(VARIANT_LIST)),_$(var))$(foreach var,$(filter shared, $(VARIANT_LIST)),S)
 
-conditional_munge=$(if $(filter-out undefined,$(origin $(1))),$(call $(1),$(2)),$(2))
+conditional_munge = $(if $(filter-out undefined,$(origin $(1))),$(call $(1),$(2)),$(2))
 
 LIBNAMES=$(foreach lib, $(LIBS), $(IMAGE_PREF_AR)$(call conditional_munge,libmunge,$(lib))$(IMAGE_SUFF_AR))
 only_objs=$(filter-out $(EXTRA_DEPS) $(EXCLUDE_OBJS_$(BUILD_TYPE)) $(addprefix %/, $(LIBNAMES)), $^)
@@ -181,7 +168,7 @@ only_objs=$(filter-out $(EXTRA_DEPS) $(EXCLUDE_OBJS_$(BUILD_TYPE)) $(addprefix %
 select_assembler := $(subst $(space),,$(foreach i,$(OS) $(CPU) $(ASSEMBLER_TYPE) $(COMPILER_DRIVER),_$(i)))
 select_compiler  := $(subst $(space),,$(foreach i,$(OS) $(CPU) $(COMPILER_TYPE)  $(COMPILER_DRIVER),_$(i)))
 linktype_static  := -static
-linktype_dynamic := 
+linktype_dynamic :=
 
 ASPREF = $(AS$(select_assembler))
 ASPOST = $(ASPOST$(select_assembler))
@@ -254,15 +241,11 @@ install_extra += $(install_extra_$(BUILD_TYPE))
 
 metasrcs=$(foreach dir, $1, $(addprefix $(dir)/*., s S c cc cpp $(EXTRA_SUFFIXES)))
 
-ifneq (darwin,$(OS))
 LIBPATH_SEP=$(space)
-else
-LIBPATH_SEP=
-endif
 lib_path = $(foreach path_opt, $(if $(LD$(LINKER_TYPE)_PATHOPT_$(COMPILER_DRIVER)),$(LD$(LINKER_TYPE)_PATHOPT_$(COMPILER_DRIVER)),-L), $(addprefix $(path_opt)$(LIBPATH_SEP), $(LIBVPATH)))
 
 ifndef CREATE_AR
-define CREATE_AR 
+define CREATE_AR
   $(PRECREATE_AR)
   $(ARPREF) $(AROPTS) $@ $(only_objs) $(ARVFLAGS_$(COMPILER_DRIVER)) $(ARPOST)
   $(POSTCREATE_AR)
@@ -462,7 +445,6 @@ define TARGET_PINFO_FAILURE
 endef
 
 # Compile rules
-COMPILE_S_o=$(AS) $(ASPREF) $(ASFLAGS) $(FLAGS) $(ASVFLAGS) $(ASOPTS) $< $(ASPOST)
-COMPILE_c_o=$(CC) $(CCPREF) $(CCFLAGS) $(FLAGS) $(CCVFLAGS) $(CCOPTS) $< $(CCPOST)
-COMPILE_cc_o=$(CC) $(CCPREF) $(CCFLAGS) $(FLAGS) $(CCVFLAGS) $(CCOPTS) $< $(CCPOST)
-
+COMPILE_S_o = $(AS) $(ASPREF) $(ASFLAGS) $(FLAGS) $(ASVFLAGS) $(ASOPTS) $< $(ASPOST)
+COMPILE_c_o = $(CC) $(CCPREF) $(CCFLAGS) $(FLAGS) $(CCVFLAGS) $(CCOPTS) $< $(CCPOST)
+COMPILE_cc_o = $(CC) $(CCPREF) $(CCFLAGS) $(FLAGS) $(CCVFLAGS) $(CCOPTS) $< $(CCPOST)

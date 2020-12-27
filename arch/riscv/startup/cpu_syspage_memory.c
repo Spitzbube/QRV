@@ -82,7 +82,7 @@ struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *cpupagep, paddr_t *syspa
     //int cpu_map_flag = (paddr_bits != 32) ? RISCV_MAP_SYSPAGE_RO : RISCV_MAP_SYSPAGE;
 
     for (i = 0; i < sp->num_cpu; i++, cpupaddr += spacing) {
-        kprintf("TODO TODO: user_cpupageptr\n");
+        kprintf("TODO: user_cpupageptr\n");
         //riscv_map_cpu(i, (uintptr_t) private->user_cpupageptr, (paddr_t) cpupaddr, cpu_map_flag);
     }
 

@@ -18,7 +18,7 @@ unsigned long cycles_freq;
 unsigned long timer_freq;
 chip_info dbg_device[2];
 unsigned patch_channel;
-struct startup_header *shdr;
+
 char **_argv;
 int _argc;
 unsigned max_cpus = ~0;
@@ -29,39 +29,51 @@ struct syspage_entry *_syspage_ptr;
 unsigned misc_flags;
 int secure_system = 0;
 
-extern struct bootargs_entry boot_args; //filled in by mkifs
-
 extern int main(int argc, char **argv, char **envv);
 
-static char *argv[20], *envv[20];
+char *boot_command_line;
 
+static char *argv[64];
+
+#ifdef CONFIG_BOOT_ENV_VARS
+static char *envv[64];
+#else
+static char **envv = NULL;
+#endif
+
+
+/**
+ * \brief TODO
+ */
 static void setup_cmdline(void)
 {
-    char *args;
-    int i, argc, envc;
+    char *s = boot_command_line;
+    int i = 0, argc = 0;
 
-    /* Find and construct argument and environment vectors for ourselves */
-
-    tweak_cmdline(&boot_args, "startup");
-
-    argc = envc = 0;
-    args = boot_args.args;
-    for (i = 0; i < boot_args.argc; ++i) {
-        if (i < sizeof argv / sizeof *argv - 1)
-            argv[argc++] = args;
-        while (*args++);
+    argc = 0;
+    int n = strlen(boot_command_line);
+    while (i < n && argc < NUM_ELTS(argv)) {
+        argv[argc] = s + i;
+        /* Skip spaces, stop if zero */
+        if (s[i] == 0)
+            break;
+        while (s[i] != ' ') i++;
+        s[i++] = 0;
+        ++argc;
     }
     argv[argc] = 0;
 
+#ifdef CONFIG_BOOT_ENV_VARS
+    int envc = 0
     for (i = 0; i < boot_args.envc; ++i) {
         if (i < sizeof envv / sizeof *envv - 1)
             envv[envc++] = args;
         while (*args++);
     }
     envv[envc] = 0;
+#endif
     _argc = argc;
     _argv = argv;
-
 }
 
 /**
@@ -71,7 +83,6 @@ static void setup_cmdline(void)
 void _main(void)
 {
     paddr_bits = arch_max_paddr_bits();
-    shdr = (struct startup_header *) boot_args.shdr_addr;
 
     board_init();
 

@@ -50,10 +50,6 @@ int cpu_handle_common_option(int opt)
 {
     return 0;
 }
-void tweak_cmdline(struct bootargs_entry *bap, const char *name)
-{
-}
-
 
 void *startup_memory_map(unsigned size, paddr_t phys, unsigned prot_flags)
 {
@@ -96,10 +92,8 @@ void virtio_disk_intr() {kprintf("$");}
 extern void rvq_putc_ser_dbg(int c);
 
 const struct debug_device debug_devices[] = {
-    {   .name = "8250",
-        .io_separate = 0,
-        .base = UART0_BASE,
-        .init = init_riscv_ser,
+    {   .name = "sbi",
+        .init = NULL,
         .put = rvq_putc_ser_dbg,
     },
 };
@@ -170,7 +164,7 @@ int main(int argc, char **argv, char **envv)
 
     /*
      * Load bootstrap executables in the image file system and initialize
-     * various syspage pointers. This must be the _last_ initialisation done
+     * various syspage pointers. This must be the _last_ initialization done
      * before transferring control to the next program.
      */
     init_system_private();

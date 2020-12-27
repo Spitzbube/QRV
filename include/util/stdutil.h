@@ -121,8 +121,8 @@ extern int fsys_mount_ext_part(char *, unsigned, unsigned, long, long);
 #define strtonid qnx_strtonid
 /* extern char    *nidtostr(nid_t nid, char *buf, int maxbuf); */
 
-#define UTIL_PATH_MAX (4096)
-#define UTIL_NAME_MAX (256)
+#define UTIL_PATH_MAX   4096
+#define UTIL_NAME_MAX   256
 
 extern int stat_optimize(struct dirent *entry, struct stat *statp);
 extern int lstat_optimize(struct dirent *entry, struct stat *statp);

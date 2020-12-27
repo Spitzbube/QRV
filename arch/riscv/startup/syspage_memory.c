@@ -77,6 +77,8 @@ void init_syspage_memory(void *base, unsigned max_size)
     local_section *sect;
     unsigned spsize = ROUND(sizeof(*lsp.syspage.p), sizeof(uint64_t));
 
+    pr_debug("%s\n", __func__);
+
     for (sect = SECTION_START; sect < SECTION_END; ++sect) {
         sect->p = (void *) ((uint8_t *) base + spsize);
         sect->size = 0;

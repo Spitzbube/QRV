@@ -73,8 +73,7 @@ void handle_common_option(int opt)
             }
             break;
         case 'S':
-            //This gets handled later so that debug code isn't brought in all
-            //the time.
+            //This gets handled later so that debug code isn't brought in all the time
             break;
         case 'T':
             misc_flags |= MISC_FLAG_SUPPRESS_BOOTTIME;
@@ -105,7 +104,7 @@ void handle_common_option(int opt)
  */
 void set_debug(unsigned channel, const struct debug_device *dev, const char *options)
 {
-    dev->init(channel, options, dev->base);
+    dev->init(channel, options, dev->defaults[channel]);
 
     if (channel == 0)
         set_print_char(dev->put);
@@ -127,7 +126,7 @@ static void select_one(const struct debug_device *dev, unsigned size, unsigned c
         for (;;) {
             if (dev >= end)
                 return;
-            if (dev->base)
+            if (dev->defaults[channel] != NULL)
                 break;
             ++dev;
         }
@@ -136,10 +135,12 @@ static void select_one(const struct debug_device *dev, unsigned size, unsigned c
     }
     selected = NULL;
     for (;;) {
+        const char *defaults;
+
         if (dev >= end)
             break;
-        paddr_t base = dev->base;
-        if (base) {
+        defaults = dev->defaults[channel];
+        if (defaults != NULL) {
             char ch;
 
             len = strlen(dev->name);
@@ -152,9 +153,9 @@ static void select_one(const struct debug_device *dev, unsigned size, unsigned c
                     ++arg;
                 break;
             }
-            if ((selected == NULL) && base) {
-                //If we don't match any of the names, the first device
-                //in the list with actual options the default device.
+            if ((selected == NULL) && (defaults[0] != '\0')) {
+                // If we don't match any of the names, the first device
+                // in the list with actual options is the default device.
                 selected = dev;
             }
         }

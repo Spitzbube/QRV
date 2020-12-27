@@ -1,22 +1,11 @@
 /*
- * $QNXtpLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+ * Copyright (c) 1992-2006 by P.J. Plauger <pjp@dinkumware.com>
+ *               All rights reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
+ * Consult your license regarding permissions and restrictions.
  *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
+ * This file is a part of Dinkum C library V5.00:1296.
  */
-
-
-
 
 
 /* yvals.h values header for conforming compilers on various systems */
@@ -32,30 +21,6 @@
 
 #if defined(__GNUC__) && (2 <= __GNUC__) && (!__STRICT_ANSI__)
 #define _C99 1
-#endif
-
-#ifdef _SOFT_FLOAT
- /* no FPU hardware support */
-#define _FPP_TYPE _FPP_NONE
-#else
-        /* DETERMINE MACHINE TYPE */
-
-#if defined(i386) || defined(__i386) \
-	|| defined(__i386__) || defined(_M_IX86)    /* Pentium */
-#define _FPP_TYPE	_FPP_X86    /* Pentium FPP */
-#elif defined(_MIPS) || defined(_MIPS_) || defined(_M_MRX000) \
-    || defined(__MIPS__)        /* MIPS */
-#define _FPP_TYPE	_FPP_MIPS   /* MIPS FPP */
-#elif defined(__ppc__) || defined(_POWER) || defined(_M_PPC) \
-    || defined(__PPC__)         /* PowerPC */
-#define _FPP_TYPE	_FPP_PPC    /* PowerPC FPP */
-#elif defined(_ARM_) || defined(__ARM__)    /* ARM */
-#define _FPP_TYPE	_FPP_NONE   /* we don't support ARM FP hardware */
-#elif defined(_SH4_) || defined(__SH__) /* SH4 */
-#define _FPP_TYPE	_FPP_SH4    /* Hitachi SH4 FPP */
-#else                           /* system detector */
-#error unknown compilation environment
-#endif                          /* system detector */
 #endif
 
 #define _HAS_POSIX_C_LIB	1   /* use common Unix conventions */
@@ -344,7 +309,3 @@ _STD_END
 #define _TEMPLATE_STAT
 #endif                          /* */
 #endif                          /* _YVALS */
-/*
- * Copyright (c) 1992-2006 by P.J. Plauger.  ALL RIGHTS RESERVED.
- * Consult your license regarding permissions and restrictions.
-V5.00:1296 */

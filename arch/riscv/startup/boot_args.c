@@ -23,11 +23,4 @@ static struct startup_header s = {
     .preboot_size = 0,
 };
 
-struct bootargs_entry boot_args = {
-    .size_lo = sizeof(struct bootargs_entry),
-    .size_hi = 0,
-    .argc = 0,
-    .envc = 0,
-    .shdr_addr = (paddr_t)&s,
-    .args = "Some arguments here"
-};
+struct startup_header *shdr = &s;

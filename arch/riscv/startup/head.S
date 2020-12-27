@@ -21,7 +21,7 @@
 
 	.section .entry, "ax", %progbits
 	.align 3
-	.globl _start
+	.global _start
 _start:
 	/* Pick one hart to run the main boot sequence */
 	la	a3, _hart_lottery
@@ -76,6 +76,7 @@ _start_hang:
 
 	.section .entry, "ax", %progbits
 	.align	3
+	.global _boot_a0, _boot_a1
 _hart_lottery:
 	.dword	0
 _boot_a0:
