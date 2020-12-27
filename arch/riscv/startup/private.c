@@ -16,6 +16,9 @@ void init_system_private()
     struct system_private_entry *private =
         set_syspage_section(&lsp.system_private, sizeof(*lsp.system_private.p));
 
+    /* Set page size */
+    private->pagesize = __PAGESIZE;
+
     /* Set the hostname if it hasn't been set yet */
     if (find_typed_string(_CS_HOSTNAME) < 0) {
         add_typed_string(_CS_HOSTNAME, "localhost");
