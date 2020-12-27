@@ -55,11 +55,11 @@
 #define RELOFFSET(reversed,arg) ((reversed) ? (-(arg)) : (arg))
 
 /* List handling structure and macros */
-typedef struct list_head        list_head_t;
+typedef struct list_head list_head_t;
 
 struct list_head {
-        list_head_t             *next;
-        list_head_t             *prev;
+    list_head_t *next;
+    list_head_t *prev;
 };
 
 #define _iszero(_q)             (!(_q)->next && !(_q)->prev)
@@ -134,19 +134,19 @@ struct list_head {
 #define OBJFLAG_LAZY            0x0020  /* lazy binding for code references */
 #define OBJFLAG_RELSDONE        0x0040  /* Relative relocs have been done */
 #define OBJFLAG_REVERSED        0x0080  /* Reverse relocations (for bootstrapping) */
-#define OBJFLAG_NOSONAME		0x0100 	/* No soname in object */
-#define OBJFLAG_EXECUTABLE		0x0200 	/* Object is the program */
-#define OBJFLAG_BEGANINIT		0x0400 	/* Init process was started on this object, but not finished */
-#define OBJFLAG_BEGANFINI		0x0800 	/* Fini process was started on this object, but not finished */
-#define OBJFLAG_TEXTREL			0x1000 	/* Object has text segment relocations */
+#define OBJFLAG_NOSONAME		0x0100  /* No soname in object */
+#define OBJFLAG_EXECUTABLE		0x0200  /* Object is the program */
+#define OBJFLAG_BEGANINIT		0x0400  /* Init process was started on this object, but not finished */
+#define OBJFLAG_BEGANFINI		0x0800  /* Fini process was started on this object, but not finished */
+#define OBJFLAG_TEXTREL			0x1000  /* Object has text segment relocations */
 #define OBJFLAG_INITARRAY		0x2000  /* object has .init_array done */
 #define OBJFLAG_FINIARRAY		0x4000  /* object jas .fini_array done */
 #define OBJFLAG_PREINIT			0x8000  /* object has .preinit_array  done */
-#define OBJFLAG_BEGANINITARRAY		0x10000  /* .init_array process was started on this object, but not finished */
-#define OBJFLAG_BEGANFINIARRAY		0x20000  /* .fini_array process was started on this object, but not finished */
-#define OBJFLAG_BEGANPREINIT		0x40000  /* .preinit_array process was started on this object, but not finished */
-#define OBJFLAG_NEW_RELOCS			0x80000  /* newer version of MIPS relocs present */
-#define OBJFLAG_LD_PRELOAD		0x100000	/* mark the object as LD_PRELOAD-ed */
+#define OBJFLAG_BEGANINITARRAY		0x10000 /* .init_array process was started on this object, but not finished */
+#define OBJFLAG_BEGANFINIARRAY		0x20000 /* .fini_array process was started on this object, but not finished */
+#define OBJFLAG_BEGANPREINIT		0x40000 /* .preinit_array process was started on this object, but not finished */
+#define OBJFLAG_NEW_RELOCS			0x80000 /* newer version of MIPS relocs present */
+#define OBJFLAG_LD_PRELOAD		0x100000    /* mark the object as LD_PRELOAD-ed */
 
 /* Mutex functions to protect lists */
 #ifndef __WATCOMC__
@@ -166,36 +166,36 @@ struct list_head {
 
 /* Dynamic object info structure */
 struct object {
-		struct link_map					_link_map;
-        int                             refcount;
-        unsigned                        flags;
-        const char                      *name;
-        const Elf32_Dyn                 *dynamic;
-        const char                      *strings;
-        const Elf32_Sym                 *symbols;
-        const unsigned long             *hash;
-        const char                      *rpath;
-		uint32_t						*got;
-        uintptr_t                       text_addr;      /* Start of code area in memory */
-        size_t                          text_size;      /* Size of code area in memory */
-        ptrdiff_t                       text_rel;       /* Relocation of code between memory and shared object
- */
-        ptrdiff_t                       data_offset;    /* Offset from start of code to start of data */
-        size_t                          data_size;      /* Size of data area in memory */
-        ptrdiff_t                       data_rel;       /* Relocation of data between memory and shared object
- */
-		struct stat						sinfo;
+    struct link_map _link_map;
+    int refcount;
+    unsigned flags;
+    const char *name;
+    const Elf32_Dyn *dynamic;
+    const char *strings;
+    const Elf32_Sym *symbols;
+    const unsigned long *hash;
+    const char *rpath;
+    uint32_t *got;
+    uintptr_t text_addr;        /* Start of code area in memory */
+    size_t text_size;           /* Size of code area in memory */
+    ptrdiff_t text_rel;         /* Relocation of code between memory and shared object
+                                 */
+    ptrdiff_t data_offset;      /* Offset from start of code to start of data */
+    size_t data_size;           /* Size of data area in memory */
+    ptrdiff_t data_rel;         /* Relocation of data between memory and shared object
+                                 */
+    struct stat sinfo;
 
-		const char						*notes;
-		size_t							note_segment_size;
+    const char *notes;
+    size_t note_segment_size;
 };
 
 #define OBJLISTFLAG_REMOVE				0x1
 struct objlist {
-        list_head_t                     list;
-        struct object                   *object;
-        list_head_t                     *root;
-		unsigned						flags;
+    list_head_t list;
+    struct object *object;
+    list_head_t *root;
+    unsigned flags;
 };
 
 /* Forward declaration of CPU-specific functions */

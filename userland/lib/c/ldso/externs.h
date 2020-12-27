@@ -18,7 +18,17 @@
 
 
 
-void __FPE_exception_(int fpe_type) {
+#ifdef DEFN
+#define EXT
+#else
+#define EXT extern
+#endif
 
-	return;
-	}
+EXT list_head_t _dl_all_objects;
+#ifdef DEFN
+EXT pthread_mutex_t _dl_list_mutex = PTHREAD_MUTEX_INITIALIZER;
+#else
+EXT pthread_mutex_t _dl_list_mutex;
+#endif
+
+/* __SRCVERSION("externs.h $Rev: 153052 $"); */

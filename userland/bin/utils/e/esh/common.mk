@@ -1,3 +1,7 @@
+#
+# Makefile for embedded shell
+#
+
 ifndef QCONFIG
 QCONFIG=qconfig.mk
 endif
@@ -14,7 +18,7 @@ USEFILE=$(PROJECT_ROOT)/esh.c
 
 EXTRA_CCDEPS = esh.c
 
-SHELLS:=$(basename $(notdir $(wildcard ../../../*.c)))
+SHELLS:=$(basename $(notdir $(wildcard ../../*.c)))
 
 ICLEAN=$(SHELLS)
 ALL_DEPENDENCIES=$(SHELLS)
@@ -42,5 +46,5 @@ ADD_USAGE=true
 LIBS+=socket
 endif
 
-$(SHELLS): %: %.o 
+$(SHELLS): %: %.o
 	$(TARGET_BUILD)
