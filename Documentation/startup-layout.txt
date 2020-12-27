@@ -1,0 +1,162 @@
+The following explains some of the fields used by the IPL and Startup for
+various types of boot. These fields are stuffed by mkifs.
+
+LINEAR ROM XIP
+==============
+
+       ROM                                          RAM
+ +-------------+ <-image_paddr          +-------------+ <-ram_paddr
+ | startup hdr |      ^       ^         | startup hdr |            ^
+ |             |      |       |         |             |            |
+ | startup     |   startup    |         | startup     | <-startup  |
+ |             |     size     |         |             |   addr    ram
+ |             |      |       |         |             |           size
+ |             |      v       |         |             |            |
+ +-------------+      -     stored      +-------------+            |
+ | imagefs hdr |      ^      size       | reserved for|            |
+ |             |      |       |         | imagefs data|            |
+ | imagefs     |      |       |         +-------------+            v
+ |             |   imagefs    |
+ |             |     size     |
+ |             |      |       |
+ |             |      |       |
+ +-------------+      v       v
+
+I checksum(image_paddr, startup_size)
+I checksum(image_paddr + startup_size, stored_size - startup_size)
+I copy(image_paddr, ram_paddr, copy_size)
+I jump(startup_vaddr)
+
+
+Linear ROM Compressed
+=====================
+
+       ROM                                        RAM
+ +-------------+ <-image_paddr         +-------------+ <-ram_paddr
+ | startup hdr |      ^       ^        | startup hdr |            ^
+ |             |      |       |        |             |            |
+ | startup     |   startup    |        | startup     | <-startup  |
+ |             |     size     |        |             |   addr    ram
+ |             |      |       |        |             |           size
+ |             |      v       |        |             |            |
+ +-------------+      -     stored     +-------------+    -       |
+ | compressed  |             size      | imagefs hdr |    ^       |
+ | imagefs hdr |              |        |             |    |       |
+ | imagefs     |              |        | imagefs     |    |       |
+ |             |              |        |             | imagefs    |
+ +-------------+              V        |             |   size     |
+                                       |             |    |       |
+                                       |             |    |       |
+                                       +-------------+    v       v
+
+I checksum(image_paddr, startup_size)
+I checksum(image_paddr + startup_size, stored_size - startup_size)
+I copy(image_paddr, ram_paddr, copy_size)
+I jump(startup_vaddr)
+S uncompress(ram_paddr + startup_size,
+             image_paddr + startup_size, stored_size - startup_size)
+
+
+
+ROM NON-XIP (usually because the ROM is too slow to XIP out of)
+===========
+
+       ROM                                  RAM
+ +-------------+ <-image_paddr         +-------------+ <-ram_paddr
+ | startup hdr |      ^       ^        | startup hdr |            ^
+ |             |      |       |        |             |            |
+ | startup     |   startup    |        | startup     | <-startup  |
+ |             |     size     |        |             |   addr    ram
+ |             |      |       |        |             |           size
+ |             |      v       |        |             |            |
+ +-------------+      -     stored     +-------------+    -       |
+ | imagefs hdr |      ^      size      | imagefs hdr |    ^       |
+ |             |      |       |        |             |    |       |
+ | imagefs     |      |       |        | imagefs     |    |       |
+ |             |   imagefs    |        |             | imagefs    |
+ |             |     size     |        |             |   size     |
+ |             |      |       |        |             |    |       |
+ |             |      |       |        |             |    |       |
+ +-------------+      v       v        +-------------+    v       v
+
+I checksum(image_paddr, startup_size)
+I checksum(image_paddr + startup_size, stored_size - startup_size)
+I copy(image_paddr, ram_paddr, copy_size)
+I jump(startup_vaddr)
+
+
+Disk/Network
+============
+
+       RAM
+ +-------------+
+ | jump ipl    |
+ +++++++++++++++ <-image_paddr  <-ram_paddr
+ | startup hdr |               ^       ^         ^
+ |             |               |       |         |
+ | startup     | <-startup  startup    |         |
+ |             |   addr       size     |        ram
+ |             |               |       |        size
+ |             |               v       |         |
+ +-------------+               -     stored      |
+ | imagefs hdr |               ^      size       |
+ |             |               |       |         |
+ | imagefs     |               |       |         |
+ |             |            imagefs    |         |
+ |             |              size     |         |
+ |             |               |       |         |
+ |             |               |       |         |
+ +-------------+               v       v         v
+
+In this case our full IPL is not involved. The image is loaded into memory
+and transfered to by an existing BIOS IPL. Since the existing IPL does not
+know where in startup to jump it always jumps to the start of the image.
+We build a tiny IPL on the front of the image which jumps to startup_vaddr.
+
+I jump(startup_vaddr)
+
+
+Disk/Network Compressed
+=======================
+
+       RAM                                           RAM
+ +-------------+                               +-------------+ <-ram_paddr
+ | jump ipl    |                               |             |
+ +++++++++++++++ <-image_paddr                 |             |
+ | startup hdr |              ^      ^     ^   | imagefs hdr |    ^
+ |             |              |      |     |   |             |    |
+ | startup     | <-startup startup   |    ram  | imagefs     |    |
+ |             |   addr      size    |    size |             | imagefs
+ |             |              |      |     |   |             |   size
+ |             |              v      |     |   |             |    |
+ +-------------+              -    stored  |   |             |    |
+ | imagefs hdr |                    size   |   |             |    |
+ |             |                     |     |   |             |    |
+ | imagefs     |                     |     |   |             |    |
+ +-------------+                     v     v   +-------------+    v
+
+
+In this case our full IPL is not involved. The image is loaded into memory
+and transfered to by an existing BIOS IPL. Since the existing IPL does not
+know where in startup tp jump it always jumps to the start of the image.
+We build a tiny IPL on the front of the image which jumps to startup_vaddr.
+
+I jump(startup_vaddr)
+S uncompress(ram2_paddr,
+             ram_paddr + startup_size, stored_size - startup_size)
+
+
+Bank Switched ROM
+=================
+This is much like a Disk/Network boot except you get to write the code
+which copies the image into RAM using.
+
+checksum(image_paddr, startup_size)
+checksum(image_paddr + startup_size, stored_size - startup_size)
+copy(image_paddr, ram_paddr, copy_size)
+jump(startup_vaddr)
+goto Disk/Network or Disk/Network Compressed
+
+You will need to map the physical addresses and sizes into bank switching
+as needed. Have fun and next time DON'T BANK SWITCH YOUR ROM! Make it linear
+in the address space.
