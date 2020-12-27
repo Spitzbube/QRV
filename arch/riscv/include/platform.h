@@ -7,9 +7,10 @@
 #ifndef _RISCV_PLATFORM_H
 #define _RISCV_PLATFORM_H
 
-#ifndef __PLATFORM_H_INCLUDED
-#error riscv/platform.h should not be included directly.
-#endif
+#define __LITTLEENDIAN__
+#define __RISCV__
+#define _FILE_OFFSET_BITS 64
+#define _PADDR_BITS       64
 
 #define __JMPBUFSIZE 32
 typedef unsigned __jmpbufalign;

@@ -15,8 +15,8 @@ OBJCOPY = $(TOOLPREFIX)objcopy
 OBJDUMP = $(TOOLPREFIX)objdump
 
 # Flags
-CFLAGS = -Wall -D__RISCV__ -D__QNXNTO__ -DVARIANT_smp -D__LITTLEENDIAN__ \
-         -D_FILE_OFFSET_BITS=64 -D_PADDR_BITS=64
+CFLAGS = -Wall -DVARIANT_smp -D__QNXNTO__
+#CFLAGS += -D__RISCV__ -D__LITTLEENDIAN__ -D_FILE_OFFSET_BITS=64 -D_PADDR_BITS=64
 CFLAGS += -march=rv64g -mcmodel=medany -mno-relax
 CFLAGS += -ffreestanding -fno-common -nostdlib
 CFLAGS += -fno-pie -no-pie -fno-builtin
