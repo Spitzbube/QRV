@@ -113,10 +113,9 @@ struct local_syspage {
 };
 
 struct debug_device {
-    const char *name;		// Device name
-    bool io_separate;		// 1 if I/O space is separate (like in x86), 0 if MMIO
-    paddr_t base;		// Base address
-    void (*init)(unsigned channel, const char *name, paddr_t base);
+    const char *name;
+    const char *defaults[2];
+    void (*init)(unsigned channel, const char *name, const char *defaults);
     void (*put)(int c);
 };
 

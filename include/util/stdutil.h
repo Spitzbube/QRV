@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -107,7 +107,7 @@ extern char    *strtrim( char *src );
 
 extern int saccess( struct stat *, int );
 extern pid_t getspid(int sid);
-extern pid_t getsid(pid_t pid);    
+extern pid_t getsid(pid_t pid);
 #define __oldgetsid()    getsid(getpid())
 extern int    sid_name(int  sid, char *name);
 extern char    *get_disk_name( char *, char * );
@@ -120,6 +120,20 @@ extern int fsys_mount_partition(char *, unsigned, long, long);
 extern int fsys_mount_ext_part(char *, unsigned, unsigned, long, long);
 #define strtonid qnx_strtonid
 /* extern char    *nidtostr(nid_t nid, char *buf, int maxbuf); */
+
+#define UTIL_PATH_MAX (4096)
+#define UTIL_NAME_MAX (256)
+
+extern int stat_optimize(struct dirent *entry, struct stat *statp);
+extern int lstat_optimize(struct dirent *entry, struct stat *statp);
+
+char *fnmatch2regex(const char *pattern);
+char *find_basename(char *s);
+void expandbrace(char *dest, char *orig, char *string, unsigned char flags);
+
+#define REPLACE_AT 1
+#define REPLACE_BRACES 2
+#define QUOTE 4
 
 #ifdef __cplusplus
 };
