@@ -1,22 +1,8 @@
-/*
- * This source code may contain confidential information of QNX Software
- * Systems Ltd.  (QSSL) and its licensors. Any use, reproduction,
- * modification, disclosure, distribution or transfer of this software,
- * or any software which includes or is based upon any of this code, is
- * prohibited unless expressly authorized by QSSL by written agreement. For
- * more information (including whether this source code file has been
- * published) please email licensing@qnx.com.
- */
-
 /* uclconf.h -- configuration for the UCL real-time data compression library
 
    This file is part of the UCL real-time data compression library.
 
-   Copyright (C) 2000 Markus Franz Xaver Johannes Oberhumer
-   Copyright (C) 1999 Markus Franz Xaver Johannes Oberhumer
-   Copyright (C) 1998 Markus Franz Xaver Johannes Oberhumer
-   Copyright (C) 1997 Markus Franz Xaver Johannes Oberhumer
-   Copyright (C) 1996 Markus Franz Xaver Johannes Oberhumer
+   Copyright (C) 1996-2000 Markus Franz Xaver Johannes Oberhumer
 
    Markus F.X.J. Oberhumer
    <markus.oberhumer@jk.uni-linz.ac.at>
@@ -63,24 +49,6 @@ extern "C" {
 /***********************************************************************
 // architecture defines
 ************************************************************************/
-
-#if !defined(__UCL_WIN) && !defined(__UCL_DOS) && !defined(__UCL_OS2)
-#  if defined(__WINDOWS__) || defined(_WINDOWS) || defined(_Windows)
-#    define __UCL_WIN
-#  elif defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
-#    define __UCL_WIN
-#  elif defined(__NT__) || defined(__NT_DLL__) || defined(__WINDOWS_386__)
-#    define __UCL_WIN
-#  elif defined(__DOS__) || defined(__MSDOS__) || defined(MSDOS)
-#    define __UCL_DOS
-#  elif defined(__OS2__) || defined(__OS2V2__) || defined(OS2)
-#    define __UCL_OS2
-#  elif defined(__palmos__)
-#    define __UCL_PALMOS
-#  elif defined(__TOS__) || defined(__atarist__)
-#    define __UCL_TOS
-#  endif
-#endif
 
 #if (UINT_MAX < UCL_0xffffffffL)
 #  if defined(__UCL_WIN)

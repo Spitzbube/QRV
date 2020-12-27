@@ -24,7 +24,7 @@
 #ifndef _MALLOC_H_INCLUDED
 
 #if defined(__WATCOMC__) && !defined(_ENABLE_AUTODEPEND)
- #pragma read_only_file;
+#pragma read_only_file;
 #endif
 
 #ifndef __PLATFORM_H_INCLUDED
@@ -41,30 +41,23 @@
 #include <_pack64.h>
 
 _C_STD_BEGIN
-
 #if defined(__SIZE_T)
-typedef __SIZE_T	size_t;
+    typedef __SIZE_T size_t;
 #undef __SIZE_T
 #endif
 
 _C_STD_END
-
 #if defined(__EXT_QNX) && !defined(_alloca)
- #ifndef _ALLOCA_H_INCLUDED
-  #include <alloca.h>
- #endif
+#ifndef _ALLOCA_H_INCLUDED
+#include <alloca.h>
 #endif
-
-
-__BEGIN_DECLS
-_C_STD_BEGIN
-extern void *calloc(size_t __n, size_t __size);
+#endif
+__BEGIN_DECLS _C_STD_BEGIN extern void *calloc(size_t __n, size_t __size);
 extern void *malloc(size_t __size);
 extern void *realloc(void *__ptr, size_t __size);
 extern void free(void *__ptr);
 _C_STD_END
-
-#if defined(__EXT_QNX)		/* Approved 1003.1d D14 */
+#if defined(__EXT_QNX)          /* Approved 1003.1d D14 */
 extern int posix_memalign(void **__memptr, _CSTD size_t __alignment, _CSTD size_t __size);
 #endif
 
@@ -76,20 +69,20 @@ extern void *_srealloc(void *__ptr, _CSTD size_t __old_size, _CSTD size_t __new_
 extern void _sfree(void *__ptr, _CSTD size_t __size);
 #endif
 
-#if defined(__EXT_QNX)		/* SVID/XPG/ELIX functions */
+#if defined(__EXT_QNX)          /* SVID/XPG/ELIX functions */
 /* This shouldn't really be an enum for C++ compatibility */
 enum malloc_opt_cmds {
-	MALLOC_VERIFY,
-	MALLOC_VERIFY_ON,
-	MALLOC_STATS,
-	MALLOC_FREE_CHECK,
-	MALLOC_ARENA_SIZE,
-	MALLOC_MONOTONIC_GROWTH,
-  MALLOC_MEMORY_HOLD,
-  MALLOC_ARENA_CACHE_MAXSZ,
-  MALLOC_ARENA_CACHE_MAXBLK,
-  MALLOC_ARENA_CACHE_FREE_NOW,
-	MALLOC_LAST
+    MALLOC_VERIFY,
+    MALLOC_VERIFY_ON,
+    MALLOC_STATS,
+    MALLOC_FREE_CHECK,
+    MALLOC_ARENA_SIZE,
+    MALLOC_MONOTONIC_GROWTH,
+    MALLOC_MEMORY_HOLD,
+    MALLOC_ARENA_CACHE_MAXSZ,
+    MALLOC_ARENA_CACHE_MAXBLK,
+    MALLOC_ARENA_CACHE_FREE_NOW,
+    MALLOC_LAST
 };
 
 /* Don't enum these, so we don't get coercion errors if the caller is C++ */
@@ -102,34 +95,34 @@ enum malloc_opt_cmds {
 #define M_MMAP_MAX	(int)(MALLOC_LAST+6)
 
 struct malloc_stats {
-	unsigned	m_small_freemem;/* memory in free small blocks */
-	unsigned	m_freemem;	/* memory in free big blocks */
-	unsigned	m_small_overhead;/* space in header block headers */
-	unsigned	m_overhead;	/* space used by block headers */
-	unsigned	m_small_allocmem;/* space in small blocks in use */
-	unsigned	m_allocmem;	/* space in big blocks in use */
-	unsigned	m_coreallocs;	/* number of core allocations performed */
-	unsigned	m_corefrees;	/* number of core de-allocations performed */
-	unsigned	m_heapsize;	/* size of the arena */
-	unsigned	m_frees;	/* number of frees performed */
-	unsigned	m_allocs;	/* number of allocations performed */
-	unsigned	m_reallocs;	/* number of realloc functions performed */
-	unsigned	m_small_blocks;	/* number of small blocks */
-	unsigned	m_blocks;	/* number of big blocks */
-	unsigned	m_hblocks;	/* number of header blocks */
+    unsigned m_small_freemem;   /* memory in free small blocks */
+    unsigned m_freemem;         /* memory in free big blocks */
+    unsigned m_small_overhead;  /* space in header block headers */
+    unsigned m_overhead;        /* space used by block headers */
+    unsigned m_small_allocmem;  /* space in small blocks in use */
+    unsigned m_allocmem;        /* space in big blocks in use */
+    unsigned m_coreallocs;      /* number of core allocations performed */
+    unsigned m_corefrees;       /* number of core de-allocations performed */
+    unsigned m_heapsize;        /* size of the arena */
+    unsigned m_frees;           /* number of frees performed */
+    unsigned m_allocs;          /* number of allocations performed */
+    unsigned m_reallocs;        /* number of realloc functions performed */
+    unsigned m_small_blocks;    /* number of small blocks */
+    unsigned m_blocks;          /* number of big blocks */
+    unsigned m_hblocks;         /* number of header blocks */
 };
 
 struct mallinfo {
-	int	arena;	/* size of the arena */
-	int	ordblks;/* number of big blocks in use */
-	int	smblks;	/* number of small blocks in use */
-	int	hblks;	/* number of header blocks in use */
-	int	hblkhd;	/* space in header block headers */
-	int	usmblks;/* space in small blocks in use */
-	int	fsmblks;/* memory in free small blocks */
-	int	uordblks;/* space in big blocks in use */
-	int	fordblks;/* memory in free big blocks */
-	int	keepcost;/* penalty if M_KEEP is used -- not used */
+    int arena;                  /* size of the arena */
+    int ordblks;                /* number of big blocks in use */
+    int smblks;                 /* number of small blocks in use */
+    int hblks;                  /* number of header blocks in use */
+    int hblkhd;                 /* space in header block headers */
+    int usmblks;                /* space in small blocks in use */
+    int fsmblks;                /* memory in free small blocks */
+    int uordblks;               /* space in big blocks in use */
+    int fordblks;               /* memory in free big blocks */
+    int keepcost;               /* penalty if M_KEEP is used -- not used */
 };
 
 enum mcheck_status {
@@ -145,13 +138,11 @@ extern void *memalign(_CSTD size_t __alignment, _CSTD size_t __size);
 extern void *valloc(_CSTD size_t __size);
 #endif
 __END_DECLS
-
 #include <_packpop.h>
-
 #include <_packpop.h>
 #ifdef MALLOC_DEBUG
 #undef MALLOC_DEBUG
-#endif 
+#endif
 #ifndef MALLOC_PC
 #define MALLOC_PC
 #endif
@@ -159,7 +150,5 @@ __END_DECLS
 #define MALLOC_GUARD
 #endif
 #include <malloc_g/malloc-lib.h>
-
 #endif
-
 #endif

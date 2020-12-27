@@ -2,17 +2,17 @@
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable 
- * license fees to QNX Software Systems before you may reproduce, 
- * modify or distribute this software, or any work that includes 
- * all or part of this software.   Free development licenses are 
- * available for evaluation and non-commercial purposes.  For more 
- * information visit http://licensing.qnx.com or email 
+ * You must obtain a written license from and pay applicable
+ * license fees to QNX Software Systems before you may reproduce,
+ * modify or distribute this software, or any work that includes
+ * all or part of this software.   Free development licenses are
+ * available for evaluation and non-commercial purposes.  For more
+ * information visit http://licensing.qnx.com or email
  * licensing@qnx.com.
- * 
- * This file may contain contributions from others.  Please review 
- * this entire file for other proprietary rights or license notices, 
- * as well as the QNX Development Suite License Guide at 
+ *
+ * This file may contain contributions from others.  Please review
+ * this entire file for other proprietary rights or license notices,
+ * as well as the QNX Development Suite License Guide at
  * http://licensing.qnx.com/license-guide/ for other information.
  * $
  */
@@ -35,61 +35,61 @@
 
 #define MDBG_PREFIX "/dev/malloc_g"
 
-enum  {
-	SUBCMD_TRACE_MIN = 1,
-	SUBCMD_TRACE_MAX,
-	SUBCMD_TRACE_RANGE,
-	SUBCMD_BTDEPTH, 		/* SUBCMD_EVENTBTDEPTH */
-	SUBCMD_TRACEDEPTH,
-	SUBCMD_NOBT,			/* SUBCMD_EVENTNOBT*/
-	SUBCMD_NOTRACEDEPTH,
-	SUBCMD_TRACE_FILE,
-	SUBCMD_NOTRACE_FILE,
-	SUBCMD_DUMP_UNREF,
-	SUBCMD_DUMP_ALLOC_STATE,
-	SUBCMD_DUMP_ALLOC_STATE_NODETAIL,
-	SUBCMD_GET_STATE,
-	SUBCMD_CKALLOC,
-	SUBCMD_CKACCESS,
-	SUBCMD_CKCHAIN,
-	SUBCMD_CKBOUNDS,
-	SUBCMD_EVENT_ACTION,
-	SUBCMD_VERIFY,
-	SUBCMD_EVENT_FILE,
-	SUBCMD_NOEVENT_FILE,
-	SUBCMD_VERBOSE,
-	SUBCMD_ERR_FILE,
-	SUBCMD_NOERR_FILE,
-	SUBCMD_USE_DLADDR,
-	SUBCMD_MAX
+enum {
+    SUBCMD_TRACE_MIN = 1,
+    SUBCMD_TRACE_MAX,
+    SUBCMD_TRACE_RANGE,
+    SUBCMD_BTDEPTH,             /* SUBCMD_EVENTBTDEPTH */
+    SUBCMD_TRACEDEPTH,
+    SUBCMD_NOBT,                /* SUBCMD_EVENTNOBT */
+    SUBCMD_NOTRACEDEPTH,
+    SUBCMD_TRACE_FILE,
+    SUBCMD_NOTRACE_FILE,
+    SUBCMD_DUMP_UNREF,
+    SUBCMD_DUMP_ALLOC_STATE,
+    SUBCMD_DUMP_ALLOC_STATE_NODETAIL,
+    SUBCMD_GET_STATE,
+    SUBCMD_CKALLOC,
+    SUBCMD_CKACCESS,
+    SUBCMD_CKCHAIN,
+    SUBCMD_CKBOUNDS,
+    SUBCMD_EVENT_ACTION,
+    SUBCMD_VERIFY,
+    SUBCMD_EVENT_FILE,
+    SUBCMD_NOEVENT_FILE,
+    SUBCMD_VERBOSE,
+    SUBCMD_ERR_FILE,
+    SUBCMD_NOERR_FILE,
+    SUBCMD_USE_DLADDR,
+    SUBCMD_MAX
 };
 
 typedef struct no_arg_msg {
-	int cmd;
+    int cmd;
 } __dbgm_na_msg;
 
 typedef struct one_int_msg {
-	int cmd;
-	int val;
+    int cmd;
+    int val;
 } __dbgm_one_int_msg;
 
 typedef struct two_int_msg {
-	int cmd;
-	int val1;
-	int val2;
+    int cmd;
+    int val1;
+    int val2;
 } __dbgm_two_int_msg;
 
 typedef struct str_msg {
-	int cmd;
-	char str[_POSIX_PATH_MAX];
+    int cmd;
+    char str[_POSIX_PATH_MAX];
 } __dbgm_str_msg;
 
 typedef struct get_state_msg {
-	int tmin;
-	int tmax;
-	int btdepth;
-	int tdepth;
-	char tfile[_POSIX_PATH_MAX];
+    int tmin;
+    int tmax;
+    int btdepth;
+    int tdepth;
+    char tfile[_POSIX_PATH_MAX];
 } __dbgm_get_state_msg;
 
 #define DBGM_CMD_CODE      1
