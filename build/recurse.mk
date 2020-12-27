@@ -1,10 +1,9 @@
 #
 # Generally useful recursive makefile.
 #
-# Finds any subdirectories with "Makefile" in them, and
-# recurses into them, issuing "make" with the specified
-# target. Do not recurse into a directory if there is
-# a "Makefile.dnm" file present.
+# Finds any subdirectories with "Makefile" in them, and recurses into them, issuing
+# "make" with the specified target. Do not recurse into a directory if there is a
+# "Makefile.dnm" file present.
 #
 
 export
@@ -46,7 +45,7 @@ makelist:=$(filter-out $(dnm_list),$(makelist))
 
 ifneq ($(filter CPU OS,$(LIST)),)
 #
-# If we're working on a CPU or OS list, figure out what target systems we 
+# If we're working on a CPU or OS list, figure out what target systems we
 # can actually build based on the host system we're running on.
 #
 ifndef QBUILDLIST
