@@ -127,17 +127,6 @@ typedef enum {
     DEBUG_WATCHDOG_FEED
 } debug_watchdog_cmd;
 
-/* 'meminfo' is deprecated - use the 'asinfo' section */
-enum {
-    MEMTYPE_NONE,
-    MEMTYPE_RAM,
-    MEMTYPE_IMAGEFSYS,
-    MEMTYPE_BOOTRAM,
-    MEMTYPE_RESERVED,
-    MEMTYPE_IOMEM,
-    MEMTYPE_FLASHFSYS
-};
-
 #define AS_NULL_OFF		((_Uint16t)-1)
 
 #define AS_ATTR_READABLE	0x0001
