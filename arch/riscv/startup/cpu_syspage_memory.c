@@ -59,7 +59,7 @@ struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *cpupagep, paddr_t *syspa
 
     paddr_t sp_phys = alloc_ram(NULL_PADDR, size, lsp.system_private.p->pagesize);
     if (sp_phys == NULL_PADDR) {
-        crash("could not allocate 0x%l bytes for syspage/cpupage\n", size);
+        crash("could not allocate %#x bytes for syspage/cpupage\n", size);
     }
 
     private = lsp.system_private.p;
@@ -68,13 +68,8 @@ struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *cpupagep, paddr_t *syspa
     private->kern_syspageptr = TOPTR(riscv_map(~0L, sp_phys, size, RISCV_MAP_SYSPAGE));
     private->kern_cpupageptr = TOPTR(private->kern_syspageptr + spsize);
 
-    if (paddr_bits != 32) {
-        // For LPAE, we don't have an option for kern-rw/user-ro mapping
-        // So we'll create a separate user-ro/kern-ro mapping for syspage
-        private->user_syspageptr = TOPTR(riscv_map(~0L, sp_phys, size, RISCV_MAP_SYSPAGE_RO));
-    } else {
-        private->user_syspageptr = (void *)private->kern_syspageptr;
-    }
+    /* Map syspage for user mode read-only */
+    private->user_syspageptr = TOPTR(riscv_map(~0L, sp_phys, size, RISCV_MAP_SYSPAGE_RO));
 
     int i;
     paddr_t cpupaddr = sp_phys + spsize;
