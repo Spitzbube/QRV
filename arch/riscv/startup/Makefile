@@ -10,7 +10,6 @@ LDFLAGS = -z max-page-size=4096
 OBJECTS = head.o \
           _main.o \
           board.o \
-          boot_args.o \
           vectors.o \
           trampoline.o \
           spinlock.o \

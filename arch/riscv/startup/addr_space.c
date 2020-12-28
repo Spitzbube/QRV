@@ -89,6 +89,9 @@ unsigned as_add_containing(paddr_t start, paddr_t end, unsigned attr, const char
     struct as_range *list;
     struct as_range **list_owner;
 
+    ultra_verbose("%s: start=%#llx, end=%#llx, %s@%s attr %d\n",
+                  __func__, start, end, name, container, attr);
+
     list = NULL;
     off = 0;
     owner = AS_NULL_OFF;
