@@ -130,7 +130,7 @@ void alloc_syspage_memory(void)
     _syspage_ptr = cpu_alloc_syspage_memory(&cpupage_paddr, &syspage_paddr, spsize);
 
     if (debug_flag) {
-        kprintf("%s: syspage size:%x _syspage_ptr:%x\n", __func__, spsize, _syspage_ptr);
+        kprintf("%s: syspage size:%x _syspage_ptr:%p\n", __func__, spsize, _syspage_ptr);
     }
 #define INIT_ENTRY(field) sp->field.entry_size = lsp.field.size; \
                           sp->field.entry_off = PTR_DIFF(lsp.field.p, sp)
