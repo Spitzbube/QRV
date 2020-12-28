@@ -51,6 +51,7 @@ static void vmsg(const char *fmt, va_list args)
             dig = sizeof(uint16_t) * 2;
             radix = 16;
             break;
+        case 'p':
         case 'P':
             num = va_arg(args, paddr_t);
             dig = sizeof(paddr_t) * 2;
