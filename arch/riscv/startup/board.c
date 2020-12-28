@@ -19,6 +19,31 @@ extern char *boot_command_line;
 
 void *fdt_addr;
 
+static unsigned num_cpus_detected;
+
+/* This header is usually filled in by a program like mkifs.
+ * For simplicity, we put it here for now.
+ */
+static struct startup_header s = {
+    .signature  = 0x00FF7EEB,
+    .version    = 1,
+    .flags1     = STARTUP_HDR_FLAGS1_VIRTUAL,
+    .header_size = sizeof(struct startup_header),
+    .machine    = EM_RISCV,
+    .startup_vaddr = 0,
+    .paddr_bias = 0,
+    .image_paddr = 0,
+    .ram_paddr  = 0,
+    .ram_size   = MEG(8),   // TODO
+    .startup_size = MEG(1), // TODO
+    .stored_size = MEG(1),  // TODO
+    .imagefs_paddr = 0,
+    .imagefs_size = 0,
+    .preboot_size = 0,
+};
+
+struct startup_header *shdr = &s;
+
 void rvq_putc_ser_dbg(int c) { sbi_ecall_console_putc(c); };
 
 #define _BE(x) ENDIAN_RET32(x)
@@ -26,7 +51,7 @@ void rvq_putc_ser_dbg(int c) { sbi_ecall_console_putc(c); };
 #define FDT_ALIGN(x, a)		(((x) + (a) - 1) & ~((a) - 1))
 #define FDT_TAGALIGN(x)		(FDT_ALIGN((x), FDT_TAGSIZE))
 
-#define CONFIG_FDT_DEBUG
+//#define CONFIG_FDT_DEBUG
 
 #ifdef CONFIG_FDT_DEBUG
 #define TRACETAG(x...) ({ for (int i=0; i < indent_lvl; i++) kprintf(" "); kprintf(x); })
@@ -39,17 +64,43 @@ void rvq_putc_ser_dbg(int c) { sbi_ecall_console_putc(c); };
  */
 static void handle_node(const char *name)
 {
+#define NODE_MATCH(_n) if (strncmp(name, _n, strlen(_n)) == 0)
+    NODE_MATCH("cpu@") {
+        num_cpus_detected++;
+    }
 }
 
 /**
  * \brief Handle a property in the given node.
  */
-static void handle_property(const char *node, const char *prop, void *data)
+static void handle_property(const char *node, const char *prop, void *data, const int datalen)
 {
-#define NODE_PROP_MATCH(_n, p) if (strcmp(node, _n) == 0 && strcmp(prop, _p) == 0
-    if (strcmp(node, "chosen") == 0 && strcmp(prop, "bootargs") == 0) {
+#define NODE_PROP_MATCH(_n, _p) if (strcmp(node, _n) == 0 && strcmp(prop, _p) == 0)
+    NODE_PROP_MATCH("chosen", "bootargs") {
         boot_command_line = data;
         pr_debug("boot command line: %s\n", boot_command_line);
+    } else
+
+    NODE_PROP_MATCH("cpus", "timebase-frequency") {
+        if (datalen == sizeof(uint32_t)) {
+            cpu_freq = _BE(*((uint32_t *)data));
+            pr_debug("CPU frequency: %d\n", cpu_freq);
+        }
+    } else
+
+    if (strncmp(node, "memory@", 7) == 0 && strcmp(prop, "reg") == 0) {
+        /* Proceed through all base/len pairs */
+        for (unsigned i = 0; i < datalen / (2*sizeof(uint64_t)); i++) {
+            uint64_t *ptr = data;
+            uint64_t regbase = ENDIAN_RET64(ptr[0]);
+            uint64_t regsize = ENDIAN_RET64(ptr[1]);
+
+            /*ramblocks[i].base = regbase;
+            ramblocks[i].size = regsize;*/
+            // TODO
+            shdr->ram_paddr = regbase;
+            pr_debug("RAM at %x, size %x\n", regbase, regsize);
+        }
     }
 }
 
@@ -93,7 +144,7 @@ static void parse_ftd(void)
             unsigned offset = _BE(prop->nameoff);
 
             TRACETAG("PROP: name=%s, string=%s, len=%d\n", values+offset, prop->data, len);
-            handle_property(curr_node, values+offset, len ? prop->data : NULL);
+            handle_property(curr_node, values+offset, len ? prop->data : NULL, len);
 
             INCPTR(node, sizeof (*prop));
             INCPTR(node, len);
@@ -146,4 +197,12 @@ void board_init(void)
 
     pr_debug("Devicetree version %d\n", _BE(fdt->version));
     parse_ftd();
+}
+
+/**
+ * \brief Return the number of CPUs in the system.
+ */
+unsigned board_smp_num_cpu(void)
+{
+    return num_cpus_detected;
 }
