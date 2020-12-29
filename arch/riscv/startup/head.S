@@ -10,6 +10,9 @@
  *
  */
 
+#include <kernel/asmmacro.h>
+#include <asm/image.h>
+
 /* Supervisor interrupt enable register */
 #define CSR_SIE		0x104
 
@@ -21,8 +24,32 @@
 
 	.section .entry, "ax", %progbits
 	.align 3
+
+ENTRY(_start)
+
 	.global _start
 _start:
+
+	j _head_start
+
+	/*
+	 * Image header
+	 */
+	.word 0			/* reserved */
+	.balign 8
+
+	.dword 0x200000		/* Offset from the start of RAM to load us */
+	.dword _end - _start	/* Effective size of kernel image */
+	.dword RISCV_IMAGE_FLAG_LE
+	.word RISCV_HEADER_VERSION
+	.word 0
+	.dword 0
+	.ascii RISCV_IMAGE_MAGIC
+	.balign 4
+	.ascii RISCV_IMAGE_MAGIC2
+	.word 0
+
+_head_start:
 	/* Pick one hart to run the main boot sequence */
 	la	a3, _hart_lottery
 	li	a2, 1
@@ -53,7 +80,7 @@ _start_warm:
 	csrw	CSR_STVEC, a3
 
 	/* Setup stack */
-	la	a3, _kernel_end
+	la	a3, _end
 	li	a4, 0x2000
 	add	sp, a3, a4
 
