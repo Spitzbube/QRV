@@ -4,6 +4,8 @@
 CPUS=4
 # Set this to 'none' to run without BIOS
 BIOS=bios/fw.bin
+# RAM-disk file name
+INITRD=ramdisk.cpio
 
 QEMU=qemu-system-riscv64
 
@@ -13,6 +15,9 @@ QEMUOPTS="-machine virt -bios $BIOS -kernel arch/riscv/startup/kernel -m 256M -s
 
 # Add the following to enable remote gdb ("target extended-remote :1234")
 #QEMUOPTS+=" -s -S"
+
+# If the ramdisk file exists, use it
+[[ -e $INITRD ]] && QEMUOPTS+=" -initrd $INITRD"
 
 # Append the command line for the system
 CMDLINE="-Dsbi -vvv"
