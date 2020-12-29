@@ -6,7 +6,7 @@
  * \copyright (c) 2008 QNX Software Systems.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 /* Address range structure */
 struct as_range {
@@ -34,6 +34,9 @@ unsigned as_add(paddr64_t start, paddr64_t end, unsigned attr, const char *name,
     struct asinfo_entry *as;
     unsigned name_off;
     unsigned off;
+
+    ultra_verbose("%s: start=%p, end=%p, name=%s, owner=%#x\n",
+                  __func__, start, end, name, owner);
 
     name_off = add_string(name);
 
@@ -68,7 +71,7 @@ unsigned as_add(paddr64_t start, paddr64_t end, unsigned attr, const char *name,
 /**
  * \brief Add default address space (from 0 to paddr_bits)
  */
-unsigned as_default()
+unsigned as_default(void)
 {
     return as_add(0, ((1ULL << paddr_bits) - 1), AS_ATTR_NONE, "memory", AS_NULL_OFF);
 }
@@ -189,9 +192,9 @@ static int match_name(struct asinfo_entry *base, struct asinfo_entry *as, const 
 {
     for (;;) {
         if (strcmp(__hwi_find_string(as->name), name) == 0)
-            return (1);
+            return 1;
         if (as->owner == AS_NULL_OFF)
-            return (0);
+            return 0;
         as = ((struct asinfo_entry *) ((uint8_t *) base + as->owner));
     }
 }
@@ -216,7 +219,7 @@ unsigned as_find_containing(unsigned off, paddr_t start, paddr_t end, const char
     stop = (struct asinfo_entry *) ((uint8_t *) base + lsp.asinfo.size);
     for (;;) {
         if (as >= stop)
-            return (AS_NULL_OFF);
+            return AS_NULL_OFF;
         if (match_name(base, as, container)) {
             if ((start >= as->start) && (start <= as->end))
                 break;
@@ -237,12 +240,12 @@ static int match_item(struct asinfo_entry *as, struct name_list *name)
 {
     for (;;) {
         if (strcmp(name->name, __hwi_find_string(as->name)) != 0)
-            return (0);
+            return 0;
         name = name->prev;
         if (name == NULL)
-            return (1);
+            return 1;
         if (as->owner == AS_NULL_OFF)
-            return (0);
+            return 0;
         as = (struct asinfo_entry *) ((uint8_t *) lsp.asinfo.p + as->owner);
     }
 }
@@ -272,7 +275,7 @@ unsigned as_find(unsigned start, ...)
         list = curr;
     }
     if (!name && !list) {
-        crash("%s: NULL name argument\n", __FUNCTION__);
+        crash("%s: NULL name argument\n", __func__);
     }
     va_end(args);
     as = base = lsp.asinfo.p;
