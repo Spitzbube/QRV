@@ -17,7 +17,7 @@
  * http://licensing.qnx.com/license-guide/ for other information.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 #include <platform/qemu_virt.h>
 
 #define STARTUP_DEBUG_LEVEL 4
@@ -37,13 +37,6 @@ void init_riscv_ser(unsigned channel, const char *init, paddr_t base)
 
 void init_asinfo(unsigned mem)
 {
-}
-
-void init_raminfo(void)
-{
-    pr_info("%s\n", __func__);
-    // TODO: determine memory size automatically
-    add_ram(KERNBASE, MEG(128));
 }
 
 int cpu_handle_common_option(int opt)
@@ -143,14 +136,21 @@ int main(int argc, char **argv, char **envv)
         pr_warn("cpu_freq = 0\n");
     }
 
-    /*
-     * Remove RAM used by modules in the image
-     */
-    alloc_ram(shdr->ram_paddr, shdr->ram_size, 1);
+    /* Claim the RAM used by kernel and RAM-disk if any */
+    alloc_ram((paddr_t)_start, _end - _start, 1);
+    if (ramdisk_phys_start)
+        alloc_ram(ramdisk_phys_start, ramdisk_phys_end-ramdisk_phys_start, 1);
 
-    if (shdr->flags1 & STARTUP_HDR_FLAGS1_VIRTUAL) {
-        init_mmu();
-    }
+    /*
+     * Initialize CPU sections in the syspage.
+     * This must be done before init_mmu().
+     */
+    init_smp();
+
+    /*
+     * Initialize the MMU
+     */
+    init_mmu();
 
     init_intrinfo();
 
