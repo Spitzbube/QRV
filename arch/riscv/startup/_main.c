@@ -6,7 +6,7 @@
  * \copyright (c) 2008 QNX Software Systems.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 #include <sbi.h>
 
 unsigned paddr_bits;
@@ -27,11 +27,10 @@ unsigned (*timer_start)(void);
 unsigned (*timer_diff)(unsigned start);
 struct syspage_entry *_syspage_ptr;
 unsigned misc_flags;
-int secure_system = 0;
+bool secure_system = 0;
 
 extern int main(int argc, char **argv, char **envv);
-
-char *boot_command_line;
+char boot_command_line[CONFIG_MAX_BOOTLINE_SIZE];
 
 static char *argv[64];
 
@@ -43,7 +42,7 @@ static char **envv = NULL;
 
 
 /**
- * \brief TODO
+ * \brief Initialize argc and argv variables from boot_command_line.
  */
 static void setup_cmdline(void)
 {
@@ -92,10 +91,6 @@ void _main(void)
 
 #define INIT_SYSPAGE_SIZE 0x600
     init_syspage_memory(ws_alloc(INIT_SYSPAGE_SIZE), INIT_SYSPAGE_SIZE);
-
-    if (shdr->imagefs_paddr != 0) {
-        avoid_ram(shdr->imagefs_paddr, shdr->stored_size);
-    }
 
     main(_argc, _argv, envv);
 
