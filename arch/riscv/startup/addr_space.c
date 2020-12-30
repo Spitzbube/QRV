@@ -73,7 +73,7 @@ unsigned as_add(paddr64_t start, paddr64_t end, unsigned attr, const char *name,
  */
 unsigned as_default(void)
 {
-    return as_add(0, ((1ULL << paddr_bits) - 1), AS_ATTR_NONE, "memory", AS_NULL_OFF);
+    return as_add(0, ((1ULL << paddr_bits) - 1), AS_ATTR_NONE, "cpu_addr_space", AS_NULL_OFF);
 }
 
 /**
