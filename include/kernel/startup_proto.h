@@ -315,6 +315,9 @@ extern paddr_t ramdisk_phys_start, ramdisk_phys_end;
 /* Start and end addresses of our kernel */
 extern const uint8_t _start[], _end[];
 
+extern void *fdt_addr;
+extern size_t fdt_size;
+
 /* Callbacks to be called when we parse FDT */
 extern void (*fdt_handle_node_cb)(const char *);
 extern void (*fdt_handle_property_cb)(const char *, const char *, void *, const int);

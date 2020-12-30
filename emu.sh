@@ -14,7 +14,7 @@ QEMUOPTS="-machine virt -bios $BIOS -kernel arch/riscv/startup/kernel -m 256M -s
           -device virtio-blk-device,drive=x0,bus=virtio-mmio-bus.0"
 
 # Add the following to enable remote gdb ("target extended-remote :1234")
-#QEMUOPTS+=" -s -S"
+[[ $1 == "-gdb" ]] && QEMUOPTS+=" -s -S"
 
 # If the ramdisk file exists, use it
 [[ -e $INITRD ]] && QEMUOPTS+=" -initrd $INITRD"

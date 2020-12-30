@@ -5,3 +5,4 @@
 *.sym
 *.img
 .gdb_history
+ramdisk*
