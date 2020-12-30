@@ -6,7 +6,10 @@
  * \copyright (c) 2008 QNX Software Systems.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
+
+// TODO
+#define STARTUP_PADDR_BIAS 0
 
 struct ram_entry {
     paddr64_t addr;
@@ -32,14 +35,16 @@ static struct ram_entry *ram_list;
 static unsigned ram_list_size;
 static struct watch_entry *watch_list;
 
-#define TEMP_SYSPAGE_SIZE (ROUNDPG(KILO(32)))
+#define TEMP_SYSPAGE_SIZE	(ROUNDPG(KILO(32)))
 #define MAX_RAM_LIST_SIZE	KILO(3)
 #define MAX_AVOID_LIST_SIZE	KILO(1)
 
 static void ws_init(void)
 {
-    // We can be fairly sure there's some ram following :-).
-    ws_early_next = ROUND(shdr->ram_paddr + shdr->ram_size, sizeof(uint64_t));
+    ultra_verbose("%s\n", __func__);
+
+    // Assume there is some RAM after our kernel
+    ws_early_next = ROUND(_end, __PAGESIZE);
 
     avoid_list = MAKE_1TO1_PTR(ws_early_next);
     avoid_list[0].start = ws_early_next;
@@ -51,9 +56,6 @@ static void ws_init(void)
     ram_list = ws_alloc(MAX_RAM_LIST_SIZE);
     ram_list->size = 0;
     ram_list_size = sizeof(struct ram_entry);
-
-    // Avoid using memory covered by startup
-    avoid_ram(shdr->ram_paddr, shdr->startup_size);
 
 #ifdef CPU_MEM_AVOID_START
     // Avoid using memory that might have something interesting
@@ -70,7 +72,8 @@ static int add_mem(paddr_t start, paddr_t size)
     struct ram_entry *r;
     struct ram_entry *ram = ram_list;
 
-//kprintf( "add_mem(%L,%L)\n", (paddr64_t)start, (paddr64_t)size );
+    ultra_verbose("add_mem(%#lx, %#lx)\n", start, size);
+
     if (size > 0) {
         for (r = ram; r->size != 0; r++) {
             if (r->addr > start)
@@ -99,10 +102,17 @@ static int add_mem(paddr_t start, paddr_t size)
     return 0;
 }
 
+/**
+ * \brief TODO
+ * \param[in] as  "Avoid block" start address
+ * \param[in] ae  "Avoid block" end address
+ */
 static int fix_size(paddr64_t * sp, paddr64_t * ep, paddr_t as, paddr_t ae)
 {
     paddr64_t s = *sp;
     paddr64_t e = *ep;
+
+    //pr_debug("%s: s=%p, e=%p, as=%p, ae=%p\n", __func__, s, e, as, ae);
 
     if ((s >= ae) || (e <= as)) {
         // Candidate mem has no overlap with the avoid range. All is good.
@@ -134,6 +144,9 @@ static int fix_size(paddr64_t * sp, paddr64_t * ep, paddr_t as, paddr_t ae)
     return 1;
 }
 
+/**
+ * \brief TODO
+ */
 paddr_t find_top_ram_aligned(paddr_t size, unsigned align, unsigned pagesize)
 {
     struct ram_entry *r;
@@ -151,8 +164,10 @@ paddr_t find_top_ram_aligned(paddr_t size, unsigned align, unsigned pagesize)
             if (!fix_size(&s, &e, a->start, a->end))
                 goto next_one;
         }
-        // Find an address at the end of the ram block.  If align is given,
-        // truncate to the alignment value.
+        /*
+         * Find an address at the end of the ram block.
+         * If align is given, truncate to the alignment value.
+         */
         if ((e - s) >= size) {
             chk = align ? TRUNC(e - size, align) : e - size;
             if (chk >= s) {
@@ -167,14 +182,21 @@ paddr_t find_top_ram_aligned(paddr_t size, unsigned align, unsigned pagesize)
     return top;
 }
 
+/**
+ * \brief Find a free block of RAM of given size aligned at page boundary.
+ */
 paddr_t find_top_ram(paddr_t size)
 {
-    return find_top_ram_aligned(size, 0, lsp.system_private.p->pagesize);
+    return find_top_ram_aligned(size, 0, __PAGESIZE);
 }
 
-paddr_t
-find_ram_in_range(paddr_t range_start, paddr_t range_end, size_t size, unsigned align,
-                  unsigned colour, unsigned mask)
+/**
+ * \brief Find free memory block in a given range.
+ *
+ * \param[in] colour TODO
+ */
+paddr_t find_ram_in_range(paddr_t range_start, paddr_t range_end, size_t size,
+                          unsigned align, unsigned colour, unsigned mask)
 {
     struct ram_entry *ram = ram_list;
     struct ram_entry *r;
@@ -183,11 +205,13 @@ find_ram_in_range(paddr_t range_start, paddr_t range_end, size_t size, unsigned 
     paddr_t addr;
     struct avoid_entry *a;
 
+    //pr_debug("%s: searching from %p to %p of block %x\n", __func__, range_start, range_end, size);
+
     for (r = ram; r->size != 0; r++) {
         int avoided = 0;
         s = r->addr;
         e = s + r->size;
-//      kprintf("%s: Candidate s:0x%L e:0x%L size:0x%L rqsize:%x\n", __FUNCTION__, s, e, r->size, size);
+        //pr_debug("%s: Candidate s:%#llx e:%#llx size:%#llx rqsize:%x\n", __func__, s, e, r->size, size);
         for (a = avoid_list; a->end != 0; ++a) {
             if (!fix_size(&s, &e, a->start, a->end)) {
                 avoided = 1;
@@ -209,12 +233,12 @@ find_ram_in_range(paddr_t range_start, paddr_t range_end, size_t size, unsigned 
         }
 
         if (range_start) {
-            if (addr < (paddr_t) range_start) {
+            if (addr < range_start) {
                 addr = range_start;
             }
         }
         if (range_end) {
-            if (e > (paddr_t) range_end) {
+            if (e > range_end) {
                 e = range_end;
             }
         }
@@ -223,9 +247,12 @@ find_ram_in_range(paddr_t range_start, paddr_t range_end, size_t size, unsigned 
             // Adjusted out of contention by alignment or ranges
             continue;
         }
-//      kprintf("%s: Adjusted addr:0x%L e:0x%L size:0x%L\n", __FUNCTION__, addr, e, e-addr);
+
+        //pr_debug("%s: Adjusted addr: %#llx e:%#llx size:%#llx\n", __func__, addr, e, e-addr);
         if (size <= (e - addr)) {
             // This one is big enough
+            if (!addr)
+                crash("%s: address is NULL\n", __func__);
             return addr;
         }
     }
@@ -233,7 +260,7 @@ find_ram_in_range(paddr_t range_start, paddr_t range_end, size_t size, unsigned 
 }
 
 /**
- * \brief TODO
+ * \brief Find a free block of a given size.
  */
 paddr_t find_ram(size_t size, unsigned align, unsigned colour, unsigned mask)
 {
@@ -241,23 +268,33 @@ paddr_t find_ram(size_t size, unsigned align, unsigned colour, unsigned mask)
 
     /* We need to restrict this to MAX_PADDR */
     result = find_ram_in_range(0, MAX_PADDR, size, align, colour, mask);
-    if (result == NULL_PADDR) {
-        return NULL_PADDR;
-    }
+    if (result == NULL_PADDR)
+        pr_warn("%s: NULL_PADDR when requesting size %#x (align=%#x)\n",
+                __func__, size, align);
+
     return result;
 }
 
+/**
+ * \brief Allocate a block of memory of a given size.
+ *
+ * \param[in] addr  The address at which to allocate (or NULL_PADDR
+ *                  to use an arbitrary address).
+ * \param[in] size  Block size
+ * \param[in] align Alignment
+ */
 paddr_t alloc_ram(paddr_t addr, paddr_t size, unsigned align)
 {
     struct ram_entry *ram = ram_list;
     struct ram_entry *r;
     paddr64_t s, e, end;
 
-//kprintf("alloc_ram(%L,%L,%l) => ", (paddr64_t)addr, (paddr64_t)size, align);
+    ultra_verbose("alloc_ram(%lx, %lx, %d) => ", (paddr64_t)addr, (paddr64_t)size, align);
+
     if (addr == NULL_PADDR) {
         addr = find_ram(size, align, 0, 0);
         if (addr == NULL_PADDR) {
-//kprintf("NULL_PADDR\n");
+            ultra_verbose("NULL_PADDR\n");
             return NULL_PADDR;
         }
         if (secure_system) {
@@ -265,7 +302,8 @@ paddr_t alloc_ram(paddr_t addr, paddr_t size, unsigned align)
             memset(MAKE_1TO1_PTR(addr), 0, size);
         }
     }
-//kprintf("%L\n", (paddr64_t)addr);
+
+    ultra_verbose("%lx\n", (paddr64_t)addr);
     end = addr + size;
     for (r = ram; r->size != 0; r++) {
         s = r->addr;
@@ -293,11 +331,7 @@ paddr_t alloc_ram(paddr_t addr, paddr_t size, unsigned align)
         }
     }
 
-    //
-    // If add_sysram() has been called, we need to adjust the start/end
-    // fields
-    //
-
+    // If add_sysram() has been called, we need to adjust the start/end fields
     if (sysram_added) {
         unsigned off;
         struct asinfo_entry *as;
@@ -330,6 +364,12 @@ paddr_t alloc_ram(paddr_t addr, paddr_t size, unsigned align)
     return addr;
 }
 
+/**
+ * \brief Allocate a block of memory and zero it.
+ *
+ * \param[in] size  Block size
+ * \param[in] align Alignment
+ */
 paddr_t calloc_ram(size_t size, unsigned align)
 {
     paddr_t a;
@@ -343,22 +383,23 @@ paddr_t calloc_ram(size_t size, unsigned align)
     return a;
 }
 
-void add_ram(paddr_t start, paddr_t size)
+/**
+ * \brief Call add_mem() and TODO
+ */
+void add_ram(paddr_t start, uint64_t size)
 {
     struct watch_entry *curr;
     unsigned mem;
 
+    //ultra_verbose("%s: %#p, size %#lx\n", __func__, start, size);
+
     if (lsp.asinfo.size == 0) {
         mem = as_default();
-        as_add(0, GIG(4) - 1, 0, "below4G", mem);
         init_asinfo(mem);
     }
-    as_add_containing(start, start + size - 1, AS_ATTR_RAM, "ram", "memory");
+    as_add_containing(start, start + size - 1, AS_ATTR_RAM, "ram", "cpu_addr_space");
 
     add_mem(start, size);
-
-    // Avoid using memory covered by image
-    alloc_ram(shdr->ram_paddr + shdr->startup_size, shdr->ram_size - shdr->startup_size, 1);
 
     // Avoid using memory reserved for the CPU (exception table)
 #if defined(CPU_MEM_RESERVE_SIZE) && (CPU_MEM_RESERVE_SIZE > 0)
@@ -379,9 +420,14 @@ void add_ram(paddr_t start, paddr_t size)
     }
 }
 
+/**
+ * \brief Add a given region to the avoid list.
+ */
 void avoid_ram(paddr_t start, size_t size)
 {
     struct avoid_entry *avoid;
+
+    ultra_verbose("%s (%#p, %#x)\n", __func__, start, size);
 
     if (avoid_list == NULL) {
         ws_init();
@@ -394,15 +440,17 @@ void avoid_ram(paddr_t start, size_t size)
     avoid_list_size += sizeof(*avoid);
 }
 
-//
-// Add all the "sysram" entries to the asinfo section. Note that we haven't
-// allocated the system page storage yet, so we're going to have adjust
-// the start/end fields when that happens.
-//
-void add_sysram()
+/*
+ * Add all the "sysram" entries to the asinfo section. Note that we haven't
+ * allocated the system page storage yet, so we're going to have adjust
+ * the start/end fields when that happens.
+ */
+void add_sysram(void)
 {
     struct ram_entry *ram;
     struct watch_entry *curr;
+
+    ultra_verbose("*************\n%s: no more RAM will be added\n*************\n", __func__);
 
     // Tell all the watchers that there won't be any more RAM added
     for (curr = watch_list; curr != NULL; curr = curr->next) {
@@ -439,11 +487,15 @@ void *ws_alloc(size_t size)
         }
     }
 
+    //ultra_verbose("%s: paddr=%p, size=%x\n", __func__, paddr, size);
+
     avoid_ram(paddr, size);
     return MAKE_1TO1_PTR(paddr);
 }
 
-
+/**
+ * \brief TODO
+ */
 void watch_add_ram(void (*func)(paddr_t, paddr_t))
 {
     struct watch_entry *new;
@@ -456,21 +508,18 @@ void watch_add_ram(void (*func)(paddr_t, paddr_t))
     watch_list = new;
 }
 
-/*
- * reserve_ram:
- *    Alloc some ram and create a "reserved" asinfo for it.
+/**
+ * \brief Allocate some RAM and create a "reserved" asinfo for it.
  *
- * Parameters:
- *    size        Size in bytes of the ram to allocate.
- *    align       Alignment requirement for the ram or 0 for no alignment.
- *    pagesize    System page size. Block will be rounded up to this size.
- *
- * Return Value:
- *    none
+ * \param[in]  size     Size in bytes of the RAM to allocate.
+ * \param[in]  align    Alignment requirement for the ram or 0 for no alignment.
+ * \param[in]  pagesize System page size. Block will be rounded up to this size.
  */
 void reserve_ram(unsigned size, unsigned align, unsigned pagesize)
 {
     paddr_t reserved;
+
+    ultra_verbose("%s: size %#x, align %#x, pagesize %#x\n", size, align, pagesize);
 
     if (size == 0) {
         return;
@@ -478,7 +527,7 @@ void reserve_ram(unsigned size, unsigned align, unsigned pagesize)
 
     reserved = find_top_ram_aligned(size, align ? align : pagesize, pagesize);
     if (reserved == NULL_PADDR) {
-        crash("Could not reserve 0x%l bytes of memory.\n", size);
+        crash("%s: could not reserve %#lx bytes of memory\n", __func__, size);
     }
 
     alloc_ram(reserved, size, align ? align : pagesize);
