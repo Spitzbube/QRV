@@ -6,7 +6,7 @@
  * \copyright (c) 2008 QNX Software Systems.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 void dummy_print_char(int c) {}
 
@@ -20,6 +20,24 @@ static void one_char(char c)
     if (c == '\n')
         print_char('\r');
     print_char(c);
+}
+
+static void puts(const char *s)
+{
+    int i;
+    paddr_t p = (paddr_t)s;
+
+    if (p < CONFIG_KPRINTF_PTR_BOUND_LOW ||
+        p > CONFIG_KPRINTF_PTR_BOUND_HIGH) {
+        puts("(invptr)");
+        return;
+    }
+
+    for (i = 0; i < CONFIG_KPRINTF_MAX_LIMIT; i++) {
+        if (s[i] == 0)
+            break;
+        one_char(s[i]);
+    }
 }
 
 static const char c[] = "0123456789abcdef";
@@ -89,9 +107,10 @@ static void vmsg(const char *fmt, va_list args)
             break;
         case 's':
             vs = va_arg(args, char *);
-            while (*vs) {
-                one_char(*vs++);
-            }
+            if (vs == NULL)
+                puts("(NULL)");
+            else
+                puts(vs);
             continue;
         case 'c':
             num = va_arg(args, unsigned);
