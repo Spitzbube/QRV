@@ -6,7 +6,7 @@
  * \copyright (c) 2008 QNX Software Systems.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 void hwi_default()
 {

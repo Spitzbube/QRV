@@ -6,7 +6,7 @@
  * \copyright (c) 2008 QNX Software Systems.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 int find_typed_string(int type_index)
 {
@@ -76,6 +76,8 @@ unsigned add_string(const char *name)
     char *p = lsp.strings.p->data;
     char *str;
     unsigned i, len, spare;
+
+    //ultra_verbose("%s (%s)\n", __func__, name);
 
     i = 0;
     for (;;) {

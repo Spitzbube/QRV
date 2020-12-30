@@ -6,7 +6,7 @@
  * \copyright (c) 2009 QNX Software Systems.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 extern void print_syspage_enable(const char *name);
 extern void print_syspage_sections(void);

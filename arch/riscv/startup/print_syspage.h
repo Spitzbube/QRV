@@ -1,6 +1,6 @@
 #if !defined(CPU_PRT_SYSPAGE_RTN)
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 #define PSP_STARTUP		1
 #define PSP_SYSPAGE		lsp.syspage.p

@@ -43,7 +43,10 @@ static void ws_init(void)
 {
     ultra_verbose("%s\n", __func__);
 
-    // Assume there is some RAM after our kernel
+    /* Assume there is some RAM after our kernel
+     * Take into account also the stack for ourselves, which is
+     * located directly after _end (see head.S for details).
+     */
     ws_early_next = ROUND(_end, __PAGESIZE);
 
     avoid_list = MAKE_1TO1_PTR(ws_early_next);

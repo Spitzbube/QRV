@@ -31,7 +31,7 @@
  * kernel.ld causes this to be aligned to a page boundary.
  */
 
-.section trampsec
+.section .trampoline
 
 .globl trampoline
 

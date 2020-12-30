@@ -6,7 +6,7 @@
  * \copyright (c) 2008 QNX Software Systems.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 static unsigned fixed_size;
 
@@ -17,7 +17,7 @@ struct unknown;
 typedef SYSPAGE_TYPED_SECTION(struct unknown, __attribute__((__may_alias__)) local_section);
 
 #define SECTION_START	((local_section *)(void *)&lsp)
-#define SECTION_END		((local_section *)(void *)(&lsp+1))
+#define SECTION_END	((local_section *)(void *)(&lsp+1))
 
 /**
  * \brief TODO
@@ -34,6 +34,9 @@ void *grow_syspage_section(void *p, unsigned add)
     uint8_t *bottom;
     unsigned new_size, max_size, len;
     uint8_t *new;
+
+    //ultra_verbose("%s: %p, add=%d\n", __func__, p, add);
+
 #ifdef CONFIG_MINIDRIVER
     mdriver_check();
 #endif
@@ -54,7 +57,6 @@ void *grow_syspage_section(void *p, unsigned add)
         new = bottom + add;
         len = lsp.syspage.p->total_size - PTR_DIFF(bottom, lsp.syspage.p);
         memmove(new, bottom, len);
-        //TODO: callout removal
         memset(bottom, 0, add);
         sect->size += add;
         lsp.syspage.p->total_size = new_size;
@@ -140,7 +142,6 @@ void alloc_syspage_memory(void)
     sp->type = CPU_SYSPAGE_TYPE;
 
     INIT_ENTRY(system_private);
-    INIT_ENTRY(meminfo);
     INIT_ENTRY(asinfo);
     INIT_ENTRY(hwinfo);
     INIT_ENTRY(cpuinfo);
@@ -151,7 +152,9 @@ void alloc_syspage_memory(void)
     INIT_ENTRY(intrinfo);
     INIT_ENTRY(smp);
     INIT_ENTRY(pminfo);
+#ifdef CONFIG_MINIDRIVER
     INIT_ENTRY(mdriver);
+#endif
 
     memset(&cpu, 0, sizeof(cpu));
     cpu.syspage = lsp.system_private.p->user_syspageptr;

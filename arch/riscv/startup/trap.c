@@ -3,7 +3,7 @@
 
 #include <kernel/types.h>
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 #include <sys/states.h>
 

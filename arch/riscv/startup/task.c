@@ -1,4 +1,4 @@
-#include <kernel/startup.h>
+#include <startup.h>
 #include <riscv.h>
 #include <spinlock.h>
 

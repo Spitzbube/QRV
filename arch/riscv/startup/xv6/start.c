@@ -7,7 +7,7 @@
  *                          Massachusetts Institute of Technology
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 #include <platform/qemu_virt.h>
 #include <riscv.h>
 

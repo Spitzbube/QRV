@@ -1,5 +1,5 @@
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 paddr_t startup_base;
 unsigned startup_size;
@@ -7,6 +7,7 @@ unsigned startup_size;
 void init_mmu(void)
 {
     kprintf("%s called\n", __func__);
+    riscv_init_pgdir();
 }
 
 /*
@@ -18,5 +19,5 @@ uintptr_t riscv_map(uintptr_t vaddr, paddr_t paddr, size_t size, int flags)
 {
     //TODO
     kprintf("%s called\n", __func__);
-    return 0;
+    return paddr;
 }

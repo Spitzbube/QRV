@@ -6,17 +6,23 @@
  * \copyright (c) 2008 QNX Software Systems.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 /**
- * \brief TODO
+ * \brief Initialize system_private_entry in the syspage.
  */
 void init_system_private()
 {
+    ultra_verbose("%s\n", __func__);
+
     struct system_private_entry *private =
         set_syspage_section(&lsp.system_private, sizeof(*lsp.system_private.p));
 
-    /* Set page size */
+    /*
+     * Set page size. Failing to do so here will result in some very
+     * unexpected results, such as ROUND() returning zero value and mem
+     * routines silently stop working.
+     */
     private->pagesize = __PAGESIZE;
 
     /* Set the hostname if it hasn't been set yet */
@@ -24,13 +30,16 @@ void init_system_private()
         add_typed_string(_CS_HOSTNAME, "localhost");
     }
 
-    /* Record startup location */
-    unsigned mem = as_find(AS_NULL_OFF, "memory", NULL);
-    as_add(shdr->ram_paddr, shdr->ram_paddr + shdr->startup_size - 1, AS_ATTR_RAM, "startup", mem);
+    /* Record kernel location in the syspage */
+    unsigned mem = as_find(AS_NULL_OFF, "cpu_addr_space", NULL);
+    as_add((paddr_t)_start, (paddr_t)_end, AS_ATTR_RAM, "kernel", mem);
 
-    /* Reserved RAM for processes in the image file system */
-    paddr_t start_paddr = shdr->ram_paddr + shdr->startup_size;
-    as_add(start_paddr, shdr->ram_paddr + shdr->ram_size - 1, AS_ATTR_RAM, "bootram", mem);
+    /* Record FDT location also */
+    as_add((paddr_t)fdt_addr, (paddr_t)fdt_addr + fdt_size, AS_ATTR_ROM, "fdt", mem);
+
+    /* Record RAM-disk location, if necessary */
+    if (ramdisk_phys_start)
+        as_add(ramdisk_phys_start, ramdisk_phys_end, AS_ATTR_ROM, "ramdisk", mem);
 
     /*
      * If the user wanted to reserve some memory, allocate it now. Get

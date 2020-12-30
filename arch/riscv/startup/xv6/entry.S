@@ -7,14 +7,6 @@
  *                          Massachusetts Institute of Technology
  */
 
-#define RISCV_IMAGE_FLAG_LE	0
-#define RISCV_IMAGE_MAGIC	"RISCV\0\0\0"
-#define RISCV_IMAGE_MAGIC2	"RSC\x05"
-
-#define RISCV_HEADER_VERSION_MAJOR 0
-#define RISCV_HEADER_VERSION_MINOR 2
-#define RISCV_HEADER_VERSION (RISCV_HEADER_VERSION_MAJOR << 16 | RISCV_HEADER_VERSION_MINOR)
-
 /*
  * We link statically and the first address to execute (_entry) is
  * specified in the linker script. It can be:
