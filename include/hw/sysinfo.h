@@ -26,7 +26,10 @@
 #endif
 
 __BEGIN_DECLS
-#define HWI_NULL_OFF			((_Uint16t)-1)
+
+/* This must correspond to AS_NULL_OFF, or some very unexpected results may occur */
+#define HWI_NULL_OFF            ((_Uint16t)-1)
+
 /* note that the HWI_ILLEGAL_VECTOR value is selected such that if it is passed
  * to InterruptAttach() (for example directly from a failed hwi_find_ivec() call),
  * it will fail with 'errno' == EINVAL */
@@ -68,10 +71,10 @@ struct hwi_prefix {
 
 struct hwi_item {
     struct hwi_prefix prefix;
-    _Uint16t itemsize;
-    _Uint16t itemname;
-    _Uint16t owner;
-    _Uint16t kids;
+    uint16_t itemsize;
+    uint16_t itemname;
+    uint16_t owner;
+    uint16_t kids;
 };
 
 #define HWI_TAG_NAME_group	"Group"
@@ -213,7 +216,7 @@ struct hwi_busattr {
 };
 /* some or all of the following may be applicable depending on the particular bus */
 __extension__ typedef enum {
-    hwi_busattr_MASTER = (1U << 0), /* otherwise slave */
+    hwi_busattr_MASTER = (1U << 0),     /* otherwise slave */
     hwi_busattr_USE_ADDR = (1U << 1),   /* addr field is valid (because 0 is a valid address) */
 
     /* the following apply to PCI only */

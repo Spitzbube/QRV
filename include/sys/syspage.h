@@ -127,7 +127,7 @@ typedef enum {
     DEBUG_WATCHDOG_FEED
 } debug_watchdog_cmd;
 
-#define AS_NULL_OFF		~0U
+#define AS_NULL_OFF		((_Uint16t)-1)
 
 /* Address space flags */
 #define AS_ATTR_READABLE	0x0001
