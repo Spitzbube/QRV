@@ -4,12 +4,14 @@
 
 include ../../../def.mk
 
-CFLAGS += -g -nostdinc -I../include -I../../../include
+CPPFLAGS += -I../include -I../../../include
+CFLAGS += -g -nostdinc
 LDFLAGS = -z max-page-size=4096
 
 OBJECTS = head.o \
           _main.o \
           board.o \
+          init_raminfo.o \
           vectors.o \
           trampoline.o \
           spinlock.o \
