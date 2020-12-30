@@ -12,10 +12,11 @@ ENTRY(_start)
 
 SECTIONS
 {
+	/* . = 0xffffffe000000000; */
 	. = 0x80200000;
 	/*. = ALIGN(0x1000);*/
 
-	PROVIDE(_kernel_start = .);
+	PROVIDE(_start = .);
 
 	. = ALIGN(0x1000); /* Need this to create proper sections */
 
@@ -26,7 +27,11 @@ SECTIONS
 		PROVIDE(_text_start = .);
 		*(.entry)
 		*(.text)
-		. = ALIGN(8);
+		. = ALIGN(0x1000);
+		_trampoline = .;
+		*(.trampoline)
+		. = ALIGN(0x1000);
+		ASSERT(. - _trampoline == 0x1000, "error: trampoline larger than one page");
 		PROVIDE(_text_end = .);
 	}
 
@@ -41,6 +46,7 @@ SECTIONS
 	.rodata :
 	{
 		PROVIDE(_rodata_start = .);
+		*(.srodata)
 		*(.rodata .rodata.*)
 		. = ALIGN(8);
 		PROVIDE(_rodata_end = .);
@@ -55,7 +61,7 @@ SECTIONS
 	.data :
 	{
 		PROVIDE(_data_start = .);
-
+		*(.sdata)
 		*(.data)
 		*(.data.*)
 		*(.readmostly.data)
@@ -70,6 +76,8 @@ SECTIONS
 	.bss :
 	{
 		PROVIDE(_bss_start = .);
+		*(.sbss)
+		*(.sbss.*)
 		*(.bss)
 		*(.bss.*)
 		. = ALIGN(8);
@@ -80,5 +88,5 @@ SECTIONS
 
 	. = ALIGN(0x1000); /* Need this to create proper sections */
 
-	PROVIDE(_kernel_end = .);
+	PROVIDE(_end = .);
 }
