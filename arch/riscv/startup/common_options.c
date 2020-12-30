@@ -6,7 +6,7 @@
  * \copyright (c) 2008 QNX Software Systems.
  */
 
-#include <kernel/startup.h>
+#include <startup.h>
 
 static char *debug_opt[2];
 
@@ -54,9 +54,8 @@ void handle_common_option(int opt)
             debug_opt[0] = optarg;
             break;
         case 'f':
-            /* cpu frequency, clock cycles frequency, timer chip frequency */
+            /* CPU and timer frequency */
             get_freq(&cpu_freq);
-            get_freq(&cycles_freq);
             get_freq(&timer_freq);
             break;
         case 'K':
@@ -73,10 +72,7 @@ void handle_common_option(int opt)
             }
             break;
         case 'S':
-            //This gets handled later so that debug code isn't brought in all the time
-            break;
-        case 'T':
-            misc_flags |= MISC_FLAG_SUPPRESS_BOOTTIME;
+            // This gets handled later so that debug code isn't brought in all the time
             break;
         case 'P':
             num = strtoul(optarg, &optarg, 10);
