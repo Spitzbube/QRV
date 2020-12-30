@@ -248,16 +248,17 @@
 #define LINK4_INIT(_queue) \
 		((_queue).count = ((unsigned int)((_queue).head = (_queue).tail = NULL)))
 
-//
-// General utility macros
-//
-#define NUM_ELTS( array )	(sizeof(array) / sizeof( array[0] ))
+/*
+ * General utility macros
+ */
+#define NUM_ELTS(array)	(sizeof(array) / sizeof(array[0]))
 
 #define ROUNDDOWN(val, round)	(((val)) & ~((round)-1))
-#define ROUNDUP(val, round)		ROUNDDOWN((val) + ((round)-1), round)
+#define ROUNDUP(val, round)	ROUNDDOWN((val) + ((round)-1), round)
 
-#define MEG(x)			((x) * 1024 * 1024)
-#define KILO(x)			((x) * 1024)
+#define KILO(k)		((k) * 1024UL)
+#define MEG(m)		((m) * (1024UL * 1024UL))
+#define GIG(m)		((m) * (1024UL * 1024UL * 1024UL))
 
 #ifdef NDEBUG
 #define CRASHCHECK(e)

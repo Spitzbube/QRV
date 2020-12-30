@@ -155,32 +155,32 @@ typedef struct mempart_cfgchg_s {
  * partition. Its fields have the following meaning
  *
  * cfg		- partition creation attributes. This field contains the attributes
- * 			  that were specified when the partition was originally created. The
- * 			  values may or may not be the same as the current partition attributes.
- * 			  This value is provided as a record of the partition creation history
- * 			  only and is not otherwise used.
+ * 		  that were specified when the partition was originally created. The
+ * 		  values may or may not be the same as the current partition attributes.
+ * 		  This value is provided as a record of the partition creation history
+ * 		  only and is not otherwise used.
  *
  * cur		- current partition attributes
- * 			  The cur.min_size and cur.max_size specify what the current min_size
- * 			  and max_size attributes are (configuration attributes may be altered
- * 			  with the MEMPART_CFG_CHG devctl()). At partition creation, 'cur' will
- * 			  be equal to 'cfg'.
+ * 		  The cur.min_size and cur.max_size specify what the current min_size
+ * 		  and max_size attributes are (configuration attributes may be altered
+ * 		  with the MEMPART_CFG_CHG devctl()). At partition creation, 'cur' will
+ * 		  be equal to 'cfg'.
  *
  * cur_size - current partition size.
- * 			  This value indicates the amount of memory that has been successfully
- * 			  allocated by processes associated with the partition. Successful
- * 			  allocations include the min_size for any partition lower in the
- * 			  partition hierarchy. The difference between max_size and cur_size
- * 			  represents the amount of memory that 'may' be allocated by processes
- * 			  associated with the partition but does not necessarily guarantee
- *			  that the amount of memory is actually available.
+ * 		  This value indicates the amount of memory that has been successfully
+ * 		  allocated by processes associated with the partition. Successful
+ * 		  allocations include the min_size for any partition lower in the
+ * 		  partition hierarchy. The difference between max_size and cur_size
+ * 		  represents the amount of memory that 'may' be allocated by processes
+ * 		  associated with the partition but does not necessarily guarantee
+ *		  that the amount of memory is actually available.
  *
  * hi_size	- indicates the maximum amount of memory that has ever been allocated
- * 			  by any process associated with the partition since the value was
- * 			  reset. The value will be reset to 0 upon partition creation or with
- * 			  the MEMPART_CNTR_RESET devctl(). hi_size could be greater than
- * 			  max_size if the partition attributes are changed such that cur.max_size
- * 			  is no longer equal to cfg.max_size.
+ * 		  by any process associated with the partition since the value was
+ * 		  reset. The value will be reset to 0 upon partition creation or with
+ * 		  the MEMPART_CNTR_RESET devctl(). hi_size could be greater than
+ * 		  max_size if the partition attributes are changed such that cur.max_size
+ * 		  is no longer equal to cfg.max_size.
  *
  * id		- partition identifier
 */

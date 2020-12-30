@@ -126,22 +126,22 @@ typedef struct link4_hdr {
 // Macro to define the fields needed for the pril routines - done this
 // way so that all the structures that use them always have the same layout
 // at the begining.
-#define PRIL_ENTRY_FIELDS				\
-	union {								\
-		struct pril_entry	*pril;		\
-		THREAD				*thread;	\
-		PULSE				*pulse;		\
-		SYNCEVENT			*sev;		\
-	}			next;					\
-	union {								\
-		struct pril_entry	*prio_tail;	\
-		struct pril_entry	**pril;		\
-		THREAD				**thread;	\
-		PULSE				**pulse;	\
-		SYNCEVENT			**sev;		\
-	}			prev;					\
-	uint8_t			 type;				\
-	uint8_t			 priority;
+#define PRIL_ENTRY_FIELDS \
+        union { \
+            struct pril_entry *pril; \
+            THREAD    *thread;       \
+            PULSE     *pulse;        \
+            SYNCEVENT *sev;          \
+        } next; \
+        union { \
+            struct pril_entry *prio_tail; \
+            struct pril_entry **pril;     \
+            THREAD    **thread; \
+            PULSE     **pulse;  \
+            SYNCEVENT **sev;    \
+        } prev; \
+        uint8_t type; \
+        uint8_t priority;
 
 typedef struct pril_entry {
 PRIL_ENTRY_FIELDS} PRIL;

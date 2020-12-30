@@ -54,16 +54,9 @@ typedef __WCHAR_T wchar_t;
 #endif
 
 _STD_END
-#if (__GNUC__ >= 4)
+
 #define offsetof(__typ,__id) __builtin_offsetof(__typ,__id)
-#elif defined(__cplusplus) && (__GNUC__ == 3 && __GNUC_MINOR__ == 4)
-#define offsetof(__typ,__id)                                \
-    (__offsetof__(reinterpret_cast <size_t>                 \
-                 (&reinterpret_cast <const volatile char &> \
-                 (static_cast<__typ *>(0)->__id))))
-#else
-#define offsetof(__typ,__id) ((_CSTD size_t)&(((__typ*)0)->__id))
-#endif
+
 #endif
 #ifdef _STD_USING
     using std::ptrdiff_t;

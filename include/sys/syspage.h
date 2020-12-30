@@ -127,8 +127,9 @@ typedef enum {
     DEBUG_WATCHDOG_FEED
 } debug_watchdog_cmd;
 
-#define AS_NULL_OFF		((_Uint16t)-1)
+#define AS_NULL_OFF		~0U
 
+/* Address space flags */
 #define AS_ATTR_READABLE	0x0001
 #define AS_ATTR_WRITABLE	0x0002
 #define AS_ATTR_CACHABLE	0x0004
@@ -326,7 +327,6 @@ struct syspage_entry {
     _Uint16t num_cpu;
     syspage_entry_info system_private;
     syspage_entry_info asinfo;
-    syspage_entry_info meminfo;
     syspage_entry_info hwinfo;
     syspage_entry_info cpuinfo;
     syspage_entry_info cacheattr;

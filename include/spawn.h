@@ -87,22 +87,6 @@ extern int posix_spawn_file_actions_addopen(posix_spawn_file_actions_t * _Restri
                                             int new_fd, const char *_Restrict path, int oflags,
                                             mode_t omode);
 
-/*
- * for our 2.95.3 compiler (and C++) _Restrict expands to __restrict however
- * 2.95.3 compiler (and C++) does not like argv[__restrict] and envp[__restrict].
- * Once we no longer support 2.95.3 compiler, this can be reduced to __cplusplus
- * (see posix_spawn.c and posix_spawnp.c also)
-*/
-#if (__GNUC__ == 2 && __GNUC_MINOR__ >= 9) || defined(__cplusplus)
-extern int posix_spawn(pid_t * _Restrict pid, const char *_Restrict path,
-                       const posix_spawn_file_actions_t * file_actions,
-                       const posix_spawnattr_t * _Restrict __attrp, char *const argv[],
-                       char *const envp[]);
-extern int posix_spawnp(pid_t * _Restrict pid, const char *_Restrict file,
-                        const posix_spawn_file_actions_t * file_actions,
-                        const posix_spawnattr_t * _Restrict __attrp, char *const argv[],
-                        char *const envp[]);
-#else                           /* (__GNUC__ == 2 && __GNUC_MINOR__ >= 9) || defined(__cplusplus) */
 extern int posix_spawn(pid_t * _Restrict pid, const char *_Restrict path,
                        const posix_spawn_file_actions_t * file_actions,
                        const posix_spawnattr_t * _Restrict __attrp, char *const argv[_Restrict],
@@ -111,7 +95,6 @@ extern int posix_spawnp(pid_t * _Restrict pid, const char *_Restrict file,
                         const posix_spawn_file_actions_t * file_actions,
                         const posix_spawnattr_t * _Restrict __attrp, char *const argv[_Restrict],
                         char *const envp[_Restrict]);
-#endif                          /* (__GNUC__ == 2 && __GNUC_MINOR__ >= 9) || defined(__cplusplus) */
 
 #define POSIX_SPAWN_SETPGROUP		0x00000001  /* set process group */
 #define POSIX_SPAWN_SETSIGMASK		0x00000002  /* set mask to sigmask */

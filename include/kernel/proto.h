@@ -21,9 +21,9 @@
 
 #if defined(__X86__)
 #if defined(__GNUC__) || defined(__INTEL_COMPILER)
-    /*-
-	 * not much fancy for now; just a little gnu-insanity
-	 */
+/*
+ * not much fancy for now; just a little gnu-insanity
+ */
 #define kdecl
 #define rdecl __attribute__((cdecl,regparm(3)))
 #define specialret_attr __attribute__((regparm(1)))
@@ -34,11 +34,11 @@
 #endif
 
 #elif defined(__PPC__)
-    /*-
-	 * use the "kdecl" attribute to avoid having to save/restore extra
-	 * registers for kcall fucntions
-	 */
-    //#define kdecl __attribute__((kdecl)) // Turn on when compilers support
+/*
+ * use the "kdecl" attribute to avoid having to save/restore extra
+ * registers for kcall fucntions
+ */
+//#define kdecl __attribute__((kdecl)) // Turn on when compilers support
 #define kdecl
 #define rdecl
 #define specialret_attr
@@ -48,9 +48,9 @@
    || defined(__SH__) \
    || defined(__ARM__) \
    || defined(__RISCV__)
-    /*-
-	 * nothing fancy for now; maybe later tap some gnu-insanity
-	 */
+/*
+ * nothing fancy for now; maybe later tap some gnu-insanity
+ */
 #define kdecl
 #define rdecl
 #define specialret_attr

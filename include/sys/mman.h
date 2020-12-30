@@ -299,16 +299,16 @@ struct mem_info {
 extern int shm_ctl(int __fd, int __flags, _Uint64t __physical, _Uint64t __size);
 extern int shm_ctl_special(int __fd, int __flags, _Uint64t __physical, _Uint64t __size, unsigned __special);
 
-#define SHMCTL_ANON			0x00000001			/* Allocate anon memory for object */
-#define SHMCTL_PHYS			0x00000002			/* Providing physical memory for object */
+#define SHMCTL_ANON		0x00000001			/* Allocate anon memory for object */
+#define SHMCTL_PHYS		0x00000002			/* Providing physical memory for object */
 #define SHMCTL_ISADMA		0x00000004			/* Memory should be suitable for ISA DMA (e.g. < 16M, NOX64) */
 #define SHMCTL_GLOBAL		0x00000010			/* Hint that object is globally visible */
-#define SHMCTL_PRIV			0x00000020			/* Hint that accessing object requires privilege */
+#define SHMCTL_PRIV		0x00000020			/* Hint that accessing object requires privilege */
 #define SHMCTL_LOWERPROT	0x00000040			/* Hint that access to this object can use lower protection in exchange for better performance */
 #define SHMCTL_LAZYWRITE	0x00000080			/* Hint that mapping of this object could use lazy-writing mechanisms */
 #define SHMCTL_NOX64K		0x00000100			/* Memory should not cross 64K boundry */
 #define SHMCTL_HIGHUSAGE	0x00000200			/* Hint that the object is high usage and the system should use limited resources for better performance */
-#define SHMCTL_LAZY			0x00000400			/* Delay actually allocating memory until first reference */
+#define SHMCTL_LAZY		0x00000400			/* Delay actually allocating memory until first reference */
 
 #define SHMCTL_HAS_SPECIAL	0x00008000
 #define SHMCTL_FLAG_MASK	0x0000ffff

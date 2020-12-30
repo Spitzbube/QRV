@@ -36,19 +36,16 @@
  *	@(#)cdefs.h	8.7 (Berkeley) 1/21/94
  */
 
-#ifndef	__CDEFS_H_INCLUDED
-#define	__CDEFS_H_INCLUDED
+#ifndef __CDEFS_H_INCLUDED
+#define __CDEFS_H_INCLUDED
+
 /* Try to keep host system's version from coming in */
 #ifndef _SYS_CDEFS_H_INCLUDED
   #define	_SYS_CDEFS_H_INCLUDED
 #endif
 
 #define _HAS_NAMESPACE	1	/* 1 for C++ names in std */
-#define _STD_USING		1	/* exports C names in global */
-
-#if defined(__GNUC__) && (__GNUC__ <= 2)
-#define __deprecated__
-#endif
+#define _STD_USING	1	/* exports C names in global */
 
 #if defined (__cplusplus) || defined(__CPLUSPLUS__)
  #define _XSTD				::std::
@@ -100,6 +97,7 @@ _X_STD_END
  #define _END_EXTERN_C		}
 
 #else /* __cplusplus */
+
  #undef _STD_USING
 
  #define _STD
@@ -124,7 +122,7 @@ _X_STD_END
 	#define	__BEGIN_DECLS	_C_LIB_DECL
 #endif
 #ifndef __END_DECLS
-	#define	__END_DECLS		_END_C_LIB_DECL
+	#define	__END_DECLS	_END_C_LIB_DECL
 #endif
 
 #ifndef _NO_RETURN
@@ -158,69 +156,25 @@ _X_STD_END
 
 #if __STDC_VERSION__ >= 199901L
 #define __restrict	restrict
-#elif __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 9) || (__INTEL_COMPILER >= 800)
-/* __restrict is valid */
-#else
-#define __restrict
 #endif
 
 #else	/* !(__STDC__ || __cplusplus) */
+
 #define	__P(protos)	()		/* traditional C preprocessor */
 #define	__CONCAT(x,y)	x/**/y
 #define	__STRING(x)	"x"
 
-#if !defined(__GNUC__) && !defined(__INTEL_COMPILER)
-#define	__const				/* delete pseudo-ANSI C keywords */
-#define	__inline
-#define	__signed
-#define	__volatile
-#define __restrict
-/*
- * In non-ANSI C environments, new programs will want ANSI-only C keywords
- * deleted from the program and old programs will want them left alone.
- * When using a compiler other than gcc, programs using the ANSI C keywords
- * const, inline etc. as normal identifiers should define -DNO_ANSI_KEYWORDS.
- * When using "gcc -traditional", we assume that this is the intent; if
- * __GNUC__ is defined but __STDC__ is not, we leave the new keywords alone.
- */
-#ifndef	NO_ANSI_KEYWORDS
-#define	const				/* delete ANSI C keywords */
-#define	inline
-#define	signed
-#define	volatile
-#define restrict
-#endif
-#endif	/* !__GNUC__ && !__INTEL_COMPILER */
 #endif	/* !(__STDC__ || __cplusplus) */
 
-/*
- * GCC1 and some versions of GCC2 declare dead (non-returning) and
- * pure (no side effects) functions using "volatile" and "const";
- * unfortunately, these then cause warnings under "-ansi -pedantic".
- * GCC2 uses a new, peculiar __attribute__((attrs)) style.  All of
- * these work for GNU C++ (modulo a slight glitch in the C++ grammar
- * in the distribution version of 2.5.5).
- */
-#if (!defined(__GNUC__) && !defined(__INTEL_COMPILER)) || (defined(__GNUC__) && __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 5))
-#define	__attribute__(x)	/* delete __attribute__ if non-gcc or gcc1 */
-#if (defined(__GNUC__) || defined(__INTEL_COMPILER)) && !defined(__STRICT_ANSI__)
-#define	__dead		__volatile
-#define	__pure		__const
-#endif
-#endif
-
-#if defined(__GNUC__) && __GNUC__ >= 4
 #define __WEAK_ALIAS(__alias, __tgt)			\
 	__asm(".weak " #__alias);			\
 	__asm(".equ "  #__alias ", " #__tgt)
-#endif
 
 /* Delete pseudo-keywords wherever they are not available or needed. */
 #ifndef __dead
-#define	__dead
-#define	__pure
-#endif
+#define __dead
+#define __pure
 
-#define _Restrict	__restrict
+#endif
 
 #endif /* !__CDEFS_H_ */
