@@ -16,7 +16,7 @@
  */
 
 #include <sys/types.h>
-#include <cpu_def.h>
+#include <arch/cpu_def.h>
 
 #define xfer_setjmp(_env)			_setjmp(_env)
 #define xfer_longjmp(_env, _ret, _regs)		_longjmp(_env, _ret)
@@ -52,7 +52,7 @@
 #define KERERR_SKIPAHEAD	8	/* increment IP by this much on error */
 
 /*
- * Convert physical address to pointer value and vis-versa when in a
+ * Convert physical address to pointer value and vice-versa when in a
  * physical memory model.
  */
 #define PHYS_TO_PTR(phys)		((void *)RISCV_PHYS_TO_KSEG0(phys))

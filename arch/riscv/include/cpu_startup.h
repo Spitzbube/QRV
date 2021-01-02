@@ -9,8 +9,6 @@
 #ifndef _RISCV_CPU_STARTUP_H
 #define _RISCV_CPU_STARTUP_H
 
-#include <riscv.h>
-
 #define RISCV_MAP_SYSPAGE	0xffffffff	/* Syspage */
 #define RISCV_MAP_SYSPAGE_RO	0xfffffffe	/* Syspage/CPUpage read-only */
 #define RISCV_MAP_NOEXEC	0x80000000	/* No execute */
@@ -22,6 +20,7 @@
 
 struct cpu_local_syspage {
     SYSPAGE_SECTION(riscv_cpu);
+    SYSPAGE_TYPED_SECTION(paddr_t, pgdir);
 };
 
 #define BOOTSTRAPS_RUN_ONE_TO_ONE 1

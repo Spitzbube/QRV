@@ -34,7 +34,7 @@
 #endif
 
 #ifndef __RISCV_CONTEXT_H_INCLUDED
-#include <arch_context.h>
+#include <arch/context.h>
 #endif
 
 #define RISCV_STRINGNAME	"riscv"

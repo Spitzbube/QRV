@@ -18,9 +18,8 @@
 #ifndef _RISCV_CPU_DEF_H
 #define _RISCV_CPU_DEF_H
 
-#include <cpu.h>
-#include <riscv.h>
-#include <smpxchg.h>
+#include <arch/cpu.h>
+#include <arch/smpxchg.h>
 
 #define FAULT_ISWRITE(_n)	((_n) & SIGCODE_STORE)
 
