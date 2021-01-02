@@ -1,6 +1,5 @@
 #include <startup.h>
 #include <platform/qemu_virt.h>
-#include <riscv.h>
 #include <intr_controller.h>
 
 #include "task.h"

@@ -50,6 +50,7 @@ static void vmsg(const char *fmt, va_list args)
     int dig;
     char buf[64];
     bool was_modifier = 0;
+    bool pad_with_zeros;
 
     for (; *fmt; ++fmt) {
         if (*fmt != '%' && !was_modifier) {
@@ -57,6 +58,7 @@ static void vmsg(const char *fmt, va_list args)
             continue;
         }
         was_modifier = false;
+        pad_with_zeros = CONFIG_KPRINTF_PAD_HEX_WITH_ZEROS;
         radix = dig = 0;
         switch (*++fmt) {
         case 'b':
@@ -118,6 +120,10 @@ static void vmsg(const char *fmt, va_list args)
             continue;
 
         /* Modifiers */
+        case '0':
+            pad_with_zeros = was_modifier = true;
+            --fmt;
+            continue;
         case '#':
             one_char('0');
             one_char('x');
@@ -141,7 +147,8 @@ static void vmsg(const char *fmt, va_list args)
             num /= radix;
         } while (num);
         for (dig -= &buf[sizeof(buf) - 1] - vs; dig > 0; --dig) {
-            one_char('0');
+            if (pad_with_zeros)
+                one_char('0');
         }
         while (*vs) {
             one_char(*vs++);

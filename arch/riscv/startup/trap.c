@@ -8,7 +8,6 @@
 #include <sys/states.h>
 
 #include <platform/qemu_virt.h>
-#include <riscv.h>
 #include <intr_controller.h>
 #include <spinlock.h>
 

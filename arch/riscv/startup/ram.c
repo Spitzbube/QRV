@@ -29,15 +29,21 @@ struct watch_entry {
 static int sysram_added;
 static paddr_t ws_early_next;
 static paddr_t temp_syspage = NULL_PADDR;
+
+/* Avoid list address and size */
 static struct avoid_entry *avoid_list;
 static unsigned avoid_list_size;
+
+/* RAM list address and size */
 static struct ram_entry *ram_list;
 static unsigned ram_list_size;
+
+/* Linked list of watch_entry elements */
 static struct watch_entry *watch_list;
 
 #define TEMP_SYSPAGE_SIZE	(ROUNDPG(KILO(32)))
-#define MAX_RAM_LIST_SIZE	KILO(3)
-#define MAX_AVOID_LIST_SIZE	KILO(1)
+#define MAX_RAM_LIST_SIZE	KILO(6)
+#define MAX_AVOID_LIST_SIZE	KILO(2)
 
 static void ws_init(void)
 {
@@ -497,7 +503,7 @@ void *ws_alloc(size_t size)
 }
 
 /**
- * \brief TODO
+ * \brief Add a given function to the "watch RAM list"
  */
 void watch_add_ram(void (*func)(paddr_t, paddr_t))
 {
@@ -535,4 +541,17 @@ void reserve_ram(unsigned size, unsigned align, unsigned pagesize)
 
     alloc_ram(reserved, size, align ? align : pagesize);
     as_add_containing(reserved, (reserved + size - 1), AS_ATTR_RAM, "reserved", "ram");
+}
+
+/**
+ * \begin Print the avoid list.
+ */
+void print_avoid_list(void)
+{
+    const int n = avoid_list_size / sizeof(struct avoid_entry);
+    for (int i = 0; i < n; i++) {
+        if (!avoid_list[i].start && !avoid_list[i].end)
+            break;
+        kprintf("%d: %#p ... %#p\n", i, avoid_list[i].start, avoid_list[i].end);
+    }
 }

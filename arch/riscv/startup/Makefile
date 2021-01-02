@@ -12,6 +12,8 @@ OBJECTS = head.o \
           _main.o \
           board.o \
           init_raminfo.o \
+          init_asinfo.o \
+          init_intrinfo.o \
           vectors.o \
           trampoline.o \
           spinlock.o \

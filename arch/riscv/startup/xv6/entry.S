@@ -1,5 +1,7 @@
 /**
- * \brief First instructions executed when the kernel starts.
+ * \file entry.S
+ *
+ * First instructions executed when the kernel starts.
  *
  * \license MIT (https://opensource.org/licenses/mit-license.php)
  *

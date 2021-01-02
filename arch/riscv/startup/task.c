@@ -1,5 +1,4 @@
 #include <startup.h>
-#include <riscv.h>
 #include <spinlock.h>
 
 #include "task.h"

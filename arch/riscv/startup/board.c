@@ -68,7 +68,7 @@ static void handle_property_early(const char *node, const char *prop, void *data
                 crash("Boot command line is too long (%d bytes, maximum %d bytes allowed)\n",
                     n, CONFIG_MAX_BOOTLINE_SIZE);
             strcpy(boot_command_line, data);
-            pr_debug("boot command line: %s\n", boot_command_line);
+            pr_debug("Boot command line: %s\n", boot_command_line);
         } else if (!strcmp(prop, "linux,initrd-start")) {
             ramdisk_phys_start = WORD_AT(data);
         } else if (!strcmp(prop, "linux,initrd-end")) {
@@ -139,7 +139,15 @@ void parse_fdt(const bool verbose, size_t *fdt_size)
             unsigned len = _BE(prop->len);
             unsigned offset = _BE(prop->nameoff);
 
-            TRACETAG("PROP: name=%s, string=%s, len=%d\n", values+offset, prop->data, len);
+            TRACETAG("PROP: name=%s, len=%d", values+offset, len);
+#ifdef CONFIG_FDT_DEBUG
+            if (verbose) {
+                if (*(char *)prop->data)
+                    kprintf(", string=%s\n", prop->data);
+                else
+                    kprintf("\n");
+            }
+#endif
             if (fdt_handle_property_cb)
                 fdt_handle_property_cb(curr_node, values+offset, len ? prop->data : NULL, len);
 
@@ -201,7 +209,7 @@ void board_init(void)
 
     fdt_handle_node_cb = handle_node_early;
     fdt_handle_property_cb = handle_property_early;
-    parse_fdt(false, &fdt_size);
+    parse_fdt(true, &fdt_size);
 
     pr_debug("FDT size: %d bytes\n", fdt_size);
 

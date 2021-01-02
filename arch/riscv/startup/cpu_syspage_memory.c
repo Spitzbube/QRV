@@ -33,22 +33,17 @@ struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *cpupagep, paddr_t *syspa
 		sp->_cpu._field.entry_size = lsp.cpu._cpu##_##_field.size; \
 		sp->_cpu._field.entry_off  = SP_OFFSET(_cpu##_##_field)
 
-    spsize = ROUND(spsize, sizeof(uint64_t));
-    if ((paddr_bits == 32) && sp->num_cpu == 1) {
-        spacing = sizeof(struct cpupage_entry);
-    } else {
-        /*
-         * WARNING: we assume SMP processor has physical cache.
-         *          We allocate the cpupages in contiguous memory so that
-         *          the kernel's cpypageptr[] pointers point at virtually
-         *          contiguous mappings into the physical pages.
-         *          The user _cpupage_ptr is a different virtual address
-         *          where the same virtual address on each cpu maps the
-         *          different physical address for that cpu's cpupage.
-         */
-        spacing = __PAGESIZE;
-        spsize = ROUND(spsize, __PAGESIZE);
-    }
+    /*
+     * We assume that SMP processor has physical cache.
+     * We allocate the cpupages in contiguous memory so that the kernel's
+     * copy_page_ptr[] pointers point at virtually contiguous mappings
+     * into the physical pages.
+     * The user _cpupage_ptr is a different virtual address where the same
+     * virtual address on each CPU maps the different physical address for
+     * that CPU's cpupage.
+     */
+    spacing = __PAGESIZE;
+    spsize = ROUND(spsize, __PAGESIZE);
     cpsize = sp->num_cpu * spacing;
 
     /*
@@ -91,9 +86,6 @@ struct syspage_entry *cpu_alloc_syspage_memory(paddr_t *cpupagep, paddr_t *syspa
 
     *syspagep = sp_phys;
     *cpupagep = sp_phys + spsize;
-
-    sp->riscv.startup_base = startup_base;
-    sp->riscv.startup_size = startup_size;
 
     INIT_ENTRY(riscv, cpu);
 

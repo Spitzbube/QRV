@@ -25,20 +25,6 @@
 extern void init_qtime(void);
 extern void init_clocks(void);
 
-/* 5+ cycles per loop */
-#define delay(x) {volatile unsigned _delay = x; while (_delay--); }
-/* ~2 cycles per loop at 720MHz, x in 1/720us units (720MHz clock) */
-#define delay_cy(x) {unsigned _delay = ((x+1)>>1); while (_delay--) asm volatile (""); }
-
-// TODO: empty for now
-void init_riscv_ser(unsigned channel, const char *init, paddr_t base)
-{
-}
-
-void init_asinfo(unsigned mem)
-{
-}
-
 int cpu_handle_common_option(int opt)
 {
     return 0;
@@ -54,11 +40,6 @@ void startup_memory_unmap(void *p)
 }
 
 void init_clocks()
-{
-    kprintf("%s\n", __func__);
-}
-
-void init_intrinfo()
 {
     kprintf("%s\n", __func__);
 }
