@@ -1,37 +1,13 @@
-/*
- * $QNXtpLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
- * for other information.
- * $
+/**
+ * \file lzoconf.h
+ *
+ * Configuration for the LZO real-time data compression library.
+ *
+ * \copyright (C) 1999 Markus Franz Xaver Johannes Oberhumer
+ *                     <markus.oberhumer@jk.uni-linz.ac.at>
+ *
+ * \license GNU GPL 2.0
  */
-
-
-
-
-/* lzoconf.h -- configuration for the LZO real-time data compression library
-
-   This file is part of the LZO real-time data compression library.
-
-   Copyright (C) 1999 Markus Franz Xaver Johannes Oberhumer
-   Copyright (C) 1998 Markus Franz Xaver Johannes Oberhumer
-   If not, write to the Free Software Foundation, Inc.,
-   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-
-   Markus F.X.J. Oberhumer
-   <markus.oberhumer@jk.uni-linz.ac.at>
-   http://wildsau.idv.uni-linz.ac.at/mfx/lzo.html
- */
-
 
 #ifndef __LZOCONF_H
 #define __LZOCONF_H
@@ -40,10 +16,6 @@
 #define LZO_VERSION_STRING      "1.06"
 #define LZO_VERSION_DATE        "Nov 29 1999"
 
-/* internal Autoconf configuration file - only used when building LZO */
-#if defined(LZO_HAVE_CONFIG_H)
-#  include <config.h>
-#endif
 #include <limits.h>
 
 #ifdef __cplusplus
@@ -70,127 +42,28 @@ extern "C" {
 
 
 /***********************************************************************
-// architecture defines
-************************************************************************/
-
-#if !defined(__LZO_WIN) && !defined(__LZO_DOS) && !defined(__LZO_OS2)
-#  if defined(__WINDOWS__) || defined(_WINDOWS) || defined(_Windows)
-#    define __LZO_WIN
-#  elif defined(__WIN32__) || defined(_WIN32) || defined(WIN32)
-#    define __LZO_WIN
-#  elif defined(__NT__) || defined(__NT_DLL__) || defined(__WINDOWS_386__)
-#    define __LZO_WIN
-#  elif defined(__DOS__) || defined(__MSDOS__) || defined(MSDOS)
-#    define __LZO_DOS
-#  elif defined(__OS2__) || defined(__OS2V2__) || defined(OS2)
-#    define __LZO_OS2
-#  elif defined(__palmos__)
-#    define __LZO_PALMOS
-#  elif defined(__TOS__) || defined(__atarist__)
-#    define __LZO_TOS
-#  endif
-#endif
-
-#if (UINT_MAX < LZO_0xffffffffL)
-#  if defined(__LZO_WIN)
-#    define __LZO_WIN16
-#  elif defined(__LZO_DOS)
-#    define __LZO_DOS16
-#  elif defined(__LZO_PALMOS)
-#    define __LZO_PALMOS16
-#  elif defined(__LZO_TOS)
-#    define __LZO_TOS16
-#  elif defined(__C166__)
-#  else
-#    error "16-bit target not supported - contact me for porting hints"
-#  endif
-#endif
-
-#if !defined(__LZO_i386)
-#  if defined(__LZO_DOS) || defined(__LZO_WIN16)
-#    define __LZO_i386
-#  elif defined(__i386__) || defined(__386__) || defined(_M_IX86)
-#    define __LZO_i386
-#  endif
-#endif
-
-#if defined(__LZO_STRICT_16BIT)
-#  if (UINT_MAX < LZO_0xffffffffL)
-#    include <lzo16bit.h>
-#  endif
-#endif
-
-
-/***********************************************************************
 // integral and pointer types
 ************************************************************************/
 
 /* Integral types with 32 bits or more */
-#if !defined(LZO_UINT32_MAX)
-#  if (UINT_MAX >= LZO_0xffffffffL)
-     typedef unsigned int       lzo_uint32;
-     typedef int                lzo_int32;
-#    define LZO_UINT32_MAX      UINT_MAX
-#    define LZO_INT32_MAX       INT_MAX
-#    define LZO_INT32_MIN       INT_MIN
-#  elif (ULONG_MAX >= LZO_0xffffffffL)
-     typedef unsigned long      lzo_uint32;
-     typedef long               lzo_int32;
-#    define LZO_UINT32_MAX      ULONG_MAX
-#    define LZO_INT32_MAX       LONG_MAX
-#    define LZO_INT32_MIN       LONG_MIN
-#  else
-#    error "lzo_uint32"
-#  endif
-#endif
-
-/* lzo_uint is used like size_t */
-#if !defined(LZO_UINT_MAX)
-#  if (UINT_MAX >= LZO_0xffffffffL)
-     typedef unsigned int       lzo_uint;
-     typedef int                lzo_int;
-#    define LZO_UINT_MAX        UINT_MAX
-#    define LZO_INT_MAX         INT_MAX
-#    define LZO_INT_MIN         INT_MIN
-#  elif (ULONG_MAX >= LZO_0xffffffffL)
-     typedef unsigned long      lzo_uint;
-     typedef long               lzo_int;
-#    define LZO_UINT_MAX        ULONG_MAX
-#    define LZO_INT_MAX         LONG_MAX
-#    define LZO_INT_MIN         LONG_MIN
-#  else
-#    error "lzo_uint"
-#  endif
-#endif
-
-
-/* Memory model that allows to access memory at offsets of lzo_uint. */
-#if !defined(__LZO_MMODEL)
-#  if (LZO_UINT_MAX <= UINT_MAX)
-#    define __LZO_MMODEL
-#  elif defined(__LZO_DOS16) || defined(__LZO_WIN16)
-#    define __LZO_MMODEL        __huge
-#    define LZO_999_UNSUPPORTED
-#  elif defined(__LZO_PALMOS16) || defined(__LZO_TOS16)
-#    define __LZO_MMODEL
-#  else
-#    error "__LZO_MMODEL"
-#  endif
-#endif
+typedef uint32_t      lzo_uint32;
+typedef int32_t       lzo_int32;
+typedef unsigned int  lzo_uint;
+typedef int           lzo_int;
 
 /* no typedef here because of const-pointer issues */
-#define lzo_byte                unsigned char __LZO_MMODEL
-#define lzo_bytep               unsigned char __LZO_MMODEL *
-#define lzo_charp               char __LZO_MMODEL *
-#define lzo_voidp               void __LZO_MMODEL *
-#define lzo_shortp              short __LZO_MMODEL *
-#define lzo_ushortp             unsigned short __LZO_MMODEL *
-#define lzo_uint32p             lzo_uint32 __LZO_MMODEL *
-#define lzo_int32p              lzo_int32 __LZO_MMODEL *
-#define lzo_uintp               lzo_uint __LZO_MMODEL *
-#define lzo_intp                lzo_int __LZO_MMODEL *
-#define lzo_voidpp              lzo_voidp __LZO_MMODEL *
-#define lzo_bytepp              lzo_bytep __LZO_MMODEL *
+#define lzo_byte     unsigned char
+#define lzo_bytep    unsigned char *
+#define lzo_charp    char *
+#define lzo_voidp    void *
+#define lzo_shortp   short *
+#define lzo_ushortp  unsigned short *
+#define lzo_uint32p  lzo_uint32 *
+#define lzo_int32p   lzo_int32 *
+#define lzo_uintp    lzo_uint *
+#define lzo_intp     lzo_int *
+#define lzo_voidpp   lzo_voidp *
+#define lzo_bytepp   lzo_bytep *
 
 typedef int lzo_bool;
 
@@ -203,90 +76,36 @@ typedef int lzo_bool;
 // function types
 ************************************************************************/
 
-/* linkage */
-#if !defined(__LZO_EXTERN_C)
-#  ifdef __cplusplus
-#    define __LZO_EXTERN_C      extern "C"
-#  else
-#    define __LZO_EXTERN_C      extern
-#  endif
-#endif
-
-/* calling conventions */
-#if !defined(__LZO_CDECL)
-#  if defined(__LZO_DOS16) || defined(__LZO_WIN16)
-#    define __LZO_CDECL         __far __cdecl
-#  elif defined(__LZO_i386) && defined(_MSC_VER)
-#    define __LZO_CDECL         __cdecl
-#  elif defined(__LZO_i386) && defined(__WATCOMC__)
-#    define __LZO_CDECL         __near __cdecl
-#  else
-#    define __LZO_CDECL
-#  endif
-#endif
-#if !defined(__LZO_ENTRY)
-#  define __LZO_ENTRY           __LZO_CDECL
-#endif
-
-/* DLL export information */
-#if !defined(__LZO_EXPORT1)
-#  define __LZO_EXPORT1
-#endif
-#if !defined(__LZO_EXPORT2)
-#  define __LZO_EXPORT2
-#endif
-
-/* calling convention for C functions */
-#if !defined(LZO_PUBLIC)
-#  define LZO_PUBLIC(_rettype)  __LZO_EXPORT1 _rettype __LZO_EXPORT2 __LZO_ENTRY
-#endif
-#if !defined(LZO_EXTERN)
-#  define LZO_EXTERN(_rettype)  __LZO_EXTERN_C LZO_PUBLIC(_rettype)
-#endif
-#if !defined(LZO_PRIVATE)
-#  define LZO_PRIVATE(_rettype) static _rettype __LZO_ENTRY
-#endif
-
-/* cdecl calling convention for assembler functions */
-#if !defined(LZO_PUBLIC_CDECL)
-#  define LZO_PUBLIC_CDECL(_rettype) \
-                __LZO_EXPORT1 _rettype __LZO_EXPORT2 __LZO_CDECL
-#endif
-#if !defined(LZO_EXTERN_CDECL)
-#  define LZO_EXTERN_CDECL(_rettype)  __LZO_EXTERN_C LZO_PUBLIC_CDECL(_rettype)
-#endif
-
-
 typedef int
-(__LZO_ENTRY *lzo_compress_t)   ( const lzo_byte *src, lzo_uint  src_len,
+( *lzo_compress_t)   ( const lzo_byte *src, lzo_uint  src_len,
                                         lzo_byte *dst, lzo_uint *dst_len,
                                         lzo_voidp wrkmem );
 
 typedef int
-(__LZO_ENTRY *lzo_decompress_t) ( const lzo_byte *src, lzo_uint  src_len,
+( *lzo_decompress_t) ( const lzo_byte *src, lzo_uint  src_len,
                                         lzo_byte *dst, lzo_uint *dst_len,
                                         lzo_voidp wrkmem );
 
 typedef int
-(__LZO_ENTRY *lzo_optimize_t)   (       lzo_byte *src, lzo_uint  src_len,
+( *lzo_optimize_t)   (       lzo_byte *src, lzo_uint  src_len,
                                         lzo_byte *dst, lzo_uint *dst_len,
                                         lzo_voidp wrkmem );
 
 typedef int
-(__LZO_ENTRY *lzo_compress_dict_t)(const lzo_byte *src, lzo_uint  src_len,
+( *lzo_compress_dict_t)(const lzo_byte *src, lzo_uint  src_len,
                                         lzo_byte *dst, lzo_uint *dst_len,
                                         lzo_voidp wrkmem,
                                   const lzo_byte *dict, lzo_uint dict_len );
 
 typedef int
-(__LZO_ENTRY *lzo_decompress_dict_t)(const lzo_byte *src, lzo_uint  src_len,
+( *lzo_decompress_dict_t)(const lzo_byte *src, lzo_uint  src_len,
                                         lzo_byte *dst, lzo_uint *dst_len,
                                         lzo_voidp wrkmem,
                                   const lzo_byte *dict, lzo_uint dict_len );
 
 
 /* a progress indicator callback function */
-typedef void (__LZO_ENTRY *lzo_progress_callback_t) (lzo_uint, lzo_uint);
+typedef void ( *lzo_progress_callback_t) (lzo_uint, lzo_uint);
 
 
 /***********************************************************************
@@ -348,8 +167,8 @@ LZO_EXTERN(lzo_bytep) lzo_alloc(lzo_uint _nelems, lzo_uint _size);
 LZO_EXTERN(lzo_bytep) lzo_malloc(lzo_uint _size);
 LZO_EXTERN(void) lzo_free(lzo_voidp _ptr);
 
-extern lzo_bytep (__LZO_ENTRY *lzo_alloc_hook) (lzo_uint,lzo_uint);
-extern void (__LZO_ENTRY *lzo_free_hook) (lzo_voidp);
+extern lzo_bytep ( *lzo_alloc_hook) (lzo_uint,lzo_uint);
+extern void ( *lzo_free_hook) (lzo_voidp);
 
 /* misc. */
 LZO_EXTERN(lzo_bool) lzo_assert(int _expr);
