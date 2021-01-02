@@ -140,7 +140,7 @@ struct startup_trailer {
 
 #define SYSPAGE_SECTION(field)	SYSPAGE_TYPED_SECTION(struct field##_entry, field)
 
-#include "cpu_startup.h"
+#include <arch/cpu_startup.h>
 
 #if !defined(MAKE_1TO1_PTR)
 #define MAKE_1TO1_PTR(p)	((void *)((paddr_t)(p) + STARTUP_PADDR_BIAS))

@@ -33,6 +33,6 @@
 #include <sys/platform.h>
 #endif
 
-#include <arch_cpuinline.h>
+#include <arch/cpuinline.h>
 
 #endif

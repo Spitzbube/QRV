@@ -82,7 +82,7 @@ typedef struct intrspin {
     volatile unsigned value;
 } intrspin_t;
 
-#include <arch_neutrino.h>
+#include <arch/neutrino.h>
 #include <stdint.h>
 #include <arch/cpu_def.h>
 

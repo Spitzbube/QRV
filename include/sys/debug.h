@@ -45,7 +45,7 @@
 #endif
 #endif
 
-#include <arch_context.h>
+#include <arch/context.h>
 
 #ifndef __FAULT_H_INCLUDED
 #include <sys/fault.h>
