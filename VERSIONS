@@ -6,7 +6,7 @@ Version   Date        Comment
 0.0.1    2020-12-24  First strings printed to the console + system stop; startup code
                      full of TODOs, kernel not linked in
 
-0.0.2    2020-12-xx  Syspage printed, memory map (for QEMU virt machine) looks OK,
+0.0.2    2021-01-02  Syspage printed, memory map (for QEMU virt machine) looks OK,
                      some SBI support
 
 0.0.3    2020-12-xx  Some modules from the real kernel linked in, SMP startup

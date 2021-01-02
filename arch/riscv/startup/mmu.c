@@ -1,8 +1,20 @@
 
 #include <startup.h>
 
-paddr_t startup_base;
-unsigned startup_size;
+paddr_t page_directory;
+
+/**
+ * \brief Initialize the page directory.
+ */
+static void riscv_init_pgdir()
+{
+    unsigned num = lsp.syspage.p->num_cpu;
+    set_syspage_section(&lsp.cpu.pgdir, sizeof(paddr_t) * num);
+
+    /* Page directory size is one page (512 entries, 8 bytes each) */
+    unsigned pd_size = __PAGESIZE;
+    page_directory = calloc_ram(pd_size * num, __PAGESIZE);
+}
 
 void init_mmu(void)
 {

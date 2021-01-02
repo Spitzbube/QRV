@@ -17,79 +17,81 @@
 
 #include "externs.h"
 
-static pthread_attr_t			thread_attr;
+static pthread_attr_t thread_attr;
 
-static resmgr_attr_t			resmgr_attr = {
-	RESMGR_FLAG_CROSS_ENDIAN,			/* Flags */
-	10,									/* Max nparts */
-	sizeof(union proc_msg_union)		/* Max message size required */
+static resmgr_attr_t resmgr_attr = {
+    RESMGR_FLAG_CROSS_ENDIAN,   /* Flags */
+    10,                         /* Max nparts */
+    sizeof(union proc_msg_union)    /* Max message size required */
 };
 
 
-static thread_pool_attr_t		pool_attr = {
-	NULL,								/* Handle */
-	dispatch_block,						/* Block function */
-	NULL,								/* Unblock func */
-	dispatch_handler,					/* Handler function */
-	dispatch_context_alloc,				/* Context allocation */
-	dispatch_context_free,				/* Context free */
-	&thread_attr,						/* Thread attribute struct */
-	3,									/* low water mark */
-	1,									/* increment */
-	10,									/* high water mark */
-	75,									/* maximum threads */
+static thread_pool_attr_t pool_attr = {
+    NULL,                       /* Handle */
+    dispatch_block,             /* Block function */
+    NULL,                       /* Unblock func */
+    dispatch_handler,           /* Handler function */
+    dispatch_context_alloc,     /* Context allocation */
+    dispatch_context_free,      /* Context free */
+    &thread_attr,               /* Thread attribute struct */
+    3,                          /* low water mark */
+    1,                          /* increment */
+    10,                         /* high water mark */
+    75,                         /* maximum threads */
 };
 
 // Internal dispatch function to specify our own chid
 void *_dispatch_create(int chid, unsigned flags);
 // Internal dispatch function to specify receiving of pulses
-dispatch_context_t *dispatch_block_receive_pulse(dispatch_context_t *ctp);
+dispatch_context_t *dispatch_block_receive_pulse(dispatch_context_t * ctp);
 
-void message_init(void) {
+void message_init(void)
+{
 
-	// Check if already initialized
-	if(dpp != NULL) {
-		return;
-	}
+    // Check if already initialized
+    if (dpp != NULL) {
+        return;
+    }
 
-	// allocate the system process main channel (MUST BE SYSMGR_CHID)
-	if(ChannelCreate(_NTO_CHF_UNBLOCK | _NTO_CHF_DISCONNECT) != SYSMGR_CHID) {
-		crash();
-	}
+    // allocate the system process main channel (MUST BE SYSMGR_CHID)
+    if (ChannelCreate(_NTO_CHF_UNBLOCK | _NTO_CHF_DISCONNECT) != SYSMGR_CHID) {
+        crash();
+    }
 
-	// allocate the process manager connection (MUST BE SYSMGR_COID)
-	if(ConnectAttach(0, SYSMGR_PID, SYSMGR_CHID, SYSMGR_COID, 0) != SYSMGR_COID) {
-		crash();
-	}
+    // allocate the process manager connection (MUST BE SYSMGR_COID)
+    if (ConnectAttach(0, SYSMGR_PID, SYSMGR_CHID, SYSMGR_COID, 0) != SYSMGR_COID) {
+        crash();
+    }
 
-	if((dpp = _dispatch_create(SYSMGR_CHID, DISPATCH_FLAG_NOLOCK)) == NULL) {
-		crash();
-	}
+    if ((dpp = _dispatch_create(SYSMGR_CHID, DISPATCH_FLAG_NOLOCK)) == NULL) {
+        crash();
+    }
 
-	// Init the resmgr sublayer with the right attributes
-	if(resmgr_attach(dpp, &resmgr_attr, NULL, 0, 0, NULL, NULL, NULL) == -1) {
-		crash();
-	}
+    // Init the resmgr sublayer with the right attributes
+    if (resmgr_attach(dpp, &resmgr_attr, NULL, 0, 0, NULL, NULL, NULL) == -1) {
+        crash();
+    }
 }
 
-static thread_pool_t		*tpp;
-int message_start(void) {
+static thread_pool_t *tpp;
+int message_start(void)
+{
 
-	message_init();
+    message_init();
 
-	// Init proc thread attributes
-	(void)pthread_attr_init(&thread_attr);
-	(void)pthread_attr_setstacksize(&thread_attr, __PAGESIZE*2);
+    // Init proc thread attributes
+    (void) pthread_attr_init(&thread_attr);
+    (void) pthread_attr_setstacksize(&thread_attr, __PAGESIZE * 2);
 
-	pool_attr.handle = (void *)dpp;
+    pool_attr.handle = (void *) dpp;
 
-	if((tpp = thread_pool_create(&pool_attr, POOL_FLAG_EXIT_SELF | POOL_FLAG_RESERVE)) == NULL) {
-		crash();
-	}
+    if ((tpp = thread_pool_create(&pool_attr, POOL_FLAG_EXIT_SELF | POOL_FLAG_RESERVE)) == NULL) {
+        crash();
+    }
 
-	// Never returns
-	(void)thread_pool_start(tpp);
-	return 0;
+    // Never returns
+    (void) thread_pool_start(tpp);
+    return 0;
 }
 
 
@@ -98,7 +100,7 @@ int message_start(void) {
  an operation is going to be performed that may block and
  then decrementing that thread count when required.
 */
-int _thread_pool_reserve(thread_pool_t *pool, int wait_count);
+int _thread_pool_reserve(thread_pool_t * pool, int wait_count);
 
 /*
  Called before/after any blocking operation to reserve/
@@ -129,31 +131,30 @@ int _thread_pool_reserve(thread_pool_t *pool, int wait_count);
 */
 //#define CATCH_NONPROC_RESV
 #ifdef	CATCH_NONPROC_RESV
-unsigned catch_nonproc_resv = 0;	// some run time control from the kernel debugger
-#endif	/* CATCH_NONPROC_RESV */
+unsigned catch_nonproc_resv = 0;    // some run time control from the kernel debugger
+#endif                          /* CATCH_NONPROC_RESV */
 
-static int thread_pool_reserve(thread_pool_t *pool, int wait_count) {
-	if (getpid() != PROCMGR_PID) {
+static int thread_pool_reserve(thread_pool_t * pool, int wait_count)
+{
+    if (getpid() != PROCMGR_PID) {
 #ifdef	CATCH_NONPROC_RESV
-		if (catch_nonproc_resv) {
-			DebugBreak();
-		}
-#endif	/* CATCH_NONPROC_RESV */
-		return 0;
-	} else {
-		return(_thread_pool_reserve(pool, wait_count));
-	}
+        if (catch_nonproc_resv) {
+            DebugBreak();
+        }
+#endif                          /* CATCH_NONPROC_RESV */
+        return 0;
+    } else {
+        return (_thread_pool_reserve(pool, wait_count));
+    }
 }
 
-int
-proc_thread_pool_reserve() {
-	return thread_pool_reserve(tpp, 1);
+int proc_thread_pool_reserve()
+{
+    return thread_pool_reserve(tpp, 1);
 }
 
-int
-proc_thread_pool_reserve_done() {
-	return thread_pool_reserve(tpp, -1);
+int proc_thread_pool_reserve_done()
+{
+    return thread_pool_reserve(tpp, -1);
 }
 
-
-__SRCVERSION("message.c $Rev: 200672 $");
