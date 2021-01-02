@@ -114,4 +114,13 @@ typedef struct riscv_perf_registers {
     uint64_t dummy;
 } RISCV_PERF_REGISTERS;
 
+typedef struct {
+    RISCV_CPU_REGISTERS cpu;
+    RISCV_FPU_REGISTERS fpu;
+} mcontext_t;
+#define SET_REGIP	RISCV_SET_REGIP
+#define SET_REGSP	RISCV_SET_REGSP
+#define GET_REGIP	RISCV_GET_REGIP
+#define GET_REGSP	RISCV_GET_REGSP
+
 #endif /* __RISCV_CONTEXT_H_INCLUDED */

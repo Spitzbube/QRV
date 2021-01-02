@@ -63,11 +63,18 @@ typedef union {
 	_Uint32t	id;
 } SH_PERFREGS;
 
-#define SH_GET_REGIP(regs)			((regs)->pc)
-#define SH_GET_REGSP(regs)			((regs)->gr[15])
+#define SH_GET_REGIP(regs)		((regs)->pc)
+#define SH_GET_REGSP(regs)		((regs)->gr[15])
 #define SH_SET_REGIP(regs,v)		(((regs)->pc) = v)
 #define SH_SET_REGSP(regs,v)		(((regs)->gr[15]) = v)
 
-#endif /* __SH_CONTEXT_H_INCLUDED */
+typedef struct {
+    SH_CPU_REGISTERS cpu;
+    SH_FPU_REGISTERS fpu;
+} mcontext_t;
+#define SET_REGIP	SH_SET_REGIP
+#define SET_REGSP	SH_SET_REGSP
+#define GET_REGIP	SH_GET_REGIP
+#define GET_REGSP	SH_GET_REGSP
 
-/* __SRCVERSION("context.h $Rev: 153052 $"); */
+#endif /* __SH_CONTEXT_H_INCLUDED */

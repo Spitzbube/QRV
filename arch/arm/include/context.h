@@ -136,6 +136,13 @@ typedef union {
 	_Uint32t	id;
 } ARM_PERFREGS;
 
-#endif /* __ARM_CONTEXT_H_INCLUDED */
+typedef struct {
+    ARM_CPU_REGISTERS cpu;
+    ARM_FPU_REGISTERS fpu;
+} mcontext_t;
+#define SET_REGIP	ARM_SET_REGIP
+#define SET_REGSP	ARM_SET_REGSP
+#define GET_REGIP	ARM_GET_REGIP
+#define GET_REGSP	ARM_GET_REGSP
 
-/* __SRCVERSION("context.h $Rev: 160127 $"); */
+#endif /* __ARM_CONTEXT_H_INCLUDED */
