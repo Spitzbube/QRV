@@ -12,3 +12,5 @@ Key differences from the standard QNX 6.4:
  * simplifications in the scheduler, multicore-only
  * Unix filesystem (taken from xv6)
  * disk device driver (devb) for QEMU virtio (taken from xv6)
+
+Observations and insights regarding this porting can be read in my blog: https://r-tty.blogspot.com
