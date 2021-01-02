@@ -549,5 +549,3 @@ int rdecl msgreceive_async(THREAD * act, CHANNELASYNC * chp, iov_t * iov, unsign
     }
     return ENOERROR;
 }
-
-__SRCVERSION("nano_asyncmsg.c $Rev: 169208 $");

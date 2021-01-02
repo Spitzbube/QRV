@@ -450,5 +450,3 @@ int kdecl ker_timer_timeout(THREAD * act, struct kerargs_timer_timeout *kap)
     }
     return ENOERROR;
 }
-
-__SRCVERSION("ker_timer.c $Rev: 198610 $");

@@ -4,7 +4,7 @@
 
 include ../def.mk
 
-CFLAGS += -nostdinc -I../include -I../include/kernel -I../arch/$(ARCH)/include
+CFLAGS += -I../include
 
 ARCHIVE = kernel.a
 OBJECTS = _main.o \

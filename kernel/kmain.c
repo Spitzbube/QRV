@@ -278,5 +278,3 @@ void kernel_main(int argc, char *argv[], char *env[])
     set_inkernel(0);
     ker_start();
 }
-
-__SRCVERSION("kmain.c $Rev: 168289 $");

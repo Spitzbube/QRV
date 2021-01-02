@@ -1,5 +1,5 @@
 /
-/ This file contains some common util routines 
+/ This file contains some common util routines
 /
 
 #ifdef	VARIANT_smp
@@ -9,7 +9,7 @@
 /	extrn	cpunum
 
 	.macro SETXFERHANDLER, handler,reg,preserve
-		#ifdef SMP_MSGOPT 	
+		#ifdef SMP_MSGOPT
 		.if &preserve <> 0
 			push	&reg
 		.endif
@@ -20,18 +20,18 @@
 		.endif
 		#else
 		movl 	$&handler,xfer_handlers
-		#endif		
+		#endif
 	.endm
-	
+
 	.macro GETXFERHANDLER, reg
-		#ifdef SMP_MSGOPT	
+		#ifdef SMP_MSGOPT
 		movzbl 	cpunum,&reg
 		movl 	xfer_handlers(,&reg,4),&reg
 		#else
 		movl 	xfer_handlers,&reg
-		#endif		
+		#endif
 	.endm
-	
+
    	//
    	// Note that if this macro changes, you also have to change the code
 	// that implements INTR_GENFLAG_LOAD_CPUNUM in init_cpu.c.
@@ -46,7 +46,7 @@
 		shr	$3,&reg2
 		sub	$32,&reg2
 	.endm
-	
+
 	.macro SETCPU,	reg
 		movb	&reg,cpunum
 	.endm
@@ -54,11 +54,11 @@
 	.macro SETXFERHANDLER, handler,reg,preserve
 		movl 	$&handler,xfer_handlers
 	.endm
-	
+
 	.macro GETXFERHANDLER, reg
 		movl 	xfer_handlers,&reg
 	.endm
-	
+
 	.macro GETCPU, reg1, reg2
 	.endm
 

@@ -27,7 +27,7 @@
 /* include this early so that atomic ops can be overridden */
 #include <atomic.h>
 
-#include "kercpu.h"
+#include <arch/kercpu.h>
 #include <sys/syspage.h>
 
 #include <stdio.h>
@@ -46,9 +46,9 @@
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <sys/trace.h>
-#include <sys/startup.h>
 #include <sys/netmgr.h>
 
+#include <kernel/startup.h>
 #include <kernel/types.h>
 #include <kernel/macros.h>
 #include <sys/neutrino.h>
@@ -86,9 +86,9 @@
 #ifdef KERDEFN
 #define COND_EXT(x) x
 #define EXT
-#define INIT1(a)				= { a }
-#define INIT2(a,b)				= { a,b }
-#define INIT3(a,b,c)			= { a,b,c }
+#define INIT1(a)		= { a }
+#define INIT2(a,b)		= { a,b }
+#define INIT3(a,b,c)		= { a,b,c }
 #define INIT7(a,b,c,d,e,f,g)	= { a,b,c,d,e,f,g }
 #else
 #define COND_EXT(x) 0

@@ -507,6 +507,3 @@ int KerextThreadCtl(PROCESS * prp, int tid, int32_t cmd, void *data)
         memcpy(&args.tctl.data, data, sizeof(args.tctl.data));
     return __Ring0(kerext_thread_ctl, (void *) &args);
 }
-
-
-__SRCVERSION("kerext_debug.c $Rev: 200383 $");

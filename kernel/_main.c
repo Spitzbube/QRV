@@ -16,7 +16,6 @@
  */
 
 #include "externs.h"
-#include <sys/image.h>
 
 char *envv[16];
 char *argv[16];
@@ -126,5 +125,3 @@ void exit(int status)
     }
 #endif
 }
-
-__SRCVERSION("_main.c $Rev: 153052 $");
