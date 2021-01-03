@@ -100,6 +100,8 @@ extern unsigned colour_mask_shifted;  // defined in memmgr/mm_internal.h, but us
 #define SYSP_GETCOLOR(x)        ((uint32_t)x&SYSP_COLOR_MASK)
 #define SYSP_ADDCOLOR(addr,color) ((SYSP_GETCOLOR(addr)>color)?((addr+SYSP_SIZECOLOR)&~SYSP_COLOR_MASK)|color :(addr&~SYSP_COLOR_MASK)|color)
 
+#define PERFREGS_CPUID_SH	0x0008
+
 /* registers that need to be specially saved during signal handling */
 struct cpu_sigsave {
 	shint	gr0;

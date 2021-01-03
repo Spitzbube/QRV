@@ -292,10 +292,6 @@ struct mem_info {
 #define TYPEMEM_SYSRAM      "/sysram"           /* System memory pool */
 #define TYPEMEM_DEVICE      "/device"           /* Devices mapping areas (e.g. video buffers) */
 
-#define TYPEMEM_SYSRAM_ISA  "/sysram.isa"       /* X86 system memory below 16M (for DMA) */
-#define TYPEMEM_SYSRAM_DMA  "/sysram.dma"       /* X86 memory below 16M not crossing 64K boundary. */
-#define TYPEMEM_DEVICE_ISA  "/device.isa"       /* X86 device memory below 16M (Usually 640K-1M) */
-
 extern int shm_ctl(int __fd, int __flags, _Uint64t __physical, _Uint64t __size);
 extern int shm_ctl_special(int __fd, int __flags, _Uint64t __physical, _Uint64t __size, unsigned __special);
 

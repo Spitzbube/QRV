@@ -60,6 +60,9 @@ typedef MIPS_PERFREGS		PERF_REGISTERS;
 	((uintptr_t)(v) >= MIPS_R4K_K0BASE && (uintptr_t)(v) < MIPS_R4K_K3BASE)
 
 
+#define PERFREGS_CPUID_MIPS	0x0002
+#define PERFREGS_PARTID_SB1	0x0001
+
 /*
  * registers that need to be saved for invoking an interrupt handler
  */
@@ -153,5 +156,3 @@ extern void r4k_settlb(uint32_t, uint32_t, uint32_t, uint32_t, uint32_t);
 extern void r4k_update_tlb(uint32_t hi, uint32_t lo0, uint32_t lo1, uint32_t pgmask);
 extern int  r4k_flush_tlb(uint32_t hi);
 extern void set_l1pagetable(void *, unsigned);
-
-/* __SRCVERSION("cpu_mips.h $Rev: 169331 $"); */

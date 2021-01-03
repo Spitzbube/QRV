@@ -12,3 +12,5 @@
 #define CONFIG_MAX_BOOTLINE_SIZE                256
 
 #define CONFIG_FDT_DEBUG
+
+#define CONFIG_PROCESSORS_MAX                   8

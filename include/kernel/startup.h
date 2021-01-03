@@ -120,8 +120,6 @@ struct startup_trailer {
     unsigned long cksum;        /* Checksum from start of header to start of trailer */
 };
 
-#define PROCESSORS_MAX	8       // set this to match kernel (at least a search will find this now)
-
 /* this ASSERT is intentionally meant to not be conditionally implemented */
 #define ASSERT(_c_) \
 		do { \

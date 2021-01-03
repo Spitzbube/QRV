@@ -56,26 +56,26 @@ typedef _Uintptrt posix_spawn_file_actions_t;
 /* prototypes */
 extern int posix_spawnattr_init(posix_spawnattr_t * attrp);
 extern int posix_spawnattr_destroy(posix_spawnattr_t * attrp);
-extern int posix_spawnattr_getflags(const posix_spawnattr_t * _Restrict attrp,
-                                    short *_Restrict flags_p);
+extern int posix_spawnattr_getflags(const posix_spawnattr_t * restrict attrp,
+                                    short *restrict flags_p);
 extern int posix_spawnattr_setflags(posix_spawnattr_t * attrp, short flags);
-extern int posix_spawnattr_getsigdefault(const posix_spawnattr_t * _Restrict attrp,
-                                         sigset_t * _Restrict sigset_p);
-extern int posix_spawnattr_setsigdefault(posix_spawnattr_t * _Restrict attrp,
-                                         const sigset_t * _Restrict sigset_p);
-extern int posix_spawnattr_getsigmask(const posix_spawnattr_t * _Restrict attrp,
-                                      sigset_t * _Restrict sigset_p);
-extern int posix_spawnattr_setsigmask(posix_spawnattr_t * _Restrict attrp,
-                                      const sigset_t * _Restrict sigset_p);
-extern int posix_spawnattr_getpgroup(const posix_spawnattr_t * _Restrict attrp,
-                                     pid_t * _Restrict pid_p);
+extern int posix_spawnattr_getsigdefault(const posix_spawnattr_t * restrict attrp,
+                                         sigset_t * restrict sigset_p);
+extern int posix_spawnattr_setsigdefault(posix_spawnattr_t * restrict attrp,
+                                         const sigset_t * restrict sigset_p);
+extern int posix_spawnattr_getsigmask(const posix_spawnattr_t * restrict attrp,
+                                      sigset_t * restrict sigset_p);
+extern int posix_spawnattr_setsigmask(posix_spawnattr_t * restrict attrp,
+                                      const sigset_t * restrict sigset_p);
+extern int posix_spawnattr_getpgroup(const posix_spawnattr_t * restrict attrp,
+                                     pid_t * restrict pid_p);
 extern int posix_spawnattr_setpgroup(posix_spawnattr_t * attrp, pid_t pid);
-extern int posix_spawnattr_getschedparam(const posix_spawnattr_t * _Restrict attrp,
-                                         struct sched_param *_Restrict sched_p);
-extern int posix_spawnattr_setschedparam(posix_spawnattr_t * _Restrict attrp,
-                                         const struct sched_param *_Restrict sched_p);
-extern int posix_spawnattr_getschedpolicy(const posix_spawnattr_t * _Restrict attrp,
-                                          int *_Restrict policy_p);
+extern int posix_spawnattr_getschedparam(const posix_spawnattr_t * restrict attrp,
+                                         struct sched_param *restrict sched_p);
+extern int posix_spawnattr_setschedparam(posix_spawnattr_t * restrict attrp,
+                                         const struct sched_param *restrict sched_p);
+extern int posix_spawnattr_getschedpolicy(const posix_spawnattr_t * restrict attrp,
+                                          int *restrict policy_p);
 extern int posix_spawnattr_setschedpolicy(posix_spawnattr_t * attrp, int policy);
 
 extern int posix_spawn_file_actions_init(posix_spawn_file_actions_t * fact_p);
@@ -83,18 +83,18 @@ extern int posix_spawn_file_actions_destroy(posix_spawn_file_actions_t * fact_p)
 extern int posix_spawn_file_actions_addclose(posix_spawn_file_actions_t * fact_p, int fd);
 extern int posix_spawn_file_actions_adddup2(posix_spawn_file_actions_t * fact_p, int fd,
                                             int new_fd);
-extern int posix_spawn_file_actions_addopen(posix_spawn_file_actions_t * _Restrict fact_p,
-                                            int new_fd, const char *_Restrict path, int oflags,
+extern int posix_spawn_file_actions_addopen(posix_spawn_file_actions_t * restrict fact_p,
+                                            int new_fd, const char *restrict path, int oflags,
                                             mode_t omode);
 
-extern int posix_spawn(pid_t * _Restrict pid, const char *_Restrict path,
+extern int posix_spawn(pid_t * restrict pid, const char *restrict path,
                        const posix_spawn_file_actions_t * file_actions,
-                       const posix_spawnattr_t * _Restrict __attrp, char *const argv[_Restrict],
-                       char *const envp[_Restrict]);
-extern int posix_spawnp(pid_t * _Restrict pid, const char *_Restrict file,
+                       const posix_spawnattr_t * restrict __attrp, char *const argv[restrict],
+                       char *const envp[restrict]);
+extern int posix_spawnp(pid_t * restrict pid, const char *restrict file,
                         const posix_spawn_file_actions_t * file_actions,
-                        const posix_spawnattr_t * _Restrict __attrp, char *const argv[_Restrict],
-                        char *const envp[_Restrict]);
+                        const posix_spawnattr_t * restrict __attrp, char *const argv[restrict],
+                        char *const envp[restrict]);
 
 #define POSIX_SPAWN_SETPGROUP		0x00000001  /* set process group */
 #define POSIX_SPAWN_SETSIGMASK		0x00000002  /* set mask to sigmask */
@@ -120,29 +120,29 @@ extern int posix_spawnp(pid_t * _Restrict pid, const char *_Restrict file,
 #define POSIX_SPAWN_ALIGN_NOFAULT	0x02000000  /* Don't fault on misalignment, and attempt to fix it (may be slow) */
 
 
-extern int posix_spawnattr_getxflags(const posix_spawnattr_t * _Restrict attrp,
-                                     uint32_t * _Restrict flags_p);
+extern int posix_spawnattr_getxflags(const posix_spawnattr_t * restrict attrp,
+                                     uint32_t * restrict flags_p);
 extern int posix_spawnattr_setxflags(posix_spawnattr_t * attrp, uint32_t flags);
-extern int posix_spawnattr_addpartition(posix_spawnattr_t * _Restrict attrp,
+extern int posix_spawnattr_addpartition(posix_spawnattr_t * restrict attrp,
                                         const char *partition_path, part_dcmd_flags_t flags);
-extern int posix_spawnattr_addpartid(posix_spawnattr_t * _Restrict attrp, part_id_t part_id,
+extern int posix_spawnattr_addpartid(posix_spawnattr_t * restrict attrp, part_id_t part_id,
                                      part_dcmd_flags_t flags);
 #define posix_spawnattr_addmempartid(__attrp__, __part_id__, __flags__)		posix_spawnattr_addpartid((_attrp__), (__part_id__), (__flags__))
 #define posix_spawnattr_addschedpartid(__attrp__, __part_id__, __flags__)	posix_spawnattr_addpartid((_attrp__), (__part_id__), (__flags__))
-extern int posix_spawnattr_getpartid(const posix_spawnattr_t * _Restrict attrp, int *num,
+extern int posix_spawnattr_getpartid(const posix_spawnattr_t * restrict attrp, int *num,
                                      partlist_info_t plist_info[]);
-extern int posix_spawnattr_getrunmask(const posix_spawnattr_t * _Restrict attrp,
-                                      uint32_t * _Restrict runmask_p);
+extern int posix_spawnattr_getrunmask(const posix_spawnattr_t * restrict attrp,
+                                      uint32_t * restrict runmask_p);
 extern int posix_spawnattr_setrunmask(posix_spawnattr_t * attrp, uint32_t runmask);
-extern int posix_spawnattr_getsigignore(const posix_spawnattr_t * _Restrict attrp,
-                                        sigset_t * _Restrict sigset_p);
-extern int posix_spawnattr_setsigignore(posix_spawnattr_t * _Restrict attrp,
-                                        const sigset_t * _Restrict sigset_p);
-extern int posix_spawnattr_getstackmax(const posix_spawnattr_t * _Restrict attrp,
-                                       uint32_t * _Restrict size_p);
+extern int posix_spawnattr_getsigignore(const posix_spawnattr_t * restrict attrp,
+                                        sigset_t * restrict sigset_p);
+extern int posix_spawnattr_setsigignore(posix_spawnattr_t * restrict attrp,
+                                        const sigset_t * restrict sigset_p);
+extern int posix_spawnattr_getstackmax(const posix_spawnattr_t * restrict attrp,
+                                       uint32_t * restrict size_p);
 extern int posix_spawnattr_setstackmax(posix_spawnattr_t * attrp, uint32_t size);
-extern int posix_spawnattr_getnode(const posix_spawnattr_t * _Restrict attrp,
-                                   uint32_t * _Restrict node_p);
+extern int posix_spawnattr_getnode(const posix_spawnattr_t * restrict attrp,
+                                   uint32_t * restrict node_p);
 extern int posix_spawnattr_setnode(posix_spawnattr_t * attrp, uint32_t node);
 
 

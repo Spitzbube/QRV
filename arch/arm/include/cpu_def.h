@@ -49,6 +49,8 @@ typedef ARM_PERFREGS		PERF_REGISTERS;
 #define CPU_V2P(v)				((paddr_t)(uintptr_t)(v))
 #define CPU_VADDR_IN_RANGE(v)	1
 
+#define PERFREGS_CPUID_ARM	0x0010
+
 /* registers that need to be saved for interrupt routine invocation */
 struct cpu_intrsave {
 	char	dummy;

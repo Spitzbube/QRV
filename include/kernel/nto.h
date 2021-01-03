@@ -26,22 +26,7 @@
 #include <inttypes.h>
 #include <sys/neutrino.h>
 #include <kernel/types.h>
-
-#if defined(__X86__)
-#include <kernel/cpu_x86.h>
-#elif defined(__PPC__)
-#include <kernel/cpu_ppc.h>
-#elif defined(__MIPS__)
-#include <kernel/cpu_mips.h>
-#elif defined(__SH__)
-#include <kernel/cpu_sh.h>
-#elif defined(__ARM__)
-#include <kernel/cpu_arm.h>
-#elif defined(__RISCV__)
-#include <kernel/cpu_riscv.h>
-#else
-#error not configured for system
-#endif
+#include <arch/cpu_def.h>
 
 #include <sys/fault.h>
 #include <sys/debug.h>

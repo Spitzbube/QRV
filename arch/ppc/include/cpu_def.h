@@ -86,6 +86,9 @@ typedef PPC_PERFREGS		PERF_REGISTERS;
 #define VM_FAULT_GLOBAL		0x08000000
 #define VM_FAULT_KEREXIT	0x04000000
 
+#define PERFREGS_CPUID_PPC	0x0004
+#define PERFREGS_PARTID_7450	0x0001
+
 /* registers that need to be saved for interrupt routine invocation */
 struct cpu_intrsave {
 	ppcint		gpr2;

@@ -50,6 +50,11 @@ typedef X86_PERFREGS		PERF_REGISTERS;
 #define VM_USER_SPACE_BOUNDRY		0xbfffffff
 #define VM_KERN_SPACE_BOUNDRY		0xffffffff
 
+#define PERFREGS_CPUID_X86	0x0001
+#define PERFREGS_PARTID_PENTIUM		0x0001
+#define PERFREGS_PARTID_P6FAMILY	0x0002
+#define PERFREGS_PARTID_PENTIUM4XEON	0x0004
+
 /* registers that need to be saved for interrupt routine invocation */
 struct cpu_intrsave {
 	char	dummy;
@@ -83,4 +88,3 @@ struct cpu_extra_state {
 
 void	v86_mark_running(unsigned on);
 
-/* __SRCVERSION("cpu_x86.h $Rev: 202117 $"); */

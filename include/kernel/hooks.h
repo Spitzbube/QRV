@@ -28,7 +28,7 @@ struct fault_info;
 #define MM_FUNCS(extra) \
 	MMF(void,	configure,		(char *cfg), extra) \
 	MMF(void,	init_mem,		(int phase), extra) \
-	MMF(void,	aspace,			(PROCESS *prp, PROCESS **pactprp), extra)	\
+	MMF(void,	aspace,			(PROCESS *prp, PROCESS **pactprp), extra) \
 	MMF(int,	fault,			(struct fault_info *), extra) \
 	MMF(int,	map_xfer,		(PROCESS *actprp, PROCESS *prp, IOV **piov, int *pparts, int *poff, IOV *niov, int *pnparts, unsigned flags), extra) \
 	MMF(int,	mcreate,		(PROCESS *prp), extra) \

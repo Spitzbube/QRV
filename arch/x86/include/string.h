@@ -33,21 +33,6 @@
 #endif
 
 _C_STD_BEGIN
-#if defined(__WATCOMC__) && defined(__INLINE_FUNCTIONS__)
- #pragma intrinsic(memchr,memcmp,memcpy,strcat,strcpy,strlen,strchr)
- #define __HAVE_ARCH_MEMCHR
- #define __HAVE_ARCH_MEMCMP
- #define __HAVE_ARCH_MEMCPY
- #define __HAVE_ARCH_STRCAT
- #define __HAVE_ARCH_STRCPY
- #define __HAVE_ARCH_STRLEN
- #define __HAVE_ARCH_STRCHR
- #ifndef __386__
-  #pragma intrinsic(memset,strcmp)
-  #define __HAVE_ARCH_MEMSET
-  #define __HAVE_ARCH_STRCMP
- #endif
-#endif
 
 #if (defined(__GNUC__) || defined(__INTEL_COMPILER)) && defined(__OPTIMIZE__)
 
@@ -83,5 +68,3 @@ _C_STD_BEGIN
 _C_STD_END
 
 #endif
-
-/* __SRCVERSION("string.h $Rev: 153052 $"); */
