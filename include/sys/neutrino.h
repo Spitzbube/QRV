@@ -82,7 +82,6 @@ typedef struct intrspin {
     volatile unsigned value;
 } intrspin_t;
 
-#include <arch/neutrino.h>
 #include <stdint.h>
 #include <arch/cpu_def.h>
 
@@ -420,6 +419,7 @@ struct _clockperiod {
 struct iovec;
 struct _asyncmsg_connection_descriptor;
 union _channel_connect_attr;
+
 /*
  * Function prototypes for all kernel calls.
  */
@@ -623,7 +623,7 @@ extern int SyncSemWait(sync_t * __sync, int __tryto);
 extern int SyncSemWait_r(sync_t * __sync, int __tryto);
 
 /* process manager private kernel interface */
-extern int __Ring0(void (*func)(void *), void *__arg);
+extern long __Ring0(void (*func)(void *), void *__arg);
 
 extern int ClockTime(clockid_t __id, const _Uint64t * _new, _Uint64t * __old);
 extern int ClockTime_r(clockid_t __id, const _Uint64t * _new, _Uint64t * __old);
@@ -647,31 +647,6 @@ extern int NetSignalKill(void *sigdata, struct _cred_info *cred);
 extern int MtCtl(int __call_type, void *__call_data);
 
 extern int TraceEvent(int __code, ...);
-extern void DebugBreak(void);
-extern void DebugKDBreak(void);
-extern void DebugKDOutput(const char *__text, _CSTD size_t __len);
-
-#define DebugBreak() 		__inline_DebugBreak()
-#define DebugKDBreak() 		__inline_DebugKDBreak()
-#define DebugKDOutput(text,len)	__inline_DebugKDOutput(text,len)
-
-extern void InterruptEnable(void);
-extern void InterruptDisable(void);
-extern int InterruptMask(int __intr, int __id);
-extern int InterruptUnmask(int __intr, int __id);
-extern void InterruptLock(struct intrspin *__spin);
-extern void InterruptUnlock(struct intrspin *__spin);
-extern unsigned InterruptStatus(void);
-
-#define InterruptEnable() 	__inline_InterruptEnable()
-#define InterruptDisable()	__inline_InterruptDisable()
-#define InterruptLock(__spin)	__inline_InterruptLock(__spin)
-#define InterruptUnlock(__spin)	__inline_InterruptUnlock(__spin)
-#define InterruptStatus()	__inline_InterruptStatus()
-
-/* For backwards compatibility only, use SyncTypeCreate[_r] instead */
-extern int SyncCreate(sync_t * __sync, const struct _sync_attr *__attr);
-extern int SyncCreate_r(sync_t * __sync, const struct _sync_attr *__attr);
 
 __END_DECLS
 #endif
