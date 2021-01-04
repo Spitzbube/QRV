@@ -120,14 +120,6 @@
 #define SIGCODE_STORE				0x80000000
 #define SIGCODE_SSTEP				0x80000000  /* for use with F.P. emulator */
 
-#if VM_USER_SPACE_BOUNDRY < VM_KERN_SPACE_BOUNDRY
-    // kernel/ProcNto is in high memory
-#define WITHIN_BOUNDRY(first, last, boundry) ((first) <= (boundry) && (last) <= (boundry))
-#else
-    // kernel/ProcNto is in low memory
-#define WITHIN_BOUNDRY(first, last, boundry) ((first) >= (boundry) && (last) >= (boundry))
-#endif
-
 /* flags for soul entries */
 #define	SOUL_CRITICAL					0x01
 #define	SOUL_NOFREE					0x02

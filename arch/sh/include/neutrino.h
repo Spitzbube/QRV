@@ -32,8 +32,11 @@ __BEGIN_DECLS
 #ifdef	__KERCPU_H_
 extern volatile unsigned long	*__shadow_imask;
 
-static __inline__ void __attribute__((__unused__))
-(__inline_InterruptLock)(struct intrspin *__spin) {
+/**
+ * \brief Disable interrupts and wait on a spinlock
+ */
+static inline void InterruptLock(struct intrspin *__spin)
+{
 
 	__inline_InterruptDisable();
 #if defined(VARIANT_smp)
@@ -47,8 +50,8 @@ static __inline__ void __attribute__((__unused__))
 	__asm__ __volatile__(
 	"	mov		%1, r1;"
 	"0:	mov.l	@r1, r0;"	/* grab old __spin->value  */
-	"	tst		r0, r0;"	/* is it zero?			   */
-	"	bf		0b;"		/* it is non-zero -- spin  */
+	"	tst	r0, r0;"	/* is it zero?			   */
+	"	bf	0b;"		/* it is non-zero -- spin  */
 	"	.word	0x0163;"	/* movli.l @r1, r0         */
 	"	mov		r0, %0;"	/* old __spin->value       */
 	"	mov		#1, r0;"	/* set __spin->value to 1  */
@@ -67,16 +70,18 @@ static __inline__ void __attribute__((__unused__))
 #endif
 }
 
-static __inline__ void __attribute__((__unused__))
-(__inline_InterruptUnlock)(struct intrspin *__spin) {
+static inline void InterruptUnlock(struct intrspin *__spin)
+{
 	/*
 	 * WARNING: SH4A SMP does not currently require a memory barrier here.
 	 */
 	__spin->value = 0;
 	__inline_InterruptEnable();
 }
-#else
-#include <sh/cpu.h>
+
+#else   /* Uni-processor */
+
+#include <arch/cpu_def.h>
 extern volatile unsigned long	*__shadow_imask;
 
 /*
@@ -230,5 +235,3 @@ ClockCycles(void) {
 #endif
 
 __END_DECLS
-
-/* __SRCVERSION("neutrino.h $Rev: 199716 $"); */

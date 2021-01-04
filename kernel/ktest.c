@@ -47,5 +47,3 @@ main(int argc, char *argv[])
         sleep(1);
     }
 }
-
-__SRCVERSION("ktest.c $Rev: 201493 $");

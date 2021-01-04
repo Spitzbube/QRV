@@ -31,8 +31,8 @@
 
 #define KARGSLOT( arg )		arg; FILLER(__LINE__)
 
-#define REGIP(reg)		(reg->pc)
-#define REGSP(reg)		(reg->gpr[RISCV_REG_SP])
+#define REGIP(reg)		((reg)->pc)
+#define REGSP(reg)		((reg)->gpr[RISCV_REG_SP])
 #define SETREGIP(reg,v)		(REGIP(reg) = (uintptr_t)(v))
 #define SETREGSP(reg,v)		(REGSP(reg) = (uintptr_t)(v))
 

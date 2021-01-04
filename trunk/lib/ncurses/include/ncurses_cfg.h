@@ -101,7 +101,7 @@
 #undef const
 #undef inline
 #else
-#if defined(lint) || defined(TRACE) || defined(__WATCOMC__)
+#if defined(lint) || defined(TRACE)
 #undef inline
 #define inline /* nothing */
 #endif

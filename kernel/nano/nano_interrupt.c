@@ -167,6 +167,7 @@ interrupt_attach(int level, const struct sigevent *(*handler) (void *area, int i
         return -1;
     }
 
+#ifndef CONFIG_MINIDRIVER
     if (level >= 0) {
         int num_md;
 
@@ -188,6 +189,7 @@ interrupt_attach(int level, const struct sigevent *(*handler) (void *area, int i
             }
         }
     }
+#endif
 
     itp->thread = act;
     itp->level = level;

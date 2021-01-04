@@ -177,5 +177,3 @@ int kdecl ker_sched_yield(THREAD * act, struct kerargs_null *kap)
     yield();
     return EOK;
 }
-
-__SRCVERSION("ker_sched.c $Rev: 153052 $");

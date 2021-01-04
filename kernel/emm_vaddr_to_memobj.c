@@ -22,5 +22,3 @@ OBJECT *emm_vaddr_to_memobj(PROCESS * prp, void *vaddr, unsigned *offset, int cr
     *offset = CPU_V2P(vaddr);
     return (void *) _syspage_ptr;
 }
-
-__SRCVERSION("emm_vaddr_to_memobj.c $Rev: 153052 $");

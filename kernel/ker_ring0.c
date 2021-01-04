@@ -28,5 +28,3 @@ int kdecl ker_ring0(THREAD * act, struct kerargs_ring0 *kap)
     (*kap->func) (kap->arg);
     return ENOERROR;
 }
-
-__SRCVERSION("ker_ring0.c $Rev: 153052 $");

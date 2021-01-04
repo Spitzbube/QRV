@@ -256,5 +256,3 @@ void miniproc_start()
     attr.__stacksize = 1024;
     (void) ThreadCreate(0, &_miniproc, NULL, &attr);
 }
-
-__SRCVERSION("miniproc_start.c $Rev: 156323 $");

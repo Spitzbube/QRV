@@ -8,7 +8,7 @@ Key differences from the standard QNX 6.4:
  * re-organized source tree
  * integration of startup into the same source tree
  * (planned) configuration system, same as in Linux
- * getting rid of callouts/callins/patches
+ * getting rid of callouts/callins/patchers
  * simplifications in the scheduler, multicore-only
  * Unix filesystem (taken from xv6)
  * disk device driver (devb) for QEMU virtio (taken from xv6)

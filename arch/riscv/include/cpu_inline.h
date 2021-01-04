@@ -326,13 +326,36 @@ static inline void InterruptLock(struct intrspin *__spin)
 #endif
 }
 
+/**
+ * \brief Release the spinlock and enable interrupts
+ */
 static inline void InterruptUnlock(struct intrspin *__spin)
 {
-	__asm__ __volatile__ (
-		"amoswap.w.rl x0, x0, (%0)" : "=r" (__spin->value)
-	);
-	InterruptEnable();
+    __asm__ __volatile__ (
+        "amoswap.w.rl x0, x0, (%0)" : "=r" (__spin->value)
+    );
+    InterruptEnable();
 }
 
+/**
+ * \brief Cause a breakpoint in the debugger.
+ */
+static inline void DebugBreak(void)
+{
+    __asm__ __volatile__ ("ebreak");
+}
+
+/**
+ * \brief Enter the kernel debugger.
+ *
+ */
+static inline void DebugKDBreak(void)
+{
+    __asm__ __volatile__ (
+        "slli x0, x0, 0x1f\n"    // Entry NOP
+        "ebreak\n"               // Break to debugger
+        "srai x0, x0, 7\n"       // NOP encoding the semihosting call number 7
+    );
+}
 
 #endif

@@ -18,6 +18,7 @@
 #ifndef _RISCV_CPU_DEF_H
 #define _RISCV_CPU_DEF_H
 
+#include <kernel/macros.h>
 #include <arch/cpu.h>
 #include <arch/smpxchg.h>
 
@@ -39,8 +40,9 @@ typedef RISCV_PERF_REGISTERS    PERF_REGISTERS;
 #define DEF_VIRTUAL_FIRST_THREAD_STACKSIZE	131072
 #define DEF_PHYSICAL_FIRST_THREAD_STACKSIZE	4096
 
-#define VM_USER_SPACE_BOUNDRY		0xbfffffff
-#define VM_KERN_SPACE_BOUNDRY		0xffffffff
+/* For RV64 */
+#define VM_USER_SPACE_BOUNDRY		GIG(128)-1
+#define VM_KERN_SPACE_BOUNDRY		0xffffffffffffffff
 
 #define STACK_ALIGNMENT				16
 #define STACK_INITIAL_CALL_CONVENTION_USAGE	0

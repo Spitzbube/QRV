@@ -31,6 +31,92 @@
 
 #define __cpu_membarrier() ({ __asm__ __volatile__ ("nop" : : : "memory"); })
 
-#endif
+static inline void InterruptEnable(void)
+{
+    unsigned __tmp;
 
-/* __SRCVERSION("cpuinline.h $Rev: 153052 $"); */
+    __asm__ __volatile__(
+        "mrs	%0, cpsr;"
+        "bic	%0, %0, #0xc0;"
+        "msr	cpsr, %0;"
+        : "=r"(__tmp)
+    );
+}
+
+static inline void InterruptDisable(void)
+{
+    unsigned __tmp;
+
+    __asm__ __volatile__(
+        "mrs	%0, cpsr;"
+        "orr	%0, %0, #0xc0;"
+        "msr	cpsr, %0;"
+        :"=r"(__tmp)
+    );
+}
+
+static inline void InterruptLock(struct intrspin *__spin)
+{
+    volatile unsigned tmp;
+
+    __inline_InterruptDisable();
+    __asm__ __volatile__(
+        "	mcr	p15, 0, %3, c7, c10, 4;"
+        "0:	ldr	%0, [%2];"
+        "	teq	%0, #0;"
+        "	bne	0b;"
+        "	swp	%0, %1, [%2];"
+        "	teq	%0, #0;"
+        "	bne	0b;"
+        "	mcr	p15, 0, %3, c7, c10, 4;"
+        : "=&r"(tmp)
+        : "r"(1), "r"(&__spin->value), "r"(0)
+    );
+}
+
+static inline void InterruptUnlock(struct intrspin *__spin)
+{
+    __asm__ __volatile__("mcr	p15, 0, %0, c7, c10, 4;"
+            :
+            :"r"(0)
+    );
+    __spin->value = 0;
+    __inline_InterruptEnable();
+}
+
+static inline unsigned InterruptStatus) (void) {
+    unsigned __val;
+    __asm__ __volatile__("mrs %0, cpsr":"=&r"(__val));
+    return (__val & 0xc0) ^ 0xc0;
+}
+
+static inline void DebugBreak(void)
+{
+    /*
+     * WARNING: must match the breakpoint instruction used by gdb.
+     */
+    __asm__ __volatile__("	.word	0xe7ffdefe");
+}
+
+static inline void DebugKDBreak(void)
+{
+    __asm__ __volatile__("	.word	0xe7ffdeff");
+}
+
+static inline void DebugKDOutput(const char *__text, _CSTD size_t __len) {
+    __asm__ __volatile__("	mov	r0, %0;"
+                         "	mov	r1, %1;"
+                         "	.word	0xe7ffffff"
+                         :
+                         :"r"(__text), "r"(__len)
+                         :"r0", "r1");
+}
+
+/*
+ * ClockCycles must be emulated
+ */
+extern _Uint64t ClockCycles();
+
+#define CLOCKCYCLES_INCR_BIT	0
+
+#endif

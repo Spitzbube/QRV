@@ -72,33 +72,8 @@ int em_event(tracebuf_t *);
 #define _TRACE_CLOCK_MSB           (1^_TRACE_CLOCK_SWAP)
 #define _TRACE_CLOCK_LSB           (0^_TRACE_CLOCK_SWAP)
 #endif
-#if defined(__X86__)
-#define _TRACE_ARGPTR(thp)         ((KSP(thp))+4)
-#define _TRACE_CLOCK_SWAP          (0)
-#define _TRACE_SAVE_REGS(t,c)
-#elif defined(__PPC__)
-#define _TRACE_ARGPTR(thp)         (&(thp)->reg.gpr[3])
-#define _TRACE_CLOCK_SWAP          (0)
-#define _TRACE_SAVE_REGS(t,c)      ((c)->gpr2=(t)->reg.gpr[2],(c)->gpr13=(t)->reg.gpr[13])
-#elif defined(__MIPS__)
-#define _TRACE_ARGPTR(thp)         (&(thp)->reg.regs[MIPS_BAREG(MIPS_REG_A0)])
-#define _TRACE_CLOCK_SWAP          (1)
-#define _TRACE_SAVE_REGS(t,c)      ((c)->gp=*(uint64_t*)&(t)->reg.regs[MIPS_BAREG(MIPS_REG_GP)])
-#elif defined(__ARM__)
-#define _TRACE_ARGPTR(thp)         ((thp)->reg.gpr)
-#define _TRACE_CLOCK_SWAP          (0)
-#define _TRACE_SAVE_REGS(t,c)
-#elif defined(__SH__)
-#define _TRACE_ARGPTR(thp)         (&(thp)->reg.gr[4])
-#define _TRACE_CLOCK_SWAP          (1)
-#define _TRACE_SAVE_REGS(t,c)
-#elif defined(__RISCV__)
-#define _TRACE_ARGPTR(thp)         ((thp)->reg.gpr)
-#define _TRACE_CLOCK_SWAP          (0)
-#define _TRACE_SAVE_REGS(t,c)
-#else
-#error instrumentation not supported
-#endif
+
+#include <arch/ktrace.h>
 
 #define _TRACEDATANUM               (2)
 #define _TRACE_MAX_STR_SIZE         (128)
@@ -135,7 +110,7 @@ int em_event(tracebuf_t *);
 
 #if defined(VARIANT_instr)
 
-#if !defined(NDEBUG) && !defined(__WATCOMC__)
+#if !defined(NDEBUG)
 #define _TRACE_PRINTF(code,x,...)	add_trace_string(_TRACE_MAKE_CODE( RUNCPU, _TRACE_STRUCT_S, _TRACE_USER_C, (code)), (x), __VA_ARGS__)
 #endif
 
@@ -264,5 +239,3 @@ if (trace_masks.system_mask[_NTO_TRACE_SYS_ADDRESS]&_TRACE_ENTER_SYSTEM) trace_e
 
 #define __KERTRACE_H_INCLUDED
 #endif
-
-/* __SRCVERSION("kertrace.h $Rev: 207484 $"); */

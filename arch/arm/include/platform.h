@@ -33,33 +33,6 @@
 #if defined(__QNXNTO__)
 
 /*
-   For gcc-3 and higher, varargs.h is deprecated, and we use the gcc
-   builtin var arg support for stdarg.h, set up in sys/compiler_gnu.h.
- */
-#if (defined(__GNUC__) && __GNUC__ < 3)
-typedef char *__NTO_va_list;
-#define __NTO_va_copy(__d,__s)			((__d)=(__s))
-
-#define	__NTO_va_align(type) \
-	(((sizeof(type) + sizeof(int) - 1) / sizeof(int)) * sizeof(int))
-
-#define	__NTO_va_start_stdarg(ap, last) (ap = ((char *)&(last) + __NTO_va_align(last)))
-#define __NTO_va_arg(ap, type)  		((type *)((ap+=__NTO_va_align(type))-__NTO_va_align(type)))[0]
-#define __NTO_va_end(ap)				((void)0)
-
-#if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 9)
-#define __NTO_va_alist			void *__alist, ...
-#define __NTO_va_dcl
-#define	__NTO_va_start_vararg(ap)		(ap = ((char *)&(__alist)))
-#else  /* __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 9) */
-#define __NTO_va_alist			__builtin_va_alist
-#define __NTO_va_dcl			void *__builtin_va_alist; ...
-#define	__NTO_va_start_vararg(ap)		(ap = ((char *)&(__builtin_va_alist)))
-#endif
-
-#endif /* __GNUC__ < 3 */
-
-/*
  * jmp_buf saves/restores only the callee-saved registers and return pc
  */
 #define __JMPBUFSIZE 	10
@@ -70,5 +43,3 @@ typedef unsigned 		__jmpbufalign;
 #endif
 
 #endif
-
-/* __SRCVERSION("platform.h $Rev: 164949 $"); */

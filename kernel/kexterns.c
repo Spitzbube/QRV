@@ -39,4 +39,3 @@ EXT const uint8_t byte_log2[] = {
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7
 };
 
-__SRCVERSION("kexterns.c $Rev: 153052 $");

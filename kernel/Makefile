@@ -7,8 +7,16 @@ include ../def.mk
 CFLAGS += -I../include
 
 ARCHIVE = kernel.a
-OBJECTS = _main.o \
-          init.o
+
+TESTING = 1
+
+ifdef TESTING
+OBJECTS += ktest.o \
+           miniproc_start.o
+else
+# Add objects here
+OBJECTS += init.o
+endif
 
 all: $(ARCHIVE)($(OBJECTS))
 

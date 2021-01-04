@@ -189,5 +189,3 @@ void shutdown(unsigned sigcode, const CPU_REGISTERS * reg)
 
     RebootSystem(1);
 }
-
-__SRCVERSION("shutdown_nto.c $Rev: 202328 $");

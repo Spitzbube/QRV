@@ -123,11 +123,11 @@
 #define PRI_TO_SIG(pri)		(_SIGMAX-(int)(pri))
 
 /* Vectors */
-#define VECP(ptr, vec, index)	(((unsigned)((ptr) = (vec)->vector[index]) & 3) ? NULL : (ptr))
-#define VECP2(ptr, vec, index)	(((unsigned)((ptr) = (vec)->vector[index]) & 1) ? NULL : VECAND((ptr), ~3))
+#define VECP(ptr, vec, index)		(((uintptr_t)((ptr) = (vec)->vector[index]) & 3) ? NULL : (ptr))
+#define VECP2(ptr, vec, index)		(((uintptr_t)((ptr) = (vec)->vector[index]) & 1) ? NULL : VECAND((ptr), ~3))
 #define VEC(vec, index)			((vec)->vector[index])
-#define VECAND(ptr, bits)		((void *)((bits) & (unsigned)(ptr)))
-#define VECOR(ptr, bits)		((void *)((bits) | (unsigned)(ptr)))
+#define VECAND(ptr, bits)		((void *)((bits) & (uintptr_t)(ptr)))
+#define VECOR(ptr, bits)		((void *)((bits) | (uintptr_t)(ptr)))
 
 /* FPU save areas; low order bits of fpudata is overloaded in SMP case. */
 #if PROCESSORS_MAX > 8
@@ -149,10 +149,11 @@
 #define FPUDATA_PTR(ptr)	(ptr)
 #endif
 
-#define KERCALL_RESTART(act)	{	lock_kernel(); \
-									CRASHCHECK(TYPE_MASK(act->type) != TYPE_THREAD); \
-									SETKTYPE((act), _TRACE_GETSYSCALL((act)->syscall)); \
-									SETKIP(act, KIP(act) - KER_ENTRY_SIZE); }
+#define KERCALL_RESTART(act) { \
+		lock_kernel(); \
+		CRASHCHECK(TYPE_MASK(act->type) != TYPE_THREAD); \
+		SETKTYPE((act), _TRACE_GETSYSCALL((act)->syscall)); \
+		SETKIP(act, KIP(act) - KER_ENTRY_SIZE); }
 
 
 #if !defined(__PPC__) && (defined(WANT_SMP_MACROS) || defined(VARIANT_smp))
@@ -200,17 +201,17 @@
 #define INITSOUL(a,b,c,d,e)		= { 0, a, 0, 0, b, 0, c, c, 0, e, d }
 
 /* Access various special registers */
-#define KTYPE(thp)			REGTYPE(&(thp)->reg)
+#define KTYPE(thp)		REGTYPE(&(thp)->reg)
 #define KSTATUS(thp)		REGSTATUS(&(thp)->reg)
-#define KIP(thp)			REGIP(&(thp)->reg)
-#define KSP(thp)			REGSP(&(thp)->reg)
+#define KIP(thp)		REGIP(&(thp)->reg)
+#define KSP(thp)		REGSP(&(thp)->reg)
 
 #define SETKTYPE(thp, v)	SETREGTYPE(&(thp)->reg, v)
 #define SETKSTATUS(thp,v)	SETREGSTATUS(&(thp)->reg, v)
 #define SETKSP(thp,v)		SETREGSP(&(thp)->reg, v)
 #define SETKIP(thp,v)		SETREGIP(&(thp)->reg, v)
 #ifndef SETKIP_FUNC
-#define SETKIP_FUNC(thp,v)		SETKIP(thp, v)
+#define SETKIP_FUNC(thp,v)	SETKIP(thp, v)
 #endif
 
 /* Manipulate the thread's stack */

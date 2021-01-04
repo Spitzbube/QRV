@@ -223,7 +223,6 @@ EXT uint64_t cycles;
 #endif
 EXT struct qtime_entry *qtimeptr;
 
-EXT struct callout_entry *calloutptr;
 EXT struct syspage_entry *_syspage_ptr;
 EXT SSREPLENISH *ss_replenish_list;
 EXT int (rdecl * scheduler_tick_hook) ();   /* return true if the current thread's timeslice should be ended */
@@ -233,7 +232,7 @@ EXT int (rdecl * kerop_thread_create_hook) (THREAD * act, PROCESS * prp,
 EXT void (rdecl * kerop_thread_destroy_hook) (THREAD * thp);
 EXT void (rdecl * kerop_clock_handler_hook) (THREAD * act);
 EXT void (rdecl * kerop_microaccount_hook) (THREAD * old, THREAD * new);
-EXT unsigned (*callout_timer_value)(struct syspage_entry *, struct qtime_entry *);
+extern unsigned arch_callout_timer_value(struct qtime_entry *);
 
 EXT int (rdecl * kerop_thread_ctl_hook) (THREAD * act, THREAD * op,
                                          struct kerargs_thread_ctl * kap);

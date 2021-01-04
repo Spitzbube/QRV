@@ -68,5 +68,3 @@ int ProcessBind(pid_t pid)
 {
     return (__Ring0(kerext_process_bind, &pid));
 }
-
-__SRCVERSION("kerext_bind.c $Rev: 153052 $");

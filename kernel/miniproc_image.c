@@ -28,26 +28,15 @@
 
 #if defined(__X86__)
 
-#if defined(__WATCOMC__)
-
-void enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_entry *sysp);
-#pragma aux enter_func = \
-	"mov ebp,ebx" \
-	"jmp eax" \
-	parm [eax] [edx] [ecx] [ebx] modify exact [eax];
-
-#elif defined(__GNUC__)
-
 static inline void
 enter_func(Elf32_Addr start, char **argv, char **envp, volatile struct syspage_entry *sysp)
 {
-  asm("	movl %3,%%ebp	;" "	jmp	*%0 ":
-  :"a"(start), "d"(argv), "c"(envp), "b"(sysp));
+    asm (
+        "movl %3, %%ebp	;"
+        "jmp *%0"
+        :
+        :"a"(start), "d"(argv), "c"(envp), "b"(sysp));
 }
-
-#else
-
-#error compiler not supported
 
 #endif
 
@@ -224,5 +213,3 @@ void miniproc_image_start(void)
         scp = (void *) ((char *) scp + scp->hdr.size_lo + (scp->hdr.size_hi << 8));
     }
 }
-
-__SRCVERSION("miniproc_image.c $Rev: 160064 $");

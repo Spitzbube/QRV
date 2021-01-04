@@ -541,5 +541,3 @@ void rdecl pril_update_unregister(PRIL_HEAD * ph, struct pril_update *upp)
         pril->type &= ~FLAG_UPDATER;
     }
 }
-
-__SRCVERSION("nano_misc.c $Rev: 199085 $");

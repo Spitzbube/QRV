@@ -19,12 +19,7 @@
 #include "apm.h"
 #include "aps.h"
 
-/* remove this when we no longer support WATCOM, or WATCOM supports inlines */
-#if (defined(__WATCOMC__) || !defined(NDEBUG))
-static DISPATCH *select_dpp(THREAD * act, PROCESS * prp, part_id_t id)
-#else                           /* (defined(__WATCOMC__) || !defined(NDEBUG)) */
 static __inline__ DISPATCH *select_dpp(THREAD * act, PROCESS * prp, part_id_t id)
-#endif                          /* (defined(__WATCOMC__) || !defined(NDEBUG)) */
 {
     DISPATCH *d = (DISPATCH *) SCHEDPART_SELECT_DPP(prp, id);
     return (d == NULL) ? act->dpp : d;
@@ -982,5 +977,3 @@ uintptr_t GetSp(THREAD * thp)
 {
     return KSP(thp);
 }
-
-__SRCVERSION("kerext_process.c $Rev: 199378 $");
