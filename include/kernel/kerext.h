@@ -56,8 +56,6 @@ void *QueryObject(int type, unsigned index1, int subtype, unsigned index2, unsig
 void QueryObjectDone(void *);
 struct _thread_local_storage *ThreadTLS(struct _thread_local_storage *tls, uintptr_t stackaddr,
                                         unsigned stacksize, unsigned guardsize, uintptr_t esp);
-#define V86Enter(swi) __Ring0(kerext_v86_enter, (void *)swi)
-void kerext_v86_enter(void *data);
 void KerextLock(void);
 void KerextUnlock(void);
 int KerextAmInKernel(void);

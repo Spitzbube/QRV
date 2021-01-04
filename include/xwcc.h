@@ -1,3 +1,14 @@
+/**
+ * \file xwcc.h
+ *
+ * TODO description
+ *
+ * \copyright (c) 1992-2006 by P.J. Plauger. All rights reserved.
+ *
+ * This file is a part of Dinkum C library V5.00:1296.
+ * Consult your license regarding permissions and restrictions.
+ */
+
 /* xwcc.h internal header */
 #ifndef _XWCC
 #define _XWCC
@@ -128,7 +139,3 @@ _END_C_LIB_DECL
 #endif                          /* _IS_C9X */
 #endif                          /* defined(__cplusplus) && !defined(_NO_CPP_INLINES) */
 #endif                          /* _XWCC */
-/*
- * Copyright (c) 1992-2006 by P.J. Plauger.  ALL RIGHTS RESERVED.
- * Consult your license regarding permissions and restrictions.
-V5.00:1296 */

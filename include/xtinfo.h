@@ -1,7 +1,12 @@
-/*
- * Copyright (c) 1992-2006 by P.J. Plauger.  ALL RIGHTS RESERVED.
+/**
+ * \file xtinfo.h
+ *
+ * TODO description
+ *
+ * \copyright (c) 1992-2006 by P.J. Plauger. All rights reserved.
+ *
+ * This file is a part of Dinkum C library V5.00:1296.
  * Consult your license regarding permissions and restrictions.
- *  V5.00:1296
  */
 
 /* xtinfo.h internal header */

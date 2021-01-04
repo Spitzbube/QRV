@@ -1,17 +1,13 @@
-/*
- * $QNXtpLicenseC:
- * Copyright 2006, QNX Software Systems. All Rights Reserved.
+/**
+ * \file float.h
  *
- * This source code may contain confidential information of QNX Software
- * Systems (QSS) and its licensors.  Any use, reproduction, modification,
- * disclosure, distribution or transfer of this software, or any software
- * that includes or is based upon any of this code, is prohibited unless
- * expressly authorized by QSS by written agreement.  For more information
- * (including whether this source code file has been published) please
- * email licensing@qnx.com. $
-*/
-
-
+ * TODO description
+ *
+ * \copyright (c) 1992-2006 by P.J. Plauger. All rights reserved.
+ *
+ * This file is a part of the Dinkum C library V5.00:1296.
+ * Consult your license regarding permissions and restrictions.
+ */
 
 /* float.h standard header -- IEEE 754 version */
 #ifndef _FLOAT
@@ -227,7 +223,4 @@ _END_C_LIB_DECL
 #endif                          /* _DLONG */
     _C_STD_END
 #endif                          /* _FLOAT */
-/*
- * Copyright (c) 1992-2006 by P.J. Plauger.  ALL RIGHTS RESERVED.
- * Consult your license regarding permissions and restrictions.
-V5.00:1296 */
+

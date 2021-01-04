@@ -24,9 +24,11 @@
     //macros.
 #define WANT_SMP_MACROS
 #endif
+
 #if defined(VARIANT_smp)
 #define WANT_SMP_MACROS
 #endif
+
 #if defined(WANT_SMP_MACROS)
 #ifndef PROCESSORS_MAX
 #define PROCESSORS_MAX		8
@@ -44,10 +46,11 @@
 #define MEM_BARRIER_RD()		__cpu_membarrier()
 #define MEM_BARRIER_WR()		__cpu_membarrier()
 #define MEM_BARRIER_RW()		__cpu_membarrier()
-#else
+
+#else /* Single-CPU */
 #define PROCESSORS_MAX			1
 #define NUM_PROCESSORS			1U
-#define RUNCPU					0
+#define RUNCPU				0
 #define SPINLOCK(spin)
 #define SPINUNLOCK(spin)
 #define SENDIPI(cpu,cmd)
@@ -70,22 +73,22 @@
     // the bitmask if we can have 32 CPU's because a lot of processors
     // 'and' the shift count with 0x1f, which makes a shift count of 32
     // become one of zero.
-#define LEGAL_CPU_BITMASK ((0x2 << (NUM_PROCESSORS-1))-1)
+#define LEGAL_CPU_BITMASK ((2UL << (NUM_PROCESSORS-1))-1)
 #else
-#define LEGAL_CPU_BITMASK ((0x1 << NUM_PROCESSORS)-1)
+#define LEGAL_CPU_BITMASK ((1UL << NUM_PROCESSORS)-1)
 #endif
 
 //
 // IPI commands for the SMP kernel.
 //
-#define	IPI_RESCHED			0x00000001
+#define	IPI_RESCHED		0x00000001
 #define IPI_TIMESLICE		0x00000002
 #define IPI_TLB_FLUSH		0x00000004
 #define IPI_TLB_SAFE		0x00000008
 #define IPI_CONTEXT_SAVE	0x00000010
-#define IPI_CHECK_INTR      0x00000020
-#define IPI_PARKIT			0x00000040
-#define IPI_INTR_UNMASK     0x00000080
+#define IPI_CHECK_INTR		0x00000020
+#define IPI_PARKIT		0x00000040
+#define IPI_INTR_UNMASK		0x00000080
 #define IPI_INTR_MASK  		0x00000100
 #define IPI_CLOCK_LOAD 		0x00000200
 #define IPI_CPU_SPECIFIC	0xffff0000

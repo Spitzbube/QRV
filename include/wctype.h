@@ -1,4 +1,14 @@
-/* wctype.h standard header */
+/**
+ * \file wctype.h
+ *
+ * TODO description
+ *
+ * \copyright (c) 1992-2006 by P.J. Plauger. All rights reserved.
+ *
+ * This file is a part of Dinkum C library V5.00:1296
+ * Consult your license regarding permissions and restrictions.
+ */
+
 #ifndef _WCTYPE
 #define _WCTYPE
 #ifndef _YVALS
@@ -73,8 +83,3 @@ using _CSTD iswblank;
 #endif                          /* _IS_C9X */
 
 #endif                          /* _STD_USING */
-
-/*
- * Copyright (c) 1992-2006 by P.J. Plauger.  ALL RIGHTS RESERVED.
- * Consult your license regarding permissions and restrictions.
-V5.00:1296 */

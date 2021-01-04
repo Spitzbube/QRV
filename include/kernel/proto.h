@@ -93,9 +93,9 @@ void *_srealloc(void *data, unsigned old_size, unsigned new_size);
 void *_sreallocfunc(void *data, unsigned old_size, unsigned new_size,
                     unsigned (*alloc)(unsigned size, void **addr));
 void _sfree(void *data, unsigned size);
-void _kfree(void *data);        // does a __Ring0() first
-void _ksfree(void *data, unsigned size);    // does a __Ring0() first
-void *_ksmalloc(unsigned size); // does a __Ring0() first
+void _kfree(void *data);                        // does a __Ring0() first
+void _ksfree(void *data, unsigned size);        // does a __Ring0() first
+void *_ksmalloc(unsigned size);                 // does a __Ring0() first
 void *sbrk(int increment);
 int purger_register(int (*purge)(size_t), unsigned prio);
 int purger_invoke(size_t amount);
@@ -249,3 +249,7 @@ extern void (rdecl * clock_handler_hook_exit) (uint64_t id_hook_context);   /* p
 extern uint64_t(rdecl * intrevent_drain_hook_enter) (void);
 extern void (rdecl * intrevent_drain_hook_exit) (uint64_t id_hook_context); /* parm is output of interevent_drain_hook_enter */
 extern void (rdecl * timer_expiry_hook_max_timer_fires) (unsigned int nfires);
+
+/* Architecture-dependent prototypes */
+int arch_timer_reload(QTIME *);
+int arch_timer_load(QTIME *);

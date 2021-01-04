@@ -1,10 +1,14 @@
-/*
- * Copyright (c) 1992-2006 by P.J. Plauger <pjp@dinkumware.com>
- *               All rights reserved.
+/**
+ * \file yvals.h
  *
- * Consult your license regarding permissions and restrictions.
+ * TODO description
+ *
+ * \copyright (c) 1992-2006 by P.J. Plauger <pjp@dinkumware.com>
+ *                All rights reserved.
  *
  * This file is a part of Dinkum C library V5.00:1296.
+ *
+ * Consult your license regarding permissions and restrictions.
  */
 
 

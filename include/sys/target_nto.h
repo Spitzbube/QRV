@@ -221,15 +221,15 @@
 	struct __name { \
 		_INT32	__pref##_priority; \
 		_INT32	__pref##_curpriority; \
-		union {	\
+		union { \
 			_INT32	__reserved[8]; \
-			struct {	\
-				_INT32	__ss_low_priority;	\
-				_INT32	__ss_max_repl;	\
-				struct __ts	__ss_repl_period;	\
-				struct __ts	__ss_init_budget;	\
-			}			__ss;	\
-		}			__ss_un;	\
+			struct { \
+				_INT32	__ss_low_priority; \
+				_INT32	__ss_max_repl; \
+				struct __ts	__ss_repl_period; \
+				struct __ts	__ss_init_budget; \
+			} __ss; \
+		} __ss_un; \
 	}
 #define __sched_ss_low_priority	__ss_un.__ss.__ss_low_priority
 #define __sched_ss_max_repl		__ss_un.__ss.__ss_max_repl
@@ -335,7 +335,7 @@ typedef _Uint64t _Uintmaxt;
 	}
 
 /*
- * Copyright (c) 1995-1999 by P.J. Plauger.  ALL RIGHTS RESERVED.
+ * Copyright (c) 1995-1999 by P.J. Plauger. All rights reserved.
  * Consult your license regarding permissions and restrictions.
  */
 
@@ -371,7 +371,7 @@ typedef _Uint64t _Uintmaxt;
 
         /* integer properties */
 #define _BITS_BYTE	8
-#define _C2			1           /* 0 if not 2's complement */
+#define _C2		1           /* 0 if not 2's complement */
 #if defined(__CHAR_SIGNED__)
 #define _CSIGN		1           /* 0 if char is not signed */
 #elif defined(__CHAR_UNSIGNED__)

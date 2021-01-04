@@ -23,7 +23,7 @@
 /*
  * ===========================================================================
  *
- * 				Partitioning Compile time Behaviour Modification
+ * Partitioning Compile time Behaviour Modification
  *
  * ===========================================================================
 */
@@ -104,17 +104,12 @@ typedef struct prp_node_s {
 /*
  * LIST manipulation macros
 */
-#ifdef __GNUC__
-#define TYPEOF(t)	typeof(t)
-#else                           /* __GNUC__ */
-#define TYPEOF(t)               // ok for now because the LINKx macros don't current use the type anyway
-#endif                          /* __GNUC__ */
 #define LIST_INIT(_q)		LINK4_INIT((_q))
 #define LIST_FIRST(_q)		(_q).head
 #define LIST_LAST(_q)		(_q).tail
 #define LIST_COUNT(_q)		(_q).count
-#define LIST_ADD(_q, _n)	LINK4_END((_q), &(_n)->hdr, TYPEOF(_n))
-#define LIST_DEL(_q, _n)	LINK4_REM((_q), &(_n)->hdr, TYPEOF(_n))
+#define LIST_ADD(_q, _n)	LINK4_END((_q), &(_n)->hdr, typeof(_n))
+#define LIST_DEL(_q, _n)	LINK4_REM((_q), &(_n)->hdr, typeof(_n))
 #define LIST_NEXT(_n)		((_n)->hdr.next)
 #define LIST_PREV(_n)		((part_qnode_t *)((((char *)((_n)->hdr.prev))) - offsetof(part_qnode_t, next)))
 
