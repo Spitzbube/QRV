@@ -38,5 +38,3 @@ void rdecl interrupt_smp_sync(unsigned flag)
     }
     CPU_SLOCK_UNLOCK(&intr_slock);
 }
-
-__SRCVERSION("nano_smp_interrupt.c $Rev: 153052 $");

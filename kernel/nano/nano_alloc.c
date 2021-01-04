@@ -95,7 +95,9 @@ static size_t pregrow_size;
 static pthread_mutex_t proc_alloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
-
+/**
+ * \brief TODO
+ */
 void *_sreallocfunc(void *data, unsigned old_size, unsigned new_size,
                     unsigned (*alloc)(unsigned size, void **addr))
 {
@@ -150,9 +152,8 @@ void *_sreallocfunc(void *data, unsigned old_size, unsigned new_size,
                 fit = pp;
             }
 
-            if (data
-                && ((unsigned) data >= (unsigned) p
-                    && (unsigned) data < ((unsigned) p + p->size))) {
+            if (data && ((uintptr_t) data >= (uintptr_t) p
+                     && (uintptr_t) data < ((uintptr_t) p + p->size))) {
                 // freed an already freed area
                 crash();
 
@@ -164,7 +165,7 @@ void *_sreallocfunc(void *data, unsigned old_size, unsigned new_size,
                 return 0;
             }
 
-            if (data && (unsigned) p > (unsigned) data) {
+            if (data && (uintptr_t) p > (uintptr_t) data) {
                 break;
             }
         }
@@ -550,6 +551,3 @@ void *_ksmalloc(unsigned size)
     return (void *) (__Ring0(ker_smalloc, &data));
 }
 
-
-
-__SRCVERSION("nano_alloc.c $Rev: 199078 $");

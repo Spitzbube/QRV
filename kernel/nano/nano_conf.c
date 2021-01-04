@@ -40,5 +40,3 @@ const long kernel_conf_table[] = {
     _CONF_VALUE_NUM | _SC_AIO_PRIO_DELTA_MAX, NUM_PRI - 1,
     _CONF_END
 };
-
-__SRCVERSION("nano_conf.c $Rev: 153052 $");

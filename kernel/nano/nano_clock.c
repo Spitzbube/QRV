@@ -51,7 +51,6 @@ const struct sigevent *clock_handler(void *dummy, int id)
 {
     QTIME *qtp = qtimeptr;
     int i;
-    int (*timer_reload)(struct syspage_entry *, QTIME *);
     int my_cpu;
     int my_inkernel;
     int hi_pri;
@@ -68,11 +67,8 @@ const struct sigevent *clock_handler(void *dummy, int id)
     // The kernel debugger also grabs this and points it to code within
     // itself when it's present - it's used for check for async stop
     // requests.
-    timer_reload = calloutptr->timer_reload;
-    if (timer_reload != NULL) {
-        if (!timer_reload(_syspage_ptr, qtp))
-            return (NULL);
-    }
+    if (!arch_timer_reload(qtp))
+            return NULL;
 
 #if defined(COUNT_CYCLES)
     // Update cycle counter so we can emulate rdtsc on non-pentium machines.
@@ -282,25 +278,15 @@ void rdecl snap_time(uint64_t * tsp, int incl_tod)
     }
 }
 
-#if defined(__X86__) && defined(__WATCOMC__)
-
-extern unsigned muldiv(unsigned long val, unsigned mul, unsigned div);
-#pragma aux muldiv = 	\
-	"mul	ecx"			\
-	"div	ebx"			\
-	parm [eax] [ecx] [ebx] modify exact [eax edx] value [eax]
-
-#elif defined(__X86__) && defined(__GNUC__)
+#if defined(__X86__) && defined(__GNUC__)
 #define muldiv(val,mul,div) ({ register unsigned long quo, rem; __asm__( \
        "mull %3\n\t" \
        "divl %4" \
        : "=&a" (quo), "=&d" (rem) : "0" ((unsigned long)val), \
        "rm" ((unsigned)mul), "rm" ((unsigned)div)); quo; })
 
-#elif defined(__MIPS__) \
-   || defined(__PPC__) \
-   || defined(__ARM__) \
-   || defined(__SH__)
+#elif defined(__MIPS__) || defined(__PPC__) || \
+      defined(__ARM__) || defined(__SH__) || defined (__RISCV__)
 
 static unsigned muldiv(unsigned long val, unsigned mul, unsigned divl)
 {
@@ -360,7 +346,7 @@ void rdecl clock_resolution(unsigned long nsec)
                 timer_load = 1;
         }
         qtp->timer_load = timer_load;
-        calloutptr->timer_load(_syspage_ptr, qtp);
+        arch_timer_load(qtp);
 
         /* The timer_load routine may adjust qtp->timer_load */
         if (qtp->timer_scale < NANO_SCALE) {
@@ -445,5 +431,3 @@ void clock_start(unsigned long nsec)
         (void) ThreadCtl(_NTO_TCTL_RUNMASK, (void *) LEGAL_CPU_BITMASK);
     }
 }
-
-__SRCVERSION("nano_clock.c $Rev: 212631 $");

@@ -81,5 +81,3 @@ void rdecl connect_coid_disconnect(CONNECT * cop, CHANNEL * chp, int prio)
         flag = _NTO_SIDE_CHANNEL;
     }
 }
-
-__SRCVERSION("nano_connect.c $Rev: 169542 $");

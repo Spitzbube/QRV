@@ -18,6 +18,9 @@
 #include "externs.h"
 #include <unistd.h>
 
+/**
+ * \brief TODO
+ */
 uint32_t rdecl keygen(IOV * msg, int32_t parts, uint32_t key1)
 {
     int32_t key2, i;
@@ -35,6 +38,9 @@ uint32_t rdecl keygen(IOV * msg, int32_t parts, uint32_t key1)
 }
 
 
+/**
+ * \brief TODO
+ */
 void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *rep)
 {
     PROCESS *prp;
@@ -172,14 +178,16 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
             vlen = GETIOVLEN(viop);
         }
 
-        return (nparts);
+        return nparts;
     }
 
 
-//
-// The server ends up reply blocked on the
-// network thread who will msgreadv/msgreadiov/msgwritev the data in/out.
-//
+/**
+ * \brief TODO
+ *
+ * \note The server ends up reply blocked on the network thread who will
+ *        msgreadv/msgreadiov/msgwritev the data in/out.
+ */
     CONNECT *rdecl net_send2(KERARGS * kap, int vtid, CONNECT * cop, THREAD * thp) {
         THREAD *act = actives[KERNCPU];
         int type = KTYPE(act);
@@ -187,7 +195,7 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
         unsigned prio;
 
         if (!net.chp) {
-            // qnet is either dead or never started. For dead case, have to repaire vthreads
+            // qnet is either dead or never started. For dead case, have to repair vthreads
             if (type == __KER_CHANNEL_DESTROY) {
                 if (thp->args.ms.server != 0) {
                     thp->args.ms.server->client = 0;
@@ -339,7 +347,7 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
             force_ready(act, status | _FORCE_SET_ERROR);
         }
 
-        return (NULL);
+        return NULL;
     }
 
 
@@ -474,6 +482,9 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
         return ENOERROR;
     }
 
+/**
+ * \brief TODO
+ */
     int rdecl net_send_pulse(THREAD * act, CONNECT * cop, int coid, int prio, int code, int value) {
         struct _pulse *p;
 
@@ -494,5 +505,3 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
 
         return net_sendmsg(act, cop, prio);
     }
-
-    __SRCVERSION("nano_message.c $Rev: 207484 $");

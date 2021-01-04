@@ -18,19 +18,19 @@
 #include "externs.h"
 
 #define emm_configure		smm_configure
-#define emm_aspace			smm_aspace
+#define emm_aspace		smm_aspace
 #define emm_debuginfo		smm_debuginfo
-#define emm_dup				smm_dup
-#define emm_fault			smm_fault
-#define emm_mapinfo			smm_mapinfo
-#define emm_mcreate			smm_mcreate
+#define emm_dup			smm_dup
+#define emm_fault		smm_fault
+#define emm_mapinfo		smm_mapinfo
+#define emm_mcreate		smm_mcreate
 #define emm_mdestroy		smm_mdestroy
-#define emm_mlock			smm_mlock
-#define emm_munlock			smm_munlock
+#define emm_mlock		smm_mlock
+#define emm_munlock		smm_munlock
 #define emm_mprotect		smm_mprotect
-#define emm_msync			smm_msync
-#define emm_resize			smm_resize
-#define emm_swapper			smm_swapper
+#define emm_msync		smm_msync
+#define emm_resize		smm_resize
+#define emm_swapper		smm_swapper
 #define emm_map_xfer		smm_map_xfer
 #define emm_vaddrinfo		smm_vaddrinfo
 #define emm_validate		smm_validate
@@ -46,5 +46,3 @@ MEMMGR memmgr_rte = {
 #define MMF(r, f, p, e)		MMF_DEFN(r, f, p, e)
     MM_FUNCS(emm)
 };
-
-__SRCVERSION("nano_memphys.c $Rev: 153052 $");
