@@ -247,13 +247,13 @@ static inline uint64_t r_time()
 }
 
 // enable device interrupts
-static inline void intr_on()
+static inline void InterruptEnable()
 {
     w_sstatus(r_sstatus() | SSTATUS_SIE);
 }
 
 // disable device interrupts
-static inline void intr_off()
+static inline void InterruptDisable()
 {
     w_sstatus(r_sstatus() & ~SSTATUS_SIE);
 }
@@ -268,7 +268,7 @@ static inline int intr_get()
 static inline uint64_t r_sp()
 {
     uint64_t x;
-    asm volatile ("mv %0, sp":"=r" (x));
+    asm volatile ("mv %0, sp" : "=r" (x));
     return x;
 }
 
@@ -289,7 +289,7 @@ static inline void w_tp(uint64_t x)
 static inline uint64_t r_ra()
 {
     uint64_t x;
-    asm volatile ("mv %0, ra":"=r" (x));
+    asm volatile ("mv %0, ra" : "=r" (x));
     return x;
 }
 
@@ -299,5 +299,40 @@ static inline void sfence_vma()
     // the zero, zero means flush all TLB entries.
     asm volatile ("sfence.vma zero, zero");
 }
+
+/**
+ * \brief Disable interrupts and wait on a spinlock
+ */
+static inline void InterruptLock(struct intrspin *__spin)
+{
+
+    InterruptDisable();
+#if defined(VARIANT_smp)
+{
+    __asm__ __volatile__(
+        "       li           t0, 1;"         // Initialize swap value
+        "1:     lw           t1, (%0);"      // Check if lock is held
+        "       bnez         t1, 1b;"        // Retry if held
+        "       amoswap.w.aq t1, t0, (%0);"  // Attempt to acquire lock
+        "       bnez         t1, 1b"         // Retry if held */
+        :
+        : "r" (&__spin->value)
+        : "t0", "t1"
+    );
+}
+#else
+    /* acquire the spin lock */
+    __spin->value = 1;
+#endif
+}
+
+static inline void InterruptUnlock(struct intrspin *__spin)
+{
+	__asm__ __volatile__ (
+		"amoswap.w.rl x0, x0, (%0)" : "=r" (__spin->value)
+	);
+	InterruptEnable();
+}
+
 
 #endif
