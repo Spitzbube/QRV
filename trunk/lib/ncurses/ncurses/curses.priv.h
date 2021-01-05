@@ -708,8 +708,8 @@ extern SCREEN *SP;
 extern int _nc_slk_format;  /* != 0 if slk_init() called */
 extern int _nc_slk_initialize(WINDOW *, int);
 
-/* 
- * Some constants related to SLK's 
+/*
+ * Some constants related to SLK's
  */
 #define MAX_SKEY_OLD	   8	/* count of soft keys */
 #define MAX_SKEY_LEN_OLD   8	/* max length of soft key text */

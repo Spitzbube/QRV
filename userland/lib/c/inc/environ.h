@@ -36,6 +36,3 @@ extern void _unsetenv(const char* name);
 #define _environ_lock()		((void)0)
 #define _environ_unlock()	((void)0)
 #endif
-
-
-/* __SRCVERSION("environ.h $Rev: 153052 $"); */

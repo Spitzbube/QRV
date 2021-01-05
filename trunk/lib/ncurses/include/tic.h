@@ -98,7 +98,7 @@ extern "C" {
 #define PRIVATE_INFO	"%s/.terminfo"	/* plug getenv("HOME") into %s */
 
 #ifdef TRACE
-#define DEBUG(n, a)	if (_nc_tracing & (1 << (n - 1))) _tracef a 
+#define DEBUG(n, a)	if (_nc_tracing & (1 << (n - 1))) _tracef a
 #else
 #define DEBUG(n, a)	/*nothing*/
 #endif

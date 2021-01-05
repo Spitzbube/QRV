@@ -1,1 +1,1 @@
-int								_Multi_threaded;
+int _Multi_threaded;

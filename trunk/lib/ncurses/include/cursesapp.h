@@ -159,5 +159,5 @@ public:
   }
 
 };
- 
+
 #endif // _CURSESAPP_H

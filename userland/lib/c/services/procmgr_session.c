@@ -26,21 +26,22 @@
 #include <sys/procmsg.h>
 #include <sys/netmgr.h>
 
-int procmgr_session(uint32_t nd, pid_t sid, int id, unsigned event) {
-	proc_session_t			msg;
+int procmgr_session(uint32_t nd, pid_t sid, int id, unsigned event)
+{
+    proc_session_t msg;
 
-	// @@@@ Should make this work remotely
-	if(nd != ND_LOCAL_NODE) {
-		errno = ENOREMOTE;
-		return -1;
-	}
-	msg.i.type = _PROC_SESSION;
-	msg.i.subtype = 0;
-	msg.i.sid = sid;
-	msg.i.id = id;
-	msg.i.event = event;
+    // @@@@ Should make this work remotely
+    if (nd != ND_LOCAL_NODE) {
+        errno = ENOREMOTE;
+        return -1;
+    }
+    msg.i.type = _PROC_SESSION;
+    msg.i.subtype = 0;
+    msg.i.sid = sid;
+    msg.i.id = id;
+    msg.i.event = event;
 
-	return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
+    return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
 __SRCVERSION("procmgr_session.c $Rev: 153052 $");

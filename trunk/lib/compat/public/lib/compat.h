@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -33,7 +33,7 @@
     /*
     ** limits.h
     */
-    
+
     #define _POSIX_PATH_MAX 255
     #define NGROUPS_MAX		8
     #define SORT_LINE_MAX	20480
@@ -47,7 +47,7 @@
     */
 
     #include <sys/types.h>
-	
+
     #ifndef uid_t
     typedef int uid_t;
     #endif
@@ -60,7 +60,7 @@
     /*
     ** errno.h
     */
-    
+
     #define EOK 0
 
     /*
@@ -68,7 +68,7 @@
     */
     #define errx(err, ...) do { fprintf(stderr, "split: "); fprintf(stderr, __VA_ARGS__); exit(err); } while (0)
     #define err(err, ...) do { fprintf(stderr, "split: "); fprintf(stderr, __VA_ARGS__); fprintf(stderr, "%s", strerror(errno)) ; exit(err); } while (0)
-    
+
    /*
     ** unix.h
     */
@@ -79,14 +79,14 @@
    /*
     ** wait.h
     */
-    
+
     #define WIFEXITED(stat_val)   (((stat_val) & 0x7f) == 0)
     #define WIFSIGNALED(stat_val) (((stat_val) & 0x7f) != 0)
     #define WIFSTOPPED(stat_val)  (0)
     #define WEXITSTATUS(stat_val) (((stat_val) >> 8) & 0xff)
     #define WTERMSIG(stat_val)    (((stat_val) & 0x7f))
     #define WSTOPSIG(stat_val)    (0)
-    
+
    /*
     ** stdlib.h
     */
@@ -99,7 +99,7 @@
 
 	#define sleep _sleep;
 
-	#define strlcpy strncpy    
+	#define strlcpy strncpy
     /*
     ** fnmatch.h
     */
@@ -115,7 +115,7 @@
     /*
     ** unistd.h
     */
-    
+
     extern char     *basename( const char * fname );
     extern char     *dirname(const char *path);
     extern int setenv(const char *var, const char *val, int overwrite);
@@ -149,7 +149,7 @@
 	/*
 	 **  pwd.h       Password operations
 	 */
-	
+
 	struct passwd {
 	    char  *pw_name;     /*  User's login name           */
 	    char  *pw_passwd;
@@ -176,7 +176,7 @@
 	/*
 	** misc
 	*/
-	
+
     #define FN_CMP( n1, n2 )	stricmp( n1, n2 )
 
     #define PATHSEP_STR	";"
@@ -192,7 +192,7 @@
     int		__has_path( const char *name );
     char* __first_dirsep( const char* path );
     char* __last_dirsep( const char* path );
-    
+
 	#define HAS_PATH( n )				__has_path( n )
 	#define FIRST_DIRSEP( n )		__first_dirsep( n )
 	#define LAST_DIRSEP( n )			__last_dirsep( n )
@@ -202,12 +202,12 @@
     */
 
     #define lstat( path, buff )		stat( path, buff )
-    
+
      /* typedefs from stat.h, to make it compliant with posix types: */
      typedef short nlink_t;
      typedef unsigned long ulong_t;
 
-    
+
     #define S_ISLNK(m)  0	/*(((m)&_S_IFMT)==_S_IFLNK) Test for symbolic link.    */
     #define S_ISNAM(m)  0	/*(((m)&_S_IFMT)==_S_IFNAM) Test for special named file*/
     #define S_ISSOCK(m) 0	/*(((m)&_S_IFMT)==_S_IFSOCK) Test for socket.           */
@@ -223,7 +223,7 @@
 	#define S_ISUID     004000              /* set user id on execution         */
 	#define S_ISGID     002000              /* set group id on execution        */
 	#define S_ISVTX     001000              /* sticky bit (does nothing yet)    */
-	
+
 	/*
 	 *  Group permissions
 	 */
@@ -231,7 +231,7 @@
 	#define S_IRGRP     000040              /*  Read permission                 */
 	#define S_IWGRP     000020              /*  Write permission                */
 	#define S_IXGRP     000010              /*  Execute/search permission       */
-	
+
 	/*
 	 *  Other permissions
 	 */
@@ -247,7 +247,7 @@
 	#define SIGHUP 1
 	#define SIGQUIT 3
 	#define SIGPIPE 13
-   
+
     /*
     ** fnmatch.h
     */
@@ -265,20 +265,20 @@
     /*
     ** wait.h
     */
-    
+
     #define WIFEXITED(stat_val)   (((stat_val) & 0x7f) == 0)
     #define WIFSIGNALED(stat_val) (((stat_val) & 0x7f) != 0)
     #define WIFSTOPPED(stat_val)  (0)
     #define WEXITSTATUS(stat_val) (((stat_val) >> 8) & 0xff)
     #define WTERMSIG(stat_val)    (((stat_val) & 0x7f))
     #define WSTOPSIG(stat_val)    (0)
-    
+
 
     /*
     ** sys/utsname.h
     */
 	#define _SYSNAME_SIZE		(256 + 1)
-	
+
 	struct utsname {
 	    char    sysname[_SYSNAME_SIZE],		/* SI_SYSNAME */
 	            nodename[_SYSNAME_SIZE],	/* SI_HOSTNAME */
@@ -302,11 +302,11 @@
 	#define QSSL_ROOT_VAR		"QSSL"
 
 	/*
-	** disk.h 
+	** disk.h
 	*/
 	#define _FLOPPY     1
 	#define _HARD       2
-	#define _RAMDISK    3	
+	#define _RAMDISK    3
 	#define _DRIVER_NAME_LEN   12
 
 
@@ -331,7 +331,7 @@ struct _disk_entry {
 };
 #pragma pack()
 
-	
+
 #elif defined(__NT__) || defined(__DOS__)
 	/*
 	** util/diskman.h
@@ -343,20 +343,20 @@ struct _disk_entry {
     /*
     ** sys/types.h
     */
-    
+
     typedef int pid_t;
     typedef int nid_t;
     typedef int gid_t;
     typedef int uid_t;
     typedef   signed short 	mpid_t;
-    typedef short muid_t;    
-    typedef short mgid_t;   
+    typedef short muid_t;
+    typedef short mgid_t;
     typedef unsigned short	msg_t;
     typedef short unsigned  nlink_t;/* Used for link counts         */
-    
+
     typedef signed ssize_t;
     typedef short unsigned  mode_t;
-    typedef long        off_t; 
+    typedef long        off_t;
     typedef char *          caddr_t;
     typedef unsigned long	paddr_t;
     typedef unsigned char   uchar_t;
@@ -370,17 +370,17 @@ struct _disk_entry {
     typedef int				timer_t;
 
     #include <inttypes.h>
-    
+
     /*
     ** errno.h
     */
-    
+
     #define EOK 0
-    
+
     /*
     ** limits.h
     */
-    
+
     #define _POSIX_PATH_MAX 255
     #define NGROUPS_MAX		8
     #define SORT_LINE_MAX	20480
@@ -392,26 +392,26 @@ struct _disk_entry {
     */
 
     #define strcasecmp stricmp
-    #define strncasecmp strnicmp 
+    #define strncasecmp strnicmp
 
     /*
     ** stdlib.h
     */
-    
+
     extern unsigned atoh(const char *);
     extern void      searchenv( const char *__name, const char *__env_var,
                         char *__buf );
     #define _MAX_NODE				_MAX_DRIVE
-    
+
     /*
     ** unistd.h
     */
-    
+
     extern int   optind;        /*  index of current option being scanned */
     extern char *optarg;        /*  points to optional argument */
     extern int   opterr;        /*  print|don't print error message */
     extern int   optopt;        /*  offending letter when error detected */
-    
+
     extern nid_t    getnid( void );
     extern gid_t    getgid( void );
     extern uid_t    getuid( void );
@@ -425,7 +425,7 @@ struct _disk_entry {
     char		*getcwd( char *__buf, unsigned __size );
     int			chdir( const char *__path );
 
-    
+
     #define getgid() 0
     #define getnid() 0
     #define getuid() 0
@@ -434,32 +434,32 @@ struct _disk_entry {
     #define chown( fn, uid, gid )
     #define readlink(a, b, c) (-1)
     #define makedev(node,major,minor)       ((dev_t)(((node) << 16) | ((major) << 10) | (minor)))
-    
+
     /*
     ** signal.h
     */
-    
+
     #define SIGHUP 1
     #define SIGQUIT 3
-   
+
     /*
     ** stdio.h
     */
 
     #define L_cuserid 14   /* Max length of login names */
- 
+
     /*
     ** vc.h
     */
-    
+
     nid_t qnx_strtonid(const char *nodename, char **str);
-    
+
     /*
     ** stat.h
     */
-    
+
     #define lstat( path, buff )		stat( path, buff )
-    
+
     #define S_ISLNK(m)  0	/*(((m)&_S_IFMT)==_S_IFLNK) Test for symbolic link.    */
     #define S_ISNAM(m)  0	/*(((m)&_S_IFMT)==_S_IFNAM) Test for special named file*/
     #define S_ISSOCK(m) 0	/*(((m)&_S_IFMT)==_S_IFSOCK) Test for socket.           */
@@ -476,28 +476,28 @@ struct _disk_entry {
     /*
     ** wait.h
     */
-    
+
     #define WIFEXITED(stat_val)   (((stat_val) & 0x7f) == 0)
     #define WIFSIGNALED(stat_val) (((stat_val) & 0x7f) != 0)
     #define WIFSTOPPED(stat_val)  (0)
     #define WEXITSTATUS(stat_val) (((stat_val) >> 8) & 0xff)
     #define WTERMSIG(stat_val)    (((stat_val) & 0x7f))
     #define WSTOPSIG(stat_val)    (0)
-    
+
     /*
     ** misc
     */
-    
+
 	#define NULL_DEVICE_NAME	"NUL"
     #define QSSL_ROOT_VAR		"QSSL"
-    
+
     #define NORMAL_OPEN_PERMS 	(S_IWRITE | S_IREAD)
     #define EXECUTE_OPEN_PERMS 	(S_IWRITE | S_IREAD)
 
     char	*__qssl_rooted_fname( const char *name );
     char	*__qssl_rooted_pathlist( const char *paths );
     int		__is_executable_name( const char *name1, const char *name2 );
-    
+
     #define QSSL_ROOT( n )			__qssl_rooted_fname( n )
     #define QSSL_ROOT_PATHLIST( n )	__qssl_rooted_pathlist( n )
 
@@ -519,20 +519,20 @@ struct _disk_entry {
     int		__has_path( const char *name );
     char* __first_dirsep( const char* path );
     char* __last_dirsep( const char* path );
-    
+
 	#define HAS_PATH( n )				__has_path( n )
 	#define FIRST_DIRSEP( n )		__first_dirsep( n )
 	#define LAST_DIRSEP( n )			__last_dirsep( n )
 
 	#define MAKE_BINARY_FD( fd )	setmode( fd, O_BINARY )
 	#define MAKE_BINARY_FP( fp )	MAKE_BINARY_FD( fileno( fp ) )
-	
+
 #elif defined(__QNXNTO__)
 
 	#include <stdlib.h>
     #include <sys/types.h>
     #include <stdint.h>
-	
+
    /*
     ** unix.h
     */
@@ -546,29 +546,29 @@ struct _disk_entry {
 	#if !defined(min) && !defined(__cplusplus)
 	#define min(a,b)  (((a) < (b)) ? (a) : (b))
 	#endif
-	
+
 	#define NORMAL_OPEN_PERMS   0666
 	#define EXECTUTE_OPEN_PERMS 0777
 	#define FIXUP_FILE_MODE
-	
+
 	#define NULL_DEVICE_NAME    "/dev/null"
-	
+
 	#define NORMAL_OPEN_PERMS   0666
 	#define EXECTUTE_OPEN_PERMS 0777
 	#define FIXUP_FILE_MODE
-	
+
 	#define NULL_DEVICE_NAME    "/dev/null"
-	
+
 	#define QSSL_ROOT( n )          (n)
 	#define QSSL_ROOT_PATHLIST( n )     (n)
 	#define FN_CMP( n1, n2 )        strcmp( n1, n2 )
 	#define IS_EXE_NAME( n1, n2 )   (strcmp( n1, n2 )==0)
-	
+
 	#define PATHSEP_STR         ":"
 	#define PATHSEP_CHR         ':'
 	#define DIRSEP_STR 			"/"
 	#define DIRSEP_CHAR			'/'
-	
+
 	#define IS_DIRSEP( c )          ( (c) == '/' )
 	#define IS_ABSPATH( n )         ( (n)[0] == '/' )
 	#define HAS_PATH( n )           (strchr( n, '/' ) != 0)
@@ -576,14 +576,14 @@ struct _disk_entry {
 	#define LAST_DIRSEP( n )			strrchr( n, '/' )
 
 	#define SKIP_DRIVE(n)           (n)
-	
+
 	#define MAKE_BINARY_FD( fd )
 	#define MAKE_BINARY_FP( fp )
 
 	extern char    *openbsd_dirname(char *path);
 	extern size_t  strlcpy( char *dst, const char *src, size_t siz );
 	extern void    strmode( mode_t mode, char *p );
-	
+
 #elif defined(__CYGWIN__)
 	#include <sys/types.h>
 
@@ -595,39 +595,39 @@ struct _disk_entry {
 	#if !defined(min) && !defined(__cplusplus)
 	#define min(a,b)  (((a) < (b)) ? (a) : (b))
 	#endif
-	
+
 	#define NORMAL_OPEN_PERMS   0666
 	#define EXECTUTE_OPEN_PERMS 0777
 	#define FIXUP_FILE_MODE
-	
+
 	#define NULL_DEVICE_NAME    "/dev/null"
-	
+
 	#define NORMAL_OPEN_PERMS   0666
 	#define EXECTUTE_OPEN_PERMS 0777
 	#define FIXUP_FILE_MODE
-	
+
 	#define NULL_DEVICE_NAME    "/dev/null"
-	
+
 	#define QSSL_ROOT_VAR		"QSSL"
 	#define QSSL_ROOT( n )          (n)
 	#define QSSL_ROOT_PATHLIST( n )     (n)
 	#define FN_CMP( n1, n2 )        strcmp( n1, n2 )
 	#define IS_EXE_NAME( n1, n2 )   (strcmp( n1, n2 )==0)
-	
+
 	#define PATHSEP_STR         ":"
 	#define PATHSEP_CHR         ':'
 	#define DIRSEP_STR 			"/"
 	#define DIRSEP_CHAR			'/'
-	
+
 	#define IS_DIRSEP( c )          ( (c) == '/' )
 	#define IS_ABSPATH( n )         ( (n)[0] == '/' )
 	#define HAS_PATH( n )           (strchr( n, '/' ) != 0)
 	#define FIRST_DIRSEP( n )			strchr( n, '/' )
 	#define LAST_DIRSEP( n )			strrchr( n, '/' )
 	#define SKIP_DRIVE(n)           (n)
-	
+
 	#define MAKE_BINARY_FD( fd )
-	#define MAKE_BINARY_FP( fp )	
+	#define MAKE_BINARY_FP( fp )
 
     /*
     ** fnmatch.h
@@ -672,13 +672,13 @@ __END_DECLS
 	#ifndef LINE_MAX
 	#define LINE_MAX 2048
 	#endif
-	
+
 	/*
 	** unistd.h
 	*/
 	extern char     *basename( const char * fname );
 
-#elif defined(__SOLARIS__) 
+#elif defined(__SOLARIS__)
 	#include <sys/int_types.h>
 
 	#if !defined(max)
@@ -722,14 +722,14 @@ __END_DECLS
 
 	#define O_BINARY (0)
 	#define EOK 0
-	#define stricmp 	strcasecmp 
-	#define strnicmp 	strncasecmp 
+	#define stricmp 	strcasecmp
+	#define strnicmp 	strncasecmp
 
 
 	/* from disk.h */
 	#define _FLOPPY     1
 	#define _HARD       2
-	#define _RAMDISK    3	
+	#define _RAMDISK    3
 	#define _DRIVER_NAME_LEN   12
 
 /*
@@ -832,8 +832,8 @@ struct _disk_entry {
 
 	#define O_BINARY (0)
 	#define EOK 0
-	#define stricmp 	strcasecmp 
-	#define strnicmp 	strncasecmp 
+	#define stricmp 	strcasecmp
+	#define strnicmp 	strncasecmp
 
 	#define eaccess		access
 
@@ -857,7 +857,7 @@ struct _disk_entry {
 	/* from disk.h */
 	#define _FLOPPY     1
 	#define _HARD       2
-	#define _RAMDISK    3	
+	#define _RAMDISK    3
 	#define _DRIVER_NAME_LEN   12
 
 /*
@@ -903,8 +903,8 @@ struct _disk_entry {
 #define _CS_RESOLVE                     202             /* In memory /etc/resolve.conf */
 #define _CS_TIMEZONE            203             /* timezone string (TZ style) */
 #define _CS_LOCALE                      204             /* locale string */
- 
-#elif defined(__QNX__) 
+
+#elif defined(__QNX__)
 #if !defined(max)
 #define max(a,b)  (((a) > (b)) ? (a) : (b))
 #endif
@@ -943,7 +943,7 @@ struct _disk_entry {
 
 #define MAKE_BINARY_FD( fd )
 #define MAKE_BINARY_FP( fp )
-#else  
+#else
     #error lib/compat.h not configured for system
 #endif
 

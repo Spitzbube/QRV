@@ -20,13 +20,15 @@
 #
 -include ../kupdate.mk
 
-MKKERCALLS:=$(MKKERCALLS_DIR)/mkkercalls
-	
+MKKERCALLS := $(MKKERCALLS_DIR)/mkkercalls
+
 #
 # Don't try to gen the kercalls if the <sys/kercalls.h> header isn't 
 # installed yet.
 #
-KERCALLS_H:=$(firstword $(wildcard $(dir $(TOP))services/system/public/sys/kercalls.h*) $(call FIND_HDR_DIR, nto, usr/include, sys/kercalls.h)sys/kercalls.h)
+
+KERCALLS_H := $(firstword $(wildcard $(dir $(TOP))include/sys/kercalls.h*) $(call FIND_HDR_DIR, nto, usr/include, sys/kercalls.h)sys/kercalls.h)
+
 ifneq ($(KERCALLS_H),)
 
 ../kupdate.mk: $(MKKERCALLS) $(MKKERCALLS_DIR)/$(CPU)/template

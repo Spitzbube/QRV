@@ -17,26 +17,30 @@
 
 #include <stdlib.h>
 
-void _preinit_array(void (**start)(void), void (**end)(void)) {
+void _preinit_array(void (**start)(void), void(**end)(void))
+{
 #ifndef __PIC__
-        void (**f)(void);
-        for (f = start; f < end; f++) {
-                (*f)();
-	}
+    void(**f)(void);
+    for (f = start; f < end; f++) {
+        (*f) ();
+    }
 #endif
 }
 
-void _init_array(void (**start)(void), void (**end)(void)) {
-        void (**f)(void);
-        for (f = start; f < end; f++) {
-                (*f)();
-	}
+void _init_array(void (**start)(void), void(**end)(void))
+{
+    void(**f)(void);
+    for (f = start; f < end; f++) {
+        (*f) ();
+    }
 }
-void _fini_array(void (**start)(void), void (**end)(void)) {
-        void (**f)(void);
-        for (f = start; f < end; f++) {
-                atexit(*f);
-	}
+
+void _fini_array(void (**start)(void), void(**end)(void))
+{
+    void(**f)(void);
+    for (f = start; f < end; f++) {
+        atexit(*f);
+    }
 }
 
 __SRCVERSION("_initfini.c $Rev$");

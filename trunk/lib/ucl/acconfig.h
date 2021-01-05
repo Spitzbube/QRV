@@ -38,7 +38,7 @@
    a given entry is in the file.
 
    Leave the following blank line there!!  Autoheader needs it.  */
-
+
 
 /* Define to your byte order.  */
 #undef MFX_BYTE_ORDER
@@ -56,14 +56,14 @@
 #undef SIZEOF_SIZE_T
 
 
-
+
 /* Leave that blank line there!!  Autoheader needs it.
    If you're adding to this file, keep in mind:
    The entries are in sort -df order: alphabetical, case insensitive,
    ignoring punctuation (such as underscores).  */
 
 
-
+
 @BOTTOM@
 
 /* $BOTTOM$ */

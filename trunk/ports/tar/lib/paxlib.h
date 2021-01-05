@@ -104,7 +104,7 @@ void fatal_exit (void) __attribute__ ((noreturn));
 
 #define STRINGIFY_BIGINT(i, b) umaxtostr (i, b)
 
-
+
 /* Name-related functions */
 bool hash_string_insert (Hash_table **table, char const *string);
 bool hash_string_lookup (Hash_table const *table, char const *string);

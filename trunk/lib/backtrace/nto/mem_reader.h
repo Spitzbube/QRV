@@ -93,7 +93,7 @@ int _bt_read_mem_indirect_safe(mem_reader_t *rdr,
 		rdr->fn(rdr,                                                \
 		        ((char*)_mem_buf)+sizeof(_mem_buf)-sz,              \
 		        _mem_addr+sizeof(_mem_buf)-sz, sz);                 \
-	} while(0)		
+	} while(0)
 
 #define MEM_SLIDE_BACKWARD(len)	do {                                \
 		size_t sz = (len);                                          \

@@ -32,12 +32,12 @@ extern void __xiyi(const struct __xiyi_init *beg, const struct __xiyi_init *end,
 extern struct __xiyi_init __xibeg, __xiend, __yibeg, __yiend;
 
 #define INIT_PRIORITY_THREAD		1	// priority for thread data init
-#define INIT_PRIORITY_FPU			2	// priority for FPU/EMU init
+#define INIT_PRIORITY_FPU		2	// priority for FPU/EMU init
 #define INIT_PRIORITY_USERTHREAD	3	// priority for user thread data init
 #define INIT_PRIORITY_RUNTIME		10	// priority for run/time initialization
 #define INIT_PRIORITY_IOSTREAM		20	// priority for IOSTREAM
 #define INIT_PRIORITY_LIBRARY		32	// default library-initialization priority
 #define INIT_PRIORITY_PROGRAM		64	// default program-initialization priority
-#define DTOR_PRIORITY				40	// priority for module DTOR
+#define DTOR_PRIORITY			40	// priority for module DTOR
 
 /* __SRCVERSION("xiyi.h $Rev: 153052 $"); */

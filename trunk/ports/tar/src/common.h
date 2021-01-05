@@ -30,7 +30,7 @@
 #define GNAME_FIELD_SIZE   32
 
 
-
+
 /* Some various global definitions.  */
 
 /* Name of file to use for interacting with user.  */
@@ -47,7 +47,7 @@
 #define TAREXIT_DIFFERS PAXEXIT_DIFFERS
 #define TAREXIT_FAILURE PAXEXIT_FAILURE
 
-
+
 #include "arith.h"
 #include <backupfile.h>
 #include <exclude.h>
@@ -67,7 +67,7 @@
 #define LG_8 3
 #define LG_64 6
 #define LG_256 8
-
+
 /* Information gleaned from the command line.  */
 
 /* Name of this program.  */
@@ -297,7 +297,7 @@ GLOBAL const char *volno_file_option;
 
 /* Specified value or pattern.  */
 GLOBAL const char *volume_label_option;
-
+
 /* Other global variables.  */
 
 /* File descriptor for archive file.  */
@@ -367,7 +367,7 @@ GLOBAL bool delay_directory_restore_option;
 /* Warn about implicit use of the wildcards in command line arguments.
    (Default for tar prior to 1.15.91, but changed afterwards */
 GLOBAL bool warn_regex_usage;
-
+
 /* Declarations for each module.  */
 
 /* FIXME: compare.c should not directly handle the following variable,

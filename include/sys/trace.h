@@ -30,6 +30,8 @@
 #include <sys/states.h>
 #endif
 
+#include <sys/spinlock.h>
+
 /* TraceEvent() - modes */
 #define _NTO_TRACE_ADDALLCLASSES     ((0x00000001<<28)|1)
 #define _NTO_TRACE_DELALLCLASSES     ((0x00000001<<28)|2)

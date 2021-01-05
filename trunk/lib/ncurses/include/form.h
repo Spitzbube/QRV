@@ -259,9 +259,9 @@ extern FIELDTYPE *TYPE_ALPHA,
 	************************************/
 extern FIELDTYPE *TYPE_IPV4;      /* Internet IP Version 4 address */
 
-        /*********************** 
+        /***********************
         *   Default objects    *
-        ***********************/ 
+        ***********************/
 extern FORM  *_nc_Default_Form;
 extern FIELD *_nc_Default_Field;
 
@@ -269,7 +269,7 @@ extern FIELD *_nc_Default_Field;
 	/***********************
 	*  FIELDTYPE routines  *
 	***********************/
-extern FIELDTYPE 
+extern FIELDTYPE
                 *new_fieldtype(
 		    bool (* const field_check)(FIELD *,const void *),
 		    bool (* const char_check)(int,const void *)),
@@ -326,7 +326,7 @@ extern FIELDTYPE
 
 extern char*    field_buffer(const FIELD *,int);
 
-extern Field_Options  
+extern Field_Options
                 field_opts(const FIELD *);
 
 	/******************

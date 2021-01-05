@@ -1,1 +1,1 @@
-int								__ealready_value;
+int __ealready_value;

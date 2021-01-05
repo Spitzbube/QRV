@@ -28,38 +28,39 @@
 
 #define STD_FILENO_MAX		(max(max(STDIN_FILENO, STDOUT_FILENO), STDERR_FILENO))
 
-int procmgr_daemon(int status, unsigned flags) {
-	proc_daemon_t			msg;
-	int						nfds;
+int procmgr_daemon(int status, unsigned flags)
+{
+    proc_daemon_t msg;
+    int nfds;
 
-	msg.i.type = _PROC_DAEMON;
-	msg.i.subtype = 0;
-	msg.i.status = status;
-	msg.i.flags = flags;
+    msg.i.type = _PROC_DAEMON;
+    msg.i.subtype = 0;
+    msg.i.status = status;
+    msg.i.flags = flags;
 
-	if((nfds = MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0)) == -1) {
-		return -1;
-	}
-	if(!(flags & PROCMGR_DAEMON_NOCLOSE)) {
-		int						fd;
+    if ((nfds = MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0)) == -1) {
+        return -1;
+    }
+    if (!(flags & PROCMGR_DAEMON_NOCLOSE)) {
+        int fd;
 
-		for(fd = STD_FILENO_MAX + 1; fd < nfds; fd++) {
-			close(fd);
-		}
-	}
-	if(!(flags & PROCMGR_DAEMON_NODEVNULL)) {
-		int						fd;
+        for (fd = STD_FILENO_MAX + 1; fd < nfds; fd++) {
+            close(fd);
+        }
+    }
+    if (!(flags & PROCMGR_DAEMON_NODEVNULL)) {
+        int fd;
 
-		if((fd = open("/dev/null", O_RDWR | O_NOCTTY)) != -1) {
-			dup2(fd, STDIN_FILENO);
-			dup2(fd, STDOUT_FILENO);
-			dup2(fd, STDERR_FILENO);
-			if(fd > STD_FILENO_MAX) {
-				close(fd);
-			}
-		}
-	}
-	return nfds;
+        if ((fd = open("/dev/null", O_RDWR | O_NOCTTY)) != -1) {
+            dup2(fd, STDIN_FILENO);
+            dup2(fd, STDOUT_FILENO);
+            dup2(fd, STDERR_FILENO);
+            if (fd > STD_FILENO_MAX) {
+                close(fd);
+            }
+        }
+    }
+    return nfds;
 }
 
 __SRCVERSION("procmgr_daemon.c $Rev: 153052 $");

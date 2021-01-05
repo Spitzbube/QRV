@@ -39,94 +39,100 @@
  *	xdatalen	Extra data returned from read
  *	nbytes		Number of bytes to read (If 0, calculate from iov)
  */
-ssize_t _notifyreadxv(int fd, int action, int flags, const struct sigevent *event, iov_t *iov, int nparts, unsigned xtype, void *xdata, size_t xdatalen, size_t nbytes) {
-	int							size;
-	void						*ptr;
-	union {
-		struct notify_read {
-			struct _io_notify			notify;
-			struct _io_read				read;
-		}							i;
-		union {
-			struct _io_notify_reply		notify;
-		}							o;
-	}							msg;
+ssize_t _notifyreadxv(int fd, int action, int flags, const struct sigevent *event, iov_t * iov,
+                      int nparts, unsigned xtype, void *xdata, size_t xdatalen, size_t nbytes)
+{
+    int size;
+    void *ptr;
+    union {
+        struct notify_read {
+            struct _io_notify notify;
+            struct _io_read read;
+        } i;
+        union {
+            struct _io_notify_reply notify;
+        } o;
+    } msg;
 
-	// Setup notify
-	msg.i.notify.type = _IO_NOTIFY;
-	msg.i.notify.combine_len = sizeof msg.i.notify;
-	msg.i.notify.action = action;
-	msg.i.notify.flags = flags;
-	if(event) {
-		msg.i.notify.event = *event;
-	}
+    // Setup notify
+    msg.i.notify.type = _IO_NOTIFY;
+    msg.i.notify.combine_len = sizeof msg.i.notify;
+    msg.i.notify.action = action;
+    msg.i.notify.flags = flags;
+    if (event) {
+        msg.i.notify.event = *event;
+    }
 
-	if(iov) {
-		// There must be at least 1 part...
-		if(nparts < 1 || (int)xdatalen < 0) {
-			errno = EINVAL;
-			return -1;
-		}
+    if (iov) {
+        // There must be at least 1 part...
+        if (nparts < 1 || (int) xdatalen < 0) {
+            errno = EINVAL;
+            return -1;
+        }
+        // Do the read setup
+        ptr = &msg.i.read;
+        size = sizeof msg.i.read;
+        if (event || (action & _NOTIFY_ACTION_POLL)) {
+            // Do notify, then read
+            ptr = &msg.i;
+            size = offsetof(struct notify_read, read) + sizeof msg.i.read;
+            msg.i.notify.combine_len = offsetof(struct notify_read, read) | _IO_COMBINE_FLAG;
+        }
+        // Setup read
+        msg.i.read.type = _IO_READ;
+        msg.i.read.combine_len = sizeof msg.i.read;
+        msg.i.read.xtype = xtype;
+        msg.i.read.zero = 0;
 
-		// Do the read setup
-		ptr = &msg.i.read;
-		size = sizeof msg.i.read;
-		if(event || (action & _NOTIFY_ACTION_POLL)) {
-			// Do notify, then read
-			ptr = &msg.i;
-			size = offsetof(struct notify_read, read) + sizeof msg.i.read;
-			msg.i.notify.combine_len = offsetof(struct notify_read, read) | _IO_COMBINE_FLAG;
-		}
+        // If nbytes not passed in, calculate it.
+        if ((msg.i.read.nbytes = nbytes) == 0) {
+            int i;
 
-		// Setup read
-		msg.i.read.type = _IO_READ;
-		msg.i.read.combine_len = sizeof msg.i.read;
-		msg.i.read.xtype = xtype;
-		msg.i.read.zero = 0;
+            for (i = 1; i < nparts; i++) {
+                msg.i.read.nbytes += GETIOVLEN(&iov[i]);
+            }
+        }
+        SETIOV(iov + 0, xdata, xdatalen);
 
-		// If nbytes not passed in, calculate it.
-		if((msg.i.read.nbytes = nbytes) == 0) {
-			int						i;
-
-			for(i = 1; i < nparts; i++) {
-				msg.i.read.nbytes += GETIOVLEN(&iov[i]);
-			}
-		}
-		SETIOV(iov + 0, xdata, xdatalen);
-
-		return MsgSendv(fd, ptr, -size, iov, nparts);
-	}
-
-	// Only do a notify
-	if(MsgSend(fd, &msg.i.notify, sizeof msg.i.notify, &msg.o.notify, sizeof msg.o.notify) == -1) {
-		return -1;
-	}
-	return msg.o.notify.flags;
+        return MsgSendv(fd, ptr, -size, iov, nparts);
+    }
+    // Only do a notify
+    if (MsgSend(fd, &msg.i.notify, sizeof msg.i.notify, &msg.o.notify, sizeof msg.o.notify) == -1) {
+        return -1;
+    }
+    return msg.o.notify.flags;
 }
 
-ssize_t _readx(int fd, void *buff, size_t nbytes, unsigned xtype, void *xdata, size_t xdatalen) {
-	iov_t			iov[2];
+ssize_t _readx(int fd, void *buff, size_t nbytes, unsigned xtype, void *xdata, size_t xdatalen)
+{
+    iov_t iov[2];
 
-	SETIOV(iov + 1, buff, nbytes);
-	return _notifyreadxv(fd, 0, 0, 0, iov, 2, xtype, xdata, xdatalen, nbytes);
+    SETIOV(iov + 1, buff, nbytes);
+    return _notifyreadxv(fd, 0, 0, 0, iov, 2, xtype, xdata, xdatalen, nbytes);
 }
 
-ssize_t _readxv(int fd, iov_t *iov, int nparts, unsigned xtype, void *xdata, size_t xdatalen, size_t nbytes) {
-	return _notifyreadxv(fd, 0, 0, 0, iov, nparts, xtype, xdata, xdatalen, nbytes);
+ssize_t _readxv(int fd, iov_t * iov, int nparts, unsigned xtype, void *xdata, size_t xdatalen,
+                size_t nbytes)
+{
+    return _notifyreadxv(fd, 0, 0, 0, iov, nparts, xtype, xdata, xdatalen, nbytes);
 }
 
-ssize_t ionotifyread(int fd, int action, int flags, const struct sigevent *event, void *buff, size_t nbytes) {
-	iov_t			iov[2];
+ssize_t ionotifyread(int fd, int action, int flags, const struct sigevent *event, void *buff,
+                     size_t nbytes)
+{
+    iov_t iov[2];
 
-	SETIOV(iov + 1, buff, nbytes);
-	return _notifyreadxv(fd, action, flags, event, iov, 2, 0, 0, 0, nbytes);
+    SETIOV(iov + 1, buff, nbytes);
+    return _notifyreadxv(fd, action, flags, event, iov, 2, 0, 0, 0, nbytes);
 }
 
-ssize_t ionotifyreadx(int fd, int action, int flags, const struct sigevent *event, void *buff, size_t nbytes, unsigned xtype, void *xdata, size_t xdatalen) {
-	iov_t			iov[2];
+ssize_t ionotifyreadx(int fd, int action, int flags, const struct sigevent *event, void *buff,
+                      size_t nbytes, unsigned xtype, void *xdata, size_t xdatalen)
+{
+    iov_t iov[2];
 
-	SETIOV(iov + 1, buff, nbytes);
-	return _notifyreadxv(fd, action, flags, event, iov, 2, xtype, xdata, xdatalen, nbytes);
+    SETIOV(iov + 1, buff, nbytes);
+    return _notifyreadxv(fd, action, flags, event, iov, 2, xtype, xdata, xdatalen, nbytes);
 }
 
 __SRCVERSION("_notifyreadxv.c $Rev: 153052 $");

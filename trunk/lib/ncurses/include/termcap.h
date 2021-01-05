@@ -45,12 +45,12 @@ extern "C"
 #endif /* __cplusplus */
 
 #include <sys/types.h>
-#include <termios.h> 
+#include <termios.h>
 
 extern char PC;
 extern char *UP;
 extern char *BC;
-extern speed_t ospeed; 
+extern speed_t ospeed;
 
 extern int tgetent(char *, const char *);
 extern int tgetflag(const char *);

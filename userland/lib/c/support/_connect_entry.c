@@ -31,37 +31,40 @@
 
 #include "stkchk.h"
 
-int _connect_entry(int base, const char *path, mode_t mode, unsigned oflag, unsigned sflag, unsigned subtype, int testcancel,
-		unsigned accessl, unsigned file_type, unsigned extra_type, unsigned extra_len, const void *extra,
-		unsigned response_len, void *response, int *status, struct _io_connect_entry *entry, int enoretry) {
-	struct _connect_ctrl			ctrl;
-	struct _io_connect				msg;
-	int								fd;
+int _connect_entry(int base, const char *path, mode_t mode, unsigned oflag, unsigned sflag,
+                   unsigned subtype, int testcancel, unsigned accessl, unsigned file_type,
+                   unsigned extra_type, unsigned extra_len, const void *extra,
+                   unsigned response_len, void *response, int *status,
+                   struct _io_connect_entry *entry, int enoretry)
+{
+    struct _connect_ctrl ctrl;
+    struct _io_connect msg;
+    int fd;
 
-	memset(&ctrl, 0x00, sizeof ctrl);
-	ctrl.base = base;
-	ctrl.extra = extra;
-	ctrl.send = testcancel ? MsgSendv : MsgSendvnc;
-	ctrl.msg = &msg;
-	if((ctrl.entry = entry)) {
-		ctrl.flags |= FLAG_TEST_ENTRY | ((enoretry) ? FLAG_NO_RETRY : 0);
-	}
+    memset(&ctrl, 0x00, sizeof ctrl);
+    ctrl.base = base;
+    ctrl.extra = extra;
+    ctrl.send = testcancel ? MsgSendv : MsgSendvnc;
+    ctrl.msg = &msg;
+    if ((ctrl.entry = entry)) {
+        ctrl.flags |= FLAG_TEST_ENTRY | ((enoretry) ? FLAG_NO_RETRY : 0);
+    }
 
-	memset(&msg, 0x00, sizeof msg);
-	msg.subtype = subtype;
-	msg.sflag = sflag;
-	msg.ioflag = oflag;
-	msg.mode = mode;
-	msg.file_type = file_type;
-	msg.access = accessl;
-	msg.extra_type = extra_type;
-	msg.extra_len = extra_len;
+    memset(&msg, 0x00, sizeof msg);
+    msg.subtype = subtype;
+    msg.sflag = sflag;
+    msg.ioflag = oflag;
+    msg.mode = mode;
+    msg.file_type = file_type;
+    msg.access = accessl;
+    msg.extra_type = extra_type;
+    msg.extra_len = extra_len;
 
-	fd = _connect_ctrl(&ctrl, path, response_len, response);
-	if(status) {
-		*status = ctrl.status;
-	}
-	return fd;
+    fd = _connect_ctrl(&ctrl, path, response_len, response);
+    if (status) {
+        *status = ctrl.status;
+    }
+    return fd;
 }
 
 __SRCVERSION("_connect_entry.c $Rev: 153052 $");

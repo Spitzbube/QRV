@@ -64,7 +64,7 @@ typedef struct {
 
 typedef enum {
 	BT_SELF,
-#ifndef _BT_LIGHT    
+#ifndef _BT_LIGHT
 	BT_THREAD,
 	BT_PROCESS,
 #endif

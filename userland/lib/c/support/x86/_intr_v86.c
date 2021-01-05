@@ -26,18 +26,17 @@
 #include <x86/v86.h>
 #include <x86/cpumsg.h>
 
-int _intr_v86(int swi, struct _v86reg *regs, void *data, int datasize) {
-	x86_cpu_v86_t				msg;
-	iov_t						iov[3];
+int _intr_v86(int swi, struct _v86reg *regs, void *data, int datasize)
+{
+    x86_cpu_v86_t msg;
+    iov_t iov[3];
 
-	msg.i.type = _X86_CPU_V86;
-	msg.i.cputype = SYSPAGE_X86;
-	msg.i.swi = swi;
+    msg.i.type = _X86_CPU_V86;
+    msg.i.cputype = SYSPAGE_X86;
+    msg.i.swi = swi;
 
-	SETIOV(iov + 0, &msg, offsetof(struct _x86_cpu_v86, regs));
-	SETIOV(iov + 1, regs, sizeof *regs);
-	SETIOV(iov + 2, data, min(datasize, _V86_DATA_SIZE));
-	return MsgSendvnc(SYSMGR_COID, iov, 3, iov, 3);
+    SETIOV(iov + 0, &msg, offsetof(struct _x86_cpu_v86, regs));
+    SETIOV(iov + 1, regs, sizeof *regs);
+    SETIOV(iov + 2, data, min(datasize, _V86_DATA_SIZE));
+    return MsgSendvnc(SYSMGR_COID, iov, 3, iov, 3);
 }
-
-__SRCVERSION("_intr_v86.c $Rev: 153052 $");

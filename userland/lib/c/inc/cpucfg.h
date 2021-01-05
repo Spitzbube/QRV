@@ -111,5 +111,3 @@
 	#error not configured for system
 
 #endif
-
-/* __SRCVERSION("cpucfg.h $Rev: 153052 $"); */

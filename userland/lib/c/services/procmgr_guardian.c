@@ -24,17 +24,18 @@
 #include <sys/procmgr.h>
 #include <sys/procmsg.h>
 
-pid_t procmgr_guardian(pid_t pid) {
-	proc_guardian_t			msg;
+pid_t procmgr_guardian(pid_t pid)
+{
+    proc_guardian_t msg;
 
-	msg.i.type = _PROC_GUARDIAN;
-	msg.i.subtype = 0;
-	msg.i.pid = pid;
+    msg.i.type = _PROC_GUARDIAN;
+    msg.i.subtype = 0;
+    msg.i.pid = pid;
 
-	if(MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, &msg.o, sizeof msg.o) == -1) {
-		return -1;
-	}
-	return msg.o.pid;
+    if (MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, &msg.o, sizeof msg.o) == -1) {
+        return -1;
+    }
+    return msg.o.pid;
 }
 
 __SRCVERSION("procmgr_guardian.c $Rev: 153052 $");

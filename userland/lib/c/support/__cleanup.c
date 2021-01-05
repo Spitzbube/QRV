@@ -21,22 +21,24 @@
 #include <pthread.h>
 #include "cpucfg.h"
 
-void __cleanup_push(struct __cleanup_handler *cleanup, void (* func)(void *arg), void *arg) {
-	cleanup->__routine = func;
-	cleanup->__save = arg;
-	cleanup->__next = (struct __cleanup_handler *)LIBC_TLS()->__cleanup;
-	LIBC_TLS()->__cleanup = (void *)cleanup;
+void __cleanup_push(struct __cleanup_handler *cleanup, void (*func)(void *arg), void *arg)
+{
+    cleanup->__routine = func;
+    cleanup->__save = arg;
+    cleanup->__next = (struct __cleanup_handler *) LIBC_TLS()->__cleanup;
+    LIBC_TLS()->__cleanup = (void *) cleanup;
 }
 
-struct __cleanup_handler *__cleanup_pop(int ex) {
-	struct __cleanup_handler *cleanup = LIBC_TLS()->__cleanup;
+struct __cleanup_handler *__cleanup_pop(int ex)
+{
+    struct __cleanup_handler *cleanup = LIBC_TLS()->__cleanup;
 
-	LIBC_TLS()->__cleanup = cleanup->__next;
-	if(ex) {
-		cleanup->__routine(cleanup->__save);
-	}
+    LIBC_TLS()->__cleanup = cleanup->__next;
+    if (ex) {
+        cleanup->__routine(cleanup->__save);
+    }
 
-	return cleanup;
+    return cleanup;
 }
 
 

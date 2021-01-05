@@ -4,7 +4,7 @@
  *
  * Developed at SunPro, a Sun Microsystems, Inc. business.
  * Permission to use, copy, modify, and distribute this
- * software is freely granted, provided that this notice 
+ * software is freely granted, provided that this notice
  * is preserved.
  * ====================================================
  */
@@ -12,17 +12,17 @@
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
  *
- * You must obtain a written license from and pay applicable 
- * license fees to QNX Software Systems before you may reproduce, 
- * modify or distribute this software, or any work that includes 
- * all or part of this software.   Free development licenses are 
- * available for evaluation and non-commercial purposes.  For more 
- * information visit http://licensing.qnx.com or email 
+ * You must obtain a written license from and pay applicable
+ * license fees to QNX Software Systems before you may reproduce,
+ * modify or distribute this software, or any work that includes
+ * all or part of this software.   Free development licenses are
+ * available for evaluation and non-commercial purposes.  For more
+ * information visit http://licensing.qnx.com or email
  * licensing@qnx.com.
- * 
- * This file may contain contributions from others.  Please review 
- * this entire file for other proprietary rights or license notices, 
- * as well as the QNX Development Suite License Guide at 
+ *
+ * This file may contain contributions from others.  Please review
+ * this entire file for other proprietary rights or license notices,
+ * as well as the QNX Development Suite License Guide at
  * http://licensing.qnx.com/license-guide/ for other information.
  * $
  */
@@ -53,30 +53,30 @@ typedef uint32_t u_int32_t;
    endianness at run time.  */
 
 /* A union which permits us to convert between a double and two 32 bit
-   ints.  
-   TF-QNX NOTE: 
-     It is actually illegal to reference an element of a union as 
-	 one type and then use another member of the union ... the 
+   ints.
+   TF-QNX NOTE:
+     It is actually illegal to reference an element of a union as
+	 one type and then use another member of the union ... the
 	 results are undefined and actually do crop up ie SET_LOW_WORD:
 		fmr     f10,f24			;Move fp to 10
 		stfd    f10,8(r1)		;Store in memory
 		lwz     r9,8(r1)		;Pull out int32 values
-		lwz     r10,12(r1)		
+		lwz     r10,12(r1)
 		li      r10,0			;Access lower int32 member
 								;and store 0 in it
 		fmr     f30,f10			;Access the double member
 								;it won't be the same as int32
 
-	This is fixed by adding the volatile keyword to the macros.	
+	This is fixed by adding the volatile keyword to the macros.
 */
 
 #if defined(__BIGENDIAN__)
 
 
-typedef union 
+typedef union
 {
   double value;
-  struct 
+  struct
   {
     u_int32_t msw;
     u_int32_t lsw;
@@ -91,10 +91,10 @@ typedef union
 /*
  * FIXME: with the soft-float, ARM FP is bigendian regardless of the CPU...
  */
-typedef union 
+typedef union
 {
   double value;
-  struct 
+  struct
   {
     u_int32_t msw;
     u_int32_t lsw;
@@ -103,10 +103,10 @@ typedef union
 
 #else	// !defined(__ARM__)
 
-typedef union 
+typedef union
 {
   double value;
-  struct 
+  struct
   {
     u_int32_t lsw;
     u_int32_t msw;
@@ -204,7 +204,7 @@ do {								\
 
 /* ieee style elementary functions */
 #if 0
-extern double __ieee754_log __P((double));			
+extern double __ieee754_log __P((double));
 #else
 #define __ieee754_log log
 #endif
@@ -218,7 +218,7 @@ extern double __ieee754_yn __P((int,double));
 
 /* ieee style elementary float functions */
 #if 0
-extern float __ieee754_logf __P((float));			
+extern float __ieee754_logf __P((float));
 #else
 #define __ieee754_logf logf
 #endif

@@ -1,16 +1,16 @@
 /*
  * $QNXtpLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -21,7 +21,7 @@
 
 
 /*
- * (c) Copyright 1990, 1991 Conor P. Cahill (uunet!virtech!cpcahil).  
+ * (c) Copyright 1990, 1991 Conor P. Cahill (uunet!virtech!cpcahil).
  * You may copy, distribute, and use this software as long as this
  * copyright statement is not removed.
  */
@@ -100,7 +100,7 @@ typedef struct mse {
     int mse_end;
 } mse_t;
 
-/* 
+/*
  * circular stack
  * top is next insertion point
  * empty: bot == top
@@ -156,7 +156,7 @@ extern "C" {
     btl_get_backtrace(&btl_acc_self,_bt,2); \
     _bt[1]; \
     })
-    
+
 #if defined(__X86__)
   static __inline__ int __attribute__((__unused__)) GET_CPU(void) {
     register  int           __cpu;
@@ -213,7 +213,7 @@ extern "C" {
 	(((__malloc_trace_minsz == -1) || (__sz >= __malloc_trace_minsz)) && \
 	 ((__malloc_trace_maxsz == -1) || (__sz <= __malloc_trace_maxsz))) ? \
 	 1 : 0
-	
+
 
 /*
  * perform string copy, but make sure that we don't go beyond the
@@ -312,7 +312,7 @@ void mc_set_cache(int size);
 
 #undef __stdcargs
 
-
+
 /*
  * global variables
  */

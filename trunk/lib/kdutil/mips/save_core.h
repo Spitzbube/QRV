@@ -2,7 +2,7 @@
 // with various tweaks to the macro definitions to get the right
 // code generated for R3K/MIPS32/MIPS64 variants
 	.set	noreorder
-	
+
 	/* save CP0 state */
 	SAVE_ONE   (0, 0)
 //	SAVE_ONE   (1, 0)
@@ -11,7 +11,7 @@
 	SAVE_ONE   (4, 0)
 	SAVE_ONE_4K(5, 0)
 	SAVE_ONE_4K(6, 0)
-//	SAVE_ONE   (7, 0) 
+//	SAVE_ONE   (7, 0)
 	SAVE_ONE   (8, 0)
 	SAVE_ONE_4K(9, 0)
 	SAVE_ONE   (10, 0)
@@ -39,7 +39,7 @@
 	SAVE_ONE_4K(28, 4)
 	SAVE_ONE_4K(29, 4)
 	SAVE_ONE_4K(30, 4)
-	
+
 #if defined(VARIANT_sb1)
 	mfc0    t0,CP0_IPL_LO
 	nop

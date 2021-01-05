@@ -28,28 +28,30 @@
 #include <share.h>
 #include <sys/iofunc.h>
 
-int _connect_object(const char *name, const char *prefix, mode_t mode, int oflag, unsigned file_type,
-		unsigned extra_type, unsigned extra_len, const void *extra) {
-	char						*path;
+int _connect_object(const char *name, const char *prefix, mode_t mode, int oflag,
+                    unsigned file_type, unsigned extra_type, unsigned extra_len, const void *extra)
+{
+    char *path;
 
-	if(*name != '/' || strchr(name + 1, '/')) {
-		path = (char *)name;
-	} else {
-		if(!(path = (char *)alloca(strlen(prefix) + strlen(name) + 1))) {
-			errno = ENOMEM;
-			return -1;
-		}
-		strcat(strcpy(path, prefix), name);
-	}
+    if (*name != '/' || strchr(name + 1, '/')) {
+        path = (char *) name;
+    } else {
+        if (!(path = (char *) alloca(strlen(prefix) + strlen(name) + 1))) {
+            errno = ENOMEM;
+            return -1;
+        }
+        strcat(strcpy(path, prefix), name);
+    }
 
-	if(oflag & O_CREAT) {
-		mode &= ~S_IFMT;
-	} else {
-		mode = 0;
-		extra = 0;
-	}
-	return _connect(0, path, mode, oflag | O_NOCTTY, SH_DENYNO, _IO_CONNECT_OPEN, 0, _IO_FLAG_RD | _IO_FLAG_WR,
-			file_type, extra ? extra_type : 0, extra ? extra_len : 0, extra, 0, 0, 0);
+    if (oflag & O_CREAT) {
+        mode &= ~S_IFMT;
+    } else {
+        mode = 0;
+        extra = 0;
+    }
+    return _connect(0, path, mode, oflag | O_NOCTTY, SH_DENYNO, _IO_CONNECT_OPEN, 0,
+                    _IO_FLAG_RD | _IO_FLAG_WR, file_type, extra ? extra_type : 0,
+                    extra ? extra_len : 0, extra, 0, 0, 0);
 }
 
 __SRCVERSION("_connect_object.c $Rev: 153052 $");

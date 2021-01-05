@@ -21,9 +21,9 @@
 #include <sys/neutrino.h>
 #include "cpucfg.h"
 
-int *
-__get_errno_ptr(void) {
-	return LIBC_TLS()->__errptr;
+int *__get_errno_ptr(void)
+{
+    return LIBC_TLS()->__errptr;
 }
 
 __SRCVERSION("__get_errno_ptr.c $Rev: 153052 $");

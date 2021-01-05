@@ -78,10 +78,6 @@ typedef __PTHREAD_ATTR_T pthread_attr_t;
 #define SYSMGR_COID		_NTO_SIDE_CHANNEL   /* System process connection is always the first side channel */
 #define SYSMGR_HANDLE	0
 
-typedef struct intrspin {
-    volatile unsigned value;
-} intrspin_t;
-
 #include <stdint.h>
 #include <arch/cpu_def.h>
 

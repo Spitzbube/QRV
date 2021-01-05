@@ -53,7 +53,7 @@
 // back to opening the device ourselves on a failure.
 //
 
-extern	pthread_mutex_t	__slog_mux;
+extern pthread_mutex_t __slog_mux;
 
 //
 // This function sends the message. It assumes that iov[0] is free
@@ -62,159 +62,159 @@ extern	pthread_mutex_t	__slog_mux;
 //
 static ssize_t slogsend(iov_t iov[], int nparts, int nbytes)
 {
-	// These two structures ARE PERFECTLY MATCHED!
-	union {
-		io_write_t	wr;
-		sys_log_t	log;
-	} 						msg;
-	ssize_t					len;
-	int						tried_proc, ret;
+    // These two structures ARE PERFECTLY MATCHED!
+    union {
+        io_write_t wr;
+        sys_log_t log;
+    } msg;
+    ssize_t len;
+    int tried_proc, ret;
 
-	msg.wr.i.combine_len = sizeof msg.wr.i;
-	msg.wr.i.xtype = _IO_XTYPE_NONE;
-	msg.wr.i.nbytes = nbytes;
-	msg.wr.i.zero = 0;
-	SETIOV(iov + 0, &msg.wr.i, sizeof msg.wr.i);
+    msg.wr.i.combine_len = sizeof msg.wr.i;
+    msg.wr.i.xtype = _IO_XTYPE_NONE;
+    msg.wr.i.nbytes = nbytes;
+    msg.wr.i.zero = 0;
+    SETIOV(iov + 0, &msg.wr.i, sizeof msg.wr.i);
 
-	tried_proc = 0;
-	if((ret = pthread_mutex_lock(&__slog_mux)) != EOK) {
-		errno = ret;
-		return -1;
-	}
-	for( ;; ) {
-		msg.wr.i.type = (_slogfd == SYSMGR_COID) ? _SYS_LOG : _IO_WRITE;
-		len = MsgSendv(_slogfd, iov, nparts + 1, 0, 0);
-		if(len != -1) break;
-		if((errno != ENOSYS) && (errno != EBADF)) break;
-		//Request not supported or the server went away
-		if(_slogfd != SYSMGR_COID) {
-			close(_slogfd);
-			_slogfd = SYSMGR_COID; // Try sending to procnto again
-			if(tried_proc) break;
-			tried_proc = 1;
-		} else {
-			_slogfd = open("/dev/slog", O_WRONLY);
-			if(_slogfd == -1) break;
-		}
-	}
-	pthread_mutex_unlock(&__slog_mux);
+    tried_proc = 0;
+    if ((ret = pthread_mutex_lock(&__slog_mux)) != EOK) {
+        errno = ret;
+        return -1;
+    }
+    for (;;) {
+        msg.wr.i.type = (_slogfd == SYSMGR_COID) ? _SYS_LOG : _IO_WRITE;
+        len = MsgSendv(_slogfd, iov, nparts + 1, 0, 0);
+        if (len != -1)
+            break;
+        if ((errno != ENOSYS) && (errno != EBADF))
+            break;
+        //Request not supported or the server went away
+        if (_slogfd != SYSMGR_COID) {
+            close(_slogfd);
+            _slogfd = SYSMGR_COID;  // Try sending to procnto again
+            if (tried_proc)
+                break;
+            tried_proc = 1;
+        } else {
+            _slogfd = open("/dev/slog", O_WRONLY);
+            if (_slogfd == -1)
+                break;
+        }
+    }
+    pthread_mutex_unlock(&__slog_mux);
 
-	return(len);
+    return (len);
 }
 
 ssize_t slogb(int opcode, int severity, void *data, int size)
 {
-	iov_t		iov[3];
-	int			buf[_SLOG_HDRINTS];
+    iov_t iov[3];
+    int buf[_SLOG_HDRINTS];
 
-	buf[0] = severity;
-	buf[1] = opcode;
-	SETIOV(iov + 1, &buf[0], sizeof buf);
-	SETIOV(iov + 2, data, size);
+    buf[0] = severity;
+    buf[1] = opcode;
+    SETIOV(iov + 1, &buf[0], sizeof buf);
+    SETIOV(iov + 2, data, size);
 
-	return(slogsend(iov, 2, GETIOVLEN(iov + 1) + GETIOVLEN(iov + 2)));
+    return (slogsend(iov, 2, GETIOVLEN(iov + 1) + GETIOVLEN(iov + 2)));
 }
 
 ssize_t slogi(int opcode, int severity, int nargs, ...)
 {
-	iov_t		iov[3];
-	int			buf[_SLOG_HDRINTS];
-	int			i;
-	int			data[32];
-	va_list		arglist;
+    iov_t iov[3];
+    int buf[_SLOG_HDRINTS];
+    int i;
+    int data[32];
+    va_list arglist;
 
-	// Limit to the size of the above buffer
-	if(nargs >  (sizeof(data)/sizeof(*data))) {
-		errno = EINVAL;
-		return -1;
-	}
+    // Limit to the size of the above buffer
+    if (nargs > (sizeof(data) / sizeof(*data))) {
+        errno = EINVAL;
+        return -1;
+    }
+    // Collect the args
+    va_start(arglist, nargs);
+    for (i = 0; i < nargs; ++i) {
+        data[i] = va_arg(arglist, int);
+    }
+    va_end(arglist);
 
-	// Collect the args
-	va_start(arglist, nargs);
-	for(i = 0 ; i < nargs ; ++i) {
-		data[i] = va_arg(arglist, int);
-	}
-	va_end(arglist);
+    buf[0] = severity;
+    buf[1] = opcode;
+    SETIOV(iov + 1, &buf[0], sizeof buf);
+    SETIOV(iov + 2, data, nargs * sizeof(int));
 
-	buf[0] = severity;
-	buf[1] = opcode;
-	SETIOV(iov + 1, &buf[0], sizeof buf);
-	SETIOV(iov + 2, data, nargs * sizeof(int));
-
-	return(slogsend(iov, 2, GETIOVLEN(iov + 1) + GETIOVLEN(iov + 2)));
+    return (slogsend(iov, 2, GETIOVLEN(iov + 1) + GETIOVLEN(iov + 2)));
 }
 
 ssize_t vslogf(int opcode, int severity, const char *fmt, va_list arglist)
 {
-	iov_t			iov[2];
-	int			*buf;
-	int			n, avail, tot;
-	char			*start;
-	va_list			va_new;
+    iov_t iov[2];
+    int *buf;
+    int n, avail, tot;
+    char *start;
+    va_list va_new;
 
 
-	/*
-	 * If we're low on stack, try to get just what we need.
-	 * This means an extra vsnprintf.
-	 */
-	if(__stackavail() < (_SLOG_MAXSIZE + 1024)) {
-		va_copy(va_new, arglist);
-		avail = vsnprintf(NULL, 0, fmt, va_new);
-		va_end(va_new);
+    /*
+     * If we're low on stack, try to get just what we need.
+     * This means an extra vsnprintf.
+     */
+    if (__stackavail() < (_SLOG_MAXSIZE + 1024)) {
+        va_copy(va_new, arglist);
+        avail = vsnprintf(NULL, 0, fmt, va_new);
+        va_end(va_new);
 
-		if(avail == -1)
-			return -1;
+        if (avail == -1)
+            return -1;
 
-		avail++; /* For '\0' */
-		avail = min(avail, _SLOG_MAXSIZE - _SLOG_HDRINTS * sizeof(int));
-		tot = avail + _SLOG_HDRINTS * sizeof(int);
+        avail++;                /* For '\0' */
+        avail = min(avail, _SLOG_MAXSIZE - _SLOG_HDRINTS * sizeof(int));
+        tot = avail + _SLOG_HDRINTS * sizeof(int);
 
-	}
-	else {
-		tot = _SLOG_MAXSIZE;
-		avail = tot - _SLOG_HDRINTS * sizeof(int);
-	}
+    } else {
+        tot = _SLOG_MAXSIZE;
+        avail = tot - _SLOG_HDRINTS * sizeof(int);
+    }
 
-	if((buf = alloca(tot)) == NULL) {
-		errno = ENOMEM;
-		return -1;
-	}
+    if ((buf = alloca(tot)) == NULL) {
+        errno = ENOMEM;
+        return -1;
+    }
 
-	start = (char *)(&buf[_SLOG_HDRINTS]);
+    start = (char *) (&buf[_SLOG_HDRINTS]);
 
-	if((n = vsnprintf(start, avail, fmt, arglist)) == -1)
-		return -1;
+    if ((n = vsnprintf(start, avail, fmt, arglist)) == -1)
+        return -1;
 
-	/* Make sure terminating '\0' is included */
-	n = min(n + 1, avail);
+    /* Make sure terminating '\0' is included */
+    n = min(n + 1, avail);
 
-	/*
-	 * If the user sets _SLOG_TEXTBIT themselves, they are indicating that
-	 * they want to output to go to stderr as well.
-	 */
-	if(severity & _SLOG_TEXTBIT) {
-		start[n - 1] = '\n';   /* overwrite '\0' */
-		write(STDERR_FILENO, start, n);
-		start[n - 1] = '\0';   /* restore */
-	}
+    /*
+     * If the user sets _SLOG_TEXTBIT themselves, they are indicating that
+     * they want to output to go to stderr as well.
+     */
+    if (severity & _SLOG_TEXTBIT) {
+        start[n - 1] = '\n';    /* overwrite '\0' */
+        write(STDERR_FILENO, start, n);
+        start[n - 1] = '\0';    /* restore */
+    }
 
-	buf[0] = severity | _SLOG_TEXTBIT;
-	buf[1] = opcode;
-	SETIOV(iov + 1, buf, n + _SLOG_HDRINTS * sizeof(int));
+    buf[0] = severity | _SLOG_TEXTBIT;
+    buf[1] = opcode;
+    SETIOV(iov + 1, buf, n + _SLOG_HDRINTS * sizeof(int));
 
-	return(slogsend(iov, 1, GETIOVLEN(iov + 1)));
+    return (slogsend(iov, 1, GETIOVLEN(iov + 1)));
 }
 
 ssize_t slogf(int opcode, int severity, const char *fmt, ...)
 {
-	ssize_t		ret;
-	va_list		arglist;
+    ssize_t ret;
+    va_list arglist;
 
-	va_start(arglist, fmt);
-	ret = vslogf(opcode, severity, fmt, arglist);
-	va_end(arglist);
+    va_start(arglist, fmt);
+    ret = vslogf(opcode, severity, fmt, arglist);
+    va_end(arglist);
 
-	return(ret);
+    return (ret);
 }
-
-__SRCVERSION("slog.c $Rev: 170432 $");

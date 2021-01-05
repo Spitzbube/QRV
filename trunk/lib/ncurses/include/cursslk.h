@@ -53,7 +53,7 @@ public:
 
     Soft_Label_Key() : label((char*)0),format(Left),num(-1) {
     }
-    
+
     virtual ~Soft_Label_Key() {
       delete[] label;
     };
@@ -61,18 +61,18 @@ public:
   public:
     // Set the text of the Label
     void operator=(char *text);
-    
+
     // Set the Justification of the Label
     inline void operator=(Justification just) {
       format = just;
     }
-	 
+
     // Retrieve the text of the label
     inline char* operator()(void) const {
-      return label; 
+      return label;
     }
   };
-  
+
 public:
   typedef enum {
     None                = -1,
@@ -87,7 +87,7 @@ private:
   static Label_Layout  format;     // Layout of the Key Sets
   static int  num_labels;          // Number Of Labels in Key Sets
   bool b_attrInit;                 // Are attributes initialized
-  
+
   Soft_Label_Key *slk_array;       // The array of SLK's
 
   // Init the Key Set
@@ -105,13 +105,13 @@ protected:
   }
 
   // Remove SLK's from screen
-  void clear() { 
+  void clear() {
     if (ERR==::slk_clear())
       Error("slk_clear");
-  }    
+  }
 
   // Restore them
-  void restore() { 
+  void restore() {
     if (ERR==::slk_restore())
       Error("slk_restore");
   }
@@ -134,23 +134,23 @@ public:
   Soft_Label_Key& operator[](int i);
 
   // Retrieve number of Labels
-  inline int labels() const { return num_labels; }          
+  inline int labels() const { return num_labels; }
 
   // Refresh the SLK portion of the screen
-  inline void refresh() { 
+  inline void refresh() {
     if (ERR==::slk_refresh())
       Error("slk_refresh");
   }
 
   // Mark the SLK portion of the screen for refresh, defer actual refresh
   // until next update call.
-  inline void noutrefresh() { 
+  inline void noutrefresh() {
     if (ERR==::slk_noutrefresh())
       Error("slk_noutrefresh");
   }
 
   // Mark the whole SLK portion of the screen as modified
-  inline void touch() { 
+  inline void touch() {
     if (ERR==::slk_touch())
       Error("slk_touch");
   }

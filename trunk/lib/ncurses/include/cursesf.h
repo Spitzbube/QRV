@@ -91,10 +91,10 @@ protected:
     if (err != E_OK)
       THROW(new NCursesFormException (err));
   }
-  
+
 public:
   // Create a 'Null' field. Can be used to delimit a field list
-  NCursesFormField() 
+  NCursesFormField()
     : field((FIELD*)0), ftype((NCursesFieldType*)0) {
   }
 
@@ -104,14 +104,14 @@ public:
 		    int first_row = 0,
 		    int first_col = 0,
 		    int offscreen_rows = 0,
-		    int additional_buffers = 0) 
+		    int additional_buffers = 0)
     : ftype((NCursesFieldType*)0) {
       field = ::new_field(rows,cols,first_row,first_col,
 			  offscreen_rows, additional_buffers);
       if (!field)
 	OnError(errno);
   }
-  
+
   virtual ~NCursesFormField ();
 
   // Duplicate the field at a new position
@@ -321,12 +321,12 @@ private:
   static void frm_term(FORM *);
   static void fld_init(FORM *);
   static void fld_term(FORM *);
-  
+
   // Calculate FIELD* array for the menu
   FIELD** mapFields(NCursesFormField* nfields[]);
 
-protected:  
-  // internal routines 
+protected:
+  // internal routines
   inline void set_user(void *user) {
     UserHook* uptr = (UserHook*)::form_userptr (form);
     assert (uptr && uptr->m_back==this && uptr->m_owner==form);
@@ -337,8 +337,8 @@ protected:
     UserHook* uptr = (UserHook*)::form_userptr (form);
     assert (uptr && uptr->m_back==this && uptr->m_owner==form);
     return uptr->m_user;
-  }  
-  
+  }
+
   void InitForm (NCursesFormField* Fields[],
 		 bool with_frame,
 		 bool autoDeleteFields);
@@ -353,14 +353,14 @@ protected:
 
   // 'Internal' constructor, builds an object without association to a
   // field array.
-  NCursesForm( int  lines, 
-	       int  cols, 
-	       int  begin_y = 0, 
-	       int  begin_x = 0) 
-    : NCursesPanel(lines,cols,begin_y,begin_x), 
+  NCursesForm( int  lines,
+	       int  cols,
+	       int  begin_y = 0,
+	       int  begin_x = 0)
+    : NCursesPanel(lines,cols,begin_y,begin_x),
       form ((FORM*)0) {
   }
-  
+
 public:
   // Create form for the default panel.
   NCursesForm (NCursesFormField* Fields[],
@@ -372,9 +372,9 @@ public:
 
   // Create a form in a panel with the given position and size.
   NCursesForm (NCursesFormField* Fields[],
-	       int  lines, 
-	       int  cols, 
-	       int  begin_y, 
+	       int  lines,
+	       int  cols,
+	       int  begin_y,
 	       int  begin_x,
 	       bool with_frame=FALSE,        // reserve space for a frame?
 	       bool autoDelete_Fields=FALSE) // do automatic cleanup?
@@ -397,17 +397,17 @@ public:
 
   // Set these fields for the form
   inline void setFields(NCursesFormField* Fields[]) {
-    OnError(::set_form_fields(form,mapFields(Fields)));    
+    OnError(::set_form_fields(form,mapFields(Fields)));
   }
 
   // Remove the form from the screen
-  inline void unpost (void) { 
-    OnError (::unpost_form (form)); 
+  inline void unpost (void) {
+    OnError (::unpost_form (form));
   }
-  
+
   // Post the form to the screen if flag is true, unpost it otherwise
   inline void post(bool flag = TRUE) {
-    OnError (flag ? ::post_form(form) : ::unpost_form (form)); 
+    OnError (flag ? ::post_form(form) : ::unpost_form (form));
   }
 
   // Decorations
@@ -424,7 +424,7 @@ public:
     else
       OnError(E_SYSTEM_ERROR);
   }
-  
+
   inline void label(const char *topLabel, const char *bottomLabel) {
     if (b_framed)
       NCursesPanel::label(topLabel,bottomLabel);
@@ -578,18 +578,18 @@ template<class T> class NCursesUserForm : public NCursesForm
 protected:
   // 'Internal' constructor, builds an object without association to a
   // field array.
-  NCursesUserForm( int  lines, 
-		   int  cols, 
-		   int  begin_y = 0, 
+  NCursesUserForm( int  lines,
+		   int  cols,
+		   int  begin_y = 0,
 		   int  begin_x = 0,
-		   const T* p_UserData = (T*)0) 
+		   const T* p_UserData = (T*)0)
     : NCursesForm(lines,cols,begin_y,begin_x) {
       if (form)
 	set_user ((void *)p_UserData);
   }
 
 public:
-  NCursesUserForm (NCursesFormField Fields[], 
+  NCursesUserForm (NCursesFormField Fields[],
 		   bool with_frame=FALSE,
 		   bool autoDelete_Fields=FALSE)
     : NCursesForm (Fields, with_frame, autoDelete_Fields) {
@@ -603,11 +603,11 @@ public:
       if (form)
 	set_user ((void *)p_UserData);
   };
-  
+
   NCursesUserForm (NCursesFormField Fields[],
-		   int lines, 
-		   int cols, 
-		   int begin_y = 0, 
+		   int lines,
+		   int cols,
+		   int begin_y = 0,
 		   int begin_x = 0,
 		   const T* p_UserData = (T*)0,
 		   bool with_frame=FALSE,
@@ -616,11 +616,11 @@ public:
 		   with_frame, autoDelete_Fields) {
       if (form)
 	set_user ((void *)p_UserData);
-  };  
-  
+  };
+
   virtual ~NCursesUserForm() {
   };
-  
+
   inline T* UserData (void) const {
     return (T*)get_user ();
   };
@@ -645,7 +645,7 @@ private:
   }
 
 public:
-  Alpha_Field(int width) 
+  Alpha_Field(int width)
     : NCursesFieldType(TYPE_ALPHA),
       min_field_width(width) {
   }
@@ -660,7 +660,7 @@ private:
   }
 
 public:
-  Alphanumeric_Field(int width) 
+  Alphanumeric_Field(int width)
     : NCursesFieldType(TYPE_ALNUM),
       min_field_width(width) {
   }
@@ -678,7 +678,7 @@ private:
 
 public:
   Integer_Field(int prec, long low=0L, long high=0L)
-    : NCursesFieldType(TYPE_INTEGER), 
+    : NCursesFieldType(TYPE_INTEGER),
       precision(prec), lower_limit(low), upper_limit(high) {
   }
 };
@@ -695,7 +695,7 @@ private:
 
 public:
   Numeric_Field(int prec, double low=0.0, double high=0.0)
-    : NCursesFieldType(TYPE_NUMERIC), 
+    : NCursesFieldType(TYPE_NUMERIC),
       precision(prec), lower_limit(low), upper_limit(high) {
   }
 };
@@ -757,11 +757,11 @@ public:
 // -------------------------------------------------------------------------
 //
 class UserDefinedFieldType : public NCursesFieldType {
-  friend class UDF_Init; // Internal helper to set up statics 
+  friend class UDF_Init; // Internal helper to set up statics
 private:
   // For all C++ defined fieldtypes we need only one generic lowlevel
   // FIELDTYPE* element.
-  static FIELDTYPE* generic_fieldtype; 
+  static FIELDTYPE* generic_fieldtype;
 
 protected:
   // This are the functions required by the low level libforms functions
@@ -793,9 +793,9 @@ public:
 // -------------------------------------------------------------------------
 //
 class UserDefinedFieldType_With_Choice : public UserDefinedFieldType {
-  friend class UDF_Init; // Internal helper to set up statics 
+  friend class UDF_Init; // Internal helper to set up statics
 private:
-  // For all C++ defined fieldtypes with choice functions we need only one 
+  // For all C++ defined fieldtypes with choice functions we need only one
   // generic lowlevel FIELDTYPE* element.
   static FIELDTYPE* generic_fieldtype_with_choice;
 

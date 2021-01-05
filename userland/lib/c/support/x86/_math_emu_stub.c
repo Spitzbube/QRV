@@ -20,7 +20,6 @@
 
 extern unsigned (*_emulator_callout)(unsigned sigcode, void **pdata, void *regs);
 
-unsigned
-_math_emu_stub(unsigned sigcode, void **pdata, void *regs) {
-	return _emulator_callout(sigcode, pdata, regs);
+unsigned _math_emu_stub(unsigned sigcode, void **pdata, void *regs) {
+    return _emulator_callout(sigcode, pdata, regs);
 }

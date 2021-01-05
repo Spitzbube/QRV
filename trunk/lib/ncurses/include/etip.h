@@ -111,25 +111,25 @@ class NCursesPanelException : public NCursesException
 public:
   const NCursesPanel* p;
 
-  NCursesPanelException (const char *msg, int err) : 
+  NCursesPanelException (const char *msg, int err) :
     NCursesException (msg, err),
     p ((NCursesPanel*)0)
     {};
 
   NCursesPanelException (const NCursesPanel* panel,
 			 const char *msg,
-			 int err) : 
+			 int err) :
     NCursesException (msg, err),
     p (panel)
     {};
 
-  NCursesPanelException (int err) : 
+  NCursesPanelException (int err) :
     NCursesException ("panel library error", err),
     p ((NCursesPanel*)0)
     {};
 
   NCursesPanelException (const NCursesPanel* panel,
-			 int err) : 
+			 int err) :
     NCursesException ("panel library error", err),
     p (panel)
     {};
@@ -145,25 +145,25 @@ class NCursesMenuException : public NCursesException
 public:
   const NCursesMenu* m;
 
-  NCursesMenuException (const char *msg, int err) : 
+  NCursesMenuException (const char *msg, int err) :
     NCursesException (msg, err),
     m ((NCursesMenu *)0)
     {};
 
   NCursesMenuException (const NCursesMenu* menu,
 			const char *msg,
-			int err) : 
+			int err) :
     NCursesException (msg, err),
     m (menu)
     {};
 
-  NCursesMenuException (int err) : 
+  NCursesMenuException (int err) :
     NCursesException ("menu library error", err),
     m ((NCursesMenu *)0)
     {};
 
   NCursesMenuException (const NCursesMenu* menu,
-			int err) : 
+			int err) :
     NCursesException ("menu library error", err),
     m (menu)
     {};
@@ -179,25 +179,25 @@ class NCursesFormException : public NCursesException
 public:
   const NCursesForm* f;
 
-  NCursesFormException (const char *msg, int err) : 
+  NCursesFormException (const char *msg, int err) :
     NCursesException (msg, err),
     f ((NCursesForm*)0)
     {};
 
   NCursesFormException (const NCursesForm* form,
 			const char *msg,
-			int err) : 
+			int err) :
     NCursesException (msg, err),
     f (form)
     {};
 
-  NCursesFormException (int err) : 
+  NCursesFormException (int err) :
     NCursesException ("form library error", err),
     f ((NCursesForm*)0)
     {};
 
   NCursesFormException (const NCursesForm* form,
-			int err) : 
+			int err) :
     NCursesException ("form library error", err),
     f (form)
     {};
@@ -226,7 +226,7 @@ inline void THROW(const NCursesException *e) {
   if (e)
     cerr << e->message << endl;
   exit(0);
-#endif     
+#endif
 }
 
 #define THROWS(s)

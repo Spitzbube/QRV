@@ -2,8 +2,8 @@
 // with various tweaks to the macro definitions to get the right
 // code generated for R3K/MIPS32/MIPS64 variants
 	.set	noreorder
-	
-	
+
+
    	/* restore TLB entries */
 	lw		a1,mips_num_tlbs
    	li		t9,0
@@ -18,17 +18,17 @@
 #if defined(VARIANT_r3k)
 	sll		t7,t9,MIPS3K_TLB_INX_INDEXSHIFT
 	mtc0	t7,CP0_INDEX
-#else	 
+#else
 	mtc0	t9,CP0_INDEX
-	lw		t3,0(t8)		
+	lw		t3,0(t8)
 	mtc0	t3,CP0_PAGEMASK
-	lw		t3,12(t8)			
+	lw		t3,12(t8)
 	mtc0	t3,CP0_TLB_LO_1
-#endif	
-	lw		t3,4(t8)			
+#endif
+	lw		t3,4(t8)
 	mtc0	t3,CP0_TLB_HI
-	sw		t3,8(t8)	
-	mtc0	t3,CP0_TLB_LO_0	
+	sw		t3,8(t8)
+	mtc0	t3,CP0_TLB_LO_0
 	ssnop
 	ssnop
 	ssnop

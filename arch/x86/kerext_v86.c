@@ -46,5 +46,3 @@ kerext_v86_enter(void *data) {
 	act->flags |= _NTO_TF_V86;
 	SETKSTATUS(act, 0);
 }
-
-__SRCVERSION("kerext_v86.c $Rev: 153052 $");

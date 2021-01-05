@@ -25,16 +25,16 @@ extern unsigned (*_emulator_callout)(unsigned sigcode, void **pdata, void *regs)
 
 extern void SignalFault(unsigned sigcode, void *regs, uintptr_t refaddr);
 
-void
-_math_emu_stub(unsigned sigcode, void **pdata, void *regs) {
-	int saved_errno;
-	unsigned ret;
+void _math_emu_stub(unsigned sigcode, void **pdata, void *regs)
+{
+    int saved_errno;
+    unsigned ret;
 
-	saved_errno = errno;
-	ret = _emulator_callout(sigcode, pdata, regs);
-	errno = saved_errno;
+    saved_errno = errno;
+    ret = _emulator_callout(sigcode, pdata, regs);
+    errno = saved_errno;
 
-	SignalFault(ret, regs, 0);
+    SignalFault(ret, regs, 0);
 }
 
 __SRCVERSION("_math_emu_stub.c $Rev: 153052 $");

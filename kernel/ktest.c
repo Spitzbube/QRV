@@ -22,11 +22,10 @@
 
 extern void miniproc_start(void);
 
-/*
- * ktest.c
- *	Minimal stub to see Neutrino boot
+/**
+ * \brief Minimal stub to see Neutrino boot.
  */
-main(int argc, char *argv[])
+void kmain(int argc, char *argv[])
 {
     unsigned len;
 

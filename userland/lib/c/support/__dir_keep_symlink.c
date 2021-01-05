@@ -1,1 +1,1 @@
-int								__dir_keep_symlink;
+int __dir_keep_symlink;

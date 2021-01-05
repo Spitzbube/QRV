@@ -22,9 +22,7 @@
 #include <sys/neutrino.h>
 #include "cpucfg.h"
 
-struct _thread_local_storage *
-__tls(void) {
-	return(LIBC_TLS());
+struct _thread_local_storage *__tls(void)
+{
+    return (LIBC_TLS());
 }
-
-__SRCVERSION("__tls.c $Rev: 153052 $");

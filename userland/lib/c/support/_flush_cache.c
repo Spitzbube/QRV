@@ -26,13 +26,13 @@
  * the data & instruction caches are all up to date.
  */
 
-void
-_flush_cache(const void *addr, size_t len, unsigned flags) {
-	// In the future we should find out which of the flag bits indicate
-	// a flush of the dcache & which is the icache. We don't care right
-	// now since MS_INVALIDATE_ICACHE knows to flush the dcache only
-	// when needed.
-	(void)msync((void *)addr, len, MS_INVALIDATE_ICACHE);
+void _flush_cache(const void *addr, size_t len, unsigned flags)
+{
+    // In the future we should find out which of the flag bits indicate
+    // a flush of the dcache & which is the icache. We don't care right
+    // now since MS_INVALIDATE_ICACHE knows to flush the dcache only
+    // when needed.
+    (void) msync((void *) addr, len, MS_INVALIDATE_ICACHE);
 }
 
 __SRCVERSION("_flush_cache.c $Rev: 153052 $");

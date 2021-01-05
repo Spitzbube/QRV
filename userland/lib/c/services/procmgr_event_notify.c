@@ -24,33 +24,37 @@
 #include <sys/procmgr.h>
 #include <sys/procmsg.h>
 
-int _procmgr_event_notify(unsigned short subtype, unsigned flags, const struct sigevent *event) {
-	proc_event_t			msg;
+int _procmgr_event_notify(unsigned short subtype, unsigned flags, const struct sigevent *event)
+{
+    proc_event_t msg;
 
-	msg.i.type = _PROC_EVENT;
-	msg.i.subtype = subtype;
-	msg.i.flags = flags;
-	msg.i.event = *event;
+    msg.i.type = _PROC_EVENT;
+    msg.i.subtype = subtype;
+    msg.i.flags = flags;
+    msg.i.event = *event;
 
-	return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
+    return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-int procmgr_event_notify(unsigned flags, const struct sigevent *event) {
-	return _procmgr_event_notify(_PROC_EVENT_NOTIFY, flags, event);
+int procmgr_event_notify(unsigned flags, const struct sigevent *event)
+{
+    return _procmgr_event_notify(_PROC_EVENT_NOTIFY, flags, event);
 }
 
-int procmgr_event_notify_add(unsigned flags, const struct sigevent *event) {
-	return _procmgr_event_notify(_PROC_EVENT_NOTIFY_ADD, flags, event);
+int procmgr_event_notify_add(unsigned flags, const struct sigevent *event)
+{
+    return _procmgr_event_notify(_PROC_EVENT_NOTIFY_ADD, flags, event);
 }
 
-int procmgr_event_notify_delete(int id) {
-	proc_event_del_t		msg;
+int procmgr_event_notify_delete(int id)
+{
+    proc_event_del_t msg;
 
-	msg.i.type = _PROC_EVENT;
-	msg.i.subtype = _PROC_EVENT_NOTIFY_DEL;
-	msg.i.id = id;
+    msg.i.type = _PROC_EVENT;
+    msg.i.subtype = _PROC_EVENT_NOTIFY_DEL;
+    msg.i.id = id;
 
-	return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
+    return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
 __SRCVERSION("procmgr_event_notify.c $Rev: 159359 $");

@@ -44,5 +44,3 @@ __ker_err(int err) {
 	errno = err;
 	return -1;
 }
-
-__SRCVERSION("__ker_err.c $Rev: 153052 $");

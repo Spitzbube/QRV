@@ -140,7 +140,7 @@ enum {
     __KER_NET_SPARE1,           /* 98       0x62 */
     __KER_NET_SPARE2,           /* 99       0x63 */
 
-    __KER_MT_CTL,               /* 100          0x64 */
+    __KER_MT_CTL,               /* 100      0x64 */
 
     __KER_BAD                   /* 101      0x65 */
 };

@@ -83,7 +83,7 @@ extern MENU _nc_Default_Menu;
 
 /* This macro ensures, that the item becomes visible, if possible with the
    specified row as the top row of the window. If this is not possible,
-   the top row will be adjusted and the value is stored in the row argument. 
+   the top row will be adjusted and the value is stored in the row argument.
 */
 #define Adjust_Current_Item(menu,row,item) \
   { if ((item)->y < row) \
@@ -98,7 +98,7 @@ extern MENU _nc_Default_Menu;
   { (menu)->pindex = 0; \
     (menu)->pattern[0] = '\0'; }
 
-/* Internal functions. */						
+/* Internal functions. */
 extern void _nc_Draw_Menu(const MENU *);
 extern void _nc_Show_Menu(const MENU *);
 extern void _nc_Calculate_Item_Length_and_Width(MENU *);

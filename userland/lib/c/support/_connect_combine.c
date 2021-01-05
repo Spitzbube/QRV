@@ -22,16 +22,20 @@
 #include <sys/iomsg.h>
 
 int _connect_combine(const char *path, mode_t mode, unsigned oflag, unsigned sflag, int testcancel,
-		unsigned file_type, unsigned extra_len, void *extra, unsigned response_len, void *response) {
-	int							fd;
-	int							status;
+                     unsigned file_type, unsigned extra_len, void *extra, unsigned response_len,
+                     void *response)
+{
+    int fd;
+    int status;
 
-	if((fd = _connect(_NTO_SIDE_CHANNEL, path, mode, oflag, sflag, _IO_CONNECT_COMBINE_CLOSE, testcancel, 0, file_type,
-				0, extra_len, extra, response_len, response, &status)) == -1) {
-		return -1;
-	}
-	ConnectDetach(fd);
-	return status;
+    if ((fd =
+         _connect(_NTO_SIDE_CHANNEL, path, mode, oflag, sflag, _IO_CONNECT_COMBINE_CLOSE,
+                  testcancel, 0, file_type, 0, extra_len, extra, response_len, response,
+                  &status)) == -1) {
+        return -1;
+    }
+    ConnectDetach(fd);
+    return status;
 }
 
 __SRCVERSION("_connect_combine.c $Rev: 153052 $");

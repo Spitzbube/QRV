@@ -37,21 +37,22 @@
 #ifdef __PIC__
 extern unsigned (*_emulator_callout)(unsigned sigcode, void **pdata, void *regs);
 
-static void emu_init(void) {
-	void						*dll;
+static void emu_init(void)
+{
+    void *dll;
 
-	if((dll = dlopen("fpemu.so." VERSION_NUMBER, RTLD_NOW))) {
-		unsigned (*func)(unsigned sigcode, void **pdata, void *regs);
+    if ((dll = dlopen("fpemu.so." VERSION_NUMBER, RTLD_NOW))) {
+        unsigned (*func)(unsigned sigcode, void **pdata, void *regs);
 
-		if((func = dlsym(dll, "_math_emulator"))) {
-			/*
-			 * This must be atomic on all processors or there may be a problem!!!
-			 */
-			_emulator_callout = func;
-		} else {
-			dlclose(dll);
-		}
-	}
+        if ((func = dlsym(dll, "_math_emulator"))) {
+            /*
+             * This must be atomic on all processors or there may be a problem!!!
+             */
+            _emulator_callout = func;
+        } else {
+            dlclose(dll);
+        }
+    }
 }
 
 // We don't support floating point (emulated or hardware) in signal
@@ -64,22 +65,25 @@ static void emu_init(void) {
 // until we've finished loading and come out of the emu_init() function.
 #undef FPEMU_IN_SIGHANDLER_SUPPORT
 
-unsigned _math_emulator(unsigned sigcode, void **pdata, void *regs) {
-	static pthread_once_t		emu_once = PTHREAD_ONCE_INIT;
+unsigned _math_emulator(unsigned sigcode, void **pdata, void *regs)
+{
+    static pthread_once_t emu_once = PTHREAD_ONCE_INIT;
 #ifdef FPEMU_IN_SIGHANDLER_SUPPORT
-	sigset_t					oldset, newset;
+    sigset_t oldset, newset;
 
-	sigfillset(&newset);
-	SignalProcmask(0, 0, SIG_SETMASK, &newset, &oldset);
+    sigfillset(&newset);
+    SignalProcmask(0, 0, SIG_SETMASK, &newset, &oldset);
 #endif
-	pthread_once(&emu_once, emu_init);
+    pthread_once(&emu_once, emu_init);
 #ifdef FPEMU_IN_SIGHANDLER_SUPPORT
-	SignalProcmask(0, 0, SIG_SETMASK, &oldset, NULL);
+    SignalProcmask(0, 0, SIG_SETMASK, &oldset, NULL);
 #endif
-	return (_emulator_callout != _math_emulator) ? _emulator_callout(sigcode, pdata, regs) : sigcode;
+    return (_emulator_callout != _math_emulator) ? _emulator_callout(sigcode, pdata,
+                                                                     regs) : sigcode;
 }
 #else
-unsigned __attribute__((weak)) _math_emulator(unsigned sigcode, void **pdata, void *regs) {
+unsigned __attribute__((weak)) _math_emulator(unsigned sigcode, void **pdata, void *regs)
+{
     return sigcode;
 }
 #endif

@@ -23,19 +23,12 @@
 #include <sync.h>
 
 #undef	ALLOW_SPIN_SMP		/* When faster smp spinlocks are coded */
-#undef	OLD_SPIN			/* For backwards compatibility */
 
 extern int _spin_init(spinlock_t *lock, int pshared);
 extern int _spin_destroy(spinlock_t *lock);
 
-#ifdef OLD_SPIN
-extern int (*_spin_init_v)(struct _sync *__sync, const struct _sync_attr *attr);
-extern int (*_spin_destroy_v)(struct _sync *__sync);
-#endif
 extern int _pthread_spin_init(pthread_spinlock_t *lock, int pshared);
 extern int _pthread_spin_destroy(pthread_spinlock_t *lock);
 extern int _pthread_spin_lock(pthread_spinlock_t *lock);
 extern int _pthread_spin_trylock(pthread_spinlock_t *lock);
 extern int _pthread_spin_unlock(pthread_spinlock_t *lock);
-
-/* __SRCVERSION("spin.h $Rev: 153052 $"); */

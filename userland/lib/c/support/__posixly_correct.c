@@ -1,1 +1,1 @@
-int								__posixly_correct;
+int __posixly_correct;

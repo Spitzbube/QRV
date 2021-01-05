@@ -31,11 +31,14 @@
 
 #include "stkchk.h"
 
-int _connect(int base, const char *path, mode_t mode, unsigned oflag, unsigned sflag, unsigned subtype, int testcancel,
-		unsigned accessl, unsigned file_type, unsigned extra_type, unsigned extra_len, const void *extra,
-		unsigned response_len, void *response, int *status) {
-	return _connect_entry(base, path, mode, oflag, sflag, subtype, testcancel, accessl,
-	                      file_type, extra_type, extra_len, extra, response_len, response, status, NULL, 0);
+int _connect(int base, const char *path, mode_t mode, unsigned oflag, unsigned sflag,
+             unsigned subtype, int testcancel, unsigned accessl, unsigned file_type,
+             unsigned extra_type, unsigned extra_len, const void *extra, unsigned response_len,
+             void *response, int *status)
+{
+    return _connect_entry(base, path, mode, oflag, sflag, subtype, testcancel, accessl,
+                          file_type, extra_type, extra_len, extra, response_len, response, status,
+                          NULL, 0);
 }
 
 __SRCVERSION("_connect.c $Rev: 153052 $");

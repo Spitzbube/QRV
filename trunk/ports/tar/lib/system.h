@@ -426,7 +426,7 @@ char *getenv ();
 #include <intprops.h>
 
 #define UINTMAX_STRSIZE_BOUND INT_BUFSIZE_BOUND (uintmax_t)
-
+
 /* Prototypes for external functions.  */
 
 #if HAVE_LOCALE_H

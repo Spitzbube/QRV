@@ -33,13 +33,13 @@ protected:
     uptr->m_user = user;
   }
   // Set the user pointer of the panel.
-  
+
   void *get_user() {
     UserHook* uptr = (UserHook*)::panel_userptr (p);
     assert (uptr && uptr->m_back==this && uptr->m_owner==p);
     return uptr->m_user;
   }
-  
+
   void OnError (int err) const THROWS((NCursesPanelException)) {
     if (err==ERR)
       THROW(new NCursesPanelException (this, err));
@@ -54,7 +54,7 @@ public:
 	       int begin_x = 0)
     : NCursesWindow(lines,cols,begin_y,begin_x) {
       init();
-  } 
+  }
   // Create a panel with this size starting at the requested position.
 
   NCursesPanel() : NCursesWindow(::stdscr) { init(); }
@@ -62,7 +62,7 @@ public:
   // ::stdscr window
 
   virtual ~NCursesPanel();
-  
+
   // basic manipulation
   inline void hide() {
     OnError (::hide_panel(p));
@@ -78,19 +78,19 @@ public:
     OnError (::top_panel(p));
   }
   // Make this panel the top panel in the stack.
-  
+
   inline void bottom() {
     OnError (::bottom_panel(p));
   }
   // Make this panel the bottom panel in the stack.
   // N.B.: The panel associated with ::stdscr is always on the bottom. So
   // actually bottom() makes the panel the first above ::stdscr.
-  
+
   inline int mvwin(int y, int x) {
     OnError(::move_panel(p, y, x));
     return OK;
   }
-  
+
   inline bool hidden() const {
     return (::panel_hidden (p) ? TRUE : FALSE);
   }
@@ -116,7 +116,7 @@ public:
   // Those two are rewrites of the corresponding virtual members of
   // NCursesWindow
   int refresh();
-  // Propagate all panel changes to the virtual screen and update the 
+  // Propagate all panel changes to the virtual screen and update the
   // physical screen.
 
   int noutrefresh();
@@ -124,9 +124,9 @@ public:
 
   static void redraw();
   // Redraw all panels.
- 
+
   // decorations
-  virtual void frame(const char* title=NULL, 
+  virtual void frame(const char* title=NULL,
 		     const char* btitle=NULL);
   // Put a frame around the panel and put the title centered in the top line
   // and btitle in the bottom line.
@@ -144,7 +144,7 @@ public:
 };
 
 /* We use templates to provide a typesafe mechanism to associate
- * user data with a panel. A NCursesUserPanel<T> is a panel 
+ * user data with a panel. A NCursesUserPanel<T> is a panel
  * associated with some user data of type T.
  */
 template<class T> class NCursesUserPanel : public NCursesPanel
@@ -161,7 +161,7 @@ public:
   };
   // This creates an user panel of the requested size with associated
   // user data pointed to by p_UserData.
-  
+
   NCursesUserPanel(const T* p_UserData = (T*)0) : NCursesPanel() {
     if (p)
       set_user((void *)p_UserData);
@@ -175,7 +175,7 @@ public:
     return (T*)get_user ();
   };
   // Retrieve the user data associated with the panel.
-  
+
   virtual void setUserData (const T* p_UserData) {
     if (p)
       set_user ((void *)p_UserData);

@@ -3,7 +3,7 @@
 #
 
 ifndef QRV_PROJ_ROOT
-$(error QRV_PROJ_ROOT is not defined
+$(error QRV_PROJ_ROOT is not defined)
 endif
 
 MKFILES_ROOT := $(QRV_PROJ_ROOT)/build

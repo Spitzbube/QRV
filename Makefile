@@ -6,8 +6,13 @@ RAMDISK := ramdisk.cpio
 
 .PHONY: all ramdisk clean
 
-all: ramdisk
+all: kernel startup ramdisk
+
+startup:
 	make -C arch/riscv/startup
+
+kernel:
+	make -C kernel
 
 clean:
 	make -C arch/riscv/startup clean

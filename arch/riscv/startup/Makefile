@@ -14,12 +14,6 @@ OBJECTS = head.o \
           init_raminfo.o \
           init_asinfo.o \
           init_intrinfo.o \
-          vectors.o \
-          trampoline.o \
-          spinlock.o \
-          plic.o \
-          trap.o \
-          task.o \
           common_options.o \
           syspage_memory.o \
           cpu_syspage_memory.o \
@@ -36,7 +30,7 @@ OBJECTS = head.o \
 # xv6 objects
 #OBJECTS += start.o $(PLAT)/dbg_uart.o
 
-# Library
+# Library objects
 OBJECTS += lib/mem.o \
            lib/strtoul.o \
            lib/getopt.o \
@@ -44,12 +38,15 @@ OBJECTS += lib/mem.o \
            lib/typed_strings.o \
            lib/util.o
 
+# Kernel libraries
+LDLIBS = ../../../kernel/kernel.a
+
 # Platform-dependent
 PLAT = ../platform/qemu_virt
 OBJECTS +=  $(PLAT)/mem.o
 
 kernel: $(OBJECTS) qrv_kernel.ld
-	$(LD) $(LDFLAGS) -T qrv_kernel.ld -o kernel $(OBJECTS)
+	$(LD) $(LDFLAGS) -T qrv_kernel.ld -o kernel $(OBJECTS) $(LDLIBS)
 	$(OBJDUMP) -S kernel > kernel.asm
 	$(OBJDUMP) -t kernel | sed '1,/SYMBOL TABLE/d; s/ .* / /; /^$$/d' > kernel.sym
 

@@ -16,25 +16,16 @@
  */
 
 
-
-
 #include <inttypes.h>
 #include <alloca.h>
 #include <sys/neutrino.h>
 #include "cpucfg.h"
 
-#if defined(__WATCOMC__)
-	uintptr_t _sp(void);
-	#pragma aux _sp = "" parm nomemory [] modify nomemory exact [] value [esp];
-#elif defined(__GNUC__) || defined(__INTEL_COMPILER)
-#define _sp()	({unsigned __sp; __asm__ ( "movl %%esp,%0": "=g" (__sp)); __sp; })
-#else
-	#error compiler not supported
-#endif
+#define _sp()	({ \
+    unsigned __sp; \
+    __asm__ ( "movl %%esp, %0" : "=g" (__sp)); \
+    __sp; })
 
-size_t
-__stackavail(void) {
-	return _sp() - (uintptr_t)LIBC_TLS()->__stackaddr;
+size_t __stackavail(void) {
+    return _sp() - (uintptr_t)LIBC_TLS()->__stackaddr;
 }
-
-__SRCVERSION("__stackavail.c $Rev: 153052 $");

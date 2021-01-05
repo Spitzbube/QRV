@@ -11,13 +11,13 @@
 #define MAXIMUM_PROXIES		2000
 #define GET_PROXYNUM(pid)	((pid >> 16) & 0x07ff)
 
-#define PROXY_CODE 			1		/* Secret code that is inserted into the 
-									   code field of the pulse to indicate to 
-									   the MsgReceive*() that this pulse 
+#define PROXY_CODE 			1		/* Secret code that is inserted into the
+									   code field of the pulse to indicate to
+									   the MsgReceive*() that this pulse
 									   represents a proxy */
 #define MIG4NTO_UNSUPP		-1		/* migration functions do not have a
 									   value for this */
-#define far  
+#define far
 #define FP_SEG(x)			((int) x)
 #define my_ds()				(0)
 
@@ -64,7 +64,7 @@ typedef struct {
 
 #define PROC_PID			1
 
-/* 
+/*
  * Note that STATE_READY under QNX 4 could be either STATE_READY or
  * STATE_RUNNING under QNX Neutrino.
  */
@@ -76,7 +76,7 @@ typedef struct {
 #define STATE_SEM_BLOCKED		STATE_SEM
 
 
-/* 
+/*
  * QNX 4 sys/name.h miscellaneous
  */
 
@@ -92,7 +92,7 @@ struct _nameinfo {
 /*
  * QNX 4 sys/sendmx.h miscellaneous
  */
- 
+
 struct _mxfer_entry {
 	void			*iov_base;
 	size_t			iov_len;
@@ -122,7 +122,7 @@ struct _dev_info_entry {
 	short unsigned  capabilities;       /* NA capabilities of this device  */
 	char            driver_type[16];    /* Sym. name describing device     */
 	char            tty_name[MAX_TTY_NAME];     /* A path to open device   */
-	short unsigned  unit;               /* Unit number of this device      */  
+	short unsigned  unit;               /* Unit number of this device      */
 										/* /dev/con2 has a unit of 2       */
 	short unsigned  open_count;         /* NA Number of opens per device   */
 	mpid_t          pgrp;               /* NA Process group                */
@@ -139,7 +139,7 @@ struct _dev_info_entry {
  * migration functions
  */
 
-#define _DEV_EVENT_INPUT        0x0001  
+#define _DEV_EVENT_INPUT        0x0001
 #define _DEV_EVENT_DRAIN        0x0002
 #define _DEV_EVENT_LOGIN        0x0004	/* NA */
 #define _DEV_EVENT_EXRDY        0x0008
@@ -300,7 +300,7 @@ struct _osinfo {
  * note that the qnx_spawn() function ignores the parameter that uses
  * the struct _proc_spawn type
  */
- 
+
 struct _proc_spawn {                    /*  Same structure as _PROC_EXEC    */
 	short unsigned  type;
 	char            priority,
@@ -380,7 +380,7 @@ struct _psinfo {
 			pid_t       	father,
 							father_zero,
 							son,
-							son_zero, 
+							son_zero,
 							brother,
 							brother_zero,
 							debugger,		/* NA */
@@ -443,15 +443,15 @@ extern int name_init(void);
 
 extern pid_t Receivemx(pid_t pid, unsigned parts, struct _mxfer_entry *msgmx);
 extern pid_t Receive(pid_t pid, void *msg, unsigned nbytes);
-extern int Send(pid_t pid, void *smsg, void *rsmg, unsigned snbytes, 
+extern int Send(pid_t pid, void *smsg, void *rsmg, unsigned snbytes,
 		 unsigned rnbytes);
-extern int Sendmx(pid_t pid, unsigned sparts, unsigned rparts, 
+extern int Sendmx(pid_t pid, unsigned sparts, unsigned rparts,
 		   struct _mxfer_entry *smsgmx, struct _mxfer_entry *rmsgmx);
 extern int Reply(pid_t pid, void *msg, unsigned nbytes);
 extern int Replymx(pid_t pid, unsigned parts, struct _mxfer_entry *msgmx);
 
 extern unsigned Readmsg(pid_t pid, unsigned offset, void *msg, unsigned nbytes);
-extern unsigned Readmsgmx(pid_t pid, unsigned offset, unsigned parts, 
+extern unsigned Readmsgmx(pid_t pid, unsigned offset, unsigned parts,
 	struct _mxfer_entry *msgmx);
 
 extern unsigned Writemsg(pid_t pid, unsigned offset, void *msg, unsigned nbytes);

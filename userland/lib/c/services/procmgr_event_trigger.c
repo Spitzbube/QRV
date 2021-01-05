@@ -24,14 +24,15 @@
 #include <sys/procmgr.h>
 #include <sys/procmsg.h>
 
-int procmgr_event_trigger(unsigned flags) {
-	proc_event_t			msg;
+int procmgr_event_trigger(unsigned flags)
+{
+    proc_event_t msg;
 
-	msg.i.type = _PROC_EVENT;
-	msg.i.subtype = _PROC_EVENT_TRIGGER;
-	msg.i.flags = flags;
+    msg.i.type = _PROC_EVENT;
+    msg.i.subtype = _PROC_EVENT_TRIGGER;
+    msg.i.flags = flags;
 
-	return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
+    return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
 __SRCVERSION("procmgr_event_trigger.c $Rev: 153052 $");

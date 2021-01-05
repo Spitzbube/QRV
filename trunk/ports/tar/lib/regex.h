@@ -233,7 +233,7 @@ typedef unsigned long int reg_syntax_t;
    stored in the pattern buffer, so changing this does not affect
    already-compiled regexps.  */
 extern reg_syntax_t re_syntax_options;
-
+
 #ifdef __USE_GNU_REGEX
 /* Define combinations of the above bits for the standard possibilities.
    (The [[[ comments delimit what gets put into the Texinfo file, so
@@ -307,7 +307,7 @@ extern reg_syntax_t re_syntax_options;
 /* [[[end syntaxes]]] */
 
 #endif /* defined __USE_GNU_REGEX */
-
+
 #ifdef __USE_GNU_REGEX
 
 /* Maximum number of duplicates an interval can allow.  POSIX-conforming
@@ -416,7 +416,7 @@ typedef enum
 #define REG_EEND	_REG_EEND
 #define REG_ESIZE	_REG_ESIZE
 #define REG_ERPAREN	_REG_ERPAREN
-
+
 /* struct re_pattern_buffer normally uses member names like `buffer'
    that POSIX does not allow.  In POSIX mode these members have names
    with leading `re_' (e.g., `re_buffer').  */
@@ -516,7 +516,7 @@ struct re_pattern_buffer
 };
 
 typedef struct re_pattern_buffer regex_t;
-
+
 /* This is the structure we store register match data in.  See
    regex.texinfo for a full description of what registers match.  */
 struct re_registers
@@ -543,7 +543,7 @@ typedef struct
   regoff_t rm_so;  /* Byte offset from string's start to substring's start.  */
   regoff_t rm_eo;  /* Byte offset from string's start to substring's end.  */
 } regmatch_t;
-
+
 /* Declarations for routines.  */
 
 /* Sets the current default syntax to SYNTAX, and return the old syntax.

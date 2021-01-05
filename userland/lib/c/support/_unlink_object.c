@@ -27,22 +27,25 @@
 #include <share.h>
 #include <sys/iofunc.h>
 
-int _unlink_object(const char *name, const char *prefix, unsigned file_type) {
-	char						*path;
-	int							fd;
-	int							status;
+int _unlink_object(const char *name, const char *prefix, unsigned file_type)
+{
+    char *path;
+    int fd;
+    int status;
 
-	if(*name != '/' || strchr(name + 1, '/')) {
-		path = (char *)name;
-	} else {
-		if(!(path = (char *)alloca(strlen(prefix) + strlen(name) + 1))) {
-			errno = ENOMEM;
-			return -1;
-		}
-		strcat(strcpy(path, prefix), name);
-	}
+    if (*name != '/' || strchr(name + 1, '/')) {
+        path = (char *) name;
+    } else {
+        if (!(path = (char *) alloca(strlen(prefix) + strlen(name) + 1))) {
+            errno = ENOMEM;
+            return -1;
+        }
+        strcat(strcpy(path, prefix), name);
+    }
 
-    if((fd = _connect(_NTO_SIDE_CHANNEL, path, S_IFLNK, O_NOCTTY, SH_DENYNO, _IO_CONNECT_UNLINK, 0, 0, file_type, 0, 0, 0, 0, 0, &status)) == -1) {
+    if ((fd =
+         _connect(_NTO_SIDE_CHANNEL, path, S_IFLNK, O_NOCTTY, SH_DENYNO, _IO_CONNECT_UNLINK, 0, 0,
+                  file_type, 0, 0, 0, 0, 0, &status)) == -1) {
         return -1;
     }
     ConnectDetach(fd);

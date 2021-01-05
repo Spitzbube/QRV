@@ -27,11 +27,13 @@ SECTIONS
 		PROVIDE(_text_start = .);
 		*(.entry)
 		*(.text)
+/*
 		. = ALIGN(0x1000);
 		_trampoline = .;
 		*(.trampoline)
 		. = ALIGN(0x1000);
 		ASSERT(. - _trampoline == 0x1000, "error: trampoline larger than one page");
+*/
 		PROVIDE(_text_end = .);
 	}
 
