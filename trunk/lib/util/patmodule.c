@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -34,13 +34,9 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef __MINGW32__
-#include <lib/compat.h>
-#else
 #include <pwd.h>
 #include <grp.h>
 #include <fnmatch.h>
-#endif
 
 #include <util/defns.h>
 #include <patmodule.h>
@@ -117,7 +113,7 @@ static mode  	*mode_table;
 
 	static uint16_t  parse_nums	( uint16_t *table, char *string,
 					  uint16_t *num,char *errstring,
-					  uint16_t max, uint16_t flags); 
+					  uint16_t max, uint16_t flags);
 	static int16_t	parse_patterns	( char *table[],  char *string,
 				 uint16_t *num, bool update_all_not_patterns,
 				 char *errstring, uint16_t max );
@@ -126,7 +122,7 @@ static mode  	*mode_table;
 	static int	ctod		( char *s);
 	static int	comp		( char *s1, char *s2 );
 	static time_t	ascdatetotime	( char *string, int heavy );
-#else 
+#else
 	extern long ascdatetotime();
 	extern int16_t parse_patterns();
 	extern uint16_t parse_nums();
@@ -199,7 +195,7 @@ void patmodule_free()
 	free(pattern_table);
 	free(mode_table);
 }
-	
+
 /*
 ----------------------------------------------------- patmodule_enter() ------
 */
@@ -234,7 +230,7 @@ void patmodule_commit()
 	#ifdef DIAG
     {
 		int i;
-		
+
 		for (i=0;i<numpatterns;i++)
 		{
 			fprintf(stderr,"pattern[%d] = '%s'\n",i,pattern_table[i]);
@@ -255,7 +251,7 @@ void patmodule_commit()
 			fprintf(stderr,"mode[%d] = %s%09o\n",i,mode_table[i].negative?"(not)":"",mode_table[i].fmode);
 		}
 
-	}		
+	}
 	#endif
 }
 
@@ -269,13 +265,13 @@ bool patmodule_check (char *fname, struct stat *statbufp)
 	register char *p;
 	char match_flag;
 	int i;
-	
+
 	#ifdef DIAG
 		fprintf(stderr,"ok_to_exec('%s',---)\n",fname);
 	#endif
 
 	/* check file group */
-	if (numgroups) 
+	if (numgroups)
 	{
 		for (i=0;i<numgroups;i++)
 		{
@@ -358,7 +354,7 @@ bool patmodule_check (char *fname, struct stat *statbufp)
 		return((nummodes == 0)  ||  match_flag || all_negative_modes );
 	}
 }
-	
+
 /*
 ---------------------------------------------------------- cmd line parsing --
 */
@@ -432,7 +428,7 @@ static uint16_t  parse_nums (
 
 			if (flags==OWNER_FLAG) {
 				struct passwd *pwtemp;
-					
+
 				pwtemp = getpwnam(ptr);
 				if (!pwtemp) {
 					if (strspn(ptr,"0123456789x")!=strlen(ptr)) {
@@ -448,9 +444,9 @@ static uint16_t  parse_nums (
 				}
 			} else if (flags==GROUP_FLAG) {
 				struct group *grtemp;
-					
+
 				grtemp = getgrnam(ptr);
-	
+
 				if (grtemp==NULL) {
 					if (strspn(ptr,"0123456789x")!=strlen(ptr)) {
 						fprintf(stderr,TXT(T_INVALID_GROUP),ptr);
@@ -471,7 +467,7 @@ static uint16_t  parse_nums (
 
 		if (hex = ((ptr[0]=='0') && (ptr[1] == 'x')))
 			ptr+=2;
-	
+
 		item=ptr;
 
 		for (;hex?isdigit(*ptr):isxdigit(*ptr);ptr++);
@@ -502,8 +498,8 @@ static uint16_t  parse_nums (
 		}
 
 		table[(*num)++] = ltemp;
-	}		
-	
+	}
+
 	return(0);
 }
 
@@ -534,7 +530,7 @@ parse_patterns (char *table[],
 
 	for(ptr=string;*ptr;)
 	{
-		item = ptr;    	
+		item = ptr;
 
 		for (escaped=0;(*ptr)&&((*ptr!=',')||escaped);ptr++) escaped=(*ptr=='\\');
 
@@ -543,23 +539,23 @@ parse_patterns (char *table[],
 			return(-1);
 		}
 
-		if (*ptr) 
+		if (*ptr)
 		{
 			*ptr = (char) 0x00;
-			ptr++;			
+			ptr++;
 			eliminate_escape(item);
 			table[(*num)++] = item;
 		} else {
 			eliminate_escape(item);
 			table[(*num)++] = item;
-		}				
+		}
 
 		if ((update_all_not_patterns)&&(*item!=NOT_CHARACTER))
 		{
 			all_not_patterns = FALSE;
 		}
-	}		
-	
+	}
+
 	return(0);
 }
 
@@ -608,11 +604,11 @@ static int parse_modes (mode *table, char *string, uint16_t *num)
 			int j;
 
 			j = atoo(ptr);
-			if (j<0) 
+			if (j<0)
 			{
 				fprintf(stderr,TXT(T_NUM_OUT_OF_RANGE),temptable[i]);
 				exit(0xBAD);
-			} else {     
+			} else {
 				#ifdef DIAG
 					fprintf(stderr,"parse_modes: got octal 0%o\n",j);
 				#endif
@@ -641,9 +637,9 @@ static int parse_modes (mode *table, char *string, uint16_t *num)
 						exit(0xBAD);
 				}
 			}
-			
+
 			/* ptr now points to '=' */
-			
+
 			for (++ptr,i2=0;*ptr;ptr++)
 			{
 				switch(*ptr)
@@ -655,9 +651,9 @@ static int parse_modes (mode *table, char *string, uint16_t *num)
 						i2 |= S_IWOTH;
 						break;
 					case 'x':
-					case 's':					
+					case 's':
 						i2 |= S_IXOTH;
-						break;			
+						break;
 	        		default:
 						fprintf(stderr,TXT(T_ILLEGAL_MODE_SPEC),temptable[i]);
 						exit(0xBAD);
@@ -675,7 +671,7 @@ static int parse_modes (mode *table, char *string, uint16_t *num)
 
 	return(0);
 }
-			
+
 
 
 
@@ -689,7 +685,7 @@ static int parse_modes (mode *table, char *string, uint16_t *num)
 static time_t ascdatetotime(char *string, bool heavy)
 {
 	bool utc = FALSE;
-	
+
 	static char *months[] = {"---", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul",
 							"Aug", "Sep", "Oct", "Nov", "Dec", "---", "---", "---"};
 
@@ -723,35 +719,35 @@ static time_t ascdatetotime(char *string, bool heavy)
 	do
 	{
 		SKIP_WHITE(ptr);
-		day = ptr;    
-	
-		SKIP_TO_SLASH(ptr);	
+		day = ptr;
+
+		SKIP_TO_SLASH(ptr);
 		BREAK_ON_END(ptr);
 		month = ptr;
-	
+
 		SKIP_TO_SLASH(ptr);
 		BREAK_ON_END(ptr);
 		year = ptr;
-	
+
 		SKIP_TO_WHITE(ptr);
 		BREAK_ON_END(ptr);
-	
+
 		SKIP_WHITE(ptr);
 		minute = second = NULL;
-	
-		hour = ptr;	
-	
-		SKIP_TO_COLON(ptr);	
+
+		hour = ptr;
+
+		SKIP_TO_COLON(ptr);
 		BREAK_ON_END(ptr);
 		minute = ptr;
-	
+
 		SKIP_TO_COLON(ptr);
 		BREAK_ON_END(ptr);
 		second = ptr;
 		SKIP_TO_WHITE(ptr);
 		BREAK_ON_END(ptr);
 
-		break;	
+		break;
 	} while (FALSE);
 
 	#ifdef TDIAG
@@ -769,7 +765,7 @@ static time_t ascdatetotime(char *string, bool heavy)
 		tm2 = localtime(&lsec);
 		tm.tm_isdst = tm2->tm_isdst;
 	} else tm.tm_isdst = 0;
-	
+
 	tm.tm_min = 0;
 	am_pm = 0;
 	flg24 = 1;
@@ -820,12 +816,8 @@ static time_t ascdatetotime(char *string, bool heavy)
 
 	lsec = mktime(&tm);
 
-	if (utc) 
-#if defined(__CYGWIN32__) || defined(__MINGW32__)
-		lsec = lsec - _timezone;
-#else
+	if (utc)
 		lsec = lsec - timezone;
-#endif
 
 	#ifdef TDIAG
 		fprintf(stderr,"lsec = %ld\n",lsec);

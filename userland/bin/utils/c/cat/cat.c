@@ -108,16 +108,7 @@ Options:
  *
  * Include declarations:
  */
-#ifndef __CYGWIN__
-	#include <lib/compat.h>
-#else
-	extern int optind;
-	#define MAKE_BINARY_FD(fd)  setmode(fd, O_BINARY)
-#endif
-
-#if defined (__MINGW32__)
-#include <windows.h>
-#endif
+#include <lib/compat.h>
 
 #include <stdio.h>
 #include <limits.h>

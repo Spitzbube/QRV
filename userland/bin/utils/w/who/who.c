@@ -1,23 +1,4 @@
 /*
- * $QNXtpLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
- *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
- */
-
-
-
-/*
  * Copyright (c) 1989, 1993
  *	The Regents of the University of California.  All rights reserved.
  *
@@ -68,102 +49,92 @@
 #include <unistd.h>
 #include <utmp.h>
 
-static void usage (void);
-static void output (struct utmp *);
-static FILE *file (const char *);
+static void usage(void);
+static void output(struct utmp *);
+static FILE *file(const char *);
 
-int
-main(argc, argv)
-	int argc;
-	char **argv;
+int main(argc, argv)
+int argc;
+char **argv;
 {
-	char *p;
-	struct utmp usr;
-	struct passwd *pw;
-	FILE *ufp;
-	char *t;
+    char *p;
+    struct utmp usr;
+    struct passwd *pw;
+    FILE *ufp;
+    char *t;
 
-	(void) setlocale(LC_TIME, "");
+    (void) setlocale(LC_TIME, "");
 
-	switch (argc) {
-	case 1:					/* who */
-		ufp = file(_PATH_UTMP);
-		/* only entries with both name and line fields */
-		while (fread((char *)&usr, sizeof(usr), 1, ufp) == 1)
-			if (*usr.ut_name != NULL && *usr.ut_line != NULL)
-				output(&usr);
-		break;
-	case 2:					/* who utmp_file */
-		ufp = file(argv[1]);
-		/* all entries */
-		while (fread((char *)&usr, sizeof(usr), 1, ufp) == 1)
-			output(&usr);
-		break;
-	case 3:					/* who am i */
-	        if (strcmp(argv[1], "am")
-		    || (strcmp(argv[2], "I") && strcmp(argv[2], "i")))
-		        usage();
+    switch (argc) {
+    case 1:                    /* who */
+        ufp = file(_PATH_UTMP);
+        /* only entries with both name and line fields */
+        while (fread((char *) &usr, sizeof(usr), 1, ufp) == 1)
+            if (*usr.ut_name != NULL && *usr.ut_line != NULL)
+                output(&usr);
+        break;
+    case 2:                    /* who utmp_file */
+        ufp = file(argv[1]);
+        /* all entries */
+        while (fread((char *) &usr, sizeof(usr), 1, ufp) == 1)
+            output(&usr);
+        break;
+    case 3:                    /* who am i */
+        if (strcmp(argv[1], "am")
+            || (strcmp(argv[2], "I") && strcmp(argv[2], "i")))
+            usage();
 
-		ufp = file(_PATH_UTMP);
+        ufp = file(_PATH_UTMP);
 
-		/* search through the utmp and find an entry for this tty */
-		if ((p = ttyname(0))) {
-			/* strip any directory component */
-			if ((t = rindex(p, '/')))
-				p = t + 1;
-			while (fread((char *)&usr, sizeof(usr), 1, ufp) == 1)
-				if (*usr.ut_name && !strcmp(usr.ut_line, p)) {
-					output(&usr);
-					exit(0);
-				}
-			/* well, at least we know what the tty is */
-			(void)strncpy(usr.ut_line, p, UT_LINESIZE);
-		} else
-			(void)strcpy(usr.ut_line, "tty??");
-		pw = getpwuid(getuid());
-		(void)strncpy(usr.ut_name, pw ? pw->pw_name : "?", UT_NAMESIZE);
-		(void)time(&usr.ut_time);
-		output(&usr);
-		break;
-	default:
-		usage();
-	}
-	exit(0);
+        /* search through the utmp and find an entry for this tty */
+        if ((p = ttyname(0))) {
+            /* strip any directory component */
+            if ((t = rindex(p, '/')))
+                p = t + 1;
+            while (fread((char *) &usr, sizeof(usr), 1, ufp) == 1)
+                if (*usr.ut_name && !strcmp(usr.ut_line, p)) {
+                    output(&usr);
+                    exit(0);
+                }
+            /* well, at least we know what the tty is */
+            (void) strncpy(usr.ut_line, p, UT_LINESIZE);
+        } else
+            (void) strcpy(usr.ut_line, "tty??");
+        pw = getpwuid(getuid());
+        (void) strncpy(usr.ut_name, pw ? pw->pw_name : "?", UT_NAMESIZE);
+        (void) time(&usr.ut_time);
+        output(&usr);
+        break;
+    default:
+        usage();
+    }
+    exit(0);
 }
 
-static void
-usage()
+static void usage()
 {
-	(void)fprintf(stderr, "%s\n%s\n",
-		"usage: who [file]",
-		"       who am i");
-	exit(EXIT_FAILURE);
+    (void) fprintf(stderr, "%s\n%s\n", "usage: who [file]", "       who am i");
+    exit(EXIT_FAILURE);
 }
 
-void
-output(up)
-	struct utmp *up;
+void output(up)
+struct utmp *up;
 {
-	char buf[80];
-	static int d_first = -1;
+    char buf[80];
+    static int d_first = -1;
 
-	(void)printf("%-*.*s %-*.*s", UT_NAMESIZE, UT_NAMESIZE, up->ut_name,
-	    UT_LINESIZE, UT_LINESIZE, up->ut_line);
-	(void)strftime(buf, sizeof(buf),
-		       d_first ? "%e %b %R" : "%b %e %R",
-		       localtime(&up->ut_time));
-	(void)printf("%s\n", buf);
+    (void) printf("%-*.*s %-*.*s", UT_NAMESIZE, UT_NAMESIZE, up->ut_name,
+                  UT_LINESIZE, UT_LINESIZE, up->ut_line);
+    (void) strftime(buf, sizeof(buf), d_first ? "%e %b %R" : "%b %e %R", localtime(&up->ut_time));
+    (void) printf("%s\n", buf);
 }
 
-static FILE *
-file(name)
-	const char *name;
+static FILE *file(name)
+const char *name;
 {
-	FILE *ufp;
+    FILE *ufp;
 
-	if (!(ufp = fopen(name, "r")))
-		err(1, "%s", name);
-	return(ufp);
+    if (!(ufp = fopen(name, "r")))
+        err(1, "%s", name);
+    return (ufp);
 }
-
-

@@ -16,10 +16,6 @@
  */
 
 
-
-
-
-
 #ifndef __PASSWD_H_INCLUDED
 #define	__PASSWD_H_INCLUDED
 
@@ -27,12 +23,8 @@
 #include <stdio.h>
 #endif
 
-#ifdef __MINGW32__
-#include <lib/compat.h>
-#else
 #ifndef __PWD_H_INCLUDED
 #include <pwd.h>
-#endif
 #endif
 
 #ifdef __cplusplus

@@ -9,12 +9,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#if defined(__DJGPP__) || defined(__CYGWIN__)
-#  define FOPR "rb"
-#  define FOPM "r+b"
-#  define FOPW "wb"
-#endif
-
 /* Enable the "UT" extra field (time info) */
 #if !defined(NO_EF_UT_TIME) && !defined(USE_EF_UT_TIME)
 #  define USE_EF_UT_TIME

@@ -1,2 +1,3 @@
-LIST=OS
+LIST=CPU
 include recurse.mk
+

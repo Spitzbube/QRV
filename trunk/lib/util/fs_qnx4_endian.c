@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -49,9 +49,9 @@ void flip_endian_xblk(qnx4fs_xblk_t *xbptr)
 	ENDIAN_SWAP32(&xbptr->xblk_next_xblk);
 	ENDIAN_SWAP32(&xbptr->xblk_prev_xblk);
 	/* xbptr->xblk_num_xtnts is unsigned char */
-    /* xbptr->xblk_spare[3] doesn't need swapping (and isn't dword aligned) */    
+    /* xbptr->xblk_spare[3] doesn't need swapping (and isn't dword aligned) */
     ENDIAN_SWAP32(&xbptr->xblk_num_blocks);
-	for (i=0;i<QNX4FS_MAX_XTNTS_PER_XBLK;i++) 
+	for (i=0;i<QNX4FS_MAX_XTNTS_PER_XBLK;i++)
 		flip_endian_xtnt(&xbptr->xblk_xtnts[i]);
     /* xbptr->xblk_signature[8] is char and doesn't need swapping */
     flip_endian_xtnt(&xbptr->xblk_first_xtnt);
@@ -93,7 +93,7 @@ void flip_endian_dir(qnx4fs_dir_entry_t *deptr)
 
 /* the following routines are for situations where the structures
    must be byte-wise preserved but where the values contained in them
-   need to be used. They can also be used when a big-endian value 
+   need to be used. They can also be used when a big-endian value
    needs to be assigned to a little-endian struct/union member */
 
 qnx4fs_nxtnt_t endian_nxtnt_t(qnx4fs_nxtnt_t val)

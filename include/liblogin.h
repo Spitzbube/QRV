@@ -37,15 +37,15 @@
 #endif
 #include <util/util_limits.h>
 
-#define	TXT(s)				(s)
+#define	TXT(s)			(s)
 #define N_CNTRL_TERM 		"login: warning- no controlling terminal"
 #define T_LOGIN_FAIL 		"login: login incorrect"
 #define T_SESSION_LEADER	"login: not login shell"
-#define T_MUST_TTY			"login: must be on a tty!"
-#define	T_NO_MEMORY			"login: no memory!"
-#define	T_NO_SHELL 			"login: no shell!"
+#define T_MUST_TTY		"login: must be on a tty!"
+#define	T_NO_MEMORY		"login: no memory!"
+#define	T_NO_SHELL 		"login: no shell!"
 #define	T_NO_PASSFILE		"login: no passwd file!"
-#define	T_OWN_ME			"login: passwd file must be owned by %s\n"
+#define	T_OWN_ME		"login: passwd file must be owned by %s\n"
 #define	T_PASSWD_FTYPE		"login: passwd file must be regular file\n"
 
 __BEGIN_DECLS

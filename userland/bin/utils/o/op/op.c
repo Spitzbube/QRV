@@ -33,42 +33,48 @@
 #include <libgen.h>
 #endif
 
-int main( int argc, char *argv[] ) {
+int main(int argc, char *argv[])
+{
     struct passwd *real;
     int i;
     gid_t gid = getegid();
     uid_t uid = geteuid();
 
-    real = getpwuid( getuid() );
-    while( (i = getopt( argc, argv, "g:u:" )) != -1 ) {
-	switch( i ) {
-	    case 'u':	uid = strtol( optarg, &optarg, 0 );
-	    		if( *optarg ) {
-	    		    struct passwd *pwd = getpwnam( optarg );
+    real = getpwuid(getuid());
+    while ((i = getopt(argc, argv, "g:u:")) != -1) {
+        switch (i) {
+        case 'u':
+            uid = strtol(optarg, &optarg, 0);
+            if (*optarg) {
+                struct passwd *pwd = getpwnam(optarg);
 
-	    		    if( pwd ) uid = pwd->pw_uid;
-	    		}
-	    		break;
+                if (pwd)
+                    uid = pwd->pw_uid;
+            }
+            break;
 
-	    case 'g':	gid = strtol( optarg, &optarg, 0 );
-	    		if( *optarg ) {
-	    		    struct group *grp = getgrnam( optarg );
+        case 'g':
+            gid = strtol(optarg, &optarg, 0);
+            if (*optarg) {
+                struct group *grp = getgrnam(optarg);
 
-	    		    if( grp ) gid = grp->gr_gid;
-	    		}
-	    		break;
+                if (grp)
+                    gid = grp->gr_gid;
+            }
+            break;
 
-	    default:	exit( 1 );
-	}
+        default:
+            exit(1);
+        }
     }
-    setgid( gid ), setuid( uid );
-    if( optind != argc ) {
-    	execvp( argv[optind], &argv[optind] );
-		if( uid == 0 && errno == ENOENT ) {
-			putenv( "PATH=/sbin:/usr/sbin" );
-    		execvp( argv[optind], &argv[optind] );
-		}
-    	fprintf( stderr, "%s: %s (%s)\n", basename( argv[0] ), argv[optind], strerror( errno ) );
+    setgid(gid), setuid(uid);
+    if (optind != argc) {
+        execvp(argv[optind], &argv[optind]);
+        if (uid == 0 && errno == ENOENT) {
+            putenv("PATH=/sbin:/usr/sbin");
+            execvp(argv[optind], &argv[optind]);
+        }
+        fprintf(stderr, "%s: %s (%s)\n", basename(argv[0]), argv[optind], strerror(errno));
     }
-    exit( errno );
+    exit(errno);
 }
