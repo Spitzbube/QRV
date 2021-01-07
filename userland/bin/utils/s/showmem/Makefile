@@ -1,8 +1,2 @@
-LIST=OS
-ifndef QRECURSE
-QRECURSE=recurse.mk
-ifdef QCONFIG
-QRDIR=$(dir $(QCONFIG))
-endif
-endif
-include $(QRDIR)$(QRECURSE)
+LIST=CPU
+include recurse.mk

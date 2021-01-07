@@ -1,5 +1,5 @@
 #!/bin/sh
-# Test script, designed to see whether or not imagemanip works properly.  
+# Test script, designed to see whether or not imagemanip works properly.
 
 # NOTE: Can't use /tmp because it's a RAM disk, and we create some very large files there
 # which would exhaust it.  This needs to be on a physical disk with at least 128MB free.

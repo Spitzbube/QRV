@@ -19,16 +19,13 @@
 
 
 
-#ifdef __USAGE		/* pwd.c */
-%C - print working directory name (POSIX)
-
-%C [-w]
+#ifdef __USAGE                  /* pwd.c */
+% C - print working directory name(POSIX)
+    % C[-w]
 Options:
- -w    Separate paths with backslashes (\) rather than front (/) (Windows only)
-Note:
-   pwd is also a shell builtin.
+-w Separate paths with backslashes(\)
+rather than front(/) (Windows only) Note:pwd is also a shell builtin.
 #endif
-
 /*---------------------------------------------------------------------
 
 
@@ -111,42 +108,36 @@ Note:
 #include <limits.h>
 #include <unistd.h>
 #include <lib/compat.h>
-
 #if defined(__NT__) || defined(__MINGW32__)
 #include <fcntl.h>
 #endif
-
 /* Defines */
-
 #define ERR   1
 #define NOERR 0
-
-
-
-int main( int argc, char * argv[])
+int main(int argc, char *argv[])
 {
-	char path[PATH_MAX];
-	int windows_path=0;
+    char path[PATH_MAX];
+    int windows_path = 0;
 
-	if(argc > 1 && strcmp(argv[1], "-w") == 0)
-		windows_path = 1;
+    if (argc > 1 && strcmp(argv[1], "-w") == 0)
+        windows_path = 1;
 
-	if (getcwd(path,PATH_MAX) != NULL) {
+    if (getcwd(path, PATH_MAX) != NULL) {
 #if defined(__NT__) || defined(__MINGW32__)
-		int i;
-		MAKE_BINARY_FP(stdout);
-		if(!windows_path)
-			for ( i = 0; path[i]; i++ )
-				if ( path[i] == '\\' )
-					path[i] = '/';
+        int i;
+        MAKE_BINARY_FP(stdout);
+        if (!windows_path)
+            for (i = 0; path[i]; i++)
+                if (path[i] == '\\')
+                    path[i] = '/';
 #endif
-		fprintf(stdout,"%s\n",path);
+        fprintf(stdout, "%s\n", path);
 
-		exit(EXIT_SUCCESS);
-	} else {
-		perror("pwd");
-		exit(EXIT_FAILURE);
-	}
+        exit(EXIT_SUCCESS);
+    } else {
+        perror("pwd");
+        exit(EXIT_FAILURE);
+    }
 
-	return(EXIT_SUCCESS);
+    return EXIT_SUCCESS;
 }

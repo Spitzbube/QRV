@@ -5,4 +5,5 @@
 *.sym
 *.img
 .gdb_history
-ramdisk*
+ramdisk
+ramdisk.cpio*
