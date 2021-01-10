@@ -21,12 +21,6 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#if defined(__WATCOMC__) && __WATCOMC__ <= 1100
-#define FIXCONST	__based(__segname("CONST2"))
-#else
-#define FIXCONST
-#endif
-
 char *ulltoa(_uint64 value, char *buf, int radix) {
 	char			tmp[64 + 1];		/* Lowest radix is 2, so 64-bits plus a null */
 	char			*p1 = tmp, *p2;

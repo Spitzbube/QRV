@@ -36,19 +36,17 @@
 typedef uint64_t	pte_t;
 
 //YYY: Have to do SMP adjust for top 256M vaddrs
-#define MSG_XFER_SET_SR(sr, adp, base)	{									\
-	uint32_t	__vsid;														\
-	unsigned	idx;														\
-																			\
+#define MSG_XFER_SET_SR(sr, adp, base)	{					\
+	uint32_t	__vsid;							\
+	unsigned	idx;							\
+										\
 	/* SLIBIE to force invalidation of [I,D]-ERAT's */                      \
-	ppc_slbie((sr) << PPC64_SLB1_ESID_SHIFT);								\
-	idx = (base) >> 28;														\
-	/* SMP adjust for high 256M so that cpupage can be kept seperate */		\
-	if(idx == 0xf) idx += RUNCPU;											\
-	__vsid = (((adp)->cpu.asid + idx) << PPC64_SLB0_VSID_SHIFT)				\
-				| (PPC64_SLB0_KS|PPC64_SLB0_KP|PPC64_SLB0_N);				\
+	ppc_slbie((sr) << PPC64_SLB1_ESID_SHIFT);				\
+	idx = (base) >> 28;							\
+	/* SMP adjust for high 256M so that cpupage can be kept separate */	\
+	if(idx == 0xf) idx += RUNCPU;						\
+	__vsid = (((adp)->cpu.asid + idx) << PPC64_SLB0_VSID_SHIFT)		\
+				| (PPC64_SLB0_KS|PPC64_SLB0_KP|PPC64_SLB0_N);	\
 	ppc_slbmte(__vsid, (((sr)<<PPC64_SLB1_ESID_SHIFT) | (sr)) | PPC64_SLB1_V);\
-	ppc_isync();															\
+	ppc_isync(); \
 	}
-
-/* __SRCVERSION("mem_family.h $Rev: 153052 $"); */

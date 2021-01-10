@@ -32,7 +32,5 @@ int fstat(int fd, struct stat *statl) {
 	msg.i.zero = 0;
 	if (MsgSendnc(fd, &msg.i, sizeof msg.i, statl, sizeof *statl) == -1)
 		return(-1);
-	return(__stat_check(statl));
+	return __stat_check(statl);
 }
-
-__SRCVERSION("fstat.c $Rev: 153052 $");

@@ -78,7 +78,7 @@
 #endif
 
 /*
- 	Global variables are defined in a seperate source file (_salloc_data.c)
+ 	Global variables are defined in a separate source file (_salloc_data.c)
 	so that we can have a single instance of them (in libc.so) for a
 	process - this code is not in libc.so, only libc[S].a and the variables
 	would get duplicated if multiple shared objects (e.g. file systems)

@@ -14,45 +14,23 @@
  * for other information.
  * $
  */
+
 /*
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-
-
-    Authors: Jerome Stadelmann (JSN), Pietro Descombes (PDB), Daniel Rossier (DRE)
-    Emails: <firstname.lastname@heig-vd.ch>
-    Copyright (c) 2009 Reconfigurable Embedded Digital Systems (REDS) Institute from HEIG-VD, Switzerland
-*/
-
-
-
-/
-/ This file contains all the entry points to the kernel.
-/ There are serveral sections
-/    Kernel call entry
-/    Special kernel calls
-/    Hardware interrupts
-/    Exceptions
-/    Interprocessor (IPI) interrupts
-/
-/ When we enter kernel code from user space via one of the above means
-/ we switch to privity level 0 with an automatic stack switch pointing
-/ at active[cpu]->reg. We stuff esp0 in the TSS to point at the threads
-/ register save area before we return to a thread.
-/ While kernel calls can only originate from user space, interrupts
-/ and exceptions can also occur while in kernel space.
-/
+ * This file contains all the entry points to the kernel.
+ * There are serveral sections
+ *    Kernel call entry
+ *    Special kernel calls
+ *    Hardware interrupts
+ *    Exceptions
+ *    Interprocessor (IPI) interrupts
+ *
+ * When we enter kernel code from user space via one of the above means
+ * we switch to privity level 0 with an automatic stack switch pointing
+ * at active[cpu]->reg. We stuff esp0 in the TSS to point at the threads
+ * register save area before we return to a thread.
+ * While kernel calls can only originate from user space, interrupts
+ * and exceptions can also occur while in kernel space.
+ */
 
 	.text
 
@@ -98,6 +76,7 @@
 	.globl	__ker_sysenter
 	.globl	disabled_perfregs
 
+#if 0
 /	extrn	ker_call_table
 /	extrn	actives
 /	extrn	actives_fpu
@@ -144,15 +123,17 @@
 /	extrn	qtimeptr
 /	extrn	callout_timer_value
 /	extrn	xfer_restorestate
+#endif
+
 #include "asmoff.def"
 #include "util.ah"
 
 	.data
 kdbg_fault_code:	.long	0
 nmi_pending:		.long	0
-nmi_eax:			.long	0
-nmi_save:			.long	0
-					.long	0
+nmi_eax:		.long	0
+nmi_save:		.long	0
+			.long	0
 
 
 
@@ -181,17 +162,17 @@ nmi_save:			.long	0
 .endm
 
 .macro	PUSHREG
-	// Force a DS: reference so that if the DS register is corrupted,
-	// we'll get a GPF and go to the "__excd" handler to fix it up while
-	// we still have stack space. By referencing the top of the stack, we
-	// should ensure that we get a cache hit.
+	/* Force a DS: reference so that if the DS register is corrupted,
+	 * we'll get a GPF and go to the "__excd" handler to fix it up while
+	 * we still have stack space. By referencing the top of the stack, we
+	 * should ensure that we get a cache hit.
 
-	// Instead of just referencing the stack, we OR (which causes a store operation)
-	// in order to catch the case where the DS==CS (or other readonly segments) and
-	// fix it up via GPF - otherwise a simple reference won't trap, and we'll start
-	// doing nasty things in the thread entry area (small stack area we're on) during
-	// __ker_exit
-
+	 * Instead of just referencing the stack, we OR (which causes a store operation)
+	 * in order to catch the case where the DS==CS (or other readonly segments) and
+	 * fix it up via GPF - otherwise a simple reference won't trap, and we'll start
+	 * doing nasty things in the thread entry area (small stack area we're on) during
+	 * __ker_exit
+	 */
 	ds
 	orb		$0,(%esp)  // Fault?
 
@@ -422,11 +403,11 @@ showit:
 
 #ifdef	VARIANT_smp
 __ker_exit_v86:
-	//
-	// Load EBX with actives[0] in case we use __ker_exit2. Don't have
-	// have to check which CPU we're on - we know it's CPU 0 due to
-	// code in memmgr/x86/v86.c
-	//
+	/*
+	 * Load EBX with actives[0] in case we use __ker_exit2. Don't have
+	 * have to check which CPU we're on - we know it's CPU 0 due to
+	 * code in memmgr/x86/v86.c
+	 */
 	mov			actives,%ebx
 1:
 	movl		inkernel,%eax
@@ -446,16 +427,16 @@ __ker_exit_v86:
 	jmp			__ker_exit2
 #endif
 
-/ KERNEL CALL
-/;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-/
-/ Kernel call entry point. Ker_start is used only once to start the first
-/ thread on each processor. We do not have to protect access to the kernel
-/ here since the code in idle() makes sure that only one CPU at a time
-/ comes through.
-/
-/
-ker_start:					/ Starting the kernel
+/**************************************************************************
+ *   KERNEL CALL
+ *
+ *
+ * Kernel call entry point. Ker_start is used only once to start the first
+ * thread on each processor. We do not have to protect access to the kernel
+ * here since the code in idle() makes sure that only one CPU at a time
+ * comes through.
+ */
+ker_start:
 	GETCPU	%bp,%ebp
 #ifdef	VARIANT_smp
 	movl	%ebp,%eax
@@ -544,9 +525,10 @@ __common_ker_entry:
 
 #ifdef	VARIANT_smp
 
-	//NOTE: If the register used to save the kernel call number is
-	//changed, there's code in 'force_kernel' that needs to change as
-	//well. See the "NOTE:" comment in that routine.
+	/* NOTE: If the register used to save the kernel call number is
+	 * changed, there's code in 'force_kernel' that needs to change as
+	 * well. See the "NOTE:" comment in that routine.
+	 */
 	mov		%eax,%esi	// save kernel call number
 acquire_kernel_attempt:
 	sti

@@ -7,6 +7,7 @@
  */
 
 #include <startup.h>
+#include <confname.h>
 
 static char *debug_opt[2];
 

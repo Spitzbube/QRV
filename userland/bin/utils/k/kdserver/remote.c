@@ -237,7 +237,7 @@ gethexnum(char *srcstr, char **retstr, unsigned *retvalue) {
 /*
  * parse2hexnum - Parse two hex numbers
  *
- * This routine converts a string of two numbers, seperated by commas,
+ * This routine converts a string of two numbers, separated by commas,
  * into two binary values. Note that if either of the values can not
  * be returned, this routine will return failure and not update either
  * return value.

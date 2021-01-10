@@ -18,15 +18,11 @@
 
 
 
-#include <_pack1.h>
-
 struct __xiyi_init {
 	unsigned char	type;				// 0 - near which is what we always are
 	unsigned char	prio;				// 0 .. 255
 	void			(*init)(void);		// function address
-};
-
-#include <_packpop.h>
+} __attribute__ ((packed));
 
 extern void __xiyi(const struct __xiyi_init *beg, const struct __xiyi_init *end, int low, int high);
 extern struct __xiyi_init __xibeg, __xiend, __yibeg, __yiend;

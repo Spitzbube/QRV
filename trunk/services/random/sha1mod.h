@@ -41,8 +41,8 @@ A million repetitions of "a"
   34AA973C D4C4DAA4 F61EEB2B DBAD2731 6534016F
 */
 
-#define LITTLE_ENDIAN /* This should be #define'd if true. */
-#undef SHA1HANDSOFF /* Copies data before messing with it. */
+#define LITTLE_ENDIAN           /* This should be #define'd if true. */
+#undef SHA1HANDSOFF             /* Copies data before messing with it. */
 
 //Context declaration
 typedef struct {
@@ -53,8 +53,8 @@ typedef struct {
 
 //Function forward declerations
 void SHA1Transform(unsigned long state[5], unsigned char buffer[64]);
-void SHA1Init(sha1_ctx_t* context);
-void SHA1Update(sha1_ctx_t* context, unsigned char* data, unsigned int len);
-void SHA1Final(unsigned char digest[20], sha1_ctx_t* context);
+void SHA1Init(sha1_ctx_t * context);
+void SHA1Update(sha1_ctx_t * context, unsigned char *data, unsigned int len);
+void SHA1Final(unsigned char digest[20], sha1_ctx_t * context);
 
 #endif

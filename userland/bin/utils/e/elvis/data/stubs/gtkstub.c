@@ -216,7 +216,7 @@ typedef struct _GtkAccelLabelClass
 	gchar *mod_name_control;
 	gchar *mod_name_alt;
 	gchar *mod_separator;
-	gchar *accel_seperator;
+	gchar *accel_separator;
 	guint latin1_to_char : 1;
 } GtkAccelLabelClass;
 

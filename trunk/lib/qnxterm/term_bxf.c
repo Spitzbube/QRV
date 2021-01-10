@@ -131,7 +131,7 @@ void term_box_fill( row, col, width, height, attr, frame, fill_char )
 	/* a fill char of 0xffff means don't fill */
 	full = (fill_char != 0xffff) || (col + width >= t.num_cols-1);
 	/*
-	Draw each vertical line seperately to minimize output data.
+	Draw each vertical line separately to minimize output data.
 	If drawing to last column, then draw together to avoid 
 	eat_newline_glitch
 	*/

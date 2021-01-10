@@ -35,4 +35,3 @@ ssize_t write(int fd, const void *buff, size_t nbytes) {
 	return MsgSendv(fd, iov, 2, 0, 0);
 }
 
-__SRCVERSION("write.c $Rev: 153052 $");

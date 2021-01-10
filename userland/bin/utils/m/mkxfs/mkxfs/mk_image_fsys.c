@@ -188,7 +188,7 @@ expand_out(int congruence, struct file_entry *fip) {
 	// for a length of phdr->p_filesz. Only the first test should be
 	// required, but because of a bug in the procnto executable loader
 	// and also in lib/c/ldd.c where they alway mmap() for phdr->p_memsz
-	// rather then phdr->p_filesz and then a seperate anonymous mmap()
+	// rather then phdr->p_filesz and then a separate anonymous mmap()
 	// for "phdr->p_memsz - phdr->p_filesz", we have to make sure that
 	// we pad out non-shared object binaries. The bug in
 	// procnto & ldd.c will be fixed in the 6.4.0 release, so the release
@@ -842,7 +842,7 @@ copy_elf(int fd, FILE *dst_fp, struct file_entry *fip) {
 					l_end   = l_start + EHost32(fip, phdr->p_filesz) - 1;
 					if((sinfo[i].off >= l_start) && (sinfo[i].off <= l_end)) {
 						// already covered by a PT_LOAD, we don't
-						// have to write it out seperately
+						// have to write it out separately
 						continue;
 					}
 				}
@@ -1155,7 +1155,7 @@ classify_file(struct file_entry *fip) {
 					l_end   = l_start + EHost32(fip, phdr->p_filesz) - 1;
 					if((n_start >= l_start) && (n_start <= l_end)) {
 						// already covered by a PT_LOAD, we don't
-						// have to write it out seperately
+						// have to write it out separately
 						continue;
 					}
 				}

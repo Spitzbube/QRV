@@ -988,7 +988,7 @@ main (int argc,char **argv, char **arge)
 	first_index = optind;
 	if (!distribute) last_index  = argc-2;
 	else {
-		/* scan for 'to' keyword seperating destinations from source files */
+		/* scan for 'to' keyword separating destinations from source files */
 		int i;
 		last_index = 0;
 		for (i=first_index+1;i<argc;i++) {

@@ -41,7 +41,7 @@ static int _inherit_schedpart_list(PROCESS * prp, part_list_t ** part_list, unsi
 
 #ifdef EXTRA_DEBUG
 static void display_factlist(posix_spawn_file_actions_t * fact_p);
-#endif /* NDEBUG */
+#endif                          /* NDEBUG */
 
 /*******************************************************************************
  * procmgr_pspawn

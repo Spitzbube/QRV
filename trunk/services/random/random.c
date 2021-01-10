@@ -40,34 +40,32 @@
 
 yarrow_t *Yarrow;
 
-int start_resmgr( void );
+int start_resmgr(void);
 
 
-static void handle_signals( void )
+static void handle_signals(void)
 {
-    int       ret;
-    sigset_t  sset;
+    int ret;
+    sigset_t sset;
     siginfo_t sinfo;
 
-    sigfillset( &sset );
-    sigdelset( &sset, SIGTERM );
-    sigdelset( &sset, SIGINT );
-    sigdelset( &sset, SIGHUP );
-    sigprocmask( SIG_BLOCK, &sset, NULL );
+    sigfillset(&sset);
+    sigdelset(&sset, SIGTERM);
+    sigdelset(&sset, SIGINT);
+    sigdelset(&sset, SIGHUP);
+    sigprocmask(SIG_BLOCK, &sset, NULL);
 
-    sigemptyset( &sset );
-    sigaddset( &sset, SIGTERM );
-    sigaddset( &sset, SIGINT );
-    sigaddset( &sset, SIGHUP );
+    sigemptyset(&sset);
+    sigaddset(&sset, SIGTERM);
+    sigaddset(&sset, SIGINT);
+    sigaddset(&sset, SIGHUP);
 
-    while( 1 )
-    {
-        ret = SignalWaitinfo( &sset, &sinfo );
-        if( ret == -1 )
+    while (1) {
+        ret = SignalWaitinfo(&sset, &sinfo);
+        if (ret == -1)
             continue;
 
-        slogf( _SLOGC_CHAR, _SLOG_ERROR, "random: Exiting on signal %d",
-               sinfo.si_signo );
+        slogf(_SLOGC_CHAR, _SLOG_ERROR, "random: Exiting on signal %d", sinfo.si_signo);
         break;
     }
 
@@ -75,112 +73,89 @@ static void handle_signals( void )
 }
 
 
-int main( int argc, char **argv )
+int main(int argc, char **argv)
 {
-    int  ret;
-    int  c;
-    int  intr_list[MAX_INTR];
-    int  intr_count;
-    int  system_poll;
-    int  hp_timer;
+    int ret;
+    int c;
+    int intr_list[MAX_INTR];
+    int intr_count;
+    int system_poll;
+    int hp_timer;
     char path[256];
 
     intr_count = 0;
     system_poll = 0;
     hp_timer = 0;
 
-    while( ( c = getopt( argc, argv, "hi:tp" ) ) != -1 )
-    {
-        switch( c )
-        {
-            case 'h':
-                memset( path, 0, sizeof( path ) );
-                snprintf( path, 255, "use %s", argv[0] );
-                return system( path );
+    while ((c = getopt(argc, argv, "hi:tp")) != -1) {
+        switch (c) {
+        case 'h':
+            memset(path, 0, sizeof(path));
+            snprintf(path, 255, "use %s", argv[0]);
+            return system(path);
 
-            case 'i':
-                if( intr_count < MAX_INTR )
-                {
-                    intr_list[ intr_count ] = strtol( optarg, 0, 0 );
-                    intr_count ++;
-                }
-                else
-                {
-                    fprintf( stderr, "random: Only %d interrupt sources "
-                             "allowed. Ignoring interrupt 0x%lX.\n", MAX_INTR,
-                             strtol( optarg, 0, 0 ) );
-                }
-                break;
+        case 'i':
+            if (intr_count < MAX_INTR) {
+                intr_list[intr_count] = strtol(optarg, 0, 0);
+                intr_count++;
+            } else {
+                fprintf(stderr, "random: Only %d interrupt sources "
+                        "allowed. Ignoring interrupt 0x%lX.\n", MAX_INTR, strtol(optarg, 0, 0));
+            }
+            break;
 
-            case 'p':
-                system_poll = 1;
-                break;
+        case 'p':
+            system_poll = 1;
+            break;
 
-            case 't':
-                hp_timer = 1;
-                break;
+        case 't':
+            hp_timer = 1;
+            break;
         }
     }
 
-    if( intr_count == 0 && system_poll == 0 && hp_timer == 0 )
-    {
-        fprintf( stderr, "random: WARNING - "
-                 "no source of random data given.\n" );
+    if (intr_count == 0 && system_poll == 0 && hp_timer == 0) {
+        fprintf(stderr, "random: WARNING - " "no source of random data given.\n");
     }
 
     ret = start_resmgr();
-    if( ret != 0 )
-    {
-        fprintf( stderr, "random: Unable to start resmgr: %s\n",
-                 strerror( errno ) );
+    if (ret != 0) {
+        fprintf(stderr, "random: Unable to start resmgr: %s\n", strerror(errno));
         return EXIT_FAILURE;
     }
 
     /* Go into daemon mode! */
-    ret = procmgr_daemon( EXIT_SUCCESS, PROCMGR_DAEMON_NOCLOSE );
-    if( ret == -1 )
-    {
-        slogf( _SLOGC_CHAR, _SLOG_ERROR,
-               "random: Unable to detach from controling terminal." );
+    ret = procmgr_daemon(EXIT_SUCCESS, PROCMGR_DAEMON_NOCLOSE);
+    if (ret == -1) {
+        slogf(_SLOGC_CHAR, _SLOG_ERROR, "random: Unable to detach from controling terminal.");
     }
 
     /* Initilize the random data */
     Yarrow = yarrow_create();
-    if( Yarrow == NULL )
-    {
-        slogf( _SLOGC_CHAR, _SLOG_CRITICAL,
-               "random: Unable to create PRNG: %s", strerror( errno ) );
+    if (Yarrow == NULL) {
+        slogf(_SLOGC_CHAR, _SLOG_CRITICAL, "random: Unable to create PRNG: %s", strerror(errno));
         return EXIT_FAILURE;
     }
 
-    if( hp_timer )
-    {
+    if (hp_timer) {
         ret = start_timer_source();
-        if( ret != 0 )
-        {
-            slogf( _SLOGC_CHAR, _SLOG_ERROR,
-                   "random: Unable to start timer: %s", strerror( errno ) );
+        if (ret != 0) {
+            slogf(_SLOGC_CHAR, _SLOG_ERROR, "random: Unable to start timer: %s", strerror(errno));
         }
     }
 
-    for( c=0; c<intr_count; c++ )
-    {
-        ret = start_interrupt_source( intr_list[c] );
-        if( ret != 0 )
-        {
-            slogf( _SLOGC_CHAR, _SLOG_ERROR,
-                   "random: Unable to use interrupt %d: %s", intr_list[c],
-                   strerror( errno ) );
+    for (c = 0; c < intr_count; c++) {
+        ret = start_interrupt_source(intr_list[c]);
+        if (ret != 0) {
+            slogf(_SLOGC_CHAR, _SLOG_ERROR,
+                  "random: Unable to use interrupt %d: %s", intr_list[c], strerror(errno));
         }
     }
 
-    if( system_poll )
-    {
+    if (system_poll) {
         ret = start_syspoll_source();
-        if( ret != 0 )
-        {
-            slogf( _SLOGC_CHAR, _SLOG_ERROR,
-                   "random: Unable to start syspoll: %s", strerror( errno ) );
+        if (ret != 0) {
+            slogf(_SLOGC_CHAR, _SLOG_ERROR, "random: Unable to start syspoll: %s", strerror(errno));
         }
     }
 

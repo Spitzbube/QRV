@@ -27,19 +27,20 @@
 /*
  * Find the process id of the network manager.
  */
-pid_t pathmgr_netmgr_pid(void) {
-	NODE	*pathnode;
-	pid_t	pid;
+pid_t pathmgr_netmgr_pid(void)
+{
+    NODE *pathnode;
+    pid_t pid;
 
-	pid = 0;
-	pathnode = pathmgr_node_lookup(NULL, "dev/netmgr", PATHMGR_LOOKUP_ATTACH, NULL);
-	if(pathnode != NULL) {
-		if(pathnode->object != NULL) {
-			pid = pathnode->object->server.pid;
-		}
-		pathmgr_node_detach(pathnode);
-	}
-	return pid;
+    pid = 0;
+    pathnode = pathmgr_node_lookup(NULL, "dev/netmgr", PATHMGR_LOOKUP_ATTACH, NULL);
+    if (pathnode != NULL) {
+        if (pathnode->object != NULL) {
+            pid = pathnode->object->server.pid;
+        }
+        pathmgr_node_detach(pathnode);
+    }
+    return pid;
 }
 
 __SRCVERSION("pathmgr_netmgr_pid.c $Rev: 153052 $");

@@ -56,5 +56,3 @@ ssize_t _writex(int fd, const void *buff, size_t nbytes, unsigned xtype, void *x
     SETIOV(iov + 1, buff, nbytes);
     return _writexv(fd, iov, 2, xtype, xdata, xdatalen, nbytes);
 }
-
-__SRCVERSION("_writexv.c $Rev: 153052 $");

@@ -28,5 +28,3 @@ void		__dorand48 __P((unsigned short[3]));
 #define	RAND48_ADD	(0x000b)
 
 #endif /* _RAND48_H_ */
-
-/* __SRCVERSION("rand48.h $Rev: 153052 $"); */

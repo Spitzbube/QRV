@@ -26,7 +26,7 @@ Options:
  -t tablist   List of tab stops  ('4' or '4,12,64,...')
 Where:
  tablist  consists of positive decimal integers, in ascending order,
-          seperated by single commas.  If a single number is specified,
+          separated by single commas.  If a single number is specified,
           tabs will be set tablist columns apart.  If multiple numbers
           are given, tabs will be set at those specific columns.
 #endif

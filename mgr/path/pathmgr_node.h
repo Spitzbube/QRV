@@ -24,30 +24,30 @@
 #define INODE_XOR(value) ((int)value ^ 0x19071975)
 
 struct node_entry {
-	NODE						*parent;
-	NODE						*sibling;
-	NODE						*child;
-	OBJECT						*object;
-	uint16_t					links;			/* Number of current access to this node */
-	uint16_t					child_objects;	/* Number of children with objects */
-	uint16_t					flags;
-	uint16_t					len;
-	char						name[1];
+    NODE *parent;
+    NODE *sibling;
+    NODE *child;
+    OBJECT *object;
+    uint16_t links;             /* Number of current access to this node */
+    uint16_t child_objects;     /* Number of children with objects */
+    uint16_t flags;
+    uint16_t len;
+    char name[1];
 };
 
-#define NODE_FLAG_NOCHILD		0x0001			/* No children allowed on this node */
-#define NODE_FLAG_NONSERVER		0x0002			/* There is a non-server object on this node */
-#define NODE_FLAG_UNLINKING		0x0004			/* The node is being unlinked */
-#define NODE_FLAG_DEFERRED		0x0008			/* The node has a deferred open */
+#define NODE_FLAG_NOCHILD		0x0001  /* No children allowed on this node */
+#define NODE_FLAG_NONSERVER		0x0002  /* There is a non-server object on this node */
+#define NODE_FLAG_UNLINKING		0x0004  /* The node is being unlinked */
+#define NODE_FLAG_DEFERRED		0x0008  /* The node has a deferred open */
 
-#define PATHMGR_LOOKUP_ATTACH	0x00000001		/* increment link count if found */
-#define PATHMGR_LOOKUP_CREATE	0x00000002		/* create entries if they don't exist */
-#define PATHMGR_LOOKUP_PRUNE	0x00000004		/* only search first path entry */
-#define PATHMGR_LOOKUP_NOSERVER	0x00000008		/* Stop at first non-server object */
-#define PATHMGR_LOOKUP_NOEMPTIES	0x00000010		/* Avoid reporting empty objects if possible */
-#define PATHMGR_LOOKUP_NOAUTO	0x00000020		/* Avoid reporting autocreated objects if possible */
+#define PATHMGR_LOOKUP_ATTACH	0x00000001  /* increment link count if found */
+#define PATHMGR_LOOKUP_CREATE	0x00000002  /* create entries if they don't exist */
+#define PATHMGR_LOOKUP_PRUNE	0x00000004  /* only search first path entry */
+#define PATHMGR_LOOKUP_NOSERVER	0x00000008  /* Stop at first non-server object */
+#define PATHMGR_LOOKUP_NOEMPTIES	0x00000010  /* Avoid reporting empty objects if possible */
+#define PATHMGR_LOOKUP_NOAUTO	0x00000020  /* Avoid reporting autocreated objects if possible */
 
-extern pthread_mutex_t			pathmgr_mutex;
+extern pthread_mutex_t pathmgr_mutex;
 
 #endif
 

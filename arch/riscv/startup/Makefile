@@ -39,7 +39,7 @@ OBJECTS += lib/mem.o \
            lib/util.o
 
 # Kernel libraries
-LDLIBS = ../../../kernel/kernel.a
+#LDLIBS = ../../../kernel/kernel.a
 
 # Platform-dependent
 PLAT = ../platform/qemu_virt

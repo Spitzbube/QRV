@@ -40,15 +40,6 @@ void *memcpy(void *dst, const void *src, size_t nbytes) {
 #else
 
 void *memcpy(void *dst, const void *src, size_t nbytes) {
-#if defined(__WATCOMC__) && defined(__386__)
-	if( ((unsigned)src % sizeof(unsigned)) == 0
-	 && ((unsigned)dst % sizeof(unsigned)) == 0) {
-		void *movs(void *dst, const void *src, unsigned nbytes);
-		#pragma aux movs = ".386" "mov eax,ecx" "shr ecx,2" "repne movsd" "mov cl,al" "and cl,3" "repne movsb" \
-			parm [edi] [esi] [ecx] modify exact [eax ecx edi esi] value [edi];
-		movs(dst, src, nbytes);
-	} else
-#endif
 	{
 		char			*d = dst;
 		const char		*s = src;
@@ -61,5 +52,3 @@ void *memcpy(void *dst, const void *src, size_t nbytes) {
 }
 
 #endif
-
-__SRCVERSION("memcpy.c $Rev: 153052 $");

@@ -51,21 +51,22 @@ static rsrcmgr_schedpart_fnctbl_t *rsrcmgr_schedpart_fnctbl = NULL;
  * against it. This eliminates a jump to unneeded stub routines
 */
 /* the following are proxy functions for when the scheduler partitioning module is not installed */
-static int schedpart_proc_disassociate(PROCESS *prp, part_id_t schedpart_id, ext_lockfncs_t *lf);
-static int schedpart_proc_associate(PROCESS *prp, part_id_t schedpart_id, schedpart_dcmd_flags_t flags, ext_lockfncs_t *lf);
-static int schedpart_getlist(PROCESS *prp, part_list_t *spart_list, int n, schedpart_flags_t flags, struct _cred_info *cred);
-static schedpart_node_t *schedpart_nodeget(PROCESS *prp);
-static void proxy_schedpart_init(part_id_t spid, sched_aps_partition_info *aps_info);
+static int schedpart_proc_disassociate(PROCESS * prp, part_id_t schedpart_id, ext_lockfncs_t * lf);
+static int schedpart_proc_associate(PROCESS * prp, part_id_t schedpart_id,
+                                    schedpart_dcmd_flags_t flags, ext_lockfncs_t * lf);
+static int schedpart_getlist(PROCESS * prp, part_list_t * spart_list, int n,
+                             schedpart_flags_t flags, struct _cred_info *cred);
+static schedpart_node_t *schedpart_nodeget(PROCESS * prp);
+static void proxy_schedpart_init(part_id_t spid, sched_aps_partition_info * aps_info);
 static int _schedpart_validate_association(part_id_t spid, struct _cred_info *cred);
 
-schedpart_fnctbl_t proxy_schedpart_fnctbl =
-{
-	STRUCT_FLD(associate) schedpart_proc_associate,
-	STRUCT_FLD(disassociate) schedpart_proc_disassociate,
-	STRUCT_FLD(get_schedpart) schedpart_nodeget,
-	STRUCT_FLD(get_schedpartlist) schedpart_getlist,
-	STRUCT_FLD(validate_association) NULL,
-	STRUCT_FLD(rsrcmgr_attach) NULL,
+schedpart_fnctbl_t proxy_schedpart_fnctbl = {
+    STRUCT_FLD(associate) schedpart_proc_associate,
+    STRUCT_FLD(disassociate) schedpart_proc_disassociate,
+    STRUCT_FLD(get_schedpart) schedpart_nodeget,
+    STRUCT_FLD(get_schedpartlist) schedpart_getlist,
+    STRUCT_FLD(validate_association) NULL,
+    STRUCT_FLD(rsrcmgr_attach) NULL,
 };
 
 /*
@@ -82,22 +83,22 @@ schedpart_fnctbl_t proxy_schedpart_fnctbl =
  * it holds could be part of the aps module
  *
 */
-static part_id_t			_schedpart_create(part_id_t parent_spid, const char *name, schedpart_cfg_t *child_cfg);
-static int					_schedpart_destroy(part_id_t spid);
-static int 					_schedpart_config(part_id_t spid, schedpart_cfg_t *cfg, unsigned key);
-static schedpart_info_t *	_schedpart_getinfo(part_id_t spid, schedpart_info_t *info);
-static PROCESS *			_schedpart_find_pid(pid_t pid, part_id_t spid);
-static int _validate_cfg_creation(part_id_t parent_mpid, schedpart_cfg_t *cfg);
-static int _validate_cfg_modification(part_id_t mpid, schedpart_cfg_t *cfg);
-static schedpart_rsrcmgr_fnctbl_t _schedpart_rsrcmgr_fnctbl =
-{
-	STRUCT_FLD(create) _schedpart_create,
-	STRUCT_FLD(destroy) _schedpart_destroy,
-	STRUCT_FLD(config) _schedpart_config,
-	STRUCT_FLD(getinfo) _schedpart_getinfo,
-	STRUCT_FLD(find_pid) _schedpart_find_pid,
-	STRUCT_FLD(validate_cfg_new) _validate_cfg_creation,
-	STRUCT_FLD(validate_cfg_change) _validate_cfg_modification,
+static part_id_t _schedpart_create(part_id_t parent_spid, const char *name,
+                                   schedpart_cfg_t * child_cfg);
+static int _schedpart_destroy(part_id_t spid);
+static int _schedpart_config(part_id_t spid, schedpart_cfg_t * cfg, unsigned key);
+static schedpart_info_t *_schedpart_getinfo(part_id_t spid, schedpart_info_t * info);
+static PROCESS *_schedpart_find_pid(pid_t pid, part_id_t spid);
+static int _validate_cfg_creation(part_id_t parent_mpid, schedpart_cfg_t * cfg);
+static int _validate_cfg_modification(part_id_t mpid, schedpart_cfg_t * cfg);
+static schedpart_rsrcmgr_fnctbl_t _schedpart_rsrcmgr_fnctbl = {
+    STRUCT_FLD(create) _schedpart_create,
+    STRUCT_FLD(destroy) _schedpart_destroy,
+    STRUCT_FLD(config) _schedpart_config,
+    STRUCT_FLD(getinfo) _schedpart_getinfo,
+    STRUCT_FLD(find_pid) _schedpart_find_pid,
+    STRUCT_FLD(validate_cfg_new) _validate_cfg_creation,
+    STRUCT_FLD(validate_cfg_change) _validate_cfg_modification,
 };
 
 /*
@@ -106,13 +107,13 @@ static schedpart_rsrcmgr_fnctbl_t _schedpart_rsrcmgr_fnctbl =
  * This function table pointer will be initialized when the scheduler partitioning
  * module is initialized and schedpart_init() is called.
 */
-schedpart_fnctbl_t  *schedpart_fnctbl = NULL;
+schedpart_fnctbl_t *schedpart_fnctbl = NULL;
 
 /*
  * sys_schedpart
  *
 */
-schedpart_t  *sys_schedpart = NULL;
+schedpart_t *sys_schedpart = NULL;
 
 /*
  * schedpart_init
@@ -122,7 +123,7 @@ schedpart_t  *sys_schedpart = NULL;
  * allow the _schedpart_init() function to be called to perform the remainder of
  * the initialization. The actual call is made through the SCHEDPART_INIT() macro.
 */
-void (*schedpart_init)(part_id_t spid, sched_aps_partition_info *aps_info) = proxy_schedpart_init;
+void (*schedpart_init)(part_id_t spid, sched_aps_partition_info * aps_info) = proxy_schedpart_init;
 
 /*
  * schedpart_select_dpp
@@ -133,7 +134,7 @@ void (*schedpart_init)(part_id_t spid, sched_aps_partition_info *aps_info) = pro
  * in kerext_process_create().
  * If the aps module is not installed, it will remain NULL
 */
-DISPATCH * (*schedpart_select_dpp)(PROCESS *prp, int id) = NULL;
+DISPATCH *(*schedpart_select_dpp)(PROCESS * prp, int id) = NULL;
 
 /*
  * default_schedpart_flags
@@ -159,7 +160,7 @@ schedpart_dcmd_flags_t default_schedpart_flags = part_flags_NONE;
  * scheduler class). It is initialized in apsmgr_init() but needs to be here
  * since we cannot reference a variable in a module
 */
-int (*spmgr_st_size)(void *attr, off_t *size) = NULL;
+int (*spmgr_st_size)(void *attr, off_t * size) = NULL;
 
 /*
  * spid_unique
@@ -169,46 +170,48 @@ int (*spmgr_st_size)(void *attr, off_t *size) = NULL;
 int spid_unique = 0;
 
 /* accessed as SCHEDPART_DEFAULT_POLICY */
-static const schedpart_policy_t  _schedpart_dflt_policy = SCHEDPART_DFLT_POLICY_INITIALIZER;
+static const schedpart_policy_t _schedpart_dflt_policy = SCHEDPART_DFLT_POLICY_INITIALIZER;
 #define SCHEDPART_DFLT_POLICY		_schedpart_dflt_policy
 
 
 
 /* FIX ME - need the cur proc locks */
-static int m_lock_init(pthread_mutex_t *m)
+static int m_lock_init(pthread_mutex_t * m)
 {
-	if (!KerextAmInKernel()) {
-		return pthread_mutex_init(m, NULL);
-	}
-	else {
-		pthread_mutex_t  tmp = PTHREAD_MUTEX_INITIALIZER;
-		memcpy(m, &tmp, sizeof(*m));
-		return EOK;
-	}
+    if (!KerextAmInKernel()) {
+        return pthread_mutex_init(m, NULL);
+    } else {
+        pthread_mutex_t tmp = PTHREAD_MUTEX_INITIALIZER;
+        memcpy(m, &tmp, sizeof(*m));
+        return EOK;
+    }
 }
-static void m_lock_destroy(pthread_mutex_t *m)
+
+static void m_lock_destroy(pthread_mutex_t * m)
 {
-	if (!KerextAmInKernel()) {
-		pthread_mutex_destroy(m);
-	}
-	else {
-		memset(m, 0, sizeof(*m));
-	}
+    if (!KerextAmInKernel()) {
+        pthread_mutex_destroy(m);
+    } else {
+        memset(m, 0, sizeof(*m));
+    }
 }
-static int m_lock(pthread_mutex_t *m)
+
+static int m_lock(pthread_mutex_t * m)
 {
-	if (!KerextAmInKernel()) {
-		return pthread_mutex_lock(m);
-	} else {
-		return EOK;
-	}
+    if (!KerextAmInKernel()) {
+        return pthread_mutex_lock(m);
+    } else {
+        return EOK;
+    }
 }
-static void m_unlock(pthread_mutex_t *m)
+
+static void m_unlock(pthread_mutex_t * m)
 {
-	if (!KerextAmInKernel()) {
-		pthread_mutex_unlock(m);
-	}
+    if (!KerextAmInKernel()) {
+        pthread_mutex_unlock(m);
+    }
 }
+
 #define MUTEX_INIT(_l_, _v_)	m_lock_init((_l_))
 #define MUTEX_DESTROY(_l_)		m_lock_destroy((_l_))
 #define MUTEX_RDLOCK(_l_)		m_lock((_l_))
@@ -225,28 +228,29 @@ static void m_unlock(pthread_mutex_t *m)
 
 
 #ifndef NDEBUG
-static int _list_audit(part_qnodehdr_t *list)
+static int _list_audit(part_qnodehdr_t * list)
 {
-	unsigned count = 0;
-	struct _s {
-		part_qnode_t  hdr;
-	} *n = (struct _s *)LIST_FIRST(*list);
-	while(n != NULL)
-	{
-		++count;
-		n = (struct _s *)LIST_NEXT(n);
-	}
-	return (count == LIST_COUNT(*list)) ? EOK : EINVAL;
+    unsigned count = 0;
+    struct _s {
+        part_qnode_t hdr;
+    } *n = (struct _s *) LIST_FIRST(*list);
+    while (n != NULL) {
+        ++count;
+        n = (struct _s *) LIST_NEXT(n);
+    }
+    return (count == LIST_COUNT(*list)) ? EOK : EINVAL;
 }
+
 #define prp_list_audit(_l_)		_list_audit((part_qnodehdr_t *)&(_l_))
 #define spart_list_audit(_l_)	_list_audit((part_qnodehdr_t *)&(_l_))
-#endif	/* NDEBUG */
+#endif                          /* NDEBUG */
 
 
 /* internal prototypes */
-static part_id_t i_schedpart_create(part_id_t parent_spid, const char *name, schedpart_cfg_t *child_cfg, part_id_t spid);
-static int schedpart_proc_disassociate_1(PROCESS *prp, schedpart_t *spart, ext_lockfncs_t *lf);
-static int schedpart_validate_association(schedpart_t *spart, struct _cred_info *cred);
+static part_id_t i_schedpart_create(part_id_t parent_spid, const char *name,
+                                    schedpart_cfg_t * child_cfg, part_id_t spid);
+static int schedpart_proc_disassociate_1(PROCESS * prp, schedpart_t * spart, ext_lockfncs_t * lf);
+static int schedpart_validate_association(schedpart_t * spart, struct _cred_info *cred);
 
 /*******************************************************************************
  * _rsrcmgr_attach
@@ -254,30 +258,30 @@ static int schedpart_validate_association(schedpart_t *spart, struct _cred_info 
 */
 bool apmgr_module_installed(void)
 {
-	return (rsrcmgr_schedpart_fnctbl != NULL);
+    return (rsrcmgr_schedpart_fnctbl != NULL);
 }
 
 /*******************************************************************************
  * _rsrcmgr_attach
  *
 */
-static schedpart_rsrcmgr_fnctbl_t *_rsrcmgr_attach(rsrcmgr_schedpart_fnctbl_t *ifTbl)
+static schedpart_rsrcmgr_fnctbl_t *_rsrcmgr_attach(rsrcmgr_schedpart_fnctbl_t * ifTbl)
 {
 #ifndef NDEBUG
-	if (ker_verbose) kprintf("Attaching scheduler partitioning resource manager\n");
+    if (ker_verbose)
+        kprintf("Attaching scheduler partitioning resource manager\n");
 #endif
-	if (ifTbl != NULL)
-	{
-		rsrcmgr_schedpart_fnctbl = ifTbl;
-	}
-	return &_schedpart_rsrcmgr_fnctbl;
+    if (ifTbl != NULL) {
+        rsrcmgr_schedpart_fnctbl = ifTbl;
+    }
+    return &_schedpart_rsrcmgr_fnctbl;
 }
 
-void _schedpart_init(part_id_t spid, sched_aps_partition_info *aps_info)
+void _schedpart_init(part_id_t spid, sched_aps_partition_info * aps_info)
 {
-	proxy_schedpart_init(spid, aps_info);
-	schedpart_fnctbl->rsrcmgr_attach = _rsrcmgr_attach;
-	schedpart_fnctbl->validate_association = _schedpart_validate_association;
+    proxy_schedpart_init(spid, aps_info);
+    schedpart_fnctbl->rsrcmgr_attach = _rsrcmgr_attach;
+    schedpart_fnctbl->validate_association = _schedpart_validate_association;
 }
 
 /*******************************************************************************
@@ -291,15 +295,14 @@ void _schedpart_init(part_id_t spid, sched_aps_partition_info *aps_info)
  * Returns: the partition pointer or NULL if no partition of the scheduler class
  * 			is associated with the process
 */
-part_id_t schedpart_getid(PROCESS *prp)
+part_id_t schedpart_getid(PROCESS * prp)
 {
-	if (prp == NULL)
-		return SCHEDPART_T_TO_ID(sys_schedpart);
-	else
-	{
-		schedpart_node_t  *m = SCHEDPART_NODEGET(prp);
-		return ((m == NULL) ? part_id_t_INVALID : SCHEDPART_T_TO_ID(m->schedpart));
-	}
+    if (prp == NULL)
+        return SCHEDPART_T_TO_ID(sys_schedpart);
+    else {
+        schedpart_node_t *m = SCHEDPART_NODEGET(prp);
+        return ((m == NULL) ? part_id_t_INVALID : SCHEDPART_T_TO_ID(m->schedpart));
+    }
 }
 
 
@@ -313,13 +316,13 @@ part_id_t schedpart_getid(PROCESS *prp)
 */
 int schedpart_validate_id(part_id_t spid)
 {
-	schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
+    schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
 
-	/* RDLOCK ? */
-	if ((spart != NULL) && (spart->signature == SCHEDPART_SIGNATURE)) {
-		return EOK;
-	}
-	return EINVAL;
+    /* RDLOCK ? */
+    if ((spart != NULL) && (spart->signature == SCHEDPART_SIGNATURE)) {
+        return EOK;
+    }
+    return EINVAL;
 }
 
 /*******************************************************************************
@@ -339,7 +342,7 @@ int schedpart_validate_id(part_id_t spid)
 */
 bool schedpart_module_loaded(void)
 {
-	return ((schedpart_init != NULL) && (schedpart_init != proxy_schedpart_init));
+    return ((schedpart_init != NULL) && (schedpart_init != proxy_schedpart_init));
 }
 
 /*******************************************************************************
@@ -352,17 +355,18 @@ bool schedpart_module_loaded(void)
 */
 schedpart_t *schedpart_lookup_spid(part_id_t spid)
 {
-	schedpart_t *spart;
+    schedpart_t *spart;
 
-	if (!KerextAmInKernel()) {
-		spart = QueryObject(_QUERY_SCHEDULER_PARTITION, SPINDEX(spid), 0/*_QUERY_SCHEDULER_PARTITION*/, 0, 0, 0, 0);
-	}
-	else {
-		spart = vector_lookup(&schedpart_vector, SPINDEX(spid));
-	}
+    if (!KerextAmInKernel()) {
+        spart =
+            QueryObject(_QUERY_SCHEDULER_PARTITION, SPINDEX(spid),
+                        0 /*_QUERY_SCHEDULER_PARTITION*/ , 0, 0, 0, 0);
+    } else {
+        spart = vector_lookup(&schedpart_vector, SPINDEX(spid));
+    }
 
-	/* only allow a unique id match */
-	return ((spart != NULL) && (spart->info.id == spid)) ? spart : NULL;
+    /* only allow a unique id match */
+    return ((spart != NULL) && (spart->info.id == spid)) ? spart : NULL;
 }
 
 /*******************************************************************************
@@ -374,35 +378,34 @@ schedpart_t *schedpart_lookup_spid(part_id_t spid)
  *
  * Returns: a 'part_id_t'
 */
-struct kerargs_schedpart_vec
-{
-	part_id_t spid;
-	schedpart_t *spart;
+struct kerargs_schedpart_vec {
+    part_id_t spid;
+    schedpart_t *spart;
 };
 
 static void kerext_schedpart_vec_add(void *data)
 {
-	struct kerargs_schedpart_vec	*kap = data;
-	int spid = vector_add(&schedpart_vector, kap->spart, 0);
-	kap->spid = (spid < 0) ? part_id_t_INVALID : (part_id_t)spid;
+    struct kerargs_schedpart_vec *kap = data;
+    int spid = vector_add(&schedpart_vector, kap->spart, 0);
+    kap->spid = (spid < 0) ? part_id_t_INVALID : (part_id_t) spid;
 }
 
-part_id_t schedpart_vec_add(schedpart_t *spart)
+part_id_t schedpart_vec_add(schedpart_t * spart)
 {
-	struct kerargs_schedpart_vec  data;
-	CRASHCHECK(spart == NULL);
-	data.spart = spart;
+    struct kerargs_schedpart_vec data;
+    CRASHCHECK(spart == NULL);
+    data.spart = spart;
 
-	if (KerextAmInKernel()) {
-		kerext_schedpart_vec_add(&data);
-	}
-	else {
-		__Ring0(kerext_schedpart_vec_add, &data);
-	}
+    if (KerextAmInKernel()) {
+        kerext_schedpart_vec_add(&data);
+    } else {
+        __Ring0(kerext_schedpart_vec_add, &data);
+    }
 
-	if (data.spid != part_id_t_INVALID) data.spid |= (spid_unique | parttype_SCHED);
+    if (data.spid != part_id_t_INVALID)
+        data.spid |= (spid_unique | parttype_SCHED);
 
-	return data.spid;
+    return data.spid;
 }
 
 /*******************************************************************************
@@ -416,19 +419,20 @@ part_id_t schedpart_vec_add(schedpart_t *spart)
 */
 static void kerext_schedpart_vec_del(void *data)
 {
-	struct kerargs_schedpart_vec *kap = data;
-	kap->spart = vector_rem(&schedpart_vector, kap->spid);
+    struct kerargs_schedpart_vec *kap = data;
+    kap->spart = vector_rem(&schedpart_vector, kap->spid);
 }
 
 schedpart_t *schedpart_vec_del(part_id_t spid)
 {
-	struct kerargs_schedpart_vec  data;
-	CRASHCHECK(KerextAmInKernel());
-	if (spid == part_id_t_INVALID) return NULL;
-	data.spid = SPINDEX(spid);
+    struct kerargs_schedpart_vec data;
+    CRASHCHECK(KerextAmInKernel());
+    if (spid == part_id_t_INVALID)
+        return NULL;
+    data.spid = SPINDEX(spid);
 
-	__Ring0(kerext_schedpart_vec_del, &data);
-	return data.spart;
+    __Ring0(kerext_schedpart_vec_del, &data);
+    return data.spart;
 }
 
 /*
@@ -491,68 +495,61 @@ schedpart_t *schedpart_vec_del(part_id_t spid)
  *
  * Returns EOK or an errno
 */
-static int schedpart_proc_associate(PROCESS *prp, part_id_t schedpart_id,
-									schedpart_dcmd_flags_t flags, ext_lockfncs_t *lf)
+static int schedpart_proc_associate(PROCESS * prp, part_id_t schedpart_id,
+                                    schedpart_dcmd_flags_t flags, ext_lockfncs_t * lf)
 {
-	schedpart_t  *schedpart = SCHEDPART_ID_TO_T(schedpart_id);
-	schedpart_node_t  *spart_node;
+    schedpart_t *schedpart = SCHEDPART_ID_TO_T(schedpart_id);
+    schedpart_node_t *spart_node;
 
-	CRASHCHECK(schedpart == NULL);
+    CRASHCHECK(schedpart == NULL);
 
-	if (schedpart == NULL)
-	{
-		return EINVAL;
-	}
-	else if ((spart_node = SCHEDPART_NODEGET(prp)) != NULL)
-	{
-		/*
-		 * a partition of <schedclass_id> is already associated with this process.
-		 * Return EALREADY if it's the same partition (allowing the caller to
-		 * determine if it thinks this is an error) or EEXIST if it's a different
-		 * partition (of the same scheduler class) which is an error
-		*/
-		return (spart_node->schedpart == schedpart) ? EALREADY : EEXIST;
-	}
-	else
-	{
+    if (schedpart == NULL) {
+        return EINVAL;
+    } else if ((spart_node = SCHEDPART_NODEGET(prp)) != NULL) {
+        /*
+         * a partition of <schedclass_id> is already associated with this process.
+         * Return EALREADY if it's the same partition (allowing the caller to
+         * determine if it thinks this is an error) or EEXIST if it's a different
+         * partition (of the same scheduler class) which is an error
+         */
+        return (spart_node->schedpart == schedpart) ? EALREADY : EEXIST;
+    } else {
 #ifdef USE_PROC_OBJ_LISTS
-		prp_node_t  *prp_node;
-#endif	/* USE_PROC_OBJ_LISTS */
+        prp_node_t *prp_node;
+#endif                          /* USE_PROC_OBJ_LISTS */
 
-		if ((spart_node = calloc(1, sizeof(*spart_node))) == NULL)
-		{
-			return ENOMEM;
-		}
+        if ((spart_node = calloc(1, sizeof(*spart_node))) == NULL) {
+            return ENOMEM;
+        }
 
-		/* finish initializing the spart_node_t structure (all other fields are NULL) */
-		spart_node->schedpart = schedpart;
-		spart_node->flags = flags;
+        /* finish initializing the spart_node_t structure (all other fields are NULL) */
+        spart_node->schedpart = schedpart;
+        spart_node->flags = flags;
 
 #ifdef USE_PROC_OBJ_LISTS
-		if ((prp_node = calloc(1, sizeof(*prp_node))) == NULL)
-		{
-			free(spart_node);
-			return ENOMEM;
-		}
-#endif	/* USE_PROC_OBJ_LISTS */
+        if ((prp_node = calloc(1, sizeof(*prp_node))) == NULL) {
+            free(spart_node);
+            return ENOMEM;
+        }
+#endif                          /* USE_PROC_OBJ_LISTS */
 
-		/* associate 'spart_node' to the the process (can only be one) */
-		(void)MUTEX_WRLOCK(&prp->spartlist_lock.mutex);
-		prp->spart_list = (void *)spart_node;
-		(void)MUTEX_WRUNLOCK(&prp->spartlist_lock.mutex);
+        /* associate 'spart_node' to the the process (can only be one) */
+        (void) MUTEX_WRLOCK(&prp->spartlist_lock.mutex);
+        prp->spart_list = (void *) spart_node;
+        (void) MUTEX_WRUNLOCK(&prp->spartlist_lock.mutex);
 
 #ifdef USE_PROC_OBJ_LISTS
-		/* add 'prp' to the process list for the partition */
-		prp_node->prp = prp;
+        /* add 'prp' to the process list for the partition */
+        prp_node->prp = prp;
 
-		(void)MUTEX_WRLOCK(&spart_node->schedpart->prplist_lock);
-		LIST_ADD(spart_node->schedpart->prp_list, prp_node);
-		CRASHCHECK(prp_list_audit(spart_node->schedpart->prp_list) != EOK);
-		(void)MUTEX_WRUNLOCK(&spart_node->schedpart->prplist_lock);
-#endif	/* USE_PROC_OBJ_LISTS */
+        (void) MUTEX_WRLOCK(&spart_node->schedpart->prplist_lock);
+        LIST_ADD(spart_node->schedpart->prp_list, prp_node);
+        CRASHCHECK(prp_list_audit(spart_node->schedpart->prp_list) != EOK);
+        (void) MUTEX_WRUNLOCK(&spart_node->schedpart->prplist_lock);
+#endif                          /* USE_PROC_OBJ_LISTS */
 
-		return EOK;
-	}
+        return EOK;
+    }
 }
 
 /*******************************************************************************
@@ -564,33 +561,30 @@ static int schedpart_proc_associate(PROCESS *prp, part_id_t schedpart_id,
  * Otherwise, the process is disassociated from partition <schedpart_id>.
  * _schedpart_proc_disassociate_1() actually does the work.
 */
-static int schedpart_proc_disassociate(PROCESS *prp, part_id_t schedpart_id, ext_lockfncs_t *lf)
+static int schedpart_proc_disassociate(PROCESS * prp, part_id_t schedpart_id, ext_lockfncs_t * lf)
 {
-	CRASHCHECK(prp == NULL);
+    CRASHCHECK(prp == NULL);
 
-	/* allow the caller to do a cleanup even if no partitions were associated */
-	if ((schedpart_id == part_id_t_INVALID) && (prp->spart_list == NULL)) {
-		return EOK;
-	}
+    /* allow the caller to do a cleanup even if no partitions were associated */
+    if ((schedpart_id == part_id_t_INVALID) && (prp->spart_list == NULL)) {
+        return EOK;
+    }
 
-	/* disassociate from a specific partition id ? */
-	if (schedpart_id != part_id_t_INVALID) {
-		return schedpart_proc_disassociate_1(prp, SCHEDPART_ID_TO_T(schedpart_id), lf);
-	}
-	else
-	{
-		/* remove the process from all of its associated partitions */
-		int  ret = EOK;
-		schedpart_node_t *sp;
+    /* disassociate from a specific partition id ? */
+    if (schedpart_id != part_id_t_INVALID) {
+        return schedpart_proc_disassociate_1(prp, SCHEDPART_ID_TO_T(schedpart_id), lf);
+    } else {
+        /* remove the process from all of its associated partitions */
+        int ret = EOK;
+        schedpart_node_t *sp;
 
-		while ((sp = prp->spart_list) != NULL)
-		{
-			int  r;
-			r = schedpart_proc_disassociate_1(prp, sp->schedpart, lf);
-			ret = ((r != EOK) ? r : ret);
-		}
-		return ret;
-	}
+        while ((sp = prp->spart_list) != NULL) {
+            int r;
+            r = schedpart_proc_disassociate_1(prp, sp->schedpart, lf);
+            ret = ((r != EOK) ? r : ret);
+        }
+        return ret;
+    }
 }
 
 /*******************************************************************************
@@ -603,59 +597,58 @@ static int schedpart_proc_disassociate(PROCESS *prp, part_id_t schedpart_id, ext
  * Since there are no actual partitions, this function always returns the
  * same thing
 */
-static int schedpart_getlist(PROCESS *prp, part_list_t *spart_list, int n,
-							schedpart_flags_t flags, struct _cred_info *cred)
+static int schedpart_getlist(PROCESS * prp, part_list_t * spart_list, int n,
+                             schedpart_flags_t flags, struct _cred_info *cred)
 {
-	schedpart_node_t *sp_node;
-	unsigned  n_sparts, i;
-	unsigned int  filtered = 0;
+    schedpart_node_t *sp_node;
+    unsigned n_sparts, i;
+    unsigned int filtered = 0;
 
-	CRASHCHECK(!SCHEDPART_INSTALLED());
+    CRASHCHECK(!SCHEDPART_INSTALLED());
 
-	if ((spart_list == NULL) && (n == 0)) {
-		/* caller just wants the (max) number of associated partitions for <prp> */
-		/* FIX ME - consider allowing the filters to be factored into the return value */
-		return 1;
-	}
+    if ((spart_list == NULL) && (n == 0)) {
+        /* caller just wants the (max) number of associated partitions for <prp> */
+        /* FIX ME - consider allowing the filters to be factored into the return value */
+        return 1;
+    }
 
-	CRASHCHECK(spart_list == NULL);
+    CRASHCHECK(spart_list == NULL);
 
-	spart_list->num_entries = 0;
-	(void)MUTEX_RDLOCK(&prp->spartlist_lock.mutex);
+    spart_list->num_entries = 0;
+    (void) MUTEX_RDLOCK(&prp->spartlist_lock.mutex);
 
-	n_sparts = 1;
+    n_sparts = 1;
 
-	for (i=0; i<n_sparts; i++)
-	{
-		if (spart_list->num_entries >= n) break;
+    for (i = 0; i < n_sparts; i++) {
+        if (spart_list->num_entries >= n)
+            break;
 
-		sp_node = (schedpart_node_t *)prp->spart_list;
-		if (sp_node == NULL) continue;
+        sp_node = (schedpart_node_t *) prp->spart_list;
+        if (sp_node == NULL)
+            continue;
 
-		++i;	// this is a valid entry
+        ++i;                    // this is a valid entry
 
-		/* filter out entries based on inheritablility ? */
-		if ((flags & schedpart_flags_t_GETLIST_INHERITABLE) &&
-			(sp_node->flags & part_flags_NO_INHERIT))
-		{
-			++filtered;
-			continue;
-		}
-		/* filter out entries based on credentials ? */
-		if ((flags & schedpart_flags_t_GETLIST_CREDENTIALS) && (cred != NULL) &&
-			(schedpart_validate_association(sp_node->schedpart, cred) != EOK))
-		{
-			++filtered;
-			continue;
-		}
+        /* filter out entries based on inheritablility ? */
+        if ((flags & schedpart_flags_t_GETLIST_INHERITABLE) &&
+            (sp_node->flags & part_flags_NO_INHERIT)) {
+            ++filtered;
+            continue;
+        }
+        /* filter out entries based on credentials ? */
+        if ((flags & schedpart_flags_t_GETLIST_CREDENTIALS) && (cred != NULL) &&
+            (schedpart_validate_association(sp_node->schedpart, cred) != EOK)) {
+            ++filtered;
+            continue;
+        }
 
-		/* otherwise return this entry */
-		spart_list->i[spart_list->num_entries].id = SCHEDPART_T_TO_ID(sp_node->schedpart);
-		spart_list->i[spart_list->num_entries++].flags = sp_node->flags;
-	}
-	MUTEX_RDUNLOCK(&prp->spartlist_lock.mutex);
+        /* otherwise return this entry */
+        spart_list->i[spart_list->num_entries].id = SCHEDPART_T_TO_ID(sp_node->schedpart);
+        spart_list->i[spart_list->num_entries++].flags = sp_node->flags;
+    }
+    MUTEX_RDUNLOCK(&prp->spartlist_lock.mutex);
 
-	return (n_sparts - (spart_list->num_entries + filtered));
+    return (n_sparts - (spart_list->num_entries + filtered));
 }
 
 /*******************************************************************************
@@ -668,12 +661,12 @@ static int schedpart_getlist(PROCESS *prp, part_list_t *spart_list, int n,
  * Since there are no actual partitions, this function always returns the
  * same thing
 */
-static schedpart_node_t *schedpart_nodeget(PROCESS *prp)
+static schedpart_node_t *schedpart_nodeget(PROCESS * prp)
 {
-//	CRASHCHECK(!SCHEDPART_INSTALLED());
-	CRASHCHECK(prp == NULL);
+//  CRASHCHECK(!SCHEDPART_INSTALLED());
+    CRASHCHECK(prp == NULL);
 
-	return prp->spart_list;
+    return prp->spart_list;
 }
 
 /*******************************************************************************
@@ -688,37 +681,39 @@ static schedpart_node_t *schedpart_nodeget(PROCESS *prp)
  * associations control is meaningless
  *
 */
-static int schedpart_validate_association(schedpart_t *spart, struct _cred_info *cred)
+static int schedpart_validate_association(schedpart_t * spart, struct _cred_info *cred)
 {
-	int r = EOK;
+    int r = EOK;
 
-	CRASHCHECK(spart == NULL);
-	CRASHCHECK(cred == NULL);
+    CRASHCHECK(spart == NULL);
+    CRASHCHECK(cred == NULL);
 
-	if ((rsrcmgr_schedpart_fnctbl != NULL) && (rsrcmgr_schedpart_fnctbl->validate_association != NULL)) {
-		r = rsrcmgr_schedpart_fnctbl->validate_association(spart->rmgr_attr_p, cred);
-	}
-	return r;
+    if ((rsrcmgr_schedpart_fnctbl != NULL)
+        && (rsrcmgr_schedpart_fnctbl->validate_association != NULL)) {
+        r = rsrcmgr_schedpart_fnctbl->validate_association(spart->rmgr_attr_p, cred);
+    }
+    return r;
 }
+
 static int _schedpart_validate_association(part_id_t spid, struct _cred_info *cred)
 {
-	return schedpart_validate_association(SCHEDPART_ID_TO_T(spid), cred);
+    return schedpart_validate_association(SCHEDPART_ID_TO_T(spid), cred);
 }
 
 /* remove this when we no longer support WATCOM, or WATCOM supports inlines */
 #if (defined(__WATCOMC__) || !defined(NDEBUG))
-void *_select_dpp(PROCESS *prp, part_id_t spid)
+void *_select_dpp(PROCESS * prp, part_id_t spid)
 {
-	if (!SCHEDPART_INSTALLED() || !apmgr_module_installed() || (schedpart_select_dpp == NULL)) {
-		return NULL;
-	} else {
-		schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
-		CRASHCHECK(spart == NULL);
+    if (!SCHEDPART_INSTALLED() || !apmgr_module_installed() || (schedpart_select_dpp == NULL)) {
+        return NULL;
+    } else {
+        schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
+        CRASHCHECK(spart == NULL);
 
-		return schedpart_select_dpp(prp, spart->info.info.id);
-	}
+        return schedpart_select_dpp(prp, spart->info.info.id);
+    }
 }
-#endif	/* (defined(__WATCOMC__) || !defined(NDEBUG)) */
+#endif                          /* (defined(__WATCOMC__) || !defined(NDEBUG)) */
 
 /* ===========================================================================
  *
@@ -735,50 +730,46 @@ void *_select_dpp(PROCESS *prp, part_id_t spid)
  *
  * Returns: EOK on success, otherwise and errno
 */
-static int schedpart_proc_disassociate_1(PROCESS *prp, schedpart_t *spart, ext_lockfncs_t *lf)
+static int schedpart_proc_disassociate_1(PROCESS * prp, schedpart_t * spart, ext_lockfncs_t * lf)
 {
-	schedpart_node_t *n;
+    schedpart_node_t *n;
 
-	CRASHCHECK(spart == NULL);
-	CRASHCHECK(prp == NULL);
+    CRASHCHECK(spart == NULL);
+    CRASHCHECK(prp == NULL);
 
 #ifdef USE_PROC_OBJ_LISTS
-	/* remove <prp> from the process list for the partition */
-	(void)MUTEX_WRLOCK(&spart->prplist_lock);
-	{
-		prp_node_t *pp = (prp_node_t *)LIST_FIRST(spart->prp_list);
-		prp_node_t *nn = pp;
+    /* remove <prp> from the process list for the partition */
+    (void) MUTEX_WRLOCK(&spart->prplist_lock);
+    {
+        prp_node_t *pp = (prp_node_t *) LIST_FIRST(spart->prp_list);
+        prp_node_t *nn = pp;
 
-		while ((nn != NULL) && (nn->prp != prp))
-		{
-			pp = nn;
-			nn = (prp_node_t *)LIST_NEXT(nn);
-		}
-		if (nn != NULL)
-		{
-			LIST_DEL(spart->prp_list, nn);
-			CRASHCHECK(prp_list_audit(spart->prp_list) != EOK);
-			(void)MUTEX_WRUNLOCK(&spart->prplist_lock);
-			free(nn);
-  		}
-  		else	/* prp not found */
-  		{
-  			(void)MUTEX_WRUNLOCK(&spart->prplist_lock);
+        while ((nn != NULL) && (nn->prp != prp)) {
+            pp = nn;
+            nn = (prp_node_t *) LIST_NEXT(nn);
+        }
+        if (nn != NULL) {
+            LIST_DEL(spart->prp_list, nn);
+            CRASHCHECK(prp_list_audit(spart->prp_list) != EOK);
+            (void) MUTEX_WRUNLOCK(&spart->prplist_lock);
+            free(nn);
+        } else {                /* prp not found */
+            (void) MUTEX_WRUNLOCK(&spart->prplist_lock);
 #ifndef NDEBUG
-			crash();
-#endif	/* NDEBUG */
-  		}
-	}
-#endif	/* USE_PROC_OBJ_LISTS */
+            crash();
+#endif                          /* NDEBUG */
+        }
+    }
+#endif                          /* USE_PROC_OBJ_LISTS */
 
-	/* remove <spart> from the partition list for the process */
-	(void)MUTEX_WRLOCK(&prp->spartlist_lock.mutex);
-	n = (schedpart_node_t *)prp->spart_list;
-	prp->spart_list = NULL;
-	(void)MUTEX_WRUNLOCK(&prp->spartlist_lock.mutex);
-	free(n);
+    /* remove <spart> from the partition list for the process */
+    (void) MUTEX_WRLOCK(&prp->spartlist_lock.mutex);
+    n = (schedpart_node_t *) prp->spart_list;
+    prp->spart_list = NULL;
+    (void) MUTEX_WRUNLOCK(&prp->spartlist_lock.mutex);
+    free(n);
 
-	return EOK;
+    return EOK;
 }
 
 
@@ -790,55 +781,54 @@ static int schedpart_proc_disassociate_1(PROCESS *prp, schedpart_t *spart, ext_l
  * _schedpart_init() function in aps.c.
  *
 */
-static void proxy_schedpart_init(part_id_t internal_sys_spid, sched_aps_partition_info *aps_info)
+static void proxy_schedpart_init(part_id_t internal_sys_spid, sched_aps_partition_info * aps_info)
 {
-	static schedpart_fnctbl_t private_schedpart_fnctbl;
-	part_id_t  sys_spid;
+    static schedpart_fnctbl_t private_schedpart_fnctbl;
+    part_id_t sys_spid;
 
-	/* can only be called once */
-	if ((sys_schedpart != NULL) || (internal_sys_spid == part_id_t_INVALID))
-	{
-		kprintf("Unable to create system partition, sys_schedpart: 0x%x, sys_schedpart_id: 0x%x\n",
-				sys_schedpart, internal_sys_spid);
-		crash();
-	}
-	/*
-	 * for APS, the create_default_dispatch() has been called to create the
-	 * system partition. Since this was not done via schedpart_create(), the
-	 * necessary data structures don't exist in apmgr. The BEST way to fix this
-	 * is to have the system partition created through schedpart_create() however
-	 * that would call create_ppg() not create_default_dispatch(). I have not
-	 * dissected the APS code yet and am not sure why the create_ppg() call could
-	 * not have been used to create the system partiton but hopefully there was
-	 * a good reason.
-	 * Another way to accomplish this is to do a fake creation however the problem
-	 * with that is we don't need '_sys_schedpart' allocated (its static).
-	 * The last alternative (which I choose at this point) is to replicate the
-	 * parts of schedpart_create() I need in this routine.
-	 * 'System' partition info and
-	*/
-	sys_spid = i_schedpart_create(part_id_t_INVALID, NULL, NULL, internal_sys_spid);
-	sys_schedpart = SCHEDPART_ID_TO_T(sys_spid);
-	CRASHCHECK(sys_schedpart == NULL);
-	CRASHCHECK(sys_spid != sys_schedpart->info.id);
-	CRASHCHECK(internal_sys_spid != sys_schedpart->info.info.id);
+    /* can only be called once */
+    if ((sys_schedpart != NULL) || (internal_sys_spid == part_id_t_INVALID)) {
+        kprintf("Unable to create system partition, sys_schedpart: 0x%x, sys_schedpart_id: 0x%x\n",
+                sys_schedpart, internal_sys_spid);
+        crash();
+    }
+    /*
+     * for APS, the create_default_dispatch() has been called to create the
+     * system partition. Since this was not done via schedpart_create(), the
+     * necessary data structures don't exist in apmgr. The BEST way to fix this
+     * is to have the system partition created through schedpart_create() however
+     * that would call create_ppg() not create_default_dispatch(). I have not
+     * dissected the APS code yet and am not sure why the create_ppg() call could
+     * not have been used to create the system partiton but hopefully there was
+     * a good reason.
+     * Another way to accomplish this is to do a fake creation however the problem
+     * with that is we don't need '_sys_schedpart' allocated (its static).
+     * The last alternative (which I choose at this point) is to replicate the
+     * parts of schedpart_create() I need in this routine.
+     * 'System' partition info and
+     */
+    sys_spid = i_schedpart_create(part_id_t_INVALID, NULL, NULL, internal_sys_spid);
+    sys_schedpart = SCHEDPART_ID_TO_T(sys_spid);
+    CRASHCHECK(sys_schedpart == NULL);
+    CRASHCHECK(sys_spid != sys_schedpart->info.id);
+    CRASHCHECK(internal_sys_spid != sys_schedpart->info.info.id);
 
-	/* synchronize some fields */
-	sys_schedpart->info.info = *aps_info;
-	sys_schedpart->info.cre_cfg.pinfo_flags = aps_info->pinfo_flags;
-	sys_schedpart->info.cre_cfg.attr.budget_percent = aps_info->budget_percent;
-	//sys_schedpart->info.cre_cfg.attr.critical_budget_ms =
+    /* synchronize some fields */
+    sys_schedpart->info.info = *aps_info;
+    sys_schedpart->info.cre_cfg.pinfo_flags = aps_info->pinfo_flags;
+    sys_schedpart->info.cre_cfg.attr.budget_percent = aps_info->budget_percent;
+    //sys_schedpart->info.cre_cfg.attr.critical_budget_ms =
 
-	/* set cur_cfg == cre_cfg without messing up the policy flags */
-	sys_schedpart->info.cur_cfg.attr = sys_schedpart->info.cre_cfg.attr;
-	sys_schedpart->info.cur_cfg.pinfo_flags = sys_schedpart->info.cre_cfg.pinfo_flags;
+    /* set cur_cfg == cre_cfg without messing up the policy flags */
+    sys_schedpart->info.cur_cfg.attr = sys_schedpart->info.cre_cfg.attr;
+    sys_schedpart->info.cur_cfg.pinfo_flags = sys_schedpart->info.cre_cfg.pinfo_flags;
 
-	/*
-	 * this private table is required because the install checks for
-	 * schedpart_fnctbl == private_schedpart_fnctbl
-	*/
-	private_schedpart_fnctbl = proxy_schedpart_fnctbl;
-	schedpart_fnctbl = &private_schedpart_fnctbl;
+    /*
+     * this private table is required because the install checks for
+     * schedpart_fnctbl == private_schedpart_fnctbl
+     */
+    private_schedpart_fnctbl = proxy_schedpart_fnctbl;
+    schedpart_fnctbl = &private_schedpart_fnctbl;
 }
 
 /*
@@ -863,9 +853,10 @@ static void proxy_schedpart_init(part_id_t internal_sys_spid, sched_aps_partitio
  * cannot be changed afterwards. I could add a new SchedCtl() that allowed the
  * name to be changed, but this is easier.
 */
-static part_id_t _schedpart_create(part_id_t parent_spid, const char *name, schedpart_cfg_t *child_cfg)
+static part_id_t _schedpart_create(part_id_t parent_spid, const char *name,
+                                   schedpart_cfg_t * child_cfg)
 {
-	return i_schedpart_create(parent_spid, name, child_cfg, part_id_t_INVALID);
+    return i_schedpart_create(parent_spid, name, child_cfg, part_id_t_INVALID);
 }
 
 /*******************************************************************************
@@ -895,152 +886,139 @@ static part_id_t _schedpart_create(part_id_t parent_spid, const char *name, sche
  * have a value of '0', which is regarded as special (ie. it's the "no key" value)
 */
 static unsigned create_key = 1 | parttype_SCHED;
-static part_id_t i_schedpart_create(part_id_t parent_spid, const char *name, schedpart_cfg_t *child_cfg, part_id_t spid)
+static part_id_t i_schedpart_create(part_id_t parent_spid, const char *name,
+                                    schedpart_cfg_t * child_cfg, part_id_t spid)
 {
-	schedpart_t *schedpart;
-	schedpart_t *parent = SCHEDPART_ID_TO_T(parent_spid);
+    schedpart_t *schedpart;
+    schedpart_t *parent = SCHEDPART_ID_TO_T(parent_spid);
 
-	if (_validate_cfg_creation(parent_spid, child_cfg) != EOK)
-	{
-		return part_id_t_INVALID;
-	}
-	else if ((schedpart = malloc(sizeof(*schedpart))) == NULL)
-	{
-		return part_id_t_INVALID;
-	}
-	else
-	{
-		sched_aps_create_parms  aps_create_parms;
+    if (_validate_cfg_creation(parent_spid, child_cfg) != EOK) {
+        return part_id_t_INVALID;
+    } else if ((schedpart = malloc(sizeof(*schedpart))) == NULL) {
+        return part_id_t_INVALID;
+    } else {
+        sched_aps_create_parms aps_create_parms;
 
-		/*
-		 * initialize the state of the new partition. Use default policies and
-		 * attributes so that the partition can be associated with but is
-		 * otherwise not usable unless valid configuration data has been provided
-		 * to override the default
-		*/
-		memset(schedpart, 0, sizeof(*schedpart));
-		if (MUTEX_INIT(&schedpart->info_lock, NULL) != EOK)
-		{
-			free(schedpart);
-			return part_id_t_INVALID;
-		}
+        /*
+         * initialize the state of the new partition. Use default policies and
+         * attributes so that the partition can be associated with but is
+         * otherwise not usable unless valid configuration data has been provided
+         * to override the default
+         */
+        memset(schedpart, 0, sizeof(*schedpart));
+        if (MUTEX_INIT(&schedpart->info_lock, NULL) != EOK) {
+            free(schedpart);
+            return part_id_t_INVALID;
+        }
 #ifdef USE_PROC_OBJ_LISTS
-		if (MUTEX_INIT(&schedpart->prplist_lock, NULL) != EOK)
-		{
-			MUTEX_DESTROY(&schedpart->info_lock);
-			free(schedpart);
-			return part_id_t_INVALID;
-		}
-#endif	/* USE_PROC_OBJ_LISTS */
+        if (MUTEX_INIT(&schedpart->prplist_lock, NULL) != EOK) {
+            MUTEX_DESTROY(&schedpart->info_lock);
+            free(schedpart);
+            return part_id_t_INVALID;
+        }
+#endif                          /* USE_PROC_OBJ_LISTS */
 
-		/*
-		 * wait until the locks are initialized since once added into the
-		 * 'schedpart_vector', 'schedpart' will be accessible, hence the lock.
-		 * We need the partition id before we call schedpart_config and before
-		 * sending any events
-		*/
-		(void)MUTEX_WRLOCK(&schedpart->info_lock);
-		if ((schedpart->info.id = schedpart_vec_add(schedpart)) == part_id_t_INVALID)
-		{
-			free(schedpart);
-			return part_id_t_INVALID;
-		}
+        /*
+         * wait until the locks are initialized since once added into the
+         * 'schedpart_vector', 'schedpart' will be accessible, hence the lock.
+         * We need the partition id before we call schedpart_config and before
+         * sending any events
+         */
+        (void) MUTEX_WRLOCK(&schedpart->info_lock);
+        if ((schedpart->info.id = schedpart_vec_add(schedpart)) == part_id_t_INVALID) {
+            free(schedpart);
+            return part_id_t_INVALID;
+        }
 
-		schedpart->info.cre_cfg.policy = schedpart->info.cur_cfg.policy = SCHEDPART_DFLT_POLICY;
-		/*
-		 * Generate the policy keys based on the currently selected policies. This
-		 * must be done before calling _schedpart_config()
-		*/
-		SET_SPART_POLICY_TERMINAL_KEY(&schedpart->info.cre_cfg);
-		SET_SPART_POLICY_CFG_LOCK_KEY(&schedpart->info.cre_cfg);
-		SET_SPART_POLICY_PERMANENT_KEY(&schedpart->info.cre_cfg);
-		SET_SPART_POLICY_TERMINAL_KEY(&schedpart->info.cur_cfg);
-		SET_SPART_POLICY_CFG_LOCK_KEY(&schedpart->info.cur_cfg);
-		SET_SPART_POLICY_PERMANENT_KEY(&schedpart->info.cur_cfg);
+        schedpart->info.cre_cfg.policy = schedpart->info.cur_cfg.policy = SCHEDPART_DFLT_POLICY;
+        /*
+         * Generate the policy keys based on the currently selected policies. This
+         * must be done before calling _schedpart_config()
+         */
+        SET_SPART_POLICY_TERMINAL_KEY(&schedpart->info.cre_cfg);
+        SET_SPART_POLICY_CFG_LOCK_KEY(&schedpart->info.cre_cfg);
+        SET_SPART_POLICY_PERMANENT_KEY(&schedpart->info.cre_cfg);
+        SET_SPART_POLICY_TERMINAL_KEY(&schedpart->info.cur_cfg);
+        SET_SPART_POLICY_CFG_LOCK_KEY(&schedpart->info.cur_cfg);
+        SET_SPART_POLICY_PERMANENT_KEY(&schedpart->info.cur_cfg);
 
-		schedpart->signature = SCHEDPART_SIGNATURE;
-		if ((schedpart->parent = parent) != NULL) {
-			atomic_add(&parent->info.num_children, 1);
-		}
+        schedpart->signature = SCHEDPART_SIGNATURE;
+        if ((schedpart->parent = parent) != NULL) {
+            atomic_add(&parent->info.num_children, 1);
+        }
 
-		if (spid == part_id_t_INVALID)
-		{
-			CRASHCHECK(parent == NULL);
-			APS_INIT_DATA(&aps_create_parms);	//initialize parameter block. Must be done
-			aps_create_parms.name = (char *)name;
-			aps_create_parms.parent_id = parent->info.info.id;	// use parents internal id
-			aps_create_parms.aps_create_flags |= APS_CREATE_FLAGS_USE_PARENT_ID;
+        if (spid == part_id_t_INVALID) {
+            CRASHCHECK(parent == NULL);
+            APS_INIT_DATA(&aps_create_parms);   //initialize parameter block. Must be done
+            aps_create_parms.name = (char *) name;
+            aps_create_parms.parent_id = parent->info.info.id;  // use parents internal id
+            aps_create_parms.aps_create_flags |= APS_CREATE_FLAGS_USE_PARENT_ID;
 
-			if ((name == NULL) || (*name == '\0') ||
-				(SchedCtl(SCHED_APS_CREATE_PARTITION, &aps_create_parms, sizeof(aps_create_parms)) != EOK))
-			{
-				(void)schedpart_vec_del(schedpart->info.id);
-				MUTEX_DESTROY(&schedpart->info_lock);
+            if ((name == NULL) || (*name == '\0') ||
+                (SchedCtl(SCHED_APS_CREATE_PARTITION, &aps_create_parms, sizeof(aps_create_parms))
+                 != EOK)) {
+                (void) schedpart_vec_del(schedpart->info.id);
+                MUTEX_DESTROY(&schedpart->info_lock);
 #ifdef USE_PROC_OBJ_LISTS
-				MUTEX_DESTROY(&schedpart->prplist_lock);
-#endif	/* USE_PROC_OBJ_LISTS */
-				free(schedpart);
-				return part_id_t_INVALID;
-			}
-			/*
-			 * we don't call _schedpart_getinfo() to sync internal data structures
-			 * because we don't have a recursive (schedpart->info_lock) so we issue
-			 * the SchedCtl(SCHED_APS_QUERY_PARTITION) directly. We only need the
-			 * schedpart->info.info data anyway.
-			 * Note that the query needs schedpart->info.info.id to contain the
-			 * correct (internal) 'id' so that the information can be retrieved.
-			 * The 'id' for the newly created partition was returned in the
-			 * 'aps_create_parms'
-			*/
-			CRASHCHECK(aps_create_parms.id <= 0);	// cannot be the system partition (0)
-			APS_INIT_DATA(&schedpart->info.info);	//initialize parameter block. Must be done
-			schedpart->info.info.id = aps_create_parms.id;
-			if (SchedCtl(SCHED_APS_QUERY_PARTITION, &schedpart->info.info, sizeof(schedpart->info.info)) != EOK)
-			{
-				/*
-				 * cannot destroy APS partitions internally so we now have an inconsistency but
-				 * we do the best we can
-				*/
-				(void)schedpart_vec_del(schedpart->info.id);
-				MUTEX_DESTROY(&schedpart->info_lock);
+                MUTEX_DESTROY(&schedpart->prplist_lock);
+#endif                          /* USE_PROC_OBJ_LISTS */
+                free(schedpart);
+                return part_id_t_INVALID;
+            }
+            /*
+             * we don't call _schedpart_getinfo() to sync internal data structures
+             * because we don't have a recursive (schedpart->info_lock) so we issue
+             * the SchedCtl(SCHED_APS_QUERY_PARTITION) directly. We only need the
+             * schedpart->info.info data anyway.
+             * Note that the query needs schedpart->info.info.id to contain the
+             * correct (internal) 'id' so that the information can be retrieved.
+             * The 'id' for the newly created partition was returned in the
+             * 'aps_create_parms'
+             */
+            CRASHCHECK(aps_create_parms.id <= 0);   // cannot be the system partition (0)
+            APS_INIT_DATA(&schedpart->info.info);   //initialize parameter block. Must be done
+            schedpart->info.info.id = aps_create_parms.id;
+            if (SchedCtl
+                (SCHED_APS_QUERY_PARTITION, &schedpart->info.info,
+                 sizeof(schedpart->info.info)) != EOK) {
+                /*
+                 * cannot destroy APS partitions internally so we now have an inconsistency but
+                 * we do the best we can
+                 */
+                (void) schedpart_vec_del(schedpart->info.id);
+                MUTEX_DESTROY(&schedpart->info_lock);
 #ifdef USE_PROC_OBJ_LISTS
-				MUTEX_DESTROY(&schedpart->prplist_lock);
-#endif	/* USE_PROC_OBJ_LISTS */
-				free(schedpart);
-				return part_id_t_INVALID;
-			}
-			CRASHCHECK(schedpart->info.info.id != aps_create_parms.id);	// they better still be the same
-		}
-		else
-		{
-			/* set internal id to spid (note that no other fields are set) */
-			schedpart->info.info.id = spid;
-		}
+                MUTEX_DESTROY(&schedpart->prplist_lock);
+#endif                          /* USE_PROC_OBJ_LISTS */
+                free(schedpart);
+                return part_id_t_INVALID;
+            }
+            CRASHCHECK(schedpart->info.info.id != aps_create_parms.id); // they better still be the same
+        } else {
+            /* set internal id to spid (note that no other fields are set) */
+            schedpart->info.info.id = spid;
+        }
 
-		if (child_cfg != NULL)
-		{
-			if (_schedpart_config(schedpart->info.id, child_cfg, 0) != EOK)
-			{
-				(void)schedpart_vec_del(schedpart->info.id);
-				MUTEX_DESTROY(&schedpart->info_lock);
+        if (child_cfg != NULL) {
+            if (_schedpart_config(schedpart->info.id, child_cfg, 0) != EOK) {
+                (void) schedpart_vec_del(schedpart->info.id);
+                MUTEX_DESTROY(&schedpart->info_lock);
 #ifdef USE_PROC_OBJ_LISTS
-				MUTEX_DESTROY(&schedpart->prplist_lock);
-#endif	/* USE_PROC_OBJ_LISTS */
-				free(schedpart);
-				return part_id_t_INVALID;
-			}
-		}
-		else
-		{
-			/* get a unique number */
-			schedpart->create_key = atomic_add_value(&create_key, 2);
-			CRASHCHECK(schedpart->create_key == 0);
-		}
-		MUTEX_WRUNLOCK(&schedpart->info_lock);
+                MUTEX_DESTROY(&schedpart->prplist_lock);
+#endif                          /* USE_PROC_OBJ_LISTS */
+                free(schedpart);
+                return part_id_t_INVALID;
+            }
+        } else {
+            /* get a unique number */
+            schedpart->create_key = atomic_add_value(&create_key, 2);
+            CRASHCHECK(schedpart->create_key == 0);
+        }
+        MUTEX_WRUNLOCK(&schedpart->info_lock);
 
-		/* FIX ME - send event notifications to any interested parties ??? */
-		return schedpart->info.id;
-	}
+        /* FIX ME - send event notifications to any interested parties ??? */
+        return schedpart->info.id;
+    }
 }
 
 /*******************************************************************************
@@ -1051,123 +1029,117 @@ static part_id_t i_schedpart_create(part_id_t parent_spid, const char *name, sch
 */
 static int _schedpart_destroy(part_id_t spid)
 {
-	return ENOSYS;
+    return ENOSYS;
 }
 
 /*******************************************************************************
  * _schedpart_config
  *
 */
-static int _schedpart_config(part_id_t spid, schedpart_cfg_t *cfg, unsigned key)
+static int _schedpart_config(part_id_t spid, schedpart_cfg_t * cfg, unsigned key)
 {
-	schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
-	int r;
+    schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
+    int r;
 
-	CRASHCHECK(spart == NULL);
-	CRASHCHECK(cfg == NULL);
+    CRASHCHECK(spart == NULL);
+    CRASHCHECK(cfg == NULL);
 
-	(void)MUTEX_WRLOCK(&spart->info_lock);
+    (void) MUTEX_WRLOCK(&spart->info_lock);
 
-	if ((r = _validate_cfg_modification(spid, cfg)) == EOK)
-	{
-		sched_aps_modify_parms  aps_mod_parms;
+    if ((r = _validate_cfg_modification(spid, cfg)) == EOK) {
+        sched_aps_modify_parms aps_mod_parms;
 
-		APS_INIT_DATA(&aps_mod_parms);	//initialize parameter block. Must be done
-		aps_mod_parms.id = spart->info.info.id;	// use the internal id
-		aps_mod_parms.new_budget_percent = cfg->attr.budget_percent;
-		aps_mod_parms.new_critical_budget_ms = cfg->attr.critical_budget_ms;
+        APS_INIT_DATA(&aps_mod_parms);  //initialize parameter block. Must be done
+        aps_mod_parms.id = spart->info.info.id; // use the internal id
+        aps_mod_parms.new_budget_percent = cfg->attr.budget_percent;
+        aps_mod_parms.new_critical_budget_ms = cfg->attr.critical_budget_ms;
 
-		if (SchedCtl(SCHED_APS_MODIFY_PARTITION, &aps_mod_parms, sizeof(aps_mod_parms)) == EOK)
-		{
-			spart->info.cur_cfg = *cfg;
-			SET_SPART_POLICY_TERMINAL_KEY(&spart->info.cur_cfg);
-			SET_SPART_POLICY_CFG_LOCK_KEY(&spart->info.cur_cfg);
-			SET_SPART_POLICY_PERMANENT_KEY(&spart->info.cur_cfg);
+        if (SchedCtl(SCHED_APS_MODIFY_PARTITION, &aps_mod_parms, sizeof(aps_mod_parms)) == EOK) {
+            spart->info.cur_cfg = *cfg;
+            SET_SPART_POLICY_TERMINAL_KEY(&spart->info.cur_cfg);
+            SET_SPART_POLICY_CFG_LOCK_KEY(&spart->info.cur_cfg);
+            SET_SPART_POLICY_PERMANENT_KEY(&spart->info.cur_cfg);
 
-			if (aps_mod_parms.new_budget_percent != -1) {
-				spart->info.cur_cfg.attr.budget_percent = aps_mod_parms.new_budget_percent;
-			}
-			if (aps_mod_parms.new_critical_budget_ms != -1) {
-				spart->info.cur_cfg.attr.critical_budget_ms = aps_mod_parms.new_critical_budget_ms;
-			}
+            if (aps_mod_parms.new_budget_percent != -1) {
+                spart->info.cur_cfg.attr.budget_percent = aps_mod_parms.new_budget_percent;
+            }
+            if (aps_mod_parms.new_critical_budget_ms != -1) {
+                spart->info.cur_cfg.attr.critical_budget_ms = aps_mod_parms.new_critical_budget_ms;
+            }
 
-			if ((spart->create_key != 0) && (spart->create_key == key))
-			{
-				/* this is an initial creation */
-				spart->info.cre_cfg = *cfg;
-				SET_SPART_POLICY_TERMINAL_KEY(&spart->info.cre_cfg);
-				SET_SPART_POLICY_CFG_LOCK_KEY(&spart->info.cre_cfg);
-				SET_SPART_POLICY_PERMANENT_KEY(&spart->info.cre_cfg);
-			}
-		}
-		else
-		{
-			/* FIX ME - have to assume EINVAL for now as SchedCtl() is not setting errno
-			r = errno; */
-			r = EINVAL;
-		}
-		spart->create_key = 0;
-	}
-	MUTEX_WRUNLOCK(&spart->info_lock);
-	/* FIX ME - events ? */
-	return r;
+            if ((spart->create_key != 0) && (spart->create_key == key)) {
+                /* this is an initial creation */
+                spart->info.cre_cfg = *cfg;
+                SET_SPART_POLICY_TERMINAL_KEY(&spart->info.cre_cfg);
+                SET_SPART_POLICY_CFG_LOCK_KEY(&spart->info.cre_cfg);
+                SET_SPART_POLICY_PERMANENT_KEY(&spart->info.cre_cfg);
+            }
+        } else {
+            /* FIX ME - have to assume EINVAL for now as SchedCtl() is not setting errno
+               r = errno; */
+            r = EINVAL;
+        }
+        spart->create_key = 0;
+    }
+    MUTEX_WRUNLOCK(&spart->info_lock);
+    /* FIX ME - events ? */
+    return r;
 }
 
 /*******************************************************************************
  * _schedpart_getinfo
  *
 */
-static schedpart_info_t *_schedpart_getinfo(part_id_t spid, schedpart_info_t *info)
+static schedpart_info_t *_schedpart_getinfo(part_id_t spid, schedpart_info_t * info)
 {
-	schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
+    schedpart_t *spart = SCHEDPART_ID_TO_T(spid);
 
-	CRASHCHECK(spart == NULL);
-	CRASHCHECK(info == NULL);
-	CRASHCHECK(spart->info.id != spid);
+    CRASHCHECK(spart == NULL);
+    CRASHCHECK(info == NULL);
+    CRASHCHECK(spart->info.id != spid);
 
-	if (MUTEX_RDLOCK(&spart->info_lock) != EOK) {
-		return NULL;
-	} else {
-		/*
-		 * we pass in a tmp 'sched_aps_partition_info/stats' structures in case
-		 * the call fails we don't destroy our existing information
-		*/
-		sched_aps_partition_info  aps_info;
-		sched_aps_partition_stats  aps_stats;
-		APS_INIT_DATA(&aps_info);	//initialize parameter block. Must be done
-		APS_INIT_DATA(&aps_stats);	//initialize parameter block. Must be done
-		aps_info.id = aps_stats.id = spart->info.info.id;	// need the internal id
+    if (MUTEX_RDLOCK(&spart->info_lock) != EOK) {
+        return NULL;
+    } else {
+        /*
+         * we pass in a tmp 'sched_aps_partition_info/stats' structures in case
+         * the call fails we don't destroy our existing information
+         */
+        sched_aps_partition_info aps_info;
+        sched_aps_partition_stats aps_stats;
+        APS_INIT_DATA(&aps_info);   //initialize parameter block. Must be done
+        APS_INIT_DATA(&aps_stats);  //initialize parameter block. Must be done
+        aps_info.id = aps_stats.id = spart->info.info.id;   // need the internal id
 
-		if ((SchedCtl(SCHED_APS_QUERY_PARTITION, &aps_info, sizeof(aps_info)) != EOK) ||
-			(SchedCtl(SCHED_APS_PARTITION_STATS, &aps_stats, sizeof(aps_stats)) != EOK))
-		{
-			MUTEX_RDUNLOCK(&spart->info_lock);
-			info = NULL;
-		} else {
-			CRASHCHECK(aps_info.id != spart->info.info.id);	// make sure they're still the same
-			CRASHCHECK(aps_stats.id != spart->info.info.id);	// make sure they're still the same
-			/* synchronize some fields */
-			spart->info.info = aps_info;
-			spart->info.cur_cfg.pinfo_flags = spart->info.info.pinfo_flags;
-			spart->info.cur_cfg.attr.budget_percent = spart->info.info.budget_percent;
-			//spart->info.cur_cfg.attr.critical_budget_ms = spart->info.info.?;
-			spart->info.stats = aps_stats;
+        if ((SchedCtl(SCHED_APS_QUERY_PARTITION, &aps_info, sizeof(aps_info)) != EOK) ||
+            (SchedCtl(SCHED_APS_PARTITION_STATS, &aps_stats, sizeof(aps_stats)) != EOK)) {
+            MUTEX_RDUNLOCK(&spart->info_lock);
+            info = NULL;
+        } else {
+            CRASHCHECK(aps_info.id != spart->info.info.id); // make sure they're still the same
+            CRASHCHECK(aps_stats.id != spart->info.info.id);    // make sure they're still the same
+            /* synchronize some fields */
+            spart->info.info = aps_info;
+            spart->info.cur_cfg.pinfo_flags = spart->info.info.pinfo_flags;
+            spart->info.cur_cfg.attr.budget_percent = spart->info.info.budget_percent;
+            //spart->info.cur_cfg.attr.critical_budget_ms = spart->info.info.?;
+            spart->info.stats = aps_stats;
 
-			/* fill in the caller provided buffer */
-			*info = spart->info;
+            /* fill in the caller provided buffer */
+            *info = spart->info;
 
-			/* get the external (bool_t) representation of the policy settings */
-			info->cre_cfg.policy.terminal = GET_SPART_POLICY_TERMINAL(&spart->info.cre_cfg);
-			info->cre_cfg.policy.config_lock = GET_SPART_POLICY_CFG_LOCK(&spart->info.cre_cfg);
-			info->cre_cfg.policy.permanent = GET_SPART_POLICY_PERMANENT(&spart->info.cre_cfg);
-			info->cur_cfg.policy.terminal = GET_SPART_POLICY_TERMINAL(&spart->info.cur_cfg);
-			info->cur_cfg.policy.config_lock = GET_SPART_POLICY_CFG_LOCK(&spart->info.cur_cfg);
-			info->cur_cfg.policy.permanent = GET_SPART_POLICY_PERMANENT(&spart->info.cur_cfg);
+            /* get the external (bool_t) representation of the policy settings */
+            info->cre_cfg.policy.terminal = GET_SPART_POLICY_TERMINAL(&spart->info.cre_cfg);
+            info->cre_cfg.policy.config_lock = GET_SPART_POLICY_CFG_LOCK(&spart->info.cre_cfg);
+            info->cre_cfg.policy.permanent = GET_SPART_POLICY_PERMANENT(&spart->info.cre_cfg);
+            info->cur_cfg.policy.terminal = GET_SPART_POLICY_TERMINAL(&spart->info.cur_cfg);
+            info->cur_cfg.policy.config_lock = GET_SPART_POLICY_CFG_LOCK(&spart->info.cur_cfg);
+            info->cur_cfg.policy.permanent = GET_SPART_POLICY_PERMANENT(&spart->info.cur_cfg);
 
-			MUTEX_RDUNLOCK(&spart->info_lock);
-		}
-		return info;
-	}
+            MUTEX_RDUNLOCK(&spart->info_lock);
+        }
+        return info;
+    }
 }
 
 /*******************************************************************************
@@ -1185,140 +1157,133 @@ static schedpart_info_t *_schedpart_getinfo(part_id_t spid, schedpart_info_t *in
 */
 static PROCESS *_schedpart_find_pid(pid_t pid, part_id_t spid)
 {
-	PROCESS *prp;
+    PROCESS *prp;
 
-	if ((prp = proc_lookup_pid(pid)) != NULL)
-	{
-#if 1	// this is the FIX ME - not implemented in apm.c yet
-		schedpart_node_t  *sp_node;
+    if ((prp = proc_lookup_pid(pid)) != NULL) {
+#if 1                           // this is the FIX ME - not implemented in apm.c yet
+        schedpart_node_t *sp_node;
 
-		(void)MUTEX_RDLOCK(&prp->spartlist_lock.mutex);
-		sp_node = (schedpart_node_t *)prp->spart_list;
-		if ((sp_node == NULL) || (sp_node->schedpart->info.id != spid)) {
-			MUTEX_RDUNLOCK(&prp->spartlist_lock.mutex);
-			prp = NULL;
-		} else {
-			MUTEX_RDUNLOCK(&prp->spartlist_lock.mutex);
-		}
+        (void) MUTEX_RDLOCK(&prp->spartlist_lock.mutex);
+        sp_node = (schedpart_node_t *) prp->spart_list;
+        if ((sp_node == NULL) || (sp_node->schedpart->info.id != spid)) {
+            MUTEX_RDUNLOCK(&prp->spartlist_lock.mutex);
+            prp = NULL;
+        } else {
+            MUTEX_RDUNLOCK(&prp->spartlist_lock.mutex);
+        }
 #else
-		prp_node_t *prp_node;
-		schedpart_t *schedpart = SCHEDPART_ID_TO_T(spid);
+        prp_node_t *prp_node;
+        schedpart_t *schedpart = SCHEDPART_ID_TO_T(spid);
 
-		CRASHCHECK(schedpart == NULL);
-		MUTEX_RDLOCK(&schedpart->prplist_lock);
-		prp_node = (prp_node_t *)LIST_FIRST(schedpart->prp_list);
+        CRASHCHECK(schedpart == NULL);
+        MUTEX_RDLOCK(&schedpart->prplist_lock);
+        prp_node = (prp_node_t *) LIST_FIRST(schedpart->prp_list);
 
-		while (prp_node != NULL)
-		{
-			if (prp_node->prp == prp) {
-				break;
-			}
-			prp_node = (prp_node_t *)LIST_NEXT(prp_node);
-		}
-		MUTEX_RDUNLOCK(&schedpart->prplist_lock);
-		if (prp_node == NULL) prp = NULL;
+        while (prp_node != NULL) {
+            if (prp_node->prp == prp) {
+                break;
+            }
+            prp_node = (prp_node_t *) LIST_NEXT(prp_node);
+        }
+        MUTEX_RDUNLOCK(&schedpart->prplist_lock);
+        if (prp_node == NULL)
+            prp = NULL;
 #endif
-	}
-	return prp;
+    }
+    return prp;
 }
 
 /*******************************************************************************
  * _validate_cfg_creation
  *
 */
-static int _validate_cfg_creation(part_id_t parent_spid, schedpart_cfg_t *cfg)
+static int _validate_cfg_creation(part_id_t parent_spid, schedpart_cfg_t * cfg)
 {
-	schedpart_t *parent_sp = SCHEDPART_ID_TO_T(parent_spid);
+    schedpart_t *parent_sp = SCHEDPART_ID_TO_T(parent_spid);
 
-	if (cfg != NULL)
-	{
-		/* assert config attribute budget falls within 0 and 100 % */
-		if (cfg->attr.budget_percent > 100) {
-			return EINVAL;
-		}
+    if (cfg != NULL) {
+        /* assert config attribute budget falls within 0 and 100 % */
+        if (cfg->attr.budget_percent > 100) {
+            return EINVAL;
+        }
 
-		/* assert config attribute critical budget falls within > 0 */
-		if (cfg->attr.critical_budget_ms < 0) {
-			return EINVAL;
-		}
-	}
+        /* assert config attribute critical budget falls within > 0 */
+        if (cfg->attr.critical_budget_ms < 0) {
+            return EINVAL;
+        }
+    }
 
-	if (parent_sp != NULL)
-	{
-		/* assert that the parent partition may have children */
-		if (GET_SPART_POLICY_TERMINAL(&parent_sp->info.cur_cfg) == bool_t_TRUE) {
-			return EPERM;
-		}
+    if (parent_sp != NULL) {
+        /* assert that the parent partition may have children */
+        if (GET_SPART_POLICY_TERMINAL(&parent_sp->info.cur_cfg) == bool_t_TRUE) {
+            return EPERM;
+        }
 
-		/* the following are checks validate the config against the parent partition */
-		if (cfg != NULL)
-		{
+        /* the following are checks validate the config against the parent partition */
+        if (cfg != NULL) {
 
-		}
-	}
-	return EOK;
+        }
+    }
+    return EOK;
 }
 
 /*******************************************************************************
  * _validate_cfg_modification
  *
 */
-static int _validate_cfg_modification(part_id_t spid, schedpart_cfg_t *cfg)
+static int _validate_cfg_modification(part_id_t spid, schedpart_cfg_t * cfg)
 {
-	schedpart_t *sp = SCHEDPART_ID_TO_T(spid);
+    schedpart_t *sp = SCHEDPART_ID_TO_T(spid);
 
-	/* assert modifying a valid partition */
-	if (sp == NULL) {
-		return ENOENT;
-	}
+    /* assert modifying a valid partition */
+    if (sp == NULL) {
+        return ENOENT;
+    }
 
-	if (cfg == NULL) {
-		return EINVAL;
-	}
+    if (cfg == NULL) {
+        return EINVAL;
+    }
 
-	/* assert that if the config lock policy is set, it cannot be changed */
-	if (GET_SPART_POLICY_CFG_LOCK(&sp->info.cur_cfg) == bool_t_TRUE) {
-		if (cfg->policy.config_lock == bool_t_FALSE) {
-			return EPERM;
-		}
-	}
+    /* assert that if the config lock policy is set, it cannot be changed */
+    if (GET_SPART_POLICY_CFG_LOCK(&sp->info.cur_cfg) == bool_t_TRUE) {
+        if (cfg->policy.config_lock == bool_t_FALSE) {
+            return EPERM;
+        }
+    }
 
-	/* assert that if the terminal partition policy is set, it cannot be changed */
-	if (GET_SPART_POLICY_TERMINAL(&sp->info.cur_cfg) == bool_t_TRUE) {
-		if (cfg->policy.terminal == bool_t_FALSE) {
-			return EPERM;
-		}
-	}
+    /* assert that if the terminal partition policy is set, it cannot be changed */
+    if (GET_SPART_POLICY_TERMINAL(&sp->info.cur_cfg) == bool_t_TRUE) {
+        if (cfg->policy.terminal == bool_t_FALSE) {
+            return EPERM;
+        }
+    }
 
-	/* assert that if the permanent partition policy is set, it cannot be changed */
-	if (GET_SPART_POLICY_PERMANENT(&sp->info.cur_cfg) == bool_t_TRUE) {
-		if (cfg->policy.permanent == bool_t_FALSE) {
-			return EPERM;
-		}
-	}
+    /* assert that if the permanent partition policy is set, it cannot be changed */
+    if (GET_SPART_POLICY_PERMANENT(&sp->info.cur_cfg) == bool_t_TRUE) {
+        if (cfg->policy.permanent == bool_t_FALSE) {
+            return EPERM;
+        }
+    }
 
-	/* assert config attribute budget falls within 0 and 100 % */
-	if (cfg->attr.budget_percent > 100) {
-		return EINVAL;
-	}
+    /* assert config attribute budget falls within 0 and 100 % */
+    if (cfg->attr.budget_percent > 100) {
+        return EINVAL;
+    }
 
-	/* assert config attribute critical budget falls within > 0 */
-	if (cfg->attr.critical_budget_ms < 0) {
-		return EINVAL;
-	}
+    /* assert config attribute critical budget falls within > 0 */
+    if (cfg->attr.critical_budget_ms < 0) {
+        return EINVAL;
+    }
 
-	/*
-	 * assert that if attribute or other policy changes are being made
-	 * that they are permitted (ie. that the config lock policy is not set)
-	*/
-	if ((cfg->attr.budget_percent != sp->info.cur_cfg.attr.budget_percent) ||
-		(cfg->attr.critical_budget_ms != sp->info.cur_cfg.attr.critical_budget_ms)) {
-		if (GET_SPART_POLICY_CFG_LOCK(&sp->info.cur_cfg) == bool_t_TRUE) {
-			return EPERM;
-		}
-	}
-	return EOK;
+    /*
+     * assert that if attribute or other policy changes are being made
+     * that they are permitted (ie. that the config lock policy is not set)
+     */
+    if ((cfg->attr.budget_percent != sp->info.cur_cfg.attr.budget_percent) ||
+        (cfg->attr.critical_budget_ms != sp->info.cur_cfg.attr.critical_budget_ms)) {
+        if (GET_SPART_POLICY_CFG_LOCK(&sp->info.cur_cfg) == bool_t_TRUE) {
+            return EPERM;
+        }
+    }
+    return EOK;
 }
-
-
-__SRCVERSION("aps.c $Rev: 209913 $");

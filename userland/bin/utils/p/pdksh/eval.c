@@ -443,7 +443,7 @@ expand(cp, wp, f)
 				c = *sp++ + 0x80;
 				break;
 
-			  case SPAT: /* pattern seperator (|) */
+			  case SPAT: /* pattern separator (|) */
 				make_magic = 1;
 				c = '|';
 				break;

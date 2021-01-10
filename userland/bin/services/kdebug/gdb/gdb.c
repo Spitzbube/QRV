@@ -228,7 +228,7 @@ parsehexnum(char *srcstr, int *retvalue) {
 /*
  * parse2hexnum - Parse two hex numbers
  *
- * This routine converts a string of two numbers, seperated by commas,
+ * This routine converts a string of two numbers, separated by commas,
  * into two binary values. Note that if either of the values can not
  * be returned, this routine will return failure and not update either
  * return value.
@@ -240,12 +240,12 @@ parse2hexnum(char *srcstr, int *retvalue1, int *retvalue2) {
 
     if(!gethexnum(srcstr, &str, &value1) || (*str++ != ',') ||
 	  !gethexnum(str, &str, &value2)) {
-		return(FALSE);
+		return FALSE;
     }
 
     *retvalue1 = value1;
     *retvalue2 = value2;
-    return(TRUE);
+    return TRUE;
 }
 
 /*

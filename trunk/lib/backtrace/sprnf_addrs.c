@@ -43,119 +43,105 @@
 
 
 int
-bt_sprnf_addrs (bt_memmap_t *memmap, bt_addr_t *addrs, int addrslen,
-				char *fmt, char *out, size_t outlen, char *seperator)
+bt_sprnf_addrs(bt_memmap_t * memmap, bt_addr_t * addrs, int addrslen,
+               char *fmt, char *out, size_t outlen, char *separator)
 {
-	int i;
-	char *p;
-	bt_addr_t addr;
-	int written;
-	int complete_written=0;
-	int complete_count=0;
-	int xlated=0;
-	bt_addr_t *reladdrs=0;
-	bt_addr_t *offsets=0;
-	int *indexes=0;
-	char **filenames=0;
+    int i;
+    char *p;
+    bt_addr_t addr;
+    int written;
+    int complete_written = 0;
+    int complete_count = 0;
+    int xlated = 0;
+    bt_addr_t *reladdrs = 0;
+    bt_addr_t *offsets = 0;
+    int *indexes = 0;
+    char **filenames = 0;
 
-	if (addrs==0 || addrslen<0 || fmt==0 || out==0 || outlen<0) {
-		errno=EINVAL;
-		return -1;
-	}
-	written = 0;
-	if (seperator == 0) seperator="\n";
+    if (addrs == 0 || addrslen < 0 || fmt == 0 || out == 0 || outlen < 0) {
+        errno = EINVAL;
+        return -1;
+    }
+    written = 0;
+    if (separator == 0)
+        separator = "\n";
 
-	for (i=0; i<addrslen; i++) {
-		p=fmt;
-		addr=addrs[i];
-		if (i)
-			written+=snprintf(out+written,max(0,outlen-written),
-							  "%s", seperator);
-		while (p[0] != 0) {
-			if (p[0] == '%' && p[1] != 0) {
-				p++;
-				switch (*p) {
-					case '%':
-						written+=snprintf(out+written,max(0,outlen-written),
-										  "%%");
-						break;
+    for (i = 0; i < addrslen; i++) {
+        p = fmt;
+        addr = addrs[i];
+        if (i)
+            written += snprintf(out + written, max(0, outlen - written), "%s", separator);
+        while (p[0] != 0) {
+            if (p[0] == '%' && p[1] != 0) {
+                p++;
+                switch (*p) {
+                case '%':
+                    written += snprintf(out + written, max(0, outlen - written), "%%");
+                    break;
 
-					case 'a':
-						written+=snprintf(out+written, max(0,outlen-written),
-										  "%p", (void*)addr);
-						break;
+                case 'a':
+                    written += snprintf(out + written, max(0, outlen - written),
+                                        "%p", (void *) addr);
+                    break;
 
-					case 'l':
-						XLATE_ADDRS();
-						if (reladdrs)
-							written+=snprintf(out+written,
-											  max(0,outlen-written),
-											  "%p", (void*)(reladdrs[i]));
-						else
-							written+=snprintf(out+written,
-											  max(0,outlen-written),
-											  "--");
-						break;
+                case 'l':
+                    XLATE_ADDRS();
+                    if (reladdrs)
+                        written += snprintf(out + written,
+                                            max(0, outlen - written), "%p", (void *) (reladdrs[i]));
+                    else
+                        written += snprintf(out + written, max(0, outlen - written), "--");
+                    break;
 
-					case 'o':
-						XLATE_ADDRS();
-						if (offsets)
-							written+=snprintf(out+written,
-											  max(0,outlen-written),
-											  "%p", (void*)(offsets[i]));
-						else
-							written+=snprintf(out+written,
-											  max(0,outlen-written),
-											  "--");
-						break;
+                case 'o':
+                    XLATE_ADDRS();
+                    if (offsets)
+                        written += snprintf(out + written,
+                                            max(0, outlen - written), "%p", (void *) (offsets[i]));
+                    else
+                        written += snprintf(out + written, max(0, outlen - written), "--");
+                    break;
 
-					case 'f':
-						XLATE_ADDRS();
-						if (filenames) {
-							written+=snprintf(out+written,
-											  max(0,outlen-written),
-											  "%s", filenames[i]);
-						} else {
-							written+=snprintf(out+written,
-											  max(0,outlen-written),
-											  "--");
-						}
-						break;
+                case 'f':
+                    XLATE_ADDRS();
+                    if (filenames) {
+                        written += snprintf(out + written,
+                                            max(0, outlen - written), "%s", filenames[i]);
+                    } else {
+                        written += snprintf(out + written, max(0, outlen - written), "--");
+                    }
+                    break;
 
-					case 'I':   /* index of memory map */
-						XLATE_ADDRS();
-						if (indexes)
-							written+=snprintf(out+written,
-											  max(0,outlen-written),
-											  "%d", indexes[i]);
-						else
-							written+=snprintf(out+written,
-											  max(0,outlen-written),
-											  "--");
-						break;
+                case 'I':      /* index of memory map */
+                    XLATE_ADDRS();
+                    if (indexes)
+                        written += snprintf(out + written,
+                                            max(0, outlen - written), "%d", indexes[i]);
+                    else
+                        written += snprintf(out + written, max(0, outlen - written), "--");
+                    break;
 
-					default:
-						written+=snprintf(out+written, max(0,outlen-written),
-										  "%%%c", (int)*p);
-						break;
-				}
-			} else {
-				if (written < outlen-1) {
-					out[written]=*p;
-					out[written+1]=0;
-				}
-				written++;
-			}
-			p++;
-		}
-		if (written >= outlen) {
-			out[complete_written]=0;
-			return complete_count;
-		}
-		complete_written=written;
-		complete_count++;
-	}
-	return complete_count;
+                default:
+                    written += snprintf(out + written, max(0, outlen - written), "%%%c", (int) *p);
+                    break;
+                }
+            } else {
+                if (written < outlen - 1) {
+                    out[written] = *p;
+                    out[written + 1] = 0;
+                }
+                written++;
+            }
+            p++;
+        }
+        if (written >= outlen) {
+            out[complete_written] = 0;
+            return complete_count;
+        }
+        complete_written = written;
+        complete_count++;
+    }
+    return complete_count;
 }
 
 #endif

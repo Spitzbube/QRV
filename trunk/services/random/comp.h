@@ -30,24 +30,23 @@
 #include "zlib.h"
 
 /* Top level compression context */
-typedef struct{
-	uint8_t  *buf;
+typedef struct {
+    uint8_t *buf;
     uint32_t space;
-	uint32_t spaceused;
+    uint32_t spaceused;
 } comp_ctx_t;
 
 typedef enum comp_error_status {
-	COMP_SUCCESS = 0,
-	COMP_ERR_NULL_POINTER,
-	COMP_ERR_LOW_MEMORY,
-	COMP_ERR_LIB
+    COMP_SUCCESS = 0,
+    COMP_ERR_NULL_POINTER,
+    COMP_ERR_LOW_MEMORY,
+    COMP_ERR_LIB
 } comp_error_status;
 
 /* Exported functions from compress.c */
-int comp_init(comp_ctx_t* ctx);
-int comp_add_data(comp_ctx_t* ctx,Bytef* inp,uInt inplen);
-int comp_end(comp_ctx_t* ctx);
-int comp_get_ratio(comp_ctx_t* ctx,float* out);
+int comp_init(comp_ctx_t * ctx);
+int comp_add_data(comp_ctx_t * ctx, Bytef * inp, uInt inplen);
+int comp_end(comp_ctx_t * ctx);
+int comp_get_ratio(comp_ctx_t * ctx, float *out);
 
 #endif
-

@@ -85,7 +85,7 @@ int bt_release_accessor(bt_accessor_t *acc);
 #ifndef _BT_LIGHT
 int bt_sprnf_addrs(bt_memmap_t *memmap,
 				   bt_addr_t *addrs, int addrslen,
-				   char *fmt, char *out, size_t outlen, char *seperator);
+				   char *fmt, char *out, size_t outlen, char *separator);
 
 int bt_load_memmap(bt_accessor_t *acc, bt_memmap_t *memmap);
 /* Note:

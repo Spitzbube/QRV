@@ -73,5 +73,3 @@ uint64_t _syspage_time(clockid_t clock_id)
 
     return nsec;
 }
-
-__SRCVERSION("_syspage_time.c $Rev: 175178 $");

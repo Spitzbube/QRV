@@ -22,31 +22,35 @@
 #include <errno.h>
 #include <sys/iomsg.h>
 
-off64_t lseek64(int fd, off64_t offset, int whence) {
-	io_lseek_t							msg;
-	off64_t								off;
+off64_t lseek64(int fd, off64_t offset, int whence)
+{
+    io_lseek_t msg;
+    off64_t off;
 
-	msg.i.type = _IO_LSEEK;
-	msg.i.combine_len = sizeof msg.i;
-	msg.i.offset = offset;
-	msg.i.whence = whence;
-	msg.i.zero = 0;
-	if(MsgSend(fd, &msg.i, sizeof msg.i, &off, sizeof off) == -1) {
-		return -1;
-	}
-	return off;
+    msg.i.type = _IO_LSEEK;
+    msg.i.combine_len = sizeof msg.i;
+    msg.i.offset = offset;
+    msg.i.whence = whence;
+    msg.i.zero = 0;
+    if (MsgSend(fd, &msg.i, sizeof msg.i, &off, sizeof off) == -1) {
+        return -1;
+    }
+    return off;
 }
 
-off64_t tell64(int fd) {
-	return lseek64(fd, 0, SEEK_CUR);
+off64_t tell64(int fd)
+{
+    return lseek64(fd, 0, SEEK_CUR);
 }
 
-off_t lseek(int fd, off_t offset, int whence) {
-	return lseek64(fd, offset, whence);
+off_t lseek(int fd, off_t offset, int whence)
+{
+    return lseek64(fd, offset, whence);
 }
 
-off_t tell(int fd) {
-	return lseek64(fd, 0, SEEK_CUR);
+off_t tell(int fd)
+{
+    return lseek64(fd, 0, SEEK_CUR);
 }
 
 __SRCVERSION("lseek.c $Rev: 153052 $");

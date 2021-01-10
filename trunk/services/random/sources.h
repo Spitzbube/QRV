@@ -23,8 +23,8 @@
 #ifndef __SOURCES_H__
 #define __SOURCES_H__
 
-int start_timer_source( void );
-int start_interrupt_source( int intr );
-int start_syspoll_source( void );
+int start_timer_source(void);
+int start_interrupt_source(int intr);
+int start_syspoll_source(void);
 
 #endif

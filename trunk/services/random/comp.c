@@ -30,96 +30,102 @@
 #include "comp.h"
 
 /* Might want to vary these by context */
-#define BUFSIZE     16384 /* 16K */
-#define OUTBUFSIZE  16800 /* = inbufsize*1.01 + 12 (See zlib docs) */
+#define BUFSIZE     16384       /* 16K */
+#define OUTBUFSIZE  16800       /* = inbufsize*1.01 + 12 (See zlib docs) */
 #define SHIFTSIZE   (BUFSIZE/4)
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
 
 /* Initialize these routines */
-int comp_init( comp_ctx_t* ctx )
+int comp_init(comp_ctx_t * ctx)
 {
-	ctx->buf = calloc( BUFSIZE, 1 );
-	if(ctx->buf == NULL)
+    ctx->buf = calloc(BUFSIZE, 1);
+    if (ctx->buf == NULL)
         return COMP_ERR_LOW_MEMORY;
 
     ctx->space = BUFSIZE;
-	ctx->spaceused = 0;
+    ctx->spaceused = 0;
 
-	return COMP_SUCCESS;
+    return COMP_SUCCESS;
 }
 
 
-int comp_add_data( comp_ctx_t* ctx, uint8_t* inp, uint32_t inplen )
+int comp_add_data(comp_ctx_t * ctx, uint8_t * inp, uint32_t inplen)
 {
-	uint32_t shifts;
-	uint32_t blocksize;
-	uint8_t* buf;
+    uint32_t shifts;
+    uint32_t blocksize;
+    uint8_t *buf;
 
-	buf = ctx->buf;
+    buf = ctx->buf;
 
-	if( inplen+SHIFTSIZE > ctx->space )
-	{
-		blocksize = MIN( inplen, ctx->space );
-		memmove( buf, inp, blocksize );
-		ctx->spaceused = blocksize;
-	}
-	else
-	{
-		if( inplen + ctx->spaceused > ctx->space )
-		{
-			shifts = (uint32_t)ceil((inplen+ctx->spaceused-ctx->space)/(float)SHIFTSIZE);
-			blocksize = MIN(shifts*SHIFTSIZE,ctx->spaceused);
-			memmove(buf,buf+blocksize,ctx->space-blocksize);
-			ctx->spaceused = ctx->spaceused - blocksize;
-		}
-		memmove(buf+ctx->spaceused,inp,inplen);
-		ctx->spaceused += inplen;
-	}
+    if (inplen + SHIFTSIZE > ctx->space) {
+        blocksize = MIN(inplen, ctx->space);
+        memmove(buf, inp, blocksize);
+        ctx->spaceused = blocksize;
+    } else {
+        if (inplen + ctx->spaceused > ctx->space) {
+            shifts = (uint32_t) ceil((inplen + ctx->spaceused - ctx->space) / (float) SHIFTSIZE);
+            blocksize = MIN(shifts * SHIFTSIZE, ctx->spaceused);
+            memmove(buf, buf + blocksize, ctx->space - blocksize);
+            ctx->spaceused = ctx->spaceused - blocksize;
+        }
+        memmove(buf + ctx->spaceused, inp, inplen);
+        ctx->spaceused += inplen;
+    }
 
-	return COMP_SUCCESS;
+    return COMP_SUCCESS;
 }
 
 
-int comp_get_ratio(comp_ctx_t* ctx,float* out)
+int comp_get_ratio(comp_ctx_t * ctx, float *out)
 {
-	uint8_t *inbuf,*outbuf;
-	uLong insize,outsize;
-	int resp;
+    uint8_t *inbuf, *outbuf;
+    uLong insize, outsize;
+    int resp;
 
-	*out = 0;
+    *out = 0;
 
-	if(ctx->spaceused == 0) {return COMP_SUCCESS;}
+    if (ctx->spaceused == 0) {
+        return COMP_SUCCESS;
+    }
 
-	inbuf = ctx->buf;
-	outbuf = (uint8_t*)malloc(OUTBUFSIZE);
-	if(outbuf==NULL) {return COMP_ERR_LOW_MEMORY;}
+    inbuf = ctx->buf;
+    outbuf = (uint8_t *) malloc(OUTBUFSIZE);
+    if (outbuf == NULL) {
+        return COMP_ERR_LOW_MEMORY;
+    }
 
-	insize = ctx->spaceused;
-	outsize = OUTBUFSIZE;
+    insize = ctx->spaceused;
+    outsize = OUTBUFSIZE;
 
-	resp = compress(outbuf,&outsize,inbuf,insize);
-	if(resp==Z_MEM_ERROR) {return COMP_ERR_LOW_MEMORY;}
-	if(resp==Z_BUF_ERROR) {return COMP_ERR_LIB;}
+    resp = compress(outbuf, &outsize, inbuf, insize);
+    if (resp == Z_MEM_ERROR) {
+        return COMP_ERR_LOW_MEMORY;
+    }
+    if (resp == Z_BUF_ERROR) {
+        return COMP_ERR_LIB;
+    }
 
-	*out = (float)outsize/(float)insize;
+    *out = (float) outsize / (float) insize;
 
-	/* Thrash the memory and free it */
-	memset(outbuf,0x00,OUTBUFSIZE);
-	memset(outbuf,0xFF,OUTBUFSIZE);
-	memset(outbuf,0x00,OUTBUFSIZE);
-	free(outbuf);
+    /* Thrash the memory and free it */
+    memset(outbuf, 0x00, OUTBUFSIZE);
+    memset(outbuf, 0xFF, OUTBUFSIZE);
+    memset(outbuf, 0x00, OUTBUFSIZE);
+    free(outbuf);
 
-	return COMP_SUCCESS;
+    return COMP_SUCCESS;
 }
 
 
-int comp_end(comp_ctx_t* ctx)
+int comp_end(comp_ctx_t * ctx)
 {
-	if(ctx == NULL) {return COMP_SUCCESS;} /* Since nothing is left undone */
+    if (ctx == NULL) {
+        return COMP_SUCCESS;
+    }                           /* Since nothing is left undone */
 
-	free( ctx->buf );
-	ctx->buf = NULL;
+    free(ctx->buf);
+    ctx->buf = NULL;
 
-	return COMP_SUCCESS;
+    return COMP_SUCCESS;
 }

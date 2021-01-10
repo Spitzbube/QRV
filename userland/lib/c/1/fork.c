@@ -62,7 +62,7 @@ pid_t _fork(unsigned flags, uintptr_t frame) {
 }
 
 pid_t fork(void) {
-#if 1 	// @@@ TEMPORARY until libc is fork safe wrt mutexs
+#if 1 	// @@@ TEMPORARY until libc is fork safe wrt mutexes
 	extern int          _Multi_threaded;
 
 	if(_Multi_threaded) {

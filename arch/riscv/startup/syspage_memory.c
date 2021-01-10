@@ -7,6 +7,7 @@
  */
 
 #include <startup.h>
+#include <stddef.h>
 
 static unsigned fixed_size;
 

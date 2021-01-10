@@ -200,7 +200,7 @@ struct filehdr {
 /*			0405	pdp11 overlay */
 /*			0407	pdp11/pre System V vax executable */
 /*			0410	pdp11/pre System V vax pure executable */
-/*			0411	pdp11 seperate I&D */
+/*			0411	pdp11 separate I&D */
 /*			0437	pdp11 kernel overlay */
 
 
