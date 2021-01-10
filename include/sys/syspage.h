@@ -23,9 +23,7 @@
 #ifndef __SYSPAGE_H_INCLUDED
 #define __SYSPAGE_H_INCLUDED
 
-#ifndef __PLATFORM_H_INCLUDED
-#include <sys/platform.h>
-#endif
+#include <sys/qrv_core.h>
 
 __BEGIN_DECLS
 #if defined(__CLOCKADJUST)
@@ -147,7 +145,7 @@ struct asinfo_entry {
     _Uint16t attr;
     _Uint16t priority;
     int (*alloc_checker)(struct syspage_entry * __sp,
-                         _Uint64t * __base, _Uint64t * __len, _Sizet __size, _Sizet __align);
+                         _Uint64t * __base, _Uint64t * __len, size_t __size, size_t __align);
     _Uint32t spare;
 };
 

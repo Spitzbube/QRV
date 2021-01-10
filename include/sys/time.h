@@ -25,32 +25,15 @@
 #ifndef _SYS_TIME_H_
 #define _SYS_TIME_H_
 
+#include <sys/_timeval.h>
+
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
 
 #ifndef __SELECT_H_INCLUDED
-#include <sys/select.h>
+//#include <sys/select.h>
 #endif
-
-#if defined(__SUSECONDS_T)
-typedef __SUSECONDS_T suseconds_t;
-#undef __SUSECONDS_T
-#endif
-
-_C_STD_BEGIN
-
-#if defined(__TIME_T)
-typedef __TIME_T	time_t;
-#undef __TIME_T
-#endif
-
-_C_STD_END
-
-struct timeval {
-    _CSTD time_t	tv_sec;		/* seconds */
-    suseconds_t		tv_usec;	/* microseconds */
-};
 
 #if defined(__EXT_UNIX_MISC)
 /* Operations on timevals. */
@@ -81,24 +64,14 @@ struct timeval {
 #endif
 
 struct  itimerval {
-	struct timeval	it_interval;	/* timer interval */
-	struct timeval	it_value;		/* current value */
+    struct timeval it_interval;	/* timer interval */
+    struct timeval it_value;	/* current value */
 };
 
 #if defined(__EXT_QNX)
-/*
- * This is only here as source code porting aid. The only function that
- * took these was gettimeofday (the second parameter) and Unix98 says
- * that should be a NULL pointer now.
- */
-#if defined(__SLIB_DATA_INDIRECT) && !defined(__SLIB)
-struct _timezone
-#else
-struct timezone
-#endif
-{
+struct timezone {
     int tz_minuteswest; /* minutes west of Greenwich */
-    int tz_dsttime; /* type of dst correction */
+    int tz_dsttime;     /* type of dst correction */
 };
 #else
 struct timezone;

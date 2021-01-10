@@ -17,34 +17,19 @@
 
 
 
-/*
- *  alloca.h: Allocate memory from the stack.
- *
 
- */
 
-#ifndef _ALLOCA_H_INCLUDED
-#define _ALLOCA_H_INCLUDED
+#ifndef __SYS_DCMD_DUMPER_H_INCLUDED
+#define __SYS_DCMD_DUMPER_H_INCLUDED
 
-#ifndef __PLATFORM_H_INCLUDED
-#include <sys/platform.h>
-#endif
+enum message_type {
+  DUMPER_NOTIFYEVENT=1,     /* add a notify event                      */
+	DUMPER_REMOVEEVENT,       /* remove a notify event                   */
+	DUMPER_REMOVEALL          /* remove all notify events to a given pid */
+};
 
-__BEGIN_DECLS extern size_t __stackavail(void);
+#define DCMD_DUMPER_NOTIFYEVENT   __DIOT(_DCMD_MISC, DUMPER_NOTIFYEVENT, struct sigevent)
+#define DCMD_DUMPER_REMOVEEVENT   __DIOT(_DCMD_MISC, DUMPER_REMOVEEVENT, NULL)
+#define DCMD_DUMPER_REMOVEALL     __DIOT(_DCMD_MISC, DUMPER_REMOVEALL, NULL)
 
-#undef alloca
-
-#define __ALLOCA_ALIGN( s )   (((s)+(sizeof(_Uint64t)-1))&~(sizeof(_Uint64t)-1))
-
-#if defined(__GNUC__) || defined(__INTEL_COMPILER)
-extern void *__builtin_alloca(unsigned long __size);
-#define _alloca(s)	__builtin_alloca(s)
-#else
-#error not configured for system
-#endif
-
-#define alloca(s)	(((__ALLOCA_ALIGN(s)+128)<__stackavail())?_alloca(s):0)
-#define __alloca(s)	_alloca(s)
-
-__END_DECLS
 #endif

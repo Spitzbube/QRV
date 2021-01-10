@@ -1,4 +1,4 @@
-/*
+/**
  * \file pthread.h
  *
  * Thread definitions.
@@ -43,11 +43,6 @@
 #if defined(__PTHREAD_T)
 typedef __PTHREAD_T pthread_t;
 #undef __PTHREAD_T
-#endif
-
-#if defined(__SYNC_T)
-typedef __SYNC_T sync_t;
-#undef __SYNC_T
 #endif
 
 #if defined(__PTHREAD_MUTEX_T)

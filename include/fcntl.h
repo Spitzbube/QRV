@@ -111,10 +111,6 @@ typedef __PID_T pid_t;
 #define O_EXCL      002000      /*  Exclusive open          */
 #define O_NOCTTY    004000      /*  Don't assign a controlling terminal */
 
-#if defined(__EXT_PCDOS)
-#define O_TEXT      000000      /*  Text file   (DOS thing)     */
-#define O_BINARY    000000      /*  Binary file (DOS thing)     */
-#endif
 #if defined(__EXT_QNX)
 #define O_CLOEXEC   020000      /*  File descriptor will be close-on-exec */
 #define O_REALIDS   040000      /*  Use real uid/gid for permision checking */
@@ -301,11 +297,6 @@ extern int posix_fallocate(int __fd, off_t __offset, off_t __len);
 #error _FILE_OFFSET_BITS value is unsupported
 #endif
 
-#endif
-
-#if defined(__EXT_PCDOS)
-extern int _vopen(const char *__path, int __oflag, int __sflag, __NTO_va_list __ap);
-extern int sopen(const char *__path, int __oflag, int __share, ...);
 #endif
 
 #if defined(__EXT_QNX)

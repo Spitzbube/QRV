@@ -33,10 +33,6 @@
 #include <sys/types.h>
 #endif
 
-#if defined(__SYNC_T)
-typedef __SYNC_T sync_t;
-#undef __SYNC_T
-#endif
 typedef sync_t sem_t;
 
 #if !defined(__EXT_POSIX1_199309) && (defined(__EXT_POSIX1_198808) || defined(__EXT_POSIX1_199009))

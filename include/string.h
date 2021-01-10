@@ -1,201 +1,177 @@
-/**
- * \file string.h
+/*
+ * string.h
  *
- * String functions
- *
- * \copyright (c) 1994-2000 by P.J. Plauger. All rights reserved.
- *
- * This file is a part of Dinkum C library V5.00:1296.
- * Consult your license regarding permissions and restrictions.
+ * Definitions for memory and string functions.
  */
 
-#ifndef _STRING_H_INCLUDED
+#ifndef _STRING_H_
+#define _STRING_H_
 
-#ifndef __PLATFORM_H_INCLUDED
-#include <sys/platform.h>
+#include "_ansi.h"
+#include <sys/reent.h>
+#include <sys/cdefs.h>
+#include <sys/features.h>
+
+#define __need_size_t
+#define __need_NULL
+#include <stddef.h>
+
+#if __POSIX_VISIBLE >= 200809
+#include <sys/_locale.h>
 #endif
 
-#if defined(__EXT_UNIX_MISC) && !defined(_STRINGS_H_INCLUDED)
-#include <strings.h>
+_BEGIN_STD_C
+
+void *	 memchr (const void *, int, size_t);
+int 	 memcmp (const void *, const void *, size_t);
+void *	 memcpy (void *__restrict, const void *__restrict, size_t);
+void *	 memmove (void *, const void *, size_t);
+void *	 memset (void *, int, size_t);
+char 	*strcat (char *__restrict, const char *__restrict);
+char 	*strchr (const char *, int);
+int	 strcmp (const char *, const char *);
+int	 strcoll (const char *, const char *);
+char 	*strcpy (char *__restrict, const char *__restrict);
+size_t	 strcspn (const char *, const char *);
+char 	*strerror (int);
+size_t	 strlen (const char *);
+char 	*strncat (char *__restrict, const char *__restrict, size_t);
+int	 strncmp (const char *, const char *, size_t);
+char 	*strncpy (char *__restrict, const char *__restrict, size_t);
+char 	*strpbrk (const char *, const char *);
+char 	*strrchr (const char *, int);
+size_t	 strspn (const char *, const char *);
+char 	*strstr (const char *, const char *);
+#ifndef _REENT_ONLY
+char 	*strtok (char *__restrict, const char *__restrict);
+#endif
+size_t	 strxfrm (char *__restrict, const char *__restrict, size_t);
+
+#if __POSIX_VISIBLE >= 200809
+int	 strcoll_l (const char *, const char *, locale_t);
+char	*strerror_l (int, locale_t);
+size_t	 strxfrm_l (char *__restrict, const char *__restrict, size_t, locale_t);
+#endif
+#if __MISC_VISIBLE || __POSIX_VISIBLE
+char 	*strtok_r (char *__restrict, const char *__restrict, char **__restrict);
+#endif
+#if __BSD_VISIBLE
+int	 timingsafe_bcmp (const void *, const void *, size_t);
+int	 timingsafe_memcmp (const void *, const void *, size_t);
+#endif
+#if __MISC_VISIBLE || __POSIX_VISIBLE
+void *	 memccpy (void *__restrict, const void *__restrict, int, size_t);
+#endif
+#if __GNU_VISIBLE
+void *	 mempcpy (void *, const void *, size_t);
+void *	 memmem (const void *, size_t, const void *, size_t);
+void *	 memrchr (const void *, int, size_t);
+void *	 rawmemchr (const void *, int);
+#endif
+#if __POSIX_VISIBLE >= 200809
+char 	*stpcpy (char *__restrict, const char *__restrict);
+char 	*stpncpy (char *__restrict, const char *__restrict, size_t);
+#endif
+#if __GNU_VISIBLE
+char	*strcasestr (const char *, const char *);
+char 	*strchrnul (const char *, int);
+#endif
+#if __MISC_VISIBLE || __POSIX_VISIBLE >= 200809 || __XSI_VISIBLE >= 4
+char 	*strdup (const char *) __malloc_like __result_use_check;
+#endif
+char 	*_strdup_r (struct _reent *, const char *);
+#if __POSIX_VISIBLE >= 200809
+char 	*strndup (const char *, size_t) __malloc_like __result_use_check;
+#endif
+char 	*_strndup_r (struct _reent *, const char *, size_t);
+
+/* There are two common strerror_r variants.  If you request
+   _GNU_SOURCE, you get the GNU version; otherwise you get the POSIX
+   version.  POSIX requires that #undef strerror_r will still let you
+   invoke the underlying function, but that requires gcc support.  */
+#if __GNU_VISIBLE
+char	*strerror_r (int, char *, size_t);
+#elif __POSIX_VISIBLE >= 200112
+# ifdef __GNUC__
+int	strerror_r (int, char *, size_t)
+#ifdef __ASMNAME
+             __asm__ (__ASMNAME ("__xpg_strerror_r"))
+#endif
+  ;
+# else
+int	__xpg_strerror_r (int, char *, size_t);
+#  define strerror_r __xpg_strerror_r
+# endif
 #endif
 
-#if !defined(__cplusplus) || defined(_STD_USING) || defined(_GLOBAL_USING)
-#define _STRING_H_INCLUDED
+/* Reentrant version of strerror.  */
+char *	_strerror_r (struct _reent *, int, int, int *);
+
+#if __BSD_VISIBLE
+size_t	strlcat (char *, const char *, size_t);
+size_t	strlcpy (char *, const char *, size_t);
+#endif
+#if __POSIX_VISIBLE >= 200809
+size_t	 strnlen (const char *, size_t);
+#endif
+#if __BSD_VISIBLE
+char 	*strsep (char **, const char *);
+#endif
+#if __BSD_VISIBLE
+char    *strnstr(const char *, const char *, size_t) __pure;
 #endif
 
-#ifndef _STRING_H_DECLARED
-#define _STRING_H_DECLARED
-
-_C_STD_BEGIN
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
+#if __MISC_VISIBLE
+char	*strlwr (char *);
+char	*strupr (char *);
 #endif
 
-#ifndef NULL
-#define NULL   _NULL
+#ifndef DEFS_H	/* Kludge to work around problem compiling in gdb */
+char	*strsignal (int __signo);
 #endif
 
-_C_STD_END
-#ifdef __cplusplus
-#ifndef _Const_return
-#define _Const_return const
-#endif
-#else
-#define _Const_return
-#endif
-__BEGIN_DECLS _C_STD_BEGIN extern _Const_return void *memchr(const void *__s, int __c, size_t __n);
-extern _Const_return char *strchr(const char *__s, int __c);
-extern _Const_return char *strpbrk(const char *__s1, const char *__s2);
-extern _Const_return char *strrchr(const char *__s, int __c);
-extern _Const_return char *strstr(const char *__s1, const char *__s2);
-
-extern int memcmp(const void *__s1, const void *__s2, size_t __n);
-extern void *memcpy(void *__s1, const void *__s2, size_t __n);
-extern void *memmove(void *__s1, const void *__s2, size_t __n);
-#ifndef __MEMSET_DEFINED
-#define __MEMSET_DEFINED
-extern void *memset(void *__s, int __c, size_t __n);
-#endif
-extern char *strcat(char *__s1, const char *__s2);
-extern int strcmp(const char *__s1, const char *__s2);
-extern int strcoll(const char *__s1, const char *__s2);
-extern size_t strxfrm(char *__s1, const char *__s2, size_t __n);
-extern char *strcpy(char *__s1, const char *__s2);
-extern size_t strcspn(const char *__s1, const char *__s2);
-extern char *strerror(int __errnum);
-extern size_t strlen(const char *__s);
-extern char *strncat(char *__s1, const char *__s2, size_t __n);
-extern int strncmp(const char *__s1, const char *__s2, size_t __n);
-extern char *strncpy(char *__s1, const char *__s2, size_t __n);
-extern size_t strspn(const char *__s1, const char *__s2);
-extern char *strtok(char *__s1, const char *__s2);
-_C_STD_END extern char *strsignal(int __signo);
-
-#if defined(__EXT_POSIX1_199506)
-extern char *strtok_r(char *__s1, const char *__s2, char **__s3);
+#ifdef __CYGWIN__
+int	strtosigno (const char *__name);
 #endif
 
-#if defined(__EXT_POSIX1_200112)
-extern int strerror_r(int __errnum, char *__buf, _CSTD size_t __len);
+#if __GNU_VISIBLE
+int	 strverscmp (const char *, const char *);
 #endif
 
-#if defined(__EXT_POSIX1_200112) || defined(__EXT_XOPEN_EX)
-extern void *memccpy(void *__restrict __s1, const void *__restrict __s2, int __c, _CSTD size_t __n);
-extern char *strdup(const char *__string);
+#if __GNU_VISIBLE && defined(__GNUC__)
+#define strdupa(__s) \
+	(__extension__ ({const char *__sin = (__s); \
+			 size_t __len = strlen (__sin) + 1; \
+			 char * __sout = (char *) __builtin_alloca (__len); \
+			 (char *) memcpy (__sout, __sin, __len);}))
+#define strndupa(__s, __n) \
+	(__extension__ ({const char *__sin = (__s); \
+			 size_t __len = strnlen (__sin, (__n)) + 1; \
+			 char *__sout = (char *) __builtin_alloca (__len); \
+			 __sout[__len-1] = '\0'; \
+			 (char *) memcpy (__sout, __sin, __len-1);}))
+#endif /* __GNU_VISIBLE && __GNUC__ */
+
+/* There are two common basename variants.  If you do NOT #include <libgen.h>
+   and you do
+
+     #define _GNU_SOURCE
+     #include <string.h>
+
+   you get the GNU version.  Otherwise you get the POSIX version for which you
+   should #include <libgen.h> for the function prototype.
+   POSIX requires that #undef basename will still let you invoke the underlying
+   function. However, this also implies that the POSIX version is used in this
+   case.  That's made sure here. */
+#if __GNU_VISIBLE && !defined(basename)
+# define basename basename
+char	*__nonnull ((1)) basename (const char *) __asm__(__ASMNAME("__gnu_basename"));
 #endif
 
-#if defined(__EXT_QNX)
+_END_STD_C
 
-/* WATCOM's Additional Functions (non-ANSI, non-POSIX) */
-
-struct iovec;
-extern _CSTD size_t memcpyv(const struct iovec *__dst, int __dparts, int __doff,
-                            const struct iovec *__src, int __sparts, int __soff);
-extern int memicmp(const void *__s1, const void *__s2, _CSTD size_t __n);
-extern int _memicmp(const void *__s1, const void *__s2, _CSTD size_t __n);
-extern int strcmpi(const char *__s1, const char *__s2);
-extern char *_strdup(const char *__string);
-extern int stricmp(const char *__s1, const char *__s2);
-extern int _stricmp(const char *__s1, const char *__s2);
-extern char *strlwr(char *__string);
-extern char *_strlwr(char *__string);
-extern int strnicmp(const char *__s1, const char *__s2, _CSTD size_t __n);
-extern int _strnicmp(const char *__s1, const char *__s2, _CSTD size_t __n);
-extern char *strnset(char *__string, int __c, _CSTD size_t __len);
-extern char *strrev(char *__string);
-extern char *strset(char *__string, int __c);
-extern char *strupr(char *__string);
-extern char *_strupr(char *__string);
-
-/* QNX's Additional Functions (non-ANSI, non-POSIX) */
-
-extern void __strerror(int __max, int __errnum, char *__buf);
-extern int straddstr(const char *__str, int __len, char **__pbuf, _CSTD size_t *__pmaxbuf);
+#if __SSP_FORTIFY_LEVEL > 0
+#include <ssp/string.h>
 #endif
 
-#if defined(__EXT_UNIX_MISC)
-extern char *strsep(char **__stringp, const char *__delim);
-#endif
-#if defined(__EXT_BSD)
-_CSTD size_t strlcat(char *__s1, const char *__s2, _CSTD size_t __n);
-_CSTD size_t strlcpy(char *__s1, const char *__s2, _CSTD size_t __n);
-#endif
-
-__END_DECLS
-#if defined(__X86__)
-#include <x86/string.h>
-#endif
-#ifdef __cplusplus
-extern "C++" {
-    _C_STD_BEGIN inline void *memchr(void *_S, int _C, _CSTD size_t _N) {   /* call with const first argument */
-        union {
-            void *_Out;
-            _Const_return void *_In;
-        } _Result;
-         return (_Result._In = _CSTD memchr((const void *) _S, _C, _N)), _Result._Out;
-    } inline char *strchr(char *_S, int _C) {   /* call with const first argument */
-        union {
-            char *_Out;
-            _Const_return char *_In;
-        } _Result;
-        return (_Result._In = _CSTD strchr((const char *) _S, _C)), _Result._Out;
-    }
-
-    inline char *strpbrk(char *_S, const char *_P) {    /* call with const first argument */
-        union {
-            char *_Out;
-            _Const_return char *_In;
-        } _Result;
-        return (_Result._In = _CSTD strpbrk((const char *) _S, _P)), _Result._Out;
-    }
-
-    inline char *strrchr(char *_S, int _C) {    /* call with const first argument */
-        union {
-            char *_Out;
-            _Const_return char *_In;
-        } _Result;
-        return (_Result._In = _CSTD strrchr((const char *) _S, _C)), _Result._Out;
-    }
-
-    inline char *strstr(char *_S, const char *_P) { /* call with const first argument */
-        union {
-            char *_Out;
-            _Const_return char *_In;
-        } _Result;
-        return (_Result._In = _CSTD strstr((const char *) _S, _P)), _Result._Out;
-    }
-_C_STD_END};
-#endif
-
-#endif
-
-#ifdef _STD_USING
-#ifndef __GCC_BUILTIN
-using _CSTD memcmp;
-using _CSTD memcpy;
-using _CSTD strcmp;
-using _CSTD strcpy;
-using _CSTD strlen;
-#endif
-using _CSTD size_t;
-using _CSTD memchr;
-using _CSTD memmove;
-using _CSTD memset;
-using _CSTD strcat;
-using _CSTD strchr;
-using _CSTD strncat;
-using _CSTD strcoll;
-using _CSTD strcspn;
-using _CSTD strerror;
-using _CSTD strncmp;
-using _CSTD strncpy;
-using _CSTD strpbrk;
-using _CSTD strrchr;
-using _CSTD strspn;
-using _CSTD strstr;
-using _CSTD strtok;
-using _CSTD strxfrm;
-#endif                          /* _STD_USING */
-
-#endif
+#endif /* _STRING_H_ */

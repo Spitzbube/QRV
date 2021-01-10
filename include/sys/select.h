@@ -66,17 +66,6 @@ __BEGIN_DECLS
 struct timeval;
 extern int select(int __nfds, fd_set *__readfds, fd_set *__writefds, fd_set *__errorfds, struct timeval *__timeout);
 
-#if defined(__EXT_QNX)
-struct sigevent;
-struct timespec;
-union sigval;
-extern int _select_event(int __maxfd, fd_set *__readfds, fd_set *__writefds, /* deprecated */
-			fd_set *__exceptfds, const struct timespec *__ts,
-			struct sigevent *__event, int (*eventwait)(const struct timespec *__ts,
-			union sigval *__value, void *__arg), void *__arg);
-extern int _select_block(const struct timespec *__ts, union sigval *__value, void *__arg); /* deprecated */
-#endif
-
 #if defined(__EXT_UNIX_MISC)
 typedef __fd_mask	fd_mask;
 #define NFDBITS		__NFDBITS
@@ -84,15 +73,6 @@ typedef __fd_mask	fd_mask;
 
 #ifndef __MEMSET_DEFINED
 #define __MEMSET_DEFINED
-
-_C_STD_BEGIN
-#if defined(__SIZE_T)
-typedef __SIZE_T	size_t;
-#undef __SIZE_T
-#endif
-
-extern void *memset( void *__s, int __c, size_t __n );
-_C_STD_END
 
 #endif
 

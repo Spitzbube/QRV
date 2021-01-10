@@ -50,21 +50,6 @@ typedef __ID_T id_t;
 #undef __ID_T
 #endif
 
-#if defined(__PID_T)
-typedef __PID_T pid_t;
-#undef __PID_T
-#endif
-
-#if defined(__UID_T)
-typedef __UID_T uid_t;
-#undef __UID_T
-#endif
-
-#if defined(__GID_T)
-typedef __GID_T gid_t;
-#undef __GID_T
-#endif
-
 #define PROCMGR_PID				SYSMGR_PID
 #define PROCMGR_CHID			SYSMGR_CHID
 #define PROCMGR_COID			SYSMGR_COID

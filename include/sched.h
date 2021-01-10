@@ -63,7 +63,7 @@ __BEGIN_DECLS
 #define SCHED_EXT_APS	1       /* APS scheduller */
 #define SCHED_EXT_CMD_BASE		  0
 #define SCHED_EXT_APS_CMD_BASE	200
-    enum {
+enum {
     SCHED_QUERY_SCHED_EXT = SCHED_EXT_CMD_BASE,
 };
 struct sched_query {
@@ -72,20 +72,39 @@ struct sched_query {
 };
 #endif
 
-#if defined(__SCHED_PARAM_T)
-typedef __SCHED_PARAM_T sched_param_t;
-#undef __SCHED_PARAM_T
-#endif
-
 #if defined(__EXT_QNX) || defined(__EXT_POSIX1_200112)
+
 #define sched_ss_low_priority	__sched_ss_low_priority
-#define sched_ss_max_repl		__sched_ss_max_repl
+#define sched_ss_max_repl	__sched_ss_max_repl
 #define sched_ss_repl_period	__sched_ss_repl_period
 #define sched_ss_init_budget	__sched_ss_init_budget
+struct sched_param {
+    int32_t sched_priority;
+    int32_t sched_curpriority;
+    union {
+        /* Make sure it occupies at least 32 bytes */
+        int32_t _reserved[8];
+        struct {
+            int32_t __ss_low_priority;
+            int32_t __ss_max_repl;
+            struct timespec _ss_repl_period;
+            struct timespec _ss_init_budget;
+        } __ss;
+    };
+};
+
+#else
+
+struct sched_param {
+    int32_t sched_priority;
+    int32_t sched__curpriority;
+    int32_t __spare[8];
+};
+
 #endif
 
 #if defined(__EXT_QNX)
-/* 1003.4 Draft 9 : These two are so convenient we include them. */
+/* 1003.4 Draft 9 : These two are so convenient we include them */
 extern int getprio(pid_t __pid);
 extern int setprio(pid_t __pid, int __priority);
 #endif
@@ -104,10 +123,5 @@ extern int sched_get_priority_adjust(int __prio, int __alg, int __adjust);
 #endif
 
 __END_DECLS
-#if defined(__EXT_QNX) && defined(__INLINE_FUNCTIONS__)
-#ifndef __NEUTRINO_H_INCLUDED
-#include <sys/neutrino.h>
-#endif
-#define sched_yield SchedYield
-#endif
+
 #endif

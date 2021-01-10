@@ -36,11 +36,6 @@ typedef __SIZE_T	size_t;
 #undef __SIZE_T
 #endif
 
-#if defined(__MODE_T)
-typedef __MODE_T	mode_t;
-#undef __MODE_T
-#endif
-
 _C_STD_END
 
 #if defined(__OFF_T)

@@ -23,7 +23,7 @@
 #ifndef __ELF_H_INCLUDED
 #define __ELF_H_INCLUDED
 
-#ifndef __PLATFORM_H_INCLUDED
+#ifdef __QNXNTO__
 #include <sys/platform.h>
 #endif
 
@@ -442,7 +442,7 @@ __END_DECLS
 #if defined(ELF_TARGET_ALL) || defined(ELF_TARGET_SH)
 #include <elf/elf_sh.h>
 #endif
-#if defined(ELF_TARGET_ALL) || defined(ELF_TARGET_SH)
+#if defined(ELF_TARGET_ALL) || defined(ELF_TARGET_RISCV)
 #include <elf/elf_riscv.h>
 #endif
 

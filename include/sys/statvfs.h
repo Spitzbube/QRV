@@ -35,21 +35,6 @@ typedef __FSBLKCNT64_T		fsblkcnt64_t;
 #undef __FSBLKCNT64_T
 #endif
 
-#if defined(__FSFILCNT64_T)
-typedef __FSFILCNT64_T		fsfilcnt64_t;
-#undef __FSFILCNT64_T
-#endif
-
-#if defined(__FSBLKCNT_T)
-typedef __FSBLKCNT_T		fsblkcnt_t;
-#undef __FSBLKCNT_T
-#endif
-
-#if defined(__FSFILCNT_T)
-typedef __FSFILCNT_T		fsfilcnt_t;
-#undef __FSFILCNT_T
-#endif
-
 struct statvfs {
 	unsigned long	f_bsize;		/* file system block size */
 	unsigned long	f_frsize;		/* fundamental filesystem block size */

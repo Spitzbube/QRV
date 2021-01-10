@@ -35,37 +35,31 @@
 #ifndef _MALLOC_H_DECLARED
 #define _MALLOC_H_DECLARED
 
-_C_STD_BEGIN
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
-#endif
-
-_C_STD_END
 #if defined(__EXT_QNX) && !defined(_alloca)
 #ifndef _ALLOCA_H_INCLUDED
 #include <alloca.h>
 #endif
 #endif
-__BEGIN_DECLS _C_STD_BEGIN extern void *calloc(size_t __n, size_t __size);
+__BEGIN_DECLS
+extern void *calloc(size_t __n, size_t __size);
 extern void *malloc(size_t __size);
 extern void *realloc(void *__ptr, size_t __size);
 extern void free(void *__ptr);
-_C_STD_END
+
 #if defined(__EXT_POSIX1_200112)    /* Approved 1003.1d D14 */
-extern int posix_memalign(void **__memptr, _CSTD size_t __alignment, _CSTD size_t __size);
+extern int posix_memalign(void **__memptr, size_t __alignment, size_t __size);
 #endif
 
 #if defined(__EXT_XOPEN_EX)
-extern void *valloc(_CSTD size_t __size);
+extern void *valloc(size_t __size);
 #endif
 
 #if defined(__EXT_QNX)
 extern int cfree(void *__ptr);
-extern void *_scalloc(_CSTD size_t __size);
-extern void *_smalloc(_CSTD size_t __size);
-extern void *_srealloc(void *__ptr, _CSTD size_t __old_size, _CSTD size_t __new_size);
-extern void _sfree(void *__ptr, _CSTD size_t __size);
+extern void *_scalloc(size_t __size);
+extern void *_smalloc(size_t __size);
+extern void *_srealloc(void *__ptr, size_t __old_size, size_t __new_size);
+extern void _sfree(void *__ptr, size_t __size);
 #endif
 
 #if defined(__EXT_QNX)          /* SVID/XPG/ELIX functions */
@@ -81,17 +75,16 @@ enum malloc_opt_cmds {
     MALLOC_ARENA_CACHE_MAXSZ,
     MALLOC_ARENA_CACHE_MAXBLK,
     MALLOC_ARENA_CACHE_FREE_NOW,
-    MALLOC_LAST
-};
+    MALLOC_LAST,
 
-/* Don't enum these, so we don't get coercion errors if the caller is C++ */
-#define M_MXFAST	(int)MALLOC_LAST
-#define M_NLBLKS	(int)(MALLOC_LAST+1)
-#define M_GRAIN		(int)(MALLOC_LAST+2)
-#define M_TRIM_THRESHOLD	(int)(MALLOC_LAST+3)
-#define M_TOP_PAD	(int)(MALLOC_LAST+4)
-#define M_MMAP_THRESHOLD	(int)(MALLOC_LAST+5)
-#define M_MMAP_MAX	(int)(MALLOC_LAST+6)
+    M_MXFAST = MALLOC_LAST,
+    M_NLBLKS,
+    M_GRAIN,
+    M_TRIM_THRESHOLD,
+    M_TOP_PAD,
+    M_MMAP_THRESHOLD,
+    M_MMAP_MAX
+};
 
 struct malloc_stats {
     unsigned m_small_freemem;   /* memory in free small blocks */
@@ -133,7 +126,7 @@ extern int mallopt(int __cmd, int __value);
 extern enum mcheck_status mprobe(void *__ptr);
 extern int mcheck(void (*__abort_fn)(enum mcheck_status __status));
 
-extern void *memalign(_CSTD size_t __alignment, _CSTD size_t __size);
+extern void *memalign(size_t __alignment, size_t __size);
 #endif
 __END_DECLS
 #endif

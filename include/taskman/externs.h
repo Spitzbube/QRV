@@ -27,7 +27,6 @@
 #include <gulliver.h>
 #include <sys/types.h>
 #include <sys/mman.h>
-#include <sys/neutrino.h>
 #include <sys/syspage.h>
 #include <sys/netmgr.h>
 

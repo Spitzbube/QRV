@@ -19,10 +19,10 @@ _C_STD_BEGIN
     /* MACROS */
 #define WEOF	((wint_t)(-1))
     /* TYPE DEFINITIONS */
-typedef _Sizet wctrans_t;
+typedef size_t wctrans_t;
 
 #if !defined(__BORLANDC__)
-typedef _Sizet wctype_t;
+typedef size_t wctype_t;
 
 #elif !defined(_WCTYPE_T_DEFINED)
 #define _WCTYPE_T_DEFINED

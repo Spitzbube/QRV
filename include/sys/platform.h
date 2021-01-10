@@ -92,7 +92,6 @@
 #undef __EXT_POSIX1_200112	/* Posix 1003.1-2001 */
 #undef __EXT_POSIX2		/* Posix 1003.2 */
 #undef __EXT_QNX		/* QNX extentions */
-#undef __EXT_PCDOS		/* Common DOS/Watcom Extentions */
 #undef __EXT_XOPEN_EX		/* XOPEN extentions */
 #undef __EXT_UNIX_MISC		/* UNIX definitions not defined by XOPEN */
 #undef __EXT_UNIX_HIST		/* incompatible historic unix definitions */
@@ -163,11 +162,6 @@
 #endif
 
 #if defined(_QNX_SOURCE) || \
-    (defined(__EXT) && !defined(__NO_EXT_PCDOS) && !defined(_POSIX_SOURCE) && !defined(_XOPEN_SOURCE) && (_POSIX_C_SOURCE+0 <= 0))
-#define __EXT_PCDOS
-#endif
-
-#if defined(_QNX_SOURCE) || \
     (defined(__EXT) && !defined(__NO_EXT_QNX) && !defined(_POSIX_SOURCE) && !defined(_XOPEN_SOURCE) && (_POSIX_C_SOURCE+0 <= 0))
 #define __EXT_QNX
 #endif
@@ -210,24 +204,8 @@
 #undef __PTRDIFF_T
 #define __PTRDIFF_T		_Intptrt
 
-typedef _UINT32			_Sizet;
-#undef __SIZE_T
-#define __SIZE_T		_Sizet
-
-typedef _INT32			_Ssizet;
-#undef __SSIZE_T
-#define __SSIZE_T		_Ssizet
-
 #define _LLONG_MAX      0x7fffffffffffffffLL
 #define _ULLONG_MAX     0xffffffffffffffffULL
-
-#include <sys/target_nto.h>
-
-#if !defined(__SECSTR)
-	#define __SECSTR(__sec, __s)
-#endif
-
-#define __SRCVERSION(__s)	__SECSTR(.ident, __s)
 
 #ifdef __WCHAR_T
 typedef __WCHAR_T		_Wchart;
@@ -291,30 +269,6 @@ typedef _Paddr32t				_Paddrt;
 #else
 #error _PADDR_BITS value is unsupported
 #endif
-
-#define __CLOCKADJUST	\
-		{	\
-			unsigned long				tick_count;	\
-			long						tick_nsec_inc;	\
-		}
-
-#define __ITIMER \
-		{	\
-			_Uint64t					nsec;	\
-			_Uint64t					interval_nsec;	\
-		}
-
-#define __TIMER_INFO  \
-	{	\
-		struct _itimer		itime;	\
-		struct _itimer		otime;	\
-		_Uint32t			flags;	\
-		_Int32t				tid;	\
-		_Int32t				notify;	\
-		clockid_t			clockid;	\
-		_Uint32t			overruns;	\
-		struct sigevent		event;	\
-	}
 
 #ifdef __cplusplus
 _STD_BEGIN

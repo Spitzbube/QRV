@@ -36,13 +36,6 @@ typedef __PID_T pid_t;
 #undef __PID_T
 #endif
 
-#if defined(__EXT_PCDOS)
-#define P_WAIT      0
-#define P_NOWAIT    1
-#define P_OVERLAY   2
-#define P_NOWAITO   3
-#endif
-
 __BEGIN_DECLS
 #if defined(__EXT_POSIX1_198808)
 void _exit(int __status) __attribute__((__noreturn__));
@@ -78,9 +71,7 @@ extern int execvpe(const char *__file, char *const __argv[], char *const __envp[
 extern int gettid(void);
 extern char *_cmdname(char *__name);
 extern int _cmdfd(void);
-#endif
 
-#if defined(__EXT_PCDOS)
 extern int spawnl(int __mode, const char *__path, const char *__arg0, ...);
 extern int spawnle(int __mode, const char *__path, const char *__arg0, ...);
 extern int spawnlp(int __mode, const char *__path, const char *__arg0, ...);

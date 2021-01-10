@@ -42,16 +42,6 @@
 #error POSIX Asynchronous Input and Output needs P1003.1b-1993 or later
 #endif
 
-#if defined(__TIMESPEC_INTERNAL)
-__TIMESPEC_INTERNAL;
-#undef __TIMESPEC_INTERNAL
-#endif
-
-#if defined(__SCHED_PARAM_INTERNAL)
-__SCHED_PARAM_INTERNAL;
-#undef __SCHED_PARAM_INTERNAL
-#endif
-
 struct aiocb {
     int aio_fildes;
     int aio_reqprio;
@@ -86,7 +76,7 @@ struct aiocb {
     void *_aio_suspend;
     void *_aio_plist;
     int _aio_policy;
-    struct __sched_param _aio_param;
+    struct sched_param _aio_param;
 };
 
 #if _LARGEFILE64_SOURCE - 0 > 0
@@ -110,15 +100,9 @@ struct aiocb64 {
     void *_aio_suspend;
     void *_aio_plist;
     unsigned _aio_policy;
-    struct __sched_param _aio_param;
+    struct sched_param _aio_param;
 };
 #endif                          /* _LARGEFILE64_SOURCE */
-
-#if defined(__TIMESPEC)
-__TIMESPEC;
-#undef __TIMESPEC
-#endif
-
 
 #define AIO_CANCELED	0
 #define AIO_ALLDONE		1

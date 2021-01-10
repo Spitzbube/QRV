@@ -1,257 +1,466 @@
 /*
- * $QNXLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+ * Copyright (c) 2004, 2005 by
+ * Ralf Corsepius, Ulm/Germany. All rights reserved.
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
+ * Permission to use, copy, modify, and distribute this software
+ * is freely granted, provided that this notice is preserved.
  */
+
+#ifndef _STDINT_H
+#define _STDINT_H
+
+#include <machine/_default_types.h>
+#include <sys/_intsup.h>
+#include <sys/_stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef ___int_least8_t_defined
+typedef __int_least8_t int_least8_t;
+typedef __uint_least8_t uint_least8_t;
+#define __int_least8_t_defined 1
+#endif
+
+#ifdef ___int_least16_t_defined
+typedef __int_least16_t int_least16_t;
+typedef __uint_least16_t uint_least16_t;
+#define __int_least16_t_defined 1
+#endif
+
+#ifdef ___int_least32_t_defined
+typedef __int_least32_t int_least32_t;
+typedef __uint_least32_t uint_least32_t;
+#define __int_least32_t_defined 1
+#endif
+
+#ifdef ___int_least64_t_defined
+typedef __int_least64_t int_least64_t;
+typedef __uint_least64_t uint_least64_t;
+#define __int_least64_t_defined 1
+#endif
 
 /*
- *  stdint.h Defined system types
+ * Fastest minimum-width integer types
  *
-
+ * Assume int to be the fastest type for all types with a width
+ * less than __INT_MAX__ rsp. INT_MAX
  */
-#ifndef _STDINT_H_INCLUDED
-
-#ifndef __PLATFORM_H_INCLUDED
-#include <sys/platform.h>
+#ifdef __INT_FAST8_TYPE__
+  typedef __INT_FAST8_TYPE__ int_fast8_t;
+  typedef __UINT_FAST8_TYPE__ uint_fast8_t;
+#define __int_fast8_t_defined 1
+#elif __STDINT_EXP(INT_MAX) >= 0x7f
+  typedef signed int int_fast8_t;
+  typedef unsigned int uint_fast8_t;
+#define __int_fast8_t_defined 1
 #endif
 
-#if !defined(__cplusplus) || defined(_STD_USING) || defined(_GLOBAL_USING)
-#define _STDINT_H_INCLUDED
+#ifdef __INT_FAST16_TYPE__
+  typedef __INT_FAST16_TYPE__ int_fast16_t;
+  typedef __UINT_FAST16_TYPE__ uint_fast16_t;
+#define __int_fast16_t_defined 1
+#elif __STDINT_EXP(INT_MAX) >= 0x7fff
+  typedef signed int int_fast16_t;
+  typedef unsigned int uint_fast16_t;
+#define __int_fast16_t_defined 1
 #endif
 
-#ifndef _STDINT_H_DECLARED
-#define _STDINT_H_DECLARED
-
-_C_STD_BEGIN typedef _Int8t int8_t;
-typedef _Uint8t uint8_t;
-typedef _Int16t int16_t;
-typedef _Uint16t uint16_t;
-typedef _Int32t int32_t;
-typedef _Uint32t uint32_t;
-typedef _Int64t int64_t;
-typedef _Uint64t uint64_t;
-#if defined(__INTPTR_T)
-typedef __INTPTR_T intptr_t;
-#undef __INTPTR_T
+#ifdef __INT_FAST32_TYPE__
+  typedef __INT_FAST32_TYPE__ int_fast32_t;
+  typedef __UINT_FAST32_TYPE__ uint_fast32_t;
+#define __int_fast32_t_defined 1
+#elif __STDINT_EXP(INT_MAX) >= 0x7fffffff
+  typedef signed int int_fast32_t;
+  typedef unsigned int uint_fast32_t;
+#define __int_fast32_t_defined 1
 #endif
-typedef _Uintptrt uintptr_t;
 
-#define INT8_C(__x)				__x
-#define INT16_C(__x)			__x
-#define INT32_C(__x)			__x ## L
-#define INT64_C(__x)			__x ## LL
+#ifdef __INT_FAST64_TYPE__
+  typedef __INT_FAST64_TYPE__ int_fast64_t;
+  typedef __UINT_FAST64_TYPE__ uint_fast64_t;
+#define __int_fast64_t_defined 1
+#elif __STDINT_EXP(INT_MAX) > 0x7fffffff
+  typedef signed int int_fast64_t;
+  typedef unsigned int uint_fast64_t;
+#define __int_fast64_t_defined 1
+#endif
 
-#define UINT8_C(__x)			__x ## U
-#define UINT16_C(__x)			__x ## U
-#define UINT32_C(__x)			__x ## UL
-#define UINT64_C(__x)			__x ## ULL
-
-#define INTMAX_C(__x)			__x ## LL
-#define UINTMAX_C(__x)			__x ## ULL
-
-#if defined(__EXT_QNX)
 /*
- * These types are deprecated and applications should use the
- * int_/uint_ types defined below.
+ * Fall back to [u]int_least<N>_t for [u]int_fast<N>_t types
+ * not having been defined, yet.
+ * Leave undefined, if [u]int_least<N>_t should not be available.
  */
-typedef _Intleast8t intleast8_t;
-typedef _Uintleast8t uintleast8_t;
-typedef _Intfast8t intfast8_t;
-typedef _Uintfast8t uintfast8_t;
-
-typedef _Intleast16t intleast16_t;
-typedef _Uintleast16t uintleast16_t;
-typedef _Intfast16t intfast16_t;
-typedef _Uintfast16t uintfast16_t;
-
-typedef _Intleast32t intleast32_t;
-typedef _Uintleast32t uintleast32_t;
-typedef _Intfast32t intfast32_t;
-typedef _Uintfast32t uintfast32_t;
-
-typedef _Intleast64t intleast64_t;
-typedef _Uintleast64t uintleast64_t;
-typedef _Intfast64t intfast64_t;
-typedef _Uintfast64t uintfast64_t;
+#if !__int_fast8_t_defined
+#if __int_least8_t_defined
+  typedef int_least8_t int_fast8_t;
+  typedef uint_least8_t uint_fast8_t;
+#define __int_fast8_t_defined 1
+#endif
 #endif
 
-typedef _Intleast8t int_least8_t;
-typedef _Uintleast8t uint_least8_t;
-typedef _Intfast8t int_fast8_t;
-typedef _Uintfast8t uint_fast8_t;
-
-typedef _Intleast16t int_least16_t;
-typedef _Uintleast16t uint_least16_t;
-typedef _Intfast16t int_fast16_t;
-typedef _Uintfast16t uint_fast16_t;
-
-typedef _Intleast32t int_least32_t;
-typedef _Uintleast32t uint_least32_t;
-typedef _Intfast32t int_fast32_t;
-typedef _Uintfast32t uint_fast32_t;
-
-typedef _Intleast64t int_least64_t;
-typedef _Uintleast64t uint_least64_t;
-typedef _Intfast64t int_fast64_t;
-typedef _Uintfast64t uint_fast64_t;
-
-#ifndef _INTMAXT
-#define _INTMAXT
-typedef _Intmaxt intmax_t;
-typedef _Uintmaxt uintmax_t;
+#if !__int_fast16_t_defined
+#if __int_least16_t_defined
+  typedef int_least16_t int_fast16_t;
+  typedef uint_least16_t uint_fast16_t;
+#define __int_fast16_t_defined 1
+#endif
 #endif
 
-#define INT8_MIN				(INT8_C(-0x7f)-INT8_C(1))
-#define INT16_MIN				(INT16_C(-0x7fff)-INT16_C(1))
-#define INT32_MIN				(INT32_C(-0x7fffffff)-INT32_C(1))
-#define INT64_MIN				(INT64_C(-0x7fffffffffffffff)-INT64_C(1))
+#if !__int_fast32_t_defined
+#if __int_least32_t_defined
+  typedef int_least32_t int_fast32_t;
+  typedef uint_least32_t uint_fast32_t;
+#define __int_fast32_t_defined 1
+#endif
+#endif
 
-#define INT8_MAX				INT8_C(0x7f)
-#define INT16_MAX				INT16_C(0x7fff)
-#define INT32_MAX				INT32_C(0x7fffffff)
-#define INT64_MAX				INT64_C(0x7fffffffffffffff)
+#if !__int_fast64_t_defined
+#if __int_least64_t_defined
+  typedef int_least64_t int_fast64_t;
+  typedef uint_least64_t uint_fast64_t;
+#define __int_fast64_t_defined 1
+#endif
+#endif
 
-#define UINT8_MAX				UINT8_C(0xff)
-#define UINT16_MAX				UINT16_C(0xffff)
-#define UINT32_MAX				UINT32_C(0xffffffff)
-#define UINT64_MAX				UINT64_C(0xffffffffffffffff)
-
-
-#if __PTR_BITS__ <= 16
-#define INTPTR_MIN				(INT16_C(-0x7fff)-INT16_C(1))
-#define INTPTR_MAX				INT16_C(0x7fff)
-#define UINTPTR_MAX				UINT16_C(0xffff)
-#elif __PTR_BITS__ <= 32
-#define INTPTR_MIN				(INT32_C(-0x7fffffff)-INT32_C(1))
-#define INTPTR_MAX				INT32_C(0x7fffffff)
-#define UINTPTR_MAX				UINT32_C(0xffffffff)
-#elif __PTR_BITS__ <= 64
-#define INTPTR_MIN				(INT64_C(-0x7fffffffffffffff)-INT64_C(1))
-#define INTPTR_MAX				INT64_C(0x7fffffffffffffff)
-#define UINTPTR_MAX				INT64_C(0xffffffffffffffff)
+#ifdef __INTPTR_TYPE__
+#define INTPTR_MIN (-__INTPTR_MAX__ - 1)
+#define INTPTR_MAX (__INTPTR_MAX__)
+#define UINTPTR_MAX (__UINTPTR_MAX__)
+#elif defined(__PTRDIFF_TYPE__)
+#define INTPTR_MAX PTRDIFF_MAX
+#define INTPTR_MIN PTRDIFF_MIN
+#ifdef __UINTPTR_MAX__
+#define UINTPTR_MAX (__UINTPTR_MAX__)
 #else
-#error Unable to determine pointer limits
+#define UINTPTR_MAX (2UL * PTRDIFF_MAX + 1)
 #endif
-
-#define PTRDIFF_MIN				INTPTR_MIN
-#define PTRDIFF_MAX				INTPTR_MAX
-
-#define INT_LEAST8_MIN			(INT8_C(-0x7f)-INT8_C(1))
-#define INT_LEAST16_MIN			(INT16_C(-0x7fff)-INT16_C(1))
-#define INT_LEAST32_MIN			(INT32_C(-0x7fffffff)-INT32_C(1))
-#define INT_LEAST64_MIN			(INT64_C(-0x7fffffffffffffff)-INT64_C(1))
-
-#define INT_LEAST8_MAX			INT8_C(0x7f)
-#define INT_LEAST16_MAX			INT16_C(0x7fff)
-#define INT_LEAST32_MAX			INT32_C(0x7fffffff)
-#define INT_LEAST64_MAX			INT64_C(0x7fffffffffffffff)
-
-#define UINT_LEAST8_MAX			UINT8_C(0xff)
-#define UINT_LEAST16_MAX		UINT16_C(0xffff)
-#define UINT_LEAST32_MAX		UINT32_C(0xffffffff)
-#define UINT_LEAST64_MAX		UINT64_C(0xffffffffffffffff)
-
-#define INT_FAST8_MIN			(INT8_C(-0x7f)-INT8_C(1))
-#define INT_FAST16_MIN			(INT16_C(-0x7fff)-INT16_C(1))
-#define INT_FAST32_MIN			(INT32_C(-0x7fffffff)-INT32_C(1))
-#define INT_FAST64_MIN			(INT64_C(-0x7fffffffffffffff)-INT64_C(1))
-
-#define INT_FAST8_MAX			INT8_C(0x7f)
-#define INT_FAST16_MAX			INT16_C(0x7fff)
-#define INT_FAST32_MAX			INT32_C(0x7fffffff)
-#define INT_FAST64_MAX			INT64_C(0x7fffffffffffffff)
-
-#define UINT_FAST8_MAX			UINT8_C(0xff)
-#define UINT_FAST16_MAX			UINT16_C(0xffff)
-#define UINT_FAST32_MAX			UINT32_C(0xffffffff)
-#define UINT_FAST64_MAX			UINT64_C(0xffffffffffffffff)
-
-#define INTMAX_MIN				(INT64_C(-0x7fffffffffffffff)-INT64_C(1))
-#define INTMAX_MAX				INT64_C(0x7fffffffffffffff)
-#define UINTMAX_MAX				UINT64_C(0xffffffffffffffff)
-
-#if __INT_BITS__ <= 16
-#define SIG_ATOMIC_MIN			INT16_MIN
-#define SIG_ATOMIC_MAX			INT16_MAX
-#elif __INT_BITS__ <= 32
-#define SIG_ATOMIC_MIN			INT32_MIN
-#define SIG_ATOMIC_MAX			INT32_MAX
-#elif __INT_BITS__ <= 64
-#define SIG_ATOMIC_MIN			INT64_MIN
-#define SIG_ATOMIC_MAX			INT64_MAX
 #else
-#error Unable to determine sigatomic limits
+/*
+ * Fallback to hardcoded values, 
+ * should be valid on cpu's with 32bit int/32bit void*
+ */
+#define INTPTR_MAX (__STDINT_EXP(LONG_MAX))
+#define INTPTR_MIN (-__STDINT_EXP(LONG_MAX) - 1)
+#define UINTPTR_MAX (__STDINT_EXP(LONG_MAX) * 2UL + 1)
 #endif
 
-#define SIZE_MAX				UINT32_MAX
+/* Limits of Specified-Width Integer Types */
 
-#define WCHAR_MIN				_WCMIN
-#define WCHAR_MAX				_WCMAX
-
-#define WINT_MIN				0UL
-#define WINT_MAX				UINT32_MAX
-
-_C_STD_END
-#endif
-#ifdef _STD_USING
-    using std::int8_t;
-using std::uint8_t;
-using std::int16_t;
-using std::uint16_t;
-using std::int32_t;
-using std::uint32_t;
-using std::int64_t;
-using std::uint64_t;
-using std::intptr_t;
-using std::uintptr_t;
-using std::intmax_t;
-using std::uintmax_t;
-#if defined(__EXT_QNX)
-using std::intleast8_t;
-using std::uintleast8_t;
-using std::intleast16_t;
-using std::uintleast16_t;
-using std::intleast32_t;
-using std::uintleast32_t;
-using std::intleast64_t;
-using std::uintleast64_t;
-using std::intfast8_t;
-using std::uintfast8_t;
-using std::intfast16_t;
-using std::uintfast16_t;
-using std::intfast32_t;
-using std::uintfast32_t;
-using std::intfast64_t;
-using std::uintfast64_t;
-#endif
-using std::int_least8_t;
-using std::uint_least8_t;
-using std::int_least16_t;
-using std::uint_least16_t;
-using std::int_least32_t;
-using std::uint_least32_t;
-using std::int_least64_t;
-using std::uint_least64_t;
-using std::int_fast8_t;
-using std::uint_fast8_t;
-using std::int_fast16_t;
-using std::uint_fast16_t;
-using std::int_fast32_t;
-using std::uint_fast32_t;
-using std::int_fast64_t;
-using std::uint_fast64_t;
-#endif                          /* _STD_USING */
-
+#ifdef __INT8_MAX__
+#define INT8_MIN (-__INT8_MAX__ - 1)
+#define INT8_MAX (__INT8_MAX__)
+#define UINT8_MAX (__UINT8_MAX__)
+#elif defined(__int8_t_defined)
+#define INT8_MIN 	(-128)
+#define INT8_MAX 	 (127)
+#define UINT8_MAX 	 (255)
 #endif
 
+#ifdef __INT_LEAST8_MAX__
+#define INT_LEAST8_MIN (-__INT_LEAST8_MAX__ - 1)
+#define INT_LEAST8_MAX (__INT_LEAST8_MAX__)
+#define UINT_LEAST8_MAX (__UINT_LEAST8_MAX__)
+#elif defined(__int_least8_t_defined)
+#define INT_LEAST8_MIN 	(-128)
+#define INT_LEAST8_MAX 	 (127)
+#define UINT_LEAST8_MAX	 (255)
+#else
+#error required type int_least8_t missing
+#endif
+
+#ifdef __INT16_MAX__
+#define INT16_MIN (-__INT16_MAX__ - 1)
+#define INT16_MAX (__INT16_MAX__)
+#define UINT16_MAX (__UINT16_MAX__)
+#elif defined(__int16_t_defined)
+#define INT16_MIN 	(-32768)
+#define INT16_MAX 	 (32767)
+#define UINT16_MAX 	 (65535)
+#endif
+
+#ifdef __INT_LEAST16_MAX__
+#define INT_LEAST16_MIN (-__INT_LEAST16_MAX__ - 1)
+#define INT_LEAST16_MAX (__INT_LEAST16_MAX__)
+#define UINT_LEAST16_MAX (__UINT_LEAST16_MAX__)
+#elif defined(__int_least16_t_defined)
+#define INT_LEAST16_MIN	(-32768)
+#define INT_LEAST16_MAX	 (32767)
+#define UINT_LEAST16_MAX (65535)
+#else
+#error required type int_least16_t missing
+#endif
+
+#ifdef __INT32_MAX__
+#define INT32_MIN (-__INT32_MAX__ - 1)
+#define INT32_MAX (__INT32_MAX__)
+#define UINT32_MAX (__UINT32_MAX__)
+#elif defined(__int32_t_defined)
+#if defined (_INT32_EQ_LONG)
+#define INT32_MIN 	 (-2147483647L-1)
+#define INT32_MAX 	 (2147483647L)
+#define UINT32_MAX       (4294967295UL)
+#else
+#define INT32_MIN 	 (-2147483647-1)
+#define INT32_MAX 	 (2147483647)
+#define UINT32_MAX       (4294967295U)
+#endif
+#endif
+
+#ifdef __INT_LEAST32_MAX__
+#define INT_LEAST32_MIN (-__INT_LEAST32_MAX__ - 1)
+#define INT_LEAST32_MAX (__INT_LEAST32_MAX__)
+#define UINT_LEAST32_MAX (__UINT_LEAST32_MAX__)
+#elif defined(__int_least32_t_defined)
+#if defined (_INT32_EQ_LONG)
+#define INT_LEAST32_MIN  (-2147483647L-1)
+#define INT_LEAST32_MAX  (2147483647L)
+#define UINT_LEAST32_MAX (4294967295UL)
+#else
+#define INT_LEAST32_MIN  (-2147483647-1)
+#define INT_LEAST32_MAX  (2147483647)
+#define UINT_LEAST32_MAX (4294967295U)
+#endif
+#else
+#error required type int_least32_t missing
+#endif
+
+#ifdef __INT64_MAX__
+#define INT64_MIN (-__INT64_MAX__ - 1)
+#define INT64_MAX (__INT64_MAX__)
+#define UINT64_MAX (__UINT64_MAX__)
+#elif defined(__int64_t_defined)
+#if __have_long64
+#define INT64_MIN 	(-9223372036854775807L-1L)
+#define INT64_MAX 	 (9223372036854775807L)
+#define UINT64_MAX 	(18446744073709551615U)
+#elif __have_longlong64
+#define INT64_MIN 	(-9223372036854775807LL-1LL)
+#define INT64_MAX 	 (9223372036854775807LL)
+#define UINT64_MAX 	(18446744073709551615ULL)
+#endif
+#endif
+
+#ifdef __INT_LEAST64_MAX__
+#define INT_LEAST64_MIN (-__INT_LEAST64_MAX__ - 1)
+#define INT_LEAST64_MAX (__INT_LEAST64_MAX__)
+#define UINT_LEAST64_MAX (__UINT_LEAST64_MAX__)
+#elif defined(__int_least64_t_defined)
+#if __have_long64
+#define INT_LEAST64_MIN  (-9223372036854775807L-1L)
+#define INT_LEAST64_MAX  (9223372036854775807L)
+#define UINT_LEAST64_MAX (18446744073709551615U)
+#elif __have_longlong64
+#define INT_LEAST64_MIN  (-9223372036854775807LL-1LL)
+#define INT_LEAST64_MAX  (9223372036854775807LL)
+#define UINT_LEAST64_MAX (18446744073709551615ULL)
+#endif
+#endif
+
+#ifdef __INT_FAST8_MAX__
+#define INT_FAST8_MIN (-__INT_FAST8_MAX__ - 1)
+#define INT_FAST8_MAX (__INT_FAST8_MAX__)
+#define UINT_FAST8_MAX (__UINT_FAST8_MAX__)
+#elif defined(__int_fast8_t_defined)
+#if __STDINT_EXP(INT_MAX) >= 0x7f
+#define INT_FAST8_MIN	(-__STDINT_EXP(INT_MAX)-1)
+#define INT_FAST8_MAX	(__STDINT_EXP(INT_MAX))
+#define UINT_FAST8_MAX	(__STDINT_EXP(INT_MAX)*2U+1U)
+#else
+#define INT_FAST8_MIN	INT_LEAST8_MIN
+#define INT_FAST8_MAX	INT_LEAST8_MAX
+#define UINT_FAST8_MAX	UINT_LEAST8_MAX
+#endif
+#endif
+
+#ifdef __INT_FAST16_MAX__
+#define INT_FAST16_MIN (-__INT_FAST16_MAX__ - 1)
+#define INT_FAST16_MAX (__INT_FAST16_MAX__)
+#define UINT_FAST16_MAX (__UINT_FAST16_MAX__)
+#elif defined(__int_fast16_t_defined)
+#if __STDINT_EXP(INT_MAX) >= 0x7fff
+#define INT_FAST16_MIN	(-__STDINT_EXP(INT_MAX)-1)
+#define INT_FAST16_MAX	(__STDINT_EXP(INT_MAX))
+#define UINT_FAST16_MAX	(__STDINT_EXP(INT_MAX)*2U+1U)
+#else
+#define INT_FAST16_MIN	INT_LEAST16_MIN
+#define INT_FAST16_MAX	INT_LEAST16_MAX
+#define UINT_FAST16_MAX	UINT_LEAST16_MAX
+#endif
+#endif
+
+#ifdef __INT_FAST32_MAX__
+#define INT_FAST32_MIN (-__INT_FAST32_MAX__ - 1)
+#define INT_FAST32_MAX (__INT_FAST32_MAX__)
+#define UINT_FAST32_MAX (__UINT_FAST32_MAX__)
+#elif defined(__int_fast32_t_defined)
+#if __STDINT_EXP(INT_MAX) >= 0x7fffffff
+#define INT_FAST32_MIN	(-__STDINT_EXP(INT_MAX)-1)
+#define INT_FAST32_MAX	(__STDINT_EXP(INT_MAX))
+#define UINT_FAST32_MAX	(__STDINT_EXP(INT_MAX)*2U+1U)
+#else
+#define INT_FAST32_MIN	INT_LEAST32_MIN
+#define INT_FAST32_MAX	INT_LEAST32_MAX
+#define UINT_FAST32_MAX	UINT_LEAST32_MAX
+#endif
+#endif
+
+#ifdef __INT_FAST64_MAX__
+#define INT_FAST64_MIN (-__INT_FAST64_MAX__ - 1)
+#define INT_FAST64_MAX (__INT_FAST64_MAX__)
+#define UINT_FAST64_MAX (__UINT_FAST64_MAX__)
+#elif defined(__int_fast64_t_defined)
+#if __STDINT_EXP(INT_MAX) > 0x7fffffff
+#define INT_FAST64_MIN	(-__STDINT_EXP(INT_MAX)-1)
+#define INT_FAST64_MAX	(__STDINT_EXP(INT_MAX))
+#define UINT_FAST64_MAX	(__STDINT_EXP(INT_MAX)*2U+1U)
+#else
+#define INT_FAST64_MIN	INT_LEAST64_MIN
+#define INT_FAST64_MAX	INT_LEAST64_MAX
+#define UINT_FAST64_MAX	UINT_LEAST64_MAX
+#endif
+#endif
+
+#ifdef __INTMAX_MAX__
+#define INTMAX_MAX (__INTMAX_MAX__)
+#define INTMAX_MIN (-INTMAX_MAX - 1)
+#elif defined(__INTMAX_TYPE__)
+/* All relevant GCC versions prefer long to long long for intmax_t.  */
+#define INTMAX_MAX INT64_MAX
+#define INTMAX_MIN INT64_MIN
+#endif
+
+#ifdef __UINTMAX_MAX__
+#define UINTMAX_MAX (__UINTMAX_MAX__)
+#elif defined(__UINTMAX_TYPE__)
+/* All relevant GCC versions prefer long to long long for intmax_t.  */
+#define UINTMAX_MAX UINT64_MAX
+#endif
+
+/* This must match size_t in stddef.h, currently long unsigned int */
+#ifdef __SIZE_MAX__
+#define SIZE_MAX (__SIZE_MAX__)
+#else
+#define SIZE_MAX (__STDINT_EXP(LONG_MAX) * 2UL + 1)
+#endif
+
+/* This must match sig_atomic_t in <signal.h> (currently int) */
+#define SIG_ATOMIC_MIN (-__STDINT_EXP(INT_MAX) - 1)
+#define SIG_ATOMIC_MAX (__STDINT_EXP(INT_MAX))
+
+/* This must match ptrdiff_t  in <stddef.h> (currently long int) */
+#ifdef __PTRDIFF_MAX__
+#define PTRDIFF_MAX (__PTRDIFF_MAX__)
+#else
+#define PTRDIFF_MAX (__STDINT_EXP(LONG_MAX))
+#endif
+#define PTRDIFF_MIN (-PTRDIFF_MAX - 1)
+
+/* This must match definition in <wchar.h> */
+#ifndef WCHAR_MIN
+#ifdef __WCHAR_MIN__
+#define WCHAR_MIN (__WCHAR_MIN__)
+#elif defined(__WCHAR_UNSIGNED__) || (L'\0' - 1 > 0)
+#define WCHAR_MIN (0 + L'\0')
+#else
+#define WCHAR_MIN (-0x7fffffff - 1 + L'\0')
+#endif
+#endif
+
+/* This must match definition in <wchar.h> */
+#ifndef WCHAR_MAX
+#ifdef __WCHAR_MAX__
+#define WCHAR_MAX (__WCHAR_MAX__)
+#elif defined(__WCHAR_UNSIGNED__) || (L'\0' - 1 > 0)
+#define WCHAR_MAX (0xffffffffu + L'\0')
+#else
+#define WCHAR_MAX (0x7fffffff + L'\0')
+#endif
+#endif
+
+/* wint_t is unsigned int on almost all GCC targets.  */
+#ifdef __WINT_MAX__
+#define WINT_MAX (__WINT_MAX__)
+#else
+#define WINT_MAX (__STDINT_EXP(INT_MAX) * 2U + 1U)
+#endif
+#ifdef __WINT_MIN__
+#define WINT_MIN (__WINT_MIN__)
+#else
+#define WINT_MIN (0U)
+#endif
+
+/** Macros for minimum-width integer constant expressions */
+#ifdef __INT8_C
+#define INT8_C(x) __INT8_C(x)
+#define UINT8_C(x) __UINT8_C(x)
+#else
+#define INT8_C(x)	x
+#if __STDINT_EXP(INT_MAX) > 0x7f
+#define UINT8_C(x)	x
+#else
+#define UINT8_C(x)	x##U
+#endif
+#endif
+
+#ifdef __INT16_C
+#define INT16_C(x) __INT16_C(x)
+#define UINT16_C(x) __UINT16_C(x)
+#else
+#define INT16_C(x)	x
+#if __STDINT_EXP(INT_MAX) > 0x7fff
+#define UINT16_C(x)	x
+#else
+#define UINT16_C(x)	x##U
+#endif
+#endif
+
+#ifdef __INT32_C
+#define INT32_C(x) __INT32_C(x)
+#define UINT32_C(x) __UINT32_C(x)
+#else
+#if defined (_INT32_EQ_LONG)
+#define INT32_C(x)	x##L
+#define UINT32_C(x)	x##UL
+#else
+#define INT32_C(x)	x
+#define UINT32_C(x)	x##U
+#endif
+#endif
+
+#ifdef __INT64_C
+#define INT64_C(x) __INT64_C(x)
+#define UINT64_C(x) __UINT64_C(x)
+#else
+#if __int64_t_defined
+#if __have_long64
+#define INT64_C(x)	x##L
+#define UINT64_C(x)	x##UL
+#else
+#define INT64_C(x)	x##LL
+#define UINT64_C(x)	x##ULL
+#endif
+#endif
+#endif
+
+/** Macros for greatest-width integer constant expression */
+#ifdef __INTMAX_C
+#define INTMAX_C(x) __INTMAX_C(x)
+#define UINTMAX_C(x) __UINTMAX_C(x)
+#else
+#if __have_long64
+#define INTMAX_C(x)	x##L
+#define UINTMAX_C(x)	x##UL
+#else
+#define INTMAX_C(x)	x##LL
+#define UINTMAX_C(x)	x##ULL
+#endif
+#endif
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _STDINT_H */

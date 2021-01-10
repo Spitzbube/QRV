@@ -1,25 +1,12 @@
-/*
- * $QNXLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+/**
+ * \file stddef.h
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
+ * Standard definitions, based on the GNU C library.
  *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
+ * \license GNU LGPL 2.1
+ *
  */
 
-/*
- *  stddef.h    Standard definitions
- *
-
- */
 #ifndef _STDDEF_H_INCLUDED
 
 #ifndef __PLATFORM_H_INCLUDED
@@ -33,19 +20,18 @@
 #ifndef _STDDEF_H_DECLARED
 #define _STDDEF_H_DECLARED
 
-_STD_BEGIN
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
+#ifdef __SIZE_TYPE__
+    typedef __SIZE_TYPE__ size_t;
+#undef __SIZE_TYPE__
 #endif
 
-#if defined(__PTRDIFF_T)
-typedef __PTRDIFF_T ptrdiff_t;
-#undef __PTRDIFF_T
+#ifdef __PTRDIFF_TYPE__
+    typedef __PTRDIFF_TYPE__ ptrdiff_t;
+#undef __PTRDIFF_TYPE__
 #endif
 
 #if defined(__WCHAR_T)
-typedef __WCHAR_T wchar_t;
+    typedef __WCHAR_T wchar_t;
 #undef __WCHAR_T
 #endif
 
@@ -53,14 +39,30 @@ typedef __WCHAR_T wchar_t;
 #define NULL   _NULL
 #endif
 
-_STD_END
-
 #define offsetof(__typ,__id) __builtin_offsetof(__typ,__id)
 
+/*
+ * Neither the C nor C++ standards, nor POSIX, specifies wint_t.
+ * We assume that stddef.h will define the macro _WINT_T if and only if
+ * it provides wint_t, and conversely, that it will avoid providing
+ * wint_t if _WINT_T is already defined.  */
+#ifndef _WINT_T
+#define _WINT_T 1
+
+/*
+ * Integral type unchanged by default argument promotions that can
+ * hold any value corresponding to members of the extended character
+ * set, as well as at least one value that does not correspond to any
+ * member of the extended character set.
+ */
+#ifndef __WINT_TYPE__
+# define __WINT_TYPE__ unsigned int
 #endif
-#ifdef _STD_USING
-    using std::ptrdiff_t;
-using std::size_t;
-#endif                          /* _STD_USING */
+
+#endif /* _WINT_T */
+
+typedef __WINT_TYPE__ wint_t;
+
+#endif
 
 #endif

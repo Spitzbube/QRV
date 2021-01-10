@@ -35,7 +35,7 @@ _C_STD_END
 #define ND2S_DOMAIN_SHOW	0x0040	/* Always show the domain even if it is the default domain */
 #define ND2S_DOMAIN_HIDE	0x0080	/* Never show the domain */
 #define ND2S_LOCAL_STR		0x1000	/* Used to return smaller string for displaying localy */
-#define ND2S_SEP_FORCE		0x2000	/* Always return a seperator even if it is the first thing returned */
+#define ND2S_SEP_FORCE		0x2000	/* Always return a separator even if it is the first thing returned */
 
 extern int		netmgr_remote_nd(int __remote_nd, int __local_nd);
 extern int 		netmgr_ndtostr(unsigned __flags, int __nd, char *__buf,

@@ -46,18 +46,6 @@
 #include <sys/wait.h>
 #endif
 
-_C_STD_BEGIN
-#if defined(__EXT_ANSIC_199012)
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
-#endif
-
-#if defined(__WCHAR_T)
-typedef __WCHAR_T wchar_t;
-#undef __WCHAR_T
-#endif
-
 #ifndef NULL
 #define NULL   _NULL
 #endif
@@ -66,7 +54,7 @@ typedef __WCHAR_T wchar_t;
 #define RAND_MAX        32767u
 #define EXIT_SUCCESS    0
 #define EXIT_FAILURE    1
-#define MB_CUR_MAX		_CSTD _Mbcurmax
+#define MB_CUR_MAX      _Mbcurmax
 
 typedef struct {
     int quot;
@@ -85,11 +73,7 @@ typedef struct {
 
 typedef lldiv_t _Lldiv_t;
 
-#endif
-_C_STD_END
-
 __BEGIN_DECLS
-_C_STD_BEGIN
 extern char _Mbcurmax;
 
 /* library private functions */
@@ -142,7 +126,7 @@ extern size_t wcstombs(char *__s, const wchar_t *__pwcs, size_t __n);
 extern int wctomb(char *__s, wchar_t __wchar);
 extern int system(const char *__cmd);
 #endif
-_C_STD_END
+
 #if defined(__EXT_XOPEN_EX)
 #if defined (__NYI)
 extern long a64l(const char *__s);
@@ -151,7 +135,7 @@ extern int ttyslot(void);
 #endif
 
 extern int getsubopt(char **__optionp, char *const *__tokens, char **__valuep);
-extern char *initstate(unsigned int __seed, char *__state, _CSTD size_t __size);
+extern char *initstate(unsigned int __seed, char *__state, size_t __size);
 extern long int jrand48(unsigned short int __xsubi[3]);
 extern void lcong48(unsigned short int __param[7]);
 extern long int mrand48(void);
@@ -166,7 +150,7 @@ extern int grantpt(int __fildes);
 extern int unlockpt(int __fildes);
 extern char *ptsname(int __fildes);
 #if defined(__EXT_QNX)
-extern char *ptsname_r(int __fildes, char *__buffer, _CSTD size_t __buflen);
+extern char *ptsname_r(int __fildes, char *__buffer, size_t __buflen);
 #endif
 #endif
 
@@ -206,7 +190,7 @@ extern int putenv(char *__string);
 #if defined(__EXT_ANSIC_199901) || defined(__EXT_POSIX1_200112)
 extern void _Exit(int __status);
 extern _Longlong llabs(_Longlong __j);
-extern _CSTD lldiv_t lldiv(_Longlong __numer, _Longlong _denom);
+extern lldiv_t lldiv(_Longlong __numer, _Longlong _denom);
 #endif
 #if defined(__EXT_QNX) || defined(__EXT_ANSIC_199901) || defined(__EXT_POSIX1_200112)
 extern _Longlong strtoll(const char *__nptr, char **__endptr, int __base);
@@ -236,40 +220,13 @@ int clearenv(void);
 
 #endif
 
-#if defined(__EXT_PCDOS)
-
-#ifndef __cplusplus
-#define atof(p)  strtod(p,(char **)NULL)
-#endif
-
-extern unsigned atoh(const char *__nptr);
-
-extern char *itoa(int __value, char *__buf, int __radix);
-extern char *ltoa(long int __value, char *__buf, int __radix);
-
-extern char *_fullpath(char *__buf, const char *__path, _CSTD size_t __size);
-extern void searchenv(const char *__name, const char *__env_var, char *__buf);
-extern char *ultoa(unsigned long int __value, char *__buf, int __radix);
-extern char *utoa(unsigned int __value, char *__buf, int __radix);
-
-
-#if defined(__SLIB_DATA_INDIRECT) && !defined(_amblksiz) && !defined(__SLIB)
-extern unsigned *__get_amblksiz_ptr(void);
-#define _amblksiz *(__get_amblksiz_ptr())
-#else
-extern unsigned _amblksiz;      /*  mallocs done in multiples of    */
-#endif
-
-
-#endif
-
 __END_DECLS
 #endif
 #ifdef __cplusplus
 #ifdef _MATH_H_INCLUDED
 inline int abs(int __j)
 {
-    return _CSTD abs(__j);
+    return abs(__j);
 };
 #endif
 #endif
@@ -308,4 +265,3 @@ using std::wctomb;
 #endif                          /* _STD_USING */
 
 #endif
-

@@ -28,6 +28,8 @@
 #include <sys/platform.h>
 #endif
 
+#include <sys/_sigset.h>
+
 #if !defined(__cplusplus) || defined(_STD_USING) || defined(_GLOBAL_USING)
 #define _SIGNAL_H_INCLUDED
 #endif
@@ -39,50 +41,28 @@
 #include <sys/siginfo.h>
 #endif
 
-_C_STD_BEGIN typedef int sig_atomic_t;
-
-_C_STD_END
-#if defined(__PTHREAD_T)
-typedef __PTHREAD_T pthread_t;
-#undef __PTHREAD_T
+#if !defined(_SIGSET_T_DECLARED)
+#define _SIGSET_T_DECLARED
+typedef __sigset_t sigset_t;
 #endif
 
-#if defined(__SIGSET_T)
-typedef __SIGSET_T sigset_t;
-#undef __SIGSET_T
-#endif
-
-#if defined(__STACK_T)
-typedef __STACK_T stack_t;
-#undef __STACK_T
-#endif
-
-#if defined(__UCONTEXT_T)
-typedef __UCONTEXT_T ucontext_t;
-#undef __UCONTEXT_T
-#endif
-
-#if defined(__cplusplus) || defined(__STRICT_ANSI__) || defined(__STRICT_PROTYPES__)
-#define _SIG_ARGS	int
-#else
-#define _SIG_ARGS
-#endif
+typedef int sig_atomic_t;
 
 struct sigaction {
-#define sa_handler		__sa_un._sa_handler
+#define sa_handler	__sa_un._sa_handler
 #define sa_sigaction	__sa_un._sa_sigaction
     union {
-        void (*_sa_handler)(_SIG_ARGS);
+        void (*_sa_handler)(int);
         void (*_sa_sigaction)(int, siginfo_t *, void *);
     } __sa_un;
     int sa_flags;
     sigset_t sa_mask;
 };
 
-#define SIG_ERR             ((void(*)(_SIG_ARGS)) -1)
-#define SIG_DFL             ((void(*)(_SIG_ARGS))  0)
-#define SIG_IGN             ((void(*)(_SIG_ARGS))  1)
-#define SIG_HOLD            ((void(*)(_SIG_ARGS))  2)
+#define SIG_ERR             ((void(*)-1)
+#define SIG_DFL             ((void(*)0)
+#define SIG_IGN             ((void(*)1)
+#define SIG_HOLD            ((void(*)2)
 
 #define SIGHUP      1           /* hangup */
 #define SIGINT      2           /* interrupt */
@@ -169,11 +149,12 @@ struct sigstack {
 struct timespec;
 
 __BEGIN_DECLS
+
 #if defined(__EXT_ANSIC_199012)
-_C_STD_BEGIN extern int raise(int __sig);
-extern void (*signal(int __sig, void (*__func)(_SIG_ARGS)))(_SIG_ARGS);
-_C_STD_END
+extern int raise(int __sig);
+extern void (*signal(int __sig, void (*__func)(int)))(int);
 #endif
+
 #if defined(__EXT_POSIX1_198808)
 extern int kill(pid_t __pid, int __signum);
 extern int sigaction(int __signo, const struct sigaction *__act, struct sigaction *__oact);

@@ -36,45 +36,18 @@
 #ifndef _TIME_H_DECLARED
 #define _TIME_H_DECLARED
 
-_C_STD_BEGIN
-#if defined(__TIME_T)
-typedef __TIME_T time_t;
-#undef __TIME_T
-#endif
-
-#if defined(__CLOCK_T)
-typedef __CLOCK_T clock_t;
-#undef __CLOCK_T
-#endif
-
-#if defined(__SIZE_T)
-typedef __SIZE_T size_t;
-#undef __SIZE_T
-#endif
-
-_C_STD_END
-#if defined(__TIMER_T)
-typedef __TIMER_T timer_t;
-#undef __TIMER_T
-#endif
-
-#if defined(__CLOCKID_T)
-typedef __CLOCKID_T clockid_t;
-#undef __CLOCKID_T
-#endif
-
-#if defined(__TIMESPEC)
-__TIMESPEC;
-#undef __TIMESPEC
-#endif
-
-#ifndef NULL
-#define NULL   0
-#endif
+/*
+ * Used to define time specifications.
+ */
+struct timespec {
+    time_t	tv_sec;
+    long	tv_nsec;
+};
 
 #ifndef __SYSCONF_DEFINED
 #define __SYSCONF_DEFINED
-__BEGIN_DECLS extern long _sysconf(int __name);
+__BEGIN_DECLS
+extern long _sysconf(int __name);
 __END_DECLS
 #endif
 /* Unix98 says that the value of CLOCKS_PER_SEC is required to be 1 million on
@@ -164,7 +137,7 @@ extern _Uint64t timespec2nsec(const struct timespec *__ts);
 #define TIMESPEC_VALID(__ts)	((__ts)->tv_nsec >= 0 && (__ts)->tv_nsec < 1000000000L)
 #endif
 
-_C_STD_BEGIN struct tm {
+struct tm {
     int tm_sec;                 /* seconds after the minute -- [0,61] */
     int tm_min;                 /* minutes after the hour   -- [0,59] */
     int tm_hour;                /* hours after midnight     -- [0,23] */
@@ -187,13 +160,13 @@ extern struct tm *localtime(const time_t * __timer);
 extern time_t mktime(struct tm *__timeptr);
 extern size_t strftime(char *__s, size_t __maxsiz, const char *__fmt, const struct tm *__tp);
 extern time_t time(time_t * __timer);
-_C_STD_END
+
 #define	__leap_year(year) ((year% 4) == 0 && ((year% 100) != 0 || (year%400) == 100))
 #if defined(_POSIX_SOURCE) || defined(_QNX_SOURCE) || !defined(NO_EXT_KEYS)
-extern char *asctime_r(const struct _CSTD tm * __timeptr, char *__buff);
-extern char *ctime_r(const _CSTD time_t * __timer, char *__buff);
-extern struct _CSTD tm *gmtime_r(const _CSTD time_t * __timer, struct _CSTD tm * __tm);
-extern struct _CSTD tm *localtime_r(const _CSTD time_t * __timer, struct _CSTD tm * __tm);
+extern char *asctime_r(const struct tm * __timeptr, char *__buff);
+extern char *ctime_r(const time_t * __timer, char *__buff);
+extern struct tm *gmtime_r(const time_t * __timer, struct tm * __tm);
+extern struct tm *localtime_r(const time_t * __timer, struct tm * __tm);
 extern void tzset(void);
 
 #if defined(__SLIB_DATA_INDIRECT) && !defined(tzname) && !defined(__SLIB)
@@ -220,8 +193,8 @@ extern long int timezone;       /* # of seconds from GMT */
 #endif
 
 #if defined(__EXT_XOPEN_EX)
-extern struct _CSTD tm *getdate(const char *__string);
-extern char *strptime(const char *__buf, const char *__format, struct _CSTD tm * __tm);
+extern struct tm *getdate(const char *__string);
+extern char *strptime(const char *__buf, const char *__format, struct tm * __tm);
 #endif
 
 __END_DECLS

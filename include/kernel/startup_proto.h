@@ -198,8 +198,8 @@ void hwitag_add_specific_irq_mapping(unsigned hwi_off, unsigned offset, unsigned
                                      int adjust);
 void hwitag_add_irqrange(unsigned hwi_off, unsigned start_vector, unsigned num);
 void hwitag_add_inputclk(unsigned hwi_off, unsigned clk, unsigned div);
-void hwitag_add_nicaddr(unsigned hwi_off, const _uint8 * addr, unsigned len);
-void hwitag_add_nicphyaddr(unsigned hwi_off, const _uint32 addr);
+void hwitag_add_nicaddr(unsigned hwi_off, const uint8_t * addr, unsigned len);
+void hwitag_add_nicphyaddr(unsigned hwi_off, const uint32_t addr);
 void hwitag_add_regname(unsigned hwi_off, const char *name, unsigned regoffset);
 
 /* Prototypes for setting specific tag values */

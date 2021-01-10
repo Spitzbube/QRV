@@ -82,7 +82,7 @@ enum {
 #define TYPE_MASK(t)	((t) & TYPE_TYPE_MASK)
 
 typedef struct sighandler_entry {
-    void (*handler)(_SIG_ARGS);
+    void (*handler)(int);
     unsigned flags;
     sigset_t sig_blocked;
 } SIGHANDLER;

@@ -55,67 +55,22 @@
 #include <signal.h>
 #endif
 
-#if defined(__PID_T)
-typedef __PID_T pid_t;
-#undef __PID_T
-#endif
-
-#if defined(__PTHREAD_T)
-typedef __PTHREAD_T pthread_t;
-#undef __PTHREAD_T
-#endif
-
-#if defined(__SIGSET_T)
-typedef __SIGSET_T sigset_t;
-#undef __SIGSET_T
-#endif
-
-#if defined(__UID_T)
-typedef __UID_T uid_t;
-#undef __UID_T
-#endif
-
-#if defined(__GID_T)
-typedef __GID_T gid_t;
-#undef __GID_T
-#endif
-
-#if defined(__ITIMER)
-struct _itimer __ITIMER;
-#undef __ITIMER
-#endif
-
-#if defined(__TIMER_T)
-typedef __TIMER_T timer_t;
-#undef __TIMER_T
-#endif
-
-#if defined(__CLOCKID_T)
-typedef __CLOCKID_T clockid_t;
-#undef __CLOCKID_T
-#endif
-
-#if defined(__TIMER_INFO)
-struct _timer_info __TIMER_INFO;
-#undef __TIMER_INFO
-#endif
-
 __BEGIN_DECLS
 
-#define _DEBUG_FLAG_STOPPED			0x00000001  /* Thread is not running */
-#define _DEBUG_FLAG_ISTOP			0x00000002  /* Stopped at point of interest */
-#define _DEBUG_FLAG_IPINVAL			0x00000010  /* IP is not valid */
-#define _DEBUG_FLAG_ISSYS			0x00000020  /* System process */
-#define _DEBUG_FLAG_SSTEP			0x00000040  /* Stopped because of single step */
-#define _DEBUG_FLAG_CURTID			0x00000080  /* Thread is current thread */
+#define _DEBUG_FLAG_STOPPED		0x00000001  /* Thread is not running */
+#define _DEBUG_FLAG_ISTOP		0x00000002  /* Stopped at point of interest */
+#define _DEBUG_FLAG_IPINVAL		0x00000010  /* IP is not valid */
+#define _DEBUG_FLAG_ISSYS		0x00000020  /* System process */
+#define _DEBUG_FLAG_SSTEP		0x00000040  /* Stopped because of single step */
+#define _DEBUG_FLAG_CURTID		0x00000080  /* Thread is current thread */
 #define _DEBUG_FLAG_TRACE_EXEC		0x00000100  /* Stopped because of breakpoint */
 #define _DEBUG_FLAG_TRACE_RD		0x00000200  /* Stopped because of read access */
 #define _DEBUG_FLAG_TRACE_WR		0x00000400  /* Stopped because of write access */
 #define _DEBUG_FLAG_TRACE_MODIFY	0x00000800  /* Stopped because of modified memory */
-#define _DEBUG_FLAG_RLC				0x00010000  /* Run-on-Last-Close flag is set */
-#define _DEBUG_FLAG_KLC				0x00020000  /* Kill-on-Last-Close flag is set */
-#define _DEBUG_FLAG_FORK			0x00040000  /* Child inherits flags (Stop on fork/spawn) */
-#define _DEBUG_FLAG_MASK			0x000f0000  /* Flags that can be changed */
+#define _DEBUG_FLAG_RLC			0x00010000  /* Run-on-Last-Close flag is set */
+#define _DEBUG_FLAG_KLC			0x00020000  /* Kill-on-Last-Close flag is set */
+#define _DEBUG_FLAG_FORK		0x00040000  /* Child inherits flags (Stop on fork/spawn) */
+#define _DEBUG_FLAG_MASK		0x000f0000  /* Flags that can be changed */
 
 enum {
     _DEBUG_WHY_REQUESTED,
@@ -127,16 +82,16 @@ enum {
     _DEBUG_WHY_EXEC
 };
 
-#define _DEBUG_RUN_CLRSIG			0x00000001  /* Clear pending signal */
-#define _DEBUG_RUN_CLRFLT			0x00000002  /* Clear pending fault */
-#define _DEBUG_RUN_TRACE			0x00000004  /* Trace mask flags interesting signals */
-#define _DEBUG_RUN_HOLD				0x00000008  /* Hold mask flags interesting signals */
-#define _DEBUG_RUN_FAULT			0x00000010  /* Fault mask flags interesting faults */
-#define _DEBUG_RUN_VADDR			0x00000020  /* Change ip before running */
-#define _DEBUG_RUN_STEP				0x00000040  /* Single step only one thread */
-#define _DEBUG_RUN_STEP_ALL			0x00000080  /* Single step one thread, other threads run */
-#define _DEBUG_RUN_CURTID			0x00000100  /* Change current thread (target thread) */
-#define _DEBUG_RUN_ARM				0x00000200  /* Deliver event at point of interest */
+#define _DEBUG_RUN_CLRSIG		0x00000001  /* Clear pending signal */
+#define _DEBUG_RUN_CLRFLT		0x00000002  /* Clear pending fault */
+#define _DEBUG_RUN_TRACE		0x00000004  /* Trace mask flags interesting signals */
+#define _DEBUG_RUN_HOLD			0x00000008  /* Hold mask flags interesting signals */
+#define _DEBUG_RUN_FAULT		0x00000010  /* Fault mask flags interesting faults */
+#define _DEBUG_RUN_VADDR		0x00000020  /* Change ip before running */
+#define _DEBUG_RUN_STEP			0x00000040  /* Single step only one thread */
+#define _DEBUG_RUN_STEP_ALL		0x00000080  /* Single step one thread, other threads run */
+#define _DEBUG_RUN_CURTID		0x00000100  /* Change current thread (target thread) */
+#define _DEBUG_RUN_ARM			0x00000200  /* Deliver event at point of interest */
 
 typedef struct _debug_process_info {
     pid_t pid;

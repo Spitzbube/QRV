@@ -25,7 +25,7 @@
 #ifndef __ELFTYPES_H_INCLUDED
 #define __ELFTYPES_H_INCLUDED
 
-#ifndef __PLATFORM_H_INCLUDED
+#ifdef __QNXNTO__
 #include <sys/platform.h>
 #endif
 

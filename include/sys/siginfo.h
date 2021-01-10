@@ -28,47 +28,14 @@
 #include <sys/platform.h>
 #endif
 
+#include <sys/_pthreadtypes.h>
+
 #if !defined(__cplusplus) || defined(_STD_USING) || defined(_GLOBAL_USING)
 #define __SIGINFO_H_INCLUDED
 #endif
 
 #ifndef __SIGINFO_H_DECLARED
 #define __SIGINFO_H_DECLARED
-
-_STD_BEGIN
-#if defined(__CLOCK_T)
-typedef __CLOCK_T clock_t;
-#undef __CLOCK_T
-#endif
-
-#if defined(__TIME_T)
-typedef __TIME_T time_t;
-#undef __TIME_T
-#endif
-
-_STD_END
-#if defined(__PID_T)
-typedef __PID_T pid_t;
-#undef __PID_T
-#endif
-
-#if defined(__UID_T)
-typedef __UID_T uid_t;
-#undef __UID_T
-#endif
-
-#if defined(__PTHREAD_ATTR_T)
-#if defined(__TIMESPEC_INTERNAL)
-__TIMESPEC_INTERNAL;
-#undef __TIMESPEC_INTERNAL
-#endif
-#if defined(__SCHED_PARAM_INTERNAL)
-__SCHED_PARAM_INTERNAL;
-#undef __SCHED_PARAM_INTERNAL
-#endif
-typedef __PTHREAD_ATTR_T pthread_attr_t;
-#undef __PTHREAD_ATTR_T
-#endif
 
 #define SIGEV_NONE			0   /* notify */
 #define SIGEV_SIGNAL			1   /* notify, signo, value */
@@ -311,9 +278,9 @@ typedef struct {
                     union sigval __value;
                 } __kill;       /* si_code <= 0 SI_FROMUSER */
                 struct {
-                    _CSTD clock_t __utime;
+                    clock_t __utime;
                     int __status;   /* CLD_EXITED status, else signo */
-                    _CSTD clock_t __stime;
+                    clock_t __stime;
                 } __chld;       /* si_signo=SIGCHLD si_code=CLD_* */
             } __pdata;
         } __proc;

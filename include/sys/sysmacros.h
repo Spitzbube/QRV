@@ -20,11 +20,6 @@
 #ifndef __SYSMACROS_H_INCLUDED
 #define __SYSMACROS_H_INCLUDED
 
-#if defined(__DEV_T)
-typedef __DEV_T		dev_t;
-#undef __DEV_T
-#endif
-
 #ifndef minor
 #define minor(device)                   ((int)((device) & 0x3ff))
 #endif
