@@ -59,7 +59,7 @@
 #define DEVDIR_CMD_MASK			_POSIX_DEVDIR_CMD_MASK
 
 __BEGIN_DECLS struct iovec;
-extern int devctl(int fd, int dcmd, void *dev_data_ptr, _CSTD size_t nbytes, int *dev_info_ptr);
+extern int devctl(int fd, int dcmd, void *dev_data_ptr, size_t nbytes, int *dev_info_ptr);
 extern int devctlv(int fd, int dcmd, int sparts, int rparts, const struct iovec *sv,
                    const struct iovec *rv, int *dev_info_ptr);
 extern int get_device_command(int command);
@@ -134,7 +134,7 @@ extern int set_device_direction(int command, int direction);
 #define _DEVCTL_FLAG_NOTTY		0x00000002
 #define _DEVCTL_FLAG_NOCANCEL	0x00000004
 
-extern int _devctl(int fd, int dcmd, void *data_ptr, _CSTD size_t nbytes, unsigned flags);
+extern int _devctl(int fd, int dcmd, void *data_ptr, size_t nbytes, unsigned flags);
 #endif
 
 __END_DECLS

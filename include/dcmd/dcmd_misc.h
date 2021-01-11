@@ -45,8 +45,8 @@ struct _interact_device {
 
 #define MAX_DEVS_PER_MGR        30
 struct _interact_mgr {
-        int                                             id;
-        struct _interact_device devices[MAX_DEVS_PER_MGR];
+    int    id;
+    struct _interact_device devices[MAX_DEVS_PER_MGR];
 };
 
 #define _INTERACT_FEEDBACK_LED       0x00000001      /* LED displays */

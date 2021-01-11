@@ -49,21 +49,21 @@ typedef struct _jmp_buf {
 
 _C_STD_END
 
-extern int _setjmp(_CSTD jmp_buf __env);
-extern void _longjmp(_CSTD jmp_buf __env, int __val) __attribute__((__noreturn__));
+extern int _setjmp(jmp_buf __env);
+extern void _longjmp(jmp_buf __env, int __val) __attribute__((__noreturn__));
 
-extern void longjmp(_CSTD jmp_buf __env, int __val) __attribute__((__noreturn__));
+extern void longjmp(jmp_buf __env, int __val) __attribute__((__noreturn__));
 #if defined(__EXT_POSIX1_200112)
 /*
  * POSIX requires a setjmp() function prototype but suppressing the macro
  * definition or defining an external identifier with the name setjmp
  * will cause undefined behaviour
  */
-extern int setjmp(_CSTD jmp_buf);
-extern int sigsetjmp(_CSTD jmp_buf __env, int __msk);
+extern int setjmp(jmp_buf);
+extern int sigsetjmp(jmp_buf __env, int __msk);
 #endif
 
-typedef _CSTD jmp_buf sigjmp_buf;
+typedef jmp_buf sigjmp_buf;
 extern void __sigjmp_prolog(sigjmp_buf __env, int __msk);
 extern void siglongjmp(sigjmp_buf __env, int __val) __attribute__((__noreturn__));
 

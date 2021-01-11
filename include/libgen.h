@@ -35,18 +35,11 @@ extern char *basename(char *__fname);
 extern char *dirname(char *__fname);
 #endif
 
-#if defined(__EXT_QNX)
-_C_STD_BEGIN
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
-#endif
-_C_STD_END
-    extern char *pathfind_r(__const char *__path, __const char *__name, __const char *__mode,
+extern char *pathfind_r(__const char *__path, __const char *__name, __const char *__mode,
                             char *__buff, _CSTD size_t __buff_size);
 
 #define WAITFOR_CHECK_CONTINUE	-1
-#define WAITFOR_CHECK_ABORT		-2
+#define WAITFOR_CHECK_ABORT	-2
 extern int waitfor(__const char *__path, int __delay_ms, int __poll_ms);
 extern int _waitfor(__const char *__path, int __delay_ms, int __poll_ms,
                     int (*__checkfunc)(__const char *, void *), void *__handle);

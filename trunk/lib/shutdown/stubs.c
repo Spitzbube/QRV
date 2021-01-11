@@ -16,22 +16,36 @@
  */
 
 
+#include <sys/shutdown.h>
 
+/* Stubs which can be overridden in the application using libshutdown */
 
-
-
-#ifndef _crypt_h
-#define _crypt_h
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-extern char	*crypt(const char *key, const char *salt);
-extern void	setkey(const char *key);
-extern void	encrypt(char *block, int edflag);
-extern int      base_64(short val);
-
-#ifdef __cplusplus
+ProcessClass_t shutdown_classify(ProcessInfo_t const *pip)
+{
+    return CLASS_UNKNOWN;
 }
-#endif
-#endif
+
+void shutdown_display(int type,DisplayData_t const *display)
+{
+}
+
+void shutdown_done(int type)
+{
+}
+
+void shutdown_error(char const *msg)
+{
+}
+
+void shutdown_process(void)
+{
+}
+
+void shutdown_progress(int done,int total)
+{
+}
+
+int shutdown_prompt(char const *name,pid_t pid)
+{
+	return(PROMPT_SKIP);
+}

@@ -30,7 +30,9 @@
 #include <sys/platform.h>
 #endif
 
-__BEGIN_DECLS extern size_t __stackavail(void);
+__BEGIN_DECLS
+
+extern size_t __stackavail(void);
 
 #undef alloca
 

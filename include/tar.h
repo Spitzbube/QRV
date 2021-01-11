@@ -1,65 +1,109 @@
-/*
- * $QNXLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+/**
+ * \file tar.h
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
+ * Extended tar format from POSIX.1.
  *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
+ * \author David J. MacKenzie
+ * \copyright (C) 1992-2020 Free Software Foundation, Inc.
+ * \license GNU LGPL 2.1
+ * \note This file is part of the GNU C Library.
  */
 
+#ifndef _TAR_H
+#define _TAR_H
+
+#include <features.h>
 
 
-/*
- *  tar.h    Symbolic constants for Extended tar format
- *
-
+/* A tar archive consists of 512-byte blocks.
+ * Each file in the archive has a header block followed by 0+ data blocks.
+ * Two blocks of NUL bytes indicate the end of the archive.
  */
 
-#ifndef _TAR_H_INCLUDED
-#define _TAR_H_INCLUDED
-
 /*
- * This header is taken from IEEE Std. 1003.1-1988 10.1.1
+ * The fields of header blocks:
+ * All strings are stored as ISO 646 (approximately ASCII) strings.
+
+ * Fields are numeric unless otherwise noted below; numbers are ISO 646
+ * representations of octal numbers, with leading zeros as needed.
+
+ * linkname is only valid when typeflag==LNKTYPE.  It doesn't use prefix;
+ * files that are links to pathnames >100 chars long can not be stored
+ * in a tar archive.
+
+ * If typeflag=={LNKTYPE,SYMTYPE,DIRTYPE} then size must be 0.
+
+ * devmajor and devminor are only valid for typeflag=={BLKTYPE,CHRTYPE}.
+
+ * chksum contains the sum of all 512 bytes in the header block,
+ * treating each byte as an 8-bit unsigned value and treating the
+ * 8 bytes of chksum as blank characters.
+
+ * uname and gname are used in preference to uid and gid, if those
+ * names exist locally.
+
+ * Field Name	Byte Offset	Length in Bytes	Field Type
+ * name		0		100		NUL-terminated if NUL fits
+ * mode		100		8
+ * uid		108		8
+ * gid		116		8
+ * size		124		12
+ * mtime	136		12
+ * chksum	148		8
+ * typeflag	156		1		see below
+ * linkname	157		100		NUL-terminated if NUL fits
+ * magic	257		6		must be TMAGIC (NUL term.)
+ * version	263		2		must be TVERSION
+ * uname	265		32		NUL-terminated
+ * gname	297		32		NUL-terminated
+ * devmajor	329		8
+ * devminor	337		8
+ * prefix	345		155		NUL-terminated if NUL fits
+
+ * If the first character of prefix is '\0', the file name is name;
+ * otherwise, it is prefix/name.  Files whose pathnames don't fit in that
+ * length can not be stored in a tar archive.
  */
 
-#define TMAGIC      "ustar"     /* ustar and a null */
-#define TMAGLEN     6
-#define TVERSION    "00"        /* 00 and no null */
-#define TVERSLEN    2
-
-/* Values used in typeflag field. */
-#define REGTYPE     '0'         /* Regular File */
-#define AREGTYPE    '\0'        /* Regular File */
-#define LNKTYPE     '1'         /* Hard Link */
-#define SYMTYPE     '2'         /* Symbolic Link */
-#define CHRTYPE     '3'         /* Character Special File */
-#define BLKTYPE     '4'         /* Block Special File */
-#define DIRTYPE     '5'         /* Directory */
-#define FIFOTYPE    '6'         /* FIFO */
-#define CONTTYPE    '7'         /* Reserved */
-
-/* Bits used in the mode field. */
-#define TSUID   04000           /* Set UID on execution */
-#define TSGID   02000           /* Set GID on execution */
-#define TSVTX   01000           /* Sticky bit */
-
-/* Mode field continued; File permissions. */
-#define TUREAD  00400           /* read by owner */
-#define TUWRITE 00200           /* write by owner */
-#define TUEXEC  00100           /* execute/search by owner */
-#define TGREAD  00040           /* read by group */
-#define TGWRITE 00020           /* write by group */
-#define TGEXEC  00010           /* execute/search by group */
-#define TOREAD  00004           /* read by other */
-#define TOWRITE 00002           /* write by other */
-#define TOEXEC  00001           /* execute/search by other */
-
+/* The bits in mode */
+#define TSUID	04000
+#define TSGID	02000
+#if defined __USE_XOPEN || !defined __USE_XOPEN2K
+# define TSVTX	01000
 #endif
+#define TUREAD	00400
+#define TUWRITE	00200
+#define TUEXEC	00100
+#define TGREAD	00040
+#define TGWRITE	00020
+#define TGEXEC	00010
+#define TOREAD	00004
+#define TOWRITE	00002
+#define TOEXEC	00001
+
+/*
+ * The values for typeflag.
+ *  Values 'A'-'Z' are reserved for custom implementations.
+ *   All other values are reserved for future POSIX.1 revisions.
+ */
+
+#define REGTYPE		'0'	/* Regular file (preferred code) */
+#define AREGTYPE	'\0'	/* Regular file (alternate code) */
+#define LNKTYPE		'1'	/* Hard link */
+#define SYMTYPE		'2'	/* Symbolic link (hard if not supported) */
+#define CHRTYPE		'3'	/* Character special */
+#define BLKTYPE		'4'	/* Block special */
+#define DIRTYPE		'5'	/* Directory */
+#define FIFOTYPE	'6'	/* Named pipe */
+#define CONTTYPE	'7'	/* Contiguous file */
+ /* (regular file if not supported).  */
+
+/* Contents of magic field and its length.  */
+#define TMAGIC	"ustar"
+#define TMAGLEN	6
+
+/* Contents of the version field and its length.  */
+#define TVERSION	"00"
+#define TVERSLEN	2
+
+#endif /* tar.h */

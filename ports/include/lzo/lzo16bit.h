@@ -1,24 +1,19 @@
-/* lzo16bit.h -- configuration for the strict 16-bit memory model
-
-   This file is part of the LZO real-time data compression library.
-
-   Copyright (C) 1999 Markus Franz Xaver Johannes Oberhumer
-   Copyright (C) 1998 Markus Franz Xaver Johannes Oberhumer
-   If not, write to the Free Software Foundation, Inc.,
-   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-
-   Markus F.X.J. Oberhumer
-   <markus.oberhumer@jk.uni-linz.ac.at>
-   http://wildsau.idv.uni-linz.ac.at/mfx/lzo.html
+/**
+ * \file lzo16bit.h
+ *
+ * Configuration for the strict 16-bit memory model.
+ *
+ * This file is part of the LZO real-time data compression library.
+ *
+ * \copyright (C) 1998-99 Markus Franz Xaver Johannes Oberhumer
+ *                        <markus.oberhumer@jk.uni-linz.ac.at>
+ *                        http://wildsau.idv.uni-linz.ac.at/mfx/lzo.html
+ *
+ * \license GNU GPL 2.0
+ *
+ * \note The strict 16-bit memory model is *not* officially supported.
+ *       This file is only included for the sake of completeness.
  */
-
-
-/*
- * NOTE:
- *   the strict 16-bit memory model is *not* officially supported.
- *   This file is only included for the sake of completeness.
- */
-
 
 #ifndef __LZOCONF_H
 #  include <lzoconf.h>
@@ -77,4 +72,3 @@ typedef int                 lzo_int;
 #endif /* defined(__LZO_STRICT_16BIT) */
 
 #endif /* already included */
-

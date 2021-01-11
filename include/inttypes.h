@@ -5,6 +5,8 @@
  *
  * \license Permission to use, copy, modify, and distribute this software
  *          is freely granted, provided that this notice is preserved.
+ *
+ * \note This file is a part of NewLib C library 3.2.0.
  */
 
 #ifndef _INTTYPES_H

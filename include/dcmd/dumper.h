@@ -15,17 +15,13 @@
  * $
  */
 
-
-
-
-
 #ifndef __SYS_DCMD_DUMPER_H_INCLUDED
 #define __SYS_DCMD_DUMPER_H_INCLUDED
 
 enum message_type {
-  DUMPER_NOTIFYEVENT=1,     /* add a notify event                      */
-	DUMPER_REMOVEEVENT,       /* remove a notify event                   */
-	DUMPER_REMOVEALL          /* remove all notify events to a given pid */
+    DUMPER_NOTIFYEVENT=1,     // add a notify event
+    DUMPER_REMOVEEVENT,       // remove a notify event
+    DUMPER_REMOVEALL          // remove all notify events to a given pid
 };
 
 #define DCMD_DUMPER_NOTIFYEVENT   __DIOT(_DCMD_MISC, DUMPER_NOTIFYEVENT, struct sigevent)

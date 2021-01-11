@@ -1,22 +1,15 @@
-/*
- * $QNXtpLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+/**
+ * \file malloc-lib.h
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
+ * Malloc debugging structures and macros.
+ * Overrides definitions in normal use for malloc library.
  *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
+ * \copyright 1990, 1991 Conor P. Cahill <cpcahil@aib.com>
+ *
+ * \license
+ * You may copy, distribute, and use this software as long as this
+ * copyright statement is not removed.
  */
-
-
-
 
 
 #ifndef malloc_lib_h
@@ -38,16 +31,6 @@ typedef struct Arena Arena;
 typedef struct Block Block;
 
 
-/*-
- * Malloc debugging structures and macros
- * Overrides definitions in normal use for malloc library
- */
-
-    /*
-     * (c) Copyright 1990, 1991 Conor P. Cahill (uunet!virtech!cpcahil).
-     * You may copy, distribute, and use this software as long as this
-     * copyright statement is not removed.
-     */
 
 /*
  * since we redefine much of the stuff that is #defined in string.h and
@@ -85,25 +68,25 @@ typedef struct Block Block;
  * the first four settings are ignored by the debugging mallopt, but are
  * here to maintain compatibility with the system malloc.h.
  */
-#define M_KEEP		4           /* ignored by mallopt       */
-#define MALLOC_WARN	100         /* set malloc warning handling  */
-#define MALLOC_FATAL	101     /* set malloc fatal handling    */
-#define MALLOC_ERRFILE	102     /* specify malloc error file    */
-#define MALLOC_CKCHAIN	103     /* turn on chain checking   */
-#define MALLOC_FILLAREA	104     /* turn off area filling    */
-#define MALLOC_CKBOUNDS	104     /* turn on/off area filling */
-#define MALLOC_LOWFRAG	105     /* use best fit allocation mech */
-#define MALLOC_CKACCESS	106     /* verify string and memory access  */
-#define MALLOC_VERBOSE	107     /* set verbosity level      */
-#define MALLOC_EVENTFILE 108    /* specify programatic err/output file */
-#define MALLOC_CKACCESS_LEVEL	109 /* verify string access more strictly */
-#define MALLOC_TRACEFILE	110 /* turn on and specify malloc trace file */
-#define MALLOC_TRACEMIN	111     /* if trace is enable, minimum size to track */
-#define MALLOC_TRACEMAX	112     /* if trace is enable, maximum size to track */
+#define M_KEEP			4       /* ignored by mallopt       */
+#define MALLOC_WARN		100     /* set malloc warning handling  */
+#define MALLOC_FATAL		101     /* set malloc fatal handling    */
+#define MALLOC_ERRFILE		102     /* specify malloc error file    */
+#define MALLOC_CKCHAIN		103     /* turn on chain checking   */
+#define MALLOC_FILLAREA		104     /* turn off area filling    */
+#define MALLOC_CKBOUNDS		104     /* turn on/off area filling */
+#define MALLOC_LOWFRAG		105     /* use best fit allocation mech */
+#define MALLOC_CKACCESS		106     /* verify string and memory access  */
+#define MALLOC_VERBOSE		107     /* set verbosity level      */
+#define MALLOC_EVENTFILE	108     /* specify programatic err/output file */
+#define MALLOC_CKACCESS_LEVEL	109     /* verify string access more strictly */
+#define MALLOC_TRACEFILE	110     /* turn on and specify malloc trace file */
+#define MALLOC_TRACEMIN		111     /* if trace is enable, minimum size to track */
+#define MALLOC_TRACEMAX		112     /* if trace is enable, maximum size to track */
 #define MALLOC_USE_DLADDR	113 /* Use dladdr(3), to get more info on the address */
 #define MALLOC_CKALLOC		114 /* turn on/off checks for the argument of for realloc(3) and free(3) */
-#define MALLOC_TRACEBTDEPTH		115 /* if trace is enable the backtrace depth */
-#define MALLOC_EVENTBTDEPTH		116 /* if trace is enable the backtrace depth */
+#define MALLOC_TRACEBTDEPTH	115 /* if trace is enable the backtrace depth */
+#define MALLOC_EVENTBTDEPTH	116 /* if trace is enable the backtrace depth */
 #define MALLOC_HANDLE_SIGNALS	117 /* turn on abnormal termination signals handling */
 /*
  * Malloc warning/fatal error codes
@@ -161,7 +144,7 @@ typedef struct Dhead Dhead;
 #ifdef MALLOC_DEBUG
 #define d_callerpc	d_debug.callerpc_line
 struct Dhead {
-    _CSTD ssize_t d_size;       /* size of this block, inc Dhead */
+    ssize_t d_size;       /* size of this block, inc Dhead */
     Dhead *d_next;              /* next free/inuse block */
     Dhead *d_prev;              /* prev free/inuse block */
     DebugInfo_t d_debug;
@@ -172,12 +155,12 @@ struct Dhead {
 };
 #else
 struct Dhead {
-    _CSTD ssize_t d_size;       /* size of this block, inc Dhead */
+    ssize_t d_size;       /* size of this block, inc Dhead */
 #ifdef MALLOC_PC
     unsigned int *d_callerpc;   /* caller's id */
 #endif
 #ifdef MALLOC_GUARD
-    _CSTD ssize_t d_usize;      /* user-requested size */
+    ssize_t d_usize;      /* user-requested size */
 #endif
 };
 #endif                          /* MALLOC_DEBUG */
@@ -251,7 +234,7 @@ typedef struct arena_range {
 #define DTAIL_T
 typedef struct Dtail Dtail;
 struct Dtail {
-    _CSTD ssize_t d_tail;       /* encoded size & busy-bit */
+    ssize_t d_tail;       /* encoded size & busy-bit */
 };
 #endif
 
@@ -261,7 +244,7 @@ struct Dtail {
 #ifndef FLINK_T
 #define FLINK_T
 struct Flink {
-    _CSTD ssize_t f_size;       /* size of this block, inc Flink */
+    ssize_t f_size;       /* size of this block, inc Flink */
     Flink *f_next;              /* next free block */
     Flink *f_prev;              /* prev free block */
 };
@@ -333,8 +316,8 @@ extern "C" {
 #endif
 
     extern void _list_release(Dhead *);
-    extern void *_list_alloc(_CSTD ssize_t);
-    extern void *_list_memalign(_CSTD size_t __align, _CSTD ssize_t __size);
+    extern void *_list_alloc(ssize_t);
+    extern void *_list_memalign(size_t __align, ssize_t __size);
     extern void *_list_resize(void *, unsigned);
     extern void _list_gc(void);
 
@@ -349,7 +332,7 @@ extern "C" {
 
     union ListNode {
         ListNode *ln_next;      /* when free, next entry */
-        _CSTD ssize_t ln_offset;    /* when allocate, offset */
+        ssize_t ln_offset;    /* when allocate, offset */
         Dhead ln_head;          /* when allocated, for GUARD, PC */
     };
 
@@ -401,8 +384,8 @@ extern "C" {
     extern int donecore(void *p, unsigned nbytes);
 
 
-    extern void *_band_get(Band * p, _CSTD size_t);
-    extern void *_band_get_aligned(Band * p, _CSTD size_t __align, _CSTD size_t __size);
+    extern void *_band_get(Band * p, size_t);
+    extern void *_band_get_aligned(Band * p, size_t __align, size_t __size);
     extern void _band_rlse(Block * p, void *up);
 
     extern Band *__static_Bands[];
@@ -464,9 +447,9 @@ extern "C" {
 #endif
     extern void (*_malloc_abort)(enum mcheck_status);
 #ifdef MALLOC_GUARD
-    extern void _malloc_check_guard(void *, Dhead *, _CSTD ssize_t);
+    extern void _malloc_check_guard(void *, Dhead *, ssize_t);
 #endif
-    extern enum mcheck_status _malloc_guard_status(void *, Dhead *, _CSTD ssize_t);
+    extern enum mcheck_status _malloc_guard_status(void *, Dhead *, ssize_t);
     extern void malloc_abort(enum mcheck_status);
     extern int malloc_opts(int cmd, void *arg2);
     extern void malloc_fatal(const char *funcname, const char *file, int line, const void *link);

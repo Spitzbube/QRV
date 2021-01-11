@@ -325,8 +325,8 @@ extern int optopt;              /*  offending letter when error detected */
 #if _LARGEFILE64_SOURCE - 0 > 0
 extern off64_t lseek64(int __fildes, off64_t __offset, int __whence);
 extern int ftruncate64(int __fd, off64_t __length);
-extern _CSTD ssize_t pread64(int __filedes, void *__buff, _CSTD size_t __nbytes, off64_t __offset);
-extern _CSTD ssize_t pwrite64(int __filedes, const void *__buff, _CSTD size_t __nbytes,
+extern ssize_t pread64(int __filedes, void *__buff, size_t __nbytes, off64_t __offset);
+extern ssize_t pwrite64(int __filedes, const void *__buff, size_t __nbytes,
                               off64_t __offset);
 #if defined(__EXT_QNX)
 extern off64_t tell64(int __fildes);
@@ -347,7 +347,7 @@ extern unsigned alarm(unsigned int __seconds);
 extern int chdir(const char *__path);
 extern int chown(const char *__path, uid_t __owner, gid_t __group);
 extern int close(int __fildes);
-extern _CSTD size_t confstr(int, char *, _CSTD size_t);
+extern size_t confstr(int, char *, size_t);
 #if defined(__EXT_QNX)
 extern void confstr_cache_enable(void);
 extern void confstr_cache_disable(void);
@@ -361,7 +361,7 @@ extern int dup(int __fildes);
 extern int dup2(int __fildes, int __fildes2);
 extern int fchown(int __fildes, uid_t __owner, gid_t __group);
 extern long fpathconf(int __fildes, int __name);
-extern char *getcwd(char *__buf, _CSTD size_t __size);
+extern char *getcwd(char *__buf, size_t __size);
 extern gid_t getegid(void);
 extern uid_t geteuid(void);
 extern gid_t getgid(void);
@@ -375,12 +375,12 @@ extern off_t lseek(int __fildes, off_t __offset, int __whence) __ALIAS64("lseek6
 extern long pathconf(const char *__path, int __name);
 extern int pause(void);
 extern int pipe(int __fildes[2]);
-extern _CSTD ssize_t pread(int __filedes, void *__buff, _CSTD size_t __nbytes,
+extern ssize_t pread(int __filedes, void *__buff, size_t __nbytes,
                            off_t __offset) __ALIAS64("pread64");
-extern _CSTD ssize_t pwrite(int __filedes, const void *__buff, _CSTD size_t __nbytes,
+extern ssize_t pwrite(int __filedes, const void *__buff, size_t __nbytes,
                             off_t __offset) __ALIAS64("pwrite64");
-extern _CSTD ssize_t read(int __fildes, void *__buffer, _CSTD size_t __len);
-extern int readlink(const char *__path, char *__buf, _CSTD size_t __bufsiz);
+extern ssize_t read(int __fildes, void *__buffer, size_t __len);
+extern int readlink(const char *__path, char *__buf, size_t __bufsiz);
 extern int rmdir(const char *__path);
 extern int setgid(gid_t __newgroup);
 extern int setuid(uid_t __newuserid);
@@ -392,7 +392,7 @@ extern pid_t tcgetpgrp(int __fildes);
 extern int tcsetpgrp(int __fildes, pid_t __pgrp_id);
 extern char *ttyname(int __fildes);
 extern int unlink(const char *__path);
-extern _CSTD ssize_t write(int __fildes, const void *__buf, _CSTD size_t __len);
+extern ssize_t write(int __fildes, const void *__buf, size_t __len);
 #endif
 
 #if defined(__EXT_POSIX1_199309)
@@ -402,12 +402,12 @@ extern int ftruncate(int __fd, off_t __length) __ALIAS64("ftruncate64");
 #endif
 
 #if defined(__EXT_POSIX1_199506)
-extern int getlogin_r(char *__name, _CSTD size_t __namesize);
-extern int ttyname_r(int __fildes, char *__buf, _CSTD size_t __bufsize);
+extern int getlogin_r(char *__name, size_t __namesize);
+extern int ttyname_r(int __fildes, char *__buf, size_t __bufsize);
 #endif
 
 #if defined(__EXT_UNIX_MISC)
-extern int sethostname(const char *__buffer, _CSTD size_t __buffer_length);
+extern int sethostname(const char *__buffer, size_t __buffer_length);
 extern int setgroups(int __gidsetsize, const gid_t * __grouplist);
 extern int getgrouplist(const char *__uname, gid_t __agroup, gid_t * __groups, int *__grpcnt);
 /* extern int mount( const char *__special, const char * __dir, int __rwflag ); */
@@ -423,7 +423,7 @@ extern int iruserok_sa(const void *, int, int, const char *, const char *);
 #endif
 
 #if defined(__EXT_XOPEN_EX)
-extern int gethostname(char *__buffer, _CSTD size_t __buffer_length);
+extern int gethostname(char *__buffer, size_t __buffer_length);
 extern int brk(void *__endds);
 extern int chroot(const char *__path);
 extern char *crypt(const char *, const char *);
@@ -464,13 +464,13 @@ extern int seteuid(uid_t __newuserid);
 struct sigevent;
 
 extern unsigned delay(unsigned int __milliseconds);
-extern _CSTD ssize_t _readx(int __fildes, void *__buffer, _CSTD size_t __len, unsigned __xtype,
-                            void *__xdata, _CSTD size_t __xdatalen);
-extern int readblock(int __fd, _CSTD size_t __blksize, unsigned __block, int __numblks,
+extern ssize_t _readx(int __fildes, void *__buffer, size_t __len, unsigned __xtype,
+                            void *__xdata, size_t __xdatalen);
+extern int readblock(int __fd, size_t __blksize, unsigned __block, int __numblks,
                      void *__buff);
-extern _CSTD ssize_t _writex(int __fildes, const void *__buffer, _CSTD size_t __len,
-                             unsigned __xtype, void *__xdata, _CSTD size_t __xdatalen);
-extern int writeblock(int __fd, _CSTD size_t __blksize, unsigned __block, int __numblks,
+extern ssize_t _writex(int __fildes, const void *__buffer, size_t __len,
+                             unsigned __xtype, void *__xdata, size_t __xdatalen);
+extern int writeblock(int __fd, size_t __blksize, unsigned __block, int __numblks,
                       const void *__buff);
 extern int readcond(int __fd, void *__buff, int __nbytes, int __min, int __time, int __timeout);
 extern int ionotify(int __fd, int __action, int __flags, const struct sigevent *__event);
@@ -485,8 +485,8 @@ extern int sopenfd(int __fd, int __oflag, int __sflag);
 extern int openfd(int __fd, int __oflag);
 extern char *qnx_crypt(const char *, const char *);
 extern int flink(int __fd, const char *__path);
-extern int getdomainname(char *__name, _CSTD size_t __namelen);
-extern int setdomainname(const char *__name, _CSTD size_t __namelen);
+extern int getdomainname(char *__name, size_t __namelen);
+extern int setdomainname(const char *__name, size_t __namelen);
 
 #if defined(__SLIB_DATA_INDIRECT) && !defined(environ) && !defined(__SLIB)
 extern char **__get_environ_ptr(void);
@@ -513,4 +513,3 @@ using std::ssize_t;
 #endif                          /* _STD_USING */
 
 #endif
-

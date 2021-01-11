@@ -1,48 +1,40 @@
-/*
- * $QNXLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+/**
+ * \file ar.h
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
+ * Header describing the "ar" archive file format.
  *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
+ * \copyright (C) 1996-2020 Free Software Foundation, Inc.
+ * \license GNU LGPL 2.1
+ * \note This file is part of the GNU C Library.
  */
 
+#ifndef _AR_H
+#define _AR_H
 
+#include <sys/cdefs.h>
 
 /*
- *  ar.h: *.a archive format.
- *
-
+ * Archive files start with the ARMAG identifying string.
+ * Then follows a "struct ar_hdr", and as many bytes of member file data
+ * as its "ar_size" member indicates, for each member file.
  */
 
-#ifndef _AR_H_INCLUDED
-#define _AR_H_INCLUDED
+#define ARMAG	"!<arch>\n"	/* String that begins an archive file.  */
+#define SARMAG	8		/* Size of that string.  */
 
-#ifndef __PLATFORM_H_INCLUDED
-#include <sys/platform.h>
-#endif
+#define ARFMAG	"`\n"		/* String in ar_fmag at end of each header.  */
 
-#define ARMAG		"!<arch>\n"
-#define SARMAG		8
-
-#define ARFMAG		"`\n"
+__BEGIN_DECLS
 
 struct ar_hdr {
-    char ar_name[16];
-    char ar_date[12];
-    char ar_uid[6];
-    char ar_gid[6];
-    char ar_mode[8];
-    char ar_size[10];
-    char ar_fmag[2];
+    char ar_name[16];		/* Member file name, sometimes / terminated. */
+    char ar_date[12];		/* File date, decimal seconds since Epoch.  */
+    char ar_uid[6], ar_gid[6];	/* User and group IDs, in ASCII decimal.  */
+    char ar_mode[8];		/* File mode, in ASCII octal.  */
+    char ar_size[10];		/* File size, in ASCII decimal.  */
+    char ar_fmag[2];		/* Always contains ARFMAG.  */
 };
+
+__END_DECLS
 
 #endif

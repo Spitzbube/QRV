@@ -45,11 +45,11 @@ typedef __TIME_T	time_t;
 _C_STD_END
 
 struct timeb {
-    _CSTD time_t        time;           /* seconds since Jan 1, 1970 UTC */
-    _Uint16t            millitm;        /* milliseconds */
-    _Int16t             timezone;       /* difference in minutes from UTC */
-    _Int16t             dstflag;        /* nonzero if daylight savings time */
-	_Uint16t			zero;
+    time_t      time;           /* seconds since Jan 1, 1970 UTC */
+    _Uint16t    millitm;        /* milliseconds */
+    _Int16t     timezone;       /* difference in minutes from UTC */
+    _Int16t     dstflag;        /* nonzero if daylight savings time */
+    _Uint16t    zero;
 };
 
 __BEGIN_DECLS

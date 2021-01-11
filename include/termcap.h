@@ -30,7 +30,8 @@
 #include <sys/platform.h>
 #endif
 
-__BEGIN_DECLS extern int tgetent(char *, char *);
+__BEGIN_DECLS
+extern int tgetent(char *, char *);
 extern char *tgetstr(char *, char **);
 extern int tgetnum(char *);
 extern int tgetflag(char *);

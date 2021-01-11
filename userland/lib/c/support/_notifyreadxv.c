@@ -28,11 +28,11 @@
 /*
  * This one funcion does notify and/or read
  *
- *	fd			The fd to send to.
+ *	fd		The fd to send to.
  *	action		Notify action (if 0 and event==NULL don't do notify)
  *	flags		Notify flags
  *	event		Notify event (if 0 and event==NULL don't do notify)
- *	iov			Read iov (Start at 2nd element, 1st element used my function)
+ *	iov		Read iov (Start at 2nd element, 1st element used my function)
  *	nparts		Number of parts (including 1st unused part)
  *	xtype		Extra type passed to read
  *	xdata		Extra data returned from read
@@ -134,5 +134,3 @@ ssize_t ionotifyreadx(int fd, int action, int flags, const struct sigevent *even
     SETIOV(iov + 1, buff, nbytes);
     return _notifyreadxv(fd, action, flags, event, iov, 2, xtype, xdata, xdatalen, nbytes);
 }
-
-__SRCVERSION("_notifyreadxv.c $Rev: 153052 $");

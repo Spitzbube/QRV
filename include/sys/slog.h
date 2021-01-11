@@ -65,7 +65,7 @@
 __BEGIN_DECLS
 
 int slogb(int code, int severity, void *data, int size);
-int vslogf(int code, int severity, const char *fmt, __NTO_va_list __arg ) __attribute__((format (printf, 3, 0)));
+int vslogf(int code, int severity, const char *fmt, va_list __arg ) __attribute__((format (printf, 3, 0)));
 int slogf(int code, int severity, const char *fmt, ...) __attribute__((format (printf, 3, 4)));
 int slogi(int code, int severity, int nargs, ...);
 extern int _slogfd;

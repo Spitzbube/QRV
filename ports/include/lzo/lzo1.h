@@ -1,15 +1,15 @@
-/* lzo1.h -- public interface of the LZO1 compression algorithm
-
-   This file is part of the LZO real-time data compression library.
-
-   Copyright (C) 1999 Markus Franz Xaver Johannes Oberhumer
-   Copyright (C) 1998 Markus Franz Xaver Johannes Oberhumer
-   If not, write to the Free Software Foundation, Inc.,
-   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-
-   Markus F.X.J. Oberhumer
-   <markus.oberhumer@jk.uni-linz.ac.at>
-   http://wildsau.idv.uni-linz.ac.at/mfx/lzo.html
+/**
+ * \file lzo1.h
+ *
+ * Public interface of the LZO1 compression algorithm.
+ *
+ * This file is part of the LZO real-time data compression library.
+ *
+ * \copyright (C) 1998-99 Markus Franz Xaver Johannes Oberhumer
+ *                        <markus.oberhumer@jk.uni-linz.ac.at>
+ *                        http://wildsau.idv.uni-linz.ac.at/mfx/lzo.html
+ *
+ * \license GNU GPL 2.0
  */
 
 

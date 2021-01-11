@@ -54,12 +54,12 @@ typedef __IOVEC_T	iov_t;
 
 __BEGIN_DECLS
 
-extern _CSTD ssize_t readv(int __fildes, const struct iovec *__iov, int __nparts);
-extern _CSTD ssize_t writev(int __fildes, const struct iovec *__iov, int __nparts);
+extern ssize_t readv(int __fildes, const struct iovec *__iov, int __nparts);
+extern ssize_t writev(int __fildes, const struct iovec *__iov, int __nparts);
 
 #if defined(__EXT_QNX)
-extern _CSTD ssize_t  _readxv(int __fd, struct iovec *__iovec, int __nparts, unsigned __xtype, void *__xdata, _CSTD size_t __xdatalen, _CSTD size_t __nbytes);
-extern _CSTD ssize_t  _writexv(int __fd, struct iovec *__iovec, int __nparts, unsigned __xtype, void *__xdata, _CSTD size_t __xdatalen, _CSTD size_t __nbytes);
+extern ssize_t  _readxv(int __fd, struct iovec *__iovec, int __nparts, unsigned __xtype, void *__xdata, size_t __xdatalen, size_t __nbytes);
+extern ssize_t  _writexv(int __fd, struct iovec *__iovec, int __nparts, unsigned __xtype, void *__xdata, size_t __xdatalen, size_t __nbytes);
 #endif
 
 __END_DECLS

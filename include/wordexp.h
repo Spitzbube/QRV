@@ -36,7 +36,8 @@ _C_STD_BEGIN
 #undef __SIZE_T
 #endif
 
-_C_STD_END __BEGIN_DECLS
+_C_STD_END
+__BEGIN_DECLS
 #define WRDE_DOOFFS	0x00000001
 #define WRDE_APPEND	0x00000002
 #define WRDE_NOCMD	0x00000004
@@ -52,9 +53,9 @@ _C_STD_END __BEGIN_DECLS
 #define WRDE_SYNTAX	5
 
 typedef struct {
-    _CSTD size_t we_wordc;
+    size_t we_wordc;
     char **we_wordv;
-    _CSTD size_t we_offs;
+    size_t we_offs;
 } wordexp_t;
 
 extern int wordexp(const char *__words, wordexp_t * __pwordexp, int __flags);

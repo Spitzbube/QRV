@@ -105,7 +105,7 @@ int kprintf(const char *fmt, ...);
 int kdprintf(const char *fmt, ...);
 int ksprintf(char *buffer, const char *fmt, ...);
 int ksnprintf(char *buffer, size_t len, const char *fmt, ...);
-int kvsnprintf(char *buf, size_t buflen, const char *fmt, __NTO_va_list ap);
+int kvsnprintf(char *buf, size_t buflen, const char *fmt, va_list ap);
 void dbug_display(const char *buffer, int len);
 void scrn_display(const char *buffer, int len);
 int scrn_poll_key(void);

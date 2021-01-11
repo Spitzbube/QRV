@@ -37,9 +37,9 @@ __BEGIN_DECLS
                          const char *__func);
 __END_DECLS
 #if (defined(__GNUC__) && (2 <= __GNUC__) && (!__STRICT_ANSI__)) || defined(__EXT_ANSIC_199901)
-#define assert(__expr)   ((__expr)?(void)0: _CSTD __assert(#__expr,__FILE__,__LINE__,__func__))
+#define assert(__expr)   ((__expr)?(void)0: __assert(#__expr,__FILE__,__LINE__,__func__))
 #else
-#define assert(__expr)   ((__expr)?(void)0: _CSTD __assert(#__expr,__FILE__,__LINE__,0))
+#define assert(__expr)   ((__expr)?(void)0: __assert(#__expr,__FILE__,__LINE__,0))
 #endif
 #endif
 _C_STD_END

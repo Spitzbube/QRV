@@ -143,8 +143,7 @@ char	*fgetln __P((FILE * __restrict, size_t * __restrict));
 char	*fparseln(FILE *, size_t *, size_t *, const char[3], int);
 int	 asprintf __P((char ** __restrict, const char * __restrict, ...))
 	    __attribute__((__format__(__printf__, 2, 3)));
-int	 vasprintf __P((char ** __restrict, const char * __restrict,
-	    __NTO_va_list))
+int	 vasprintf __P((char ** __restrict, const char * __restrict, va_list))
 	    __attribute__((__format__(__printf__, 2, 0)));
 
 /* In NetBSD's <stdlib.h> (libc proper) */

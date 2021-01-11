@@ -28,8 +28,6 @@
 #include <sys/platform.h>
 #endif
 
-#include <sys/_sigset.h>
-
 #if !defined(__cplusplus) || defined(_STD_USING) || defined(_GLOBAL_USING)
 #define _SIGNAL_H_INCLUDED
 #endif
@@ -40,6 +38,8 @@
 #ifndef __SIGINFO_H_INCLUDED
 #include <sys/siginfo.h>
 #endif
+
+typedef unsigned long __sigset_t;
 
 #if !defined(_SIGSET_T_DECLARED)
 #define _SIGSET_T_DECLARED
@@ -111,7 +111,7 @@ struct sigaction {
 #define SIGRTMIN    41
 #define SIGRTMAX    56
 
-/*The range SIGRTMIN through SIGRTMAX inclusive includes at least RTSIG_MAX signal numbers. */
+/* The range SIGRTMIN through SIGRTMAX inclusive includes at least RTSIG_MAX signal numbers */
 
 /*
  * The top 8 signals are special. They are always masked. Attempts to unmask
@@ -129,16 +129,16 @@ struct sigaction {
 #define SIG_PENDING 5           /* Neutrino specific */
 
 #define SA_NOCLDSTOP    0x0001  /* Do not generate SIGCHLD when child stops */
-#define SA_SIGINFO		0x0002  /* Queue signals and call with siginfo filled */
+#define SA_SIGINFO	0x0002  /* Queue signals and call with siginfo filled */
 #define SA_RESETHAND	0x0004  /* Reset handler to SIG_DFL when handling signal */
                                                                                                                      /* #define SA_ONSTACK       0x0008 (not supported yet) *//* Handle signal on signal stack */
-#define SA_NODEFER		0x0010  /* Don't apply the sigmask when the signal is being delivered */
+#define SA_NODEFER	0x0010  /* Don't apply the sigmask when the signal is being delivered */
 #define SA_NOCLDWAIT	0x0020  /* Do not generate zombies on unwaited child */
                                                                                                                     /* #define SA_RESTART      0x0040 (not supported yet) *//* Restart the kernel call on signal return */
-#define SA_MASK			0x00ff  /* Mask to special bits */
+#define SA_MASK		0x00ff  /* Mask to special bits */
 
-#define SS_ONSTACK		1       /* Take signals on alternate stack */
-#define SS_DISABLE		2       /* Disable takeing signals on alternate stack */
+#define SS_ONSTACK	1       /* Take signals on alternate stack */
+#define SS_DISABLE	2       /* Disable takeing signals on alternate stack */
 
 struct sigstack {
     int ss_onstack;             /* non-zero when signal stack is in use */
@@ -181,18 +181,6 @@ extern void __signalstub(void);
 #endif
 
 #if defined(__EXT_XOPEN_EX)
-/*
- -- Not currently supported --
-
-extern void (*bsd_signal(int __sig, void (*func)(int)))(int);
-extern int sigaltstack(const stack_t *__ss, stack_t *__oss);
-extern int sighold(int __sig);
-extern int sigignore(int __sig);
-extern int siginterrupt(int __sig, int __flag);
-extern int sigrelse(int __sig);
-extern void (*sigset(int __sig, void (*__disp)(int)))(int);
-extern int sigstack(struct sigstack *__ss, struct sigstack *__oss);
-*/
 extern int killpg(pid_t __pgrp, int __signum);
 extern int sigpause(int __sig);
 #endif
@@ -213,7 +201,7 @@ extern const int sys_nsig;
 __END_DECLS
 #endif
 #ifdef _STD_USING
-    using std::sig_atomic_t;
+using std::sig_atomic_t;
 using std::raise;
 using std::signal;
 #endif                          /* _STD_USING */

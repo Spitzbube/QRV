@@ -131,17 +131,6 @@ __extension__ typedef unsigned long long _ULonglong;
 #define __EXT
 #endif
 
-#ifndef __GNUC_VA_LIST
-#define __GNUC_VA_LIST
-typedef __builtin_va_list __gnuc_va_list;
-
-typedef __gnuc_va_list __NTO_va_list;
-#define __NTO_va_start_stdarg(__p1,__p2)  __builtin_va_start(__p1,__p2)
-#define __NTO_va_arg(__p1, __p2)          __builtin_va_arg(__p1,__p2)
-#define __NTO_va_end(__p1)                __builtin_va_end(__p1)
-#define __NTO_va_copy(__d,__s)            __builtin_va_copy(__d,__s)
-#endif
-
 #if _FILE_OFFSET_BITS - 0 == 64
 #undef __ALIAS64
 #define __ALIAS64(n)	__asm(n)

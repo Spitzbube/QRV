@@ -58,15 +58,15 @@ extern void *realloc(void *__ptr, size_t __size);
 extern void free(void *__ptr);
 _C_STD_END
 #if defined(__EXT_QNX)          /* Approved 1003.1d D14 */
-extern int posix_memalign(void **__memptr, _CSTD size_t __alignment, _CSTD size_t __size);
+extern int posix_memalign(void **__memptr, size_t __alignment, size_t __size);
 #endif
 
 #if defined(__EXT_QNX)
 extern int cfree(void *__ptr);
-extern void *_scalloc(_CSTD size_t __size);
-extern void *_smalloc(_CSTD size_t __size);
-extern void *_srealloc(void *__ptr, _CSTD size_t __old_size, _CSTD size_t __new_size);
-extern void _sfree(void *__ptr, _CSTD size_t __size);
+extern void *_scalloc(size_t __size);
+extern void *_smalloc(size_t __size);
+extern void *_srealloc(void *__ptr, size_t __old_size, size_t __new_size);
+extern void _sfree(void *__ptr, size_t __size);
 #endif
 
 #if defined(__EXT_QNX)          /* SVID/XPG/ELIX functions */
@@ -134,8 +134,8 @@ extern int mallopt(int __cmd, int __value);
 extern enum mcheck_status mprobe(void *__ptr);
 extern int mcheck(void (*__abort_fn)(enum mcheck_status __status));
 
-extern void *memalign(_CSTD size_t __alignment, _CSTD size_t __size);
-extern void *valloc(_CSTD size_t __size);
+extern void *memalign(size_t __alignment, size_t __size);
+extern void *valloc(size_t __size);
 #endif
 __END_DECLS
 #include <_packpop.h>
@@ -151,154 +151,5 @@ __END_DECLS
 #endif
 #include <malloc_g/malloc-lib.h>
 #endif
-#ifdef _STD_USING
-    using std::malloc;
-using std::calloc;
-using std::free;
-using std::realloc;
-#endif
-
-#ifdef __cplusplus
-#ifndef CHECKED_PTR_T
-#define CHECKED_PTR_T
-
-typedef struct Dhead Dhead;
-
-template < class T > class CheckedPtr {
-  protected:
-    T * bp;
-    T *cp;
-    _CSTD size_t siz;
-  public:
-    CheckedPtr(void) {
-        bp = NULL;
-        cp = NULL;
-        siz = -1;
-    }
-    CheckedPtr(const CheckedPtr < T > &p) {
-        bp = p.bp;
-        cp = p.cp;
-        siz = p.siz;
-    }
-    CheckedPtr(T * p);
-    CheckedPtr < T > &operator=(T * p);
-    CheckedPtr < T > &operator++() {
-        cp++;
-        return *this;
-    }
-    CheckedPtr < T > &operator--() {
-        cp--;
-        return *this;
-    }
-    CheckedPtr < T > operator++(int) {
-        CheckedPtr < T > temp(*this);
-        cp++;
-        return temp;
-    }
-    CheckedPtr < T > operator--(int) {
-        CheckedPtr < T > temp(*this);
-        cp--;
-        return temp;
-    }
-    CheckedPtr < T > &operator+=(const CheckedPtr < T > &p) {
-        cp += p.cp;
-    }
-    CheckedPtr < T > &operator-=(const CheckedPtr < T > &p) {
-        cp -= p.cp;
-    }
-    bool operator==(const T * p) {
-        return (cp == p);
-    }
-    bool operator==(const CheckedPtr < T > p) {
-        return (cp == p.cp);
-    }
-    T & operator*();
-    T & operator[](int i);
-    T *operator->();
-    operator  void *() {
-        return cp;
-    }
-};
-
-template < class T > CheckedPtr < T >::CheckedPtr(T * p)
-{
-    char *mptr;
-    if ((mptr = _mptr((char *) p)) != NULL) {
-        bp = (T *) mptr;
-        cp = p;
-        siz = _musize((char *) bp);
-    } else {
-        cp = p;
-        siz = -1;
-    }
-}
-
-template < class T > CheckedPtr < T > &CheckedPtr < T >::operator =(T * p)
-{
-    void *mptr;
-    if ((mptr = _mptr((char *) p)) != NULL) {
-        bp = (T *) mptr;
-        cp = p;
-        siz = _musize((char *) bp);
-    } else {
-        bp = p;
-        cp = p;
-        siz = -1;
-    }
-    return *this;
-}
-
-extern void *libmalloc_caller_fn(void);
-
-template < class T > T & CheckedPtr < T >::operator*()
-{
-    if (cp == NULL) {
-        void *line = (void *) libmalloc_caller_fn();
-        malloc_warning("CheckedPtr<T>::operator*()", NULL, (int) line, NULL);
-    }
-    if (siz > 1) {
-        if (cp < bp || cp >= (T *) ((char *) bp + siz)) {
-            void *line = (void *) libmalloc_caller_fn();
-            malloc_warning("CheckedPtr<T>::operator*()", NULL, (int) line,
-                           (void *) ((Dhead *) bp - 1));
-        }
-    }
-    return *cp;
-}
-
-template < class T > T * CheckedPtr < T >::operator->()
-{
-    if (cp == NULL) {
-        void *line = (void *) libmalloc_caller_fn();
-        malloc_warning("CheckedPtr<T>::operator->()", NULL, (int) line, NULL);
-    }
-    if (siz > 1) {
-        if (cp < bp || cp >= (T *) ((char *) bp + siz)) {
-            void *line = (void *) libmalloc_caller_fn();
-            malloc_warning("CheckedPtr<T>::operator->()", NULL, (int) line,
-                           (void *) ((Dhead *) bp - 1));
-        }
-    }
-    return cp;
-}
-
-template < class T > T & CheckedPtr < T >::operator[](int i) {
-    T * np = cp + i;
-    if (cp == NULL) {
-        void *line = (void *) libmalloc_caller_fn();
-        malloc_warning("CheckedPtr<T>::operator[]()", NULL, (int) line, NULL);
-    }
-    if (siz > 1) {
-        if (np < bp || np >= (T *) ((char *) bp + siz)) {
-            void *line = (void *) libmalloc_caller_fn();
-            malloc_warning("CheckedPtr<T>::operator[]()", NULL, (int) line,
-                           (void *) ((Dhead *) bp - 1));
-        }
-    }
-    return cp[i];
-}
-#endif                          /* CHECKED_PTR_T */
-#endif                          /* __cplusplus */
-
 
 #endif                          /* _MALLOC_H_INCLUDED */

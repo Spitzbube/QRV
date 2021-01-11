@@ -59,7 +59,7 @@ typedef struct fd_set {
 #define FD_ISSET(fd, p) ((p)->fds_bits[(fd)/__NFDBITS] & \
                 (1 << ((fd) % __NFDBITS)))
 
-#define FD_ZERO(p)  _CSTD memset((p), 0, sizeof *(p))
+#define FD_ZERO(p)  memset((p), 0, sizeof *(p))
 
 
 __BEGIN_DECLS

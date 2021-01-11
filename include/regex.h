@@ -94,7 +94,7 @@ typedef _Int32t regoff_t;
 
 typedef struct {
     int re_magic;
-    _CSTD size_t re_nsub;
+    size_t re_nsub;
     __const char *re_endp;
     struct re_guts *re_g;
 } regex_t;
@@ -107,9 +107,9 @@ typedef struct {
 
 __BEGIN_DECLS extern int regcomp(regex_t * __preg, __const char *__pattern, int __cflags);
 extern int regexec(__const regex_t * __preg, __const char *__str,
-                   _CSTD size_t __nmatch, regmatch_t * __pmatch, int __eflags);
-extern _CSTD size_t regerror(int __errcode, __const regex_t * __preg, char *__errbuf,
-                             _CSTD size_t __errbuf_size);
+                   size_t __nmatch, regmatch_t * __pmatch, int __eflags);
+extern size_t regerror(int __errcode, __const regex_t * __preg, char *__errbuf,
+                             size_t __errbuf_size);
 extern void regfree(regex_t * __preg);
 __END_DECLS
 #endif

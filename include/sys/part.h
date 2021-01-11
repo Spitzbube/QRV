@@ -17,9 +17,7 @@
 
 /*
  * =============================================================================
- *
- * 					Common header for partitioning module
- * 								public interfaces
+ * Common header for partitioning module public interfaces
  * =============================================================================
 */
 
