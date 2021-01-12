@@ -1,65 +1,55 @@
 /*
- * $QNXLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+ * \file wordexp.h
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
+ * Declarations and prototypes for word expansion functions.
  *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
+ * \copyright (C) 1991-2020 Free Software Foundation, Inc.
+ * \license GNU LGPL 2.1
+ * \note This file is part of the GNU C Library.
  */
 
+#ifndef _WORDEXP_H
+#define _WORDEXP_H
 
+#include <stddef.h>
 
-/*
- * wordexp.h
- *
-
- *
- */
-#ifndef	_WORDEXP_H_INCLUDED
-#define	_WORDEXP_H_INCLUDED
-
-#ifndef __PLATFORM_H_INCLUDED
-#include <sys/platform.h>
-#endif
-
-_C_STD_BEGIN
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
-#endif
-
-_C_STD_END
 __BEGIN_DECLS
-#define WRDE_DOOFFS	0x00000001
-#define WRDE_APPEND	0x00000002
-#define WRDE_NOCMD	0x00000004
-#define WRDE_REUSE	0x00000008
-#define WRDE_SHOWERR	0x00000010
-#define WRDE_UNDEF	0x00000020
-#define __WRDE_FLAGS	(WRDE_DOOFFS | WRDE_APPEND | WRDE_NOCMD | WRDE_REUSE | WRDE_SHOWERR | WRDE_UNDEF)
-#define WRDE_NOSYS	-1
-#define WRDE_NOSPACE	1
-#define WRDE_BADCHAR	2
-#define WRDE_BADVAL	3
-#define WRDE_CMDSUB	4
-#define WRDE_SYNTAX	5
 
+/* Bits set in the FLAGS argument to wordexp() */
+enum {
+    WRDE_DOOFFS  = (1 << 0),	/* Insert PWORDEXP->we_offs NULLs */
+    WRDE_APPEND  = (1 << 1),	/* Append to results of a previous call */
+    WRDE_NOCMD   = (1 << 2),	/* Don't do command substitution */
+    WRDE_REUSE   = (1 << 3),	/* Reuse storage in PWORDEXP */
+    WRDE_SHOWERR = (1 << 4),	/* Don't redirect stderr to /dev/null */
+    WRDE_UNDEF   = (1 << 5),	/* Error for expanding undefined variables */
+    __WRDE_FLAGS = (WRDE_DOOFFS | WRDE_APPEND | WRDE_NOCMD |
+                    WRDE_REUSE | WRDE_SHOWERR | WRDE_UNDEF)
+};
+
+/* Structure describing a word-expansion run */
 typedef struct {
-    size_t we_wordc;
-    char **we_wordv;
-    size_t we_offs;
+    size_t we_wordc;		/* Count of words matched */
+    char **we_wordv;		/* List of expanded words */
+    size_t we_offs;		/* Slots to reserve in we_wordv */
 } wordexp_t;
 
-extern int wordexp(const char *__words, wordexp_t * __pwordexp, int __flags);
-extern void wordfree(wordexp_t * __pwordexp);
+/* Possible nonzero return values from wordexp() */
+enum {
+    WRDE_NOSPACE = 1,		/* Ran out of memory */
+    WRDE_BADCHAR,		/* A metachar appears in the wrong place */
+    WRDE_BADVAL,		/* Undefined var reference with WRDE_UNDEF */
+    WRDE_CMDSUB,		/* Command substitution with WRDE_NOCMD */
+    WRDE_SYNTAX			/* Shell syntax error */
+};
+
+/* Do word expansion of WORDS into PWORDEXP */
+extern int wordexp (const char *__restrict __words,
+                    wordexp_t *__restrict __pwordexp, int __flags);
+
+/* Free the storage allocated by a `wordexp' call.  */
+extern void wordfree (wordexp_t *__wordexp);
 
 __END_DECLS
+
 #endif
