@@ -1,26 +1,23 @@
-/*
- * $QNXLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+/**
+ * \file nano_alloc.c
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
+ * Memory allocation routines for the nanokernel.
  *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
+ * \copyright 2007, QNX Software Systems. All Rights Reserved.
+ *
+ * 64-bit conversion (c) 2021 Yuri Zaporozhets <r_tty@yahoo.co.uk>
+ *
+ * \license QNX NCEULA 1.01
+ *          http://www.qnx.com/legal/licensing/dev_license/eula/nceula1_01.html
  */
+
 
 #include <limits.h>
 #include "externs.h"
 #include "apm.h"
 
-#define ALIGN(x)		((unsigned)((((unsigned)(x))+(_MALLOC_ALIGN-1))&~(_MALLOC_ALIGN-1)))
-#define PTRDIFF(x, y)		(((unsigned)(x))-((unsigned)(y)))
+#define ALIGN(x)		((size_t)((((size_t)(x))+(_MALLOC_ALIGN-1))&~(_MALLOC_ALIGN-1)))
+#define PTRDIFF(x, y)		(((paddr_t)(x))-((paddr_t)(y)))
 #define PTRADD(x, y)		((void *)((char *)(x)+(y)))
 
 #ifdef NDEBUG
@@ -31,7 +28,7 @@
 
 struct free_entry {
     struct free_entry *next;
-    unsigned size;
+    size_t size;
 };
 
 // There are separate free lists for the kernel and for proc
@@ -99,8 +96,8 @@ static pthread_mutex_t proc_alloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 /**
  * \brief TODO
  */
-void *_sreallocfunc(void *data, unsigned old_size, unsigned new_size,
-                    unsigned (*alloc)(unsigned size, void **addr))
+void *_sreallocfunc(void *data, size_t old_size, size_t new_size,
+                    size_t (*alloc)(size_t size, void **addr))
 {
     struct free_entry *p, *prev, *new, **pp, **fit, *add;
     int ker;
@@ -238,7 +235,7 @@ void *_sreallocfunc(void *data, unsigned old_size, unsigned new_size,
         }
 
         if (!new) {
-            unsigned size;
+            size_t size;
 
             // when allocating make sure there is enough room of a new free entry
             if (alloc) {
@@ -350,7 +347,10 @@ void *_sreallocfunc(void *data, unsigned old_size, unsigned new_size,
     return new;
 }
 
-static unsigned _heap_alloc(unsigned size, void **addr)
+/**
+ * \brief TODO
+ */
+static size_t _heap_alloc(size_t size, void **addr)
 {
     size = ROUNDUP(size, __PAGESIZE);
     if (size <= pregrow_size) {
@@ -362,20 +362,19 @@ static unsigned _heap_alloc(unsigned size, void **addr)
     }
 
     if (memmgr.mmap(0, 0, size, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANON | MAP_PRIVATE,
-                    0, 0, _MALLOC_ALIGN, 0, NOFD, addr, &size, mempart_getid(NULL,
-                                                                             sys_memclass_id)) !=
-        EOK) {
+                    0, 0, _MALLOC_ALIGN, 0, NOFD, addr, &size,
+                    mempart_getid(NULL,sys_memclass_id)) != EOK) {
         return 0;
     }
     return size;
 }
 
-void *_srealloc(void *data, unsigned old_size, unsigned new_size)
+void *_srealloc(void *data, size_t old_size, size_t new_size)
 {
     return _sreallocfunc(data, old_size, new_size, _heap_alloc);
 }
 
-void _sfree(void *data, unsigned size)
+void _sfree(void *data, size_t size)
 {
     if ((uintptr_t) data & (_MALLOC_ALIGN - 1)) {
         size -= _MALLOC_ALIGN - ((uintptr_t) data & (_MALLOC_ALIGN - 1));
@@ -385,63 +384,62 @@ void _sfree(void *data, unsigned size)
     _sreallocfunc(data, size, 0, _heap_alloc);
 }
 
-void *_smalloc(unsigned size)
+void *_smalloc(size_t size)
 {
     return _sreallocfunc(0, 0, size, _heap_alloc);
 }
 
-void *_scalloc(unsigned size)
+void *_scalloc(size_t size)
 {
     void *p;
 
     if ((p = _sreallocfunc(0, 0, size, _heap_alloc))) {
-        memset(p, 0x00, size);
+        memset(p, 0, size);
     }
     return p;
 }
 
 void free(void *data)
 {
-    unsigned *p = data;
+    size_t *p = data;
 
     if (p) {
-        p = (unsigned *) ((char *) p - _MALLOC_ALIGN);
+        p = TOPTR(((char *) p - _MALLOC_ALIGN));
         _sreallocfunc(p, *p, 0, _heap_alloc);
     }
 }
 
 void *malloc(size_t size)
 {
-    unsigned *p;
+    size_t *p;
     size += _MALLOC_ALIGN;
     if ((p = _sreallocfunc(0, 0, size, _heap_alloc))) {
         *p = size;
-        p = (unsigned *) ((char *) p + _MALLOC_ALIGN);
+        p = TOPTR(((char *) p + _MALLOC_ALIGN));
     }
     return p;
 }
 
 void *calloc(size_t size, size_t num)
 {
-    unsigned *p;
+    size_t *p;
 
     size = size * num + _MALLOC_ALIGN;
     if ((p = _sreallocfunc(0, 0, size, _heap_alloc))) {
         memset(p, 0x00, size);
         *p = size;
-        p = (unsigned *) ((char *) p + _MALLOC_ALIGN);
+        p = TOPTR(((char *) p + _MALLOC_ALIGN));
     }
     return p;
 }
 
 void *realloc(void *data, size_t size)
 {
-    unsigned *p;
-    unsigned old_size;
+    size_t *p, old_size;
 
     old_size = 0;
     if ((p = data)) {
-        p = (unsigned *) ((char *) p - _MALLOC_ALIGN);
+        p = TOPTR(((char *) p - _MALLOC_ALIGN));
         old_size = *p;
     }
     if (size) {
@@ -450,7 +448,7 @@ void *realloc(void *data, size_t size)
     if ((p = _sreallocfunc(p, old_size, size, _heap_alloc))) {
         if (size) {
             *p = size;
-            p = (unsigned *) ((char *) p + _MALLOC_ALIGN);
+            p = TOPTR(((char *) p + _MALLOC_ALIGN));
         } else {
             p = 0;
         }
@@ -477,7 +475,7 @@ void heap_init(size_t pregrow)
 }
 
 
-int crit_sfree(void *p, unsigned size)
+int crit_sfree(void *p, size_t size)
 {
     // If the pointer is from the critical area, we want to put it back
     // in the critical free list as soon as possible so that it's available
@@ -510,7 +508,7 @@ void _kfree(void *data)
 
 struct kerargs_sfree {
     void *p;
-    unsigned size;
+    size_t size;
 };
 
 static void ker_sfree(void *data)
@@ -520,7 +518,7 @@ static void ker_sfree(void *data)
     _sfree(kap->p, kap->size);
 }
 
-void _ksfree(void *p, unsigned size)
+void _ksfree(void *p, size_t size)
 {
     struct kerargs_sfree data;
 
@@ -530,7 +528,7 @@ void _ksfree(void *p, unsigned size)
 }
 
 struct kerargs_smalloc {
-    unsigned size;
+    size_t size;
 };
 
 
@@ -544,7 +542,7 @@ static void ker_smalloc(void *data)
     SETKSTATUS(actives[KERNCPU], ptr);
 }
 
-void *_ksmalloc(unsigned size)
+void *_ksmalloc(size_t size)
 {
     struct kerargs_smalloc data;
 
