@@ -7,6 +7,7 @@
  */
 
 #include <startup.h>
+#include <alloca.h>
 
 /* Address range structure */
 struct as_range {

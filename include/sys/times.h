@@ -26,16 +26,11 @@
 #include <sys/platform.h>
 #endif
 
-#if defined(__CLOCK_T)
-typedef __CLOCK_T	clock_t;
-#undef __CLOCK_T
-#endif
-
 struct  tms {
-        clock_t tms_utime;
-        clock_t tms_stime;
-        clock_t tms_cutime;
-        clock_t tms_cstime;
+    clock_t tms_utime;
+    clock_t tms_stime;
+    clock_t tms_cutime;
+    clock_t tms_cstime;
 };
 
 

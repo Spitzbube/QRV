@@ -35,15 +35,6 @@
 #ifndef __TIMEB_H_DECLARED
 #define __TIMEB_H_DECLARED
 
-_C_STD_BEGIN
-
-#if defined(__TIME_T)
-typedef __TIME_T	time_t;
-#undef __TIME_T
-#endif
-
-_C_STD_END
-
 struct timeb {
     time_t      time;           /* seconds since Jan 1, 1970 UTC */
     _Uint16t    millitm;        /* milliseconds */

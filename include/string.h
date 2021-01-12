@@ -1,5 +1,5 @@
-/*
- * string.h
+/**
+ * \file string.h
  *
  * Definitions for memory and string functions.
  */
@@ -7,7 +7,6 @@
 #ifndef _STRING_H_
 #define _STRING_H_
 
-#include "_ansi.h"
 #include <sys/reent.h>
 #include <sys/cdefs.h>
 #include <sys/features.h>
@@ -128,10 +127,6 @@ char	*strupr (char *);
 
 #ifndef DEFS_H	/* Kludge to work around problem compiling in gdb */
 char	*strsignal (int __signo);
-#endif
-
-#ifdef __CYGWIN__
-int	strtosigno (const char *__name);
 #endif
 
 #if __GNU_VISIBLE

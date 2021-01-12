@@ -36,12 +36,6 @@
 #include <inttypes.h>
 #include <stddef.h>
 
-_C_STD_BEGIN
-#if defined(__TIME_T)
-typedef __TIME_T time_t;
-#undef __TIME_T
-#endif
-
 typedef struct link_map Link_map;
 struct link_map {
     _Uintptrt l_addr;           /* base address */
@@ -107,5 +101,4 @@ void *__ldd_register_eh(Ldd_Eh_t eh, void *eh_d_handle, unsigned flags);
 /* deregister an event handler */
 int __ldd_deregister_eh(void *ehh);
 
-_C_STD_END
 #endif

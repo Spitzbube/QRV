@@ -11,6 +11,8 @@
 #ifndef _STARTUP_PROTO_H
 #define _STARTUP_PROTO_H
 
+#include <kernel/posix_types.h>
+
 /* This function is usually called very first, at the start of _main() */
 void board_init(void);
 
@@ -151,7 +153,7 @@ char *ultoa_end(unsigned long int v, char *d, int radix);
 
 /* Syspage routines */
 void init_syspage_memory(void *, unsigned max_size);
-void *grow_syspage_section(void *, unsigned size);
+void *grow_syspage_section(void *, ulong_t size);
 void *set_syspage_section(void *, unsigned size);
 void reloc_syspage_memory(void *, unsigned max_size);
 void alloc_syspage_memory(void);
@@ -224,8 +226,8 @@ unsigned as_find_containing(unsigned off, paddr_t start, paddr_t end, const char
 
 extern struct local_syspage lsp;
 
-static inline unsigned as_info2off(const struct asinfo_entry *as) {
-    return (uintptr_t)as - (uintptr_t)lsp.asinfo.p;
+static inline ptrdiff_t as_info2off(const struct asinfo_entry *as) {
+    return as - lsp.asinfo.p;
 }
 
 static inline struct asinfo_entry *as_off2info(unsigned off) {
@@ -298,7 +300,8 @@ extern chip_info dbg_device[2];
 extern chip_info timer_chip;
 extern unsigned long cpu_freq, timer_freq;
 extern unsigned max_cpus;
-extern unsigned reserved_size, reserved_align;
+extern size_t reserved_size;
+extern unsigned reserved_align;
 extern int _argc;
 extern char **_argv;
 extern char *optarg;
@@ -320,6 +323,6 @@ extern size_t fdt_size;
 
 /* Callbacks to be called when we parse FDT */
 extern void (*fdt_handle_node_cb)(const char *);
-extern void (*fdt_handle_property_cb)(const char *, const char *, void *, const int);
+extern void (*fdt_handle_property_cb)(const char *, const char *, void *, const unsigned);
 
 #endif

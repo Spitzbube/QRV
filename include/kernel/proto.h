@@ -83,9 +83,9 @@ void rdecl cred_dirty(PROCESS * prp);
 LIMITS *rdecl limits_getset(uid_t uid, unsigned *newmaxes[]);
 
 // memory object allocator calls
-void *malloc(unsigned size);
-void *calloc(unsigned size, unsigned num);
-void *realloc(void *data, unsigned size);
+void *malloc(size_t size);
+void *calloc(size_t nmemb, size_t size);
+void *realloc(void *data, size_t size);
 void free(void *data);
 void *_smalloc(unsigned size);
 void *_scalloc(unsigned size);

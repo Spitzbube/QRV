@@ -36,14 +36,6 @@
 #ifndef _TIME_H_DECLARED
 #define _TIME_H_DECLARED
 
-/*
- * Used to define time specifications.
- */
-struct timespec {
-    time_t	tv_sec;
-    long	tv_nsec;
-};
-
 #ifndef __SYSCONF_DEFINED
 #define __SYSCONF_DEFINED
 __BEGIN_DECLS

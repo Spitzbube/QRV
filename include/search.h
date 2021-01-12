@@ -1,43 +1,22 @@
-/*
- * $QNXLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+/**
+ * \file search.h
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
+ * Declarations for System V style searching functions.
  *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
+ * \copyright (C) 1995-2020 Free Software Foundation, Inc.
+ * \license GNU LGPL 2.1
+ * \note This file is part of the GNU C Library.
+ *
  */
 
+#ifndef _SEARCH_H
+#define _SEARCH_H
 
-
-/*
- *  search.h    Function prototypes for searching functions
- *
-
- */
-#ifndef _SEARCH_H_INCLUDED
-#define _SEARCH_H_INCLUDED
-
-#ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
-#endif
 
-_C_STD_BEGIN
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
-#endif
-_C_STD_END typedef struct {
+typedef struct _entry {
     char *key;
     void *data;
-
 } ENTRY;
 
 typedef enum { FIND, ENTER } ACTION;
@@ -56,12 +35,13 @@ extern void *tsearch(const void *__key, void **__rootp,
                      int (*__compar)(const void *, const void *));
 extern int hcreate(_CSTD size_t __nel);
 extern void hdestroy(void);
+
 #if defined(__EXT_XOPEN_EX)
 extern void insque(void *__element, void *__pred);
 extern void remque(void *__element);
 #endif
 extern void twalk(const void *__root, void (*__action)(const void *, VISIT, int));
 
-
 __END_DECLS
+
 #endif

@@ -41,12 +41,13 @@ extern const char *const sys_errlist[];
 extern const int sys_nerr;
 #endif
 
-__BEGIN_DECLS _C_STD_BEGIN extern int errno;
+__BEGIN_DECLS
+extern int errno;
 #ifndef errno
 int *__get_errno_ptr(void) __attribute__((__const__));
 #define errno (*_STD __get_errno_ptr())
 #endif
-_C_STD_END extern int __ealready_value;
+extern int __ealready_value;
 
 __END_DECLS
 /* --- Symbolic names of the error return conditions --- */

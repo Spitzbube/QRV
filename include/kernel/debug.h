@@ -20,7 +20,7 @@
 
 #include <sys/debug.h>
 
-//Internal data structure used between procfs and kerext
+// Internal data structure used between procfs and kerext
 typedef struct debug_breaklist {
     uint32_t offset;            //Offset at which to start
     uint32_t count;             //IN: Number to fill OUT: Number filled

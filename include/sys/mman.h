@@ -25,26 +25,8 @@
 #ifndef __MMAN_H_INCLUDED
 #define __MMAN_H_INCLUDED
 
-#ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
-#endif
-
-_C_STD_BEGIN
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
-#endif
-
-_C_STD_END
-#if defined(__OFF_T)
-typedef __OFF_T off_t;
-#undef __OFF_T
-#endif
-
-#if defined(__OFF64_T)
-typedef __OFF64_T off64_t;
-#undef __OFF64_T
-#endif
+#include <sys/types.h>
 
 #if !defined(__EXT_POSIX1_199309) && (defined(__EXT_POSIX1_198808) || defined(__EXT_POSIX1_199009))
 #error POSIX Threads needs P1003.1b-1993 or later
@@ -63,7 +45,7 @@ typedef __OFF64_T off64_t;
 #endif
 #if defined(__EXT_UNIX_HIST)
 #define MAP_NORESERVE	0x00004000
-#define MAP_RENAME		0x00008000
+#define MAP_RENAME	0x00008000
 #endif
 
 /* Flags to mmap (or-ed in to MAP_SHARED or MAP_PRIVATE)     */
@@ -74,23 +56,23 @@ typedef __OFF64_T off64_t;
 #define MAP_LAZY        0x00000080  /* allow lazy mapping     */
 #define MAP_STACK       0x00001000  /* memory used for stack  */
 #define MAP_BELOW       0x00002000  /* allocate below hint    */
-#define MAP_NOINIT		0x00004000  /* don't have to initialize the memory */
+#define MAP_NOINIT      0x00004000  /* don't have to initialize the memory */
 #define MAP_PHYS        0x00010000  /* map physical memory    */
 #define MAP_NOX64K      0x00020000  /* don't cross 64k bound  */
 #define MAP_BELOW16M    0x00040000  /* allocate below 16M     */
 #define MAP_ANON        0x00080000  /* anonymous memory       */
 #define MAP_SYSRAM      0x01000000  /* system ram             */
-#define MAP_SPARE1 		0x10000000  /* reserved for system use */
-#define MAP_SPARE2 		0x20000000  /* reserved for system use */
-#define MAP_SPARE3 		0x40000000  /* reserved for system use */
-#define MAP_SPARE4 		0x80000000  /* reserved for system use */
-#define MAP_RESERVMASK 	0xf0000000  /* reserved for system use */
+#define MAP_SPARE1      0x10000000  /* reserved for system use */
+#define MAP_SPARE2      0x20000000  /* reserved for system use */
+#define MAP_SPARE3      0x40000000  /* reserved for system use */
+#define MAP_SPARE4      0x80000000  /* reserved for system use */
+#define MAP_RESERVMASK  0xf0000000  /* reserved for system use */
 
 /* Page mapping flags which may be or-ed together         */
-#define PG_MODIFIED		0x00100000  /* pages modified */
+#define PG_MODIFIED	0x00100000  /* pages modified */
 #define PG_REFERENCED	0x00200000  /* pages referenced */
-#define PG_HWMAPPED		0x00400000  /* pages are present and mapped */
-#define PG_MASK			0x00f00000  /* mask for page bits */
+#define PG_HWMAPPED	0x00400000  /* pages are present and mapped */
+#define PG_MASK		0x00f00000  /* mask for page bits */
 #endif
 
 /* Page protection flags which may be or-ed together         */
@@ -109,7 +91,7 @@ typedef __OFF64_T off64_t;
 #define MS_INVALIDATE           0x0000004   /* Invalidate area (next access will retrieve from storage) */
 #if defined(__EXT_QNX)
 #define MS_INVALIDATE_ICACHE    0x1000000   /* If PROT_EXEC, force execution from cache or storage */
-#define MS_CACHE_ONLY			0x2000000   /* Only operate on CPU cache */
+#define MS_CACHE_ONLY		0x2000000   /* Only operate on CPU cache */
 #endif
 
 /* flags for mlockall() */
@@ -120,14 +102,14 @@ typedef __OFF64_T off64_t;
 
 #if defined(__EXT_POSIX1_200112)    /* Approved 1003.1d D14 */
 #define POSIX_MADV_NORMAL		0   /* No advice to give */
-#define POSIX_MADV_SEQUENTIAL	1   /* Sequentialy from lower to higher addresses */
+#define POSIX_MADV_SEQUENTIAL		1   /* Sequentialy from lower to higher addresses */
 #define POSIX_MADV_RANDOM		2   /* Random order */
 #define POSIX_MADV_WILLNEED		3   /* Expects to access specified range */
 #define POSIX_MADV_DONTNEED		4   /* Will not access specified range */
 #endif
 
 #if defined(__EXT_QNX)
-#define NOFD            	(-1)
+#define NOFD			(-1)
 #define MAP_DEVICE_FAILED	((_Uintptrt)MAP_FAILED)
 
 #if defined(__X86__) \
@@ -230,17 +212,9 @@ struct posix_typed_mem_info {
 extern int posix_typed_mem_get_info(int __fd, struct posix_typed_mem_info *__info);
 
 #if _LARGEFILE64_SOURCE - 0 > 0 || _FILE_OFFSET_BITS - 0 == 64
-extern int posix_mem_offset64(__const void *__addr, size_t __len, off64_t * __off,
-                              size_t *__contig_len, int *__fd);
-#endif
-#if _FILE_OFFSET_BITS - 0 == 64
-static __inline int
-    __attribute__((__unused__)) posix_mem_offset(__const void *__addr, size_t __len,
+extern int posix_mem_offset(__const void *__addr, size_t __len,
                                                  off_t * __off, size_t *__contig_len,
-                                                 int *__fd)
-{
-    return posix_mem_offset64(__addr, __len, __off, __contig_len, __fd);
-}
+                                                 int *__fd) __ALIAS64("posix_mem_offset64");
 #elif !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
 extern int posix_mem_offset(__const void *__addr, size_t __len, off_t * __off,
                             size_t *__contig_len, int *__fd);
@@ -252,16 +226,8 @@ extern int posix_mem_offset(__const void *__addr, size_t __len, off_t * __off,
 
 #if defined(__EXT_QNX)          /* 1003.1j D5, used only for getting physical addresses */
 #if _LARGEFILE64_SOURCE - 0 > 0 || _FILE_OFFSET_BITS - 0 == 64
-extern int mem_offset64(__const void *__addr, int __fd, size_t __len, off64_t * __off,
-                        size_t *__contig_len);
-#endif
-#if _FILE_OFFSET_BITS - 0 == 64
-static __inline int
-    __attribute__((__unused__)) mem_offset(__const void *__addr, int __fd, size_t __len,
-                                           off_t * __off, size_t *__contig_len)
-{
-    return mem_offset64(__addr, __fd, __len, __off, __contig_len);
-}
+extern int mem_offset(__const void *__addr, int __fd, size_t __len,
+                              off_t * __off, size_t *__contig_len) __ALIAS64("mem_offset64");
 #elif !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
 extern int mem_offset(__const void *__addr, int __fd, size_t __len, off_t * __off,
                       size_t *__contig_len);

@@ -1,6 +1,6 @@
 /*
  * $QNXLicenseC: $
-*/
+ */
 
 
 #ifndef _NETMGR_H_INCLUDED
@@ -11,15 +11,6 @@
 #endif
 
 __BEGIN_DECLS
-
-_C_STD_BEGIN
-
-#if defined(__SIZE_T)
-typedef __SIZE_T	size_t;
-#undef __SIZE_T
-#endif
-
-_C_STD_END
 
 #define	ND_LOCAL_NODE		0
 #define ND_NODE_BITS		16
@@ -39,9 +30,9 @@ _C_STD_END
 
 extern int		netmgr_remote_nd(int __remote_nd, int __local_nd);
 extern int 		netmgr_ndtostr(unsigned __flags, int __nd, char *__buf,
-								_CSTD size_t __maxbuf);
+								size_t __maxbuf);
 extern int 		netmgr_strtond(const char *__nodename, char **__endstr);
-extern int 		netmgr_path(const char *__netname, const char *__suffix, char *__path,  _CSTD size_t __path_max);
+extern int 		netmgr_path(const char *__netname, const char *__suffix, char *__path,  size_t __path_max);
 
 /* process manager private interface */
 extern int		netmgr_ctl(int __nd, int __fop);

@@ -13,7 +13,6 @@
 #define _QRV_CORE_H
 
 #include <sys/platform.h>
-#include <signal.h>
 #include <sys/types.h>
 
 typedef _Paddrt         paddr_t;
@@ -75,29 +74,14 @@ typedef _Paddr64t       paddr64_t;
 #undef __FSFILCNT64_T
 #define __FSFILCNT64_T	_Uint64t
 
-#undef __TIME_T
-#define __TIME_T		_Uint32t
-
-#undef __CLOCK_T
-#define __CLOCK_T		_Uint32t
-
 #undef __MODE_T
 #define __MODE_T		_Uint32t
 
 #undef __TIMER_T
 #define __TIMER_T		int
 
-#undef __USECONDS_T
-#define __USECONDS_T	_Uint32t
-
-#undef __SUSECONDS_T
-#define __SUSECONDS_T	_Int32t
-
 #undef __KEY_T
 #define __KEY_T			_Uint32t
-
-#undef __PTHREAD_T
-#define __PTHREAD_T		_Int32t
 
 struct iovec {
     void *iov_base;
@@ -117,35 +101,14 @@ struct fpos_t {
     struct mb_state_t   _Wstate;
 };
 
-/* Synchronization structures */
-/*
- * owner
- *  -1       Static initalized mutex which is auto created on SyncWait
- *  -2       Destroyed mutex
- *  -3       Named semaphore (the count is used as an fd)
- */
-typedef struct _sync {
-    int         __count;	/* Count for recursive mutexs and semaphores */
-    unsigned    __owner;	/* Thread id (valid for mutex only) */
-} sync_t;
-
-typedef struct _sync_attr {
-    int		__protocol;
-    int		__flags;
-    int		__prioceiling;	/* Not implemented */
-    int		__clockid;	/* Condvars only */
-    int		__reserved[4];
-} sync_attr_t;
-
-
 /*
  * Signal structures
  */
-struct stack_t {
+typedef struct _stack {
     void        *ss_sp;
     size_t      ss_size;
     int         ss_flags;
-};
+} stack_t;
 
 /* These are C99 types */
 
@@ -172,26 +135,6 @@ typedef _Uint64t _Uintfast64t;
 typedef _Int64t _Intmaxt;
 typedef _Uint64t _Uintmaxt;
 
-#undef __PTHREAD_KEY_T
-#define __PTHREAD_KEY_T		int
-
-#undef __PTHREAD_COND_T
-#define __PTHREAD_COND_T		struct _sync
-
-#undef __PTHREAD_CONDATTR_T
-#define __PTHREAD_CONDATTR_T	struct _sync_attr
-
-#undef __PTHREAD_MUTEX_T
-#define __PTHREAD_MUTEX_T		struct _sync
-
-#undef __PTHREAD_MUTEXATTR_T
-#define __PTHREAD_MUTEXATTR_T	struct _sync_attr
-
-struct _pthread_once {
-    int         __once;
-    sync_t      __mutex;
-};
-
 struct _clockadjust {
     unsigned long tick_count;
     long          tick_nsec_inc;
@@ -213,7 +156,7 @@ struct _cred_info {
     gid_t grouplist[__NGROUPS_MAX];
 };
 
-#include <sys/siginfo.h>
+
 
 struct _timer_info {
     struct _itimer	itime;

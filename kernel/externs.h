@@ -30,16 +30,14 @@
 #include <arch/kercpu.h>
 #include <sys/syspage.h>
 
-#include <stdio.h>
 #include <string.h>
 #include <stddef.h>
-#include <stdlib.h>
 #include <errno.h>
 #include <signal.h>
 #include <intr.h>
-#include <malloc.h>
 #include <time.h>
 #include <ucontext.h>
+#include <minmax.h>
 
 #include <sched.h>
 #include <limits.h>
@@ -63,7 +61,9 @@
 #include <kernel/query.h>
 #include <sys/fault.h>
 #include <sys/kercalls.h>
+#ifdef CONFIG_ASYNC_MSG
 #include <sys/asyncmsg.h>
+#endif
 #include "smpswitch.h"
 #include "kermacros.h"
 #include "kerargs.h"

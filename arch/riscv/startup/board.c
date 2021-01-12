@@ -39,7 +39,7 @@ void rvq_putc_ser_dbg(int c) { sbi_ecall_console_putc(c); };
 
 /* Callbacks to be called when we parse FDT */
 void (*fdt_handle_node_cb)(const char *);
-void (*fdt_handle_property_cb)(const char *, const char *, void *, const int);
+void (*fdt_handle_property_cb)(const char *, const char *, void *, const unsigned);
 
 /**
  * \brief Handle a given node.
@@ -58,12 +58,12 @@ static void handle_node_early(const char *name)
 /**
  * \brief Callback to set boot command line, initrd addresses and CPU frequency.
  */
-static void handle_property_early(const char *node, const char *prop, void *data, const int datalen)
+static void handle_property_early(const char *node, const char *prop, void *data, const unsigned datalen)
 {
 #define NODE_PROP_MATCH(_n, _p) if (!strcmp(node, _n) && !strcmp(prop, _p))
     if (!strcmp(node, "chosen")) {
         if (!strcmp(prop, "bootargs")) {
-            int n = strlen(data);
+            size_t n = strlen(data);
             if (n > CONFIG_MAX_BOOTLINE_SIZE)
                 crash("Boot command line is too long (%d bytes, maximum %d bytes allowed)\n",
                     n, CONFIG_MAX_BOOTLINE_SIZE);
@@ -198,7 +198,7 @@ void board_init(void)
     pr_debug("Boot hart %d, FDT @ %#P\n", _boot_a0, fdt_addr);
 
     /* Avoid using kernel memory */
-    avoid_ram((paddr_t)_start, _end - _start);
+    avoid_ram((paddr_t)_start, (size_t)(_end - _start));
 
     /* Check the signature. If device tree is not there, we cannot continue */
     if (_BE(fdt->magic) != FDT_MAGIC) {

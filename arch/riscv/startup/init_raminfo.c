@@ -13,7 +13,7 @@
 /**
  * \brief Callback to set memory information.
  */
-static void handle_property_meminfo(const char *node, const char *prop, void *data, const int datalen)
+static void handle_property_meminfo(const char *node, const char *prop, void *data, const unsigned datalen)
 {
     if (!strncmp(node, "memory@", 7) && !strcmp(prop, "reg")) {
         /* Proceed through all base/len pairs */

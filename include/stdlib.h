@@ -32,6 +32,8 @@
 #include <malloc.h>
 #endif
 
+#include <stddef.h>
+
 #if !defined(__cplusplus) || defined(_STD_USING) || defined(_GLOBAL_USING)
 #define _STDLIB_H_INCLUDED
 #endif
@@ -204,19 +206,7 @@ extern char *ulltoa(_ULonglong __value, char *__buf, int __radix);
 
 int clearenv(void);
 
-/* min and max macros */
-#if !defined(__max)
-#define __max(a,b)  (((a) > (b)) ? (a) : (b))
-#endif
-#if !defined(max) && !defined(__cplusplus)
-#define max(a,b)  (((a) > (b)) ? (a) : (b))
-#endif
-#if !defined(__min)
-#define __min(a,b)  (((a) < (b)) ? (a) : (b))
-#endif
-#if !defined(min) && !defined(__cplusplus)
-#define min(a,b)  (((a) < (b)) ? (a) : (b))
-#endif
+#include <minmax.h>
 
 #endif
 

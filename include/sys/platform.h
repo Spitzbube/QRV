@@ -126,7 +126,7 @@
 #define __STDC_HOSTED__		1
 #endif
 
-#ifndef __STDC_ISO_10646__			/* ISO/IEC 10646 characters for wchar_t */
+#ifndef __STDC_ISO_10646__		/* ISO/IEC 10646 characters for wchar_t */
 #define __STDC_ISO_10646__	200009L	/* this matches glibc, previous was 199712L */
 #endif
 
@@ -206,44 +206,6 @@
 
 #define _LLONG_MAX      0x7fffffffffffffffLL
 #define _ULLONG_MAX     0xffffffffffffffffULL
-
-#ifdef __WCHAR_T
-typedef __WCHAR_T		_Wchart;
-#undef __WCHAR_T
-#if !defined(__cplusplus)
-#define __WCHAR_T		_Wchart
-#endif
-#endif
-
-#ifdef __WINT_T
-#undef __WINT_T
-#define __WINT_T		_Wintt
-#endif
-
-#ifdef __MBSTATE_T
-typedef __MBSTATE_T		_Mbstatet;
-#undef __MBSTATE_T
-#define __MBSTATE_T		_Mbstatet
-#endif
-
-#ifdef __OFF_T
-typedef __OFF_T			_Offt;
-#undef __OFF_T
-#define __OFF_T			_Offt
-#endif
-
-#ifdef __OFF64_T
-typedef __OFF64_T		_Off64t;
-#undef __OFF64_T
-#define __OFF64_T		_Off64t
-#endif
-
-/* _Fpost must be after _Offt and _Off64t */
-#ifdef __FPOS_T
-typedef __FPOS_T		_Fpost;
-#undef __FPOS_T
-#define __FPOS_T		_Fpost
-#endif
 
 #ifdef __EXT_QNX	/* Compatible with old headers */
 #ifndef __INTEL_COMPILER

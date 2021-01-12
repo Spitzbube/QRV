@@ -28,8 +28,6 @@
 #include <sys/platform.h>
 #endif
 
-#include <sys/_pthreadtypes.h>
-
 #if !defined(__cplusplus) || defined(_STD_USING) || defined(_GLOBAL_USING)
 #define __SIGINFO_H_INCLUDED
 #endif
@@ -45,37 +43,6 @@
 #define SIGEV_UNBLOCK			5   /* notify */
 #define SIGEV_INTR			6   /* notify */
 #define SIGEV_THREAD			7   /* notify, notify_function, notify_attributes */
-
-union sigval {
-    int sival_int;
-    void *sival_ptr;
-};
-
-struct sigevent {
-    int sigev_notify;
-    union {
-        int __sigev_signo;
-        int __sigev_coid;
-        int __sigev_id;
-        void (*__sigev_notify_function)(union sigval);
-    } __sigev_un1;
-#define sigev_signo		__sigev_un1.__sigev_signo
-#define sigev_coid		__sigev_un1.__sigev_coid
-#define sigev_id		__sigev_un1.__sigev_id
-#define sigev_notify_function	__sigev_un1.__sigev_notify_function
-
-    union sigval sigev_value;
-    union {
-        struct {
-            short __sigev_code;
-            short __sigev_priority;
-        } __st;
-        pthread_attr_t *__sigev_notify_attributes;
-    } __sigev_un2;
-#define sigev_notify_attributes	__sigev_un2.__sigev_notify_attributes
-#define sigev_code		__sigev_un2.__st.__sigev_code
-#define sigev_priority		__sigev_un2.__st.__sigev_priority
-};
 
 
 #ifdef __EXT_QNX
@@ -264,34 +231,6 @@ struct sigevent {
 #define	NSIGFPE		10
 #endif
 
-typedef struct {
-    int si_signo;
-    int si_code;                /* if SI_NOINFO, only si_signo is valid */
-    int si_errno;
-    union {
-        int __pad[7];
-        struct {
-            pid_t __pid;
-            union {
-                struct {
-                    uid_t __uid;
-                    union sigval __value;
-                } __kill;       /* si_code <= 0 SI_FROMUSER */
-                struct {
-                    clock_t __utime;
-                    int __status;   /* CLD_EXITED status, else signo */
-                    clock_t __stime;
-                } __chld;       /* si_signo=SIGCHLD si_code=CLD_* */
-            } __pdata;
-        } __proc;
-        struct {
-            int __fltno;
-            void *__fltip;
-            void *__addr;
-            int __bdslot;
-        } __fault;              /* si_signo=SIGSEGV,ILL,FPE,TRAP,BUS */
-    } __data;
-} siginfo_t;
 #define si_pid		__data.__proc.__pid
 #define si_value	__data.__proc.__pdata.__kill.__value
 #define si_uid		__data.__proc.__pdata.__kill.__uid

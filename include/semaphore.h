@@ -1,43 +1,21 @@
-/*
- * $QNXLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+/**
+ * \file semaphore.h
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
+  * Semaphore definitions.
+  *
+ * \copyright (C) 2002-2020 Free Software Foundation, Inc.
+ * \license GNU LGPL 2.1
+ * \note This file is part of the GNU C Library.
  *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
  */
 
+#ifndef _SEMAPHORE_H
+#define _SEMAPHORE_H
 
-
-/*
- *  semaphore.h
- *
-
- */
-#if !defined(_SEMAPHORE_H_INCLUDED) && !defined(__CYGWIN__)
-#define _SEMAPHORE_H_INCLUDED
-
-#ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
-#endif
-
-#ifndef __TYPES_H_INCLUDED
 #include <sys/types.h>
-#endif
 
 typedef sync_t sem_t;
-
-#if !defined(__EXT_POSIX1_199309) && (defined(__EXT_POSIX1_198808) || defined(__EXT_POSIX1_199009))
-#error POSIX Semaphores needs P1003.1b-1993 or later
-#endif
 
 __BEGIN_DECLS
 
@@ -51,10 +29,8 @@ extern int sem_post(sem_t * __sem);
 extern int sem_trywait(sem_t * __sem);
 extern int sem_unlink(const char *__name);
 extern int sem_wait(sem_t * __sem);
-#if defined(__EXT_POSIX1_200112)    /* Approved 1003.1d D14 */
-struct timespec;
 extern int sem_timedwait(sem_t * __sem, const struct timespec *__abs_timeout);
-#endif
 
 __END_DECLS
+
 #endif

@@ -37,7 +37,7 @@
 
 
 __BEGIN_DECLS
-_C_STD_BEGIN
+
 typedef struct _jmp_buf {
     union {
         unsigned int __savearea[__JMPBUFSIZE];
@@ -46,8 +46,6 @@ typedef struct _jmp_buf {
     int __flg;
     long __msk[2];
 } jmp_buf[1];
-
-_C_STD_END
 
 extern int _setjmp(jmp_buf __env);
 extern void _longjmp(jmp_buf __env, int __val) __attribute__((__noreturn__));
@@ -68,7 +66,7 @@ extern void __sigjmp_prolog(sigjmp_buf __env, int __msk);
 extern void siglongjmp(sigjmp_buf __env, int __val) __attribute__((__noreturn__));
 
 #define sigsetjmp(__env, __msk)	(__sigjmp_prolog((__env), (__msk)), _setjmp(__env))
-#define setjmp(__env)			sigsetjmp(__env, 1)
+#define setjmp(__env)		sigsetjmp(__env, 1)
 #define longjmp(__env, __val)	siglongjmp((__env), (__val))
 
 __END_DECLS

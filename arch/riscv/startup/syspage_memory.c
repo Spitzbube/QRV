@@ -28,12 +28,13 @@ typedef SYSPAGE_TYPED_SECTION(struct unknown, __attribute__((__may_alias__)) loc
  *       once we're done, that will also disallow any further growing since
  *       it's going to be less than the total_size.
  */
-void *grow_syspage_section(void *p, unsigned add)
+void *grow_syspage_section(void *p, ulong_t add)
 {
     local_section *sect = p;
     local_section *s2;
     uint8_t *bottom;
-    unsigned new_size, max_size, len;
+    ulong_t new_size, max_size;
+    ptrdiff_t len;
     uint8_t *new;
 
     //ultra_verbose("%s: %p, add=%d\n", __func__, p, add);

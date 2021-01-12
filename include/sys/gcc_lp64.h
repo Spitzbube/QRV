@@ -23,8 +23,8 @@
 #ifndef __GCC_LP64_H_INCLUDED
 #define __GCC_LP64_H_INCLUDED
 
-#if (__GNUC__ < 8)
-#error GNU C compiler is too old (must be at least 8.x)
+#if (__GNUC__ < 8) || (__STDC_VERSION__ < 199901L)
+#error GCC version 8 or newer and C99 ("-std=c99") required
 #endif
 
 #if __has_attribute(__fallthrough__)

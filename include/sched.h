@@ -72,37 +72,6 @@ struct sched_query {
 };
 #endif
 
-#if defined(__EXT_QNX) || defined(__EXT_POSIX1_200112)
-
-#define sched_ss_low_priority	__sched_ss_low_priority
-#define sched_ss_max_repl	__sched_ss_max_repl
-#define sched_ss_repl_period	__sched_ss_repl_period
-#define sched_ss_init_budget	__sched_ss_init_budget
-struct sched_param {
-    int32_t sched_priority;
-    int32_t sched_curpriority;
-    union {
-        /* Make sure it occupies at least 32 bytes */
-        int32_t _reserved[8];
-        struct {
-            int32_t __ss_low_priority;
-            int32_t __ss_max_repl;
-            struct timespec _ss_repl_period;
-            struct timespec _ss_init_budget;
-        } __ss;
-    };
-};
-
-#else
-
-struct sched_param {
-    int32_t sched_priority;
-    int32_t sched__curpriority;
-    int32_t __spare[8];
-};
-
-#endif
-
 #if defined(__EXT_QNX)
 /* 1003.4 Draft 9 : These two are so convenient we include them */
 extern int getprio(pid_t __pid);

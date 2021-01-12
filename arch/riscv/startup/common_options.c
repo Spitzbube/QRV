@@ -6,6 +6,7 @@
  * \copyright (c) 2008 QNX Software Systems.
  */
 
+#include <stdlib.h>
 #include <startup.h>
 #include <confname.h>
 
@@ -45,7 +46,7 @@ static void get_freq(unsigned long *fp)
 
 void handle_common_option(int opt)
 {
-    unsigned num;
+    unsigned long num;
     char *cp;
 
     if (!cpu_handle_common_option(opt)) {
@@ -69,7 +70,7 @@ void handle_common_option(int opt)
         case 'R':
             reserved_size = getsize(optarg, &cp);
             if (*cp == ',') {
-                reserved_align = getsize(cp + 1, &cp);
+                reserved_align = (unsigned)getsize(cp + 1, &cp);
             }
             break;
         case 'S':
@@ -77,8 +78,12 @@ void handle_common_option(int opt)
             break;
         case 'P':
             num = strtoul(optarg, &optarg, 10);
-            if (num > 0)
-                max_cpus = num;
+            if (num > 0) {
+                if (num > CONFIG_PROCESSORS_MAX)
+                    crash("Too many CPUs specified in '-P' option (%ld, but maximum allowed is %d)\n",
+                            num, CONFIG_PROCESSORS_MAX);
+                max_cpus = (unsigned)num;
+            }
             break;
         case 'v':
             debug_flag++;
@@ -112,7 +117,7 @@ void set_debug(unsigned channel, const struct debug_device *dev, const char *opt
  */
 static void select_one(const struct debug_device *dev, unsigned size, unsigned channel)
 {
-    unsigned len;
+    size_t len;
     const struct debug_device *selected;
     const struct debug_device *end;
     char *arg;

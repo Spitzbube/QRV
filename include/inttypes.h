@@ -17,8 +17,7 @@
 #include <_ansi.h>
 #include <stdint.h>
 
-#define __need_wchar_t
-#include <stddef.h>
+#include <sys/_multibytetypes.h>
 
 #if __BSD_VISIBLE
 #include <sys/_locale.h>

@@ -24,9 +24,7 @@
  */
 #ifndef _SIGNAL_H_INCLUDED
 
-#ifndef __PLATFORM_H_INCLUDED
-#include <sys/platform.h>
-#endif
+#include <sys/types.h>
 
 #if !defined(__cplusplus) || defined(_STD_USING) || defined(_GLOBAL_USING)
 #define _SIGNAL_H_INCLUDED
@@ -38,26 +36,6 @@
 #ifndef __SIGINFO_H_INCLUDED
 #include <sys/siginfo.h>
 #endif
-
-typedef unsigned long __sigset_t;
-
-#if !defined(_SIGSET_T_DECLARED)
-#define _SIGSET_T_DECLARED
-typedef __sigset_t sigset_t;
-#endif
-
-typedef int sig_atomic_t;
-
-struct sigaction {
-#define sa_handler	__sa_un._sa_handler
-#define sa_sigaction	__sa_un._sa_sigaction
-    union {
-        void (*_sa_handler)(int);
-        void (*_sa_sigaction)(int, siginfo_t *, void *);
-    } __sa_un;
-    int sa_flags;
-    sigset_t sa_mask;
-};
 
 #define SIG_ERR             ((void(*)-1)
 #define SIG_DFL             ((void(*)0)

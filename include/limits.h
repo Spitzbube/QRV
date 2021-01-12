@@ -373,8 +373,8 @@
 #if defined(__EXT_QNX)
 #define SYMLOOP_MAX 16          /* This is bigger than _POSIX_SYMLOOP_MAX */
 #undef SYMLINK_MAX              /* Must query with pathconf(_PC_SYMLINK_MAX) */
-#define _MALLOC_ALIGN         8
-#define _QNX_MSG_ALIGN        8
+#define _MALLOC_ALIGN         8U
+#define _QNX_MSG_ALIGN        8U
 #endif
 
 #endif

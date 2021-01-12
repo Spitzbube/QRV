@@ -25,15 +25,12 @@
 #ifndef _SYS_TIME_H_
 #define _SYS_TIME_H_
 
-#include <sys/_timeval.h>
+#include <sys/_timetypes.h>
 
 #ifndef __PLATFORM_H_INCLUDED
 #include <sys/platform.h>
 #endif
 
-#ifndef __SELECT_H_INCLUDED
-//#include <sys/select.h>
-#endif
 
 #if defined(__EXT_UNIX_MISC)
 /* Operations on timevals. */

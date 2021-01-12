@@ -11,7 +11,7 @@
 
 unsigned paddr_bits;
 int debug_flag = 0;
-unsigned reserved_size;
+size_t reserved_size;
 unsigned reserved_align;
 unsigned long cpu_freq;
 unsigned long cycles_freq;
@@ -21,7 +21,7 @@ unsigned patch_channel;
 
 char **_argv;
 int _argc;
-unsigned max_cpus = ~0;
+unsigned max_cpus = ~0U;
 chip_info timer_chip;
 unsigned (*timer_start)(void);
 unsigned (*timer_diff)(unsigned start);
@@ -50,7 +50,7 @@ static void setup_cmdline(void)
     int i = 0, argc = 0;
 
     argc = 0;
-    int n = strlen(boot_command_line);
+    size_t n = strlen(boot_command_line);
     while (i < n && argc < NUM_ELTS(argv)) {
         argv[argc] = s + i;
         /* Skip spaces, stop if zero */

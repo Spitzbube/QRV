@@ -54,10 +54,10 @@
 #define PHYS_TO_PTR(phys)		((void *)RISCV_PHYS_TO_KSEG0(phys))
 #define PTR_TO_PHYS(ptr)		((uintptr_t)RISCV_KSEG0_TO_PHYS(ptr))
 
+#if 0
 #define rd_probe_1(ptr)	({ __attribute__((unused)) uint32_t dummy = *(const volatile uint32_t *)(ptr); })
 
-inline static void
-rd_probe_num(const void *loc, int num) {
+inline static void rd_probe_num(const void *loc, int num) {
 	ulong_t tmp;
 
 	asm volatile (
@@ -73,8 +73,7 @@ rd_probe_num(const void *loc, int num) {
 		);
 }
 
-inline static void
-wr_probe_1(void *loc) {
+inline static void wr_probe_1(void *loc) {
 	ulong_t tmp;
 
 	asm volatile (
@@ -86,8 +85,7 @@ wr_probe_1(void *loc) {
 		);
 }
 
-inline static void
-wr_probe_num(void *loc, int num) {
+inline static void wr_probe_num(void *loc, int num) {
 	ulong_t tmp;
 
 	asm volatile (
@@ -103,6 +101,7 @@ wr_probe_num(void *loc, int num) {
 		: "memory"
 		);
 }
+#endif
 
 #define HAVE_ACTIVES_STORAGE	1
 #define HAVE_KERSTACK_STORAGE	1

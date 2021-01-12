@@ -40,56 +40,6 @@
 #include <sys/storage.h>
 #endif
 
-#if defined(__PTHREAD_T)
-typedef __PTHREAD_T pthread_t;
-#undef __PTHREAD_T
-#endif
-
-#if defined(__PTHREAD_MUTEX_T)
-typedef __PTHREAD_MUTEX_T pthread_mutex_t;
-#undef __PTHREAD_MUTEX_T
-#endif
-
-#if defined(__PTHREAD_COND_T)
-typedef __PTHREAD_COND_T pthread_cond_t;
-#undef __PTHREAD_COND_T
-#endif
-
-#if defined(__SYNC_ATTR_T)
-typedef __SYNC_ATTR_T sync_attr_t;
-#undef __SYNC_ATTR_T
-#endif
-
-#if defined(__PTHREAD_MUTEXATTR_T)
-typedef __PTHREAD_MUTEXATTR_T pthread_mutexattr_t;
-#undef __PTHREAD_MUTEXATTR_T
-#endif
-
-#if defined(__PTHREAD_CONDATTR_T)
-typedef __PTHREAD_CONDATTR_T pthread_condattr_t;
-#undef __PTHREAD_CONDATTR_T
-#endif
-
-
-#if defined(__SCHED_PARAM_T)
-typedef __SCHED_PARAM_T sched_param_t;
-#undef __SCHED_PARAM_T
-#endif
-
-#if defined(__PTHREAD_ATTR_T)
-typedef __PTHREAD_ATTR_T pthread_attr_t;
-#undef __PTHREAD_ATTR_T
-#endif
-
-#if defined(__EXT_POSIX1_200112)    /* Approved 1003.1j */
-
-#if defined(__CLOCKID_T)        /* Needed for cond_get/setclock */
-typedef __CLOCKID_T clockid_t;
-#undef __CLOCKID_T
-#endif
-
-#endif
-
 #include <arch/smpxchg.h>
 
 #ifndef __mutex_smp_cmpxchg
@@ -109,49 +59,48 @@ __BEGIN_DECLS
 #define _NTO_SYNC_NONRECURSIVE	0x80000000  /* mutexes */
 #define _NTO_SYNC_NOERRORCHECK	0x40000000  /* mutexes */
 #define _NTO_SYNC_PRIOCEILING	0x20000000  /* mutexes */
-#define _NTO_SYNC_PRIONONE		0x10000000  /* mutexes */
-#define _NTO_SYNC_COUNTMASK		0x00ffffff  /* mutexes */
+#define _NTO_SYNC_PRIONONE	0x10000000  /* mutexes */
+#define _NTO_SYNC_COUNTMASK	0x00ffffff  /* mutexes */
 /* On owner */
 #define _NTO_SYNC_MUTEX_FREE	0x00000000  /*    0  mutexes, and old cond, sem, spin */
-#define _NTO_SYNC_WAITING		0x80000000  /* Top bit used with mutexes */
+#define _NTO_SYNC_WAITING	0x80000000  /* Top bit used with mutexes */
 #define _NTO_SYNC_OWNER_MASK	0x7fffffff  /* Owner used with mutexes */
 #define _NTO_SYNC_INITIALIZER	0xffffffff  /*   -1  count is 0=mutexes, 0(old),-5(new)=cond */
-#define _NTO_SYNC_DESTROYED		0xfffffffe  /*   -2  mutexes, cond, sem, spin */
-#define _NTO_SYNC_NAMED_SEM		0xfffffffd  /*   -3  sem (count is handle) */
-#define _NTO_SYNC_SEM			0xfffffffc  /*   -4  sem (count is value) */
-#define _NTO_SYNC_COND			0xfffffffb  /*   -5  cond (count is clockid) */
-#define _NTO_SYNC_SPIN			0xfffffffa  /*   -6  spin (count is internal) */
-#define _NTO_SYNC_DEAD			0xffffff00  /* -256  mutex (when a process dies with a mutex locked) */
-#define PTHREAD_DETACHSTATE_MASK		0x01
-#define PTHREAD_CREATE_JOINABLE				0x00
-#define PTHREAD_CREATE_DETACHED				0x01
-#define PTHREAD_INHERITSCHED_MASK		0x02
-#define PTHREAD_INHERIT_SCHED				0x00
-#define PTHREAD_EXPLICIT_SCHED				0x02
+#define _NTO_SYNC_DESTROYED	0xfffffffe  /*   -2  mutexes, cond, sem, spin */
+#define _NTO_SYNC_NAMED_SEM	0xfffffffd  /*   -3  sem (count is handle) */
+#define _NTO_SYNC_SEM		0xfffffffc  /*   -4  sem (count is value) */
+#define _NTO_SYNC_COND		0xfffffffb  /*   -5  cond (count is clockid) */
+#define _NTO_SYNC_SPIN		0xfffffffa  /*   -6  spin (count is internal) */
+#define _NTO_SYNC_DEAD		0xffffff00  /* -256  mutex (when a process dies with a mutex locked) */
+
+#define PTHREAD_DETACHSTATE_MASK	0x01
+#define PTHREAD_CREATE_JOINABLE		0x00
+#define PTHREAD_CREATE_DETACHED		0x01
+
+#define PTHREAD_INHERITSCHED_MASK	0x02
+#define PTHREAD_INHERIT_SCHED		0x00
+#define PTHREAD_EXPLICIT_SCHED		0x02
+
 #define PTHREAD_CONTENTIONSCOPE_MASK	0x04
-#define PTHREAD_SCOPE_SYSTEM				0x00
-#define PTHREAD_SCOPE_PROCESS				0x04
-#define PTHREAD_MULTISIG_MASK			0x08
-#define PTHREAD_MULTISIG_ALLOW				0x00
-#define PTHREAD_MULTISIG_DISALLOW			0x08
-#define PTHREAD_CSTATE_MASK				0x10
-#define PTHREAD_CANCEL_ENABLE				0x00
-#define PTHREAD_CANCEL_DISABLE				0x10
-#define PTHREAD_CTYPE_MASK				0x20
-#define PTHREAD_CANCEL_DEFERRED				0x00
-#define PTHREAD_CANCEL_ASYNCHRONOUS			0x20
-#define PTHREAD_CANCEL_PENDING			0x40
-#define PTHREAD_NOTLAZYSTACK_MASK		0x80
-#define PTHREAD_STACK_LAZY					0x00
-#define PTHREAD_STACK_NOTLAZY				0x80
+#define PTHREAD_SCOPE_SYSTEM		0x00
+#define PTHREAD_SCOPE_PROCESS		0x04
+#define PTHREAD_MULTISIG_MASK		0x08
+#define PTHREAD_MULTISIG_ALLOW		0x00
+#define PTHREAD_MULTISIG_DISALLOW	0x08
+#define PTHREAD_CSTATE_MASK		0x10
+#define PTHREAD_CANCEL_ENABLE		0x00
+#define PTHREAD_CANCEL_DISABLE		0x10
+#define PTHREAD_CTYPE_MASK		0x20
+#define PTHREAD_CANCEL_DEFERRED		0x00
+#define PTHREAD_CANCEL_ASYNCHRONOUS	0x20
+#define PTHREAD_CANCEL_PENDING		0x40
+#define PTHREAD_NOTLAZYSTACK_MASK	0x80
+#define PTHREAD_STACK_LAZY		0x00
+#define PTHREAD_STACK_NOTLAZY		0x80
 #define PTHREAD_CANCELED ((void *)-1)
-#if defined(__PTHREAD_KEY_T)
-typedef __PTHREAD_KEY_T pthread_key_t;
-#undef __PTHREAD_KEY_T
-#endif
 
 #define PTHREAD_PRIO_INHERIT	0
-#define PTHREAD_PRIO_NONE		1
+#define PTHREAD_PRIO_NONE	1
 #define PTHREAD_PRIO_PROTECT	2
 
 /* thread attribute prototypes */
@@ -209,7 +158,7 @@ extern pthread_t pthread_self(void);
 extern int pthread_setcancelstate(int __state, int *__oldstate);
 extern int pthread_setcanceltype(int __type, int *__oldtype);
 #ifdef __INLINE_FUNCTIONS__
-#define pthread_self()				(__tls()->__tid)
+#define pthread_self()			(__tls()->__tid)
 #define pthread_equal(__t1, __t2)	((__t1) == (__t2))
 #endif
 
@@ -286,33 +235,33 @@ extern int pthread_setspecific(pthread_key_t __key, const void *__value);
 
 #define PTHREAD_COND_INITIALIZER	{ (int)_NTO_SYNC_COND, _NTO_SYNC_INITIALIZER }
 
-#define PTHREAD_PROCESSSHARED_MASK		0x01
-#define PTHREAD_PROCESS_PRIVATE				0x00
-#define PTHREAD_PROCESS_SHARED				0x01
+#define PTHREAD_PROCESSSHARED_MASK	0x01
+#define PTHREAD_PROCESS_PRIVATE		0x00
+#define PTHREAD_PROCESS_SHARED		0x01
 
-#define PTHREAD_RECURSIVE_MASK			0x02
-#define PTHREAD_RECURSIVE_DISABLE			0x00
-#define PTHREAD_RECURSIVE_ENABLE			0x02
+#define PTHREAD_RECURSIVE_MASK		0x02
+#define PTHREAD_RECURSIVE_DISABLE	0x00
+#define PTHREAD_RECURSIVE_ENABLE	0x02
 
-#define PTHREAD_ERRORCHECK_MASK			0x04
-#define PTHREAD_ERRORCHECK_ENABLE			0x00
-#define PTHREAD_ERRORCHECK_DISABLE			0x04
+#define PTHREAD_ERRORCHECK_MASK		0x04
+#define PTHREAD_ERRORCHECK_ENABLE	0x00
+#define PTHREAD_ERRORCHECK_DISABLE	0x04
 
-#define _NTO_ATTR_FLAGS					0x0000ffff  /* These flags are verified for each type */
+#define _NTO_ATTR_FLAGS			0x0000ffff  /* These flags are verified for each type */
 
-#define _NTO_ATTR_MASK					0x000f0000
-#define _NTO_ATTR_UNKNOWN				0x00000000
-#define _NTO_ATTR_MUTEX					0x00010000
-#define _NTO_ATTR_COND					0x00020000
-#define _NTO_ATTR_RWLOCK				0x00030000
-#define _NTO_ATTR_BARRIER				0x00040000
+#define _NTO_ATTR_MASK			0x000f0000
+#define _NTO_ATTR_UNKNOWN		0x00000000
+#define _NTO_ATTR_MUTEX			0x00010000
+#define _NTO_ATTR_COND			0x00020000
+#define _NTO_ATTR_RWLOCK		0x00030000
+#define _NTO_ATTR_BARRIER		0x00040000
 
-#define PTHREAD_MUTEX_TYPE				0x40000000  /* non-default mutex type */
+#define PTHREAD_MUTEX_TYPE		0x40000000  /* non-default mutex type */
 /*
  * Used to identify that more than the first three ints
  * of struct _sync_attr are valid. This is for compatibility with old apps
  */
-#define _NTO_ATTR_EXTRA_FLAG			0x80000000
+#define _NTO_ATTR_EXTRA_FLAG		0x80000000
 
 /*
  * These are inline mutex macros that do not perform error checking
@@ -320,9 +269,9 @@ extern int pthread_setspecific(pthread_key_t __key, const void *__value);
  * They can be used with mutexes initialized with PTHREAD_MUTEX_DEFAULT,
  * PTHREAD_MUTEX_ERRORCHECK, or PTHREAD_MUTEX_NORMAL.
  */
-#define __mutex_lock(__m)		(__mutex_smp_cmpxchg(&(__m)->__owner, 0, __tls()->__owner) ? SyncMutexLock_r(__m) : 0 /* EOK */)
+#define __mutex_lock(__m)	(__mutex_smp_cmpxchg(&(__m)->__owner, 0, __tls()->__owner) ? SyncMutexLock_r(__m) : 0 /* EOK */)
 #define __mutex_trylock(__m)	(__mutex_smp_cmpxchg(&(__m)->__owner, 0, __tls()->__owner) ? 16 /* EBUSY */ : 0 /* EOK */)
-#define __mutex_unlock(__m)		((__mutex_smp_xchg(&(__m)->__owner, 0) & _NTO_SYNC_WAITING) ? __cpu_membarrier(), SyncMutexUnlock_r((__m)) : 0 /* EOK */)
+#define __mutex_unlock(__m)	((__mutex_smp_xchg(&(__m)->__owner, 0) & _NTO_SYNC_WAITING) ? __cpu_membarrier(), SyncMutexUnlock_r((__m)) : 0 /* EOK */)
 #if defined(__EXT_QNX)
 #define _mutex_lock(__m)	__mutex_lock(__m)
 #define _mutex_trylock(__m)	__mutex_trylock(__m)

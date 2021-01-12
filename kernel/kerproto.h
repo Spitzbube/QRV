@@ -296,8 +296,10 @@ int rdecl msgreceive_gbl(THREAD * act, CHANNELGBL * chp, void *msg, size_t size,
                          struct _msg_info *info, CONNECT * cop, int coid);
 int rdecl msgsend_gbl(THREAD * act, CONNECT * cop, void *msg, size_t size, unsigned priority,
                       int coid);
+#ifdef CONFIG_ASYNC_MSG
 int rdecl msgsend_async(THREAD * act, CONNECT * cop);
 int rdecl msgreceive_async(THREAD * act, CHANNELASYNC * chp, iov_t * iov, unsigned parts);
+#endif
 
 int (rcvmsg) (THREAD * dthp, PROCESS * sprp, void *destp, int destparts, void *srcp, int srcparts);
 

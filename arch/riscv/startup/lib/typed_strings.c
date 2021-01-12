@@ -8,6 +8,13 @@
 
 #include <startup.h>
 
+/**
+ * \brief Find a typed string in typed_strings section of the syspage.
+ *
+ * \param[in] type_index        string type
+ * \return    The offset from the beginning of the types_strings section (if found),
+ *            -1 if no such string is present.
+ */
 int find_typed_string(int type_index)
 {
     char *p = lsp.typed_strings.p->data;
@@ -18,7 +25,7 @@ int find_typed_string(int type_index)
     for (;;) {
         type = *(uint32_t *) & p[i];
         if (type == type_index)
-            return i;
+            return (int)i;
         if (type == _CS_NONE)
             return -1;
         i += sizeof(uint32_t);
@@ -27,6 +34,12 @@ int find_typed_string(int type_index)
     }
 }
 
+/**
+ * \brief Find the string in the typed_strings section of the system page
+ *        indicated by the type type_index and remove it.
+ * \return The offset where the removed string was,
+ *         or -1 if no such string was present.
+ */
 int del_typed_string(int type_index)
 {
     char *p = lsp.typed_strings.p->data;
@@ -49,6 +62,10 @@ int del_typed_string(int type_index)
     return 1;
 }
 
+/**
+ * \brief Add the typed string specified by name (of type type_index) into the
+ *        typed string literal pool in the system page and return the index.
+ */
 unsigned add_typed_string(int type_index, const char *name)
 {
     char *p = lsp.typed_strings.p->data;
@@ -71,11 +88,16 @@ unsigned add_typed_string(int type_index, const char *name)
     return i;
 }
 
+/**
+ * \brief Add the string specified by name into the string literal pool in
+ *        the system page and return the index.
+ */
 unsigned add_string(const char *name)
 {
     char *p = lsp.strings.p->data;
     char *str;
-    unsigned i, len, spare;
+    size_t len;
+    unsigned i, spare;
 
     //ultra_verbose("%s (%s)\n", __func__, name);
 
@@ -96,4 +118,3 @@ unsigned add_string(const char *name)
     strcpy(str, name);
     return i;
 }
-

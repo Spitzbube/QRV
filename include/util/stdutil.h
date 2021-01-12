@@ -79,9 +79,7 @@ extern void abprt(const char *,... );
 /*- misc string functions */
 extern int   breakstr(char *buf, const char *sep, char **blist, int n);
 extern char *purty(char *string );
-#if !defined(__CYGWIN32__) && !defined(__MINGW32__)
 extern char *strsignal(int sig);
-#endif
 extern int     set_escape_string(char *match, char *xlat);
 extern int     stresc(char *s, char **update);
 extern int     strnbcmp( char *l, char *m );

@@ -15,10 +15,11 @@
  * $
  */
 
+#include <limits.h>
 #include "externs.h"
 #include "apm.h"
 
-#define ALIGN(x)			((unsigned)((((unsigned)(x))+(_MALLOC_ALIGN-1))&~(_MALLOC_ALIGN-1)))
+#define ALIGN(x)		((unsigned)((((unsigned)(x))+(_MALLOC_ALIGN-1))&~(_MALLOC_ALIGN-1)))
 #define PTRDIFF(x, y)		(((unsigned)(x))-((unsigned)(y)))
 #define PTRADD(x, y)		((void *)((char *)(x)+(y)))
 
@@ -83,7 +84,7 @@ struct free_entry {
 struct free_entry *ker_free_list;
 struct free_entry *ker_crit_list;
 struct free_entry *proc_free_list;
-uintptr_t crit_start = ~0;      // to make initial IS_CRIT() fail
+uintptr_t crit_start = ~0UL;    // to make initial IS_CRIT() fail
 uintptr_t crit_end = 0;
 static void *pregrow_start;
 static size_t pregrow_size;
@@ -409,7 +410,7 @@ void free(void *data)
     }
 }
 
-void *malloc(unsigned size)
+void *malloc(size_t size)
 {
     unsigned *p;
     size += _MALLOC_ALIGN;
@@ -433,7 +434,7 @@ void *calloc(size_t size, size_t num)
     return p;
 }
 
-void *realloc(void *data, unsigned size)
+void *realloc(void *data, size_t size)
 {
     unsigned *p;
     unsigned old_size;

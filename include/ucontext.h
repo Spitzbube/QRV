@@ -21,24 +21,9 @@
 #ifndef _UCONTEXT_H_INCLUDED
 #define _UCONTEXT_H_INCLUDED
 
+//#include <sys/qrv_core.h>
 #include <sys/platform.h>
 #include <arch/context.h>
-#include <signal.h>
-
-#if defined(__SIGSET_T)
-typedef __SIGSET_T sigset_t;
-#undef __SIGSET_T
-#endif
-
-#if defined(__STACK_T)
-typedef __STACK_T stack_t;
-#undef __STACK_T
-#endif
-
-#if defined(__UCONTEXT_T)
-typedef __UCONTEXT_T ucontext_t;
-#undef __UCONTEXT_T
-#endif
 
 struct __ucontext_t {
     struct __ucontext_t *uc_link;
