@@ -29,14 +29,6 @@
 #include <sys/platform.h>
 #endif
 
-_C_STD_BEGIN
-#if defined(__TIME_T)
-typedef __TIME_T time_t;
-#undef __TIME_T
-#endif
-
-_C_STD_END
-
 struct utimbuf {
     time_t actime;              /* access time */
     time_t modtime;             /* modification time */

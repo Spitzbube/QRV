@@ -28,20 +28,10 @@
 #include <sys/platform.h>
 #endif
 
-#if defined(__PID_T)
-typedef __PID_T		pid_t;
-#undef __PID_T
-#endif
-
 #if defined(__EXT_XOPEN_EX)
 
 #ifndef _SIGNAL_H_INCLUDED
 #include <signal.h>
-#endif
-
-#if defined(__ID_T)
-typedef __ID_T		id_t;
-#undef __ID_T
 #endif
 
 #endif

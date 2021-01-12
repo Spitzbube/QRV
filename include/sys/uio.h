@@ -28,28 +28,9 @@
 #include <sys/platform.h>
 #endif
 
-_C_STD_BEGIN
-
-#if defined(__SSIZE_T)
-typedef __SSIZE_T	ssize_t;
-#undef __SSIZE_T
-#endif
-
-#if defined(__SIZE_T)
-typedef __SIZE_T	size_t;
-#undef __SIZE_T
-#endif
-
-_C_STD_END
-
 #if defined(__EXT_UNIX_MISC)
 #define UIO_MAXIOV   1024       /* max 1K of iov's */
 #define UIO_SMALLIOV    8       /* 8 on stack, else malloc */
-#endif
-
-#if defined(__IOVEC_T)
-typedef __IOVEC_T	iov_t;
-#undef __IOVEC_T
 #endif
 
 __BEGIN_DECLS

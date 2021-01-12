@@ -118,7 +118,7 @@
  || defined(__SH__) \
  || defined(__ARM__) \
  || defined(__RISCV__)
-#define __PAGESIZE 0x1000
+#define __PAGESIZE 0x1000UL
 #else
 #error PAGESIZE not configured for system
 #endif

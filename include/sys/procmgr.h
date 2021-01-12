@@ -27,15 +27,10 @@
 #include <sys/platform.h>
 #endif
 
-#if defined(__PID_T)
-typedef __PID_T		pid_t;
-#undef __PID_T
-#endif
-
 #define PROCMGR_SESSION_SETSID			0
 #define PROCMGR_SESSION_TCSETSID		1
 #define PROCMGR_SESSION_SETPGRP			2
-#define PROCMGR_SESSION_SIGNAL_LEADER	3
+#define PROCMGR_SESSION_SIGNAL_LEADER		3
 #define PROCMGR_SESSION_SIGNAL_PGRP		4
 #define PROCMGR_SESSION_SIGNAL_PID		5
 
@@ -44,7 +39,7 @@ typedef __PID_T		pid_t;
 #define PROCMGR_DAEMON_NODEVNULL		0x00000004
 #define PROCMGR_DAEMON_KEEPUMASK		0x00000008
 
-#define PROCMGR_EVENT_SYNC				0x00000001	/* sync() was called */
+#define PROCMGR_EVENT_SYNC			0x00000001	/* sync() was called */
 #define PROCMGR_EVENT_PATHSPACE			0x00000002  /* pathname space changed */
 #define PROCMGR_EVENT_SYSCONF			0x00010000	/* a sysconf() was changed */
 #define PROCMGR_EVENT_CONFSTR			0x00020000	/* a confstr() was changed */

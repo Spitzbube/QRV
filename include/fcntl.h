@@ -44,28 +44,6 @@
 #include <sys/stat.h>
 #endif
 
-_C_STD_BEGIN
-#if defined(__MODE_T)
-typedef __MODE_T mode_t;
-#undef __MODE_T
-#endif
-
-_C_STD_END
-#if defined(__OFF_T)
-typedef __OFF_T off_t;
-#undef __OFF_T
-#endif
-
-#if defined(__OFF64_T)
-typedef __OFF64_T off64_t;
-#undef __OFF64_T
-#endif
-
-#if defined(__PID_T)
-typedef __PID_T pid_t;
-#undef __PID_T
-#endif
-
 /*
  *  Flag values accessible to both open() and fcntl()
  *  (The first three can only be set by open)

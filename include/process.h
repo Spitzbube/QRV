@@ -31,11 +31,6 @@
 #include <sys/platform.h>
 #endif
 
-#if defined(__PID_T)
-typedef __PID_T pid_t;
-#undef __PID_T
-#endif
-
 __BEGIN_DECLS
 #if defined(__EXT_POSIX1_198808)
 void _exit(int __status) __attribute__((__noreturn__));

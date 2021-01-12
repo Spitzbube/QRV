@@ -31,13 +31,6 @@
 #include <sys/platform.h>
 #endif
 
-_C_STD_BEGIN
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
-#endif
-
-_C_STD_END
 /*
  * regcomp() cflags argument
  */

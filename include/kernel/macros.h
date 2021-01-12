@@ -245,8 +245,21 @@
  */
 #define NUM_ELTS(array)	(sizeof(array) / sizeof(array[0]))
 
+/* Rounding down and up */
 #define ROUNDDOWN(val, round)	(((val)) & ~((round)-1))
 #define ROUNDUP(val, round)	ROUNDDOWN((val) + ((round)-1), round)
+
+/* Same as above, but arguments typecasted to paddr_t */
+#define TRUNC(_x,_a)  ((paddr_t)(_x) & ~(((paddr_t)(_a))-1))
+#define ROUND(_x,_a)  TRUNC(((paddr_t)(_x)) + ((paddr_t)(_a)-1), (paddr_t)(_a))
+
+/* Same as above, but truncating/rounding the address on the page boundary */
+#define TRUNCPG(_x)	TRUNC((_x), __PAGESIZE)
+#define ROUNDPG(_x)	ROUND((_x), __PAGESIZE)
+
+#define TOPTR(x)		((void *)(x))
+
+#define PTR_DIFF(a,b)	((uint8_t *)(a) - (uint8_t *)(b))
 
 #define KILO(k)		((k) * 1024UL)
 #define MEG(m)		((m) * (1024UL * 1024UL))

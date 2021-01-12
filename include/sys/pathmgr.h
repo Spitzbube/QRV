@@ -45,11 +45,6 @@
 #include <fcntl.h>
 #endif
 
-#if defined(__PID_T)
-typedef __PID_T		pid_t;
-#undef __PID_T
-#endif
-
 #define PATHMGR_FLAG_BEFORE	0x0001	/* Force path to be resolved before others at the same mountpoint. */
 #define PATHMGR_FLAG_AFTER	0x0002	/* Force path to be resolved after others at the same mountpoint. */
 #define PATHMGR_FLAG_OPAQUE	0x0004	/* Don't resolve to mountpoints with shorter pathname matches. */

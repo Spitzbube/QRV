@@ -38,25 +38,19 @@
 #ifndef _MALLOC_H_DECLARED
 #define _MALLOC_H_DECLARED
 
-#include <_pack64.h>
-
-_C_STD_BEGIN
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
-#endif
-
-_C_STD_END
 #if defined(__EXT_QNX) && !defined(_alloca)
 #ifndef _ALLOCA_H_INCLUDED
 #include <alloca.h>
 #endif
 #endif
-__BEGIN_DECLS _C_STD_BEGIN extern void *calloc(size_t __n, size_t __size);
+
+__BEGIN_DECLS
+
+extern void *calloc(size_t __n, size_t __size);
 extern void *malloc(size_t __size);
 extern void *realloc(void *__ptr, size_t __size);
 extern void free(void *__ptr);
-_C_STD_END
+
 #if defined(__EXT_QNX)          /* Approved 1003.1d D14 */
 extern int posix_memalign(void **__memptr, size_t __alignment, size_t __size);
 #endif
@@ -138,8 +132,7 @@ extern void *memalign(size_t __alignment, size_t __size);
 extern void *valloc(size_t __size);
 #endif
 __END_DECLS
-#include <_packpop.h>
-#include <_packpop.h>
+
 #ifndef MALLOC_DEBUG
 #define MALLOC_DEBUG
 #endif

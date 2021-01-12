@@ -3,7 +3,7 @@
  *
  * Definition of opaque POSIX-1.2008 type locale_t for userspace.
  *
- * \note This file is a part of NewLib C library 3.2.0.
+ * \note This file is part of NewLib C library 3.2.0.
  */
 
 #ifndef _SYS_LOCALE_H

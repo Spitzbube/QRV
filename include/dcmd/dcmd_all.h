@@ -25,15 +25,7 @@
 #ifndef __DCMD_ALL_H_INCLUDED
 #define __DCMD_ALL_H_INCLUDED
 
-#ifndef _DEVCTL_H_INCLUDED
- #include <devctl.h>
-#endif
-
-#if defined(__OFF64_T)
-typedef __OFF64_T	off64_t;
-#undef __OFF64_T
-#endif
-
+#include <devctl.h>
 
 /*
  * Desc:  This call gets O_ status flags as described in <fcntl.h>.
@@ -86,10 +78,10 @@ typedef __OFF64_T	off64_t;
  *        cover to generate this request
  */
 struct _fadvise {
-	int				advice;
-	int				spare;
-	off64_t			offset;
-	off64_t			len;
+    int		advice;
+    int		spare;
+    off64_t	offset;
+    off64_t	len;
 };
 #define DCMD_ALL_FADVISE __DIOT(_DCMD_ALL, 6, struct _fadvise)
 

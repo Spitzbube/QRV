@@ -50,11 +50,6 @@
 #include <sys/iomsg.h>
 #endif
 
-#if defined(__IOVEC_T)
-typedef __IOVEC_T iov_t;
-#undef __IOVEC_T
-#endif
-
 typedef struct _pulse io_pulse_t;
 
 struct _dispatch;

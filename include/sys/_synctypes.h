@@ -19,8 +19,8 @@
  *  -3       Named semaphore (the count is used as an fd)
  */
 typedef struct _sync {
-    int         count;          /* Count for recursive mutexes and semaphores */
-    unsigned    owner;          /* Thread id (valid for mutex only) */
+    long          count;        /* Count for recursive mutexes and semaphores */
+    unsigned long owner;        /* Thread id (valid for mutex only) */
 } sync_t;
 
 typedef struct _sync_attr {

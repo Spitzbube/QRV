@@ -33,11 +33,6 @@
 #include <sys/platform.h>
 #endif
 
-#if defined(__ID_T)
-typedef __ID_T id_t;
-#undef __ID_T
-#endif
-
 #undef NZERO                    /* Use sysconf(_SC_NZERO) */
 
 #define	PRIO_PROCESS	0       /* Identifies who argument as a process ID. */

@@ -45,11 +45,6 @@
 #include <sys/resource.h>
 #endif
 
-#if defined(__ID_T)
-typedef __ID_T id_t;
-#undef __ID_T
-#endif
-
 #define PROCMGR_PID				SYSMGR_PID
 #define PROCMGR_CHID			SYSMGR_CHID
 #define PROCMGR_COID			SYSMGR_COID

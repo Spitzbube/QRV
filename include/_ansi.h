@@ -3,7 +3,7 @@
  *
  * Provide support for both ANSI and non-ANSI environments.
  *
- * \note This file is a part of NewLib C library 3.2.0.
+ * \note This file is part of NewLib C library 3.2.0.
  *
  * \note To get a strict ANSI C environment, define macro __STRICT_ANSI__.
  *       This will "comment out" the non-ANSI parts of the ANSI header files

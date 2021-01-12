@@ -33,18 +33,6 @@
 #include <sys/platform.h>
 #endif
 
-_C_STD_BEGIN
-#if defined(__SIZE_T)
-    typedef __SIZE_T size_t;
-#undef __SIZE_T
-#endif
-
-#if defined(__SSIZE_T)
-typedef __SSIZE_T ssize_t;
-#undef __SSIZE_T
-#endif
-
-_C_STD_END
 __BEGIN_DECLS
 /* malloc.c */
 void *malloc_pc __stdcargs((size_t size, unsigned int *pc));

@@ -1,4 +1,4 @@
-/*
+/**
  * \file wordexp.h
  *
  * Declarations and prototypes for word expansion functions.

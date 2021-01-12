@@ -152,20 +152,6 @@ struct startup_trailer {
 
 unsigned arch_max_paddr_bits(void);
 
-// TODO: review
-//#define NULL_PADDR32	(~(paddr32_t)0)
-//#define MAX_PADDR32     0xffffffff
-
-#define TRUNC(_x,_a)  ((paddr_t)(_x) & ~(((paddr_t)(_a))-1))
-#define ROUND(_x,_a)  TRUNC(((paddr_t)(_x)) + ((paddr_t)(_a)-1), (paddr_t)(_a))
-
-#define TRUNCPG(_x)	TRUNC((_x), __PAGESIZE)
-#define ROUNDPG(_x)	ROUND((_x), __PAGESIZE)
-
-#define TOPTR(x)		((void *)(x))
-
-#define PTR_DIFF(a,b)	((uint8_t *)(a) - (uint8_t *)(b))
-
 #define COMMON_OPTIONS_STRING   CPU_COMMON_OPTIONS_STRING "ACD:F:f:I:i:K:M:N:P:R:S:Tvr:j:Z"
 
 struct local_syspage {

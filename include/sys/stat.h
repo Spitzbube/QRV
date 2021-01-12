@@ -37,13 +37,6 @@
 
 #include <sys/types.h>
 
-#if defined(__EXT_QNX)
-#if defined(__PID_T)
-typedef __PID_T pid_t;
-#undef __PID_T
-#endif
-#endif
-
 struct stat {
 #if _FILE_OFFSET_BITS - 0 == 64
     ino_t st_ino;               /* File serial number.                  */

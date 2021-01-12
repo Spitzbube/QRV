@@ -95,22 +95,22 @@ enum lc_state {
 // have some uses.... Naaaah!
 #define LOADER_CONTEXT_FIELDS					\
 	struct loader_context			*next;		\
-	size_t							size;		\
-	iov_t							iov[10];	\
+	size_t					size;		\
+	iov_t					iov[10];	\
 	struct process_entry			*process;	\
-	int								rcvid;		\
-	sigset_t						mask;		\
-	siginfo_t						info;		\
-	pid_t							pid;		\
-	pid_t							ppid;		\
-	int								pnode;		\
-	int								tid;		\
-	unsigned						flags;		\
-	unsigned						msgsize;	\
-	int								state;		\
+	int					rcvid;		\
+	sigset_t				mask;		\
+	siginfo_t				info;		\
+	pid_t					pid;		\
+	pid_t					ppid;		\
+	int					pnode;		\
+	int					tid;		\
+	unsigned				flags;		\
+	unsigned				msgsize;	\
+	int					state;		\
 	struct loader_startup			start;		\
-	unsigned						remote_off; \
-	int								fault_errno;
+	unsigned				remote_off; \
+	int					fault_errno;
 
 struct loader_context_prefix {
 LOADER_CONTEXT_FIELDS};

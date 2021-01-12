@@ -168,9 +168,9 @@ extern int pthread_sigmask(int __how, const sigset_t * __set, sigset_t * __oset)
 #endif
 
 #if defined(__EXT_UNIX_HIST)
-_C_STD_BEGIN extern void (*signal(int __sig, void (*__func)()))();
-_C_STD_END
+extern void (*signal(int __sig, void (*__func)()))();
 #endif
+
 #if defined(__EXT_UNIX_MISC)
 extern const char *const sys_siglist[];
 extern const int sys_nsig;

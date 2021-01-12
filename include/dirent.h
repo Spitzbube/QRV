@@ -36,26 +36,6 @@
 #endif
 #endif
 
-#if defined(__OFF_T)
-typedef __OFF_T off_t;
-#undef __OFF_T
-#endif
-
-#if defined(__OFF64_T)
-typedef __OFF64_T off64_t;
-#undef __OFF64_T
-#endif
-
-#if defined(__INO_T)
-typedef __INO_T ino_t;
-#undef __INO_T
-#endif
-
-#if defined(__INO64_T)
-typedef __INO64_T ino64_t;
-#undef __INO64_T
-#endif
-
 struct dirent {
 #if _FILE_OFFSET_BITS - 0 == 64
     ino_t d_ino;                /* File serial number.                  */

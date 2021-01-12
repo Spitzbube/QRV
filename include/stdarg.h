@@ -4,7 +4,7 @@
  * Variable argument macros definitions for use with variable argument lists.
  *
  * \copyright (c) 2019 Free Software Foundation, Inc.
- * \note This file is a part of GNU C Library.
+ * \note This file is part of GNU C Library.
  * \license GNU LGPL 2.1
  */
 

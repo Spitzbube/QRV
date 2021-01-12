@@ -402,12 +402,9 @@ get_outfile()
 		fprintf(stderr, "discarding output\n");
 		fd = open("/dev/null", O_WRONLY);
 	}
-#ifdef _C_STD_BEGIN		/* This is defined with the Dinkum libraries */
-	/* This is illegal, but is the easiest way right now */
-	outfile->_Handle = fd;
-#else
+
 	fileno(outfile) = fd;
-#endif
+
 	setvbuf(outfile, 0, _IOFBF, 4096);
 	outset = 1;
 	return outfile;

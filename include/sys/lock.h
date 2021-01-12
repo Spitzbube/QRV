@@ -3,7 +3,7 @@
  *
  * Dummy lock routines for single-threaded applications
  *
- * \note This file is a part of NewLib C library 3.2.0.
+ * \note This file is part of NewLib C library 3.2.0.
  */
 
 #ifndef __SYS_LOCK_H__

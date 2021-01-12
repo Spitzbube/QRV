@@ -1,7 +1,7 @@
 /**
- * \file  sys/target_nto.h
+ * \file  sys/qrv_core.h
  *
- * TODO describe
+ * Prototypes of core microkernel functions.
  *
  * \copyright 2007, QNX Software Systems. All Rights Reserved.
  *
@@ -14,6 +14,7 @@
 
 #include <sys/platform.h>
 #include <sys/types.h>
+#include <limits.h>
 
 typedef _Paddrt         paddr_t;
 typedef _Paddr32t       paddr32_t;
@@ -55,33 +56,6 @@ typedef _Paddr64t       paddr64_t;
 #else
 #error _FILE_OFFSET_BITS value is unsupported
 #endif
-
-#undef __SOCKLEN_T
-#define __SOCKLEN_T		_Int32t
-
-#undef __SA_FAMILY_T
-#define __SA_FAMILY_T		_Uint8t
-
-#undef __INO64_T
-#define __INO64_T		_Uint64t
-
-#undef __BLKCNT64_T
-#define __BLKCNT64_T	_Uint64t
-
-#undef __FSBLKCNT64_T
-#define __FSBLKCNT64_T	_Uint64t
-
-#undef __FSFILCNT64_T
-#define __FSFILCNT64_T	_Uint64t
-
-#undef __MODE_T
-#define __MODE_T		_Uint32t
-
-#undef __TIMER_T
-#define __TIMER_T		int
-
-#undef __KEY_T
-#define __KEY_T			_Uint32t
 
 struct iovec {
     void *iov_base;

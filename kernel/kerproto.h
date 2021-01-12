@@ -130,7 +130,7 @@ void rdecl thread_specret(THREAD * thp);
 void rdecl signal_specret(THREAD * thp);
 
 void heap_init(size_t);
-int crit_sfree(void *p, unsigned size);
+int crit_sfree(void *p, size_t size);
 
 const struct sigevent *clock_handler(void *, int id);
 void clock_ticker(void);

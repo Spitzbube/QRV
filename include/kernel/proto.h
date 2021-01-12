@@ -87,15 +87,15 @@ void *malloc(size_t size);
 void *calloc(size_t nmemb, size_t size);
 void *realloc(void *data, size_t size);
 void free(void *data);
-void *_smalloc(unsigned size);
-void *_scalloc(unsigned size);
-void *_srealloc(void *data, unsigned old_size, unsigned new_size);
-void *_sreallocfunc(void *data, unsigned old_size, unsigned new_size,
-                    unsigned (*alloc)(unsigned size, void **addr));
-void _sfree(void *data, unsigned size);
-void _kfree(void *data);                        // does a __Ring0() first
-void _ksfree(void *data, unsigned size);        // does a __Ring0() first
-void *_ksmalloc(unsigned size);                 // does a __Ring0() first
+void *_smalloc(size_t size);
+void *_scalloc(size_t size);
+void *_srealloc(void *data, size_t old_size, size_t new_size);
+void *_sreallocfunc(void *data, size_t old_size, size_t new_size,
+                    size_t (*alloc)(size_t size, void **addr));
+void _sfree(void *data, size_t size);
+void _kfree(void *data);                      // does a __Ring0() first
+void _ksfree(void *data, size_t size);        // does a __Ring0() first
+void *_ksmalloc(size_t size);                 // does a __Ring0() first
 void *sbrk(int increment);
 int purger_register(int (*purge)(size_t), unsigned prio);
 int purger_invoke(size_t amount);

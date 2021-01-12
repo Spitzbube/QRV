@@ -75,7 +75,7 @@ constant.
 
 __BEGIN_DECLS
 #if defined(__EXT_POSIX1_199309)
-    struct sigevent;            /* for C++ */
+struct sigevent;            /* for C++ */
 
 extern int clock_getres(clockid_t __clock_id, struct timespec *__res);
 extern int clock_gettime(clockid_t __clock_id, struct timespec *__tp);
@@ -83,13 +83,11 @@ extern int clock_gettime(clockid_t __clock_id, struct timespec *__tp);
 extern int clock_setres(clockid_t __clock_id, struct timespec *__res);
 #endif
 extern int clock_settime(clockid_t __clock_id, const struct timespec *__tp);
+
 #if defined(__EXT_POSIX1_200112)    /* Approved 1003.1d D14 */
-#if defined(__PID_T)
-typedef __PID_T pid_t;
-#undef __PID_T
-#endif
 extern int clock_getcpuclockid(pid_t __pid, clockid_t * __clock_id);
 #endif
+
 extern int nanosleep(const struct timespec *__rqtp, struct timespec *__rmtp);
 extern int timer_create(clockid_t __clock_id, struct sigevent *__evp, timer_t * __timerid);
 extern int timer_delete(timer_t __timerid);
