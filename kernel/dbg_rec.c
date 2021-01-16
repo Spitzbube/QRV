@@ -51,7 +51,7 @@ unsigned get_ridx(unsigned inc)
         InterruptEnable();
     }
 #endif
-    return (result);
+    return result;
 }
 
 void rec(int num)

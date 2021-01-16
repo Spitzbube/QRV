@@ -28,7 +28,7 @@
 SYNC *rdecl sync_create(PROCESS * bill_prp, sync_t * sync, unsigned flags)
 {
     SYNC *syp;
-    OBJECT *obp;
+    tPathMgrObject *obp;
     unsigned addr;
     THREAD *act = actives[KERNCPU];
     PROCESS *prp = act->process;
@@ -42,7 +42,7 @@ SYNC *rdecl sync_create(PROCESS * bill_prp, sync_t * sync, unsigned flags)
     // (flags & PTHREAD_PROCESSSHARED_MASK) may be useful to memmgr
     // Note that we tell vaddr_to_memobj to mark this page as containing a
     // sync object.
-    if ((obp = memmgr.vaddr_to_memobj(prp, sync, &addr, 1)) == (OBJECT *) - 1) {
+    if ((obp = memmgr.vaddr_to_memobj(prp, sync, &addr, 1)) == (tPathMgrObject *) - 1) {
         kererr(act, EINVAL);
         return NULL;
     }
@@ -62,7 +62,7 @@ SYNC *rdecl sync_create(PROCESS * bill_prp, sync_t * sync, unsigned flags)
 
 int rdecl sync_destroy(PROCESS * prp, sync_t * sync)
 {
-    OBJECT *obp;
+    tPathMgrObject *obp;
     unsigned addr;
     SYNC *syp;
     THREAD *thp;
@@ -72,7 +72,7 @@ int rdecl sync_destroy(PROCESS * prp, sync_t * sync)
     CRASHCHECK(!am_inkernel());
 
     // Map the virtual address of the users sync to a physical addr.
-    if ((obp = memmgr.vaddr_to_memobj(act->process, sync, &addr, 0)) == (OBJECT *) - 1) {
+    if ((obp = memmgr.vaddr_to_memobj(act->process, sync, &addr, 0)) == (tPathMgrObject *) - 1) {
         return EINVAL;
     }
     // Verify the sync exists.
@@ -124,7 +124,7 @@ SYNC *rdecl sync_lookup(sync_t * sync, unsigned create)
     THREAD *act = actives[KERNCPU];
     unsigned addr;
     unsigned mem_addr;
-    OBJECT *obp;
+    tPathMgrObject *obp;
     SYNC **owner;
 
     //Watch out for sneaky QA types trying to get at kernel memory.
@@ -262,7 +262,7 @@ void rdecl sync_wakeup(SYNC * syp, int all)
     }
 }
 
-SYNC *rdecl synchash_lookup(OBJECT * obp, unsigned addr)
+SYNC *rdecl synchash_lookup(tPathMgrObject * obp, unsigned addr)
 {
     SYNC **owner;
     SYNC *syp;
@@ -284,13 +284,13 @@ SYNC *rdecl synchash_lookup(OBJECT * obp, unsigned addr)
 }
 
 
-int rdecl synchash_add(OBJECT * obp, unsigned addr, SYNC * syp)
+int rdecl synchash_add(tPathMgrObject * obp, unsigned addr, SYNC * syp)
 {
     unsigned index, sindex;
     SYNC **table;
 
     if (synchash_lookup(obp, addr)) {
-        return (-1);
+        return -1;
     }
 
     syp->obj = obp;
@@ -314,7 +314,7 @@ int rdecl synchash_add(OBJECT * obp, unsigned addr, SYNC * syp)
 
 
 void rdecl
-synchash_rem(unsigned addr, OBJECT * obp, unsigned addr1, unsigned addr2, PROCESS * prp,
+synchash_rem(unsigned addr, tPathMgrObject * obp, unsigned addr1, unsigned addr2, PROCESS * prp,
              void *vaddr)
 {
     unsigned index, sindex, eindex;
@@ -498,7 +498,7 @@ synchash_rem(unsigned addr, OBJECT * obp, unsigned addr1, unsigned addr2, PROCES
 
 struct kerargs_synchash_rem {
     unsigned addr;
-    OBJECT *obp;
+    tPathMgrObject *obp;
     off_t start;
     off_t end;
     PROCESS *prp;
@@ -530,7 +530,7 @@ static void ker_synchash_rem(void *data)
     KerextStatus(NULL, 0);
 }
 
-void MemobjDestroyed(OBJECT * obp, off_t start, off_t end, PROCESS * prp, void *vaddr)
+void MemobjDestroyed(tPathMgrObject * obp, off_t start, off_t end, PROCESS * prp, void *vaddr)
 {
     struct kerargs_synchash_rem data;
     int ret;

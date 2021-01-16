@@ -32,6 +32,7 @@
 void _Unlocksysmtx(void)
 {
 }
+
 void _Unlockfilemtx(void)
 {
 }
@@ -45,33 +46,39 @@ void _Unlockfilemtx(void)
  *  if POSIX file locking not supported, no need for the default
  *  close/unblock handlers which just maintain the lock_list).
  */
-int iofunc_open_default(resmgr_context_t *ctp, io_open_t *msg, iofunc_attr_t *attr, void *extra)
+int iofunc_open_default(resmgr_context_t * ctp, io_open_t * msg, iofunc_attr_t * attr, void *extra)
 {
-	return ENOSYS;
+    return ENOSYS;
 }
-int iofunc_unblock_default(resmgr_context_t *ctp, io_pulse_t *msg, iofunc_ocb_t *ocb)
+
+int iofunc_unblock_default(resmgr_context_t * ctp, io_pulse_t * msg, iofunc_ocb_t * ocb)
 {
-	return _RESMGR_DEFAULT;
+    return _RESMGR_DEFAULT;
 }
-int iofunc_lock_default(resmgr_context_t *ctp, io_lock_t *msg, iofunc_ocb_t *ocb)
+
+int iofunc_lock_default(resmgr_context_t * ctp, io_lock_t * msg, iofunc_ocb_t * ocb)
 {
-	return ENOSYS;
+    return ENOSYS;
 }
-int iofunc_mmap_default(resmgr_context_t *ctp, io_mmap_t *msg, iofunc_ocb_t *ocb)
+
+int iofunc_mmap_default(resmgr_context_t * ctp, io_mmap_t * msg, iofunc_ocb_t * ocb)
 {
-	return ENOSYS;
+    return ENOSYS;
 }
-int iofunc_close_dup_default(resmgr_context_t *ctp, io_close_t *msg, iofunc_ocb_t *ocb)
+
+int iofunc_close_dup_default(resmgr_context_t * ctp, io_close_t * msg, iofunc_ocb_t * ocb)
 {
-	return EOK;
+    return EOK;
 }
-int iofunc_sync_default(resmgr_context_t *ctp, io_sync_t *msg, iofunc_ocb_t *ocb)
+
+int iofunc_sync_default(resmgr_context_t * ctp, io_sync_t * msg, iofunc_ocb_t * ocb)
 {
-	return ENOSYS;
+    return ENOSYS;
 }
-int iofunc_power_default(resmgr_context_t *ctp, io_power_t *msg, iofunc_ocb_t *ocb)
+
+int iofunc_power_default(resmgr_context_t * ctp, io_power_t * msg, iofunc_ocb_t * ocb)
 {
-	return ENOSYS;
+    return ENOSYS;
 }
 
 __SRCVERSION("link_noops.c $Rev: 161179 $");

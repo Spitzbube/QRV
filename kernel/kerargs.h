@@ -19,13 +19,13 @@
 #define KARGSLOT( arg )		arg
 #endif
 
-union kerargs {
+typedef union kerargs {
     struct kerargs_null {
         KARGSLOT(int32_t dummy);
     } null;
 
     struct kerargs_channel_create {
-        KARGSLOT(int32_t flags);
+        KARGSLOT(uint32_t flags);
         KARGSLOT(mode_t mode);
         KARGSLOT(size_t bufsize);
          KARGSLOT(unsigned maxbuf);
@@ -40,8 +40,8 @@ union kerargs {
     struct kerargs_connect_attach {
         KARGSLOT(uint32_t nd);
         KARGSLOT(pid_t pid);
-        KARGSLOT(int32_t chid);
-        KARGSLOT(int32_t index);
+        KARGSLOT(uint32_t chid);
+        KARGSLOT(uint32_t index);
         KARGSLOT(int32_t flags);
         KARGSLOT(void *cd);
     } connect_attach;
@@ -459,6 +459,5 @@ union kerargs {
         KARGSLOT(int type);
          KARGSLOT(void *data);
     } mt_init;
-};
+} tKerArgs;
 
-/* __SRCVERSION("kerargs.h $Rev: 153052 $"); */

@@ -57,22 +57,15 @@ typedef _Paddr64t       paddr64_t;
 #error _FILE_OFFSET_BITS value is unsupported
 #endif
 
-struct iovec {
+typedef struct iovec {
     void *iov_base;
     size_t iov_len;
-};
-
-/* State of a multibyte translation */
-struct mb_state_t {
-    wchar_t     _Wchar; \
-    char        _State; \
-    char        _Reserved[3];
-};
+} iov_t;
 
 /* File position */
 struct fpos_t {
-    _off64_t            _Off;
-    struct mb_state_t   _Wstate;
+    _off64_t    _Off;
+    mb_state_t  _Wstate;
 };
 
 /*
@@ -369,17 +362,17 @@ struct _thread_runmask {
  * Define channel flags
  */
 #define _NTO_CHF_FIXED_PRIORITY		0x0001
-#define _NTO_CHF_UNBLOCK			0x0002
+#define _NTO_CHF_UNBLOCK		0x0002
 #define _NTO_CHF_THREAD_DEATH		0x0004
-#define _NTO_CHF_DISCONNECT			0x0008
-#define _NTO_CHF_NET_MSG			0x0010
-#define _NTO_CHF_SENDER_LEN			0x0020
+#define _NTO_CHF_DISCONNECT		0x0008
+#define _NTO_CHF_NET_MSG		0x0010
+#define _NTO_CHF_SENDER_LEN		0x0020
 #define _NTO_CHF_COID_DISCONNECT	0x0040
-#define _NTO_CHF_REPLY_LEN			0x0080
-#define _NTO_CHF_STICKY				0x0100
+#define _NTO_CHF_REPLY_LEN		0x0080
+#define _NTO_CHF_STICKY			0x0100
 #define _NTO_CHF_ASYNC_NONBLOCK		0x0200
-#define _NTO_CHF_ASYNC				0x0400
-#define _NTO_CHF_GLOBAL				0x0800
+#define _NTO_CHF_ASYNC			0x0400
+#define _NTO_CHF_GLOBAL			0x0800
 
 
 /*
@@ -393,10 +386,11 @@ struct _thread_runmask {
 #define _NTO_COF_ASYNC			0x0200
 #define _NTO_COF_GLOBAL			0x0400
 
-/* If the 2nd from top bit is set then we don't use the fd connection vector. */
+/* If the 2nd from top bit is set then we don't use the fd connection vector */
 #define _NTO_SIDE_CHANNEL		((~0u ^ (~0u >> 1)) >> 1)
-/* If the 2nd from top bit is set in the channel id, then it is a global channel. */
-#define _NTO_GLOBAL_CHANNEL		((~0u ^ (~0u >> 1)) >> 1)
+
+/* If the 2nd from top bit is set in the channel id, then it is a global channel */
+#define QRV_GLOBAL_CHANNEL		((~0u ^ (~0u >> 1)) >> 1)
 
 
 /*
@@ -405,7 +399,7 @@ struct _thread_runmask {
  */
 #define _NTO_TIMEOUT_MASK		((1 << STATE_MAX) - 1)
 #define _NTO_TIMEOUT_ACTIVE		(1 << STATE_MAX)
-#define _NTO_TIMEOUT_IMMEDIATE	(1 << (STATE_MAX+1))
+#define _NTO_TIMEOUT_IMMEDIATE		(1 << (STATE_MAX+1))
 
 /*
  * Flag bits for InterruptAttach[Event]

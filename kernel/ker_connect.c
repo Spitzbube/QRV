@@ -21,10 +21,11 @@
 int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
 {
     PROCESS *prpc, *prps;
-    CHANNEL *chp;
+    tChannel *chp;
     CONNECT *cop, *cop_master = NULL;
     VECTOR *vec, *newvec;
-    int i, coid, scoid, chid, special;
+    int i, coid, scoid, special;
+    unsigned chid;
     unsigned status;
 
     prpc = act->process;
@@ -66,12 +67,14 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
     kap->pid = prps->pid;
 
     vec = &prps->chancons;
-    if ((chid = kap->chid) & _NTO_GLOBAL_CHANNEL) {
+    chid = kap->chid;
+    if (chid & _NTO_GLOBAL_CHANNEL) {
         vec = &chgbl_vector;
         chid &= ~_NTO_GLOBAL_CHANNEL;
     }
     // Make sure channel is valid.
-    if ((chp = vector_lookup(vec, chid)) == NULL || chp->type != TYPE_CHANNEL) {
+    chp = vector_lookup(vec, (int)chid);
+    if (chp == NULL || chp->type != TYPE_CHANNEL) {
         return ESRCH;
     }
 
@@ -87,45 +90,40 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
         // Scan for an existing connection in either channel vector.
         for (vec = &prpc->fdcons;;) {
             for (i = 0; i < vec->nentries; ++i) {
-                if ((cop = VECP2(cop, vec, i))) {
-                    if (cop->type == TYPE_CONNECTION &&
-                        cop->process == prpc &&
-                        cop->channel &&
-                        cop->links &&
-                        (cop->flags & COF_NETCON) == 0 &&
-                        cop->un.lcl.pid == kap->pid &&
-                        cop->un.lcl.chid == kap->chid &&
-                        ND_NODE_CMP(cop->un.lcl.nd, kap->nd) == 0) {
-                        if (cop->un.lcl.nd != kap->nd) {
-                            /* same connection, different quality of service */
-                            if (cop_master == NULL) {
-                                cop_master = (cop->flags & COF_VCONNECT) ? cop->un.lcl.cop : cop;
-                            }
-                        } else {
-                            lock_kernel();
-                            if ((coid =
-                                 vector_add(newvec, cop, kap->index & ~_NTO_SIDE_CHANNEL)) == -1) {
-                                return EAGAIN;
-                            }
-                            // Check coid is allowed
-                            if ((kap->index & _NTO_SIDE_CHANNEL) == 0 && !special
-                                && coid >= prpc->rlimit_vals_soft[RLIMIT_NOFILE]) {
-                                vector_rem(newvec, coid);
-                                return EMFILE;
-                            }
-
-                            ++cop->links;
-
-                            if (kap->flags & _NTO_COF_CLOEXEC) {
-                                vector_flag(newvec, coid, 1);
-                            }
-
-                            status = coid | (kap->index & _NTO_SIDE_CHANNEL);
-                            SETKSTATUS(act, status);
-                            prpc->nfds++;
-
-                            return ENOERROR;
+                cop = VECP2(cop, vec, i);
+                if (cop && cop->type == TYPE_CONNECTION && cop->process == prpc &&
+                    cop->channel && cop->links && (cop->flags & COF_NETCON) == 0 &&
+                    cop->un.lcl.pid == kap->pid && cop->un.lcl.chid == kap->chid &&
+                    ND_NODE_CMP(cop->un.lcl.nd, kap->nd) == 0) {
+                    if (cop->un.lcl.nd != kap->nd) {
+                        /* same connection, different quality of service */
+                        if (cop_master == NULL) {
+                            cop_master = (cop->flags & COF_VCONNECT) ? cop->un.lcl.cop : cop;
                         }
+                    } else {
+                        lock_kernel();
+                        if ((coid =
+                             vector_add(newvec, cop, kap->index & ~_NTO_SIDE_CHANNEL)) == -1) {
+                            return EAGAIN;
+                        }
+                        // Check coid is allowed
+                        if ((kap->index & _NTO_SIDE_CHANNEL) == 0 && !special
+                            && coid >= prpc->rlimit_vals_soft[RLIMIT_NOFILE]) {
+                            vector_rem(newvec, coid);
+                            return EMFILE;
+                        }
+
+                        ++cop->links;
+
+                        if (kap->flags & _NTO_COF_CLOEXEC) {
+                            vector_flag(newvec, coid, 1);
+                        }
+
+                        status = coid | (kap->index & _NTO_SIDE_CHANNEL);
+                        SETKSTATUS(act, status);
+                        prpc->nfds++;
+
+                        return ENOERROR;
                     }
                 }
             }
@@ -232,7 +230,7 @@ int kdecl ker_connect_detach(THREAD * act, struct kerargs_connect_detach *kap)
 {
     PROCESS *prp = act->process;
     CONNECT *cop;
-    CHANNEL *chp;
+    tChannel *chp;
     VECTOR *vec;
     int coid;
 
@@ -367,7 +365,7 @@ int kdecl ker_connect_server_info(THREAD * act, struct kerargs_connect_server_in
     PROCESS *prp;
     VECTOR *vec;
     CONNECT *cop;
-    CHANNEL *chp;
+    tChannel *chp;
     unsigned coid;
     unsigned flags;
     struct _server_info *sep;
@@ -453,7 +451,7 @@ int kdecl ker_connect_client_info(THREAD * act, struct kerargs_connect_client_in
 {
     PROCESS *prp = act->process;
     CONNECT *cop;
-    CHANNEL *chp;
+    tChannel *chp;
     CLIENT *clp;
     int scoid = kap->scoid & ~_NTO_SIDE_CHANNEL;
 

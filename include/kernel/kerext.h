@@ -29,7 +29,7 @@ void DebugInstall(int code);
 int DebugAttach(pid_t pid, unsigned flags);
 int DebugDetach(pid_t pid);
 int DebugProcess(enum nto_debug_request request, pid_t pid, int tid, union nto_debug_data *data);
-int DebugChannel(CHANNEL * chp, debug_channel_t * data);
+int DebugChannel(tChannel * chp, debug_channel_t * data);
 int PageFaultWait(struct fault_info *);
 int PageWait(uintptr_t vaddr, unsigned flags, pid_t pid, int code);
 int PageCont(pid_t pid, int tid, int err);

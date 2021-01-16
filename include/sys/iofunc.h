@@ -339,7 +339,9 @@ extern int iofunc_unlock_ocb_default(resmgr_context_t *__ctp, void *__reserved, 
 extern int iofunc_utime_default(resmgr_context_t *__ctp, io_utime_t *__msg, iofunc_ocb_t *__ocb);
 extern int iofunc_write_default(resmgr_context_t *__ctp, io_write_t *__msg, iofunc_ocb_t *__ocb);
 extern int iofunc_sync_default(resmgr_context_t *__ctp, io_sync_t *__msg, iofunc_ocb_t *__ocb);
+#ifdef CONFIG_POWER_MANAGEMENT
 extern int iofunc_power_default(resmgr_context_t *__ctp, io_power_t *__msg, iofunc_ocb_t *__ocb);
+#endif
 /* If iofunc_lock_default is used, iofunc_close_dup_default and iofunc_unblock_default must be used */
 
 /* Used by iofunc's for multithread protection */
@@ -401,7 +403,9 @@ extern int iofunc_stat(resmgr_context_t *__ctp, iofunc_attr_t *__attr, struct st
 extern int iofunc_unblock(resmgr_context_t *__ctp, iofunc_attr_t *__attr);
 extern int iofunc_utime(resmgr_context_t *__ctp, io_utime_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
 extern int iofunc_sync(resmgr_context_t *__ctp, iofunc_ocb_t *__ocb, int __ioflag);
+#ifdef CONFIG_POWER_MANAGEMENT
 extern int iofunc_power(resmgr_context_t *__ctp, io_power_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
+#endif
 
 /* Used to force invalid times to be updated */
 extern int iofunc_time_update(iofunc_attr_t *__attr);

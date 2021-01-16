@@ -45,7 +45,7 @@ int xferlen(THREAD * thp, IOV * iov, int parts)
     jmp_buf env;
 
     if (parts < 0) {
-        return (-parts);
+        return -parts;
     }
 #ifndef NDEBUG
     /* Make sure iov's address space is accessable */

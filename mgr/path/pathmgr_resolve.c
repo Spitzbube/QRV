@@ -206,7 +206,7 @@ int pathmgr_resolve_servers(resmgr_context_t * ctp, struct node_entry *node,
     }
 
     for (n = node;; n = n->parent) {
-        union object *o;
+        tPathMgrObject *o;
 
         pathmgr_node_access(n);
 

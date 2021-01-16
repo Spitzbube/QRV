@@ -15,8 +15,8 @@
  * $
  */
 
-#ifndef __KEREXTERNS_H
-#define __KEREXTERNS_H
+#ifndef _KEREXTERNS_H
+#define _KEREXTERNS_H
 
 
 #define __KERNEL_H_INCLUDED
@@ -31,6 +31,7 @@
 #include <sys/syspage.h>
 
 #include <string.h>
+#include <stdlib.h>
 #include <stddef.h>
 #include <errno.h>
 #include <signal.h>
@@ -64,7 +65,8 @@
 #ifdef CONFIG_ASYNC_MSG
 #include <sys/asyncmsg.h>
 #endif
-#include "smpswitch.h"
+#include <kernel/smpswitch.h>
+
 #include "kermacros.h"
 #include "kerargs.h"
 #include "kertrace.h"
@@ -105,8 +107,8 @@
     // Some debug globals. The code never touches them but you can assign
     // them values via wd to simplify structure viewing of void * ptrs.
 EXT PROCESS *__prp;
-EXT THREAD *__thp;
-EXT CHANNEL *__chp;
+EXT tThread *__thp;
+EXT tChannel *__chp;
 EXT CONNECT *__cop;
 EXT TIMER *__tip;
 EXT unsigned stats[4];
@@ -126,7 +128,7 @@ EXT int fpuemul;
 EXT int nohalt;
 EXT unsigned user_boundry_addr INIT1(VM_USER_SPACE_BOUNDRY);
 EXT int ker_verbose;
-EXT int limits_max[LIMITS_NUM];
+EXT long limits_max[LIMITS_NUM];
 EXT unsigned max_fds INIT1(1000);
 EXT unsigned fd_close_timeout INIT1(30);
 EXT unsigned priv_prio INIT1(64);
@@ -156,18 +158,17 @@ EXT unsigned intrinfo_num;
 EXT unsigned __cpu_flags;
 EXT NET net;
 EXT PROCMGR procmgr;
-EXT int num_processors;
 EXT int scheduler_type;         //one of SCHEDULER_TYPE_* values in kermacros.h
 
 EXT int (rdecl * debug_process_stopped) (PROCESS * prp, int signo, int sigcode, int sigval,
                                          int sender);
-EXT int (rdecl * debug_thread_fault) (THREAD * thp, siginfo_t * info);
-EXT int (rdecl * debug_thread_signal) (THREAD * thp, int signo, int sigcode, int sigval,
+EXT int (rdecl * debug_thread_fault) (tThread * thp, siginfo_t * info);
+EXT int (rdecl * debug_thread_signal) (tThread * thp, int signo, int sigcode, int sigval,
                                        int sender);
 EXT int (rdecl * debug_process_exit) (PROCESS * prp, int priority);
 EXT void (rdecl * debug_attach_brkpts) (DEBUG * dep);
 EXT void (rdecl * debug_detach_brkpts) (DEBUG * dep);
-EXT void (rdecl * debug_moduleinfo) (PROCESS * prp, THREAD * thp, void *dbg);
+EXT void (rdecl * debug_moduleinfo) (PROCESS * prp, tThread * thp, void *dbg);
 EXT void (*sched_trace_initial_parms)();
 EXT DISPATCH *(*init_scheduler)(void) INIT1(init_scheduler_default);
 
@@ -182,7 +183,7 @@ EXT unsigned rr_interval_mul INIT1(_NTO_RR_INTERVAL_MUL_DEFAULT);
 EXT volatile unsigned inkernel;
 #endif
 #if !COND_EXT(HAVE_ACTIVES_STORAGE)
-EXT THREAD *actives[PROCESSORS_MAX];
+EXT tThread *actives[PROCESSORS_MAX];
 #endif
 EXT int inspecret;
 EXT PROCESS *actives_prp[PROCESSORS_MAX];
@@ -192,12 +193,12 @@ EXT struct cpupage_entry *cpupageptr[PROCESSORS_MAX];
 #if !COND_EXT(HAVE_KERSTACK_STORAGE)
 EXT uintptr_t ker_stack[PROCESSORS_MAX];
 #endif
-EXT THREAD *actives_fpu[PROCESSORS_MAX];
+EXT tThread *actives_fpu[PROCESSORS_MAX];
 EXT int nopreempt;
-EXT MEMMGR memmgr;
+EXT tMemMgr memmgr;
 EXT memclass_id_t sys_memclass_id;  // generic system ram memory class
-EXT void (rdecl * mark_running) (THREAD * act);
-EXT THREAD *actives_pcr[PROCESSORS_MAX];
+EXT void (rdecl * mark_running) (tThread * act);
+EXT tThread *actives_pcr[PROCESSORS_MAX];
 EXT HASH sync_hash INIT1(0x3ff);    // Must be a mask
 
 
@@ -205,7 +206,7 @@ EXT HASH sync_hash INIT1(0x3ff);    // Must be a mask
 EXT INTREVENT *intrevent_pending;
 EXT volatile unsigned queued_event_priority;
 EXT struct intrinfo_entry *intrinfoptr;
-EXT INTRLEVEL *interrupt_level;
+EXT tIntrLevel *interrupt_level;
 EXT int intrs_aps_critical INIT1(1);
 EXT struct _thread_local_storage intr_tls INIT3(0, 0, &intr_tls.__errval);
 EXT int intrespsave;
@@ -226,22 +227,22 @@ EXT struct qtime_entry *qtimeptr;
 EXT struct syspage_entry *_syspage_ptr;
 EXT SSREPLENISH *ss_replenish_list;
 EXT int (rdecl * scheduler_tick_hook) ();   /* return true if the current thread's timeslice should be ended */
-EXT int (rdecl * kerop_thread_create_hook) (THREAD * act, PROCESS * prp,
+EXT int (rdecl * kerop_thread_create_hook) (tThread * act, PROCESS * prp,
                                             const struct sigevent * evp,
-                                            unsigned thread_create_flags, THREAD * thp);
-EXT void (rdecl * kerop_thread_destroy_hook) (THREAD * thp);
-EXT void (rdecl * kerop_clock_handler_hook) (THREAD * act);
-EXT void (rdecl * kerop_microaccount_hook) (THREAD * old, THREAD * new);
+                                            unsigned thread_create_flags, tThread * thp);
+EXT void (rdecl * kerop_thread_destroy_hook) (tThread * thp);
+EXT void (rdecl * kerop_clock_handler_hook) (tThread * act);
+EXT void (rdecl * kerop_microaccount_hook) (tThread * old, tThread * new);
 extern unsigned arch_callout_timer_value(struct qtime_entry *);
 
-EXT int (rdecl * kerop_thread_ctl_hook) (THREAD * act, THREAD * op,
+EXT int (rdecl * kerop_thread_ctl_hook) (tThread * act, tThread * op,
                                          struct kerargs_thread_ctl * kap);
 EXT int (*kdinvoke_hook)(union kd_request * r);
 
 // vendor hooks
-EXT void (rdecl * interrupt_hook) (INTRLEVEL * ilp);
-EXT void (rdecl * sync_mutex_lock_hook_for_block) (THREAD * thp);
-EXT void (rdecl * clock_handler_hook_for_ts_preemption) (THREAD * act, unsigned int reschedl);
+EXT void (rdecl * interrupt_hook) (tIntrLevel * ilp);
+EXT void (rdecl * sync_mutex_lock_hook_for_block) (tThread * thp);
+EXT void (rdecl * clock_handler_hook_for_ts_preemption) (tThread * act, unsigned int reschedl);
 EXT void (rdecl * sync_create_hook) (PROCESS * prp);
 EXT void (rdecl * sync_destroy_hook) (PROCESS * prp, sync_t * sync);
 EXT uint64_t(rdecl * intrevent_drain_hook_enter) (void);
@@ -250,49 +251,49 @@ EXT void (rdecl * timer_expiry_hook_max_timer_fires) (unsigned int nfires);
 
 
 // MT tracer extends
-EXT THREAD *mt_controller_thread;
+EXT tThread *mt_controller_thread;
 EXT int mt_flush_evt_channel;
 EXT uintptr_t mt_tracebuf_addr;
 
 
 // Object allocator - put most-used object pools at beginning.
 EXT int alloc_critical;
-EXT SOUL pulse_souls INITSOUL(LIMITS_PULSE, sizeof(PULSE), 64, SOUL_CRITICAL, 0);
-EXT SOUL sync_souls INITSOUL(LIMITS_SYNC, sizeof(SYNC), 64, 0, 0);
-EXT SOUL timer_souls INITSOUL(LIMITS_TIMER, sizeof(TIMER), 12, 0, 0);
-EXT SOUL thread_souls INITSOUL(LIMITS_THREAD, sizeof(THREAD), 24, 0, 0);
-EXT SOUL connect_souls INITSOUL(LIMITS_CONNECT, sizeof(CONNECT), 64, 0, 0);
-EXT SOUL channel_souls INITSOUL(LIMITS_CHANNEL, sizeof(CHANNEL), 8, 0, 0);
-EXT SOUL process_souls INITSOUL(LIMITS_PROCESS, sizeof(PROCESS), 12, 0, 0);
-EXT SOUL chasync_souls INITSOUL(LIMITS_CHANNEL, sizeof(CHANNELASYNC), 8, 0, 0);
-EXT SOUL chgbl_souls INITSOUL(LIMITS_CHANNEL, sizeof(CHANNELGBL), 8, 0, 0);
-EXT SOUL interrupt_souls INITSOUL(LIMITS_INTERRUPT, sizeof(INTERRUPT), 8, 0, 0);
-EXT SOUL syncevent_souls INITSOUL(LIMITS_SYNCEVENT, sizeof(SYNCEVENT), 4, 0, 0);
-EXT SOUL fpu_souls INITSOUL(0, sizeof(FPU_REGISTERS), 4, 0, FPUDATA_ALIGN);
-EXT SOUL sigtable_souls INITSOUL(0, sizeof(SIGTABLE), 8, 0, 0);
-EXT SOUL client_souls INITSOUL(0, sizeof(CLIENT), 4, 0, 0);
-EXT SOUL credential_souls INITSOUL(0, sizeof(CREDENTIAL), 4, 0, 0);
-EXT SOUL limits_souls INITSOUL(0, sizeof(LIMITS), 4, 0, 0);
-EXT SOUL vthread_souls INITSOUL(0, SIZEOF_VTHREAD, 4, 0, 0);
-EXT SOUL debug_souls INITSOUL(0, sizeof(DEBUG), 1, 0, 0);
-EXT SOUL breakpt_souls INITSOUL(0, sizeof(BREAKPT), 1, SOUL_CRITICAL, 0);
-EXT SOUL ssinfo_souls INITSOUL(0, sizeof(SSINFO), 1, 0, 0);
-EXT SOUL threadname_souls INITSOUL(0, THREAD_NAME_FIXED_SIZE, 1, 0, 0);
+EXT tSoul pulse_souls INITSOUL(LIMITS_PULSE, sizeof(PULSE), 64, SOUL_CRITICAL, 0);
+EXT tSoul sync_souls INITSOUL(LIMITS_SYNC, sizeof(SYNC), 64, 0, 0);
+EXT tSoul timer_souls INITSOUL(LIMITS_TIMER, sizeof(TIMER), 12, 0, 0);
+EXT tSoul thread_souls INITSOUL(LIMITS_THREAD, sizeof(tThread), 24, 0, 0);
+EXT tSoul connect_souls INITSOUL(LIMITS_CONNECT, sizeof(CONNECT), 64, 0, 0);
+EXT tSoul channel_souls INITSOUL(LIMITS_CHANNEL, sizeof(tChannel), 8, 0, 0);
+EXT tSoul process_souls INITSOUL(LIMITS_PROCESS, sizeof(PROCESS), 12, 0, 0);
+EXT tSoul chasync_souls INITSOUL(LIMITS_CHANNEL, sizeof(CHANNELASYNC), 8, 0, 0);
+EXT tSoul chgbl_souls INITSOUL(LIMITS_CHANNEL, sizeof(CHANNELGBL), 8, 0, 0);
+EXT tSoul interrupt_souls INITSOUL(LIMITS_INTERRUPT, sizeof(INTERRUPT), 8, 0, 0);
+EXT tSoul syncevent_souls INITSOUL(LIMITS_SYNCEVENT, sizeof(SYNCEVENT), 4, 0, 0);
+EXT tSoul fpu_souls INITSOUL(0, sizeof(FPU_REGISTERS), 4, 0, FPUDATA_ALIGN);
+EXT tSoul sigtable_souls INITSOUL(0, sizeof(SIGTABLE), 8, 0, 0);
+EXT tSoul client_souls INITSOUL(0, sizeof(CLIENT), 4, 0, 0);
+EXT tSoul credential_souls INITSOUL(0, sizeof(CREDENTIAL), 4, 0, 0);
+EXT tSoul limits_souls INITSOUL(0, sizeof(LIMITS), 4, 0, 0);
+EXT tSoul vthread_souls INITSOUL(0, SIZEOF_VTHREAD, 4, 0, 0);
+EXT tSoul debug_souls INITSOUL(0, sizeof(DEBUG), 1, 0, 0);
+EXT tSoul breakpt_souls INITSOUL(0, sizeof(BREAKPT), 1, SOUL_CRITICAL, 0);
+EXT tSoul ssinfo_souls INITSOUL(0, sizeof(SSINFO), 1, 0, 0);
+EXT tSoul threadname_souls INITSOUL(0, THREAD_NAME_FIXED_SIZE, 1, 0, 0);
 
 
 // High-bandwidth scheduler variables/func pointers
 EXT volatile uint64_t ss_replenish_time;
-EXT int (rdecl * may_thread_run) (THREAD * thp);
-EXT void (rdecl * block_and_ready) (THREAD * thp);
-EXT void (rdecl * ready) (THREAD * thp);
-EXT THREAD *(rdecl * select_thread) (THREAD * act, int cpu, int prio);
-EXT void (rdecl * adjust_priority) (THREAD * thp, int prio, DISPATCH * dpp, int priority_inherit);
+EXT int (rdecl * may_thread_run) (tThread * thp);
+EXT void (rdecl * block_and_ready) (tThread * thp);
+EXT void (rdecl * ready) (tThread * thp);
+EXT tThread *(rdecl * select_thread) (tThread * act, int cpu, int prio);
+EXT void (rdecl * adjust_priority) (tThread * thp, int prio, DISPATCH * dpp, int priority_inherit);
 EXT void (rdecl * resched) (void);
 EXT void (rdecl * yield) (void);
 
 
 // SMP variables
-EXT THREAD *need_to_run INIT1(NULL);
+EXT tThread *need_to_run INIT1(NULL);
 EXT int need_to_run_cpu INIT1(-1);
 EXT void *kercallptr;
 EXT char alives[PROCESSORS_MAX];
@@ -411,99 +412,10 @@ EXT uint32_t int_exit_enable_mask;
 extern int kdecl(*_trace_ker_call_table[]) ();
 extern int kdecl(*_trace_call_table[]) ();
 
-#endif
+#endif /* KERDEFN */
+
+#include <arch/defs_proto.h>
 
 EXT int signal_kill_updates_terming_priority INIT1(1);
 
-#if defined(__X86__)
-
-EXT short unsigned ker_cs INIT1(0x80);
-EXT short unsigned ker_ds INIT1(0x27);
-EXT short unsigned ker_ss INIT1(0x88);
-EXT short unsigned ker2_cs INIT1(0x90);
-EXT short unsigned sys_cs INIT1(0x1d);
-EXT short unsigned sys_ds INIT1(0x27);
-EXT short unsigned sys_ss INIT1(0x99);
-EXT short unsigned usr_cs INIT1(0x1f);
-EXT short unsigned usr_ds INIT1(0x27);
-EXT short unsigned usr_ss INIT1(0x27);
-EXT X86_TSS *tss[PROCESSORS_MAX];
-EXT short unsigned cpupage_segs[PROCESSORS_MAX];
-EXT unsigned realmode_addr;
-EXT volatile unsigned *__inkp INIT1(&inkernel); // For debugging
-EXT unsigned fault_code;
-EXT unsigned startup_cpunum;
-
-EXT X86_PERFREGS disabled_perfregs;
-
-#elif defined(__PPC__)
-
-EXT unsigned ppc_ienable_bits INIT1(PPC_MSR_EE);
-EXT union ppc_alt_regs *actives_alt[PROCESSORS_MAX];
-EXT void (*tlb_flush_all)(void);
-    // The size field is filled in at runtime.
-EXT SOUL alt_souls INITSOUL(0, 0, 2, 0, 16);
-
-#if defined(VARIANT_booke)
-EXT unsigned ppcbke_tlb_select;
-#endif
-
-EXT PPC_PERFREGS disabled_perfregs;
-
-#elif defined(__MIPS__)
-
-EXT void *l1pagetable;
-EXT volatile unsigned long *__shadow_imask;
-EXT void *sys_kercallptr;
-
-#if defined(VARIANT_smp)
-        //INIT1() values used while kernel is initializing
-EXT uintptr_t ker_stack_bot INIT1(0x80000000);
-EXT uintptr_t ker_stack_top INIT1(0xffffffff);
-#endif
-
-EXT MIPS_PERFREGS disabled_perfregs;
-
-#elif defined(__C6X__)
-
-#elif defined(__ARM__)
-
-EXT unsigned mmu_domain[PROCESSORS_MAX];
-EXT void (*mmu_abort)(CPU_REGISTERS *);
-EXT uint64_t last_cycles;
-#if defined(VARIANT_v6) && !defined(VARIANT_smp)
-        /*
-         * We need to clear the ARMv6 exclusive monitor on context switches:
-         * - on SMP (ARMv6K architectures) we can use clrex.
-         * - on non-ARMv6K, we need to perform a dummy strex, so we provide
-         *   dummy_strex as a safe location to perform the store.
-         */
-EXT unsigned dummy_strex;
-#endif
-
-#elif defined(__SH__)
-
-EXT volatile unsigned long *__shadow_imask;
-EXT volatile unsigned long *__cpu_imask[PROCESSORS_MAX];
-
-#if defined(VARIANT_smp)
-        /*
-         * These are required to ensure that am_inkernel will return true
-         * during early initialisation.
-         * They will be assigned to their real values by ker_start().
-         */
-EXT uintptr_t ker_stack_bot INIT1(0x80000000);
-EXT uintptr_t ker_stack_top INIT1(0xffffffff);
-#endif
-
-#elif defined(__RISCV__)
-EXT unsigned mmu_domain[PROCESSORS_MAX];
-EXT void (*mmu_abort)(CPU_REGISTERS *);
-EXT uint64_t last_cycles;
-#else
-
-#error not configured for system
-
-#endif
-
-#endif
+#endif /* _KEREXTERNS_H */

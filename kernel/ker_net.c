@@ -286,5 +286,3 @@ int kdecl ker_net_signal_kill(THREAD * act, struct kerargs_net_signal_kill *kap)
     // send the signal
     return do_ker_signal_kill(act, &args);
 }
-
-__SRCVERSION("ker_net.c $Rev: 207484 $");

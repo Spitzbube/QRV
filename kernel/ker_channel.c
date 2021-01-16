@@ -1,27 +1,25 @@
-/*
- * $QNXLicenseC:
- * Copyright 2007, QNX Software Systems. All Rights Reserved.
+/**
+ * \file ker_channel.c
  *
- * You must obtain a written license from and pay applicable license fees to QNX
- * Software Systems before you may reproduce, modify or distribute this software,
- * or any work that includes all or part of this software.   Free development
- * licenses are available for evaluation and non-commercial purposes.  For more
- * information visit http://licensing.qnx.com or email licensing@qnx.com.
+ * Channel creation and manipulation routines.
  *
- * This file may contain contributions from others.  Please review this entire
- * file for other proprietary rights or license notices, as well as the QNX
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/
- * for other information.
- * $
+ * \copyright 2007, QNX Software Systems. All Rights Reserved.
+ *
+ * 64-bit conversion (c) 2021 Yuri Zaporozhets <r_tty@yahoo.co.uk>
+ *
+ * \license QNX NCEULA 1.01
+ *          http://www.qnx.com/legal/licensing/dev_license/eula/nceula1_01.html
  */
 
 #include "externs.h"
 
-
+/**
+ * \brief Create a channel.
+ */
 int kdecl ker_channel_create(THREAD * act, struct kerargs_channel_create *kap)
 {
     PROCESS *prp;
-    CHANNEL *chp;
+    tChannel *chp;
     int chid;
     SOUL *souls;
     VECTOR *chvec;
@@ -79,7 +77,8 @@ int kdecl ker_channel_create(THREAD * act, struct kerargs_channel_create *kap)
         net.chp = chp;
     }
     // Add the channel to the channels vector.
-    if ((chid = vector_add(chvec, chp, 1)) == -1) {
+    chid = vector_add(chvec, chp, 1);
+    if (chid == -1) {
         object_free(prp, &channel_souls, chp);
         if (kap->flags & _NTO_CHF_NET_MSG) {
             net.prp = NULL;
@@ -98,7 +97,7 @@ int kdecl ker_channel_create(THREAD * act, struct kerargs_channel_create *kap)
         if (kap->flags & _NTO_CHF_GLOBAL) {
             CHANNELGBL *chgbl = (CHANNELGBL *) chp;
 
-            chid |= _NTO_GLOBAL_CHANNEL;
+            SET_GLOBAL_CHAN(chid);
             chgbl->event.sigev_notify = SIGEV_NONE;
             chgbl->max_num_buffer = kap->maxbuf;
             chgbl->buffer_size = kap->bufsize;
@@ -154,7 +153,7 @@ static void clear_msgxfer(THREAD * thp)
         return;
     }
     if (thp->state == STATE_SEND) {
-        pril_rem(&((CHANNEL *) thp->blocked_on)->send_queue, thp);
+        pril_rem(&((tChannel *) thp->blocked_on)->send_queue, thp);
     } else {
         LINKPRIL_REM(thp);
     }
@@ -171,7 +170,7 @@ static void clear_msgxfer(THREAD * thp)
 int kdecl ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
 {
     PROCESS *prp;
-    CHANNEL *chp;
+    tChannel *chp;
     CONNECT *cop;
     THREAD *thp;
     int i, chid;
@@ -182,8 +181,8 @@ int kdecl ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
 
     chid = kap->chid;
     chvec = &prp->chancons;
-    if (chid & _NTO_GLOBAL_CHANNEL) {
-        chid &= ~_NTO_GLOBAL_CHANNEL;
+    if (IS_GLOBAL_CHAN_SET(chid)) {
+        CLEAR_GLOBAL_CHAN(chid);
         chvec = &chgbl_vector;
     }
     // Make sure the channel is valid.

@@ -111,7 +111,7 @@ __END_DECLS
 #define EDEADLOCK       56      /* File locking deadlock                    */
 #endif
 #define EBFONT          57      /* Bad font file format                     */
-#define EOWNERDEAD		58      /* Owner died holding lock                  */
+#define EOWNERDEAD      58      /* Owner died holding lock                  */
 #if 1                           /* stream problems */
 #define ENOSTR          60      /* Device not a stream                      */
 #define ENODATA         61      /* No data (for no delay io)                */

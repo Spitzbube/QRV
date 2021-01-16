@@ -344,5 +344,3 @@ int rdecl ppg_tick_hook(void)
     }
 }
 
-
-__SRCVERSION("aps_time.c $Rev: 163913 $");

@@ -112,10 +112,10 @@ static pthread_mutex_t SemaphoreMutex = PTHREAD_MUTEX_INITIALIZER;
 static char *name_sem(char *name)
 {
     if (*name == '\0')
-        return (NULL);
+        return NULL;
     if (strncmp(&NamedSemaphores.name[1], name, PrefixLength) || name[PrefixLength] != '/')
-        return (name);
-    return (&name[PrefixLength + 1]);
+        return name;
+    return &name[PrefixLength + 1];
 }
 
 /*

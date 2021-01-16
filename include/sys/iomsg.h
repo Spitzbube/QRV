@@ -69,10 +69,6 @@
 #include <sys/iomgr.h>
 #endif
 
-#ifndef	__PM_H_INCLUDED
-#include <sys/pm.h>
-#endif
-
 __BEGIN_DECLS
 
 /*
@@ -784,6 +780,10 @@ struct _io_power {
     _Int32t mode;
 };
 
+#ifdef CONFIG_POWER_MANAGEMENT
+
+#include <sys/pm.h>
+
 /* struct _io_power subtype */
 enum _io_power_subtypes {
     _IO_POWER_GET,
@@ -798,6 +798,7 @@ typedef union {
 /*  pm_power_mode_t				modes[mode];       for _IO_POWER_MODES	*/
 /*  pmd_mode_attr_t				modes[mode];       for _IO_POWER_MODES	*/
 } io_power_t;
+#endif
 
 __END_DECLS
 #endif

@@ -34,7 +34,7 @@
 #define emm_map_xfer		smm_map_xfer
 #define emm_vaddrinfo		smm_vaddrinfo
 #define emm_validate		smm_validate
-#define emm_madvise			smm_madvise
+#define emm_madvise		smm_madvise
 #define emm_memobj_phys		smm_memobj_phys
 
 MEMMGR memmgr_rte = {

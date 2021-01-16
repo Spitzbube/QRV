@@ -1038,7 +1038,7 @@ void comm_em_signal(THREAD * thp, siginfo_t * s_i)
 }
 
 // Intercepts interrupt entries
-void add_ktrace_int_handler_enter(INTRLEVEL * lp, INTERRUPT * isr)
+void add_ktrace_int_handler_enter(tIntrLevel * lp, INTERRUPT * isr)
 {
     uint32_t l = _TRACE_INT_LEV(lp);
 
@@ -1071,7 +1071,7 @@ void add_ktrace_int_handler_enter(INTRLEVEL * lp, INTERRUPT * isr)
 }
 
 // Intercepts interrupt exits
-void add_ktrace_int_handler_exit(INTRLEVEL * lp, const struct sigevent *ev)
+void add_ktrace_int_handler_exit(tIntrLevel * lp, const struct sigevent *ev)
 {
     uint32_t l = _TRACE_INT_LEV(lp);
 
@@ -1102,7 +1102,7 @@ void add_ktrace_int_handler_exit(INTRLEVEL * lp, const struct sigevent *ev)
 }
 
 // Intercepts interrupt entries
-void add_ktrace_int_enter(INTRLEVEL * lp)
+void add_ktrace_int_enter(tIntrLevel * lp)
 {
     uint32_t l = _TRACE_INT_LEV(lp);
 
@@ -1125,7 +1125,7 @@ void add_ktrace_int_enter(INTRLEVEL * lp)
 }
 
 // Intercepts interrupt exits
-void add_ktrace_int_exit(INTRLEVEL * lp)
+void add_ktrace_int_exit(tIntrLevel * lp)
 {
     uint32_t l = _TRACE_INT_LEV(lp);
 
@@ -1679,5 +1679,3 @@ void trace_emit_sys_aps_bankruptcy(uint32_t id, pid_t pid, int32_t tid)
     _TRACE_SYS_APS_BANKRUPTCY(id, pid, tid);
     return;
 }
-
-__SRCVERSION("nano_trace.c $Rev: 206799 $");

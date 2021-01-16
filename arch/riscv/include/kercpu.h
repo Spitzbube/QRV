@@ -17,6 +17,7 @@
 
 #include <stdbool.h>
 #include <sys/types.h>
+#include <kernel/posix_types.h>
 #include <arch/cpu_def.h>
 
 #define xfer_setjmp(_env)			_setjmp(_env)
@@ -54,52 +55,26 @@
 #define PHYS_TO_PTR(phys)		((void *)RISCV_PHYS_TO_KSEG0(phys))
 #define PTR_TO_PHYS(ptr)		((uintptr_t)RISCV_KSEG0_TO_PHYS(ptr))
 
-#if 0
+
 #define rd_probe_1(ptr)	({ __attribute__((unused)) uint32_t dummy = *(const volatile uint32_t *)(ptr); })
 
+#if 0
 inline static void rd_probe_num(const void *loc, int num) {
-	ulong_t tmp;
-
-	asm volatile (
-		".set noreorder ;"
-		"1:	lw %0, 0(%1) ;"
-		"	addiu %2,%2,-1 ;"
-		"   bne %2,$0,1b ;"
-		"	addiu %1,%1,4 ;"
-		".set reorder ;"
-		: "=&r" (tmp),"=&b" (loc),"=&r" (num)
-		: "1" (loc), "2" (num)
-		: "memory"
-		);
+    //ulong_t tmp;
+#warning This function is not implemented yet - stop
+    for(;;);
 }
 
 inline static void wr_probe_1(void *loc) {
-	ulong_t tmp;
-
-	asm volatile (
-		"	lw %0, 0(%1) ;"
-		"	sw %0, 0(%1) ;"
-		: "=&r" (tmp)
-		: "b" (loc)
-		: "memory"
-		);
+    //ulong_t tmp;
+#warning This function is not implemented yet - stop
+    for(;;);
 }
 
 inline static void wr_probe_num(void *loc, int num) {
-	ulong_t tmp;
-
-	asm volatile (
-		".set noreorder ;"
-		"1:	lw %0, 0(%1) ;"
-		"	sw %0, 0(%1) ;"
-		"	addiu %2,%2,-1 ;"
-		"   bne %2,$0,1b ;"
-		"	addiu %1,%1,4 ;"
-		".set reorder ;"
-		: "=&r" (tmp),"=&b" (loc), "=&r" (num)
-		: "1" (loc), "2" (num)
-		: "memory"
-		);
+    //ulong_t tmp;
+#warning This function is not implemented yet - stop
+    for(;;);
 }
 #endif
 

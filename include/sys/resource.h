@@ -57,11 +57,11 @@
 
 #if _FILE_OFFSET_BITS - 0 == 64
 typedef _Uint64t rlim_t;
-#define	RLIM_INFINITY	((rlim_t)-3)    /* A value of rlim_t indicating no limit. */
-#define	RLIM_SAVED_MAX	((rlim_t)-2)    /* A value of type rlim_t indicating an unrepresentable saved hard limit. */
-#define	RLIM_SAVED_CUR	((rlim_t)-1)    /* A value of type rlim_t indicating an unrepresentable saved soft limit. */
+#define	RLIM_INFINITY	((rlim_t)-3L)   /* A value of rlim_t indicating no limit. */
+#define	RLIM_SAVED_MAX	((rlim_t)-2L)   /* A value of type rlim_t indicating an unrepresentable saved hard limit. */
+#define	RLIM_SAVED_CUR	((rlim_t)-1L)   /* A value of type rlim_t indicating an unrepresentable saved soft limit. */
 #else
-typedef unsigned long rlim_t;
+typedef _Uint32t rlim_t;
 #define RLIM_INFINITY   0x7fffffff  /* A value of rlim_t indicating no limit. */
 #define RLIM_SAVED_MAX  0x7ffffffe  /* A value of type rlim_t indicating an unrepresentable saved hard limit. */
 #define RLIM_SAVED_CUR  0x7ffffffd  /* A value of type rlim_t indicating an unrepresentable saved soft limit. */

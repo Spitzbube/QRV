@@ -282,5 +282,3 @@ VALUE(PERFREGS_ENABLED_FLAG, PERFREGS_ENABLED_FLAG);
 //#undef COMMENT_SUFFIX
 //#define COMMENT_SUFFIX __
 #include "cpu_asmoff.h"
-
-__SRCVERSION("asmoff.c $Rev: 199085 $");

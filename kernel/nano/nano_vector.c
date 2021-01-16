@@ -80,10 +80,10 @@ void *rdecl vector_lookup(VECTOR * vec, int id)
 
     /* Do unsigned compare to catch negative values as well */
     if (vec && (unsigned) id < vec->nentries) {
-        return (VECP(ptr, vec, id));
+        return VECP(ptr, vec, id);
     }
 
-    return (NULL);
+    return NULL;
 }
 
 
@@ -93,10 +93,10 @@ void *rdecl vector_lookup2(VECTOR * vec, int id)
 
     /* Do unsigned compare to catch negative values as well */
     if (vec && (unsigned) id < vec->nentries && VECAND(ptr = VEC(vec, id), 1) == 0) {
-        return (VECAND(ptr, ~3));
+        return VECAND(ptr, ~3);
     }
 
-    return (NULL);
+    return NULL;
 }
 
 
@@ -115,10 +115,10 @@ void *rdecl vector_search(VECTOR * vec, unsigned id, unsigned *found)
                     continue;
                 }
             }
-            return (ptr);
+            return ptr;
         }
     }
-    return (NULL);
+    return NULL;
 }
 
 
@@ -152,13 +152,13 @@ int rdecl vector_add(VECTOR * vec, void *object, unsigned index)
             *cur = object;
             --vec->nfree;
             CHECK_VEC(vec);
-            return (i);
+            return i;
         }
     }
 
     // No free spot so we must grow the vector. Max it out at 65K-1.
     if (vec->nentries == VECTOR_MAX) {
-        return (-1);
+        return -1;
     }
 
     if (index >= vec->nentries) {
@@ -185,7 +185,7 @@ int rdecl vector_add(VECTOR * vec, void *object, unsigned index)
     ptr = _scalloc(nentries * sizeof(void *));
 
     if (ptr == NULL) {
-        return (-1);
+        return -1;
     }
     optr = vec->vector;
     memcpy(ptr, optr, vec->nentries * sizeof(void *));
@@ -219,7 +219,7 @@ int rdecl vector_add(VECTOR * vec, void *object, unsigned index)
     vec->nentries = nentries;
 
     // Now that we have grown the vector the add can't fail!
-    return (object ? vector_add(vec, object, index) : index);
+    return object ? vector_add(vec, object, index) : index;
 }
 
 
@@ -229,7 +229,7 @@ void *rdecl vector_rem(VECTOR * vec, unsigned index)
 
     // Verify index is range and that the entry is not already free.
     if (index >= vec->nentries || VECAND(ptr = VEC(vec, index), 1)) {
-        return (NULL);
+        return NULL;
     }
 
     ptr = VECAND(ptr, ~3);
@@ -250,7 +250,7 @@ void *rdecl vector_rem(VECTOR * vec, unsigned index)
     ++vec->nfree;
 
     CHECK_VEC(vec);
-    return (ptr);
+    return ptr;
 }
 
 
@@ -259,12 +259,12 @@ int rdecl vector_flag(VECTOR * vec, unsigned index, int flag)
     void *ptr;
 
     if (index >= vec->nentries || VECAND(ptr = VEC(vec, index), 1)) {
-        return (-1);
+        return -1;
     }
 
     VEC(vec, index) = flag ? VECOR(ptr, 2) : VECAND(ptr, ~2);
 
-    return (0);
+    return 0;
 }
 
 

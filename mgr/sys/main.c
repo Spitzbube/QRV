@@ -15,9 +15,11 @@
  * $
  */
 
-#include "externs.h"
+#include "taskman/externs.h"
 
-
+/**
+ * Main function
+ */
 int main(void)
 {
 

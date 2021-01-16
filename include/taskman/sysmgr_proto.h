@@ -26,14 +26,14 @@ int proc_thread_pool_reserve(void);
 int proc_thread_pool_reserve_done(void);
 
 /* support.c */
-PROCESS *proc_lookup_pid(pid_t pid);
-PROCESS *proc_lock_pid(pid_t pid);
-PROCESS *proc_lock_parent(PROCESS * prp);
-void proc_unlock(PROCESS * prp);
-int proc_error(int ret, PROCESS *);
-int proc_isaccess(PROCESS * prp, struct _msg_info *rcvinfo);
-void *proc_object_alloc(SOUL * soulp);
-void proc_object_free(SOUL * soulp, void *ptr);
+tProcess *proc_lookup_pid(pid_t pid);
+tProcess *proc_lock_pid(pid_t pid);
+tProcess *proc_lock_parent(tProcess * prp);
+void proc_unlock(tProcess * prp);
+int proc_error(int ret, tProcess *);
+int proc_isaccess(tProcess * prp, struct _msg_info *rcvinfo);
+void *proc_object_alloc(tSoul * soulp);
+void proc_object_free(tSoul * soulp, void *ptr);
 int proc_status(resmgr_context_t * ctp, int status);
 int rdecl proc_mux_lock(struct proc_mux_lock **mp);
 int rdecl proc_mux_unlock(struct proc_mux_lock **mp);
@@ -43,11 +43,11 @@ int rdecl proc_mux_haslock(struct proc_mux_lock **mp, int owner);
 int imagefs_mount_mounter(void);
 void *imagefs_mount(paddr_t paddr, unsigned size, unsigned offset, unsigned flags,
                     struct node_entry *root, const char *mountpoint);
-int imagefs_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *h, OBJECT ** pobp);
-size_t imagefs_fname(OBJECT *, unsigned off, size_t max, char *name);
+int imagefs_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *h, tPathMgrObject ** pobp);
+size_t imagefs_fname(tPathMgrObject *, unsigned off, size_t max, char *name);
 
 /* proc_loader.c */
-void loader_exit(resmgr_context_t * hdr, union proc_msg_union *msg, PROCESS * prp);
+void loader_exit(resmgr_context_t * hdr, union proc_msg_union *msg, tProcess * prp);
 void *loader_fork(void *lcp);
 void *loader_load(void *lcp);
 
@@ -65,10 +65,10 @@ void devstd_init(void);
 
 /* devzero.c */
 void devzero_init(void);
-int devzero_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *h, OBJECT ** pobp);
+int devzero_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *h, tPathMgrObject ** pobp);
 
 /* devmem.c */
-int devmem_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *h, OBJECT ** pobp);
+int devmem_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *h, tPathMgrObject ** pobp);
 int devmem_check_ocb_phys(resmgr_context_t * ctp, void *ocb);
 int mem_open(resmgr_context_t * ctp, io_open_t * msg, void *handle, void *extra);
 int tymem_open(resmgr_context_t * ctp, io_open_t * msg, void *handle, void *extra);
@@ -78,9 +78,9 @@ void devmem_init(void);
 void namedsem_init(void);
 
 /* procfs.h */
-int proc_debug_destroy(resmgr_context_t * ctp, PROCESS * prp);
-void proc_debug_attach(PROCESS * prp);
-void proc_debug_detach(PROCESS * prp);
+int proc_debug_destroy(resmgr_context_t * ctp, tProcess * prp);
+void proc_debug_attach(tProcess * prp);
+void proc_debug_detach(tProcess * prp);
 void procfs_init(void);
 
 /* devtext.c */
@@ -97,7 +97,7 @@ void sysmgr_init(void);
 
 /* rsrcdbmgr_init.c */
 void rsrcdbmgr_init(void);
-void rsrcdbmgr_destroy_process(PROCESS * prp);
+void rsrcdbmgr_destroy_process(tProcess * prp);
 int rsrcdbmgr_proc_interface(void *list, int count, int command);
 int rsrcdbmgr_proc_query(struct _rsrc_alloc *list, int count, int start, int flags);
 int rsrcdbmgr_proc_devno(char *name, dev_t * devno, int minor_request, int flags);

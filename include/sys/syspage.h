@@ -97,7 +97,7 @@ enum {
 #define QTIME_FLAG_TICKLESS		4u
 #define QTIME_FLAG_GLOBAL_CLOCKCYCLES	8u /* clockcycles is synchronized between all processors */
 
-struct qtime_entry {
+typedef struct qtime_entry {
     _Uint64t cycles_per_sec;    /* for ClockCycles */
     _Uint64t volatile nsec_tod_adjust;
     _Uint64t volatile nsec;
@@ -115,7 +115,7 @@ struct qtime_entry {
     unsigned long spare0;
     _Uint64t volatile nsec_stable;
     unsigned long spare[4];
-};
+} tQtime;
 
 struct intrspin;
 
@@ -153,8 +153,8 @@ struct hwinfo_entry {
     unsigned long data[1];      /* variable sized, see <hw/sysinfo.h> */
 };
 
-#define SYSTEM_PRIVATE_FLAG_ABNORMAL_REBOOT	0x00000001
-#define SYSTEM_PRIVATE_FLAG_EALREADY_NEW	0x00000002
+#define SYSTEM_PRIVATE_FLAG_ABNORMAL_REBOOT     1UL
+#define SYSTEM_PRIVATE_FLAG_EALREADY_NEW        2UL
 
 struct system_private_entry {
     struct cpupage_entry *user_cpupageptr;
@@ -177,8 +177,8 @@ struct system_private_entry {
 /*
  * System independent CPU flags (system dependent grow from bottom up)
  */
-#define CPU_FLAG_FPU		(1UL <<  31)    /* CPU has floating point support */
-#define CPU_FLAG_MMU		(1UL <<  30)    /* MMU is active */
+#define CPU_FLAG_FPU    (1U <<  31)    /* CPU has floating point support */
+#define CPU_FLAG_MMU    (1U <<  30)    /* MMU is active */
 
 struct cpuinfo_entry {
     _Uint32t cpu;

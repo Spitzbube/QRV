@@ -40,7 +40,7 @@ int CredDirty(pid_t pid)
     struct kerargs_cred_dirty data;
 
     data.pid = pid;
-    return (__Ring0(kerext_cred_dirty, &data));
+    return __Ring0(kerext_cred_dirty, &data);
 }
 
 
@@ -70,7 +70,7 @@ int CredGet(pid_t pid, struct _cred_info *cip)
 
     data.pid = pid;
     data.cip = cip;
-    return (__Ring0(kerext_cred_get, &data));
+    return __Ring0(kerext_cred_get, &data);
 }
 
 
@@ -105,7 +105,7 @@ int CredSet(pid_t pid, struct _cred_info *cip)
 
     data.pid = pid;
     data.cip = cip;
-    return (__Ring0(kerext_cred_set, &data));
+    return __Ring0(kerext_cred_set, &data);
 }
 
 __SRCVERSION("kerext_cred.c $Rev: 153052 $");

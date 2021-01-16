@@ -32,8 +32,8 @@
 */
 
 struct _alloc_array {
-	int 		index, count;
-	rsrc_alloc_t 	*array;
+    int index, count;
+    rsrc_alloc_t *array;
 };
 
 /*************************
@@ -58,294 +58,279 @@ struct _alloc_array {
 #if defined(PERFORM_SEEDING)
 
 #if defined(OLD_STYLE_SEEDING)
-static void add_element(struct _alloc_array *array, rsrc_alloc_t *alloc) {
-	if (array->index >= array->count) {
-		array->array = (rsrc_alloc_t *)_srealloc(array->array,
-		  		 array->count * sizeof(rsrc_alloc_t),
-		  		 (array->count + 10) * sizeof(rsrc_alloc_t));
-		array->count += 10;
-	}
+static void add_element(struct _alloc_array *array, rsrc_alloc_t * alloc)
+{
+    if (array->index >= array->count) {
+        array->array = (rsrc_alloc_t *) _srealloc(array->array,
+                                                  array->count * sizeof(rsrc_alloc_t),
+                                                  (array->count + 10) * sizeof(rsrc_alloc_t));
+        array->count += 10;
+    }
 
-	memcpy(&array->array[array->index++], alloc, sizeof(*alloc));
+    memcpy(&array->array[array->index++], alloc, sizeof(*alloc));
 }
 #endif
 
-static int add_range(struct _alloc_array *array, rsrc_alloc_t *alloc) {
+static int add_range(struct _alloc_array *array, rsrc_alloc_t * alloc)
+{
 #if defined(OLD_STYLE_SEEDING)
-	int i, j, lastindex, insstart, insend;
-	rsrc_alloc_t extra;
+    int i, j, lastindex, insstart, insend;
+    rsrc_alloc_t extra;
 
-	insstart = array->index;
-	add_element(array, alloc);
-	insend = array->index;
+    insstart = array->index;
+    add_element(array, alloc);
+    insend = array->index;
 
-	//Go through the list pruning the entry
-	for (i=0; i<insstart; i++) {
-		for (j=insstart; j<array->index; j++) {
+    //Go through the list pruning the entry
+    for (i = 0; i < insstart; i++) {
+        for (j = insstart; j < array->index; j++) {
 
-			//Must be the same types ...
-			if ((array->array[i].flags & RSRCDBMGR_TYPE_MASK) !=
-			    (array->array[j].flags & RSRCDBMGR_TYPE_MASK)) {
-				continue;
-			}
+            //Must be the same types ...
+            if ((array->array[i].flags & RSRCDBMGR_TYPE_MASK) !=
+                (array->array[j].flags & RSRCDBMGR_TYPE_MASK)) {
+                continue;
+            }
+            //Check for overlaping start/end
+            if (!(OVERLAP(array->array[i].start,
+                          array->array[i].end, array->array[j].start, array->array[j].end))) {
+                continue;
+            }
+            //If the new block is completely contained, nuke it
+            if (CONTAINS(array->array[i].start,
+                         array->array[i].end, array->array[j].start, array->array[j].end)) {
+                array->index--;
+                memmove(&array->array[j], &array->array[j + 1], (array->index - j) * sizeof(extra));
+                j--;            //Backup the counter to re-do this element
+                continue;
+            }
+            //If the new entry contains the old one, then create a
+            //new block and add it in.
+            if (CONTAINSNE(array->array[j].start,
+                           array->array[j].end, array->array[i].start, array->array[i].end)) {
+                extra.start = array->array[j].start;
+                extra.end = array->array[i].start - 1;
+                extra.flags = array->array[j].flags;
+                add_element(array, &extra);
+                insend = array->index;
+                array->array[j].start = array->array[i].end + 1;
+                continue;
+            }
+            //If the start borders, shrink it
+            if (BETWEEN(array->array[j].start, array->array[j].end, array->array[i].end)) {
+                array->array[j].start = array->array[i].end + 1;
+                continue;
+            }
+            //If the end borders, shrink it
+            if (BETWEEN(array->array[j].start, array->array[j].end, array->array[i].start)) {
+                array->array[j].end = array->array[i].start - 1;
+                continue;
+            }
+        }
+    }
 
-			//Check for overlaping start/end
-			if (!(OVERLAP(array->array[i].start,
-						array->array[i].end,
-						array->array[j].start,
-						array->array[j].end))) {
-				continue;
-			}
+    //Go through and take all the new blocks and put them
+    //in in the right spot (ie sorted by start).
+    insend = array->index;
+    for (i = insstart; i < insend; i++) {
+        memcpy(&extra, &array->array[i], sizeof(extra));
+        for (lastindex = -1, j = 0; j < i; j++) {
+            if ((array->array[i].flags & RSRCDBMGR_TYPE_MASK) !=
+                (array->array[j].flags & RSRCDBMGR_TYPE_MASK)) {
+                continue;
+            }
 
-			//If the new block is completely contained, nuke it
-			if (CONTAINS(array->array[i].start,
-						 array->array[i].end,
-						 array->array[j].start,
-						 array->array[j].end)) {
-				array->index--;
-				memmove(&array->array[j],
-				        &array->array[j+1],
-					(array->index - j) * sizeof(extra));
-				j--;	//Backup the counter to re-do this element
-				continue;
-			}
-
-			//If the new entry contains the old one, then create a
-			//new block and add it in.
-			if (CONTAINSNE(array->array[j].start,
-						   array->array[j].end,
-						   array->array[i].start,
-						   array->array[i].end)) {
-				extra.start = array->array[j].start;
-				extra.end = array->array[i].start -1;
-				extra.flags = array->array[j].flags;
-				add_element(array, &extra);
-				insend = array->index;
-				array->array[j].start = array->array[i].end+1;
-				continue;
-			}
-
-			//If the start borders, shrink it
-			if (BETWEEN(array->array[j].start,
-						array->array[j].end,
-						array->array[i].end)) {
-				array->array[j].start = array->array[i].end+1;
-				continue;
-			}
-
-			//If the end borders, shrink it
-			if (BETWEEN(array->array[j].start,
-						array->array[j].end,
-						array->array[i].start)) {
-				array->array[j].end = array->array[i].start-1;
-				continue;
-			}
-		}
-	}
-
-	//Go through and take all the new blocks and put them
-	//in in the right spot (ie sorted by start).
-	insend = array->index;
-	for (i=insstart; i<insend; i++) {
-		memcpy(&extra, &array->array[i], sizeof(extra));
-		for (lastindex=-1, j= 0; j<i; j++) {
-			if ((array->array[i].flags & RSRCDBMGR_TYPE_MASK) !=
-			    (array->array[j].flags & RSRCDBMGR_TYPE_MASK)) {
-				continue;
-			}
-
-			if (extra.start < array->array[j].start) {
-				lastindex = j;
-				break;
-			}
-		}
-		if (lastindex >= 0)	{
-			memmove(&array->array[lastindex+1],
-					&array->array[lastindex],
-					(i - lastindex) * sizeof(extra));
-			memcpy(&array->array[lastindex], &extra, sizeof(extra));
-		}
-	}
+            if (extra.start < array->array[j].start) {
+                lastindex = j;
+                break;
+            }
+        }
+        if (lastindex >= 0) {
+            memmove(&array->array[lastindex + 1],
+                    &array->array[lastindex], (i - lastindex) * sizeof(extra));
+            memcpy(&array->array[lastindex], &extra, sizeof(extra));
+        }
+    }
 #else
-	if (rsrcdbmgr_proc_interface(alloc, 1, RSRCDBMGR_REQ_CREATE) != EOK) {
-		return -1;
-	}
+    if (rsrcdbmgr_proc_interface(alloc, 1, RSRCDBMGR_REQ_CREATE) != EOK) {
+        return -1;
+    }
 #endif
 
-	return 0;
+    return 0;
 }
 
 /* Add the interrupts from the IRQ list */
-static void add_irq(struct _alloc_array *array) {
-	struct intrinfo_entry *intrinfo;
-	rsrc_alloc_t	alloc;
-	int num;
+static void add_irq(struct _alloc_array *array)
+{
+    struct intrinfo_entry *intrinfo;
+    rsrc_alloc_t alloc;
+    int num;
 
-	num = _syspage_ptr->intrinfo.entry_size / sizeof(*intrinfo);
-	intrinfo = SYSPAGE_ENTRY(intrinfo);
+    num = _syspage_ptr->intrinfo.entry_size / sizeof(*intrinfo);
+    intrinfo = SYSPAGE_ENTRY(intrinfo);
 
-	while (num-- > 0) {
-		memset(&alloc, 0, sizeof(alloc));
-		alloc.start = intrinfo->vector_base;
-		alloc.end = alloc.start + intrinfo->num_vectors -1;
-		alloc.flags = RSRCDBMGR_IRQ;
-		if (add_range(array, &alloc) == -1) {
-			if(ker_verbose >= 2) {
-				kprintf("Add_range failed. Add_irq %d\n", num);
-			}
-		}
-		intrinfo++;
-	}
+    while (num-- > 0) {
+        memset(&alloc, 0, sizeof(alloc));
+        alloc.start = intrinfo->vector_base;
+        alloc.end = alloc.start + intrinfo->num_vectors - 1;
+        alloc.flags = RSRCDBMGR_IRQ;
+        if (add_range(array, &alloc) == -1) {
+            if (ker_verbose >= 2) {
+                kprintf("Add_range failed. Add_irq %d\n", num);
+            }
+        }
+        intrinfo++;
+    }
 }
 
 /* Return the type of this ASINFO offset item (based on aspace) */
-static int get_as_type(int addrspace) {
-	struct asinfo_entry *asinfo;
-	char				*name;
-	int					type;
+static int get_as_type(int addrspace)
+{
+    struct asinfo_entry *asinfo;
+    char *name;
+    int type;
 
-	type = -1;
-	while (addrspace != HWI_NULL_OFF) {
-		asinfo = SYSPAGE_ENTRY(asinfo);
-		asinfo = (struct asinfo_entry *)((char *)asinfo + addrspace);
+    type = -1;
+    while (addrspace != HWI_NULL_OFF) {
+        asinfo = SYSPAGE_ENTRY(asinfo);
+        asinfo = (struct asinfo_entry *) ((char *) asinfo + addrspace);
 
-		name = __hwi_find_string(asinfo->name);
-		if (strcmp(name, "io") == 0) {
-			type = RSRCDBMGR_IO_PORT;
-			break;
-		}
-		else if (strcmp(name, "memory") == 0) {
-			type = RSRCDBMGR_MEMORY;
-			break;
-		}
-		addrspace = asinfo->owner;
-	}
-	return type;
+        name = __hwi_find_string(asinfo->name);
+        if (strcmp(name, "io") == 0) {
+            type = RSRCDBMGR_IO_PORT;
+            break;
+        } else if (strcmp(name, "memory") == 0) {
+            type = RSRCDBMGR_MEMORY;
+            break;
+        }
+        addrspace = asinfo->owner;
+    }
+    return type;
 }
 
 /* Add the IO and MEMORY from the ASINFO section */
-static void add_io_and_memory(struct _alloc_array *array) {
-	struct asinfo_entry  *asinfo;
-	rsrc_alloc_t alloc;
-	int			 num;
+static void add_io_and_memory(struct _alloc_array *array)
+{
+    struct asinfo_entry *asinfo;
+    rsrc_alloc_t alloc;
+    int num;
 
-	num = _syspage_ptr->asinfo.entry_size / sizeof(*asinfo);
-	asinfo = SYSPAGE_ENTRY(asinfo);
+    num = _syspage_ptr->asinfo.entry_size / sizeof(*asinfo);
+    asinfo = SYSPAGE_ENTRY(asinfo);
 
-	while (num-- > 0) {
-		char *name;
-		name = __hwi_find_string(asinfo->name);
+    while (num-- > 0) {
+        char *name;
+        name = __hwi_find_string(asinfo->name);
 
-		/*
- 		Here we check to see if the item is IO or
-		MEMORY memory. Note that we need to check for
-		io that lives in both worlds.
-		*/
-		memset(&alloc, 0, sizeof(alloc));
-		if (name && strcmp(name, "io") == 0) {
-			alloc.start = asinfo->start;
-			alloc.end = asinfo->end;
-			alloc.flags = RSRCDBMGR_IO_PORT;
-			/* We only add io that is not memory io */
-			switch(get_as_type(asinfo->owner)) {
-			case RSRCDBMGR_MEMORY:
-				break;
-			case RSRCDBMGR_IO_PORT:
-			default:
-				if (add_range(array, &alloc) == -1) {
-					if(ker_verbose >= 2) {
-						kprintf("Add range failed. add_io %d\n", num);
-					}
-				}
-				break;
-			}
-		}
-		else if (name && strcmp(name, "memory") == 0) {
-			alloc.start = asinfo->start;
-			alloc.end = asinfo->end;
-			alloc.flags = RSRCDBMGR_MEMORY;
-			if (add_range(array, &alloc) == -1) {
-				if(ker_verbose >= 2) {
-					kprintf("Add range failed. add_mem %d\n", num);
-				}
-			}
-		}
-		asinfo++;
-	}
+        /*
+           Here we check to see if the item is IO or
+           MEMORY memory. Note that we need to check for
+           io that lives in both worlds.
+         */
+        memset(&alloc, 0, sizeof(alloc));
+        if (name && strcmp(name, "io") == 0) {
+            alloc.start = asinfo->start;
+            alloc.end = asinfo->end;
+            alloc.flags = RSRCDBMGR_IO_PORT;
+            /* We only add io that is not memory io */
+            switch (get_as_type(asinfo->owner)) {
+            case RSRCDBMGR_MEMORY:
+                break;
+            case RSRCDBMGR_IO_PORT:
+            default:
+                if (add_range(array, &alloc) == -1) {
+                    if (ker_verbose >= 2) {
+                        kprintf("Add range failed. add_io %d\n", num);
+                    }
+                }
+                break;
+            }
+        } else if (name && strcmp(name, "memory") == 0) {
+            alloc.start = asinfo->start;
+            alloc.end = asinfo->end;
+            alloc.flags = RSRCDBMGR_MEMORY;
+            if (add_range(array, &alloc) == -1) {
+                if (ker_verbose >= 2) {
+                    kprintf("Add range failed. add_mem %d\n", num);
+                }
+            }
+        }
+        asinfo++;
+    }
 }
 
 
-static void reserve_ranges(struct _alloc_array *array) {
-	hwi_tag                         *tag;
-	void                            *next;
-	char                            *name;
-	rsrc_alloc_t					alloc;
-	int								type;
+static void reserve_ranges(struct _alloc_array *array)
+{
+    hwi_tag *tag;
+    void *next;
+    char *name;
+    rsrc_alloc_t alloc;
+    int type;
 
-	//Walk the HWINFO list first
-	tag = (hwi_tag *)SYSPAGE_ENTRY(hwinfo);
-	while(tag->prefix.size != 0) {
+    //Walk the HWINFO list first
+    tag = (hwi_tag *) SYSPAGE_ENTRY(hwinfo);
+    while (tag->prefix.size != 0) {
 
-        next = (hwi_tag *)((uint32_t *)tag + tag->prefix.size);
+        next = (hwi_tag *) ((uint32_t *) tag + tag->prefix.size);
         name = __hwi_find_string(tag->prefix.name);
 
-		//Really I need to look at the AS of this entry to
-		//determine if this is io memory or regular memory.
-		if (name && strcmp(name, HWI_TAG_NAME_location) == 0) {
-			if ((type = get_as_type(tag->location.addrspace)) == -1) {
-				tag = next;
-				continue;
-			}
-			alloc.start = tag->location.base;
-			alloc.end = alloc.start + tag->location.len -1;
-			alloc.flags = type | RSRCDBMGR_FLAG_RSVP;
-			if (add_range(array, &alloc) == -1) {
-				if(ker_verbose >= 2) {
-					kprintf("Add range failed. rsvp %x\n", alloc.flags);
-				}
-			}
-		}
-		else if (name && strcmp(name, HWI_TAG_NAME_irq) == 0) {
-			alloc.start =
-			alloc.end = tag->irq.vector;
-			alloc.flags = RSRCDBMGR_IRQ | RSRCDBMGR_FLAG_RSVP;
-			if (add_range(array, &alloc) == -1) {
-				if(ker_verbose >= 2) {
-					kprintf("Add range failed. rsvp %x\n", alloc.flags);
-				}
-			}
-		}
+        //Really I need to look at the AS of this entry to
+        //determine if this is io memory or regular memory.
+        if (name && strcmp(name, HWI_TAG_NAME_location) == 0) {
+            if ((type = get_as_type(tag->location.addrspace)) == -1) {
+                tag = next;
+                continue;
+            }
+            alloc.start = tag->location.base;
+            alloc.end = alloc.start + tag->location.len - 1;
+            alloc.flags = type | RSRCDBMGR_FLAG_RSVP;
+            if (add_range(array, &alloc) == -1) {
+                if (ker_verbose >= 2) {
+                    kprintf("Add range failed. rsvp %x\n", alloc.flags);
+                }
+            }
+        } else if (name && strcmp(name, HWI_TAG_NAME_irq) == 0) {
+            alloc.start = alloc.end = tag->irq.vector;
+            alloc.flags = RSRCDBMGR_IRQ | RSRCDBMGR_FLAG_RSVP;
+            if (add_range(array, &alloc) == -1) {
+                if (ker_verbose >= 2) {
+                    kprintf("Add range failed. rsvp %x\n", alloc.flags);
+                }
+            }
+        }
         tag = next;
-	}
+    }
 }
 #endif
 
-void rsrcdbmgr_seed() {
+void rsrcdbmgr_seed()
+{
 #if defined(PERFORM_SEEDING)
-	struct _alloc_array aa;
-	memset(&aa, 0, sizeof(aa));
+    struct _alloc_array aa;
+    memset(&aa, 0, sizeof(aa));
 
 //*** Mark these areas as reserved
-	reserve_ranges(&aa);
+    reserve_ranges(&aa);
 
 //*** Make the rest of these items as being free
-	//IRQ -- Taken from the intrinfo section (vector_base, num_vectors)
-	add_irq(&aa);
+    //IRQ -- Taken from the intrinfo section (vector_base, num_vectors)
+    add_irq(&aa);
 
-	//IO_PORTS & MEMORY -- Taken from the ASINFO section
-	add_io_and_memory(&aa);
+    //IO_PORTS & MEMORY -- Taken from the ASINFO section
+    add_io_and_memory(&aa);
 
-	//DMA -- Not yet available on the system page
+    //DMA -- Not yet available on the system page
 
 #if defined(OLD_STYLE_SEEDING)
-	//If this fails, we should try and do it piecewise
-	if (rsrcdbmgr_proc_interface(aa.array, aa.index, RSRCDBMGR_REQ_CREATE) != EOK) {
-		if(ker_verbose >= 2) {
-			kprintf("Problem seeding rsrc database \n");
-		}
-	}
+    //If this fails, we should try and do it piecewise
+    if (rsrcdbmgr_proc_interface(aa.array, aa.index, RSRCDBMGR_REQ_CREATE) != EOK) {
+        if (ker_verbose >= 2) {
+            kprintf("Problem seeding rsrc database \n");
+        }
+    }
 
-	_sfree(aa.array, aa.count * sizeof(aa.array));
+    _sfree(aa.array, aa.count * sizeof(aa.array));
 #endif
 
 #endif

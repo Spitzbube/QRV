@@ -41,7 +41,7 @@ static dev_t procfs_devno;
 /** Proc Filesystem Callouts for pathmanager **/
 
 /*
- * This link code needs to be stream lined ... and it would be nice
+ * This link code needs to be streamlined ... and it would be nice
  * to get rid of the temporary buffer that is jammed in there.
  */
 static int return_a_link(resmgr_context_t * ctp, struct _io_connect_link_reply *link_reply,
@@ -91,8 +91,8 @@ static int return_a_link(resmgr_context_t * ctp, struct _io_connect_link_reply *
        [nentries of struct _io_connect_entry]
        {path}
      */
-    return (_RESMGR_PTR(ctp, link_reply, sizeof(*link_reply) +
-                        len + ((entry) ? sizeof(*entry) : 0)));
+    return _RESMGR_PTR(ctp, link_reply, sizeof(*link_reply) +
+                        len + ((entry) ? sizeof(*entry) : 0));
 }
 
 static NODE *proc_pathmgr_resolve(int type, char *path, const char **tail)
@@ -106,7 +106,7 @@ static NODE *proc_pathmgr_resolve(int type, char *path, const char **tail)
 
     //I should probably pass in PATHMGR_LOOKUP_ATTACH,
     //and then call pathmgr_node_detach() when I'm finished
-    return (pathmgr_node_lookup(0, path, PATHMGR_LOOKUP_ATTACH, tail));
+    return pathmgr_node_lookup(0, path, PATHMGR_LOOKUP_ATTACH, tail);
 }
 
 

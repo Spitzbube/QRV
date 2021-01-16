@@ -273,3 +273,8 @@
 #else
 #define CRASHCHECK(e)	if(e) crash()
 #endif
+
+/* Macros for setting/resetting/testing for QRV_GLOBAL_CHANNEL */
+#define SET_GLOBAL_CHAN(var) (var) |= (int)QRV_GLOBAL_CHANNEL
+#define CLEAR_GLOBAL_CHAN(var) (var) &= (int)(~QRV_GLOBAL_CHANNEL)
+#define IS_GLOBAL_CHAN_SET(var) (var) & (int)QRV_GLOBAL_CHANNEL

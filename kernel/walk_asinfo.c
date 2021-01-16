@@ -17,6 +17,9 @@
 
 #include "externs.h"
 
+/**
+ * \brief Walk asinfo entries in the syspage applying a given function.
+ */
 int walk_asinfo(const char *name, int (*func)(struct asinfo_entry *, char *, void *), void *data)
 {
     char *str = SYSPAGE_ENTRY(strings)->data;
@@ -37,5 +40,3 @@ int walk_asinfo(const char *name, int (*func)(struct asinfo_entry *, char *, voi
         --num;
     }
 }
-
-__SRCVERSION("walk_asinfo.c $Rev: 153052 $");

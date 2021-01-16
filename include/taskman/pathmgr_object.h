@@ -19,7 +19,7 @@
 #define PATHMGR_OBJECT_H
 
 #include <sys/iofunc.h>
-// FIX ME #include <sys/mempart.h>
+#include <taskman/pathmgr_node.h>
 #include "kernel/mempart.h"
 
 enum {
@@ -34,12 +34,16 @@ enum {
 };
 struct mempart_s;
 
-//max size of a pathmgr object is limited by the _Uint8t we use to keep track of it's length in object_header.len
+/* Max size of a pathmgr object is limited by the _Uint8t we use
+ * to keep track of it's length in object_header.len
+ */
 #define PATHMGR_MAX_OBJECT_LEN UINT8_MAX
 
+typedef union path_mgr_obj tPathMgrObject;
+
 struct object_header {
-    OBJECT *next;
-    NODE *node;
+    tPathMgrObject *next;
+    tNode *node;
     _Uint8t type;
     _Uint8t len;
 //RUSH3: The 'flags' field probably only needs to be present in
@@ -48,8 +52,8 @@ struct object_header {
     _Uint16t flags;
     /* partition stuff follows */
     pid_t creator;
-    part_id_t mpid;             // partition which the OBJECT is associated with
-    void (*mpart_disassociate)(OBJECT *);   // disassociation function
+    part_id_t mpid;             // partition which the tPathMgrObject is associated with
+    void (*mpart_disassociate)(tPathMgrObject *);   // disassociation function
     unsigned refs;
 };
 
@@ -118,7 +122,7 @@ struct mm_object_typed {
     char *name;
 };
 
-union object {
+typedef union path_mgr_obj {
     struct object_header hdr;
     struct server_object server;
     struct symlink_object symlink;
@@ -127,20 +131,18 @@ union object {
     struct mm_object_shared shmem;
     struct mm_object_fd fdmem;
     struct mm_object_typed tymem;
-};
+} tPathMgrObject;
 
 
 // These bits do not correspond to any of the prot or flags bits that
 // a user is allowed to set in the mmap message (they're read only bits
 // that come back from mapinfo). The pathmgr flips them on in the input
 // message structure to pass some information back to the memory manager
-#define IMAP_MASK						(PG_MASK|MAP_SYSRAM)
-#define IMAP_OCB_RDONLY					0x00100000  // OCB is read-only, mprotect() can't turn on PROT_WRITE
-#define IMAP_TYMEM_ALLOCATE				0x00200000  // POSIX_TYPED_MEM_ALLOCATE
-#define IMAP_TYMEM_ALLOCATE_CONTIG		0x00400000  // POSIX_TYPED_MEM_ALLOCATE_CONTIG
-#define IMAP_TYMEM_MAP_ALLOCATABLE		0x00800000  // POSIX_TYPED_MEM_MAP_ALLOCATABLE
-#define IMAP_GLOBAL						MAP_SYSRAM  // creating a global vaddr
+#define IMAP_MASK			(PG_MASK|MAP_SYSRAM)
+#define IMAP_OCB_RDONLY			0x00100000  // OCB is read-only, mprotect() can't turn on PROT_WRITE
+#define IMAP_TYMEM_ALLOCATE		0x00200000  // POSIX_TYPED_MEM_ALLOCATE
+#define IMAP_TYMEM_ALLOCATE_CONTIG	0x00400000  // POSIX_TYPED_MEM_ALLOCATE_CONTIG
+#define IMAP_TYMEM_MAP_ALLOCATABLE	0x00800000  // POSIX_TYPED_MEM_MAP_ALLOCATABLE
+#define IMAP_GLOBAL			MAP_SYSRAM  // creating a global vaddr
 
 #endif
-
-/* __SRCVERSION("pathmgr_object.h $Rev: 174147 $"); */

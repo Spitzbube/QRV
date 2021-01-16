@@ -74,7 +74,7 @@ void *QueryObject(int type, unsigned index1, int subtype,
     data.objbuf = objbuf;
     data.objsize = objsize;
     data.restarts = 0;
-    return ((void *) __Ring0(kerext_query_object, &data));
+    return (void *) __Ring0(kerext_query_object, &data);
 }
 
 
@@ -84,5 +84,3 @@ void QueryObjectDone(void *obj)
     // the fields and it's OK for a ProcessDestroy() to happen
     ((PROCESS *) obj)->querying = 0;
 }
-
-__SRCVERSION("kerext_query.c $Rev: 204178 $");

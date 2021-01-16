@@ -18,7 +18,7 @@
 #include "vmm.h"
 
 
-MEMMGR memmgr_virtual = {
+tMemMgr memmgr_virtual = {
     __PAGESIZE,
     0,
     sizeof(ADDRESS),
@@ -28,4 +28,3 @@ MEMMGR memmgr_virtual = {
     MM_FUNCS(vmm)
 };
 
-__SRCVERSION("vmm.c $Rev: 153052 $");

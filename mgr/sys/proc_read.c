@@ -32,40 +32,46 @@
 //FUTURE: about the FS's that don't support it, so maybe in a year
 //FUTURE: or two we'll be able to switch. bstecher 2005/01/19.
 
-ssize_t
-proc_read(int fd, void *buff, ssize_t nbytes, off64_t off) {
-	struct seek_read {
-		struct _io_lseek		lseek;
-		struct _io_read			read;
-	}						msg;
-	ssize_t					received;
-	ssize_t					got;
+ssize_t proc_read(int fd, void *buff, ssize_t nbytes, off64_t off)
+{
+    struct seek_read {
+        struct _io_lseek lseek;
+        struct _io_read read;
+    } msg;
+    ssize_t received;
+    ssize_t got;
 
-	msg.lseek.type = _IO_LSEEK;
-	msg.lseek.combine_len = offsetof(struct seek_read, read) | _IO_COMBINE_FLAG;
-	msg.lseek.offset = off;
-	msg.lseek.whence = SEEK_SET;
-	msg.lseek.zero = 0;
-	msg.read.type = _IO_READ;
-	msg.read.combine_len = sizeof msg.read;
-	msg.read.nbytes = nbytes;
-	msg.read.xtype = _IO_XTYPE_NONE;
-	msg.read.zero = 0;
+    msg.lseek.type = _IO_LSEEK;
+    msg.lseek.combine_len = offsetof(struct seek_read, read) | _IO_COMBINE_FLAG;
+    msg.lseek.offset = off;
+    msg.lseek.whence = SEEK_SET;
+    msg.lseek.zero = 0;
+    msg.read.type = _IO_READ;
+    msg.read.combine_len = sizeof msg.read;
+    msg.read.nbytes = nbytes;
+    msg.read.xtype = _IO_XTYPE_NONE;
+    msg.read.zero = 0;
 
-	received = MsgSend(fd, &msg, offsetof(struct seek_read, read) + sizeof msg.read, buff, msg.read.nbytes);
-	if(received == -1) return -1;
+    received =
+        MsgSend(fd, &msg, offsetof(struct seek_read, read) + sizeof msg.read, buff,
+                msg.read.nbytes);
+    if (received == -1)
+        return -1;
 
-	/* deal with short reads */
-	for( ;; ) {
-		if(received >= nbytes) break;
-		msg.read.nbytes = nbytes - received;
-		got = MsgSend(fd, &msg.read, sizeof msg.read, (uint8_t *)buff + received, msg.read.nbytes);
-		if(got == -1) return -1;
-		if(got == 0) break;
-		received += got;
-	}
+    /* deal with short reads */
+    for (;;) {
+        if (received >= nbytes)
+            break;
+        msg.read.nbytes = nbytes - received;
+        got = MsgSend(fd, &msg.read, sizeof msg.read, (uint8_t *) buff + received, msg.read.nbytes);
+        if (got == -1)
+            return -1;
+        if (got == 0)
+            break;
+        received += got;
+    }
 
-	return received;
+    return received;
 }
 
 __SRCVERSION("proc_read.c $Rev: 153052 $");

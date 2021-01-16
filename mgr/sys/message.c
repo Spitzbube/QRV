@@ -15,7 +15,7 @@
  * $
  */
 
-#include "externs.h"
+#include "taskman/externs.h"
 
 static pthread_attr_t thread_attr;
 
@@ -157,4 +157,3 @@ int proc_thread_pool_reserve_done()
 {
     return thread_pool_reserve(tpp, -1);
 }
-

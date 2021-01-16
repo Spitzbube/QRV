@@ -25,22 +25,24 @@
  * Since it will only occur when procnto is linked against a debug libc though,
  * put it in it's own file so that it's not linked in unless needed.
  */
-void __assert(const char *expr, const char *file, unsigned line, const char *func) {
-	if(func) {
-		kprintf("In function %s -- ", func);
-	}
-	kprintf("%s:%d %s -- assertion failed\n", file, line, expr);
-	crash();
+void __assert(const char *expr, const char *file, unsigned line, const char *func)
+{
+    if (func) {
+        kprintf("In function %s -- ", func);
+    }
+    kprintf("%s:%d %s -- assertion failed\n", file, line, expr);
+    crash();
 }
 
 #ifdef __PPC__
-void __NTO_va_arg_type_violation(void) {
-	kprintf("va_arg type violation\n");
-	crash();
+void __NTO_va_arg_type_violation(void)
+{
+    kprintf("va_arg type violation\n");
+    crash();
 #ifndef _lint
-	for( ;; ) {
-		// Shut up GCC
-	}
+    for (;;) {
+        // Shut up GCC
+    }
 #endif
 }
 #endif

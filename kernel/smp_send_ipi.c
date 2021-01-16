@@ -21,5 +21,3 @@
 void rdecl send_ipi(int cpu, int cmd)
 {
 }
-
-__SRCVERSION("smp_send_ipi.c $Rev: 153052 $");

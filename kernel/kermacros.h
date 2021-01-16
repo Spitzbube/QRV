@@ -94,19 +94,19 @@
 /* Individual bits */
 
 /* Whole masks */
-#define SIGMASK_SET(oset, nset)	((oset)->__bits[0] |= (nset)->__bits[0], (oset)->__bits[1] |= (nset)->__bits[1])
-#define SIGMASK_CLR(oset, nset)	((oset)->__bits[0] &=~(nset)->__bits[0], (oset)->__bits[1] &=~(nset)->__bits[1])
+#define SIGMASK_SET(oset, nset)	((oset)->bits[0] |= (nset)->bits[0], (oset)->bits[1] |= (nset)->bits[1])
+#define SIGMASK_CLR(oset, nset)	((oset)->bits[0] &=~(nset)->bits[0], (oset)->bits[1] &=~(nset)->bits[1])
 #define SIGMASK_CPY(oset, nset)	(*(oset) = *(nset))
-#define SIGMASK_ZERO(set) ((set)->__bits[0] = (set)->__bits[1] = 0)
-#define SIGMASK_ONES(set) ((set)->__bits[0] = (set)->__bits[1] = ~0)
+#define SIGMASK_ZERO(set) ((set)->bits[0] = (set)->bits[1] = 0)
+#define SIGMASK_ONES(set) ((set)->bits[0] = (set)->bits[1] = ~0U)
 #define SIGMASK_INDEX(signo) (((signo)-1)>>5)
 #define SIGMASK_BIT(signo)   (1 << (((signo)-1) & 0x1f))
-#define SIGMASK_NO_KILLSTOP(set)((set)->__bits[0]  &=~(SIGMASK_BIT(SIGKILL)|SIGMASK_BIT(SIGSTOP)))
-#define SIGMASK_SPECIAL(set) ((set)->__bits[1] |= 0xff000000)
+#define SIGMASK_NO_KILLSTOP(set)((set)->bits[0]  &=~(SIGMASK_BIT(SIGKILL)|SIGMASK_BIT(SIGSTOP)))
+#define SIGMASK_SPECIAL(set) ((set)->bits[1] |= 0xff000000)
 
-#define SIG_SET(set, signo)	((set).__bits[SIGMASK_INDEX(signo)] |= SIGMASK_BIT(signo))
-#define SIG_CLR(set, signo)	((set).__bits[SIGMASK_INDEX(signo)] &= ~SIGMASK_BIT(signo))
-#define SIG_TST(set, signo)	((set).__bits[SIGMASK_INDEX(signo)] & SIGMASK_BIT(signo))
+#define SIG_SET(set, signo)	((set).bits[SIGMASK_INDEX(signo)] |= SIGMASK_BIT(signo))
+#define SIG_CLR(set, signo)	((set).bits[SIGMASK_INDEX(signo)] &= ~SIGMASK_BIT(signo))
+#define SIG_TST(set, signo)	((set).bits[SIGMASK_INDEX(signo)] & SIGMASK_BIT(signo))
 
 /* Status returns from nano kill calls */
 #define SIGSTAT_NOPERMS		0
@@ -124,7 +124,7 @@
 
 /* Vectors */
 #define VECP(ptr, vec, index)		(((uintptr_t)((ptr) = (vec)->vector[index]) & 3) ? NULL : (ptr))
-#define VECP2(ptr, vec, index)		(((uintptr_t)((ptr) = (vec)->vector[index]) & 1) ? NULL : VECAND((ptr), ~3))
+#define VECP2(ptr, vec, index)		(((uintptr_t)((ptr) = (vec)->vector[index]) & 1) ? NULL : VECAND((ptr), ~3UL))
 #define VEC(vec, index)			((vec)->vector[index])
 #define VECAND(ptr, bits)		((void *)((bits) & (uintptr_t)(ptr)))
 #define VECOR(ptr, bits)		((void *)((bits) | (uintptr_t)(ptr)))
@@ -565,4 +565,3 @@ static __inline__ void __attribute__((__unused__)) atomic_boundry()
 #define LINKPRIL_REM(_object) LINK2_REM((LINK3_NODE *)(_object))
 #define LINKPRIL_BEG(_queue, _object, _type) LINK2_BEG(*(LINK3_NODE **)&(_queue), (LINK3_NODE *)(_object), _type)
 
-/* __SRCVERSION("kermacros.h $Rev: 206796 $"); */

@@ -37,7 +37,8 @@
 #include <inttypes.h>
 #endif
 
-__BEGIN_DECLS union _channel_connect_attr {
+__BEGIN_DECLS
+union _channel_connect_attr {
     unsigned flags;             /* flags of the channel */
     mode_t mode;                /* access permissions */
     size_t bufsize;             /* size of kernel buffer */

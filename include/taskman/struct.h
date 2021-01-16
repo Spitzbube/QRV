@@ -29,7 +29,7 @@
 #include <sys/pathmsg.h>
 #include <sys/memmsg.h>
 #include <sys/sysmsg.h>
-#include "smpswitch.h"
+#include <kernel/smpswitch.h>
 
 
 #define PROC_INIT_PRIORITY		10  // priority to start init thread at
@@ -91,39 +91,35 @@ enum lc_state {
     LC_TERMER_FINISHED = 0x80
 };
 
-// Done as a define since C doesn't have inheritance. Maybe C++ does
-// have some uses.... Naaaah!
-#define LOADER_CONTEXT_FIELDS					\
-	struct loader_context			*next;		\
-	size_t					size;		\
-	iov_t					iov[10];	\
-	struct process_entry			*process;	\
-	int					rcvid;		\
-	sigset_t				mask;		\
-	siginfo_t				info;		\
-	pid_t					pid;		\
-	pid_t					ppid;		\
-	int					pnode;		\
-	int					tid;		\
-	unsigned				flags;		\
-	unsigned				msgsize;	\
-	int					state;		\
-	struct loader_startup			start;		\
-	unsigned				remote_off; \
-	int					fault_errno;
+struct loader_context_base {
+    struct loader_context *next;
+    size_t size;
+    iov_t iov[10];
+    struct process_entry *process;
+    int rcvid;
+    sigset_t mask;
+    siginfo_t info;
+    pid_t pid;
+    pid_t ppid;
+    int pnode;
+    int tid;
+    unsigned flags;
+    unsigned msgsize;
+    int state;
+    struct loader_startup start;
+    unsigned remote_off;
+    int fault_errno;
+};
 
-struct loader_context_prefix {
-LOADER_CONTEXT_FIELDS};
-
-#define LOADER_STACK_SIZE 	(3*__PAGESIZE 						\
-						- sizeof(struct loader_context_prefix)	\
-						- sizeof(union proc_msg_union))
+#define LOADER_STACK_SIZE (3*__PAGESIZE - sizeof(struct loader_context_base) - sizeof(union proc_msg_union))
 
 struct loader_context {
-    LOADER_CONTEXT_FIELDS uint32_t stack[LOADER_STACK_SIZE / sizeof(uint32_t)];
+    struct loader_context_base base;
+    uint32_t stack[LOADER_STACK_SIZE / sizeof(uint32_t)];
 
-    // The 'msg' field has to go on the end so that we can expand
-    // it out for long spawns.
+    /* The 'msg' field has to go on the end so that we can expand
+     * it out for long spawns.
+     */
     union proc_msg_union msg;
 };
 

@@ -16,6 +16,4 @@
  */
 
 #define PROCHDR
-#include <externs.h>
-
-__SRCVERSION("externs.c $Rev: 153052 $");
+#include <taskman/externs.h>

@@ -29,10 +29,10 @@
 #include <sys/platform.h>
 #endif
 
-#define KDEBUG_PROC_CURRENT			2
+#define KDEBUG_PROC_CURRENT		2
 #define KDEBUG_PROC_HAS_REQUEST		2
 #define KDEBUG_DEBUG_CURRENT		1
-#define KDEBUG_CURRENT				1
+#define KDEBUG_CURRENT			1
 
 enum {
     KDEBUG_TYPE_PROCESS,
@@ -166,7 +166,7 @@ struct kdump_private {
     unsigned short paddr_size;  /* bytes in a paddr_t */
 };
 
-#define KDEBUG_PRIVATE_SEGS			0x00000001  /* private flags */
+#define KDEBUG_PRIVATE_SEGS		0x00000001  /* private flags */
 
 #define KDEBUG_PRIVATE_INDIRECT		0x8000  /* If set in offset, target is a pointer */
 

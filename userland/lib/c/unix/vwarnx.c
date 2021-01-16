@@ -35,4 +35,3 @@ vwarnx(fmt, ap)
 	(void)fprintf(stderr, "\n");
 }
 
-__SRCVERSION("vwarnx.c $Rev: 153052 $");

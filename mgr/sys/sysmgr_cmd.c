@@ -17,25 +17,26 @@
 
 #include "externs.h"
 
-int sysmgr_cmd(resmgr_context_t *ctp, sys_cmd_t *msg) {
-	if(ctp->info.flags & _NTO_MI_ENDIAN_DIFF) {
-		ENDIAN_SWAP16(&msg->i.cmd);
-		ENDIAN_SWAP32(&msg->i.mode);
-	}
-	switch(msg->i.cmd) {
-	case _SYS_CMD_REBOOT:
-		if(!proc_isaccess(0, &ctp->info)) {
-			return EPERM;
-		}
-		RebootSystem(0);
-		break;
-	case _SYS_CMD_CPUMODE:
-		if(!proc_isaccess(0, &ctp->info)) {
-			return EPERM;
-		}
-		return SysCpumode(msg->i.mode);
-	default:
-		break;
-	}
-	return ENOSYS;
+int sysmgr_cmd(resmgr_context_t * ctp, sys_cmd_t * msg)
+{
+    if (ctp->info.flags & _NTO_MI_ENDIAN_DIFF) {
+        ENDIAN_SWAP16(&msg->i.cmd);
+        ENDIAN_SWAP32(&msg->i.mode);
+    }
+    switch (msg->i.cmd) {
+    case _SYS_CMD_REBOOT:
+        if (!proc_isaccess(0, &ctp->info)) {
+            return EPERM;
+        }
+        RebootSystem(0);
+        break;
+    case _SYS_CMD_CPUMODE:
+        if (!proc_isaccess(0, &ctp->info)) {
+            return EPERM;
+        }
+        return SysCpumode(msg->i.mode);
+    default:
+        break;
+    }
+    return ENOSYS;
 }

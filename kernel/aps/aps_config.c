@@ -551,5 +551,3 @@ DISPATCH *aps_select_ppg(PROCESS * prp, int id)
     return (DISPATCH *) actives_ppg[id];
 }
 
-
-__SRCVERSION("aps_config.c $Rev: 168521 $");

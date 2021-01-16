@@ -36,7 +36,7 @@ struct mem_ocb {
     unsigned pos;
     int ioflag;
     int tflags;                 // for typed memory objects
-    union object *object;
+    tPathMgrObject *object;
 };
 
 typedef struct {
@@ -56,7 +56,7 @@ static int mem_read_write(resmgr_context_t * ctp, resmgr_iomsgs_t * msg, struct 
     unsigned nbytes;
     unsigned size;
     PROCESS *proc;
-    union object *obp;
+    tPathMgrObject *obp;
     unsigned *pos;
     unsigned offset;
     size_t skip;
@@ -241,7 +241,7 @@ static int mem_lseek(resmgr_context_t * ctp, io_lseek_t * msg, void *vocb)
 static int mem_stat(resmgr_context_t * ctp, io_stat_t * msg, void *vocb)
 {
     struct mem_ocb *ocb = vocb;
-    union object *obp = ocb ? ocb->object : 0;
+    tPathMgrObject *obp = ocb ? ocb->object : 0;
     size_t size = ocb ? (obp ? OBJECT_SIZE(obp) : UINT_MAX) : 0;
 
     memset(&msg->o, 0x00, sizeof msg->o);
@@ -258,8 +258,8 @@ static int mem_stat(resmgr_context_t * ctp, io_stat_t * msg, void *vocb)
         msg->o.st_dev = path_devno;
         msg->o.st_rdev = S_ISNAM(msg->o.st_mode) ? S_INSHD : 0;
     } else {
-        //The /dev/mem device is set to rw root only, the /dev/shmem
-        //device is set to rwx for all, since it is un-enforced.
+        /* The /dev/mem device is set to rw root only, the /dev/shmem
+         * device is set to rwx for all, since it is un-enforced */
         msg->o.st_mode = ocb ? S_IFREG | 0600 : S_IFDIR | 0777;
         msg->o.st_nlink = ocb ? 1 : 2;
         msg->o.st_dev = mem_devno;
@@ -319,7 +319,7 @@ static int mem_devctl(resmgr_context_t * ctp, io_devctl_t * msg, void *vocb)
 static int mem_utime(resmgr_context_t * ctp, io_utime_t * msg, void *vocb)
 {
     struct mem_ocb *ocb = vocb;
-    union object *obp;
+    tPathMgrObject *obp;
 
     if (ocb && (obp = ocb->object)) {
         if (msg->i.cur_flag) {
@@ -336,7 +336,7 @@ static int mem_space(resmgr_context_t * ctp, io_space_t * msg, void *vocb)
 {
     struct mem_ocb *ocb = vocb;
     unsigned start, end;
-    union object *obj;
+    tPathMgrObject *obj;
     int status;
 
     if (!ocb || !(obj = ocb->object)) {
@@ -407,7 +407,7 @@ static int mem_change_attr(resmgr_context_t * ctp, resmgr_iomsgs_t * msg, void *
     iofunc_ocb_t nocb;
     iofunc_attr_t attr;
     struct mem_ocb *ocb = vocb;
-    union object *obp;
+    tPathMgrObject *obp;
     int ret;
 
     if (!ocb || !(obp = ocb->object) || (!S_ISNAM(obp->mem.pm.mode) && !S_ISREG(obp->mem.pm.mode))) {

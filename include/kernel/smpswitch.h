@@ -33,8 +33,11 @@
 #ifndef PROCESSORS_MAX
 #define PROCESSORS_MAX		8
 #endif
+
+extern unsigned num_processors;
+
 #define NUM_PROCESSORS			num_processors
-#define RUNCPU					get_cpunum()
+#define RUNCPU				get_cpunum()
 #define SPINLOCK(spin)			do { while((spin)->value) { /* nothing to do */ } } while(_smp_xchg(&(spin)->value, 1) != 0)
 #define SPINUNLOCK(spin)		((spin)->value = 0)
 #define SENDIPI(cpu,cmd)		send_ipi(cpu,cmd)

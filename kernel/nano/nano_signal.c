@@ -90,7 +90,7 @@ special_case_signalhandling(PROCESS * prp, THREAD * thp, int signo, int code, in
             if ((shp = get_signal_handler(prp, signo, 0)) && shp->handler) {
                 // Remove any pending SIGCONT
                 signal_remove(prp, SIGCONT);
-                return (-1);
+                return -1;
             }
             // Fall Through
         case SIGSTOP:
@@ -168,9 +168,9 @@ special_case_signalhandling(PROCESS * prp, THREAD * thp, int signo, int code, in
 
             // Check if process has a SIGCONT handler
             if ((shp = get_signal_handler(prp, signo, 0)) && shp->handler) {
-                return (-1);
+                return -1;
             }
-            return (SIGSTAT_QUEUED);
+            return SIGSTAT_QUEUED;
 
             /*
              * SIGIO is a BSD signal that is ignored, but it shadows SIGPOLL
@@ -207,7 +207,7 @@ special_case_signalhandling(PROCESS * prp, THREAD * thp, int signo, int code, in
             break;
         }
     }
-    return (-1);
+    return -1;
 }
 
 //
@@ -998,7 +998,7 @@ SIGHANDLER *get_signal_handler(PROCESS * prp, int signo, int create)
     for (stp = prp->sig_table; stp; stp = stp->next) {
         index = signo - stp->sig_base;
         if (index < HANDLERS_PER_SIGTABLE) {
-            return (&stp->handlers[index]);
+            return &stp->handlers[index];
         }
     }
 
@@ -1009,7 +1009,7 @@ SIGHANDLER *get_signal_handler(PROCESS * prp, int signo, int create)
             stp->next = prp->sig_table;
             stp->sig_base = signo - signo % HANDLERS_PER_SIGTABLE;
             prp->sig_table = stp;
-            return (&stp->handlers[signo - stp->sig_base]);
+            return &stp->handlers[signo - stp->sig_base];
         }
     }
 

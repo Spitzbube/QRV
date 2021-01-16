@@ -39,25 +39,25 @@ struct pa_restrict {
 
 /* Quantum Flags (per quantum attr) */
 // leave top bit unused for efficiency (think RISC immediate encoding)
-#define PAQ_FLAG_UNUSED			0x8000
+#define PAQ_FLAG_UNUSED		0x8000
 #define PAQ_FLAG_INITIALIZED	0x4000
-#define PAQ_FLAG_ZEROED			0x2000
-#define PAQ_FLAG_INUSE			0x1000
-#define PAQ_FLAG_HAS_INSTRS		0x0800
+#define PAQ_FLAG_ZEROED		0x2000
+#define PAQ_FLAG_INUSE		0x1000
+#define PAQ_FLAG_HAS_INSTRS	0x0800
 //RUSH3: What to do with sync objects on swapped out pages?
-#define PAQ_FLAG_HAS_SYNC		0x0400
-#define PAQ_FLAG_LOCKED			0x0200
-#define PAQ_FLAG_MODIFIED		0x0100
+#define PAQ_FLAG_HAS_SYNC	0x0400
+#define PAQ_FLAG_LOCKED		0x0200
+#define PAQ_FLAG_MODIFIED	0x0100
 #define PAQ_FLAG_INIT_REQUIRED	0x0080  // Only used with pa_quantum's.
-#define PAQ_FLAG_RDB			0x0080  // Only used with pa_quantum_fake's.
-#define PAQ_FLAG_SYSTEM			0x0040
+#define PAQ_FLAG_RDB		0x0080  // Only used with pa_quantum_fake's.
+#define PAQ_FLAG_SYSTEM		0x0040
 #define PAQ_FLAG_ACTIVE         0x0020
 #define PAQ_FLAG_COLOUR_MASK	0x000f  // Allow up to 15 colours
 //RUSH3: flags for anon or private memory? For mem with multiple refs?
 
-#define PAQ_COLOUR_NONE			(~0 & PAQ_FLAG_COLOUR_MASK)
+#define PAQ_COLOUR_NONE		(~0 & PAQ_FLAG_COLOUR_MASK)
 
-#define PAQ_BLK_FAKE			((_Uint16t)~0)
+#define PAQ_BLK_FAKE		((_Uint16t)~0)
 
 struct pa_free_link {
     struct pa_quantum *next;    // must be first entry

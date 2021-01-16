@@ -23,7 +23,6 @@
 */
 
 #include "ap.h"
-// FIX ME #include <sys/schedpart.h>
 #include <kernel/schedpart.h>
 #include <kernel/event.h>
 
@@ -154,7 +153,7 @@ typedef struct schedpart_rsrcmgr_fnctbl_s {
     int (*destroy)(part_id_t spid);
     int (*config)(part_id_t spid, schedpart_cfg_t * cfg, unsigned key);
     schedpart_info_t *(*getinfo)(part_id_t spid, schedpart_info_t * info);
-    PROCESS *(*find_pid)(pid_t pid_filter, part_id_t spid);
+    tProcess *(*find_pid)(pid_t pid_filter, part_id_t spid);
     int (*validate_cfg_new)(part_id_t parent_spid, schedpart_cfg_t * cfg);
     int (*validate_cfg_change)(part_id_t spid, schedpart_cfg_t * cfg);
 } schedpart_rsrcmgr_fnctbl_t;
@@ -171,11 +170,11 @@ typedef struct schedpart_rsrcmgr_fnctbl_s {
  * for the scheduler partitioning module to use.
 */
 typedef struct schedpart_fnctbl_s {
-    int (*associate)(PROCESS * prp, part_id_t spid, schedpart_dcmd_flags_t flags,
+    int (*associate)(tProcess * prp, part_id_t spid, schedpart_dcmd_flags_t flags,
                      ext_lockfncs_t * lf);
-    int (*disassociate)(PROCESS * prp, part_id_t, ext_lockfncs_t * lf);
-    schedpart_node_t *(*get_schedpart)(PROCESS * prp);
-    int (*get_schedpartlist)(PROCESS * prp, part_list_t * spart_list, int n,
+    int (*disassociate)(tProcess * prp, part_id_t, ext_lockfncs_t * lf);
+    schedpart_node_t *(*get_schedpart)(tProcess * prp);
+    int (*get_schedpartlist)(tProcess * prp, part_list_t * spart_list, int n,
                              schedpart_flags_t flags, struct _cred_info * cred);
     int (*validate_association)(part_id_t spid, struct _cred_info * cred);
     schedpart_rsrcmgr_fnctbl_t *(*rsrcmgr_attach) (rsrcmgr_schedpart_fnctbl_t *);
@@ -187,9 +186,9 @@ extern schedpart_fnctbl_t proxy_schedpart_fnctbl;
 extern schedpart_dcmd_flags_t default_schedpart_flags;
 extern schedpart_t *sys_schedpart;
 extern void (*schedpart_init)(part_id_t i_spid, sched_aps_partition_info * aps_info);
-extern DISPATCH *(*schedpart_select_dpp)(PROCESS * prp, int id);
+extern tDispatch *(*schedpart_select_dpp)(tProcess * prp, int id);
 
-extern part_id_t schedpart_getid(PROCESS * prp);
+extern part_id_t schedpart_getid(tProcess * prp);
 extern memclass_id_t schedpart_get_classid(part_id_t spid);
 extern int schedpart_validate_id(part_id_t spid);
 extern schedpart_t *schedpart_lookup_spid(part_id_t spid);
@@ -288,7 +287,7 @@ extern bool apmgr_module_installed(void);
 /*
  * SCHEDPART_DISASSOCIATE
  *
- * disassociate PROCESS <p> from the associated partition identified by partition
+ * disassociate tProcess <p> from the associated partition identified by partition
  * id <spid>. If <spid> == part_id_t_INVALID, the process will be disassociated
  * from all of its associated partitions (this is the situation when a process
  * is destroyed during process termination).
@@ -378,17 +377,17 @@ extern bool apmgr_module_installed(void);
  * This function provides the mechanism by which a newly created process can be
  * associated with a specific scheduling partition via posix_spawn(). It is
  * called via SCHEDPART_SELECT_DPP() in kerext_process_create() with the partition
- * id <spid> for which the respective DISPATCH structure is to be selected.
+ * id <spid> for which the respective tDispatch structure is to be selected.
  *
- * If the DISPATCH structure could be selected, it will be returned (cast to void *)
+ * If the tDispatch structure could be selected, it will be returned (cast to void *)
  * If the aps or apmgr modules are not installed, or any other error occurs, NULL
  * will be returned.
 */
 
 #if !defined(NDEBUG)
-extern void *_select_dpp(PROCESS * prp, part_id_t spid);
+extern void *_select_dpp(tProcess * prp, part_id_t spid);
 #else
-static __inline__ void *_select_dpp(PROCESS * prp, part_id_t spid)
+static __inline__ void *_select_dpp(tProcess * prp, part_id_t spid)
 {
     if (!SCHEDPART_INSTALLED() || !apmgr_module_installed() || (schedpart_select_dpp == NULL)) {
         return NULL;

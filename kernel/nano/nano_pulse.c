@@ -188,5 +188,3 @@ void rdecl pulse_remove(PROCESS * prp, PRIL_HEAD * queue, PULSE * pup)
         object_free(prp, &pulse_souls, pup);
     }
 }
-
-__SRCVERSION("nano_pulse.c $Rev: 169542 $");

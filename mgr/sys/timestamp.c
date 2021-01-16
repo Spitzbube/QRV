@@ -24,7 +24,7 @@
 #include "timestamp.h"
 
 const char os_version_string[] = {
-	(_NTO_VERSION / 100) % 10 + '0', '.',
-	(_NTO_VERSION /  10) % 10 + '0', '.',
-	(_NTO_VERSION /   1) % 10 + '0', '\0',
+    (_NTO_VERSION / 100) % 10 + '0', '.',
+    (_NTO_VERSION / 10) % 10 + '0', '.',
+    (_NTO_VERSION / 1) % 10 + '0', '\0',
 };

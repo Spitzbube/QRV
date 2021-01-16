@@ -90,7 +90,9 @@ typedef union _resmgr_iomsgs {
     io_mmap_t mmap;
     io_dup_t dup;
     io_sync_t sync;
+#ifdef CONFIG_POWER_MANAGEMENT
     io_power_t power;
+#endif
 } resmgr_iomsgs_t;
 
 struct _xendian_context {
@@ -174,7 +176,9 @@ typedef struct _resmgr_io_funcs {
     int (*lock_ocb)(resmgr_context_t * ctp, void *reserved, RESMGR_OCB_T * ocb);
     int (*unlock_ocb)(resmgr_context_t * ctp, void *reserved, RESMGR_OCB_T * ocb);
     int (*sync)(resmgr_context_t * ctp, io_sync_t * msg, RESMGR_OCB_T * ocb);
+#ifdef CONFIG_POWER_MANAGEMENT
     int (*power)(resmgr_context_t * ctp, io_power_t * msg, RESMGR_OCB_T * ocb);
+#endif
 } resmgr_io_funcs_t;
 #define _RESMGR_IO_NFUNCS		((sizeof(resmgr_io_funcs_t)-sizeof(unsigned))/sizeof(void *))
 

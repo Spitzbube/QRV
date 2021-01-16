@@ -37,10 +37,9 @@
 #include <kernel/kerext.h>
 #include <kernel/proto.h>
 #include <kernel/query.h>
-// FIX ME #include <sys/memclass.h>
 #include "kernel/memclass.h"
 
-extern SOUL process_souls;
+extern tSoul process_souls;
 extern VECTOR process_vector;
 extern PROCMGR procmgr;
 extern MEMMGR memmgr;

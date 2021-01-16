@@ -41,7 +41,7 @@ void KerextUnlock(void)
 
 int KerextAmInKernel(void)
 {
-    return (am_inkernel());
+    return am_inkernel();
 }
 
 

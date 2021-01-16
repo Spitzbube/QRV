@@ -5,7 +5,9 @@
  *
  * \license Apache 2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  *
- * \copyright (c) 2014 QNX Software Systems.
+ * \copyright
+ *      Original code (c) 2014 QNX Software Systems.
+ *      Modifications (c) 2021 Yuri Zaporozhets <r_tty@yahoo.co.uk>
  *
  * \note For detailed explanation of various startup scenarios see
  *       Documentation/startup-layout.txt

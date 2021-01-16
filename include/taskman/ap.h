@@ -96,7 +96,7 @@ typedef struct {
 /* prp_node_t */
 typedef struct prp_node_s {
     part_qnode_t hdr;
-    PROCESS *prp;
+    tProcess *prp;
 } prp_node_t;
 #endif                          /* USE_PROC_OBJ_LISTS */
 

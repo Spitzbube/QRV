@@ -19,5 +19,3 @@
 #define CPU_LIBC_BASE 	0xb0300000
 
 #define CPU_ELF_NUMBERS	EM_386: case EM_486
-
-/* __SRCVERSION("cpudeps.h $Rev: 153052 $"); */

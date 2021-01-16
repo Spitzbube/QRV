@@ -129,17 +129,17 @@ void smp_clr_INKERNEL_SPECRET(void);
 					"movw %%cs,%w0\n\tandl $3,%0": "=r" (priv)); priv; })
 
 #define __inline_xfer_memcpy(dst, src, n) ({ 			\
-	int	d0, d1, d2;										\
-	__asm__ __volatile__ (								\
-		"movl	%%ecx,%%eax\n"							\
-		"shr	$2,%%ecx\n"								\
-		"repne;	movsl\n"								\
-		"movl	%%eax,%%ecx\n"							\
-		"andl	$3,%%ecx\n"								\
-		"jz		1f\n"									\
-		"repne;	movsb\n"								\
-		"1: \n"											\
-		:"=&c" (d0), "=&D" (d1), "=&S" (d2)				\
+	int	d0, d1, d2;					\
+	__asm__ __volatile__ (					\
+		"movl	%%ecx,%%eax\n"				\
+		"shr	$2,%%ecx\n"				\
+		"repne;	movsl\n"				\
+		"movl	%%eax,%%ecx\n"				\
+		"andl	$3,%%ecx\n"				\
+		"jz		1f\n"				\
+		"repne;	movsb\n"				\
+		"1: \n"						\
+		:"=&c" (d0), "=&D" (d1), "=&S" (d2)		\
 		:"0" (n), "1" ((long) dst), "2" ((long) src)	\
 		:"eax", "memory");	})
 

@@ -204,13 +204,13 @@ int memmgr_resize(OBJECT * obj, size_t size)
 // manager sorted out
 void init_memmgr(void)
 {
-    extern MEMMGR memmgr_virtual;
+    extern tMemMgr memmgr_virtual;
 
     if (SYSPAGE_ENTRY(cpuinfo)->flags & CPU_FLAG_MMU) {
         memmgr = memmgr_virtual;
     } else {
 #ifdef ENABLE_PHYSICAL_MEMMGR
-        extern MEMMGR memmgr_phys;
+        extern tMemMgr memmgr_phys;
         memmgr = memmgr_phys;
 #else
         crash();
@@ -219,4 +219,3 @@ void init_memmgr(void)
     address_cookie = object_register_data(&process_souls, memmgr.sizeof_address_entry);
 }
 
-__SRCVERSION("memmgr_init.c $Rev: 199396 $");

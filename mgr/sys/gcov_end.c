@@ -19,19 +19,20 @@ static unsigned *force_cc1_to_data[] __attribute__((unused)) = { 0 };
 
 asm(".section .ctors,\"aw\"");
 unsigned _ctors_end[] = { 0 };
+
 asm(".previous");
 
 extern unsigned _ctors_begin;
 
 void gcov_init(void)
 {
-	void (*func)(void);
-	unsigned *p;
+    void (*func)(void);
+    unsigned *p;
 
-	for( p = &_ctors_end[0]-1; p > &_ctors_begin; p-- ) {
-		func = (void *)*p;
-		func();
-	}
+    for (p = &_ctors_end[0] - 1; p > &_ctors_begin; p--) {
+        func = (void *) *p;
+        func();
+    }
 }
 
 #ifdef __X86__

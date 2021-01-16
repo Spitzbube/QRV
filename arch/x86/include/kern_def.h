@@ -17,10 +17,10 @@
 
 
 
-/*
- *  x86/neutrino.h
+/**
+ * \file arch/x86/kern_def.h
  *
-
+ * Various machine-specific kernel definitions.
  */
 
 #ifndef __NEUTRINO_H_INCLUDED
@@ -172,5 +172,3 @@ struct __gcc_fool { int __fool[100]; };
 #else
 #error Compiler not defined.
 #endif
-
-/* __SRCVERSION("neutrino.h $Rev: 175130 $"); */

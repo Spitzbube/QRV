@@ -88,5 +88,3 @@ typedef char *__NTO_va_list[1];
 #endif
 
 #endif
-
-/* __SRCVERSION("platform.h $Rev: 164949 $"); */

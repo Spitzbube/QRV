@@ -19,7 +19,7 @@
 #include <confname.h>
 #include <sys/conf.h>
 
-static int sc_nprocessors(int name)
+static unsigned sc_nprocessors(int name)
 {
     return NUM_PROCESSORS;
 }

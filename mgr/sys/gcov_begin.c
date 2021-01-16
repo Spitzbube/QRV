@@ -19,4 +19,5 @@ static unsigned *force_cc1_to_data[] __attribute__((__unused__)) = { 0 };
 
 asm(".section .ctors,\"aw\"");
 unsigned _ctors_begin[] = { -1 };
+
 asm(".previous");

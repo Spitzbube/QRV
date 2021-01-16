@@ -106,6 +106,7 @@ struct mm_aspace {
 
 #if _PADDR_BITS > 32
 // Since we've got 40 bits of paddr, make the 'object' the high 8 bits.
+#warning This will not work with 64-bit addressing
 #define PADDR_TO_SYNC_OBJ(addr)	((void *)((uintptr_t)((addr) >> 32) & 0xff))
 #else
 #define PADDR_TO_SYNC_OBJ(addr)	((void *)_syspage_ptr)

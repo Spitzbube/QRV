@@ -12,7 +12,9 @@
 #ifndef _SYS_SIGNALTYPES_H
 #define _SYS_SIGNALTYPES_H
 
-typedef unsigned long sigset_t;
+typedef struct {
+    uint32_t bits[2];
+} sigset_t;
 
 typedef int sig_atomic_t;
 

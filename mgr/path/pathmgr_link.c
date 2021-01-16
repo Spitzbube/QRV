@@ -117,7 +117,7 @@ int _netmgr_connect(int base, const char *path, mode_t mode, unsigned oflag, uns
 {
     struct _io_connect_entry entry;
     struct node_entry *node;
-    union object *o;
+    tPathMgrObject *o;
     char *newpath;
     int ret;
     size_t slen = strlen(path) + 1;

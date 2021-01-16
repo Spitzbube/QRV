@@ -16,7 +16,6 @@
  */
 
 #include "externs.h"
-#include <sys/image.h>
 #include "apm.h"
 #include "aps.h"
 
@@ -32,7 +31,7 @@ void init_objects()
 {
     PROCESS *prp;
     THREAD *thp;
-    int i;
+    unsigned i;
     unsigned ker_stack_size;
     uintptr_t ker_sp;
     DISPATCH *dpp;
@@ -110,7 +109,7 @@ void init_objects()
     prp->flags = _NTO_PF_RING0 | _NTO_PF_SLEADER | _NTO_PF_NOCLDSTOP;
     prp->num_active_threads = NUM_PROCESSORS;
     prp->boundry_addr = VM_KERN_SPACE_BOUNDRY;
-    prp->sig_ignore.__bits[0] |= SIGMASK_BIT(SIGKILL) | SIGMASK_BIT(SIGSTOP) |
+    prp->sig_ignore.bits[0] |= SIGMASK_BIT(SIGKILL) | SIGMASK_BIT(SIGSTOP) |
         SIGMASK_BIT(SIGTSTP) | SIGMASK_BIT(SIGTTIN) | SIGMASK_BIT(SIGTTOU);
     SIGMASK_SPECIAL(&prp->sig_queue);
 
@@ -130,7 +129,7 @@ void init_objects()
     i = 0;
     do {
         uintptr_t stack_top;
-        void *dummy;
+        void *dummy __attribute__ ((unused));
 
         thp = object_alloc(NULL, &thread_souls);
         memset(thp, 0, sizeof(*thp));
@@ -139,7 +138,7 @@ void init_objects()
         thp->process = prp;
         thp->runcpu = i;
         // We can leave default_runmask to zero for inheritance
-        thp->runmask = ~(1 << i);
+        thp->runmask = ~(1U << i);
         thp->last_chid = -1;
         thp->policy = SCHED_RR;
         thp->sched_flags = 0;
@@ -168,7 +167,7 @@ void init_objects()
     mdriver_check();
 }
 
-extern MEMMGR memmgr_rte;
+extern tMemMgr memmgr_rte;
 
 void init_memmgr(void)
 {

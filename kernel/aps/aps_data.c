@@ -266,7 +266,3 @@ DISPATCH * create_default_dispatch(void)
     /* return system partition - this is the default partition at boot time */
     return (DISPATCH *) system_ppg;
 }
-
-
-
-__SRCVERSION("aps_data.c $Rev: 153052 $");

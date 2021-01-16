@@ -130,7 +130,7 @@ init_send_ipi() {
 	// the time in the send_ipi[2] routines.
 	cpu_remap[cpu] = apic_id << 24;
 
-   	apic_write(LAPIC_TPR, 0);
+	apic_write(LAPIC_TPR, 0);
 	apic_write(LAPIC_SPIV, apic_read(LAPIC_SPIV) | 0x100);
 
 	// save the reserved bits in APIC cmd reg
@@ -180,7 +180,7 @@ send_ipi2() {
 	unsigned			cmd;
 	unsigned			my_cpu;
 
-   	my_cpu = RUNCPU;
+	my_cpu = RUNCPU;
 	// Set target APIC ID
 	dst = reservAPICICRH[my_cpu] | cpu_remap[cpunum];
 	cmd = reservAPICICRL[my_cpu] + 1;
@@ -192,5 +192,3 @@ send_ipi2() {
 	apic_write(LAPIC_ICRH, dst);
 	apic_write(LAPIC_ICRL, cmd); // Send command
 }
-
-__SRCVERSION("smp_send_ipi.c $Rev: 153052 $");

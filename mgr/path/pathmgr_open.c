@@ -170,7 +170,7 @@ static int node_devctl(resmgr_context_t * ctp, io_devctl_t * msg, void *vocb)
 
 static int node_stat(resmgr_context_t * ctp, io_stat_t * msg, void *vocb)
 {
-    union object *o;
+    tPathMgrObject *o;
     struct node_ocb *ocb = vocb;
 
     memset(&msg->o, 0x00, sizeof msg->o);

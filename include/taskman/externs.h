@@ -38,15 +38,16 @@
 #include <arch/cpu_def.h>
 
 #ifndef KERHDR
-#include <kernel/nto.h>
+#include <kernel/objects.h>
 #endif
 #undef NKDEBUG
 
 #include "struct.h"
-#include "proto.h"
-#include "procmgr_proto.h"
-#include "pathmgr_proto.h"
-#include "memmgr_proto.h"
+#include <kernel/proto.h>
+#include "taskman/sysmgr_proto.h"
+#include "taskman/procmgr_proto.h"
+#include "taskman/pathmgr_proto.h"
+#include "taskman/memmgr_proto.h"
 #include "mclass.h"
 #include "apm.h"
 #include "aps.h"

@@ -30,14 +30,11 @@
 #include <gulliver.h>
 #endif
 
-#ifndef __CPUINLINE_H_INCLUDED
-#include <sys/cpuinline.h>
-#endif
-
-#include _NTO_CPU_HDR_(inout.h)
+#include <arch/cpuinline.h>
+#include <arch/inout.h>
 
 #ifndef mem_barrier
-#define mem_barrier()				__cpu_membarrier()
+#define mem_barrier() __cpu_membarrier()
 #endif
 
 #ifndef inle16

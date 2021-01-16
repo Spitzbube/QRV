@@ -63,11 +63,11 @@ static int check_class(int class)
     case _NTO_TRACE_SYSTEM:
     case _NTO_TRACE_COMM:
         {
-            return (EOK);
+            return EOK;
         }
     default:
         {
-            return (ENOTSUP);
+            return ENOTSUP;
         }
     }
 }
@@ -76,7 +76,7 @@ static int get_int_level(unsigned v)
 {
     switch (v) {
     case _NTO_TRACE_INTFIRST:
-        return (0);
+        return 0;
     case _NTO_TRACE_INTLAST:
         {
             unsigned i;
@@ -87,10 +87,10 @@ static int get_int_level(unsigned v)
                 l += iip->num_vectors;
             }
 
-            return (l);
+            return l;
         }
     default:
-        return (get_interrupt_level(NULL, v));
+        return get_interrupt_level(NULL, v);
     }
 }
 
@@ -113,7 +113,7 @@ static int check_call_masks()
     }
     ker_exit_enable_mask = j ? (0xffffffff) : (0x00000000);
 
-    return (EOK);
+    return EOK;
 }
 
 static int add_eh(THREAD * thp, ehandler_data_t ** loc, void *handler, event_data_t * area) {
@@ -133,13 +133,13 @@ static int add_eh(THREAD * thp, ehandler_data_t ** loc, void *handler, event_dat
                 *loc = trace_masks.eh_storage + i;
                 InterruptUnlock(&trace_masks.eh_spin);
 
-                return (EOK);
+                return EOK;
             }
         }
     } else {
         InterruptUnlock(&trace_masks.eh_spin);
 
-        return (ENOTSUP);
+        return ENOTSUP;
     }
 }
 
@@ -159,18 +159,18 @@ static int delete_eh(ehandler_data_t ** loc)
     }
     InterruptUnlock(&trace_masks.eh_spin);
 
-    return (EOK);
+    return EOK;
 }
 
 //Local macros used only within kernel trace call.
 #define _TRACE_ADD_EH(loc) \
 ((a_1)=(loc),(a_2)=(*(++c_p)),(a_3)=(*(++c_p)),(add_eh(act,a_1,(void*)a_2,(event_data_t*)a_3)))
 
-#define _TRACE_DOUBLE_ADD_EH(l_1, l_2)                     \
-(a_0=l_1,a_1=l_2,a_2=*(++c_p),a_3=*(++c_p),                \
- ((add_eh(act,a_0,(void*)a_2,(event_data_t*)a_3)==(EOK) && \
-   add_eh(act,a_1,(void*)a_2,(event_data_t*)a_3)==(EOK))   \
-   ?(EOK):(ENOTSUP)))
+#define _TRACE_DOUBLE_ADD_EH(l_1, l_2)                       \
+   (a_0=l_1,a_1=l_2,a_2=*(++c_p),a_3=*(++c_p),               \
+   ((add_eh(act,a_0,(void*)a_2,(event_data_t*)a_3)==(EOK) && \
+     add_eh(act,a_1,(void*)a_2,(event_data_t*)a_3)==(EOK))   \
+     ? EOK : ENOTSUP))
 
 int kdecl ker_trace_event(THREAD * act, struct kerargs_trace_event *kap)
 {

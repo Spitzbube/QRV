@@ -346,7 +346,7 @@ int intrevent_add_attr intrevent_add(const struct sigevent *evp, THREAD * thp, I
         }
         INTR_UNLOCK(&intrevent_lock);
         if (!intrevent_error(thp, isr)) {
-            return (-1);
+            return -1;
         }
     }
     intrevent_free = irp->next;
@@ -602,9 +602,9 @@ void intrevent_init(unsigned num)
 //
 int rdecl sigevent_exe(const struct sigevent *evp, THREAD * thp, int deliver)
 {
-    CONNECT *cop;
-    CHANNEL *chp;
-    PROCESS *prp;
+    tConnect *cop;
+    tChannel *chp;
+    tProcess *prp;
     int status;
     int prio;
 
@@ -628,7 +628,7 @@ int rdecl sigevent_exe(const struct sigevent *evp, THREAD * thp, int deliver)
 
     case SIGEV_SIGNAL_THREAD:
         if (evp->sigev_signo <= 0 || evp->sigev_signo > _SIGMAX || evp->sigev_code > SI_USER) {
-            return (EINVAL);
+            return EINVAL;
         }
         if (deliver) {
             prp = thp->process;

@@ -102,7 +102,7 @@ typedef enum {
 /* obj_node_t */
 typedef struct obj_node_s {
     part_qnode_t hdr;
-    OBJECT *obj;
+    tPathMgrObject *obj;
 } obj_node_t;
 #endif                          /* USE_PROC_OBJ_LISTS */
 
@@ -210,7 +210,7 @@ typedef struct mempart_rsrcmgr_fnctbl_s {
     int (*destroy)(part_id_t mpid);
     int (*config)(part_id_t mpid, mempart_cfg_t * cfg, unsigned create_key);
     mempart_info_t *(*getinfo)(part_id_t mpid, mempart_info_t * info);
-    PROCESS *(*find_pid)(pid_t pid_filter, part_id_t mpid);
+    tProcess *(*find_pid)(pid_t pid_filter, part_id_t mpid);
     int (*validate_cfg_new)(part_id_t parent_mpid, mempart_cfg_t * cfg, memclass_id_t memclass_id);
     int (*validate_cfg_change)(part_id_t mpid, mempart_cfg_t * cfg);
 } mempart_rsrcmgr_fnctbl_t;
@@ -227,17 +227,17 @@ typedef struct mempart_rsrcmgr_fnctbl_s {
  * for the memory partitioning module to use.
 */
 typedef struct mempart_fnctbl_s {
-    int (*associate)(PROCESS * prp, part_id_t mpid, mempart_dcmd_flags_t flags,
+    int (*associate)(tProcess * prp, part_id_t mpid, mempart_dcmd_flags_t flags,
                      ext_lockfncs_t * lf);
-    int (*disassociate)(PROCESS * prp, part_id_t, ext_lockfncs_t * lf);
-    int (*obj_associate)(OBJECT * obj, part_id_t mpid);
-    void (*obj_disassociate)(OBJECT * o);
+    int (*disassociate)(tProcess * prp, part_id_t, ext_lockfncs_t * lf);
+    int (*obj_associate)(tPathMgrObject * obj, part_id_t mpid);
+    void (*obj_disassociate)(tPathMgrObject * o);
     int (*chk_and_incr)(part_id_t mpid, memsize_t incr, memsize_t * resv_size);
      memsize_t(*decr) (part_id_t mpid, memsize_t decr);
     int (*incr)(part_id_t mpid, memsize_t incr);
     void (*undo_incr)(part_id_t mpid, memsize_t incr, memsize_t resv_size);
-    mempart_node_t *(*get_mempart)(PROCESS * prp, memclass_id_t memclass_id);
-    int (*get_mempartlist)(PROCESS * prp, part_list_t * mpart_list, int n, mempart_flags_t flags,
+    mempart_node_t *(*get_mempart)(tProcess * prp, memclass_id_t memclass_id);
+    int (*get_mempartlist)(tProcess * prp, part_list_t * mpart_list, int n, mempart_flags_t flags,
                            struct _cred_info * cred);
     int (*validate_association)(part_id_t mpid, struct _cred_info * cred);
     mempart_rsrcmgr_fnctbl_t *(*rsrcmgr_attach) (rsrcmgr_mempart_fnctbl_t *);
@@ -276,7 +276,7 @@ extern mempart_dcmd_flags_t default_mempart_flags;
 /*
  * MEMPART_DISASSOCIATE
  *
- * disassociate PROCESS <p> from the associated partition identified by partition
+ * disassociate tProcess <p> from the associated partition identified by partition
  * id <mpid>. If <mpid> == part_id_t_INVALID, the process will be disassociated
  * from all of its associated partitions (this is the situation when a process
  * is destroyed during process termination).
@@ -309,7 +309,7 @@ extern mempart_dcmd_flags_t default_mempart_flags;
  * specified in the Design Documentation (see also object_done())
 
 #define	MEMPART_OBJ_DISASSOCIATE(o) \
-		if ((MEMPART_INSTALLED()) && ((o) != NULL) && (((OBJECT *)(o))->hdr.mpid != NULL)) \
+		if ((MEMPART_INSTALLED()) && ((o) != NULL) && (((tPathMgrObject *)(o))->hdr.mpid != NULL)) \
 		{mempart_fnctbl->obj_disassociate((o));}
 */
 
@@ -521,7 +521,7 @@ memsize_t free_mem(pid_t pid, part_id_t mpid);
 
 /* mm_mempart.c */
 extern void (*mempart_init)(memsize_t sysmem_size, memclass_id_t memclass_id);
-part_id_t mempart_getid(PROCESS * prp, memclass_id_t mclass);
+part_id_t mempart_getid(tProcess * prp, memclass_id_t mclass);
 memclass_id_t mempart_get_classid(part_id_t mpid);
 int mempart_validate_id(part_id_t mpid);
 mempart_t *mempart_lookup_mpid(part_id_t mpid);

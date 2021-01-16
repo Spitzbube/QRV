@@ -38,7 +38,7 @@ int rdecl get_interrupt_level(THREAD * act, unsigned vector)
                 /* out of range number */
                 if (act != NULL)
                     kererr(act, EINVAL);
-                return (-1);
+                return -1;
             }
             if (vector >= iip->vector_base && vector < (iip->vector_base + iip->num_vectors))
                 break;
@@ -53,9 +53,9 @@ int rdecl get_interrupt_level(THREAD * act, unsigned vector)
                 && alives[0]) {
                 if (act != NULL)
                     kererr(act, EINVAL);
-                return (-1);
+                return -1;
             }
-            return (level);
+            return level;
         }
         //
         // Guy wanted a cascaded interrupt level. Give him the first one
@@ -82,7 +82,7 @@ void rdecl interrupt_init()
     struct intrinfo_entry *iip;
     unsigned level_base;
     unsigned num_external_levels;
-    INTRLEVEL *ilp;
+    tIntrLevel *ilp;
 
     num_external_levels = 0;
     iip = intrinfoptr;
@@ -138,7 +138,7 @@ interrupt_attach(int level, const struct sigevent *(*handler) (void *area, int i
 {
     INTERRUPT *itp;
     INTERRUPT **owner;
-    INTRLEVEL *ilp;
+    tIntrLevel *ilp;
     unsigned count;
     THREAD *act = actives[KERNCPU];
     int id;
@@ -298,7 +298,7 @@ void rdecl interrupt_detach_entry(PROCESS * prp, int index)
 
 int rdecl interrupt_mask(int level, INTERRUPT * itp)
 {
-    INTRLEVEL *ilp;
+    tIntrLevel *ilp;
     int new;
 
     if (level < 0)
@@ -333,13 +333,13 @@ int rdecl interrupt_mask_vector(unsigned vector, int id)
     int level = get_interrupt_level(NULL, vector);
 
     if (level == -1)
-        return (-1);
+        return -1;
     return (interrupt_mask(level, vector_lookup(&interrupt_vector, id)));
 }
 
 int rdecl interrupt_unmask(int level, INTERRUPT * itp)
 {
-    INTRLEVEL *ilp;
+    tIntrLevel *ilp;
     int new;
 
     if (level < 0)
@@ -380,7 +380,7 @@ int rdecl interrupt_unmask(int level, INTERRUPT * itp)
     if (alives[0]) {
         CPU_SLOCK_INTR_UNLOCK(&intr_slock);
     }
-    return (new);
+    return new;
 }
 
 int rdecl interrupt_unmask_vector(unsigned vector, int id)
@@ -388,8 +388,6 @@ int rdecl interrupt_unmask_vector(unsigned vector, int id)
     int level = get_interrupt_level(NULL, vector);
 
     if (level == -1)
-        return (-1);
-    return (interrupt_unmask(level, vector_lookup(&interrupt_vector, id)));
+        return -1;
+    return interrupt_unmask(level, vector_lookup(&interrupt_vector, id));
 }
-
-__SRCVERSION("nano_interrupt.c $Rev: 201493 $");

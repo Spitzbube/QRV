@@ -220,7 +220,5 @@ int CacheControl(void *base, size_t len, int flags)
         full_flush &= cache_iterate(cpu->ins_cache, base, len, code_flags, CACHE_FLAG_DATA);
     }
 
-    return (full_flush);
+    return full_flush;
 }
-
-__SRCVERSION("kerext_cache.c $Rev: 153052 $");

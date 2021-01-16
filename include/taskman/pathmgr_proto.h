@@ -15,6 +15,10 @@
  * $
  */
 
+#ifndef _PATHMGR_PROTO_H
+#define _PATHMGR_PROTO_H
+
+#include <taskman/pathmgr_object.h>
 
 struct object_funcs;
 
@@ -29,7 +33,7 @@ struct symlink_object;
 int reply_symlink(resmgr_context_t * ctp, unsigned eflag, struct _io_connect_link_reply *link,
                   struct symlink_object *symlink, const char *path, const char *tail);
 int pathmgr_dolink(resmgr_context_t * ctp, io_link_t * msg, void *handle, io_link_extra_t * extra);
-int pathmgr_node2fullpath(NODE * node, char *path, int pathmax);
+int pathmgr_node2fullpath(tNode * node, char *path, int pathmax);
 
 /* pathmgr_open.c */
 int pathmgr_open(resmgr_context_t * ctp, io_open_t * msg, void *handle, void *extra);
@@ -47,25 +51,27 @@ struct node_entry *pathmgr_resolve_path(struct node_entry *node, struct _io_conn
 int pathmgr_resolve_servers(resmgr_context_t * ctp, struct node_entry *node,
                             struct _io_connect *connect, const char *path, struct node_entry *root);
 
-NODE *pathmgr_node_alloc(const char *name, unsigned len);
-NODE *pathmgr_node_lookup(NODE * nop, const char *path, unsigned flags, const char **result);
-void pathmgr_node_detach(NODE * nop);
-void pathmgr_node_detach_flags(NODE * nop, unsigned);
-void pathmgr_node_unlink(NODE * nop);
-void pathmgr_node_access(NODE * node);
-void pathmgr_node_complete(NODE * node);
-NODE *pathmgr_node_clone(NODE * node);
+tNode *pathmgr_node_alloc(const char *name, unsigned len);
+tNode *pathmgr_node_lookup(tNode * nop, const char *path, unsigned flags, const char **result);
+void pathmgr_node_detach(tNode * nop);
+void pathmgr_node_detach_flags(tNode * nop, unsigned);
+void pathmgr_node_unlink(tNode * nop);
+void pathmgr_node_access(tNode * node);
+void pathmgr_node_complete(tNode * node);
+tNode *pathmgr_node_clone(tNode * node);
 pid_t pathmgr_netmgr_pid(void);
 
-OBJECT *pathmgr_object_attach(PROCESS * prp, NODE * nop, const char *path, int type, unsigned flags,
+tPathMgrObject *pathmgr_object_attach(tProcess * prp, tNode * nop, const char *path, int type, unsigned flags,
                               void *data);
-void pathmgr_object_detach(OBJECT * obp);
-size_t pathmgr_object_pathname(OBJECT * obp, size_t max, char *dest);
-OBJECT *pathmgr_object_clone(OBJECT *);
-void pathmgr_object_unclone(OBJECT *);
-void pathmgr_object_done(OBJECT *);
+void pathmgr_object_detach(tPathMgrObject * obp);
+size_t pathmgr_object_pathname(tPathMgrObject * obp, size_t max, char *dest);
+tPathMgrObject *pathmgr_object_clone(tPathMgrObject *);
+void pathmgr_object_unclone(tPathMgrObject *);
+void pathmgr_object_done(tPathMgrObject *);
 
-OBJECT *object_create(int type, void *extra, PROCESS * prp, memclass_id_t mcid);
-int object_done(OBJECT *);
-size_t object_name(OBJECT *, size_t, char *);
-int object_devctl(resmgr_context_t *, io_devctl_t *, OBJECT *);
+tPathMgrObject *object_create(int type, void *extra, tProcess * prp, memclass_id_t mcid);
+int object_done(tPathMgrObject *);
+size_t object_name(tPathMgrObject *, size_t, char *);
+int object_devctl(resmgr_context_t *, io_devctl_t *, tPathMgrObject *);
+
+#endif

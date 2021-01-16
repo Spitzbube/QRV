@@ -60,11 +60,11 @@ int rdecl kerisroot(THREAD * thp)
 {
 
     if (thp->process->cred->info.euid == 0) {
-        return (1);
+        return 1;
     }
 
     kererr(thp, EPERM);
-    return (0);
+    return 0;
 }
 
 
@@ -81,13 +81,13 @@ int rdecl kerisusr(THREAD * srcthp, PROCESS * dstprp)
     }
 
     kererr(srcthp, EPERM);
-    return (0);
+    return 0;
 }
 
 int rdecl keriskill(THREAD * srcthp, PROCESS * dstprp, int signo)
 {
     if (signo == SIGCONT && dstprp->session == srcthp->process->session) {
-        return (1);
+        return 1;
     }
     return kerisusr(srcthp, dstprp);
 }
@@ -118,7 +118,7 @@ int kercall_attach(unsigned callnum, int kdecl(*func) ())
 {
 
     if (callnum >= __KER_BAD)
-        return (-1);
+        return -1;
 
     ker_call_table[callnum] = func;
 #if defined(VARIANT_instr)
@@ -126,7 +126,7 @@ int kercall_attach(unsigned callnum, int kdecl(*func) ())
     _trace_call_table[callnum] = func;
 #endif
 
-    return (0);
+    return 0;
 }
 
 /*
@@ -325,7 +325,7 @@ void *rdecl pril_first(PRIL_HEAD * ph)
 #if !defined(pril_next)
 void *rdecl pril_next(void *p)
 {
-    return ((PRIL *) p)->next.pril;
+    return ((tPril *) p)->next.pril;
 }
 #endif
 

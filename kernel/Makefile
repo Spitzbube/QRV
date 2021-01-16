@@ -10,13 +10,11 @@ ARCHIVE = kernel.a
 
 TESTING = 1
 
-ifdef TESTING
-OBJECTS += ktest.o \
-           miniproc_start.o
-else
-# Add objects here
-OBJECTS += init.o
-endif
+OBJECTS += init.o \
+           kmain.o \
+           ker_ring0.o \
+           ker_channel.o \
+           ker_connect.o
 
 all: $(ARCHIVE)($(OBJECTS))
 

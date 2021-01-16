@@ -19,21 +19,23 @@
 #define PATHMGR_NODE_H
 
 #include <inttypes.h>
-#include <kernel/proctypes.h>
 
 #define INODE_XOR(value) ((int)value ^ 0x19071975)
 
-struct node_entry {
-    NODE *parent;
-    NODE *sibling;
-    NODE *child;
-    OBJECT *object;
+typedef struct node_entry tNode;
+typedef union path_mgr_obj tPathMgrObject;
+
+typedef struct node_entry {
+    tNode *parent;
+    tNode *sibling;
+    tNode *child;
+    tPathMgrObject *object;
     uint16_t links;             /* Number of current access to this node */
     uint16_t child_objects;     /* Number of children with objects */
     uint16_t flags;
     uint16_t len;
     char name[1];
-};
+} tNode;
 
 #define NODE_FLAG_NOCHILD		0x0001  /* No children allowed on this node */
 #define NODE_FLAG_NONSERVER		0x0002  /* There is a non-server object on this node */
@@ -50,5 +52,3 @@ struct node_entry {
 extern pthread_mutex_t pathmgr_mutex;
 
 #endif
-
-/* __SRCVERSION("pathmgr_node.h $Rev: 159046 $"); */

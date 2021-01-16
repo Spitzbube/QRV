@@ -44,7 +44,7 @@ typedef RISCV_PERF_REGISTERS    PERF_REGISTERS;
 #define VM_USER_SPACE_BOUNDRY		GIG(128)-1
 #define VM_KERN_SPACE_BOUNDRY		0xffffffffffffffff
 
-#define STACK_ALIGNMENT				16
+#define STACK_ALIGNMENT				16UL
 #define STACK_INITIAL_CALL_CONVENTION_USAGE	0
 
 #define CPU_P2V(p)			((uintptr_t)(p))
@@ -64,7 +64,7 @@ struct cpu_intrsave {
 
 /* Fields this cpu may need for debugging a process */
 #define CPU_DEBUG	\
-	BREAKPT			step;
+	tBreakpoint	step;
 
 /* CPU specific fields in the thread entry structure */
 struct cpu_thread_entry {

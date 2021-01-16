@@ -254,16 +254,16 @@ void *_sreallocfunc(void *data, size_t old_size, size_t new_size,
                 }
                 if (size) {
                     if (!ker) {
-                        // If we're not the kernel we can't just
-                        // continue on, because the realloc handling
-                        // code down below is going to attempt to
-                        // use the 'prev' pointer which may no longer
-                        // be valid since we released the mutex before
-                        // calling 'alloc' (another proc thread might
-                        // have allocated/freed memory). Instead we
-                        // "free" the memory to put it into the heap
-                        // and then just start over from the top.
-
+                        /* If we're not the kernel we can't just
+                         * continue on, because the realloc handling
+                         * code down below is going to attempt to
+                         * use the 'prev' pointer which may no longer
+                         * be valid since we released the mutex before
+                         * calling 'alloc' (another proc thread might
+                         * have allocated/freed memory). Instead we
+                         * "free" the memory to put it into the heap
+                         * and then just start over from the top.
+                         */
                         _sreallocfunc(new, size, 0, NULL);
                         goto addmem;
                     }

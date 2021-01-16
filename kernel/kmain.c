@@ -37,10 +37,12 @@ void module_init(unsigned pass)
     }
 }
 
-
-static unsigned getmem(char *arg)
+/**
+ * \brief TODO
+ */
+static size_t getmem(char *arg)
 {
-    unsigned size;
+    size_t size;
 
     size = strtoul(arg, &arg, 0);
     switch (*arg) {
@@ -61,9 +63,8 @@ static unsigned getmem(char *arg)
 void kernel_main(int argc, char *argv[], char *env[])
 {
     int i;
-    int n;
-    char *cp;
-    char *mem_config;
+    ulong_t n;
+    char *cp, *mem_config;
     size_t pregrow = KILO(64);
 
     module_init(0);
@@ -76,7 +77,7 @@ void kernel_main(int argc, char *argv[], char *env[])
     while ((i = getopt(argc, argv, "a:cf:T:F:m:pP:hl:R:M:ve:u:H:")) != -1) {
         switch (i) {
         case 'u':
-            procfs_umask = strtoul(optarg, NULL, 0);
+            procfs_umask = (mode_t)strtoul(optarg, NULL, 0);
             break;
         case 'a':
             switch (optarg[0]) {
@@ -118,35 +119,53 @@ void kernel_main(int argc, char *argv[], char *env[])
         case 'l':
             // -l PROCESSES,THREADS,TIMERS,PULSES,SYNCS,CONNECTS,CHANNELS,INTERRUPTS
             for (cp = optarg, i = 0; *cp; ++i) {
-                unsigned lim;
-
-                lim = strtoul(cp, &cp, 0);
-                if (lim != 0)
-                    limits_max[i] = lim;
+                ulong_t lim = strtoul(cp, &cp, 0);
+                if (lim && lim < LONG_MAX)
+                    limits_max[i] = (long)lim;
+                else
+                    kprintf("Ignoring limit value %lu\n", lim);
                 if (*cp == ',')
                     ++cp;
             }
             break;
 
-        case 'T':
-            fd_close_timeout = strtoul(optarg, NULL, 0);
-            if (fd_close_timeout == 0)
-                fd_close_timeout = 30;
+        case 'T': {
+            ulong_t val = strtoul(optarg, NULL, 0);
+            if (val > 1024) {
+                pr_warn("ignoring given fd timeout (value %ld is too high)\n", val);
+                break;
+            }
+            if (val == 0) {
+                val = 30;
+                pr_warn("fd timeout value is 0, setting to default (%d)\n", val);
+            }
+            fd_close_timeout = (unsigned)val;
             break;
+        }
 
-        case 'F':
-            max_fds = strtoul(optarg, NULL, 0);
-            if (max_fds < 100)
-                max_fds = 100;
+        case 'F': {
+            ulong_t val = strtoul(optarg, NULL, 0);
+            if (val > INT_MAX || val < 100) {
+                pr_warn("given value for max_fds (%d) is too small or too big, setting to default (100)", val);
+                val = 100;
+            }
+            max_fds = (unsigned)val;
             break;
+        }
 
-        case 'P':
-            priv_prio = strtoul(optarg, NULL, 0);
-            if (priv_prio < 10)
-                priv_prio = 10;
-            if (priv_prio > NUM_PRI)
-                priv_prio = NUM_PRI;
+        case 'P': {
+            ulong_t val = strtoul(optarg, NULL, 0);
+            if (val < 10) {
+                pr_warn("priv value %d too low, setting to default (10)\n", val);
+                val = 10;
+            }
+            if (priv_prio > NUM_PRI) {
+                pr_warn("priv value %d too high, setting to default (10)\n", val, NUM_PRI);
+                val = NUM_PRI;
+            }
+            priv_prio = (unsigned)val;
             break;
+        }
 
         case 'R':
             /*
@@ -174,13 +193,13 @@ void kernel_main(int argc, char *argv[], char *env[])
                  * mempart_flags_t setting for default_mempart_flags.
                  * This option is independent or the partitioning module
                  */
-                mempart_dcmd_flags_t tmp = strtoul(optarg, NULL, 0);
+                ulong_t tmp = strtoul(optarg, NULL, 0);
 
                 if ((tmp & (mempart_flags_HEAP_CREATE | mempart_flags_HEAP_SHARE)) == 0) {
-                    kprintf("Illegal -M option to procnto\n"
+                    pr_warn("Illegal -M option to procnto\n"
                             "Must contain mempart_flags_HEAP_CREATE and/or mempart_flags_HEAP_SHARE\n");
                 } else {
-                    default_mempart_flags = tmp;
+                    default_mempart_flags = (unsigned)tmp;
                 }
 
                 if (ker_verbose) {
@@ -255,7 +274,7 @@ void kernel_main(int argc, char *argv[], char *env[])
     // Remaining arguments are for Proc, save them in malloc'd storage
     argc -= (optind - 1);
     argv += (optind - 1);
-    _argv = _smalloc((argc + 1) * sizeof(*argv));
+    _argv = _smalloc(((unsigned)argc + 1) * sizeof(*argv));
     for (i = 1; i < argc; ++i) {
         _argv[i] = strdup(argv[i]);
     }

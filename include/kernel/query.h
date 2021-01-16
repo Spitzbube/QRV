@@ -42,7 +42,7 @@
 #define _QUERY_INTERRUPT            2
 #define _QUERY_VTHREAD              3
 /* FIX ME - this subtype stuff doesn't seem to work without nano_query.c changes
-#define _QUERY_PARTITION			4
+#define _QUERY_PARTITION	4
 */
 #define _QUERY_MEMORY_PARTITION		4
 #define _QUERY_SCHEDULER_PARTITION	5

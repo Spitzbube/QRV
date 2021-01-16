@@ -15,7 +15,7 @@
  * $
  */
 
-#include "externs.h"
+#include "taskman/externs.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <share.h>
@@ -272,7 +272,9 @@ static int map_ifs(struct asinfo_entry *as, char *name, void *d)
     return 1;
 }
 
-
+/**
+ * \brief TODO
+ */
 static int bootimage_start(message_context_t * ctp, int code, unsigned flags, void *handle)
 {
     union image_dirent *dir;
@@ -470,7 +472,9 @@ static int bootimage_start(message_context_t * ctp, int code, unsigned flags, vo
     return 0;
 }
 
-
+/**
+ * \brief TODO
+ */
 void bootimage_init(void)
 {
     int code;

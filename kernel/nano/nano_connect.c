@@ -19,17 +19,18 @@
 
 void rdecl connect_detach(CONNECT * cop, int prio)
 {
-    CHANNEL *chp;
+    tChannel *chp;
 
     if ((cop->flags & COF_VCONNECT) == 0) {
         // Inform the server that the connection has been dropped via a pulse.
-        if ((chp = cop->channel)) {
+        chp = cop->channel;
+        if (chp) {
             if (chp->flags & _NTO_CHF_DISCONNECT) {
                 // Tell the server.
                 _TRACE_COMM_EMIT_SPULSE_DIS(cop, cop->scoid | _NTO_SIDE_CHANNEL,
                                             prio | _PULSE_PRIO_BOOST);
                 pulse_deliver(chp, prio | _PULSE_PRIO_BOOST, _PULSE_CODE_DISCONNECT, 0,
-                              cop->scoid | _NTO_SIDE_CHANNEL, 0);
+                              cop->scoid | (int)_NTO_SIDE_CHANNEL, 0);
                 // The client is no longer associated with the connection.
                 // Setting process to NULL will allow lookup_rcvid()
                 // to fail if further operations are attempted on the rcvid.
@@ -57,7 +58,7 @@ void rdecl connect_detach(CONNECT * cop, int prio)
 
 
 
-void rdecl connect_coid_disconnect(CONNECT * cop, CHANNEL * chp, int prio)
+void rdecl connect_coid_disconnect(CONNECT * cop, tChannel * chp, int prio)
 {
     int i, flag = 0;
     CONNECT *cop2;

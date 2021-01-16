@@ -220,7 +220,7 @@ PROCESS *ProcessCreate(pid_t parent_pid, void *lcp, proc_create_attr_t * extra)
     data.lcp = lcp;
     data.extra = extra;
 
-    return ((PROCESS *) __Ring0(kerext_process_create, &data));
+    return (tProcess *) __Ring0(kerext_process_create, &data);
 }
 
 
@@ -515,7 +515,7 @@ void *ProcessStartup(pid_t pid, int start)
 
     data.pid = pid;
     data.start = start;
-    return ((void *) __Ring0(kerext_process_startup, &data));
+    return (void *) __Ring0(kerext_process_startup, &data);
 }
 
 
@@ -969,7 +969,7 @@ struct _thread_local_storage *ThreadTLS(struct _thread_local_storage *tls, uintp
     data.stacksize = stacksize;
     data.guardsize = guardsize;
     data.esp = esp;
-    return ((struct _thread_local_storage *) __Ring0(kerext_thread_tls, &data));
+    return (struct _thread_local_storage *) __Ring0(kerext_thread_tls, &data);
 }
 
 
