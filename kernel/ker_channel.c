@@ -16,34 +16,40 @@
 /**
  * \brief Create a channel.
  */
-int kdecl ker_channel_create(THREAD * act, struct kerargs_channel_create *kap)
+int kdecl ker_channel_create(tThread * act, struct kerargs_channel_create *kap)
 {
-    PROCESS *prp;
+    tProcess *prp;
     tChannel *chp;
     int chid;
-    SOUL *souls;
-    VECTOR *chvec;
+    tSoul *souls;
+    tVector *chvec;
 
     prp = act->process;
-    if ((kap->flags & (_NTO_CHF_THREAD_DEATH | _NTO_CHF_COID_DISCONNECT)) && prp->death_chp) {
+    if ((kap->flags & (QRV_FLG_CHF_THREAD_DEATH | QRV_FLG_CHF_COID_DISCONNECT)) && prp->death_chp) {
         return EBUSY;
     }
 
-    souls = &channel_souls;
-    chvec = &prp->chancons;
-    if (kap->flags & (_NTO_CHF_ASYNC | _NTO_CHF_GLOBAL)) {
+    if (kap->flags & (QRV_FLG_CHF_ASYNC | QRV_FLG_CHF_GLOBAL)) {
+#ifdef CONFIG_ASYNC_MSG
         souls = &chasync_souls;
+#endif
         if (kap->event != NULL) {
             RD_PROBE_INT(act, kap->event, sizeof(*kap->event) / sizeof(int));
         }
-        if (kap->flags & _NTO_CHF_GLOBAL) {
-            prp = NULL;
-            souls = &chgbl_souls;
-            chvec = &chgbl_vector;
-            if (kap->cred != NULL) {
-                RD_PROBE_INT(act, kap->cred, sizeof(*kap->cred) / sizeof(int));
-            }
+    }
+
+    if (kap->flags & QRV_FLG_CHF_GLOBAL) {
+        prp = NULL;
+        souls = &chgbl_souls;
+        chvec = &chgbl_vector;
+        if (kap->cred != NULL) {
+            RD_PROBE_INT(act, kap->cred, sizeof(*kap->cred) / sizeof(int));
         }
+    } else {
+#ifndef CONFIG_ASYNC_MSG
+        souls = &channel_souls;
+#endif
+        chvec = &prp->chancons;
     }
 
     lock_kernel();
@@ -56,7 +62,7 @@ int kdecl ker_channel_create(THREAD * act, struct kerargs_channel_create *kap)
     chp->process = prp;
     chp->flags = kap->flags;
 
-    if (kap->flags & _NTO_CHF_GLOBAL) {
+    if (kap->flags & QRV_FLG_CHF_GLOBAL) {
         if (chp->reply_queue)
             crash();
     }
@@ -64,7 +70,7 @@ int kdecl ker_channel_create(THREAD * act, struct kerargs_channel_create *kap)
     // Don't do this until we know the channel's fully created, so
     // we (mostly) don't have to worry about net.* fields not getting cleared
     // on an error.
-    if (kap->flags & _NTO_CHF_NET_MSG) {
+    if (kap->flags & QRV_FLG_CHF_NET_MSG) {
         if (!kerisroot(act)) {
             object_free(prp, &channel_souls, chp);
             return EPERM;
@@ -80,42 +86,45 @@ int kdecl ker_channel_create(THREAD * act, struct kerargs_channel_create *kap)
     chid = vector_add(chvec, chp, 1);
     if (chid == -1) {
         object_free(prp, &channel_souls, chp);
-        if (kap->flags & _NTO_CHF_NET_MSG) {
+        if (kap->flags & QRV_FLG_CHF_NET_MSG) {
             net.prp = NULL;
             net.chp = NULL;
         }
         return EAGAIN;
     }
 
-    if (kap->flags & (_NTO_CHF_THREAD_DEATH | _NTO_CHF_COID_DISCONNECT)) {
+    if (kap->flags & (QRV_FLG_CHF_THREAD_DEATH | QRV_FLG_CHF_COID_DISCONNECT)) {
         if (prp) {              /* not global channel */
             prp->death_chp = chp;
         }
     }
 
-    if (kap->flags & (_NTO_CHF_ASYNC | _NTO_CHF_GLOBAL)) {
-        if (kap->flags & _NTO_CHF_GLOBAL) {
-            CHANNELGBL *chgbl = (CHANNELGBL *) chp;
+    if (kap->flags & QRV_FLG_CHF_GLOBAL) {
+        tChannelGbl *chgbl = (tChannelGbl *) chp;
 
-            SET_GLOBAL_CHAN(chid);
-            chgbl->event.sigev_notify = SIGEV_NONE;
-            chgbl->max_num_buffer = kap->maxbuf;
-            chgbl->buffer_size = kap->bufsize;
-            if (kap->event != NULL) {
-                memcpy(&chgbl->event, kap->event, sizeof(*kap->event));
-                chgbl->ev_prp = act->process;
-            }
-            if (kap->cred) {
-                memcpy(&chgbl->cred, kap->cred, sizeof(chgbl->cred));
-            }
-        } else {
-            ((CHANNELASYNC *) chp)->event.sigev_notify = SIGEV_NONE;
-            if (kap->event != NULL) {
-                memcpy(&((CHANNELASYNC *) chp)->event, kap->event, sizeof(*kap->event));
-                ((CHANNELASYNC *) chp)->ev_prp = act->process;
-            }
+        SET_GLOBAL_CHAN(chid);
+        chgbl->event.sigev_notify = SIGEV_NONE;
+        chgbl->max_num_buffer = kap->maxbuf;
+        chgbl->buffer_size = kap->bufsize;
+        if (kap->event != NULL) {
+            memcpy(&chgbl->event, kap->event, sizeof(*kap->event));
+            chgbl->ev_prp = act->process;
+        }
+        if (kap->cred) {
+            memcpy(&chgbl->cred, kap->cred, sizeof(chgbl->cred));
         }
     }
+
+#ifdef CONFIG_ASYNC_MSG
+    if (kap->flags & QRV_FLG_CHF_ASYNC) {
+        ((tChannelAsync *) chp)->event.sigev_notify = SIGEV_NONE;
+        if (kap->event != NULL) {
+            memcpy(&((tChannelAsync *) chp)->event, kap->event, sizeof(*kap->event));
+            ((tChannelAsync *) chp)->ev_prp = act->process;
+        }
+    }
+#endif
+
     chp->chid = chid;
 
     SETKSTATUS(act, chid);
@@ -124,16 +133,16 @@ int kdecl ker_channel_create(THREAD * act, struct kerargs_channel_create *kap)
 
 
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
-static void clear_msgxfer(THREAD * thp)
+static void clear_msgxfer(tThread * thp)
 {
 
     switch (thp->state) {
     case STATE_REPLY:
-        thp->flags &= ~_NTO_TF_UNBLOCK_REQ;
+        thp->flags &= ~QRV_FLG_THR_UNBLOCK_REQ;
         /* fall through */
 
     case STATE_SEND:{
-            CONNECT *cop = thp->blocked_on;
+            tConnect *cop = thp->blocked_on;
             if (--cop->links == 0) {
                 connect_detach(cop, thp->priority);
             }
@@ -141,7 +150,7 @@ static void clear_msgxfer(THREAD * thp)
 
         /* fall through */
     case STATE_RECEIVE:
-        thp->internal_flags &= ~_NTO_ITF_RCVPULSE;
+        thp->internal_flags &= ~QRV_FLG_ITF_RCVPULSE;
         thp->restart = NULL;
         break;
     default:
@@ -161,21 +170,21 @@ static void clear_msgxfer(THREAD * thp)
     thp->state = STATE_READY;
 }
 
-#define CLR_MSGXFER(thp) if((thp)->internal_flags & _NTO_ITF_MSG_DELIVERY) clear_msgxfer(thp)
+#define CLR_MSGXFER(thp) if((thp)->internal_flags & QRV_FLG_ITF_MSG_DELIVERY) clear_msgxfer(thp)
 #else
 #define CLR_MSGXFER(thp)
 #endif
 
 
-int kdecl ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
+int kdecl ker_channel_destroy(tThread * act, struct kerargs_channel_destroy *kap)
 {
-    PROCESS *prp;
+    tProcess *prp;
     tChannel *chp;
-    CONNECT *cop;
-    THREAD *thp;
+    tConnect *cop;
+    tThread *thp;
     int i, chid;
-    SOUL *souls;
-    VECTOR *chvec;
+    tSoul *souls;
+    tVector *chvec;
 
     prp = act->process;
 
@@ -200,14 +209,14 @@ int kdecl ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
         static unsigned retries;
 
         for (i = 0; i < vthread_vector.nentries; ++i) {
-            VTHREAD *vthp;
+            tVthread *vthp;
 
             vthp = vector_rem(&vthread_vector, i);
             if (vthp != NULL) {
                 unsigned saved_flags;
                 saved_flags = vthp->flags;
-                vthp->flags &= ~_NTO_TF_KILLSELF;
-                if (!force_ready((THREAD *) (void *) vthp, EINTR | _FORCE_SET_ERROR)) {
+                vthp->flags &= ~QRV_FLG_THR_KILLSELF;
+                if (!force_ready((tThread *) (void *) vthp, EINTR | _FORCE_SET_ERROR)) {
                     // We couldn't force_ready the thread, we must
                     // have been in the middle of a SMP_MSGOPT message
                     // pass. The force_ready() call would have invoked
@@ -245,12 +254,12 @@ int kdecl ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
             object_free(chp->process, &pulse_souls, thp);
             break;
         case TYPE_VTHREAD:
-            // Turn on _NTO_TF_KERERR_SET so that if net_send2() calls
+            // Turn on QRV_FLG_THR_KERERR_SET so that if net_send2() calls
             // kererr(), it won't advance the IP - we're going to be
             // restarting the kernel call so that qnet has a chance
             // to process the pulse
-            act->flags |= _NTO_TF_KERERR_SET;
-            (void) net_send2((KERARGS *) (void *) kap, thp->un.net.vtid, thp->blocked_on, thp);
+            act->flags |= QRV_FLG_THR_KERERR_SET;
+            (void) net_send2((tKerArgs *) (void *) kap, thp->un.net.vtid, thp->blocked_on, thp);
             CLR_MSGXFER(thp);
             KERCALL_RESTART(act);
             return ENOERROR;
@@ -273,17 +282,17 @@ int kdecl ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
         KER_PREEMPT(act, ENOERROR);
     }
 
-    if (!(chp->flags & (_NTO_CHF_ASYNC | _NTO_CHF_GLOBAL))) {
+    if (!(chp->flags & (QRV_FLG_CHF_ASYNC | QRV_FLG_CHF_GLOBAL))) {
         // Unblock all threads reply blocked on the channel
         while ((thp = chp->reply_queue)) {
             switch (TYPE_MASK(thp->type)) {
             case TYPE_VTHREAD:
-                // Turn on _NTO_TF_KERERR_SET so that if net_send2() calls
+                // Turn on QRV_FLG_THR_KERERR_SET so that if net_send2() calls
                 // kererr(), it won't advance the IP - we're going to be
                 // restarting the kernel call so that qnet has a chance
                 // to process the pulse
-                act->flags |= _NTO_TF_KERERR_SET;
-                (void) net_send2((KERARGS *) (void *) kap, thp->un.net.vtid, thp->blocked_on, thp);
+                act->flags |= QRV_FLG_THR_KERERR_SET;
+                (void) net_send2((tKerArgs *) (void *) kap, thp->un.net.vtid, thp->blocked_on, thp);
                 CLR_MSGXFER(thp);
                 KERCALL_RESTART(act);
                 return ENOERROR;
@@ -300,9 +309,9 @@ int kdecl ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
         }
     } else {
         // release all packages/send requests
-        if (chp->flags & _NTO_CHF_GLOBAL) {
+        if (chp->flags & QRV_FLG_CHF_GLOBAL) {
             struct gblmsg_entry *gblmsg;
-            CHANNELGBL *chgbl = (CHANNELGBL *) chp;
+            tChannelGbl *chgbl = (tChannelGbl *) chp;
 
             if (chgbl->free != NULL) {
                 _sfree(chgbl->free, chgbl->buffer_size + sizeof(*gblmsg));
@@ -316,7 +325,7 @@ int kdecl ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
     }
 
     // Find all server connections and mark their channels as NULL.
-    if (!(chp->flags & _NTO_CHF_GLOBAL)) {
+    if (!(chp->flags & QRV_FLG_CHF_GLOBAL)) {
         for (i = 0; i < prp->chancons.nentries; ++i) {
             if ((cop = VECP2(cop, &prp->chancons, i))) {
                 if (cop->type == TYPE_CONNECTION && cop->channel == chp && cop->scoid == i) {
@@ -335,16 +344,16 @@ int kdecl ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
                             }
                             // Null channel pointer since it is gone.
                             cop->channel = NULL;
-                        } while ((cop = cop->next) && (!(chp->flags & _NTO_CHF_ASYNC)));
+                        } while ((cop = cop->next) && (!(chp->flags & QRV_FLG_CHF_ASYNC)));
                     }
                 }
             }
             KER_PREEMPT(act, ENOERROR);
         }
     } else {
-        cop = ((CHANNELGBL *) chp)->cons;
+        cop = ((tChannelGbl *) chp)->cons;
         while (cop) {
-            CONNECT *next = cop->next;
+            tConnect *next = cop->next;
             cop->channel = NULL;
             cop->next = NULL;
             cop = next;
@@ -356,17 +365,16 @@ int kdecl ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
         return EINVAL;
     }
 
-    souls = &channel_souls;
-    if (chp->flags & (_NTO_CHF_ASYNC | _NTO_CHF_GLOBAL)) {
+    if (chp->flags & QRV_FLG_CHF_GLOBAL)
+        souls = &chgbl_souls;
+    else
+        souls = &channel_souls;
+#ifdef CONFIG_ASYNC_MSG
+    if (chp->flags & QRV_FLG_CHF_ASYNC)
         souls = &chasync_souls;
-        if (chp->flags & _NTO_CHF_GLOBAL) {
-            souls = &chgbl_souls;
-        }
-    }
+#endif
     // Release the channel entry.
     object_free(prp, souls, chp);
 
     return EOK;
 }
-
-__SRCVERSION("ker_channel.c $Rev: 209291 $");

@@ -120,7 +120,7 @@ int _sleepon_destroy(sleepon_t *l) {
 	}
 
 	// If caller does not have the mutex locked, return and error
-	if((l->mutex.__owner & ~_NTO_SYNC_WAITING) != LIBC_TLS()->__owner) {
+	if((l->mutex.__owner & ~QRV_SYNC_WAITING) != LIBC_TLS()->__owner) {
 		if((status = pthread_mutex_lock(&l->mutex)) != EOK) {
 			return status;
 		}
@@ -184,7 +184,7 @@ int _sleepon_wait(sleepon_t *l, const volatile void *addr, _uint64 nsec) {
 	int							ret = EOK;
 
 	// If caller does not have the mutex locked, return and error
-	if((l->mutex.__owner & ~_NTO_SYNC_WAITING) != LIBC_TLS()->__owner || (l->inuse & SLEEPON_DYING)) {
+	if((l->mutex.__owner & ~QRV_SYNC_WAITING) != LIBC_TLS()->__owner || (l->inuse & SLEEPON_DYING)) {
 		return EINVAL;
 	}
 
@@ -289,7 +289,7 @@ _sleepon_wakeup(sleepon_t *l, const volatile void *addr, int type) {
 	struct _sleepon_entry		*p;
 
 	// If caller does not have the mutex locked, return and error
-	if((l->mutex.__owner & ~_NTO_SYNC_WAITING) != LIBC_TLS()->__owner || (l->inuse & SLEEPON_DYING)) {
+	if((l->mutex.__owner & ~QRV_SYNC_WAITING) != LIBC_TLS()->__owner || (l->inuse & SLEEPON_DYING)) {
 		return EINVAL;
 	}
 

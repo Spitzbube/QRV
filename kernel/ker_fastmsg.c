@@ -114,7 +114,7 @@
 			rep->scoid = (cop)->scoid | _NTO_SIDE_CHANNEL;		\
 			rep->coid = (thp)->args.ms.coid;					\
 			rep->msglen = (thp)->args.ms.msglen;				\
-			rep->srcmsglen = ((thp)->flags & _NTO_TF_BUFF_MSG) ?	\
+			rep->srcmsglen = ((thp)->flags & QRV_FLG_THR_BUFF_MSG) ?	\
 				(thp)->args.ms.msglen : (thp)->args.ms.srcmsglen;	\
 			rep->dstmsglen = (thp)->args.ms.dstmsglen;			\
 			rep->priority = (thp)->priority;					\
@@ -258,7 +258,7 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
         sender->args.ms.rparts = kap->rparts;
     }
 
-    sender->flags &= ~_NTO_TF_BUFF_MSG;
+    sender->flags &= ~QRV_FLG_THR_BUFF_MSG;
     // Make sure the SPECRET_PENDING bit isn't set when we don't need it.
     sender->internal_flags &= ~_NTO_ITF_SPECRET_PENDING;
 
@@ -330,7 +330,7 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
         if (len <= sizeof(sender->args.msbuff.buff)) {
             (void) __inline_xfer_memcpy(sender->args.msbuff.buff, (char *) base,
                                         sender->args.msbuff.msglen = len);
-            th_flags = _NTO_TF_BUFF_MSG;
+            th_flags = QRV_FLG_THR_BUFF_MSG;
         }
     } else if (kap->sparts == 1) {
         // Single IOV -- do the boundary check and copy if short message
@@ -347,7 +347,7 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
         if (len <= sizeof(sender->args.msbuff.buff)) {
             (void) __inline_xfer_memcpy(sender->args.msbuff.buff, (char *) base,
                                         sender->args.ms.msglen = len);
-            th_flags = _NTO_TF_BUFF_MSG;
+            th_flags = QRV_FLG_THR_BUFF_MSG;
         }
     } else {
         // Multi IOV case
@@ -396,7 +396,7 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
                 sparts--;
             }
             sender->args.ms.msglen = len;
-            th_flags = _NTO_TF_BUFF_MSG;
+            th_flags = QRV_FLG_THR_BUFF_MSG;
         }
     }
 
@@ -416,7 +416,7 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
         int xferstat;
         // If an immediate timeout was specified we return immediately.
         if (IMTO(act, STATE_REPLY)) {
-            sender->flags &= ~_NTO_TF_BUFF_MSG;
+            sender->flags &= ~QRV_FLG_THR_BUFF_MSG;
             return ETIMEDOUT;
         }
         // Is this a long message?
@@ -439,7 +439,7 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
                 act->restart = 0;
                 return ENOERROR;
             }
-            if (act->flags & (_NTO_TF_SIG_ACTIVE | _NTO_TF_CANCELSELF)) {
+            if (act->flags & (QRV_FLG_THR_SIG_ACTIVE | QRV_FLG_THR_CANCELSELF)) {
                 /* send is a cancelation point */
                 KERCALL_RESTART(act);
                 act->restart = 0;
@@ -476,7 +476,7 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
                 // Has to be a receiver fault;
                 goto rcv_fault;
             }
-            sender->flags |= _NTO_TF_BUFF_MSG;
+            sender->flags |= QRV_FLG_THR_BUFF_MSG;
             // Note: below this point, we should NOT reference kap anywhere
             // as kap points to the original aspace
         }
@@ -574,7 +574,7 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
 
             if (cop->flags & COF_NETCON) {
                 SETKSTATUS(act, 1);
-                if ((sender->flags & _NTO_TF_BUFF_MSG) == 0) {
+                if ((sender->flags & QRV_FLG_THR_BUFF_MSG) == 0) {
                     // #### Note: use net_srcmsglen saved above before we switch aspace
                     sender->args.ms.srcmsglen = net_srcmsglen;
                 }
@@ -613,12 +613,12 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
         sender->args.ms.sparts = kap->sparts;
         // FUTURE: Make copy of send IOVs
     } else {
-        sender->flags |= _NTO_TF_BUFF_MSG;
+        sender->flags |= QRV_FLG_THR_BUFF_MSG;
     }
 
 
     if (IMTO(sender, STATE_SEND)) {
-        sender->flags &= ~_NTO_TF_BUFF_MSG;
+        sender->flags &= ~QRV_FLG_THR_BUFF_MSG;
         return ETIMEDOUT;
     }
 
@@ -627,7 +627,7 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
     // Incoming network Send.
     // We use vtid passed in kap->rparts and _vtid_info passed in kap->rmsg
     if (cop->flags & COF_NETCON) {
-        if (sender->flags & _NTO_TF_BUFF_MSG) {
+        if (sender->flags & QRV_FLG_THR_BUFF_MSG) {
             SETKSTATUS(act, 1);
         } else {
             // Return zero telling the network manager we still need the send data.
@@ -642,10 +642,10 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
         //
         // Don't allow any MsgSend's to processes that are dying.
         // Only have to check here because of code in nano_signal.c
-        // - check the comment where we turn on the _NTO_PF_COREDUMP
+        // - check the comment where we turn on the QRV_FLG_PROC_COREDUMP
         // flag.
         //
-        if (chp->process->flags & (_NTO_PF_TERMING | _NTO_PF_ZOMBIE | _NTO_PF_COREDUMP)) {
+        if (chp->process->flags & (QRV_FLG_PROC_TERMING | QRV_FLG_PROC_ZOMBIE | QRV_FLG_PROC_COREDUMP)) {
             return ENXIO;
         }
         // Can't use block(), because 'sender' might not actually be the
@@ -685,12 +685,12 @@ int kdecl ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
     return ENOERROR;
 
   send_fault:
-    sender->flags &= ~_NTO_TF_BUFF_MSG;
+    sender->flags &= ~QRV_FLG_THR_BUFF_MSG;
 
     return EFAULT;
 
   rcv_fault:
-    sender->flags &= ~_NTO_TF_BUFF_MSG;
+    sender->flags &= ~QRV_FLG_THR_BUFF_MSG;
     kererr(thp, EFAULT);
     LINKPRIL_REM(thp);
     ready(thp);
@@ -1002,7 +1002,7 @@ int kdecl ker_msg_receivev(THREAD * act, struct kerargs_msg_receivev *kap)
             goto restart;
         }
 
-        if (thp->flags & _NTO_TF_BUFF_MSG) {
+        if (thp->flags & QRV_FLG_THR_BUFF_MSG) {
             xferstat =
                 xfer_cpy_diov(act, kap->rmsg, thp->args.msbuff.buff, kap->rparts,
                               thp->args.msbuff.msglen);
@@ -1025,7 +1025,7 @@ int kdecl ker_msg_receivev(THREAD * act, struct kerargs_msg_receivev *kap)
                 act->restart = 0;
                 return ENOERROR;
             }
-            if (act->flags & (_NTO_TF_SIG_ACTIVE | _NTO_TF_CANCELSELF)) {
+            if (act->flags & (QRV_FLG_THR_SIG_ACTIVE | QRV_FLG_THR_CANCELSELF)) {
                 KERCALL_RESTART(act);
                 act->restart = 0;
                 return ENOERROR;
@@ -1074,7 +1074,7 @@ int kdecl ker_msg_receivev(THREAD * act, struct kerargs_msg_receivev *kap)
         if (kap->info) {
             //  get_rcvinfo(thp, -1, cop, kap->info);
             STUFF_RCVINFO(thp, cop, kap->info);
-            if (thp->flags & _NTO_TF_BUFF_MSG) {
+            if (thp->flags & QRV_FLG_THR_BUFF_MSG) {
                 if (kap->info->msglen > act->args.ms.srcmsglen)
                     kap->info->msglen = act->args.ms.srcmsglen;
             }
@@ -1085,7 +1085,7 @@ int kdecl ker_msg_receivev(THREAD * act, struct kerargs_msg_receivev *kap)
         act->timeout_flags = 0;
         act->restart = NULL;
 
-        // Because _NTO_TF_RCVINFO and _NTO_TF_SHORT_MSG will not be set, set this to NULL
+        // Because QRV_FLG_THR_RCVINFO and QRV_FLG_THR_SHORT_MSG will not be set, set this to NULL
         thp->restart = NULL;
 
         if (act->client != 0) {
@@ -1221,7 +1221,7 @@ int kdecl ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
         }
     }
 
-    thp->flags &= ~(_NTO_TF_BUFF_MSG | _NTO_TF_SHORT_MSG);
+    thp->flags &= ~(QRV_FLG_THR_BUFF_MSG | QRV_FLG_THR_SHORT_MSG);
 
     if (kap->sparts != 0) {
         /* Reply IOVs */
@@ -1244,7 +1244,7 @@ int kdecl ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
                                  len))) {
                     goto xfer_err;
                 }
-                flags = _NTO_TF_BUFF_MSG;
+                flags = QRV_FLG_THR_BUFF_MSG;
             }
         } else if (kap->sparts == 1) {
             // Single IOV -- do the boundary check and copy if short message
@@ -1264,7 +1264,7 @@ int kdecl ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
                                  len))) {
                     goto xfer_err;
                 }
-                flags = _NTO_TF_BUFF_MSG;
+                flags = QRV_FLG_THR_BUFF_MSG;
             }
         } else {
             // Multi IOV case
@@ -1317,7 +1317,7 @@ int kdecl ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
                     sparts--;
                 }
                 thp->args.ms.msglen = len;
-                flags = _NTO_TF_BUFF_MSG;
+                flags = QRV_FLG_THR_BUFF_MSG;
             }
         }
 
@@ -1325,7 +1325,7 @@ int kdecl ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
          * Up-front work is now done. There are a few things set:
          *  - incoming reply IOVs are verified for boundary
          *  - if short message, it has been copied into thp's short buffer
-         *  - flags is either zero (long message) or _NTO_TF_BUFF_MSG if short
+         *  - flags is either zero (long message) or QRV_FLG_THR_BUFF_MSG if short
          */
 
         // This is a long message
@@ -1362,7 +1362,7 @@ int kdecl ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
                 xferstat = 0;
                 lock_kernel();
                 thp->blocked_on = thp;
-                thp->flags |= (_NTO_TF_BUFF_MSG | _NTO_TF_SHORT_MSG);
+                thp->flags |= (QRV_FLG_THR_BUFF_MSG | QRV_FLG_THR_SHORT_MSG);
             }
         }
         _TRACE_COMM_EMIT_REPLY(thp, cop, thp->tid + 1);
@@ -1373,7 +1373,7 @@ int kdecl ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
     }
 
 
-    thp->flags &= ~_NTO_TF_UNBLOCK_REQ;
+    thp->flags &= ~QRV_FLG_THR_UNBLOCK_REQ;
 
     if (thp->args.ms.server != 0) {
         thp->args.ms.server->client = 0;
@@ -1403,7 +1403,7 @@ int kdecl ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
     status = (xferstat & XFER_SRC_FAULT) ? ESRVRFAULT : EFAULT;
     kererr(thp, status);
     LINKPRIL_REM(thp);
-    thp->flags &= ~(_NTO_TF_BUFF_MSG | _NTO_TF_SHORT_MSG);
+    thp->flags &= ~(QRV_FLG_THR_BUFF_MSG | QRV_FLG_THR_SHORT_MSG);
 
     if (--cop->links == 0) {
         connect_detach(cop, thp->priority);
@@ -1452,7 +1452,7 @@ int kdecl ker_msg_error(THREAD * act, struct kerargs_msg_error *kap)
         thp->args.ms.server = 0;
     }
 
-    thp->flags &= ~(_NTO_TF_BUFF_MSG | _NTO_TF_UNBLOCK_REQ);
+    thp->flags &= ~(QRV_FLG_THR_BUFF_MSG | QRV_FLG_THR_UNBLOCK_REQ);
     if (kap->err == ERESTART) {
         CRASHCHECK(TYPE_MASK(thp->type) != TYPE_THREAD);
         SETKIP(thp, KIP(thp) - KER_ENTRY_SIZE);
@@ -1487,5 +1487,3 @@ int kdecl ker_msg_error(THREAD * act, struct kerargs_msg_error *kap)
     act->restart = NULL;
     return EOK;
 }
-
-__SRCVERSION("ker_fastmsg.c $Rev: 206029 $");

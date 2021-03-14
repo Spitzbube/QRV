@@ -36,6 +36,12 @@
 /******************************************************************************
  * Forward declarations of structure types.
  *****************************************************************************/
+typedef struct channel_entry tChannel;
+typedef struct mm_aspace tAddress;
+typedef struct debug_entry tDebug;
+typedef struct process_entry tProcess;
+typedef struct limits_entry tLimits;
+typedef struct timer_entry tTimer;
 typedef struct session_entry tSession;
 typedef struct dispatch_entry tDispatch;
 typedef struct thread_entry tThread;
@@ -199,12 +205,6 @@ typedef struct credential_entry {
 } tCredential;
 
 struct mempart_node_s;
-typedef struct channel_entry tChannel;
-typedef struct mm_aspace tAddress;
-typedef struct debug_entry tDebug;
-typedef struct process_entry tProcess;
-typedef struct limits_entry tLimits;
-typedef struct timer_entry tTimer;
 
 typedef struct process_entry {
     tProcess *next;
@@ -292,7 +292,7 @@ typedef struct process_entry {
 typedef struct channel_entry {
     tChannel *next;
     int32_t chid;
-    uint32_t flags;             // _NTO_CHF_*
+    uint32_t flags;             // QRV_CHF_*
     uint8_t type;
     uint8_t zero[3];
     tProcess *process;
@@ -305,7 +305,7 @@ typedef struct channel_entry {
 struct channel_async_entry {
     struct channel_entry ch;    /* basic channel_entry */
     struct sigevent event;      /* the event to be sent for notification */
-    tProcess *ev_prp;            /* the process who registers the event */
+    tProcess *ev_prp;           /* the process who registers the event */
 };
 
 struct gblmsg_entry {
@@ -315,10 +315,10 @@ struct gblmsg_entry {
 };
 
 typedef struct connect_entry tConnect;
-struct channel_gbl_entry {
-    struct channel_entry ch;    /* basic channel_entry */
+typedef struct channel_gbl_entry {
+    tChannel ch;                /* basic channel_entry */
     struct sigevent event;      /* the event to be sent for notification */
-    tProcess *ev_prp;            /* the process who registers the event */
+    tProcess *ev_prp;           /* the process who registers the event */
     int ev_coid;                /* handle to identify the owner of the event */
     size_t buffer_size;         /* size of kernel buffer */
     unsigned max_num_buffer;    /* maximum number of buffer allowed */
@@ -326,8 +326,8 @@ struct channel_gbl_entry {
     struct _cred_info cred;     /* credential */
     void *free;                 /* free buffer list */
     struct gblmsg_entry *tail;  /* points to the tail of the queue */
-    tConnect *cons;              /* connection list for cleanup when channel is destroyed */
-};
+    tConnect *cons;             /* connection list for cleanup when channel is destroyed */
+} tChannelGbl;
 
 typedef struct connect_entry {
     tConnect *next;
@@ -353,7 +353,7 @@ typedef struct connect_entry {
             uint32_t nd;
             pid_t pid;
             pid_t sid;
-            uint32_t flags;     // _NTO_CI_*
+            uint32_t flags;     // QRV_CI_*
             uint32_t coid;
         } net;
     } un;
@@ -363,10 +363,10 @@ typedef struct connect_entry {
 } tConnect;
 
 
-struct net_entry {
+typedef struct net_entry {
     tProcess *prp;
     tChannel *chp;
-};
+} tNetEntry;
 
 
 typedef struct pulse_entry {
@@ -499,7 +499,7 @@ typedef struct thread_entry {           // Also used for vthread_entry
             int8_t code;
         } ri;
 
-#define _NTO_NOIOV				1UL << (8*sizeof(uint32_t)-1)   // Must agree with sparts/rparts
+#define QRV_NOIOV (1UL << (8*sizeof(uint32_t)-1))   // Must agree with sparts/rparts
 #if 0
         struct {                // Used by net (must align with ms)
             iov_t *rmsg;        // Must be 1st arg

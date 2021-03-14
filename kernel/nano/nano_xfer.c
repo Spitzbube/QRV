@@ -569,5 +569,3 @@ int rcvmsg(THREAD * dthp, PROCESS * sprp, void *destp, int destparts, void *srcp
 
     return EOK;
 }
-
-__SRCVERSION("nano_xfer.c $Rev: 199078 $");

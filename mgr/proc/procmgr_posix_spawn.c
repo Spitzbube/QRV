@@ -36,8 +36,8 @@ static int get_schedpartids(const posix_spawnattr_t * _Restrict attrp, unsigned 
                             part_list_t ** partlist);
 static int get_mempartids(const posix_spawnattr_t * _Restrict attrp, unsigned *num,
                           part_list_t ** partlist);
-static int _inherit_mempart_list(PROCESS * prp, part_list_t ** part_list, unsigned behaviour);
-static int _inherit_schedpart_list(PROCESS * prp, part_list_t ** part_list, unsigned behaviour);
+static int _inherit_mempart_list(tProcess * prp, part_list_t ** part_list, unsigned behaviour);
+static int _inherit_schedpart_list(tProcess * prp, part_list_t ** part_list, unsigned behaviour);
 
 #ifdef EXTRA_DEBUG
 static void display_factlist(posix_spawn_file_actions_t * fact_p);
@@ -179,12 +179,12 @@ int procmgr_pspawn(resmgr_context_t * ctp, void *vmsg)
  * Note that it is assumed that <prp> is safe to use (locked)
  *
 */
-int inherit_mempart_list(PROCESS * prp, part_list_t ** part_list)
+int inherit_mempart_list(tProcess * prp, part_list_t ** part_list)
 {
     return _inherit_mempart_list(prp, part_list, 0);
 }
 
-int inherit_schedpart_list(PROCESS * prp, part_list_t ** part_list)
+int inherit_schedpart_list(tProcess * prp, part_list_t ** part_list)
 {
     return _inherit_schedpart_list(prp, part_list, 0);
 }
@@ -403,7 +403,7 @@ static int parse_pspawn_msg(pid_t ppid, proc_posixspawn_t * msg, proc_spawn_t **
  * Note that it is assumed that <prp> is safe to use (locked)
  *
 */
-static int _inherit_mempart_list(PROCESS * prp, part_list_t ** part_list, unsigned behaviour)
+static int _inherit_mempart_list(tProcess * prp, part_list_t ** part_list, unsigned behaviour)
 {
     CRASHCHECK((behaviour != 0) && (behaviour != 1));
     CRASHCHECK(prp == NULL);
@@ -511,7 +511,7 @@ static int _inherit_mempart_list(PROCESS * prp, part_list_t ** part_list, unsign
  * Note that it is assumed that <prp> is safe to use (locked)
  *
 */
-static int _inherit_schedpart_list(PROCESS * prp, part_list_t ** part_list, unsigned behaviour)
+static int _inherit_schedpart_list(tProcess * prp, part_list_t ** part_list, unsigned behaviour)
 {
     CRASHCHECK(behaviour != 0);
     CRASHCHECK(prp == NULL);
@@ -603,7 +603,7 @@ static int fill_mempart_list(pid_t ppid, part_list_t ** mempart_list, posix_spaw
 
     if (num_entries == 0) {
         /* 2nd case, no partitions provided, select alternate inheritance behaviour */
-        PROCESS *pprp = proc_lock_pid(ppid);
+        tProcess *pprp = proc_lock_pid(ppid);
         CRASHCHECK(pprp == NULL);
         CRASHCHECK(*mempart_list != NULL);
         /* mempart_list will be allocated, use alternate inheritance behaviour */
@@ -614,7 +614,7 @@ static int fill_mempart_list(pid_t ppid, part_list_t ** mempart_list, posix_spaw
         /* 1st case, user provided partition list */
         unsigned i;
         int sysram_list_idx = -1;
-        PROCESS *pprp;
+        tProcess *pprp;
 
         CRASHCHECK(num_entries != mplist->num_entries);
 
@@ -726,7 +726,7 @@ static int fill_schedpart_list(pid_t ppid, part_list_t ** schedpart_list, posix_
     } else {
         /* 1st case, user provided partition list */
         unsigned i;
-        PROCESS *pprp;
+        tProcess *pprp;
 
         CRASHCHECK(num_entries != splist->num_entries);
 

@@ -817,7 +817,7 @@ void rdecl timeout_stop(THREAD * thp)
             if (thp->state == STATE_NANOSLEEP) {
 
                 // Calculate time remaining if we were interrupted.
-                thp->flags |= _NTO_TF_NANOSLEEP;
+                thp->flags |= QRV_FLG_THR_NANOSLEEP;
                 // Save time unslept for.
                 if (KSTATUS(thp) != 0) {
                     timer_remaining(thp->timeout, &thp->args.to.left);
@@ -831,5 +831,3 @@ void rdecl timeout_stop(THREAD * thp)
         break;
     }
 }
-
-__SRCVERSION("nano_timer.c $Rev: 204314 $");

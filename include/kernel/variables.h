@@ -15,8 +15,8 @@
  * $
  */
 
-#ifndef __KERNEL_NTO_H_INCLUDED
-#define __KERNEL_NTO_H_INCLUDED
+#ifndef _KERNEL_VARIABLES_H
+#define _KERNEL_VARIABLES_H
 
 #if defined(rdecl) || defined(KERHDR)
 #error Not to be mixed with other kernel/ includes
@@ -24,8 +24,6 @@
 
 #include <stddef.h>
 #include <inttypes.h>
-#include <sys/neutrino.h>
-#include <kernel/types.h>
 #include <arch/cpu_def.h>
 
 #include <sys/fault.h>
@@ -40,14 +38,14 @@
 #include "kernel/memclass.h"
 
 extern tSoul process_souls;
-extern VECTOR process_vector;
-extern PROCMGR procmgr;
-extern MEMMGR memmgr;
+extern tVector process_vector;
+extern tProcMgr procmgr;
+extern tMemMgr memmgr;
 extern unsigned num_processors;
-extern PROCESS *procnto_prp;
+extern tProcess *procnto_prp;
 extern memclass_id_t sys_memclass_id;   // generic system ram memory class
-extern VECTOR mempart_vector;
-extern VECTOR schedpart_vector;
+extern tVector mempart_vector;
+extern tVector schedpart_vector;
 
 extern unsigned user_boundry_addr;
 

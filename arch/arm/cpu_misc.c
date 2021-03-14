@@ -164,7 +164,7 @@ void cpu_thread_init(THREAD * act, THREAD * thp, int align)
     switch (align) {
     case 0:                    // default case causes trap
     case 1:
-        thp->flags |= _NTO_TF_ALIGN_FAULT;
+        thp->flags |= QRV_FLG_THR_ALIGN_FAULT;
         break;
     default:
         break;
@@ -197,7 +197,7 @@ void cpu_thread_priv(THREAD * thp)
  * Allow/disallow alignment faults on a thread
  *
  * The CPU always generates alignment faults, and the data abort handler
- * checks _NTO_TF_ALIGN_FAULT to determine whether to trap or emulate.
+ * checks QRV_FLG_THR_ALIGN_FAULT to determine whether to trap or emulate.
  */
 void cpu_thread_align_fault(THREAD * thp)
 {

@@ -1,6 +1,4 @@
 #include <sys/kdebug.h>
-#include <sys/neutrino.h>
-
 #include <kernel/types.h>
 
 #include <startup.h>

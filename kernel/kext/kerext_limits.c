@@ -85,5 +85,3 @@ int LimitsSet(uid_t uid, unsigned **maxes)
     data.maxes = maxes;
     return (__Ring0(kerext_limits_set, &data));
 }
-
-__SRCVERSION("kerext_limits.c $Rev: 153052 $");

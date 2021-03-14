@@ -27,7 +27,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <sys/neutrino.h>
 #include <termios.h>
 #include <devctl.h>
 #include <sys/dcmd_chr.h>

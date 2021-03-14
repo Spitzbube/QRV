@@ -149,7 +149,7 @@ int kdecl ker_msg_readv(THREAD * act, struct kerargs_msg_readv *kap)
         }
     }
 
-    if (thp->flags & _NTO_TF_BUFF_MSG) {
+    if (thp->flags & QRV_FLG_THR_BUFF_MSG) {
         unsigned dlen;
 
         slen = thp->args.msbuff.msglen;
@@ -515,5 +515,3 @@ int kdecl ker_msg_readwritev(THREAD * act, struct kerargs_msg_readwritev *kap)
     return ENOERROR;
 #endif
 }
-
-__SRCVERSION("ker_message.c $Rev: 162922 $");

@@ -351,7 +351,7 @@ v86leave:
 	pusha						/ Save register set for caller
 	mov		ker_stack,%esp
 	mov		actives,%eax
-	andl	$~_NTO_TF_V86,TFLAGS(%eax)
+	andl	$~QRV_FLG_THR_V86,TFLAGS(%eax)
 	jmp		__ker_exit_v86
 
 

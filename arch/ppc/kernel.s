@@ -259,7 +259,7 @@ EXC_COPY_CODE_START exitkernel_2
 	lwz		%r0,TFLAGS(%r31)
 	# Check if returning from a kcall, in which case we don't need
 	# to restore a bunch of registers
-	bittst	%r0,%r0,_NTO_TF_KCALL_ACTIVE
+	bittst	%r0,%r0,QRV_FLG_THR_KCALL_ACTIVE
 1:	bne+	1b				# patched when installed
 .endif
 EXC_COPY_CODE_END
@@ -384,7 +384,7 @@ acquire_kernel_end:
 	mtmsr	%r5	 # enable interrupts
 	
 	lwz		%r6,TFLAGS(%r31)
-	loadi	%r4,(_NTO_TF_KERERR_SET | _NTO_TF_BUFF_MSG)
+	loadi	%r4,(QRV_FLG_THR_KERERR_SET | QRV_FLG_THR_BUFF_MSG)
 	slwi	%r3,%r0,2
 	andc	%r5,%r6,%r4
 	stw		%r0,SYSCALL(%r31)
@@ -403,7 +403,7 @@ acquire_kernel_end:
 	# interrupt/exception is serviced.  Until we do that I've commented 
 	# this code out so full register sets are always copied.
 	#
-	# bitset	%r5,%r5,_NTO_TF_KCALL_ACTIVE
+	# bitset	%r5,%r5,QRV_FLG_THR_KCALL_ACTIVE
 .endif
 	cmplwi	%r0,__KER_BAD
 	stw		%r5,TFLAGS(%r31)
@@ -545,7 +545,7 @@ prpret:
 # Check for special actions
 #
 	lwz		%r28,TFLAGS(%r31)
-	andi.	%r0,%r28,_NTO_TF_SPECRET_MASK
+	andi.	%r0,%r28,QRV_FLG_THR_SPECRET_MASK
 	bne-	__ker_specialret
 #
 # Save/Restore FPU
@@ -1473,7 +1473,7 @@ __exc_emulation:
 __exc_alignment:
 	lwz		%r6,TFLAGS(%r31)
 	loadi	%r3,SIGBUS + (BUS_ADRALN*256) + (FLTACCESS*65536)
-	bittst	%r0,%r6,_NTO_TF_ALIGN_FAULT
+	bittst	%r0,%r6,QRV_FLG_THR_ALIGN_FAULT
 	bne+	__exc
 	mr		%r28,%r4			# save reference address
 .ifdef VARIANT_smp
@@ -1860,9 +1860,9 @@ fixup_kcall:
 
 	stw		%r0,REG_GPR+(0*PPCINT)(%r30)
 	lwz		%r0,TFLAGS(%r31)
-	bitset	%r4,%r0,_NTO_TF_KERERR_SET
+	bitset	%r4,%r0,QRV_FLG_THR_KERERR_SET
 	stw		%r4,TFLAGS(%r31)
-	bittst	%r0,%r0,_NTO_TF_KERERR_SET
+	bittst	%r0,%r0,QRV_FLG_THR_KERERR_SET
 	bne-	__ker_exit
 	lwz		%r4,REG_IAR(%r30)
 	addi	%r4,%r4,KERERR_SKIPAHEAD

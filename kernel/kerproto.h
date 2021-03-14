@@ -123,9 +123,9 @@ int kercall_attach(unsigned callnum, int kdecl(*func) ());
 void ker_start(void);
 void sync_mutex_lock(tThread * act, sync_t * sync, int flags);
 void sync_mutex_unlock(tThread * act, sync_t * sync, unsigned incr);
-void mutex_holdlist_add(tThread *, SYNC *);
-void mutex_holdlist_rem(SYNC *);
-int mutex_set_prioceiling(SYNC * syp, unsigned ceiling, unsigned *ceiling_old);
+void mutex_holdlist_add(tThread *, tSync *);
+void mutex_holdlist_rem(tSync *);
+int mutex_set_prioceiling(tSync * syp, unsigned ceiling, unsigned *ceiling_old);
 void rdecl thread_specret(tThread * thp);
 void rdecl signal_specret(tThread * thp);
 
@@ -145,7 +145,7 @@ void init_traps(void);
 void init_objects(void);
 void init_memmgr(void);
 void init_smp(void);
-DISPATCH *init_scheduler_default();
+tDispatch *init_scheduler_default();
 
 void rdecl clock_resolution(unsigned long nsec);
 void clock_start(unsigned long nsec);
@@ -159,21 +159,21 @@ int rdecl interrupt_attach(int intr, const struct sigevent *(*handler) (void *ar
                            void *area, int flags);
 void rdecl interrupt_detach(int intr, const struct sigevent *(*handler) (void *area, int id));
 void rdecl interrupt_detach_entry(tProcess * prp, int index);
-int rdecl interrupt_mask(int intr, INTERRUPT * itp);
-int rdecl interrupt_unmask(int intr, INTERRUPT * itp);
+int rdecl interrupt_mask(int intr, tInterrupt * itp);
+int rdecl interrupt_unmask(int intr, tInterrupt * itp);
 int rdecl interrupt_mask_vector(unsigned vector, int id);
 int rdecl interrupt_unmask_vector(unsigned vector, int id);
 int rdecl get_interrupt_level(tThread * act, unsigned vector);
 
 unsigned (xferiov_pos) (CPU_REGISTERS * regs);
-int (xferiov) (tThread * sthp, IOV * dst, IOV * src, int dparts, int sparts, int doff, int soff);
+int (xferiov) (tThread * sthp, iov_t * dst, iov_t * src, int dparts, int sparts, int doff, int soff);
 
 int (xfermsg) (tThread * dthp, tThread * sthp, int doff, int soff);
-int (xferpulse) (tThread * dthp, IOV * dst, int parts, uint32_t code, uint32_t value, int32_t scoid);
-int (xferlen) (tThread * thp, IOV * iov, int parts);
+int (xferpulse) (tThread * dthp, iov_t * dst, int parts, uint32_t code, uint32_t value, int32_t scoid);
+int (xferlen) (tThread * thp, iov_t * iov, int parts);
 int (xfer_memcpy) (void *dst, const void *src, size_t len);
-int (xfer_cpy_diov) (tThread * thpd, IOV * dst, uint8_t * saddr, int dparts, unsigned slen);
-int (xfer_memchk) (uintptr_t bound, const IOV * iov, size_t iov_len);
+int (xfer_cpy_diov) (tThread * thpd, iov_t * dst, uint8_t * saddr, int dparts, unsigned slen);
+int (xfer_memchk) (uintptr_t bound, const iov_t * iov, size_t iov_len);
 void xfer_restart(tThread * thp, CPU_REGISTERS * regs);
 void xfer_async_restart(tThread * thp, CPU_REGISTERS * regs);
 
@@ -183,11 +183,11 @@ struct sigevent *reboot_handler();
 
 void kernel_main(int argc, char *argv[], char *environ[]);
 
-int rdecl cpu_debug_sstep(DEBUG * dep, tThread * thp);
-int rdecl cpu_debug_brkpt(DEBUG * dep, BREAKPT * bpp);
-void rdecl cpu_debug_attach_brkpts(DEBUG * dep);
-void rdecl cpu_debug_detach_brkpts(DEBUG * dep);
-int rdecl cpu_debug_fault(DEBUG * dep, tThread * thp, siginfo_t * info, unsigned *pflags);
+int rdecl cpu_debug_sstep(tDebug * dep, tThread * thp);
+int rdecl cpu_debug_brkpt(tDebug * dep, tBreakpoint * bpp);
+void rdecl cpu_debug_attach_brkpts(tDebug * dep);
+void rdecl cpu_debug_detach_brkpts(tDebug * dep);
+int rdecl cpu_debug_fault(tDebug * dep, tThread * thp, siginfo_t * info, unsigned *pflags);
 int rdecl cpu_debug_get_altregs(tThread * thp, debug_altreg_t * regs);
 int rdecl cpu_debug_set_altregs(tThread * thp, debug_altreg_t * regs);
 int rdecl cpu_debug_set_perfregs(tThread * thp, debug_perfreg_t * regs);
@@ -197,8 +197,8 @@ void halt(void);
 
 int rdecl within_syspage(uintptr_t vaddr, unsigned size);
 
-int rdecl synchash_add(tPathMgrObject * obp, unsigned addr, SYNC * syp);
-SYNC *rdecl synchash_lookup(tPathMgrObject * obp, unsigned addr);
+int rdecl synchash_add(tPathMgrObject * obp, unsigned addr, tSync * syp);
+tSync *rdecl synchash_lookup(tPathMgrObject * obp, unsigned addr);
 void rdecl synchash_rem(unsigned addr, tPathMgrObject * obp, unsigned addr1, unsigned addr2, tProcess * prp,
                         void *vaddr);
 
@@ -207,7 +207,7 @@ uint32_t exe_event_h(ehandler_data_t *, uint32_t, uint32_t, uint32_t);
 uint32_t exe_pt_event_h_buff(ehandler_data_t *, uint32_t, pid_t, int, void *, uint32_t);
 uint32_t exe_event_h_buff(int, ehandler_data_t *, uint32_t, void *, uint32_t);
 int trace_event(uint32_t *);
-void add_ktrace_int_handler_enter(tIntrLevel *, INTERRUPT *);
+void add_ktrace_int_handler_enter(tIntrLevel *, tInterrupt *);
 void add_ktrace_int_handler_exit(tIntrLevel *, const struct sigevent *);
 void add_ktrace_int_enter(tIntrLevel *);
 void add_ktrace_int_exit(tIntrLevel *);
@@ -219,7 +219,7 @@ void add_trace_d1_string(uint32_t header, uint32_t d_1, const char *fmt, ...);
 void add_trace_d2_string(uint32_t header, uint32_t d_1, uint32_t d_2, const char *fmt, ...);
 int add_trace_event(unsigned code, unsigned data_0, unsigned data_1, unsigned data_2);
 void add_trace_buffer(uint32_t header, uint32_t * b_p, unsigned len);
-void add_trace_iovs(uint32_t header, IOV * iovs, unsigned iovlen);
+void add_trace_iovs(uint32_t header, iov_t * iovs, unsigned iovlen);
 void add_ktrace_event(unsigned event, tThread * thp);
 void th_em_st(tThread * thp, uint32_t s, int cpu);
 void th_em_cd(tThread * thp, uint32_t s, uint32_t c);
@@ -252,9 +252,9 @@ void cpu_thread_waaa(tThread * thp);
 void cpu_thread_priv(tThread * thp);
 void cpu_thread_align_fault(tThread * thp);
 void cpu_thread_destroy(tThread * thp);
-void cpu_signal_save(SIGSTACK * ssp, tThread * thp);
-void cpu_signal_restore(tThread * thp, SIGSTACK * ssp);
-void cpu_intr_attach(INTERRUPT * itp, tThread * thp);
+void cpu_signal_save(tSigStack * ssp, tThread * thp);
+void cpu_signal_restore(tThread * thp, tSigStack * ssp);
+void cpu_intr_attach(tInterrupt * itp, tThread * thp);
 void cpu_greg_load(tThread * thp, CPU_REGISTERS * regs);
 void cpu_process_init(tThread * thp, uintptr_t pc, uintptr_t sp);
 void cpu_reboot(void);
@@ -278,8 +278,8 @@ int outside_kdebug_path(struct kdebug_entry *, char *, int);
 
 
 //Hook routines that the kernel calls
-void hook_idle(uint64_t *, struct qtime_entry *, INTERRUPT *);
-struct sigevent *hook_trace(void *, INTERRUPT *);
+void hook_idle(uint64_t *, struct qtime_entry *, tInterrupt *);
+struct sigevent *hook_trace(void *, tInterrupt *);
 
 int rdecl net_sendmsg(tThread * act, tConnect * cop, int prio);
 int rdecl net_send_pulse(tThread * act, tConnect * cop, int coid, int prio, int code, int value);
@@ -292,13 +292,13 @@ void rdecl cpu_free_perfregs(tThread * thp);
 void rdecl cpu_debug_init_perfregs(void);
 //int  rdecl    cpu_alloc_perfregs(tThread *thp);
 
-int rdecl msgreceive_gbl(tThread * act, CHANNELGBL * chp, void *msg, size_t size,
+int rdecl msgreceive_gbl(tThread * act, tChannelGbl * chp, void *msg, size_t size,
                          struct _msg_info *info, tConnect * cop, int coid);
 int rdecl msgsend_gbl(tThread * act, tConnect * cop, void *msg, size_t size, unsigned priority,
                       int coid);
 #ifdef CONFIG_ASYNC_MSG
 int rdecl msgsend_async(tThread * act, tConnect * cop);
-int rdecl msgreceive_async(tThread * act, CHANNELASYNC * chp, iov_t * iov, unsigned parts);
+int rdecl msgreceive_async(tThread * act, tChannelAsync * chp, iov_t * iov, unsigned parts);
 #endif
 
 int (rcvmsg) (tThread * dthp, tProcess * sprp, void *destp, int destparts, void *srcp, int srcparts);
@@ -308,7 +308,7 @@ int (rcvmsg) (tThread * dthp, tProcess * sprp, void *destp, int destparts, void 
 MM_FUNCS(emm)
 
 #ifdef DEBUG_PRIL
-void *rdecl pril_first(PRIL_HEAD *);
+void *rdecl pril_first(tPrilHead *);
 void *rdecl pril_next(void *);
 #else
 #define pril_first(ph)	((void *)(ph)->data)
@@ -316,9 +316,9 @@ void *rdecl pril_next(void *);
 #endif
 
 void *rdecl pril_next_prio(void *);
-void *rdecl pril_find_insertion(PRIL_HEAD *, unsigned);
-void rdecl pril_add(PRIL_HEAD *, void *);
-void rdecl pril_rem(PRIL_HEAD *, void *);
-void rdecl pril_update_register(PRIL_HEAD *, struct pril_update *);
-void rdecl pril_update_unregister(PRIL_HEAD *, struct pril_update *);
+void *rdecl pril_find_insertion(tPrilHead *, unsigned);
+void rdecl pril_add(tPrilHead *, void *);
+void rdecl pril_rem(tPrilHead *, void *);
+void rdecl pril_update_register(tPrilHead *, struct pril_update *);
+void rdecl pril_update_unregister(tPrilHead *, struct pril_update *);
 

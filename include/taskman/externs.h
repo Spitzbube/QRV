@@ -15,6 +15,9 @@
  * $
  */
 
+#ifndef _TASKMAN_EXTERNS_H
+#define _TASKMAN_EXTERNS_H
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -39,6 +42,7 @@
 
 #ifndef KERHDR
 #include <kernel/objects.h>
+#include <kernel/variables.h>
 #endif
 #undef NKDEBUG
 
@@ -110,4 +114,6 @@ extern unsigned __cpu_flags;
  * add one more for a minus sign if the type is signed.
  */
 #define INT_STRLEN_MAXIMUM(type)     (((sizeof(type) * CHAR_BIT) - (((type)-1) < 0)) * 302 / 1000 + 1 + (((type)-1) < 0))
+#endif
+
 #endif

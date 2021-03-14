@@ -32,6 +32,3 @@ void aps_bankruptcy_crash(int ap, int pid, char *debug_name)
             pid, debug_name);
     crash();
 }
-
-
-__SRCVERSION("aps_application_error.c $Rev: 153052 $");

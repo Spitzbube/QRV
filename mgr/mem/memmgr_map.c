@@ -24,7 +24,7 @@ static int (*const fs_check[])(const resmgr_io_funcs_t *, mem_map_t *, void *, O
 };
 
 int
-memmgr_find_object(resmgr_context_t * ctp, PROCESS * prp, int fd, mem_map_t * msg, OBJECT ** obpp)
+memmgr_find_object(resmgr_context_t * ctp, tProcess * prp, int fd, mem_map_t * msg, OBJECT ** obpp)
 {
     struct _msg_info info;
     void *handle;
@@ -86,7 +86,7 @@ memmgr_find_object(resmgr_context_t * ctp, PROCESS * prp, int fd, mem_map_t * ms
     return status;
 }
 
-int memmgr_map(resmgr_context_t * ctp, PROCESS * prp, mem_map_t * msg)
+int memmgr_map(resmgr_context_t * ctp, tProcess * prp, mem_map_t * msg)
 {
     void *addr;
     unsigned size;

@@ -30,7 +30,7 @@ sem_timedwait(sem_t *sem, const struct timespec *abs_timeout) {
 	uint64_t	t = timespec2nsec(abs_timeout);
 
 	// Is it a named semaphore.
-	if(sem->__owner == _NTO_SYNC_NAMED_SEM) {
+	if(sem->__owner == QRV_SYNC_NAMED_SEM) {
 		int		status;
 
 		if(TimerTimeout(CLOCK_REALTIME, TIMER_ABSTIME | _NTO_TIMEOUT_SEND | _NTO_TIMEOUT_REPLY, 0, &t, 0) == -1) {

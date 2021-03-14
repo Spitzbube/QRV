@@ -16,11 +16,12 @@
  */
 
 #include "externs.h"
-#include "apm.h"
-#include "aps.h"
+
+#include <taskman/mempart_adv.h>
+#include <taskman/schedpart_adv.h>
 
 
-static void init_soul(SOUL * sp)
+static void init_soul(tSoul * sp)
 {
     (void) object_grow(sp);
     mdriver_check();
@@ -29,12 +30,12 @@ static void init_soul(SOUL * sp)
 
 void init_objects()
 {
-    PROCESS *prp;
-    THREAD *thp;
+    tProcess *prp;
+    tThread *thp;
     unsigned i;
     unsigned ker_stack_size;
     uintptr_t ker_sp;
-    DISPATCH *dpp;
+    tDispatch *dpp;
 
     // Link all vectors off the query vector.
     vector_add(&query_vector, &mempart_vector, _QUERY_MEMORY_PARTITION);
@@ -47,24 +48,26 @@ void init_objects()
 
     // Create all the objects.
     mdriver_check();
-    init_soul(&process_souls);  // Allocate the min number of processes.
-    init_soul(&thread_souls);   // Allocate the min number of threads.
-    init_soul(&channel_souls);  // Allocate the min number of channels.
-    init_soul(&chasync_souls);  // Allocate the min number of async channels.
-    init_soul(&chgbl_souls);    // Allocate the min number of gbl channels.
-    init_soul(&connect_souls);  // Allocate the min number of connects.
-    init_soul(&pulse_souls);    // Allocate the min number of pulses.
-    init_soul(&sync_souls);     // Allocate the min number of syncs.
-    init_soul(&syncevent_souls);    // Allocate the min number of syncevents.
-    init_soul(&interrupt_souls);    // Allocate the min number of interrupts.
-    init_soul(&sigtable_souls); // Allocate the min number of signal tables.
-    init_soul(&timer_souls);    // Allocate the min number of timers.
-    init_soul(&credential_souls);   // Allocate the min number of credentials.
-    init_soul(&ssinfo_souls);   // Allocate the min number of ss schedinfos.
+    init_soul(&process_souls);  // Allocate the min number of processes
+    init_soul(&thread_souls);   // Allocate the min number of threads
+    init_soul(&channel_souls);  // Allocate the min number of channels
+#ifdef CONFIG_ASYNC_MSG
+    init_soul(&chasync_souls);  // Allocate the min number of async channels
+#endif
+    init_soul(&chgbl_souls);    // Allocate the min number of gbl channels
+    init_soul(&connect_souls);  // Allocate the min number of connects
+    init_soul(&pulse_souls);    // Allocate the min number of pulses
+    init_soul(&sync_souls);     // Allocate the min number of syncs
+    init_soul(&syncevent_souls);    // Allocate the min number of syncevents
+    init_soul(&interrupt_souls);    // Allocate the min number of interrupts
+    init_soul(&sigtable_souls); // Allocate the min number of signal tables
+    init_soul(&timer_souls);    // Allocate the min number of timers
+    init_soul(&credential_souls);   // Allocate the min number of credentials
+    init_soul(&ssinfo_souls);   // Allocate the min number of ss schedinfos
     init_soul(&threadname_souls);   // Allocate the min number of thread name souls
 
     // Create all hash tables
-    sync_hash.table = _scalloc((sync_hash.mask + 1) * sizeof(SYNC *));
+    sync_hash.table = _scalloc((sync_hash.mask + 1) * sizeof(tSync *));
 
     // Allocate the process table mapping vector. Reserves first slot.
     vector_add(&process_vector, 0, process_souls.min);  // Pregrow vector
@@ -106,7 +109,7 @@ void init_objects()
         prp->limits->links = 1;
         memcpy(prp->limits->max, limits_max, sizeof(prp->limits->max));
     }
-    prp->flags = _NTO_PF_RING0 | _NTO_PF_SLEADER | _NTO_PF_NOCLDSTOP;
+    prp->flags = QRV_FLG_PROC_RING0 | QRV_FLG_PROC_SLEADER | QRV_FLG_PROC_NOCLDSTOP;
     prp->num_active_threads = NUM_PROCESSORS;
     prp->boundry_addr = VM_KERN_SPACE_BOUNDRY;
     prp->sig_ignore.bits[0] |= SIGMASK_BIT(SIGKILL) | SIGMASK_BIT(SIGSTOP) |
@@ -145,7 +148,7 @@ void init_objects()
         thp->dpp = thp->orig_dpp = dpp;
         SIGMASK_ONES(&thp->sig_blocked);
         thp->type = TYPE_THREAD;
-        thp->flags = _NTO_TF_NOMULTISIG | _NTO_TF_WAAA;
+        thp->flags = QRV_FLG_THR_NOMULTISIG | QRV_FLG_THR_WAAA;
         thp->real_priority = thp->priority = NUM_PRI - 1;
         thp->start_time = prp->start_time;
         thp->un.lcl.stackaddr = (void *) _smalloc(sizeof(startup_stack));

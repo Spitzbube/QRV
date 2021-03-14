@@ -33,7 +33,7 @@ int
 	uint64_t	t;
 
 	// Is it priority ceiling?
-	if(!(mutex->__count & _NTO_SYNC_PRIOCEILING)) {
+	if(!(mutex->__count & QRV_SYNC_PRIOCEILING)) {
 		// Is it unlocked?
 		if(__mutex_smp_cmpxchg(&mutex->__owner, 0, id) == 0) {
 			++mutex->__count;
@@ -42,16 +42,16 @@ int
 	}
 
 	// Is it locked by me?
-	if((mutex->__owner & ~_NTO_SYNC_WAITING) == id) {
-		if((mutex->__count & _NTO_SYNC_NONRECURSIVE) == 0) {
+	if((mutex->__owner & ~QRV_SYNC_WAITING) == id) {
+		if((mutex->__count & QRV_SYNC_NONRECURSIVE) == 0) {
 			// We have it so bump the count.
-			if((mutex->__count & _NTO_SYNC_COUNTMASK) == _NTO_SYNC_COUNTMASK) {
+			if((mutex->__count & QRV_SYNC_COUNTMASK) == _NTO_SYNC_COUNTMASK) {
 				return EAGAIN;	/* As per Unix 98 */
 			}
 			++mutex->__count;
 			return EOK;
 		}
-		if((mutex->__count & _NTO_SYNC_NOERRORCHECK) == 0) {
+		if((mutex->__count & QRV_SYNC_NOERRORCHECK) == 0) {
 			return EDEADLK;
 		}
 	}
@@ -68,7 +68,7 @@ int
 
 	// Someone else owns it. Wait for it. Or, ceiling case, enter kernel.
 	if((ret = SyncMutexLock_r((sync_t *)mutex)) != EOK) {
-		if((ret == ETIMEDOUT) && (mutex->__owner == _NTO_SYNC_DEAD)) {
+		if((ret == ETIMEDOUT) && (mutex->__owner == QRV_SYNC_DEAD)) {
 			return EOWNERDEAD;
 		}
 		return ret;

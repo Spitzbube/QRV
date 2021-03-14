@@ -44,5 +44,3 @@ void kerext_idle(void *data)
     lock_kernel();
     SETKSTATUS(act, 0);
 }
-
-__SRCVERSION("kerext_idle.c $Rev: 153052 $");

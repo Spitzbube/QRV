@@ -15,15 +15,15 @@
  * $
  */
 
-#include "externs.h"
+#include <taskman/externs.h>
+//#include <taskman/apm.h>
 #include "procmgr_internal.h"
-#include "apm.h"
 
 int procmgr_fork(resmgr_context_t * ctp, proc_fork_t * msg)
 {
     struct loader_context *lcp;
     struct _thread_attr attr;
-    PROCESS *prp;
+    tProcess *prp;
     proc_create_attr_t extra = { NULL };
     part_list_t *mempart_list;
     part_list_t *schedpart_list = NULL;
@@ -35,7 +35,7 @@ int procmgr_fork(resmgr_context_t * ctp, proc_fork_t * msg)
     /* memory partitions */
     {
         unsigned i, r;
-        PROCESS *pprp = proc_lock_pid(ctp->info.pid);
+        tProcess *pprp = proc_lock_pid(ctp->info.pid);
         int num_parts;
         mempart_flags_t getlist_flags =
             mempart_flags_t_GETLIST_INHERITABLE | mempart_flags_t_GETLIST_CREDENTIALS;
@@ -87,7 +87,7 @@ int procmgr_fork(resmgr_context_t * ctp, proc_fork_t * msg)
 
     /* scheduler partitions */
     if (SCHEDPART_INSTALLED()) {
-        PROCESS *pprp = proc_lock_pid(ctp->info.pid);
+        tProcess *pprp = proc_lock_pid(ctp->info.pid);
         int num_parts, r;
         schedpart_flags_t getlist_flags =
             schedpart_flags_t_GETLIST_INHERITABLE | schedpart_flags_t_GETLIST_CREDENTIALS;
@@ -142,11 +142,11 @@ int procmgr_fork(resmgr_context_t * ctp, proc_fork_t * msg)
      */
     CRASHCHECK(mempart_get_classid(mempart_list->i[0].id) != sys_memclass_id);
 
-    lcp->flags = msg->i.flags;
-    lcp->ppid = ctp->info.pid;
-    lcp->rcvid = ctp->rcvid;
+    lcp->ctx.flags = msg->i.flags;
+    lcp->ctx.ppid = ctp->info.pid;
+    lcp->ctx.rcvid = ctp->rcvid;
     memcpy(&lcp->msg, msg, min(sizeof lcp->msg, sizeof *msg));
-    SignalProcmask(lcp->ppid, ctp->info.tid, 0, 0, &lcp->mask);
+    SignalProcmask(lcp->ctx.ppid, ctp->info.tid, 0, 0, &lcp->ctx.mask);
 
 #ifndef NDEBUG
     if (MEMPART_INSTALLED() && (mempart_list == NULL)) {
@@ -158,30 +158,28 @@ int procmgr_fork(resmgr_context_t * ctp, proc_fork_t * msg)
     extra.mpart_list = mempart_list;
     extra.spart_list = schedpart_list;
     proc_wlock_adp(sysmgr_prp);
-    lcp->process = ProcessCreate(lcp->ppid, lcp, &extra);
+    lcp->ctx.process = ProcessCreate(lcp->ctx.ppid, lcp, &extra);
     proc_unlock_adp(sysmgr_prp);
-    if (lcp->process == (void *) -1) {
+    if (lcp->ctx.process == (void *) -1) {
         procmgr_context_free(lcp);
         return errno;
     }
 
-    if ((prp = proc_lock_pid(lcp->ppid))) {
-        lcp->process->root = pathmgr_node_clone(prp->root);
-        lcp->process->cwd = pathmgr_node_clone(prp->cwd);
+    if ((prp = proc_lock_pid(lcp->ctx.ppid))) {
+        lcp->ctx.process->root = pathmgr_node_clone(prp->root);
+        lcp->ctx.process->cwd = pathmgr_node_clone(prp->cwd);
 
         proc_unlock(prp);
     }
 
     procmgr_thread_attr(&attr, lcp, ctp);
 
-    if (ThreadCreate(lcp->process->pid, loader_fork, lcp, &attr) == -1) {
+    if (ThreadCreate(lcp->ctx.process->pid, loader_fork, lcp, &attr) == -1) {
         // Turn terming flag on, we're not doing a thread_destroy
-        lcp->process->flags |= _NTO_PF_TERMING;
-        MsgSendPulse(PROCMGR_COID, attr.__param.__sched_priority, PROC_CODE_TERM,
-                     lcp->process->pid);
+        lcp->ctx.process->flags |= QRV_FLG_PROC_TERMING;
+        MsgSendPulse(PROCMGR_COID, attr.sched_param.sched_priority, PROC_CODE_TERM,
+                     lcp->ctx.process->pid);
         return ENOMEM;
     }
     return _RESMGR_NOREPLY;
 }
-
-__SRCVERSION("procmgr_fork.c $Rev: 198175 $");

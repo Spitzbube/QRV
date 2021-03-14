@@ -192,9 +192,9 @@
 #define STATE_LAZY_RESCHED(thp)	((1 << (thp)->state) & STATE_LAZY_RESCHED_BITS)
 
 /* Macros for playing with the owner field in a mutex sync_t */
-#define SYNC_OWNER_BITS(pid,tid)	((((pid) << 16) | (tid) + 1) & ~_NTO_SYNC_WAITING)
+#define SYNC_OWNER_BITS(pid,tid)	((((pid) << 16) | (tid) + 1) & ~QRV_SYNC_WAITING)
 #define SYNC_OWNER(thp)	SYNC_OWNER_BITS((thp)->process->pid, (thp)->tid)
-#define SYNC_PINDEX(owner)	PINDEX(((owner) & ~_NTO_SYNC_WAITING) >> 16)
+#define SYNC_PINDEX(owner)	PINDEX(((owner) & ~QRV_SYNC_WAITING) >> 16)
 #define SYNC_TID(owner)	(((owner) & 0xffff) - 1)
 
 /* Flag and init macro for soul lists */

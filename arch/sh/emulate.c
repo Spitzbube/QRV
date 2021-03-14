@@ -78,7 +78,7 @@ emulate_instruction(THREAD *thp, uint32_t flags) {
 	inst.op_code = *(uint16_t *)ctx->pc;
 
 	/* emulate privileged instructions for IO_PRIV processes */
-	if( ((flags >> 16) == FLTPRIV) && (thp->flags & _NTO_TF_IOPRIV) ) {
+	if( ((flags >> 16) == FLTPRIV) && (thp->flags & QRV_FLG_THR_IOPRIV) ) {
 		if(inst.i_f.op == OPCODE_STC) {
 			/* stc */
 			if(inst.i_f.func == FCODE_STC_SR_RN) {

@@ -96,17 +96,13 @@ int kdecl ker_mt_ctl(THREAD * act, struct kerargs_mt_ctl *kap)
             for (iProc = 1; iProc < process_vector.nentries; iProc++)
                 if (VECP(pProcess, &process_vector, iProc)) {
                     kprintf("Process %d : %s\n", iProc, pProcess->debug_name);
-/*
-				for (iThread=1; iThread<pProcess->threads.nentries; iThread++)
-					if (VECP(pThread, &pProcess->threads, iThread))
-					{
-						kprintf("   Task %d : %s\n", iProc, pThread);
-					}
-*/ }
+                    /* for (iThread=1; iThread<pProcess->threads.nentries; iThread++)
+			if (VECP(pThread, &pProcess->threads, iThread)) {
+			    kprintf("   Task %d : %s\n", iProc, pThread);
+			} */
+                }
         }
     }
 
     return EOK;
 }
-
-__SRCVERSION("ker_mt.c $Rev: 153052 $");

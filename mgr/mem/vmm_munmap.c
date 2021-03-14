@@ -136,7 +136,7 @@ int ms_unmap(ADDRESS * adp, struct map_set *ms, int unmap_flags)
     end_mm = ms->last->next;
     for (mm = ms->first; mm != end_mm; mm = mm->next) {
         if (mm->extra_flags & EXTRA_FLAG_SPECIAL) {
-            if (!(data.prp->flags & (_NTO_PF_LOADING | _NTO_PF_TERMING))) {
+            if (!(data.prp->flags & (QRV_FLG_PROC_LOADING | QRV_FLG_PROC_TERMING))) {
                 ms->flags |= MI_SKIP_SPECIAL;
                 continue;
             }

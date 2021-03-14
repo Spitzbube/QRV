@@ -104,14 +104,14 @@ void procmgr_context_free(struct loader_context *lcp)
         if (prp == NULL)
             break;
         flags = prp->flags;
-        // We can terminate the query early because if the _NTO_PF_TERM_WAITING
+        // We can terminate the query early because if the QRV_FLG_PROC_TERM_WAITING
         // flag is on, we know that the process isn't going to terminate
         // on us while we're inside the 'if' - it can't possibly be in the
         // termination code. If it's off, we don't do anything more with
         // the process pointer.
         QueryObjectDone(prp);
-        if (flags & _NTO_PF_TERM_WAITING) {
-            prp->flags &= ~_NTO_PF_TERM_WAITING;
+        if (flags & QRV_FLG_PROC_TERM_WAITING) {
+            prp->flags &= ~QRV_FLG_PROC_TERM_WAITING;
             MsgSendPulse(PROCMGR_COID, prp->terming_priority, PROC_CODE_TERM, prp->pid);
             --lcp_waiting;
         }
@@ -124,7 +124,7 @@ void procmgr_context_wait(PROCESS * prp)
 {
     pthread_mutex_lock(&procmgr_context_alloc_mutex);
     if (lcp_inuse != 0) {
-        prp->flags |= _NTO_PF_TERM_WAITING;
+        prp->flags |= QRV_FLG_PROC_TERM_WAITING;
         ++lcp_waiting;
     } else {
         // We can't wait for a loader context to become available

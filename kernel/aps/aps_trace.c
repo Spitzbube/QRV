@@ -44,6 +44,3 @@ void sched_trace_initial_parms_ppg()
 
     }
 }
-
-
-__SRCVERSION("aps_trace.c $Rev: 153052 $");

@@ -29,7 +29,7 @@ static __inline__ DISPATCH *select_dpp(THREAD * act, PROCESS * prp, part_id_t id
 
 #define MUTEX_INIT(p, m) \
 		do { \
-			const pthread_mutex_t  tmp = { 0, _NTO_SYNC_MUTEX_FREE }; \
+			const pthread_mutex_t  tmp = { 0, QRV_SYNC_MUTEX_FREE }; \
 			(m)->mutex = tmp; \
 			(m)->spin.value = 0; \
 			(void)sync_create(p, &(m)->mutex, 0); \
@@ -79,7 +79,7 @@ static void kerext_process_create(void *data)
     }
 
     if (kap->parent_pid) {
-        prp->flags = _NTO_PF_LOADING | _NTO_PF_NOZOMBIE | _NTO_PF_RING0;
+        prp->flags = QRV_FLG_PROC_LOADING | QRV_FLG_PROC_NOZOMBIE | QRV_FLG_PROC_RING0;
         prp->lcp = kap->lcp;
     }
     snap_time(&prp->start_time, 1);
@@ -177,7 +177,7 @@ static void kerext_process_create(void *data)
 
     // stop core file generation if RLIMIT_CORE is 0
     if (prp->rlimit_vals_soft[RLIMIT_CORE] == 0) {
-        prp->flags |= _NTO_PF_NOCOREDUMP;
+        prp->flags |= QRV_FLG_PROC_NOCOREDUMP;
     }
 
     // Inherit default scheduling partition
@@ -285,11 +285,11 @@ static void kerext_process_destroy(void *data)
 
             prp->child = child->sibling;
             if (procmgr.process_threads_destroyed) {
-                if (((child->flags & (_NTO_PF_LOADING | _NTO_PF_TERMING | _NTO_PF_ZOMBIE)) ==
-                     _NTO_PF_ZOMBIE) || (child->flags & _NTO_PF_NOZOMBIE)) {
+                if (((child->flags & (QRV_FLG_PROC_LOADING | QRV_FLG_PROC_TERMING | QRV_FLG_PROC_ZOMBIE)) ==
+                     QRV_FLG_PROC_ZOMBIE) || (child->flags & QRV_FLG_PROC_NOZOMBIE)) {
                     struct sigevent ev;
 
-                    child->flags &= ~(_NTO_PF_ZOMBIE | _NTO_PF_WAITINFO);
+                    child->flags &= ~(QRV_FLG_PROC_ZOMBIE | QRV_FLG_PROC_WAITINFO);
                     (*procmgr.process_threads_destroyed) (child, &ev);
                     sigevent_proc(&ev);
                 }
@@ -464,7 +464,7 @@ static void kerext_process_startup(void *data)
     struct _cred_info info;
     void *lcp;
 
-    if ((prp = lookup_pid(kap->pid)) == NULL || (prp->flags & _NTO_PF_LOADING) == 0) {
+    if ((prp = lookup_pid(kap->pid)) == NULL || (prp->flags & QRV_FLG_PROC_LOADING) == 0) {
         kererr(act, ESRCH);
         return;
     }
@@ -489,18 +489,18 @@ static void kerext_process_startup(void *data)
         info.sgid = info.egid;
         cred_set(&prp->cred, &info);
         thp = prp->valid_thp;
-        if (!(prp->flags & _NTO_PF_FORKED)) {
+        if (!(prp->flags & QRV_FLG_PROC_FORKED)) {
             SETKIP_FUNC(thp, start_ip);
             SETKSP(thp, prp->initial_esp);
         }
-        cpu_process_startup(thp, prp->flags & _NTO_PF_FORKED);
+        cpu_process_startup(thp, prp->flags & QRV_FLG_PROC_FORKED);
         _TRACE_NOARGS(thp);
 
         /* @@@ This should be examined in more detail later!!! */
         prp->boundry_addr =
             WITHIN_BOUNDRY(prp->initial_esp, prp->initial_esp,
                            user_boundry_addr) ? user_boundry_addr : VM_KERN_SPACE_BOUNDRY;
-        prp->flags &= ~(_NTO_PF_LOADING | _NTO_PF_RING0);
+        prp->flags &= ~(QRV_FLG_PROC_LOADING | QRV_FLG_PROC_RING0);
         prp->lcp = 0;
         _TRACE_PR_EMIT_CREATE_NAME(prp);
     }
@@ -671,13 +671,13 @@ static void kerext_process_swap(void *data)
     }
 
     /* Flags to inherit */
-#define FLAGS	(_NTO_PF_WAITINFO | \
-				_NTO_PF_WAITDONE | \
-				_NTO_PF_SLEADER | \
-				_NTO_PF_ORPHAN_PGRP | \
-				_NTO_PF_NOCLDSTOP | \
-				_NTO_PF_PTRACED | \
-				_NTO_PF_NOZOMBIE)
+#define FLAGS	(QRV_FLG_PROC_WAITINFO | \
+				QRV_FLG_PROC_WAITDONE | \
+				QRV_FLG_PROC_SLEADER | \
+				QRV_FLG_PROC_ORPHAN_PGRP | \
+				QRV_FLG_PROC_NOCLDSTOP | \
+				QRV_FLG_PROC_PTRACED | \
+				QRV_FLG_PROC_NOZOMBIE)
     i = parent->flags;
     parent->flags = (parent->flags & ~FLAGS) | (child->flags & FLAGS);
     child->flags = (child->flags & ~FLAGS) | (i & FLAGS);
@@ -827,7 +827,7 @@ static void kerext_process_shutdown(void *data)
             return;
         }
 
-        if (prp->flags & _NTO_PF_VFORKED) {
+        if (prp->flags & QRV_FLG_PROC_VFORKED) {
             // We're shutting down a vfork'd process. Don't free the
             // aspace, the parent process is still using it.
             prp->memory = NULL;
@@ -850,7 +850,7 @@ static void kerext_process_shutdown(void *data)
 
     // Check for guardian
     if (prp->guardian
-        && (prp->guardian->flags & (_NTO_PF_LOADING | _NTO_PF_TERMING | _NTO_PF_ZOMBIE)) == 0) {
+        && (prp->guardian->flags & (QRV_FLG_PROC_LOADING | QRV_FLG_PROC_TERMING | QRV_FLG_PROC_ZOMBIE)) == 0) {
         process_swap(prp->guardian);
         prp->guardian = 0;
     }
@@ -858,7 +858,7 @@ static void kerext_process_shutdown(void *data)
     if (prp == act->process) {
         if (!args->exec) {
             // if we need to, send a sigchld to the parent
-            if (!(prp->flags & _NTO_PF_NOZOMBIE)) {
+            if (!(prp->flags & QRV_FLG_PROC_NOZOMBIE)) {
                 signal_kill_process(prp->parent, SIGCHLD, prp->siginfo.si_code,
                                     prp->siginfo.si_value.sival_int, prp->siginfo.si_pid, 0);
             }

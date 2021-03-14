@@ -535,7 +535,7 @@ int do_process(char *node, pid_t pid, process_entry * pe_p)
 
     if (devctl(fd, DCMD_PROC_INFO, &pe_p->info, sizeof pe_p->info, 0) != -1) {
         int lasttid, tid;
-        if (pe_p->info.flags & _NTO_PF_ZOMBIE) {
+        if (pe_p->info.flags & QRV_FLG_PROC_ZOMBIE) {
             close(fd);
             return 0;
         } else {
@@ -1150,7 +1150,7 @@ void piddspinfo(int fd, char *pidname, pid_t pid, int flags, const char *fmt, co
     for (lasttid = tid = 1; lasttid >= tid; lasttid = ++tid) {
         f = fmt;
 
-        if (!(info.info->flags & _NTO_PF_ZOMBIE)) {
+        if (!(info.info->flags & QRV_FLG_PROC_ZOMBIE)) {
             if (fill_status(1, &info, &tid, fd) || tid < lasttid)
                 break;
         }
@@ -1179,13 +1179,13 @@ void piddspinfo(int fd, char *pidname, pid_t pid, int flags, const char *fmt, co
                 continue;
             }
             /* if we can do it as a zombie or this isn't a zombie ... */
-            if (!(format->flags & ZOMBIE_INVALID) || !(info.info->flags & _NTO_PF_ZOMBIE)) {
+            if (!(format->flags & ZOMBIE_INVALID) || !(info.info->flags & QRV_FLG_PROC_ZOMBIE)) {
                 if (format->print(stdout, pid, &tid, format, fd, &info))
                     break;
             } else {
                 if (format->flags & NA) {
                     format_data_string(stdout, format,
-                                       (info.info->flags & _NTO_PF_ZOMBIE) ? "(Zombie)" : na);
+                                       (info.info->flags & QRV_FLG_PROC_ZOMBIE) ? "(Zombie)" : na);
                 } else {
                     format_data_string(stdout, format, spaces);
                 }
@@ -1206,7 +1206,7 @@ void piddspinfo(int fd, char *pidname, pid_t pid, int flags, const char *fmt, co
             }
         }
 
-        if (info.info->flags & _NTO_PF_ZOMBIE)
+        if (info.info->flags & QRV_FLG_PROC_ZOMBIE)
             break;
         if (!(flags & DO_THREADS))
             break;

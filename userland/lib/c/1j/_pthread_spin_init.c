@@ -22,7 +22,7 @@
 #include <pthread.h>
 
 int _pthread_spin_init(pthread_spinlock_t *lock, int pshared) {
-	lock->__owner = _NTO_SYNC_SPIN;
+	lock->__owner = QRV_SYNC_SPIN;
 	lock->__count = 0;
 	return EOK;
 }

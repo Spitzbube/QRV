@@ -119,7 +119,7 @@ pulse_deliver(CHANNEL * chp, int priority, int code, int value, int id, unsigned
             thp->args.ri.code = code;
             thp->args.ri.value = value;
             thp->args.ri.id = id;
-            thp->flags |= _NTO_TF_PULSE;
+            thp->flags |= QRV_FLG_THR_PULSE;
         }
 
         SETKSTATUS(thp, 0);
@@ -136,7 +136,7 @@ pulse_deliver(CHANNEL * chp, int priority, int code, int value, int id, unsigned
         }
 
         if (priority & _PULSE_PRIO_VTID) {
-            thp->flags |= _NTO_TF_RCVINFO;
+            thp->flags |= QRV_FLG_THR_RCVINFO;
             // If the caller set the priority to _PULSE_PRIO_VTID, then they passed in
             // the sender's THREAD object as an id (this is done in net_send2)
             thp->args.ri.thp = (THREAD *) id;
@@ -151,7 +151,7 @@ pulse_deliver(CHANNEL * chp, int priority, int code, int value, int id, unsigned
         return status ? ESRVRFAULT : EOK;
     }
     //Fail any pulse delivery attempt to a dying process.
-    if (chp->process->flags & (_NTO_PF_TERMING | _NTO_PF_ZOMBIE | _NTO_PF_COREDUMP)) {
+    if (chp->process->flags & (QRV_FLG_PROC_TERMING | QRV_FLG_PROC_ZOMBIE | QRV_FLG_PROC_COREDUMP)) {
         return ENXIO;
     }
 

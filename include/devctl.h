@@ -126,12 +126,12 @@ extern int set_device_direction(int command, int direction);
 #define __DIOT(class, cmd, data)	((sizeof(data)<<16) + ((class)<<8) + (cmd) + _POSIX_DEVDIR_TO)
 #define __DIOTF(class, cmd, data)	((sizeof(data)<<16) + ((class)<<8) + (cmd) + _POSIX_DEVDIR_TOFROM)
 
-#define __DION(class, cmd)			(((class)<<8) + (cmd) + _POSIX_DEVDIR_NONE)
-#define _DEVCTL_DATA(msg)			((void *)(sizeof(msg) + (char *)(&msg)))
+#define __DION(class, cmd)		(((class)<<8) + (cmd) + _POSIX_DEVDIR_NONE)
+#define _DEVCTL_DATA(msg)		((void *)(sizeof(msg) + (char *)(&msg)))
 
 #if defined(__EXT_QNX)
 #define _DEVCTL_FLAG_NORETVAL	0x00000001
-#define _DEVCTL_FLAG_NOTTY		0x00000002
+#define _DEVCTL_FLAG_NOTTY	0x00000002
 #define _DEVCTL_FLAG_NOCANCEL	0x00000004
 
 extern int _devctl(int fd, int dcmd, void *data_ptr, size_t nbytes, unsigned flags);

@@ -15,12 +15,13 @@
  * $
  */
 
-#include "externs.h"
+#include <sys/states.h>
+#include <taskman/externs.h>
 #include "procmgr_internal.h"
 
 char *procmgr_init_objects(void)
 {
-    SESSION *sep;
+    tSession *sep;
 
     if (!(sep = _scalloc(sizeof *sep))) {
         return "No Memory";
@@ -154,7 +155,7 @@ static int procmgr_handler(message_context_t * mctp, int code, unsigned flags, v
     return proc_status(ctp, n);
 }
 
-static void proc_term(PROCESS * prp, struct sigevent *evp)
+static void proc_term(tProcess * prp, struct sigevent *evp)
 {
     evp->sigev_notify = SIGEV_PULSE;
     evp->sigev_coid = PROCMGR_COID;
@@ -163,25 +164,25 @@ static void proc_term(PROCESS * prp, struct sigevent *evp)
     evp->sigev_code = PROC_CODE_TERM;
 }
 
-static int proc_start(PROCESS * prp, uintptr_t * start_ip)
+static int proc_start(tProcess * prp, uintptr_t * start_ip)
 {
-    THREAD *thp;
+    tThread *thp;
     struct loader_context *lcp = prp->lcp;
 
-    if (!(thp = vector_lookup(&prp->threads, lcp->tid - 1)) || thp->state != STATE_REPLY) {
+    if (!(thp = vector_lookup(&prp->threads, lcp->ctx.tid - 1)) || thp->state != STATE_REPLY) {
         return EL3HLT;
     }
 
-    if ((lcp->state & LC_STATE_MASK) == LC_FORK) {
-        THREAD *pthp;
+    if ((lcp->ctx.state & LC_STATE_MASK) == LC_FORK) {
+        tThread *pthp;
         int tid;
         struct _thread_local_storage *tsp;
         char buff[0x100];
         struct _thread_local_storage tls;
-        unsigned size = 0;
+        size_t size = 0;
         uintptr_t sp;
 
-        if (!(lookup_rcvid(0, lcp->rcvid, &pthp)) || pthp->state != STATE_REPLY) {
+        if (!(lookup_rcvid(0, lcp->ctx.rcvid, &pthp)) || pthp->state != STATE_REPLY) {
             return EL3HLT;
         }
         sp = GetSp(pthp);
@@ -189,14 +190,15 @@ static int proc_start(PROCESS * prp, uintptr_t * start_ip)
         tid = thp->un.lcl.tls->__tid;
         tsp = thp->un.lcl.tls = pthp->un.lcl.tls;
         thp->un.lcl.stacksize = pthp->un.lcl.stacksize;
-        if (!(lcp->flags & _FORK_ASPACE)) {
+        if (!(lcp->ctx.flags & _FORK_ASPACE)) {
             memcpy(&tls, tsp, sizeof(tls));
 #ifdef STACK_GROWS_UP
             if ((size = sp - lcp->start.stackaddr) >= sizeof(buff))
                 return ENOMEM;
             memcpy(buff, (void *) lcp->start.stackaddr, size);
 #else
-            if ((size = lcp->start.stackaddr - sp) >= sizeof(buff))
+            size = lcp->ctx.start.stackaddr;
+            if (size - sp >= sizeof(buff))
                 return ENOMEM;
             memcpy(buff, (void *) sp, size);
 #endif
@@ -206,21 +208,21 @@ static int proc_start(PROCESS * prp, uintptr_t * start_ip)
 
         tsp->__pid = prp->pid;
         tsp->__tid = tid;
-        tsp->__owner = ((tsp->__pid << 16) | tsp->__tid) & ~_NTO_SYNC_WAITING;
+        tsp->__owner = ((tsp->__pid << 16) | tsp->__tid) & ~QRV_SYNC_WAITING;
 
         thp->reg = pthp->reg;
         thp->runmask = thp->default_runmask = pthp->default_runmask;
 
-        prp->flags |= _NTO_PF_FORKED;
+        prp->flags |= QRV_FLG_PROC_FORKED;
 
-        if (!(lcp->flags & _FORK_ASPACE)) {
+        if (!(lcp->ctx.flags & _FORK_ASPACE)) {
             struct vfork_info *vip;
 
             if (size > sizeof buff
                 || !(vip = prp->vfork_info = malloc(offsetof(struct vfork_info, frame) + size))) {
                 return ENOMEM;
             }
-            vip->rcvid = lcp->rcvid;
+            vip->rcvid = lcp->ctx.rcvid;
             vip->tls = tls;
 #ifdef STACK_GROWS_UP
             vip->frame_base = (void *) lcp->start.stackaddr;
@@ -231,23 +233,23 @@ static int proc_start(PROCESS * prp, uintptr_t * start_ip)
             memcpy(vip->frame, buff, size);
         }
 
-        if (!(lcp->flags & _FORK_NOZOMBIE)) {
-            prp->flags &= ~_NTO_PF_NOZOMBIE;
+        if (!(lcp->ctx.flags & _FORK_NOZOMBIE)) {
+            prp->flags &= ~QRV_FLG_PROC_NOZOMBIE;
         }
         // Don't allow anything to change the IP
-        thp->flags |= _NTO_TF_KERERR_SET;
+        thp->flags |= QRV_FLG_THR_KERERR_SET;
         return EOK;
     }
 
-    if (lcp->flags & SPAWN_EXEC) {
+    if (lcp->ctx.flags & SPAWN_EXEC) {
         struct _thread_local_storage *tsp = thp->un.lcl.tls;
 
-        /* make sure to propagate _NTO_PF_NOZOMBIE for execs */
-        if (prp->flags & _NTO_PF_NOZOMBIE)
-            lcp->flags |= SPAWN_NOZOMBIE;
+        /* make sure to propagate QRV_FLG_PROC_NOZOMBIE for execs */
+        if (prp->flags & QRV_FLG_PROC_NOZOMBIE)
+            lcp->ctx.flags |= SPAWN_NOZOMBIE;
 
-        tsp->__pid = lcp->ppid;
-        tsp->__owner = ((tsp->__pid << 16) | tsp->__tid) & ~_NTO_SYNC_WAITING;
+        tsp->__pid = lcp->ctx.ppid;
+        tsp->__owner = ((tsp->__pid << 16) | tsp->__tid) & ~QRV_SYNC_WAITING;
     }
     KerextLock();
 
@@ -258,17 +260,17 @@ static int proc_start(PROCESS * prp, uintptr_t * start_ip)
         runmask = lcp->msg.spawn.i.parms.runmask;
         thp->runmask = thp->default_runmask = ~runmask;
     } else {
-        THREAD *pthp;
+        tThread *pthp;
 
         // Look up spawning thread and get its runmask
-        if (!(lookup_rcvid(0, lcp->rcvid, &pthp)) || pthp->state != STATE_REPLY) {
+        if (!(lookup_rcvid(0, lcp->ctx.rcvid, &pthp)) || pthp->state != STATE_REPLY) {
             // I'm not sure how we could ever get here.
 #ifndef NDEBUG
             crash();
 #endif
         } else {
             thp->default_runmask = pthp->default_runmask;
-            if (lcp->flags & SPAWN_EXEC) {
+            if (lcp->ctx.flags & SPAWN_EXEC) {
                 /*
                  * Both masks are propagated as is across
                  * exec() so no changes are made (replacement
@@ -281,25 +283,25 @@ static int proc_start(PROCESS * prp, uintptr_t * start_ip)
         }
     }
 
-    *start_ip = lcp->start.eip;
-    prp->initial_esp = lcp->start.esp;
+    *start_ip = lcp->ctx.start.eip;
+    prp->initial_esp = lcp->ctx.start.esp;
 
     // Don't allow anything to change the IP
-    thp->flags |= _NTO_TF_KERERR_SET;
+    thp->flags |= QRV_FLG_THR_KERERR_SET;
 
     // Propagate zombie inhibition
-    if (!(lcp->flags & SPAWN_NOZOMBIE)) {
-        prp->flags &= ~_NTO_PF_NOZOMBIE;
+    if (!(lcp->ctx.flags & SPAWN_NOZOMBIE)) {
+        prp->flags &= ~QRV_FLG_PROC_NOZOMBIE;
     }
     // If created under a debugger, arrange to stop before running
-    if (lcp->flags & SPAWN_HOLD) {
+    if (lcp->ctx.flags & SPAWN_HOLD) {
         stop_threads(prp, 0, 0);
-        prp->flags |= _NTO_PF_STOPPED;
+        prp->flags |= QRV_FLG_PROC_STOPPED;
     }
 #ifndef NKDEBUG
     // Same idea, but kernel debugging
-    if ((lcp->flags & SPAWN_DEBUG)) {
-        (void) kdebug_watch_entry(&prp->kdebug, lcp->start.eip);
+    if ((lcp->ctx.flags & SPAWN_DEBUG)) {
+        (void) kdebug_watch_entry(&prp->kdebug, lcp->ctx.start.eip);
     }
 #endif
 
@@ -308,9 +310,9 @@ static int proc_start(PROCESS * prp, uintptr_t * start_ip)
 
 static int proc_core_code;
 
-static int proc_core(PROCESS * prp, struct sigevent *evp)
+static int proc_core(tProcess * prp, struct sigevent *evp)
 {
-    if (prp->flags & (_NTO_PF_NOCOREDUMP | _NTO_PF_LOADING)) {
+    if (prp->flags & (QRV_FLG_PROC_NOCOREDUMP | QRV_FLG_PROC_LOADING)) {
         return 0;
     }
 
@@ -342,10 +344,10 @@ static int proc_core(PROCESS * prp, struct sigevent *evp)
     return 0;
 }
 
-static int proc_stop_or_cont(PROCESS * prp, int signo, int sigcode, int sigval, int sender,
+static int proc_stop_or_cont(tProcess * prp, int signo, int sigcode, int sigval, int sender,
                              struct sigevent *evp)
 {
-    PROCESS *parent;
+    tProcess *parent;
     struct wait_entry *wap;
     int type;
 

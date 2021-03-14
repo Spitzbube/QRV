@@ -63,7 +63,7 @@ static void signal_remove(PROCESS * prp, int signo)
             for (;;) {
                 if (pup == NULL) {
                     // Got to the end of the list with no active signals...
-                    thp->flags &= ~_NTO_TF_SIG_ACTIVE;
+                    thp->flags &= ~QRV_FLG_THR_SIG_ACTIVE;
                     break;
                 }
                 if (!SIG_TST(thp->sig_blocked, PRI_TO_SIG(pup->priority)))
@@ -95,7 +95,7 @@ special_case_signalhandling(PROCESS * prp, THREAD * thp, int signo, int code, in
             // Fall Through
         case SIGSTOP:
             // don't stop if process is being destroyed
-            if (prp->flags & _NTO_PF_DESTROYALL) {
+            if (prp->flags & QRV_FLG_PROC_DESTROYALL) {
                 return SIGSTAT_QUEUED;
             }
             // SIGSTOP and SIGCONT cannot be blocked and perform special actions.
@@ -112,7 +112,7 @@ special_case_signalhandling(PROCESS * prp, THREAD * thp, int signo, int code, in
                 (void) (*debug_process_stopped) (prp, signo, code, value, pid);
             }
             // Drop a SIGCHLD on the parent
-            if ((prp->flags & _NTO_PF_STOPPED) == 0) {
+            if ((prp->flags & QRV_FLG_PROC_STOPPED) == 0) {
                 // Fill out report to parent
                 prp->siginfo.si_signo = SIGCHLD;
                 prp->siginfo.si_code = CLD_STOPPED;
@@ -120,12 +120,12 @@ special_case_signalhandling(PROCESS * prp, THREAD * thp, int signo, int code, in
                 prp->siginfo.si_status = signo;
                 prp->siginfo.si_pid = prp->pid;
 
-                if ((prp->parent->flags & _NTO_PF_NOCLDSTOP) == 0) {
+                if ((prp->parent->flags & QRV_FLG_PROC_NOCLDSTOP) == 0) {
                     signal_kill_process(prp->parent, SIGCHLD, CLD_STOPPED, signo, prp->pid, 0);
                 }
 
-                prp->flags |= _NTO_PF_STOPPED;
-                prp->flags &= ~_NTO_PF_CONTINUED;
+                prp->flags |= QRV_FLG_PROC_STOPPED;
+                prp->flags &= ~QRV_FLG_PROC_CONTINUED;
                 stop_threads(prp, 0, 0);
             }
             // Remove any pending SIGCONT
@@ -148,7 +148,7 @@ special_case_signalhandling(PROCESS * prp, THREAD * thp, int signo, int code, in
                 }
             }
 
-            if ((prp->flags & _NTO_PF_CONTINUED) == 0) {
+            if ((prp->flags & QRV_FLG_PROC_CONTINUED) == 0) {
                 // Fill out report to parent
                 prp->siginfo.si_signo = SIGCHLD;
                 prp->siginfo.si_code = CLD_CONTINUED;
@@ -156,8 +156,8 @@ special_case_signalhandling(PROCESS * prp, THREAD * thp, int signo, int code, in
                 prp->siginfo.si_status = signo;
                 prp->siginfo.si_pid = prp->pid;
             }
-            prp->flags &= ~_NTO_PF_STOPPED;
-            prp->flags |= _NTO_PF_CONTINUED;
+            prp->flags &= ~QRV_FLG_PROC_STOPPED;
+            prp->flags |= QRV_FLG_PROC_CONTINUED;
             cont_threads(prp, 0);
 
             // Remove any pending stop signals
@@ -189,18 +189,18 @@ special_case_signalhandling(PROCESS * prp, THREAD * thp, int signo, int code, in
             break;
 
         case SIGKILL:
-            if (prp->flags & _NTO_PF_STOPPED) {
+            if (prp->flags & QRV_FLG_PROC_STOPPED) {
                 // This signal always kills you so make sure we continue any
                 // threads first.
-                prp->flags &= ~_NTO_PF_STOPPED;
+                prp->flags &= ~QRV_FLG_PROC_STOPPED;
                 cont_threads(prp, 0);
             }
-            if (thp->flags & _NTO_TF_THREADS_HOLD) {
+            if (thp->flags & QRV_FLG_THR_THREADS_HOLD) {
                 // We are on hold and this signal always kills you so make
                 // sure we continue any threads first.
-                cont_threads(prp, _NTO_TF_THREADS_HOLD);
+                cont_threads(prp, QRV_FLG_THR_THREADS_HOLD);
             }
-            prp->flags |= _NTO_PF_DESTROYALL;
+            prp->flags |= QRV_FLG_PROC_DESTROYALL;
             break;
 
         default:
@@ -252,7 +252,7 @@ signal_kill_thread(PROCESS * prp, THREAD * thp, int signo, int code, int value,
         thp->args.sw.code = code;
         thp->args.sw.value = value;
         thp->args.sw.pid = pid;
-        thp->flags |= _NTO_TF_SIGWAITINFO;
+        thp->flags |= QRV_FLG_THR_SIGWAITINFO;
         if (signal_flags & SIGNAL_KILL_APS_CRITICAL_FLAG)
             AP_MARK_THREAD_CRITICAL(thp);
         ready(thp);
@@ -275,13 +275,13 @@ signal_kill_thread(PROCESS * prp, THREAD * thp, int signo, int code, int value,
     // If the signal was not blocked we must ready the thread.
     if (SIG_TST(thp->sig_blocked, signo) == 0) {
         if (thp->state == STATE_MUTEX) {
-            thp->flags |= _NTO_TF_ACQUIRE_MUTEX;
+            thp->flags |= QRV_FLG_THR_ACQUIRE_MUTEX;
             thp->args.mu.saved_timeout_flags = thp->timeout_flags;
         }
         if (signal_flags & SIGNAL_KILL_APS_CRITICAL_FLAG)
             AP_MARK_THREAD_CRITICAL(thp);
         force_ready(thp, EINTR);
-        thp->flags |= _NTO_TF_SIG_ACTIVE;
+        thp->flags |= QRV_FLG_THR_SIG_ACTIVE;
 
         // Is the target thread running on another processor in an SMP system?
         if (thp->state == STATE_RUNNING && thp != actives[KERNCPU]) {
@@ -466,7 +466,7 @@ static void sigstack_fault(THREAD * thp, CPU_REGISTERS * regs, unsigned flags)
     //return EFAULT on the 'kernel call' we're doing, but we want to
     //come back into signal_specret() with no signal handler installed.
 
-    thp->flags |= _NTO_TF_SIG_ACTIVE;
+    thp->flags |= QRV_FLG_THR_SIG_ACTIVE;
     signo = 0;
     for (pup = pril_first(&thp->sig_pending); pup; pup = pril_next(pup)) {
         signo = PRI_TO_SIG(pup->priority);
@@ -539,7 +539,7 @@ void rdecl signal_specret(THREAD * thp)
     signo = 0;
     sigpup = NULL;
     thp->internal_flags &= ~_NTO_ITF_SSTEP_SUSPEND;
-    flags = thp->flags & ~_NTO_TF_SIG_ACTIVE;
+    flags = thp->flags & ~QRV_FLG_THR_SIG_ACTIVE;
 
     pup = pril_first(&thp->sig_pending);
     for (;;) {
@@ -550,7 +550,7 @@ void rdecl signal_specret(THREAD * thp)
             if (sigpup != NULL) {
                 // A second signal in the queue that's also
                 // not blocked - keep the active flag on.
-                flags |= _NTO_TF_SIG_ACTIVE;
+                flags |= QRV_FLG_THR_SIG_ACTIVE;
                 break;
             }
             // Found a signal. Save away information we will need below.
@@ -571,7 +571,7 @@ void rdecl signal_specret(THREAD * thp)
             if ((next != NULL) && PRI_TO_SIG(next->priority) == signo) {
                 // Another signal of the same type follows in the queue - keep
                 // the active flag on.
-                flags |= _NTO_TF_SIG_ACTIVE;
+                flags |= QRV_FLG_THR_SIG_ACTIVE;
                 break;
             }
         }
@@ -580,7 +580,7 @@ void rdecl signal_specret(THREAD * thp)
 
     // Check for a false wakeup.
     if (sigpup == NULL) {
-        // turn off the _NTO_TF_SIGACTIVE bit
+        // turn off the QRV_FLG_THR_SIGACTIVE bit
         thp->flags = flags;
         return;
     }
@@ -646,8 +646,8 @@ void rdecl signal_specret(THREAD * thp)
 
     // Save current execution state and blocked mask for possible restoration
     // when the signal handler returns (via ker_signal_return).
-    if (thp->flags & _NTO_TF_SIGSUSPEND) {
-        flags &= ~_NTO_TF_SIGSUSPEND;
+    if (thp->flags & QRV_FLG_THR_SIGSUSPEND) {
+        flags &= ~QRV_FLG_THR_SIGSUSPEND;
         ssp->ss.sig_blocked = thp->args.ss.sig_blocked;
     } else {
         ssp->ss.sig_blocked = thp->sig_blocked;
@@ -655,8 +655,8 @@ void rdecl signal_specret(THREAD * thp)
 
     // If we were in STATE_MUTEX or STATE_CONDVAR we need to reaquire the mutex
     // upon return from the signal handler.
-    if (thp->flags & _NTO_TF_ACQUIRE_MUTEX) {
-        flags &= ~_NTO_TF_ACQUIRE_MUTEX;
+    if (thp->flags & QRV_FLG_THR_ACQUIRE_MUTEX) {
+        flags &= ~QRV_FLG_THR_ACQUIRE_MUTEX;
         ssp->ss.mutex = thp->args.mu.mutex;
         ssp->ss.mutex_timeout_flags = thp->args.mu.saved_timeout_flags;
         ssp->ss.mutex_acquire_incr = thp->args.mu.incr;
@@ -672,7 +672,7 @@ void rdecl signal_specret(THREAD * thp)
     }
     // Remember the "error set" flag.
     ssp->ss.old_flags = flags;
-    flags &= ~_NTO_TF_KERERR_SET;
+    flags &= ~QRV_FLG_THR_KERERR_SET;
 
     // Save away some key registers so we can restore them on handler return.
     cpu_signal_save(&ssp->ss, thp);
@@ -713,7 +713,7 @@ void rdecl signal_specret(THREAD * thp)
 
         sig_code = (((sigpup->code & 0xff) << 8) | signo);
         // See if we want to get the kernel debugger involved
-        if (prp->flags & _NTO_PF_RING0) {
+        if (prp->flags & QRV_FLG_PROC_RING0) {
             // set SIGCODE_TRAP so kernel debugger will handle:
             // - procnto faults
             // - termer faults where no signal handler is installed
@@ -722,7 +722,7 @@ void rdecl signal_specret(THREAD * thp)
             // Other loader faults are treated as SIGCODE_USER so that
             // the kernel debugger will ignore them by default.
             //
-            if (!(prp->flags & _NTO_PF_LOADING) || signo == SIGTRAP) {
+            if (!(prp->flags & QRV_FLG_PROC_LOADING) || signo == SIGTRAP) {
                 sig_code |= SIGCODE_PROC;
             } else {
                 sig_code |= SIGCODE_USER;
@@ -759,7 +759,7 @@ void rdecl signal_specret(THREAD * thp)
     }
     _TRACE_COMM_EMIT_SIGNAL(thp, &prp->siginfo);
 
-    if (((thp->flags & _NTO_TF_NOMULTISIG) && prp->num_active_threads > 1)
+    if (((thp->flags & QRV_FLG_THR_NOMULTISIG) && prp->num_active_threads > 1)
         || prp->pid == SYSMGR_PID) {
         thp->status = 0;
         thread_destroy(thp);
@@ -767,19 +767,19 @@ void rdecl signal_specret(THREAD * thp)
     }
 
 
-    thp->flags &= ~_NTO_TF_SPECRET_MASK;
+    thp->flags &= ~QRV_FLG_THR_SPECRET_MASK;
 
     // process manager may want to coredump, don't do one if we're in
     // the termer thread.
-    if ((procmgr.process_coredump != NULL) && !(prp->flags & _NTO_PF_TERMING)) {
+    if ((procmgr.process_coredump != NULL) && !(prp->flags & QRV_FLG_PROC_TERMING)) {
         struct sigevent ev;
 
         if (procmgr.process_coredump(prp, &ev)) {
-            if (prp->flags & _NTO_PF_COREDUMP) {
+            if (prp->flags & QRV_FLG_PROC_COREDUMP) {
                 // We have two dump requests for the same process.
                 crash();
             }
-            prp->flags |= _NTO_PF_COREDUMP;
+            prp->flags |= QRV_FLG_PROC_COREDUMP;
             //
             // Turning on _NTO_IF_RCVPULSE will put anybody who attempts
             // to MsgSend to this process into the uncommon code path
@@ -885,7 +885,7 @@ void rdecl signal_clear_thread(THREAD * thp, siginfo_t * sip)
     }
     if (!(state & CT_SIG_ACT)) {
         // Went all through the list without finding anything active...
-        thp->flags &= ~_NTO_TF_SIG_ACTIVE;
+        thp->flags &= ~QRV_FLG_THR_SIG_ACTIVE;
     }
 }
 
@@ -942,7 +942,7 @@ void rdecl signal_block(THREAD * thp, sigset_t * sig_blocked)
     }
 
     // Check if any signals are now active.
-    thp->flags &= ~_NTO_TF_SIG_ACTIVE;
+    thp->flags &= ~QRV_FLG_THR_SIG_ACTIVE;
     for (pup = pril_first(&thp->sig_pending); pup != NULL; pup = next) {
         int signo;
         int status;
@@ -966,7 +966,7 @@ void rdecl signal_block(THREAD * thp, sigset_t * sig_blocked)
                     special_case_signalhandling(prp, thp, signo, pup->code, pup->value, pup->id);
             }
             if (status == -1) {
-                thp->flags |= _NTO_TF_SIG_ACTIVE;
+                thp->flags |= QRV_FLG_THR_SIG_ACTIVE;
                 // cannot break out yet, since there might be multiple
                 // signals pending, more than one of which need special
                 // case handling
@@ -978,7 +978,7 @@ void rdecl signal_block(THREAD * thp, sigset_t * sig_blocked)
     }
 
     // If the thread is already ready then calling force_ready is a no-op.
-    if (thp->flags & _NTO_TF_SIG_ACTIVE) {
+    if (thp->flags & QRV_FLG_THR_SIG_ACTIVE) {
         force_ready(thp, EINTR);
     }
 }
@@ -1046,12 +1046,12 @@ void rdecl deliver_fault(THREAD * thp, siginfo_t * info)
         info->si_fltno |= FLTNO_BDSLOT_INDICATOR;
     }
     // We now add a queued signal with the invalid address as the value.
-    prp->flags |= _NTO_PF_NO_LIMITS;
+    prp->flags |= QRV_FLG_PROC_NO_LIMITS;
     pup =
         pulse_add(prp, &thp->sig_pending,
                   _PULSE_PRIO_SIGNAL | _PULSE_PRIO_BOOST | SIG_TO_PRI(info->si_signo),
                   info->si_code, (uintptr_t) info->si_addr, info->si_fltno);
-    prp->flags &= ~_NTO_PF_NO_LIMITS;
+    prp->flags &= ~QRV_FLG_PROC_NO_LIMITS;
     first = pril_first(&thp->sig_pending);
     if (pup != NULL) {
         if ((pup->count > 1) || ((pup != first)
@@ -1064,7 +1064,7 @@ void rdecl deliver_fault(THREAD * thp, siginfo_t * info)
         }
     }
 
-    thp->flags |= _NTO_TF_SIG_ACTIVE;
+    thp->flags |= QRV_FLG_THR_SIG_ACTIVE;
 }
 
 unsigned kdebug_enter(PROCESS * prp, unsigned sigcode, CPU_REGISTERS * reg)
@@ -1102,13 +1102,13 @@ void rdecl usr_fault(int code_signo, THREAD * thp, uintptr_t addr)
     PROCESS *prp;
     siginfo_t info;
 
-    if (thp->flags & _NTO_TF_V86) {
+    if (thp->flags & QRV_FLG_THR_V86) {
         //
         // A fault in V86 mode just causes the kernel call that put the
         // thread into V86 to return with an EFAULT indicator.
         //
         lock_kernel();
-        thp->flags &= ~_NTO_TF_V86;
+        thp->flags &= ~QRV_FLG_THR_V86;
         kererr(thp, EFAULT);
         return;
     }
@@ -1183,5 +1183,3 @@ int rdecl net_deliver_signal(THREAD * act, struct kerargs_signal_kill *kap)
 
     return net_sendmsg(act, cop, act->priority);
 }
-
-__SRCVERSION("nano_signal.c $Rev: 211164 $");

@@ -42,7 +42,7 @@ struct conf_entry {
 
 pthread_mutex_t conf_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-void sysmgr_conf_destroy(PROCESS * prp)
+void sysmgr_conf_destroy(tProcess * prp)
 {
     struct conf_entry *p;
 
@@ -111,7 +111,7 @@ int sysmgr_strconf(int name, long *value, char *str)
 
 int sysmgr_conf_set(pid_t pid, int cmd, int name, long value, const char *str)
 {
-    PROCESS *prp;
+    tProcess *prp;
     struct conf_entry *table;
     int status;
 

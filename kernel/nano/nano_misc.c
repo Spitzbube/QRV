@@ -36,8 +36,8 @@ void rdecl kererr(THREAD * thp, int err)
     SETKSTATUS(thp, err);
 
     // Check for multiple errors in one kernel call.
-    if (err != EOK && (thp->flags & _NTO_TF_KERERR_SET) == 0) {
-        thp->flags |= _NTO_TF_KERERR_SET;
+    if (err != EOK && (thp->flags & QRV_FLG_THR_KERERR_SET) == 0) {
+        thp->flags |= QRV_FLG_THR_KERERR_SET;
         thp->restart = NULL;
         timeout_stop(thp);
         SETKIP(thp, KIP(thp) + KERERR_SKIPAHEAD);
@@ -49,8 +49,8 @@ void rdecl kerunerr(THREAD * thp)
 {
 
     // Ignore unless an error is already set;
-    if (thp->flags & _NTO_TF_KERERR_SET) {
-        thp->flags &= ~_NTO_TF_KERERR_SET;
+    if (thp->flags & QRV_FLG_THR_KERERR_SET) {
+        thp->flags &= ~QRV_FLG_THR_KERERR_SET;
         SETKIP(thp, KIP(thp) - KERERR_SKIPAHEAD);
     }
 }
@@ -97,7 +97,7 @@ int rdecl kerschedok(THREAD * thp, int policy, const struct sched_param *param)
     if (param->sched_priority < 0 || param->sched_priority >= NUM_PRI)
         return EINVAL;
     if (param->sched_priority == 0
-        && (thp->process->flags & (_NTO_PF_LOADING | _NTO_PF_RING0)) != _NTO_PF_RING0)
+        && (thp->process->flags & (QRV_FLG_PROC_LOADING | QRV_FLG_PROC_RING0)) != QRV_FLG_PROC_RING0)
         return EINVAL;
     if (thp->process->cred->info.euid != 0 && param->sched_priority >= priv_prio)
         return EPERM;

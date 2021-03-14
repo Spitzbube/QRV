@@ -101,7 +101,7 @@ msgsend_gbl(THREAD * act, CONNECT * cop, void *msg, size_t size, unsigned priori
                 thp->args.ri.thp = act;
                 thp->args.ri.value = priority;  // use value to store priority
                 thp->args.ri.id = act->args.ms.msglen;  // use id to store msglen
-                thp->flags |= _NTO_TF_RCVINFO;
+                thp->flags |= QRV_FLG_THR_RCVINFO;
                 // indicate that there is a receiver depending on data in our THREAD object
                 act->internal_flags |= _NTO_ITF_SPECRET_PENDING;
             }

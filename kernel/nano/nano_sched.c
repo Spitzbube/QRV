@@ -686,7 +686,7 @@ int rdecl sched_thread(THREAD * thp, int policy, struct sched_param *param)
         }
 
         //Thread creation and newcomers to the policy need this info snapped
-        if (thp->flags & _NTO_TF_WAAA || thp->policy != SCHED_SPORADIC) {
+        if (thp->flags & QRV_FLG_THR_WAAA || thp->policy != SCHED_SPORADIC) {
             snap_time(&thp->schedinfo.ss_info->activation_time, 0);
             thp->schedinfo.ss_info->curr_budget = timespec2nsec(&param->sched_ss_init_budget);
         }
@@ -846,7 +846,7 @@ int rdecl force_ready(THREAD * thp, int err)
 
     // Make sure short message flag is cleared
     if (thp->state != STATE_READY && thp->state != STATE_RUNNING && thp->state != STATE_REPLY) {
-        thp->flags &= ~_NTO_TF_BUFF_MSG;
+        thp->flags &= ~QRV_FLG_THR_BUFF_MSG;
     }
 
     switch (thp->state) {
@@ -857,7 +857,7 @@ int rdecl force_ready(THREAD * thp, int err)
             if (TYPE_MASK(thp->type) == TYPE_VTHREAD) {
                 thp->state = STATE_STOPPED;
                 snap_time(&thp->timestamp_last_block, 0);
-                if (thp->flags & _NTO_TF_KILLSELF) {
+                if (thp->flags & QRV_FLG_THR_KILLSELF) {
                     object_free(NULL, &vthread_souls, thp);
                 }
             } else {
@@ -905,7 +905,7 @@ int rdecl force_ready(THREAD * thp, int err)
             if (chp && (chp->flags & _NTO_CHF_UNBLOCK)
                 && !(err & _FORCE_NO_UNBLOCK)
                 && ((chp->process == NULL)
-                    || !(chp->process->flags & (_NTO_PF_TERMING | _NTO_PF_DESTROYALL)))
+                    || !(chp->process->flags & (QRV_FLG_PROC_TERMING | QRV_FLG_PROC_DESTROYALL)))
                 && (thp->state == STATE_REPLY)) {
                 int rcvid;
                 if (TYPE_MASK(thp->type) == TYPE_VTHREAD) {
@@ -935,13 +935,13 @@ int rdecl force_ready(THREAD * thp, int err)
                     pulse_souls.flags = flags;  /* restore pulse_soul flags */
                 }
                 if (err & _FORCE_KILL_SELF) {
-                    thp->flags |= _NTO_TF_KILLSELF | _NTO_TF_ONLYME;
+                    thp->flags |= QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME;
                 }
                 if ((err & _FORCE_SET_ERROR) == 0) {
-                    thp->flags |= _NTO_TF_UNBLOCK_REQ;
+                    thp->flags |= QRV_FLG_THR_UNBLOCK_REQ;
                     return 0;
                 }
-                thp->flags &= ~_NTO_TF_UNBLOCK_REQ;
+                thp->flags &= ~QRV_FLG_THR_UNBLOCK_REQ;
             }
             if (thp->args.ms.server != NULL) {
                 if (thp->args.ms.server->client == NULL) {
@@ -951,9 +951,9 @@ int rdecl force_ready(THREAD * thp, int err)
                 thp->args.ms.server = NULL;
             }
             if (thp->restart) {
-                if ((thp->restart->flags & (_NTO_TF_RCVINFO | _NTO_TF_SHORT_MSG)) != 0) {
+                if ((thp->restart->flags & (QRV_FLG_THR_RCVINFO | QRV_FLG_THR_SHORT_MSG)) != 0) {
                     KERCALL_RESTART(thp->restart);
-                    thp->restart->flags &= ~(_NTO_TF_RCVINFO | _NTO_TF_SHORT_MSG);
+                    thp->restart->flags &= ~(QRV_FLG_THR_RCVINFO | QRV_FLG_THR_SHORT_MSG);
                     thp->internal_flags &= ~_NTO_ITF_SPECRET_PENDING;
                     thp->restart = NULL;
                 }
@@ -1059,7 +1059,7 @@ int rdecl force_ready(THREAD * thp, int err)
         break;
 
     case STATE_WAITTHREAD:
-        ((THREAD *) thp->blocked_on)->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+        ((THREAD *) thp->blocked_on)->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
         /* Fall Through */
 
     case STATE_JOIN:
@@ -1084,7 +1084,7 @@ int rdecl force_ready(THREAD * thp, int err)
             snap_time(&thp->timestamp_last_block, 0);
 
             _TRACE_TH_EMIT_STATE(thp, STOPPED);
-            if (thp->flags & _NTO_TF_KILLSELF) {
+            if (thp->flags & QRV_FLG_THR_KILLSELF) {
                 CRASHCHECK(vector_lookup(&vthread_vector, thp->un.net.vtid));
                 object_free(NULL, &vthread_souls, thp);
             }
@@ -1217,7 +1217,7 @@ static void rdecl ready_default(THREAD * thp)
     }
 
     // Make sure the thread does not have a pending stop
-    if ((thp->flags & _NTO_TF_TO_BE_STOPPED) && !(thp->flags & _NTO_TF_KILLSELF)) {
+    if ((thp->flags & QRV_FLG_THR_TO_BE_STOPPED) && !(thp->flags & QRV_FLG_THR_KILLSELF)) {
         thp->state = STATE_STOPPED;
         snap_time(&thp->timestamp_last_block, 0);
         _TRACE_TH_EMIT_STATE(thp, STOPPED);
@@ -1290,7 +1290,7 @@ static void rdecl ready_default(THREAD * thp)
 
                 // Disable need_to_run for now.
 #if 0
-                if (need_to_run == NULL && (thp->flags & _NTO_TF_SPECRET_MASK) == 0) {
+                if (need_to_run == NULL && (thp->flags & QRV_FLG_THR_SPECRET_MASK) == 0) {
                     need_to_run_cpu = cpu;
                     need_to_run = thp;
                 }
@@ -1391,7 +1391,7 @@ static void rdecl block_and_ready_default(THREAD * thp)
 
     thp->restart = NULL;
     // If thp has a pending stop then degrade block_and_ready() to just block()
-    if ((thp->flags & _NTO_TF_TO_BE_STOPPED) && !(thp->flags & _NTO_TF_KILLSELF)) {
+    if ((thp->flags & QRV_FLG_THR_TO_BE_STOPPED) && !(thp->flags & QRV_FLG_THR_KILLSELF)) {
         thp->state = STATE_STOPPED;
         //we dont have to update act->timestamp_last_block here becuse block() below will do it.
         _TRACE_TH_EMIT_STATE(thp, STOPPED);
@@ -1599,7 +1599,7 @@ static void rdecl resched_default(void)
     CRASHCHECK(actives[KERNCPU] != act);
 
     // check if this process exceeded its max cpu usage
-    if (act->process->running_time > act->process->max_cpu_time && !(act->flags & _NTO_TF_KILLSELF)) {
+    if (act->process->running_time > act->process->max_cpu_time && !(act->flags & QRV_FLG_THR_KILLSELF)) {
 
         if (signal_kill_process(act->process, SIGXCPU, 0, 0, act->process->pid, 0) ==
             SIGSTAT_IGNORED) {
@@ -1887,8 +1887,8 @@ int rdecl stop_one_thread(PROCESS * prp, int tid, unsigned flags, unsigned iflag
 
     chk_lock();
     if ((tid < prp->threads.nentries) && (thp = VECP2(thp2, &prp->threads, tid))) {
-        if ((thp == thp2) || (thp->flags & _NTO_TF_WAAA)) {
-            thp->flags |= _NTO_TF_TO_BE_STOPPED | flags;
+        if ((thp == thp2) || (thp->flags & QRV_FLG_THR_WAAA)) {
+            thp->flags |= QRV_FLG_THR_TO_BE_STOPPED | flags;
             thp->internal_flags |= iflags;
 #if defined(VARIANT_smp)
             if (thp->state == STATE_RUNNING && thp != actives[KERNCPU]) {
@@ -1917,11 +1917,11 @@ int rdecl cont_one_thread(PROCESS * prp, int tid, unsigned flags)
 
     chk_lock();
     if ((tid < prp->threads.nentries) && (thp = VECP2(thp2, &prp->threads, tid))) {
-        if ((thp == thp2) || (thp->flags & _NTO_TF_WAAA)) {
-            if ((prp->flags & (_NTO_PF_STOPPED | _NTO_PF_DEBUG_STOPPED | _NTO_PF_COREDUMP)) == 0) {
+        if ((thp == thp2) || (thp->flags & QRV_FLG_THR_WAAA)) {
+            if ((prp->flags & (QRV_FLG_PROC_STOPPED | QRV_FLG_PROC_DEBUG_STOPPED | QRV_FLG_PROC_COREDUMP)) == 0) {
                 thp->flags &= ~flags;
-                if ((thp->flags & (_NTO_TF_FROZEN | _NTO_TF_THREADS_HOLD)) == 0) {
-                    thp->flags &= ~_NTO_TF_TO_BE_STOPPED;
+                if ((thp->flags & (QRV_FLG_THR_FROZEN | QRV_FLG_THR_THREADS_HOLD)) == 0) {
+                    thp->flags &= ~QRV_FLG_THR_TO_BE_STOPPED;
                     if (thp->state == STATE_STOPPED) {
                         ready(thp);
                     }
@@ -2026,6 +2026,3 @@ DISPATCH *init_scheduler_default(void)
     scheduler_type = SCHEDULER_TYPE_DEFAULT;
     return dpp;
 }
-
-
-__SRCVERSION("nano_sched.c $Rev: 212233 $");

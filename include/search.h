@@ -22,7 +22,8 @@ typedef struct _entry {
 typedef enum { FIND, ENTER } ACTION;
 typedef enum { preorder, postorder, endorder, leaf } VISIT;
 
-__BEGIN_DECLS extern ENTRY *hsearch(ENTRY __item, ACTION __action);
+__BEGIN_DECLS
+extern ENTRY *hsearch(ENTRY __item, ACTION __action);
 extern void *lfind(const void *__key, const void *__base, size_t *__num, size_t __width,
                    int (*__compare)(const void *, const void *));
 extern void *lsearch(const void *__key, void *__base, size_t *__num, size_t __width,
@@ -33,7 +34,7 @@ extern void *tfind(const void *__key, void *const *__rootp,
                    int (*__compar)(const void *, const void *));
 extern void *tsearch(const void *__key, void **__rootp,
                      int (*__compar)(const void *, const void *));
-extern int hcreate(_CSTD size_t __nel);
+extern int hcreate(const size_t __nel);
 extern void hdestroy(void);
 
 #if defined(__EXT_XOPEN_EX)

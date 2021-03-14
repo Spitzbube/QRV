@@ -50,9 +50,9 @@ static void kerext_page_cont(void *data)
                     // Fixup ip
                     SETKIP(thp, KIP(thp) + KER_ENTRY_SIZE);
                 }
-                if (thp->flags & _NTO_TF_WAAA) {
+                if (thp->flags & QRV_FLG_THR_WAAA) {
                     thp->status = (void *) EAGAIN;
-                    thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+                    thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
                 } else {
                     kererr(thp, EFAULT);
                 }
@@ -63,7 +63,7 @@ static void kerext_page_cont(void *data)
             // Make sure that the signal will be delivered by
             // knocking down all higher priority specret flags,
             // except for KILLSELF and TO_BE_STOPPED
-            thp->flags &= ~(_NTO_TF_SIG_ACTIVE - 1) | (_NTO_TF_KILLSELF | _NTO_TF_TO_BE_STOPPED);
+            thp->flags &= ~(QRV_FLG_THR_SIG_ACTIVE - 1) | (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_TO_BE_STOPPED);
 
             // Deliver the signal
             // PageWait() stored the faulting address in "thp->next"
@@ -236,5 +236,3 @@ PageWaitInfo(union sigval value, pid_t * ppid, int *ptid, pid_t * paspace_pid, u
     __Ring0(kerext_page_wait_info, &data);
     return data.vaddr;
 }
-
-__SRCVERSION("kerext_page.c $Rev: 169426 $");

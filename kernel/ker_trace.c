@@ -1924,7 +1924,7 @@ int kdecl ker_trace_event(THREAD * act, struct kerargs_trace_event *kap)
         }
     case _TRACE_GET_FLAG(_NTO_TRACE_ADDEVENTHANDLER):  // Adding one event handler
         {
-            if (!kerisroot(act) || !(act->flags & _NTO_TF_IOPRIV))
+            if (!kerisroot(act) || !(act->flags & QRV_FLG_THR_IOPRIV))
                 return (EPERM);
             if (trace_masks.eh_num >= _TRACE_MAX_EV_HANDLER_NUM) {
                 return (ENOTSUP);
@@ -2199,7 +2199,7 @@ int kdecl ker_trace_event(THREAD * act, struct kerargs_trace_event *kap)
         }
     case _TRACE_GET_FLAG(_NTO_TRACE_ADDCLASSEVHANDLER):    // Adding one event handler
         {
-            if (!kerisroot(act) || !(act->flags & _NTO_TF_IOPRIV))
+            if (!kerisroot(act) || !(act->flags & QRV_FLG_THR_IOPRIV))
                 return (EPERM);
             if (trace_masks.eh_num >= _TRACE_MAX_EV_HANDLER_NUM) {
                 return (ENOTSUP);
@@ -2574,5 +2574,3 @@ int kdecl ker_trace_event(THREAD * act, struct kerargs_trace_event *kap)
 }
 
 #endif
-
-__SRCVERSION("ker_trace.c $Rev: 206799 $");

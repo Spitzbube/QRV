@@ -111,5 +111,3 @@ int rdecl cred_set(CREDENTIAL ** pcrp, struct _cred_info *cip)
 
     return (EOK);
 }
-
-__SRCVERSION("nano_cred.c $Rev: 153052 $");

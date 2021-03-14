@@ -23,7 +23,7 @@
 #include <sys/neutrino.h>
 
 int pthread_cond_init(pthread_cond_t *cond, const pthread_condattr_t *attr) {
-	return SyncTypeCreate_r(_NTO_SYNC_COND, (sync_t *)cond, attr);
+	return SyncTypeCreate_r(QRV_SYNC_COND, (sync_t *)cond, attr);
 }
 
 __SRCVERSION("pthread_cond_init.c $Rev: 153052 $");

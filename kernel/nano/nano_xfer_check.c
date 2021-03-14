@@ -100,6 +100,3 @@ int (xfer_memprobe) (void *ptr) {
 
     return 0;
 }
-
-
-__SRCVERSION("nano_xfer_check.c $Rev: 153052 $");

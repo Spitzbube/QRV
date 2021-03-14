@@ -58,7 +58,6 @@
 
 #define rd_probe_1(ptr)	({ __attribute__((unused)) uint32_t dummy = *(const volatile uint32_t *)(ptr); })
 
-#if 0
 inline static void rd_probe_num(const void *loc, int num) {
     //ulong_t tmp;
 #warning This function is not implemented yet - stop
@@ -76,7 +75,6 @@ inline static void wr_probe_num(void *loc, int num) {
 #warning This function is not implemented yet - stop
     for(;;);
 }
-#endif
 
 #define HAVE_ACTIVES_STORAGE	1
 #define HAVE_KERSTACK_STORAGE	1

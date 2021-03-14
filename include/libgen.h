@@ -36,7 +36,7 @@ extern char *dirname(char *__fname);
 #endif
 
 extern char *pathfind_r(__const char *__path, __const char *__name, __const char *__mode,
-                            char *__buff, _CSTD size_t __buff_size);
+                            char *__buff, const size_t __buff_size);
 
 #define WAITFOR_CHECK_CONTINUE	-1
 #define WAITFOR_CHECK_ABORT	-2

@@ -275,5 +275,3 @@ void rdecl vector_free(VECTOR * vec)
     vec->nentries = vec->nfree = 0;
     vec->vector = NULL;
 }
-
-__SRCVERSION("nano_vector.c $Rev: 204178 $");

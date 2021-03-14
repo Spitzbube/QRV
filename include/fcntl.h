@@ -175,12 +175,12 @@
 #endif
 
 #if defined(__EXT_POSIX1_200112)    /* Approved 1003.1d D14 */
-#define POSIX_FADV_NORMAL		0   /* No advice to give */
+#define POSIX_FADV_NORMAL	0   /* No advice to give */
 #define POSIX_FADV_SEQUENTIAL	1   /* Sequentially from lower to higher offsets */
-#define POSIX_FADV_RANDOM		2   /* Random order */
-#define POSIX_FADV_WILLNEED		3   /* Expects to access specified data */
-#define POSIX_FADV_DONTNEED		4   /* Will not access specified data */
-#define POSIX_FADV_NOREUSE		5   /* Will access specified data once */
+#define POSIX_FADV_RANDOM	2   /* Random order */
+#define POSIX_FADV_WILLNEED	3   /* Expects to access specified data */
+#define POSIX_FADV_DONTNEED	4   /* Will not access specified data */
+#define POSIX_FADV_NOREUSE	5   /* Will access specified data once */
 #endif
 
 /*
@@ -233,12 +233,12 @@ __BEGIN_DECLS
  */
 #if _LARGEFILE64_SOURCE - 0 > 0
 extern int open64(const char *__path, int __oflag, ...);
-extern int creat64(const char *__path, _CSTD mode_t __mode);
+extern int creat64(const char *__path, const mode_t __mode);
 #endif
 
 #if defined(__EXT_POSIX1_198808)
 extern int open(const char *__path, int __oflag, ...) __ALIAS64("open64");
-extern int creat(const char *__path, _CSTD mode_t __mode) __ALIAS64("creat64");
+extern int creat(const char *__path, const mode_t __mode) __ALIAS64("creat64");
 extern int fcntl(int __fildes, int __cmd, ...);
 #endif
 

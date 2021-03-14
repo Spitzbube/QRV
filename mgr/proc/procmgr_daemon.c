@@ -39,7 +39,7 @@ int procmgr_msg_daemon(resmgr_context_t * ctp, proc_daemon_t * msg)
     // Now detach from session and join proc's session
     // Remember an fd that may need to be closed while not proc_lock()ed
     fd = -1;
-    if (prp->flags & _NTO_PF_SLEADER) {
+    if (prp->flags & QRV_FLG_PROC_SLEADER) {
         prp->pgrp = 1;          // So we don't drop a SIGHUP on ourselves
         fd = procmgr_sleader_detach(prp);
     }

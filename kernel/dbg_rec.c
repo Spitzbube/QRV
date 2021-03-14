@@ -112,5 +112,3 @@ void rec_who3(int num, int num2, int num3)
     i = ADV(i, 1);
     rbuff[i] = (my_cpu << 28) + ((prp->pid & 0xffff) << 4) + actives[my_cpu]->tid;
 }
-
-__SRCVERSION("dbg_rec.c $Rev: 199078 $");

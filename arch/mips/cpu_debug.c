@@ -178,7 +178,7 @@ static int select_mips_can_watch(DEBUG *dep, BREAKPT *bpp )
 
 /*
  * This routine does enables debugging on a thread. The thread
- * flag _NTO_TF_SSTEP is also set on this thread, so this could
+ * flag QRV_FLG_THR_SSTEP is also set on this thread, so this could
  * be used by the fault handler code if needed. If single stepping
  * is done throught temporary breakpoints, the temp information could
  * be stored in the cpu area off the DEBUG structure so the 
@@ -188,7 +188,7 @@ static int select_mips_can_watch(DEBUG *dep, BREAKPT *bpp )
  *   dep
  *      DEBUG structure attached to the process being debugged
  *   thp
- *      thread to debug (_NTO_TF_SSTEP) will be set if function succeeds
+ *      thread to debug (QRV_FLG_THR_SSTEP) will be set if function succeeds
  * On Exit:
  *   a errno is returned, single step will only occur if EOK is returned.
  */
@@ -366,13 +366,13 @@ cpu_debug_attach_brkpts(DEBUG *dep) {
 			}
 			if(d->brk.type & _DEBUG_BREAK_EXEC) {
 				one_break(d, &range);
-			} else if( !(act->flags & _NTO_TF_SSTEP)) {
+			} else if( !(act->flags & QRV_FLG_THR_SSTEP)) {
 				mips_set_watch( dep, d );
 			}
 		}
 	}
 	act = actives[KERNCPU];
-	if((act->flags & _NTO_TF_SSTEP) && !(act->internal_flags & _NTO_ITF_SSTEP_SUSPEND)) {
+	if((act->flags & QRV_FLG_THR_SSTEP) && !(act->internal_flags & _NTO_ITF_SSTEP_SUSPEND)) {
 		dep->cpu.step.brk.addr = next_instruction(&act->reg);
 		one_break(&dep->cpu.step, &range);
 		trigger = 0;
@@ -489,7 +489,7 @@ cpu_debug_fault(DEBUG *dep, THREAD *thp, siginfo_t *info, unsigned *pflags) {
 		if(dep->cpu.step.planted) {
 			if(KIP(thp) == dep->cpu.step.brk.addr) {
 				*pflags |= _DEBUG_FLAG_SSTEP;
-				thp->flags &= ~_NTO_TF_SSTEP;
+				thp->flags &= ~QRV_FLG_THR_SSTEP;
 				if(dep->cpu.real_step_flags) {
 					*pflags |= dep->cpu.real_step_flags;
 					dep->cpu.real_step_flags = 0;
@@ -505,7 +505,7 @@ cpu_debug_fault(DEBUG *dep, THREAD *thp, siginfo_t *info, unsigned *pflags) {
 	case FLTTRACE:
 		// This gets used when we finish emulating a FP instruction.
 		*pflags |= _DEBUG_FLAG_SSTEP;
-		thp->flags &= ~_NTO_TF_SSTEP;
+		thp->flags &= ~QRV_FLG_THR_SSTEP;
 		break;
 	case FLTWATCH:
 		hwreg = 0; /*mips_hwreg_watch(dep, thp);*/
@@ -538,7 +538,7 @@ cpu_debug_fault(DEBUG *dep, THREAD *thp, siginfo_t *info, unsigned *pflags) {
 		/* we need to single step over the instruction that caused
 		  the watch exception */
 		dep->cpu.real_step_flags = *pflags | flags;
-		thp->flags |= _NTO_TF_SSTEP;
+		thp->flags |= QRV_FLG_THR_SSTEP;
 
 		/* force the new single step breakpoint to be planted */
 		cpu_debug_detach_brkpts(dep);

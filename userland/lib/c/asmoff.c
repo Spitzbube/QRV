@@ -12,7 +12,6 @@ information, please email licensing@qnx.com.
 #include <stddef.h>
 #include <signal.h>
 #include <ucontext.h>
-#include <sys/neutrino.h>
 #include <sys/kercalls.h>
 #include <mkasmoff.h>
 #include <sys/syspage.h>

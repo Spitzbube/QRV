@@ -100,5 +100,3 @@ void *nano_query(int type, unsigned index1, int subtype, unsigned index2,
 
     return (NULL);
 }
-
-__SRCVERSION("nano_query.c $Rev: 153052 $");

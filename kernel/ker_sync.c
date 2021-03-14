@@ -54,11 +54,11 @@ int kdecl ker_sync_create(THREAD * act, struct kerargs_sync_create *kap)
     struct syncevent_entry *syncep = NULL;
 
 #ifndef IGNORE_OLD_SYNC_CREATE
-    if (kap->type < _NTO_SYNC_DEAD && kap->type != _NTO_SYNC_MUTEX_FREE) {
+    if (kap->type < QRV_SYNC_DEAD && kap->type != _NTO_SYNC_MUTEX_FREE) {
         // Older libc didn't have a type. The first parameter would
         // be a pointer instead of a type. This is detected and the
         // parameters are swaped to support the old SyncCreate() call.
-        type = _NTO_SYNC_MUTEX_FREE;
+        type = QRV_SYNC_MUTEX_FREE;
         sync = (sync_t *) kap->type;
         attr = (struct _sync_attr *) kap->sync;
     } else {
@@ -89,17 +89,17 @@ int kdecl ker_sync_create(THREAD * act, struct kerargs_sync_create *kap)
     }
 
     switch (type) {
-    case _NTO_SYNC_MUTEX_FREE:
+    case QRV_SYNC_MUTEX_FREE:
 #ifndef IGNORE_OLD_SYNC_CREATE
         if (sync == kap->sync) {    // The old SyncCreate set the count in the lib
 #endif
-            count = _NTO_SYNC_NONRECURSIVE;
+            count = QRV_SYNC_NONRECURSIVE;
             if (attr != NULL) {
                 if ((attr->__flags & PTHREAD_RECURSIVE_MASK) != PTHREAD_RECURSIVE_DISABLE) {
-                    count &= ~_NTO_SYNC_NONRECURSIVE;
+                    count &= ~QRV_SYNC_NONRECURSIVE;
                 }
                 if (attr->__flags & PTHREAD_ERRORCHECK_DISABLE) {
-                    count |= _NTO_SYNC_NOERRORCHECK;
+                    count |= QRV_SYNC_NOERRORCHECK;
                 }
             }
 #ifndef IGNORE_OLD_SYNC_CREATE
@@ -130,12 +130,12 @@ int kdecl ker_sync_create(THREAD * act, struct kerargs_sync_create *kap)
                     ((THREAD *) syncep)->args.mu.owner = 0;
                     ((THREAD *) syncep)->args.mu.next = 0;
                     ((THREAD *) syncep)->args.mu.prev = 0;
-                    count |= _NTO_SYNC_PRIOCEILING;
+                    count |= QRV_SYNC_PRIOCEILING;
                     break;
                 }
 
             case PTHREAD_PRIO_NONE:
-                count |= _NTO_SYNC_PRIONONE;
+                count |= QRV_SYNC_PRIONONE;
                 break;
 
             default:
@@ -149,7 +149,7 @@ int kdecl ker_sync_create(THREAD * act, struct kerargs_sync_create *kap)
         // attr->__flags & PTHREAD_PROCESSSHARED_MASK
         break;
 
-    case _NTO_SYNC_COND:
+    case QRV_SYNC_COND:
         count = CLOCK_REALTIME;
 #ifndef IGNORE_OLD_SYNC_ATTR
         if (attr && (attr->__flags & _NTO_ATTR_EXTRA_FLAG)) {
@@ -171,7 +171,7 @@ int kdecl ker_sync_create(THREAD * act, struct kerargs_sync_create *kap)
         // attr->__clockid
         break;
 
-    case _NTO_SYNC_SEM:
+    case QRV_SYNC_SEM:
         if (attr) {
             if ((unsigned) attr->__protocol > SEM_VALUE_MAX) {
                 return EINVAL;
@@ -238,11 +238,11 @@ int kdecl ker_sync_destroy(THREAD * act, struct kerargs_sync_destroy *kap)
     //mt_trace_sync_destroy(sync, sync->__count, act->process->pid, act->tid);
 #endif
     // Check for a statically created mutex.
-    if (sync->__owner == _NTO_SYNC_INITIALIZER) {
+    if (sync->__owner == QRV_SYNC_INITIALIZER) {
         // The lock is needed so if we are not ripped out
-        // the kernel after setting it to _NTO_SYNC_DESTROYED (-2).
+        // the kernel after setting it to QRV_SYNC_DESTROYED (-2).
         lock_kernel();
-        sync->__owner = _NTO_SYNC_DESTROYED;
+        sync->__owner = QRV_SYNC_DESTROYED;
         return EOK;
     }
 
@@ -263,7 +263,7 @@ void sync_mutex_lock(THREAD * act, sync_t * sync, int flags)
     struct syncevent_entry *syncep;
 
     // Verify the sync exists.
-    if ((syp = sync_lookup(sync, _NTO_SYNC_MUTEX_FREE)) == NULL) {
+    if ((syp = sync_lookup(sync, QRV_SYNC_MUTEX_FREE)) == NULL) {
         return;
     }
     // This is needed in an SMP machine to make a thread which is
@@ -272,7 +272,7 @@ void sync_mutex_lock(THREAD * act, sync_t * sync, int flags)
     owp = &sync->__owner;
     ceiling = 0;
     syncep = 0;
-    if ((sync->__count & _NTO_SYNC_PRIOCEILING) && !(flags & _MUTEXLOCK_FLAGS_NOCEILING)) {
+    if ((sync->__count & QRV_SYNC_PRIOCEILING) && !(flags & _MUTEXLOCK_FLAGS_NOCEILING)) {
         for (syncep = pril_first(&syp->waiting); syncep; syncep = pril_next(syncep)) {
             if (TYPE_MASK(syncep->type) == TYPE_SYNCEVENT
                 && syncep->subtype == SYNCEVENT_SUBTYPE_PRIORITYCEILING) {
@@ -288,21 +288,21 @@ void sync_mutex_lock(THREAD * act, sync_t * sync, int flags)
     }
 
   retry:
-    if (*owp == _NTO_SYNC_DESTROYED) {
+    if (*owp == QRV_SYNC_DESTROYED) {
         kererr(act, EINVAL);
         return;
     }
-    atomic_set(owp, _NTO_SYNC_WAITING);
+    atomic_set(owp, QRV_SYNC_WAITING);
     // Make sure we reference the count field before we lock the kernel - it
     // could be on a different page from the owner. We're only interested
-    // the _NTO_SYNC_PRIONONE bit, so it doesn't matter if another CPU
-    // twiddles count in the meantime - the _NTO_SYNC_PRIONONE bit value
+    // the QRV_SYNC_PRIONONE bit, so it doesn't matter if another CPU
+    // twiddles count in the meantime - the QRV_SYNC_PRIONONE bit value
     // will be maintained.
     count = sync->__count;
     lock_kernel();
 
     // Try and acquire the mutex. There are three return values.
-    // _NTO_SYNC_WAITING   - we got the mutex and it is ours.
+    // QRV_SYNC_WAITING   - we got the mutex and it is ours.
     // 0                   - we did not get it but should have
     // xxx                 - another thread has it
     owner = *owp;
@@ -312,8 +312,8 @@ void sync_mutex_lock(THREAD * act, sync_t * sync, int flags)
     while (thp && TYPE_MASK(thp->type) != TYPE_THREAD) {
         thp = pril_next(thp);
     }
-    if (thp == NULL || thp->priority < act->priority || (act->flags & _NTO_TF_ACQUIRE_MUTEX)) {
-        if ((owner = _smp_cmpxchg(owp, 0, _NTO_SYNC_WAITING)) == _NTO_SYNC_WAITING) {
+    if (thp == NULL || thp->priority < act->priority || (act->flags & QRV_FLG_THR_ACQUIRE_MUTEX)) {
+        if ((owner = _smp_cmpxchg(owp, 0, QRV_SYNC_WAITING)) == _NTO_SYNC_WAITING) {
             act->timeout_flags = 0;
             *owp = SYNC_OWNER(act);
             if (ceiling) {
@@ -325,7 +325,7 @@ void sync_mutex_lock(THREAD * act, sync_t * sync, int flags)
                     mutex_holdlist_rem(syp);
                 }
                 thp->args.mu.owner = *owp;
-                *owp |= _NTO_SYNC_WAITING;
+                *owp |= QRV_SYNC_WAITING;
                 mutex_holdlist_add(act, syp);
             }
             if (ceiling) {
@@ -335,10 +335,10 @@ void sync_mutex_lock(THREAD * act, sync_t * sync, int flags)
             return;
         }
 
-    } else if (owner == _NTO_SYNC_MUTEX_FREE) {
+    } else if (owner == QRV_SYNC_MUTEX_FREE) {
         //Another CPU unlocked the thing on us
         goto retry;
-    } else if (owner == _NTO_SYNC_WAITING) {
+    } else if (owner == QRV_SYNC_WAITING) {
         thp = pril_first(&syp->waiting);
         if (thp != NULL) {
             unsigned type;
@@ -389,7 +389,7 @@ void sync_mutex_lock(THREAD * act, sync_t * sync, int flags)
     pril_add(&syp->waiting, act);
 
     // Check for priority inversion and avoid via priortity inheritence.
-    if (count & _NTO_SYNC_PRIONONE) {
+    if (count & QRV_SYNC_PRIONONE) {
         act->args.mu.owner = 0;
     } else if (pril_first(&syp->waiting) == act) {
         // Try and determine who is using it.
@@ -477,14 +477,14 @@ int kdecl ker_sync_mutex_revive(THREAD * act, struct kerargs_sync_mutex_revive *
     sync_t *sync = kap->sync;
 
     WR_VERIFY_PTR(act, sync, sizeof(sync_t));
-    if (sync->__owner == _NTO_SYNC_DEAD) {
+    if (sync->__owner == QRV_SYNC_DEAD) {
         WR_PROBE_INT(act, sync, sizeof(sync_t) / sizeof(int));
         lock_kernel();
-        sync->__owner = _NTO_SYNC_WAITING;
-        sync->__count = (sync->__count & ~_NTO_SYNC_COUNTMASK) | 1;
-        act->flags |= _NTO_TF_ACQUIRE_MUTEX;
+        sync->__owner = QRV_SYNC_WAITING;
+        sync->__count = (sync->__count & ~QRV_SYNC_COUNTMASK) | 1;
+        act->flags |= QRV_FLG_THR_ACQUIRE_MUTEX;
         sync_mutex_lock(act, sync, 0);
-        act->flags &= ~_NTO_TF_ACQUIRE_MUTEX;
+        act->flags &= ~QRV_FLG_THR_ACQUIRE_MUTEX;
     } else {
         kererr(act, EINVAL);
     }
@@ -506,12 +506,12 @@ void sync_mutex_unlock(THREAD * act, sync_t * sync, unsigned incr)
     unsigned *owp = &sync->__owner;
 
     // Verify the sync exists.
-    if ((syp = sync_lookup(sync, _NTO_SYNC_MUTEX_FREE)) == NULL) {
+    if ((syp = sync_lookup(sync, QRV_SYNC_MUTEX_FREE)) == NULL) {
         return;
     }
 
     // If I own it, then release it.
-    if ((*owp & ~_NTO_SYNC_WAITING) == SYNC_OWNER(act)) {
+    if ((*owp & ~QRV_SYNC_WAITING) == SYNC_OWNER(act)) {
         WR_PROBE_INT(act, sync, sizeof(*sync) / sizeof(int));
         lock_kernel();
         sync->__count -= incr;
@@ -519,7 +519,7 @@ void sync_mutex_unlock(THREAD * act, sync_t * sync, unsigned incr)
         if ((thp != NULL) &&
             (TYPE_MASK(thp->type) == TYPE_THREAD
              || ((thp = pril_next(thp)) && (TYPE_MASK(thp->type) == TYPE_THREAD)))) {
-            *owp = _NTO_SYNC_WAITING;
+            *owp = QRV_SYNC_WAITING;
         } else {
             *owp = 0;
         }
@@ -551,7 +551,7 @@ void sync_mutex_unlock(THREAD * act, sync_t * sync, unsigned incr)
                 type = TYPE_MASK(thp->type);
                 if (type == TYPE_THREAD
                     || ((next = pril_next(thp)) && TYPE_MASK(next->type) == TYPE_THREAD)) {
-                    atomic_set(owp, _NTO_SYNC_WAITING);
+                    atomic_set(owp, QRV_SYNC_WAITING);
                     thp->args.mu.owner = 0;
                 } else if (type == TYPE_SYNCEVENT
                            && ((struct syncevent_entry *) thp)->subtype ==
@@ -596,8 +596,8 @@ int kdecl ker_sync_mutex_unlock(THREAD * act, struct kerargs_sync_mutex_unlock *
 #ifdef _mt_LTT_TRACES_          /* PDB */
     //mt_TRACE_DEBUG("mutex_unlock");
     mt_trace_mutex_unlock(sync, act->process->pid, act->tid,
-                          (sync->__owner & ~_NTO_SYNC_WAITING) ==
-                          -1 ? -1 : SYNC_TID(sync->__owner & ~_NTO_SYNC_WAITING));
+                          (sync->__owner & ~QRV_SYNC_WAITING) ==
+                          -1 ? -1 : SYNC_TID(sync->__owner & ~QRV_SYNC_WAITING));
 #endif
     sync_mutex_unlock(act, sync, 0);
     return ENOERROR;
@@ -626,7 +626,7 @@ int kdecl ker_sync_ctl(THREAD * act, struct kerargs_sync_ctl *kap)
     struct sigevent *event;
 
     // Verify the sync exists.
-    if ((syp = sync_lookup(kap->sync, _NTO_SYNC_MUTEX_FREE)) == NULL) {
+    if ((syp = sync_lookup(kap->sync, QRV_SYNC_MUTEX_FREE)) == NULL) {
         return ENOERROR;
     }
 
@@ -642,12 +642,12 @@ int kdecl ker_sync_ctl(THREAD * act, struct kerargs_sync_ctl *kap)
                 || (prp->cred->info.euid != 0 && ceiling >= priv_prio)) {
                 return EINVAL;
             }
-            if (!(kap->sync->__count & _NTO_SYNC_PRIOCEILING)) {
+            if (!(kap->sync->__count & QRV_SYNC_PRIOCEILING)) {
                 return EINVAL;
             }
 
             /* check if the calling thread has locked the mutex */
-            if ((kap->sync->__owner & ~_NTO_SYNC_WAITING) == SYNC_OWNER(act)) {
+            if ((kap->sync->__owner & ~QRV_SYNC_WAITING) == SYNC_OWNER(act)) {
                 /* change the ceiling and return */
                 lock_kernel();
                 ret = mutex_set_prioceiling(syp, ceiling, &ceiling_old);
@@ -660,7 +660,7 @@ int kdecl ker_sync_ctl(THREAD * act, struct kerargs_sync_ctl *kap)
 
             /* kernel is locked at this point by sync_mutex_lock */
             /* check if the mutex is locked successfully */
-            if ((kap->sync->__owner & ~_NTO_SYNC_WAITING) == SYNC_OWNER(act)) {
+            if ((kap->sync->__owner & ~QRV_SYNC_WAITING) == SYNC_OWNER(act)) {
                 /* change the ceiling, unlock the mutex, and return */
                 ret = mutex_set_prioceiling(syp, ceiling, &ceiling_old);
                 sync_mutex_unlock(act, kap->sync, 0);
@@ -669,7 +669,7 @@ int kdecl ker_sync_ctl(THREAD * act, struct kerargs_sync_ctl *kap)
             }
 
             /* set the specret flag, let the thread change the ceiling when specret */
-            act->flags |= _NTO_TF_MUTEX_CEILING;
+            act->flags |= QRV_FLG_THR_MUTEX_CEILING;
             act->args.mu.ceiling = ceiling;
 
             return ENOERROR;
@@ -678,7 +678,7 @@ int kdecl ker_sync_ctl(THREAD * act, struct kerargs_sync_ctl *kap)
     case _NTO_SCTL_GETPRIOCEILING:
         WR_VERIFY_PTR(act, kap->data, sizeof(int *));
         WR_PROBE_OPT(act, kap->data, sizeof(int *));
-        if (!(kap->sync->__count & _NTO_SYNC_PRIOCEILING)) {
+        if (!(kap->sync->__count & QRV_SYNC_PRIOCEILING)) {
             return EINVAL;
         }
         for (syncep = pril_first(&syp->waiting); syncep; syncep = pril_next(syncep)) {
@@ -692,7 +692,7 @@ int kdecl ker_sync_ctl(THREAD * act, struct kerargs_sync_ctl *kap)
 
     case _NTO_SCTL_SETEVENT:
         {
-            int dead = (kap->sync->__owner == _NTO_SYNC_DEAD);
+            int dead = (kap->sync->__owner == QRV_SYNC_DEAD);
 
             event = (struct sigevent *) kap->data;
             if (event != NULL) {
@@ -761,22 +761,22 @@ int kdecl ker_sync_condvar_wait(THREAD * act, struct kerargs_sync_condvar_wait *
     unsigned incr;
 
     // Verify the sync exists.
-    if ((syp = sync_lookup(sync = kap->sync, _NTO_SYNC_COND)) == NULL) {
+    if ((syp = sync_lookup(sync = kap->sync, QRV_SYNC_COND)) == NULL) {
         return ENOERROR;
     }
 
     // For compatibility with older libraries.
     if (sync->__owner == 0) {
-        sync->__owner = _NTO_SYNC_COND;
+        sync->__owner = QRV_SYNC_COND;
     }
 
     // Verify it is a condvar.
-    if (sync->__owner != _NTO_SYNC_COND) {
+    if (sync->__owner != QRV_SYNC_COND) {
         return EINVAL;
     }
 
     // Make sure I own the attached mutex!
-    if ((kap->mutex->__owner & ~_NTO_SYNC_WAITING) != SYNC_OWNER(act)) {
+    if ((kap->mutex->__owner & ~QRV_SYNC_WAITING) != SYNC_OWNER(act)) {
         return EPERM;
     }
 
@@ -786,7 +786,7 @@ int kdecl ker_sync_condvar_wait(THREAD * act, struct kerargs_sync_condvar_wait *
         return ENOERROR;
     }
 
-    if ((kap->mutex->__count & _NTO_SYNC_COUNTMASK) > 0) {
+    if ((kap->mutex->__count & QRV_SYNC_COUNTMASK) > 0) {
         // The kernel is responsible for manipulating the mutex count field
         // while handling a condvar wait.
         incr = 1;
@@ -799,13 +799,13 @@ int kdecl ker_sync_condvar_wait(THREAD * act, struct kerargs_sync_condvar_wait *
 
     // Release the attached mutex. sync_mutex_unlock will call lock_kernel();
     sync_mutex_unlock(act, kap->mutex, incr);
-    if (act->flags & _NTO_TF_KERERR_SET) {
+    if (act->flags & QRV_FLG_THR_KERERR_SET) {
         // If the sync_mutex_unlock signalled an error on the thread,
         // we need to abort the rest of the operation.
         return ENOERROR;
     }
 
-    act->flags |= _NTO_TF_ACQUIRE_MUTEX;
+    act->flags |= QRV_FLG_THR_ACQUIRE_MUTEX;
     act->args.mu.mutex = kap->mutex;
     act->args.mu.saved_timeout_flags = 0;
     act->args.mu.owner = 0;
@@ -839,17 +839,17 @@ int kdecl ker_sync_condvar_signal(THREAD * act, struct kerargs_sync_condvar_sign
     int all = (volatile int) kap->all;
 
     // Verify the sync exists.
-    if ((syp = sync_lookup(sync = kap->sync, _NTO_SYNC_COND)) == NULL) {
+    if ((syp = sync_lookup(sync = kap->sync, QRV_SYNC_COND)) == NULL) {
         return ENOERROR;
     }
 
     // For compatibility with older libraries
     if (sync->__owner == 0) {
-        sync->__owner = _NTO_SYNC_COND;
+        sync->__owner = QRV_SYNC_COND;
     }
 
     // Verify it is a condvar.
-    if (sync->__owner != _NTO_SYNC_COND) {
+    if (sync->__owner != QRV_SYNC_COND) {
         return EINVAL;
     }
 
@@ -868,13 +868,13 @@ int kdecl ker_sync_sem_wait(THREAD * act, struct kerargs_sync_sem_wait *kap)
     sync_t *sync;
     unsigned tls_flags;
 
-    // Verify the sync exists (pass _NTO_SYNC_INITIALIZER to stop auto-create)
-    if ((syp = sync_lookup(sync = kap->sync, _NTO_SYNC_INITIALIZER)) == NULL) {
+    // Verify the sync exists (pass QRV_SYNC_INITIALIZER to stop auto-create)
+    if ((syp = sync_lookup(sync = kap->sync, QRV_SYNC_INITIALIZER)) == NULL) {
         return ENOERROR;
     }
 
     // Verify it is a semaphore (Old libraries set this to zero);
-    if (sync->__owner != _NTO_SYNC_SEM && sync->__owner != 0) {
+    if (sync->__owner != QRV_SYNC_SEM && sync->__owner != 0) {
         return EINVAL;
     }
 
@@ -926,13 +926,13 @@ int kdecl ker_sync_sem_post(THREAD * act, struct kerargs_sync_sem_post *kap)
     SYNC *syp;
     sync_t *sync;
 
-    // Verify the sync exists (pass _NTO_SYNC_INITIALIZER to stop auto-create)
-    if ((syp = sync_lookup(sync = kap->sync, _NTO_SYNC_INITIALIZER)) == NULL) {
+    // Verify the sync exists (pass QRV_SYNC_INITIALIZER to stop auto-create)
+    if ((syp = sync_lookup(sync = kap->sync, QRV_SYNC_INITIALIZER)) == NULL) {
         return ENOERROR;
     }
 
     // Verify it is a semaphore (Old libraries set this to zero);
-    if (sync->__owner != _NTO_SYNC_SEM && sync->__owner != 0) {
+    if (sync->__owner != QRV_SYNC_SEM && sync->__owner != 0) {
         return EINVAL;
     }
 #ifdef _mt_LTT_TRACES_          /* PDB */
@@ -952,5 +952,3 @@ int kdecl ker_sync_sem_post(THREAD * act, struct kerargs_sync_sem_post *kap)
     }
     return EOK;
 }
-
-__SRCVERSION("ker_sync.c $Rev: 193078 $");

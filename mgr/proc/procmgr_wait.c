@@ -16,7 +16,6 @@
  */
 
 #include <sys/wait.h>
-#include <sys/neutrino.h>
 #include <sys/slog.h>
 #include <sys/slogcodes.h>
 #include "externs.h"
@@ -47,7 +46,7 @@ static int wait_unblock(resmgr_context_t * ctp, io_pulse_t * msg, void *ocb)
             proc_unlock(prp);
             return _RESMGR_NOREPLY;
         }
-        if ((prp->flags & (_NTO_PF_LOADING | _NTO_PF_TERMING)) == 0) {
+        if ((prp->flags & (QRV_FLG_PROC_LOADING | QRV_FLG_PROC_TERMING)) == 0) {
             struct wait_entry *p, **pp;
 
             for (pp = &prp->wap; (p = *pp); pp = &p->next) {
@@ -129,21 +128,21 @@ int procmgr_wait_check(PROCESS * prp, PROCESS * parent, struct wait_entry *wap, 
         /*
          * Have we already responded with exit code?
          */
-        if (!(prp->flags & _NTO_PF_WAITINFO)) {
+        if (!(prp->flags & QRV_FLG_PROC_WAITINFO)) {
             match &= ~WEXITED;
         }
     } else {
         /*
          * Check if the requested prp currently matches any options
          */
-        if ((wap->options & WTRAPPED) && (prp->flags & (_NTO_PF_DEBUG_STOPPED | _NTO_PF_PTRACED)) ==
-            (_NTO_PF_DEBUG_STOPPED | _NTO_PF_PTRACED)) {
+        if ((wap->options & WTRAPPED) && (prp->flags & (QRV_FLG_PROC_DEBUG_STOPPED | QRV_FLG_PROC_PTRACED)) ==
+            (QRV_FLG_PROC_DEBUG_STOPPED | QRV_FLG_PROC_PTRACED)) {
             match = WTRAPPED;
-        } else if ((wap->options & WEXITED) && (prp->flags & _NTO_PF_WAITINFO)) {
+        } else if ((wap->options & WEXITED) && (prp->flags & QRV_FLG_PROC_WAITINFO)) {
             match = WEXITED;
-        } else if ((wap->options & WCONTINUED) && (prp->flags & _NTO_PF_CONTINUED)) {
+        } else if ((wap->options & WCONTINUED) && (prp->flags & QRV_FLG_PROC_CONTINUED)) {
             match = WCONTINUED;
-        } else if ((wap->options & WUNTRACED) && (prp->flags & _NTO_PF_STOPPED) &&
+        } else if ((wap->options & WUNTRACED) && (prp->flags & QRV_FLG_PROC_STOPPED) &&
                    prp->siginfo.si_signo != 0) {
             match = WUNTRACED;
         }
@@ -155,19 +154,19 @@ int procmgr_wait_check(PROCESS * prp, PROCESS * parent, struct wait_entry *wap, 
     if (match == 0) {
         int options = wap->options;
 
-        if (prp->flags & (_NTO_PF_ZOMBIE | _NTO_PF_TERMING)) {
+        if (prp->flags & (QRV_FLG_PROC_ZOMBIE | QRV_FLG_PROC_TERMING)) {
             options &= ~(WUNTRACED | WTRAPPED | WCONTINUED);
         }
-        if ((prp->flags & (_NTO_PF_ZOMBIE | _NTO_PF_WAITINFO)) == _NTO_PF_ZOMBIE) {
+        if ((prp->flags & (QRV_FLG_PROC_ZOMBIE | QRV_FLG_PROC_WAITINFO)) == QRV_FLG_PROC_ZOMBIE) {
             options &= ~WEXITED;
         }
-        if ((prp->flags & _NTO_PF_NOZOMBIE) || sigismember(&parent->sig_ignore, SIGCHLD)) {
+        if ((prp->flags & QRV_FLG_PROC_NOZOMBIE) || sigismember(&parent->sig_ignore, SIGCHLD)) {
             options &= ~WEXITED;
         }
-        if (prp->flags & _NTO_PF_WAITDONE) {
+        if (prp->flags & QRV_FLG_PROC_WAITDONE) {
             options &= ~WEXITED;
         }
-        if (!(prp->flags & _NTO_PF_PTRACED)) {
+        if (!(prp->flags & QRV_FLG_PROC_PTRACED)) {
             options &= ~WTRAPPED;
         }
         if ((options & (WEXITED | WUNTRACED | WTRAPPED | WCONTINUED)) == 0) {
@@ -189,7 +188,7 @@ int procmgr_wait_check(PROCESS * prp, PROCESS * parent, struct wait_entry *wap, 
         }
         siginfo = prp->siginfo;
         if (siginfo.si_signo != SIGCHLD) {
-            if (prp->flags & _NTO_PF_COREDUMP) {
+            if (prp->flags & QRV_FLG_PROC_COREDUMP) {
                 siginfo.si_code = CLD_DUMPED;
             } else {
                 siginfo.si_code = CLD_KILLED;
@@ -221,13 +220,13 @@ int procmgr_wait_check(PROCESS * prp, PROCESS * parent, struct wait_entry *wap, 
     }
     switch (match) {
     case WEXITED:
-        if (prp->flags & _NTO_PF_WAITINFO) {
+        if (prp->flags & QRV_FLG_PROC_WAITINFO) {
             parent->kids_running_time += prp->running_time + prp->kids_running_time;
             parent->kids_system_time += prp->system_time + prp->kids_system_time;
-            prp->flags &= ~_NTO_PF_WAITINFO;
-            prp->flags |= _NTO_PF_WAITDONE;
+            prp->flags &= ~QRV_FLG_PROC_WAITINFO;
+            prp->flags |= QRV_FLG_PROC_WAITDONE;
         }
-        if (prp->flags & _NTO_PF_ZOMBIE) {
+        if (prp->flags & QRV_FLG_PROC_ZOMBIE) {
             MsgSendPulse(PROCMGR_COID, prp->terming_priority, PROC_CODE_TERM, prp->pid);
         } else {
             match = WNOWAIT;
@@ -239,7 +238,7 @@ int procmgr_wait_check(PROCESS * prp, PROCESS * parent, struct wait_entry *wap, 
     case WTRAPPED:
         break;
     case WCONTINUED:
-        prp->flags &= ~_NTO_PF_CONTINUED;
+        prp->flags &= ~QRV_FLG_PROC_CONTINUED;
         break;
     default:
         break;
@@ -414,7 +413,7 @@ void procmgr_nozombie(PROCESS * prp, int status)
      * kernel call does not allow it. SI_USER is alowable though, and this
      * is only used by QNX functions right now.
      */
-    if (!(prp->flags & _NTO_PF_NOZOMBIE)) {
+    if (!(prp->flags & QRV_FLG_PROC_NOZOMBIE)) {
         PROCESS *parent;
         struct wait_entry *wap, **pwap;
 
@@ -426,7 +425,7 @@ void procmgr_nozombie(PROCESS * prp, int status)
         parent = proc_lock_parent(prp);
 
         if (!sigismember(&(prp->parent->sig_ignore), SIGCHLD)) {
-            prp->flags |= _NTO_PF_WAITINFO;
+            prp->flags |= QRV_FLG_PROC_WAITINFO;
         }
         for (pwap = &parent->wap; (wap = *pwap);) {
             if ((status = procmgr_wait_check(prp, parent, wap, WEXITED)) > 0) {
@@ -439,7 +438,7 @@ void procmgr_nozombie(PROCESS * prp, int status)
                 pwap = &wap->next;
             }
         }
-        prp->flags |= _NTO_PF_NOZOMBIE;
+        prp->flags |= QRV_FLG_PROC_NOZOMBIE;
         proc_unlock(parent);
         SignalKill(ND_LOCAL_NODE, prp->parent->pid, 0, SIGCHLD, SI_USER, prp->pid);
     }

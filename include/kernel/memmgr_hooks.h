@@ -25,8 +25,6 @@
 
 #include <taskman/pathmgr_object.h>
 
-typedef _Uint32t MPART_ID;
-
 struct _procfs_map_info;
 struct _procfs_debug_info;
 struct _mem_debug_info;
@@ -41,8 +39,8 @@ struct fault_info;
 	MMF(int,	mcreate,		(tProcess *prp), extra) \
 	MMF(void,	mdestroy,		(tProcess *prp), extra) \
 	MMF(int,	dup,			(tProcess *pprp, tProcess *prp), extra) \
-	MMF(int,	mmap,			(tProcess *prp, uintptr_t addr, size_t len, int prot, int flags, tPathMgrObject *obp, uint64_t off, unsigned align, unsigned prealloc, int fd, void **vaddr, size_t *size, MPART_ID mpid), extra) \
-	MMF(int,	munmap,			(tProcess *prp, uintptr_t addr, size_t len, int flags, MPART_ID mpid), extra) \
+	MMF(int,	mmap,			(tProcess *prp, uintptr_t addr, size_t len, int prot, int flags, tPathMgrObject *obp, uint64_t off, unsigned align, unsigned prealloc, int fd, void **vaddr, size_t *size, mempart_id_t mpid), extra) \
+	MMF(int,	munmap,			(tProcess *prp, uintptr_t addr, size_t len, int flags, mempart_id_t mpid), extra) \
 	MMF(int,	mprotect,		(tProcess *prp, uintptr_t addr, size_t len, int prot), extra) \
 	MMF(int,	msync,			(tProcess *prp, uintptr_t addr, size_t len, int flags), extra) \
 	MMF(int,	mlock,			(tProcess *prp, uintptr_t addr, size_t len, int flags), extra) \
@@ -58,7 +56,7 @@ struct fault_info;
 	MMF(int,	madvise,		(tProcess *prp, uintptr_t start, size_t len, int flags), extra) \
 	MMF(int,	pmem_add,		(paddr_t start, paddr_t len), extra)
 
-struct memmgr_entry {
+typedef struct memmgr_entry {
     unsigned pagesize;
     unsigned fault_pulse_code;
     unsigned sizeof_address_entry;
@@ -67,7 +65,7 @@ struct memmgr_entry {
 #define MMF(r, f, p, e)	r (*f)p;
      MM_FUNCS(x)
     void *reserved[2];
-};
+} tMemMgr;
 
 #define MMF_PROTO(r, f, p, e)	extern r e##_##f p;
 #define MMF_DEFN(r, f, p, e)	e##_##f,
@@ -75,7 +73,7 @@ struct memmgr_entry {
 /*
  * Process manager
  */
-struct procmgr_entry {
+typedef struct procmgr_entry {
     void (*process_threads_destroyed)(tProcess * prp, struct sigevent * ev);
     int (*process_stop_or_cont)(tProcess * prp, int signo, int sigcode, int sigval, int sender,
                                 struct sigevent * ev);
@@ -83,7 +81,7 @@ struct procmgr_entry {
     int (*process_coredump)(tProcess * prp, struct sigevent * ev);
     int process_stack_code;
     void *reserved;
-};
+} tProcMgr;
 
 /*
  * Definitions for parameters

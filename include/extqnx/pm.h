@@ -30,10 +30,6 @@
 #include <sys/types.h>
 #endif
 
-#ifndef	__NEUTRINO_H_INCLUDED
-#include <sys/neutrino.h>
-#endif
-
 #define	PMM_PATH	"/dev/pmm"
 #define	PMM_PREFIX	"/dev/pmm/"
 

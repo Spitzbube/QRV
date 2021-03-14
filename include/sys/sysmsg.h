@@ -29,10 +29,6 @@
 #include <sys/platform.h>
 #endif
 
-#ifndef __NEUTRINO_H_INCLUDED
-#include <sys/neutrino.h>
-#endif
-
 enum _sys_bases {
     _SYSMSG_BASE = 0x0000,
     _SYSMGR_BASE = 0x0000,

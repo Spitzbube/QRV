@@ -42,7 +42,6 @@ struct semaphore;
 #include <sys/dispatch.h>
 #include <sys/iofunc.h>
 #include <sys/iomsg.h>
-#include <sys/neutrino.h>
 #include <sys/procmgr.h>
 #include <sys/resmgr.h>
 #include <sys/resource.h>

@@ -25,10 +25,6 @@
 #ifndef __ASYNCMSG_H_INCLUDED
 #define __ASYNCMSG_H_INCLUDED
 
-#ifndef __NEUTRINO_H_INCLUDED
-#include <sys/neutrino.h>
-#endif
-
 #ifndef __PTHREAD_H_INCLUDED
 #include <pthread.h>
 #endif
@@ -52,14 +48,14 @@ union _channel_connect_attr {
 };
 
 /* flags for _channel_connect_attr */
-#define _NTO_CHANCON_ATTR_CONFLAGS		0x00000001
-#define _NTO_CHANCON_ATTR_CHANFLAGS		0x00000002
-#define _NTO_CHANCON_ATTR_MODE			0x00000004
-#define _NTO_CHANCON_ATTR_BUFSIZE		0x00000008
-#define _NTO_CHANCON_ATTR_MAXBUF		0x00000010
-#define _NTO_CHANCON_ATTR_EVENT			0x00000020
-#define _NTO_CHANCON_ATTR_CURMSGS		0x00000040
-#define _NTO_CHANCON_ATTR_CRED			0x00000080
+#define QRV_CHANCON_ATTR_CONFLAGS	0x00000001
+#define QRV_CHANCON_ATTR_CHANFLAGS	0x00000002
+#define QRV_CHANCON_ATTR_MODE		0x00000004
+#define QRV_CHANCON_ATTR_BUFSIZE	0x00000008
+#define QRV_CHANCON_ATTR_MAXBUF		0x00000010
+#define QRV_CHANCON_ATTR_EVENT		0x00000020
+#define QRV_CHANCON_ATTR_CURMSGS	0x00000040
+#define QRV_CHANCON_ATTR_CRED		0x00000080
 
 struct _asyncmsg_get_header {
     struct _msg_info info;      /* same as synchronous message */

@@ -60,7 +60,7 @@ int procmgr_setpgid(resmgr_context_t * ctp, proc_setpgid_t * msg)
 
         // If pid is a child that has execed, return EACCES
         //@@@ This catches spawns _and_ exec's
-        if (!(prp2->flags & _NTO_PF_FORKED)) {
+        if (!(prp2->flags & QRV_FLG_PROC_FORKED)) {
             ret = EACCES;
             goto out_unlock;
         }
@@ -74,7 +74,7 @@ int procmgr_setpgid(resmgr_context_t * ctp, proc_setpgid_t * msg)
     }
 
     // If pid is a session leader or not in the same session return EPERM
-    if ((prp2->flags & _NTO_PF_SLEADER) || prp1->session != prp2->session) {
+    if ((prp2->flags & QRV_FLG_PROC_SLEADER) || prp1->session != prp2->session) {
         ret = EPERM;
         goto out_unlock;
     }
@@ -151,5 +151,3 @@ int procmgr_setpgid(resmgr_context_t * ctp, proc_setpgid_t * msg)
         proc_unlock(prp2);
     return proc_error(ret, prp1);
 }
-
-__SRCVERSION("procmgr_setpgid.c $Rev: 153052 $");

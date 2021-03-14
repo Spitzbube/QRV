@@ -30,5 +30,3 @@ int rdecl within_syspage(uintptr_t vaddr, unsigned size)
         return 0;
     return 1;
 }
-
-__SRCVERSION("nano_syspage.c $Rev: 153052 $");

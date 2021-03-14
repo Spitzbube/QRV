@@ -50,7 +50,7 @@ void rsrcdbmgr_init()
 /*
  Called to destroy a process's resource allocations
 */
-void rsrcdbmgr_destroy_process(PROCESS * prp)
+void rsrcdbmgr_destroy_process(tProcess * prp)
 {
     rsrc_list_array_t *pidrsrc;
     int i;
@@ -83,6 +83,3 @@ void rsrcdbmgr_destroy_process(PROCESS * prp)
     pthread_mutex_unlock(&g_rsrc_mutex);
 }
 
-
-
-__SRCVERSION("rsrcdbmgr_init.c $Rev: 153052 $");

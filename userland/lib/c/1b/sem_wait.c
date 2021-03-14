@@ -28,7 +28,7 @@ int
 sem_wait(sem_t *sem) {
 
 	// Is it a named semaphore.
-	if(sem->__owner == _NTO_SYNC_NAMED_SEM) {
+	if(sem->__owner == QRV_SYNC_NAMED_SEM) {
 		int status;
 
 		if((status = read(sem->__count, NULL, 0)) == -1) {

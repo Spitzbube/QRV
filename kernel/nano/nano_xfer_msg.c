@@ -110,6 +110,3 @@ int (xferiov) (THREAD * sthp, IOV * dst, IOV * src, int dparts, int sparts, int 
     }
     return (ret);
 }
-
-
-__SRCVERSION("nano_xfer_msg.c $Rev: 153052 $");

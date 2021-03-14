@@ -91,11 +91,11 @@ filter_ps (struct _ps *psp)
 	if (allProcs)
 		return 1;
 
-if(psp->sid == 1) psp->pflags |= _NTO_PF_NOCTTY;	// @@@ Temp until new procs are used
-	if (termProcs && (psp->pflags & (_NTO_PF_NOCTTY | _NTO_PF_SLEADER)) == 0)
+if(psp->sid == 1) psp->pflags |= QRV_FLG_PROC_NOCTTY;	// @@@ Temp until new procs are used
+	if (termProcs && (psp->pflags & (QRV_FLG_PROC_NOCTTY | QRV_FLG_PROC_SLEADER)) == 0)
 		return 1;
 
-	if (sessionProcs && (psp->pflags & _NTO_PF_NOCTTY) == 0)
+	if (sessionProcs && (psp->pflags & QRV_FLG_PROC_NOCTTY) == 0)
 		return 1;
 
 	if (userList)
@@ -117,7 +117,7 @@ if(psp->sid == 1) psp->pflags |= _NTO_PF_NOCTTY;	// @@@ Temp until new procs are
 		return 1;
 
 	if(!termProcs && !sessionProcs && !userList && !groupList && !procList && !termList) {
-		if((psp->pflags & _NTO_PF_NOCTTY) == 0 && psp->user == getuid()) // And tty matches the invokers tty
+		if((psp->pflags & QRV_FLG_PROC_NOCTTY) == 0 && psp->user == getuid()) // And tty matches the invokers tty
 			return 1;
 	}
 

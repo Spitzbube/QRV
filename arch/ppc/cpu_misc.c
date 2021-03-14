@@ -71,7 +71,7 @@ cpu_thread_init(THREAD *act, THREAD *thp, int align) {
 #endif	
 	switch(align) {
 	case 1:
-		thp->flags |= _NTO_TF_ALIGN_FAULT;
+		thp->flags |= QRV_FLG_THR_ALIGN_FAULT;
 		break;
 	default:
 		break;
@@ -205,7 +205,7 @@ cpu_process_startup(THREAD *thp, int forking) {
 
 	thp->cpu.low_mem_boundry = 0;
 	// Reset kcall flag here so that all registers are restored properly
-	thp->flags &= ~_NTO_TF_KCALL_ACTIVE;
+	thp->flags &= ~QRV_FLG_THR_KCALL_ACTIVE;
 	if(!forking) {
 		thp->reg.gpr[3] = *(unsigned *)thp->reg.gpr[1]; 		/* argc */
 		thp->reg.gpr[4] = thp->reg.gpr[1] + sizeof( unsigned ); /* argv */

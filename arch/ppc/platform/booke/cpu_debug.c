@@ -45,7 +45,7 @@ extern int  ppc_can_watch(DEBUG *dep, BREAKPT *bpp);
 
 /*
  * This routine does enables debugging on a thread. The thread
- * flag _NTO_TF_SSTEP is also set on this thread, so this could
+ * flag QRV_FLG_THR_SSTEP is also set on this thread, so this could
  * be used by the fault handler code if needed. If single stepping
  * is done throught temporary breakpoints, the temp information could
  * be stored in the cpu area off the DEBUG structure so the 
@@ -55,7 +55,7 @@ extern int  ppc_can_watch(DEBUG *dep, BREAKPT *bpp);
  *   dep
  *      DEBUG structure attached to the process being debugged
  *   thp
- *      thread to debug (_NTO_TF_SSTEP) will be set if function succeeds
+ *      thread to debug (QRV_FLG_THR_SSTEP) will be set if function succeeds
  * On Exit:
  *   a errno is returned, single step will only occur if EOK is returned.
  */
@@ -278,7 +278,7 @@ cpu_debug_attach_brkpts(DEBUG *dep) {
 
 	act = actives[KERNCPU];
 
-	if((act->flags & _NTO_TF_SSTEP) && !(act->internal_flags & _NTO_ITF_SSTEP_SUSPEND)) {
+	if((act->flags & QRV_FLG_THR_SSTEP) && !(act->internal_flags & _NTO_ITF_SSTEP_SUSPEND)) {
 		step = 1;
 #ifdef DEBUG_DEBUG
 		kprintf("ab step = 1\n");
@@ -300,7 +300,7 @@ cpu_debug_attach_brkpts(DEBUG *dep) {
 			}
 			if(d->brk.type & _DEBUG_BREAK_EXEC) {
 				one_break(d);
-			} else if( !(act->flags & _NTO_TF_SSTEP)) {
+			} else if( !(act->flags & QRV_FLG_THR_SSTEP)) {
 				dep->cpu.num_watchpoints++;
 				if ( dep->cpu.num_watchpoints >= dep->cpu.max_hw_watchpoints ) {
 					step = 1;
@@ -462,7 +462,7 @@ kprintf("CPU %d fault %d at %x MSR %x DBCR0 %x DBSR %x\n", KERNCPU, info->si_flt
 			kprintf("saving real pflags for later\n");
 #endif
 			dep->cpu.real_step_flags = *pflags | _DEBUG_FLAG_TRACE_MODIFY;
-			thp->flags |= _NTO_TF_SSTEP;
+			thp->flags |= QRV_FLG_THR_SSTEP;
 			dep->cpu.dbcr0 |= PPCBKE_DBCR0_ICMP;
 #ifdef DEBUG_DEBUG
 			kprintf("clearing watch register\n");
@@ -477,9 +477,9 @@ kprintf("CPU %d fault %d at %x MSR %x DBCR0 %x DBSR %x\n", KERNCPU, info->si_flt
 			return 1;
 		}
 
-		if((thp->flags & _NTO_TF_SSTEP) && !(thp->internal_flags & _NTO_ITF_SSTEP_SUSPEND)) {
+		if((thp->flags & QRV_FLG_THR_SSTEP) && !(thp->internal_flags & _NTO_ITF_SSTEP_SUSPEND)) {
 			*pflags |= _DEBUG_FLAG_SSTEP;
-			thp->flags &= ~_NTO_TF_SSTEP;
+			thp->flags &= ~QRV_FLG_THR_SSTEP;
 #ifdef DEBUG_DEBUG
 			kprintf("single step! dbsr %x ICMP = %x\n", thp->cpu.dbsr, PPCBKE_DBSR_ICMP);
 #endif

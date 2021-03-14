@@ -17,7 +17,7 @@
 
 #include "vmm.h"
 
-int vmm_validate(PROCESS * prp, uintptr_t vaddr, size_t len, int flags)
+int vmm_validate(tProcess * prp, uintptr_t vaddr, size_t len, int flags)
 {
     ADDRESS *adp;
     int r;
@@ -59,7 +59,7 @@ int vmm_validate(PROCESS * prp, uintptr_t vaddr, size_t len, int flags)
     for (;;) {
         // Attempting to fiddle with the system page address.
         // No-no unless we're terminating.
-        if ((mm->extra_flags & EXTRA_FLAG_SPECIAL) && !(prp->flags & _NTO_PF_TERMING)) {
+        if ((mm->extra_flags & EXTRA_FLAG_SPECIAL) && !(prp->flags & QRV_FLG_PROC_TERMING)) {
             goto fail2;
         }
         if (mm == ms.last)

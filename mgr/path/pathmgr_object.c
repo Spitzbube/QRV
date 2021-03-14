@@ -53,7 +53,7 @@ static void object_set_flags(NODE * nop, OBJECT * obp)
  * allow the scaning routine to stop early when checking for
  * objects.
  */
-OBJECT *pathmgr_object_attach(PROCESS * prp, NODE * nop, const char *path, int type, unsigned flags,
+OBJECT *pathmgr_object_attach(tProcess * prp, NODE * nop, const char *path, int type, unsigned flags,
                               void *data)
 {
     OBJECT *obp, *p, **pp;
@@ -283,7 +283,7 @@ struct object_info obj_info[] = {
 };
 
 
-OBJECT *object_create(int type, void *extra, PROCESS * prp, memclass_id_t mcid)
+OBJECT *object_create(int type, void *extra, tProcess * prp, memclass_id_t mcid)
 {
     struct object_info *info;
     unsigned len;

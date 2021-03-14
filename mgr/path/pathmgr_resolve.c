@@ -157,7 +157,7 @@ int pathmgr_resolve_servers(resmgr_context_t * ctp, struct node_entry *node,
     struct _io_connect_link_reply *linkp;
     int file_type;
     int server_max_space;
-    PROCESS *prp;
+    tProcess *prp;
     unsigned ret;
 
     eflag = connect->eflag;

@@ -31,7 +31,7 @@ sem_init(sem_t *sem, int pshared, unsigned int value) {
 	attr.__flags = pshared ? PTHREAD_PROCESS_SHARED : PTHREAD_PROCESS_PRIVATE;
 	attr.__prioceiling = 0;
 
-	if(SyncTypeCreate(_NTO_SYNC_SEM, (sync_t *)sem, &attr) == -1) {
+	if(SyncTypeCreate(QRV_SYNC_SEM, (sync_t *)sem, &attr) == -1) {
 		if(errno == EAGAIN) {
 			errno = ENOSPC;	// To conform with POSIX 1003.1b
 		}

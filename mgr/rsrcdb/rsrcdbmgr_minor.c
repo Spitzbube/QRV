@@ -134,7 +134,7 @@ int _rsrc_minor(const char *name, int *major, int *minor_request, int flags)
 int rsrcmgr_handle_minor(resmgr_context_t * ctp, rsrc_cmd_t * msg, rsrc_minor_request_t * data)
 {
     rsrc_list_array_t *list_array;
-    PROCESS *prp;
+    tProcess *prp;
     int i, ret, type;
 
     //The data name is supposed to live after the structure ...

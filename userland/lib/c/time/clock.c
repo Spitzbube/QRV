@@ -22,7 +22,6 @@
 #include <errno.h>
 #include <inttypes.h>
 #include <limits.h>
-#include <sys/neutrino.h>
 
 clock_t clock(void) {
 	uint64_t						t;
@@ -40,5 +39,3 @@ clock_t clock(void) {
 	}
 	return res;
 }
-
-__SRCVERSION("clock.c $Rev: 153052 $");

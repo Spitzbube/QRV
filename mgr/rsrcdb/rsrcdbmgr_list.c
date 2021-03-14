@@ -1074,7 +1074,7 @@ remove all of the resources that this particular process has had allocated.
 */
 int _rsrcdbmgr_pid_clear(pid_t pid)
 {
-    PROCESS *prp;
+    tProcess *prp;
     rsrc_root_node_t *root;
     rsrc_create_t **create, *ctarget;
     rsrc_block_t **blockp, *btarget;
@@ -1128,7 +1128,7 @@ int _rsrcdbmgr_pid_clear(pid_t pid)
 */
 int _rsrcdbmgr_pid_mark(pid_t pid)
 {
-    PROCESS *prp;
+    tProcess *prp;
     rsrc_list_array_t *pidrsrc;
 
     if (!(prp = proc_lock_pid(pid))) {

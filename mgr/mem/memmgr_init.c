@@ -60,7 +60,7 @@ static int memmgr_handler(message_context_t * mctp, int code, unsigned flags, vo
         } else if (!(peer = proc_lock_pid(msg->peer.i.pid))) {
             return proc_status(ctp, ESRCH);
         }
-        if (peer->flags & (_NTO_PF_TERMING | _NTO_PF_DESTROYALL | _NTO_PF_ZOMBIE)) {
+        if (peer->flags & (QRV_FLG_PROC_TERMING | QRV_FLG_PROC_DESTROYALL | QRV_FLG_PROC_ZOMBIE)) {
             // Not allowed to do things with a peer process that's
             // terminating.
             if (peer != prp)

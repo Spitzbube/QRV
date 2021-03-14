@@ -87,7 +87,7 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
         rep->chid = cop->channel ? cop->channel->chid : -1;
         rep->scoid = cop->scoid | _NTO_SIDE_CHANNEL;
         rep->msglen = thp->args.ms.msglen;
-        rep->srcmsglen = (thp->flags & _NTO_TF_BUFF_MSG) ?
+        rep->srcmsglen = (thp->flags & QRV_FLG_THR_BUFF_MSG) ?
             thp->args.ms.msglen : thp->args.ms.srcmsglen;
         rep->dstmsglen = thp->args.ms.dstmsglen;
         rep->coid = thp->args.ms.coid;
@@ -98,7 +98,7 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
         rep->tid = tid + 1;
 
         // Is there an unblock pending on the thread?
-        if (thp->flags & _NTO_TF_UNBLOCK_REQ) {
+        if (thp->flags & QRV_FLG_THR_UNBLOCK_REQ) {
             rep->flags |= _NTO_MI_UNBLOCK_REQ;
         }
         // In the case of Net doing an info request we let him know
@@ -273,14 +273,14 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
             memcpy(act->args.msbuff.buff, kap->msg_deliver_event.event,
                    sizeof *kap->msg_deliver_event.event);
             lock_kernel();
-            act->flags |= _NTO_TF_BUFF_MSG;
+            act->flags |= QRV_FLG_THR_BUFF_MSG;
             break;
 
         case __KER_CHANNEL_DESTROY:
             act->args.msbuff.msglen = sizeof(int);
             *(int *) act->args.msbuff.buff = ESRCH;
             lock_kernel();
-            act->flags |= _NTO_TF_BUFF_MSG;
+            act->flags |= QRV_FLG_THR_BUFF_MSG;
             type = __KER_MSG_ERROR;
             break;
 
@@ -288,7 +288,7 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
             act->args.msbuff.msglen = sizeof kap->msg_error.err;
             memcpy(act->args.msbuff.buff, &kap->msg_error.err, sizeof kap->msg_error.err);
             lock_kernel();
-            act->flags |= _NTO_TF_BUFF_MSG;
+            act->flags |= QRV_FLG_THR_BUFF_MSG;
             break;
 
         case __KER_MSG_CURRENT:
@@ -409,7 +409,7 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
         act->args.msbuff.rparts = 0;
 
         lock_kernel();
-        act->flags |= _NTO_TF_BUFF_MSG;
+        act->flags |= QRV_FLG_THR_BUFF_MSG;
 
         thp = chp->receive_queue;
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
@@ -418,7 +418,7 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
         }
 #endif
         if ((thp != NULL) && !(thp->internal_flags & _NTO_ITF_RCVPULSE)) {
-            thp->flags |= _NTO_TF_SHORT_MSG;
+            thp->flags |= QRV_FLG_THR_SHORT_MSG;
             thp->blocked_on = act;
             // Indicate that there is a receiver depending on data in our THREAD object.
             act->internal_flags |= _NTO_ITF_SPECRET_PENDING;
@@ -429,7 +429,7 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
             if (thp->args.ri.info) {
                 thp->args.ri.cop = cop;
                 thp->args.ri.thp = act;
-                thp->flags |= _NTO_TF_RCVINFO;
+                thp->flags |= QRV_FLG_THR_RCVINFO;
             }
             // Unlink receive thread from the receive queue.
             LINKPRIL_REM(thp);
@@ -456,7 +456,7 @@ void rdecl get_rcvinfo(THREAD * thp, int tid, CONNECT * cop, struct _msg_info *r
             return ENOERROR;
         }
 
-        if (chp->process->flags & (_NTO_PF_TERMING | _NTO_PF_ZOMBIE | _NTO_PF_COREDUMP)) {
+        if (chp->process->flags & (QRV_FLG_PROC_TERMING | QRV_FLG_PROC_ZOMBIE | QRV_FLG_PROC_COREDUMP)) {
             return ENXIO;
         }
         act->state = STATE_NET_SEND;    // Must be set before calling block()

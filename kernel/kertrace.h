@@ -48,8 +48,8 @@ typedef struct {
 typedef struct ehandler_data {
     int (*handler)(event_data_t *);
     event_data_t *area;
-    THREAD *thp;
-    PROCESS *process;
+    tThread *thp;
+    tProcess *process;
     struct ehandler_data **location;
     struct cpu_intrsave cpu;
 } ehandler_data_t;

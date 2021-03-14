@@ -189,7 +189,7 @@ static int	_fake_destroy(pthread_mutex_t *l) {return EOK;}
 static int my_mutex_init(pthread_mutex_t *lock, const pthread_mutexattr_t *a)
 {
 	extern SYNC *_k_sync_create(PROCESS *prp, sync_t *sync, unsigned flags, int *err); // FIX ME
-	const pthread_mutex_t tmp = { 0, _NTO_SYNC_MUTEX_FREE };
+	const pthread_mutex_t tmp = { 0, QRV_SYNC_MUTEX_FREE };
 	/* system partition (via procnto_prp) pays the cost of partition SYNC objects */
 	*lock = tmp;
 #ifndef NDEBUG
@@ -222,8 +222,8 @@ static pthread_mutexattr_t		info_lock_attr = PTHREAD_RMUTEX_INITIALIZER;
 /* kermacros.h stuff */
 #define PID_MASK			0xfff
 #define PINDEX(pid)			((pid) & PID_MASK)
-#define SYNC_PINDEX(owner)	PINDEX(((owner) & ~_NTO_SYNC_WAITING) >> 16)
-#define SYNC_OWNER_BITS(pid,tid)	((((pid) << 16) | (tid) + 1) & ~_NTO_SYNC_WAITING)
+#define SYNC_PINDEX(owner)	PINDEX(((owner) & ~QRV_SYNC_WAITING) >> 16)
+#define SYNC_OWNER_BITS(pid,tid)	((((pid) << 16) | (tid) + 1) & ~QRV_SYNC_WAITING)
 #define SYNC_OWNER(thp)	SYNC_OWNER_BITS((thp)->process->pid, (thp)->tid)
 
 volatile unsigned int mempart_ker_int_lock_cnt = 0;
@@ -237,9 +237,9 @@ static INLINE int _mtx_lock(void *m, int line)
 #ifndef NDEBUG
 		extern THREAD *actives[];
 		if ((lock->wr_cnt > 0) && (lock->rd_cnt > 0) &&
-			(lock->mutex.__owner != _NTO_SYNC_DESTROYED) &&
-			(actives[RUNCPU] != NULL) && (lock->mutex.__owner & ~_NTO_SYNC_WAITING) &&
-			((lock->mutex.__owner & ~_NTO_SYNC_WAITING) != SYNC_OWNER(actives[RUNCPU])))
+			(lock->mutex.__owner != QRV_SYNC_DESTROYED) &&
+			(actives[RUNCPU] != NULL) && (lock->mutex.__owner & ~QRV_SYNC_WAITING) &&
+			((lock->mutex.__owner & ~QRV_SYNC_WAITING) != SYNC_OWNER(actives[RUNCPU])))
 		{
 			kprintf("lock clash with 0x%x @ %d\n", lock->mutex.__owner, line);
 #ifndef DISABLE_ASSERT
@@ -254,7 +254,7 @@ static INLINE int _mtx_lock(void *m, int line)
 		int r = mutex->lock(&lock->mutex);
 		if (r == EOK)
 		{
-//			if ((lock->mutex.__count & _NTO_SYNC_COUNTMASK) == 1)
+//			if ((lock->mutex.__count & QRV_SYNC_COUNTMASK) == 1)
 			if (atomic_add_value(&mempart_ker_int_lock_cnt, 1) == 0)
 				InterruptLock(&lock->spin); /* FIX ME - temp sync with kernel */
 		}
@@ -282,7 +282,7 @@ static INLINE int _mtx_unlock(void *m, int line)
 	{
 		kerproc_lock_t *lock = (kerproc_lock_t *)m;
 
-//		if ((lock->mutex.__count & _NTO_SYNC_COUNTMASK) == 1)
+//		if ((lock->mutex.__count & QRV_SYNC_COUNTMASK) == 1)
 		if (atomic_sub_value(&mempart_ker_int_lock_cnt, 1) == 1)
 			InterruptUnlock(&lock->spin); /* FIX ME - temp sync with kernel */
 #ifndef NDEBUG
@@ -2521,7 +2521,4 @@ static void display_mempart_info(mempart_t *mp)
 			(paddr_t)mp->info.cur_size, (paddr_t)mp->info.hi_size);
 }
 #endif	/* NDEBUG */
-
-
-__SRCVERSION("$IQ: mm_partitions_2.c,v 1.7 $");
 

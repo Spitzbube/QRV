@@ -26,7 +26,7 @@
 int
 sem_destroy(sem_t *sem) {
 	// Force an EINVAL if the semaphore is "statically" initialized.
-	if (sem->__owner == _NTO_SYNC_INITIALIZER) {
+	if (sem->__owner == QRV_SYNC_INITIALIZER) {
 		errno = EINVAL;
 		return(-1);
 	}

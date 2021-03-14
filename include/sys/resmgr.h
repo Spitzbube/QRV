@@ -23,32 +23,10 @@
 
  */
 
-#ifndef __PLATFORM_H_INCLUDED
-#include <sys/platform.h>
-#endif
-
-#ifdef RESMGR_COMPAT
-#include <sys/resmgr_compat.h>
-#else
-
 #ifndef __RESMGR_H_INCLUDED
 #define __RESMGR_H_INCLUDED
 
-
-#if defined(__EXT_POSIX1_199309) || defined(__EXT_POSIX1_199506) || defined(__EXT_POSIX1_200112)
- /* We really shouldn't include pthread.h at all since nothing in resmgr.h depends
-  * on it.  However, we did before so for backwards compatibility we must continue
-  * to do so.  But, pthread.h is only supported in and after POSIX-1993, so in order
-  * to compile in older environments we only include sched.h in those later versions.
-  */
-#ifndef _PTHREAD_H_INCLUDED
-#include <pthread.h>
-#endif
-#endif
-
-#ifndef __IOMSG_H_INCLUDED
 #include <sys/iomsg.h>
-#endif
 
 typedef struct _pulse io_pulse_t;
 
@@ -247,19 +225,19 @@ extern struct _resmgr_handle_table _resmgr_io_table;
 /*
  * flags for resmgr_attach(). Must match PATHMGR_FLAG_*.
  */
-#define _RESMGR_FLAG_BEFORE		0x0001  /* Force path to be resolved before others at the same mountpoint. */
-#define _RESMGR_FLAG_AFTER		0x0002  /* Force path to be resolved after others at the same mountpoint. */
-#define _RESMGR_FLAG_OPAQUE		0x0004  /* Don't resolve to mountpoints with shorter pathname matches. */
+#define _RESMGR_FLAG_BEFORE	0x0001  /* Force path to be resolved before others at the same mountpoint. */
+#define _RESMGR_FLAG_AFTER	0x0002  /* Force path to be resolved after others at the same mountpoint. */
+#define _RESMGR_FLAG_OPAQUE	0x0004  /* Don't resolve to mountpoints with shorter pathname matches. */
 #define _RESMGR_FLAG_FTYPEONLY	0x0008  /* Only attach at "/", and only match ftype */
 #define _RESMGR_FLAG_FTYPEALL	0x0010  /* Matching all ftypes (for redirecting servers) */
-#define _RESMGR_FLAG_DIR		0x0100  /* Allow resolving of longer pathnames. */
-#define _RESMGR_FLAG_SELF		0x0200  /* Allow resolving names to itself. */
-#define _RESMGR_FLAG_MASK		0x031f  /* Flags allowed by resmgr_attach() */
+#define _RESMGR_FLAG_DIR	0x0100  /* Allow resolving of longer pathnames. */
+#define _RESMGR_FLAG_SELF	0x0200  /* Allow resolving names to itself. */
+#define _RESMGR_FLAG_MASK	0x031f  /* Flags allowed by resmgr_attach() */
 
 /*
  * flags for resmgr_detach()
  */
-#define _RESMGR_DETACH_ALL		0x0000  /* Detach the name from the namespace and invalidate all open bindings. */
+#define _RESMGR_DETACH_ALL	0x0000  /* Detach the name from the namespace and invalidate all open bindings. */
 #define _RESMGR_DETACH_PATHNAME	0x0001  /* Only detach the name from the namespace */
 #define _RESMGR_DETACH_CLOSE	0x8000  /* Call close on bindings when detaching */
 
@@ -279,7 +257,8 @@ extern struct _resmgr_handle_table _resmgr_io_table;
 #define THREAD_POOL_HANDLE_T	dispatch_t
 #endif
 
-__BEGIN_DECLS struct binding;
+__BEGIN_DECLS
+struct binding;
 
 extern int resmgr_pathname(int __id, unsigned __flags, char *__path, int __maxbuf);
 extern int resmgr_devino(int __id, dev_t * __pdevno, ino64_t * __pino);
@@ -313,5 +292,5 @@ extern int _resmgr_unbind(struct _msg_info *__rep);
 extern int _resmgr_detach_id(resmgr_context_t * __ctp, int __id, unsigned __flags);
 
 __END_DECLS
-#endif
+
 #endif

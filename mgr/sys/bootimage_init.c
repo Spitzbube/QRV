@@ -61,7 +61,7 @@ static int kdebug_path(struct kdebug_entry *entry, char *buff, int buffsize)
 
     switch (entry->type) {
     case KDEBUG_TYPE_PROCESS:
-        if (entry->ptr && (p = ((PROCESS *) (entry->ptr))->debug_name)) {
+        if (entry->ptr && (p = ((tProcess *) (entry->ptr))->debug_name)) {
             int len;
 
             for (len = 0; buffsize-- && (*buff++ = *p++); len++) {
@@ -282,7 +282,7 @@ static int bootimage_start(message_context_t * ctp, int code, unsigned flags, vo
     int fds[3];
     int size;
     pid_t pid;
-    PROCESS *prp;
+    tProcess *prp;
     char *tty;
     char *tmp1, *tmp2;
 #ifdef PROC_BOOTIMAGE_DIR
@@ -312,7 +312,7 @@ static int bootimage_start(message_context_t * ctp, int code, unsigned flags, vo
         return -1;
     }
 
-    prp->flags |= _NTO_PF_LOADING;
+    prp->flags |= QRV_FLG_PROC_LOADING;
     proc_unlock(prp);
 
     dir = (union image_dirent *) ((char *) boot_image + boot_image->dir_offset);
@@ -401,7 +401,7 @@ static int bootimage_start(message_context_t * ctp, int code, unsigned flags, vo
     (void) kdebug_attach(&prp->kdebug, 1);
 #endif
 
-    prp->flags &= ~_NTO_PF_LOADING;
+    prp->flags &= ~QRV_FLG_PROC_LOADING;
 
     fds[0] = fds[1] = fds[2] = sopen(tty = "/dev/text", O_RDWR, SH_DENYNO);
 

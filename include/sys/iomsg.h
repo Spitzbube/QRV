@@ -45,10 +45,6 @@
 #include <sys/statvfs.h>
 #endif
 
-#ifndef __NEUTRINO_H_INCLUDED
-#include <sys/neutrino.h>
-#endif
-
 #ifndef _UTIME_H_INCLUDED
 #include <utime.h>
 #endif
@@ -205,9 +201,9 @@ enum _io_connect_extra_type {
 };
 
 /* struct _io_connect ioflag (non-masked values match O_? in fcntl.h) */
-#define _IO_FLAG_RD					0x00000001  /* read permission */
-#define _IO_FLAG_WR					0x00000002  /* write permission */
-#define _IO_FLAG_MASK				0x00000003  /* permission mask */
+#define _IO_FLAG_RD			0x00000001  /* read permission */
+#define _IO_FLAG_WR			0x00000002  /* write permission */
+#define _IO_FLAG_MASK			0x00000003  /* permission mask */
 
 /* struct _io_connect eflag */
 #define _IO_CONNECT_EFLAG_DIR		0x01    /* Path referenced a directory    */
@@ -222,7 +218,7 @@ enum _io_connect_extra_type {
 #define _IO_CONNECT_RET_UMASK		0x00020000  /* umask field in link reply is valid */
 #define _IO_CONNECT_RET_NOCTTY		0x00040000  /* No controling terminal defined  */
 #define _IO_CONNECT_RET_CHROOT		0x00080000  /* chroot_len field in link reply is valid */
-#define _IO_CONNECT_RET_MSG			0x00100000  /* Connect to server and send new message */
+#define _IO_CONNECT_RET_MSG		0x00100000  /* Connect to server and send new message */
 
 #define _IO_CONNECT_RET_TYPE_MASK	0x0001e000  /* Mask for returned file type */
 #define _IO_CONNECT_RET_FTYPE		0x00008000  /* File type was matched, _io_connect_ftype_reply expected */
@@ -409,11 +405,11 @@ typedef union {
  * Message of _IO_READ
  */
 struct _io_read {
-    _Uint16t type;
-    _Uint16t combine_len;
-    _Int32t nbytes;
-    _Uint32t xtype;
-    _Uint32t zero;
+    uint16_t type;
+    uint16_t combine_len;
+    size_t   nbytes;
+    uint16_t xtype;
+    uint16_t zero;
 };
 
 typedef union {

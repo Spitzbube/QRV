@@ -123,5 +123,3 @@ int xfer_cpy_diov(THREAD * thpd, IOV * dst, uint8_t * saddr, int dparts, unsigne
     SET_XFER_HANDLER(0);
     return 0;
 }
-
-__SRCVERSION("nano_xfer_cpy.c $Rev: 164239 $");

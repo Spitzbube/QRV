@@ -29,10 +29,6 @@
 #include <sys/platform.h>
 #endif
 
-#ifndef __NEUTRINO_H_INCLUDED
-#include <sys/neutrino.h>
-#endif
-
 #ifndef __FTYPE_H_INCLUDED
 #include <sys/ftype.h>
 #endif

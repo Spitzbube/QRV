@@ -300,5 +300,3 @@ int ksnprintf(char *buffer, size_t len, const char *fmt, ...)
     va_end(ap);
     return (len);
 }
-
-__SRCVERSION("kprintf.c $Rev: 174894 $");

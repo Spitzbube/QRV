@@ -42,16 +42,16 @@ static void kerext_stack_cont(void *data)
     lock_kernel();
     if (kap->err) {
         thp->status = (void *) kap->err;
-        thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+        thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
     } else {
         struct _thread_attr *attr = kap->attr;
 
         thp->un.lcl.stackaddr = attr->__stackaddr;
         thp->un.lcl.stacksize = attr->__stacksize;
-        if (thp->flags & _NTO_TF_WAAA) {
-            thp->flags |= _NTO_TF_ALLOCED_STACK;
+        if (thp->flags & QRV_FLG_THR_WAAA) {
+            thp->flags |= QRV_FLG_THR_ALLOCED_STACK;
         } else {
-            thp->flags &= ~_NTO_TF_ALLOCED_STACK;
+            thp->flags &= ~QRV_FLG_THR_ALLOCED_STACK;
         }
     }
     ready(thp);
@@ -96,7 +96,7 @@ static void kerext_stack_wait_info(void *data)
         *kap->ptid = thp->tid + 1;
         attr->__stackaddr = thp->un.lcl.stackaddr;
         attr->__stacksize = thp->un.lcl.stacksize;
-        if (thp->flags & _NTO_TF_WAAA) {
+        if (thp->flags & QRV_FLG_THR_WAAA) {
             attr->__flags = (uintptr_t) thp->next.thread;
             attr->__guardsize = (uintptr_t) thp->prev.thread;
             attr->__prealloc = (uintptr_t) thp->status;
@@ -122,5 +122,3 @@ int StackWaitInfo(union sigval value, pid_t * ppid, int *ptid, struct _thread_at
     data.attr = attr;
     return __Ring0(kerext_stack_wait_info, &data);
 }
-
-__SRCVERSION("kerext_stack.c $Rev: 169208 $");

@@ -42,7 +42,7 @@ static void kerext_debug_process(void *args)
 
     dep = prp->debugger;
 
-    if (kap->request == NTO_DEBUG_PROCESS_INFO || (prp->flags & _NTO_PF_TERMING)) {
+    if (kap->request == NTO_DEBUG_PROCESS_INFO || (prp->flags & QRV_FLG_PROC_TERMING)) {
         tid = 0;
     } else if (dep && kap->tid == 0) {
         tid = dep->tid + 1;
@@ -60,7 +60,7 @@ static void kerext_debug_process(void *args)
     }
 
     stopped = 0;
-    if (thp && ((thp->flags & _NTO_TF_TO_BE_STOPPED) ||
+    if (thp && ((thp->flags & QRV_FLG_THR_TO_BE_STOPPED) ||
                 (thp->state != STATE_RUNNING && thp->state != STATE_READY))) {
         stopped = 1;
     }
@@ -184,7 +184,7 @@ static void kerext_debug_process(void *args)
         }
         if (stopped) {
             lock_kernel();
-            thp->flags |= _NTO_TF_FROZEN;
+            thp->flags |= QRV_FLG_THR_FROZEN;
         }
         break;
 
@@ -195,7 +195,7 @@ static void kerext_debug_process(void *args)
         }
         if (stopped) {
             lock_kernel();
-            thp->flags &= ~_NTO_TF_FROZEN;
+            thp->flags &= ~QRV_FLG_THR_FROZEN;
         }
         break;
 
@@ -435,9 +435,9 @@ static void kerext_debug_detach(void *args)
     dep = prp->debugger;
     lock_kernel();
     prp->debugger = 0;
-    if (prp->flags & _NTO_PF_DEBUG_STOPPED) {
-        prp->flags &= ~_NTO_PF_DEBUG_STOPPED;
-        if (prp->flags & _NTO_PF_TERMING) {
+    if (prp->flags & QRV_FLG_PROC_DEBUG_STOPPED) {
+        prp->flags &= ~QRV_FLG_PROC_DEBUG_STOPPED;
+        if (prp->flags & QRV_FLG_PROC_TERMING) {
             if (procmgr.process_threads_destroyed) {
                 struct sigevent ev;
 

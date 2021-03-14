@@ -22,7 +22,7 @@
  * partitioning is installed or not
 */
 
-#include "ap.h"
+#include <taskman/partitioning.h>
 #include <kernel/schedpart.h>
 #include <kernel/event.h>
 
@@ -34,7 +34,7 @@
  * similar to process id's, scheduler partition id's are kept unique
  * Wrap will occur at SPID_UNIQUE_MASK
 */
-#define SPID_MASK			0xfff
+#define SPID_MASK		0xfff
 #define SPINDEX(spid)		((spid) & SPID_MASK)
 #define SPID_UNIQUE_MASK	(UINT_MAX & ~parttype_MASK)
 extern int spid_unique;

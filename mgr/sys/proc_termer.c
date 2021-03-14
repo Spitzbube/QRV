@@ -25,7 +25,7 @@
 
 extern unsigned fd_close_timeout;
 
-static void trace(PROCESS * prp, siginfo_t * info)
+static void trace(tProcess * prp, siginfo_t * info)
 {
     char buff[512];
     void *vaddr;
@@ -133,7 +133,7 @@ static void trace(PROCESS * prp, siginfo_t * info)
     write(fd, buff, p - buff);
 }
 
-static void cleanup(PROCESS * prp, siginfo_t * info)
+static void cleanup(tProcess * prp, siginfo_t * info)
 {
     unsigned i;
     CHANNEL *chp;
@@ -146,7 +146,7 @@ static void cleanup(PROCESS * prp, siginfo_t * info)
     exec = (prp->lcp->state == LC_EXEC_SWAP);
 
     if (info->si_signo != SIGCHLD) {
-        if (prp->flags & _NTO_PF_COREDUMP) {
+        if (prp->flags & QRV_FLG_PROC_COREDUMP) {
             info->si_code = CLD_DUMPED;
         } else {
             info->si_code = CLD_KILLED;
@@ -219,7 +219,7 @@ static void cleanup(PROCESS * prp, siginfo_t * info)
     // The first time remove the address space
     if (prp->memory) {
         // Clean up address space before we kill the coid to proc
-        if (!(prp->flags & _NTO_PF_VFORKED)) {
+        if (!(prp->flags & QRV_FLG_PROC_VFORKED)) {
             // Remove all memory associated with process
             prp->pls = NULL;
             munmap(0, ~0);
@@ -274,12 +274,12 @@ static void cleanup(PROCESS * prp, siginfo_t * info)
     // Do the more sensitive removal at kernel time
     prp->siginfo = *info;
 
-    if (!exec && !(prp->flags & _NTO_PF_NOZOMBIE)) {
-        PROCESS *parent;
+    if (!exec && !(prp->flags & QRV_FLG_PROC_NOZOMBIE)) {
+        tProcess *parent;
 
         parent = proc_lock_parent(prp);
         if (!sigismember(&prp->parent->sig_ignore, SIGCHLD)) {
-            prp->flags |= _NTO_PF_WAITINFO;
+            prp->flags |= QRV_FLG_PROC_WAITINFO;
         }
         proc_unlock(parent);
     }
@@ -295,7 +295,7 @@ static void cleanup(PROCESS * prp, siginfo_t * info)
 
 static void handler(int signo)
 {
-    PROCESS *prp;
+    tProcess *prp;
 
     // get the process entry
     prp = proc_lookup_pid(getpid());
@@ -310,7 +310,7 @@ static void handler(int signo)
 void *terminator(void *parm)
 {
     struct loader_context *lcp = parm;
-    PROCESS *prp;
+    tProcess *prp;
 
     // get the process entry
     prp = proc_lookup_pid(getpid());

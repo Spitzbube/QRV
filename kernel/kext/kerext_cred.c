@@ -107,5 +107,3 @@ int CredSet(pid_t pid, struct _cred_info *cip)
     data.cip = cip;
     return __Ring0(kerext_cred_set, &data);
 }
-
-__SRCVERSION("kerext_cred.c $Rev: 153052 $");

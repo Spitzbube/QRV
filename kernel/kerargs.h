@@ -78,15 +78,15 @@ typedef union kerargs {
 
     struct kerargs_msg_sendv {
         KARGSLOT(int32_t coid);
-        KARGSLOT(IOV * smsg);
+        KARGSLOT(iov_t * smsg);
         KARGSLOT(int32_t sparts);
-        KARGSLOT(IOV * rmsg);
+        KARGSLOT(iov_t * rmsg);
         KARGSLOT(int32_t rparts);
     } msg_sendv;
 
     struct kerargs_msg_receivev {
         KARGSLOT(int32_t chid);
-        KARGSLOT(IOV * rmsg);
+        KARGSLOT(iov_t * rmsg);
         KARGSLOT(int32_t rparts);
         KARGSLOT(struct _msg_info *info);
          KARGSLOT(int32_t coid);
@@ -95,38 +95,38 @@ typedef union kerargs {
     struct kerargs_msg_replyv {
         KARGSLOT(int32_t rcvid);
         KARGSLOT(int32_t status);
-        KARGSLOT(IOV * smsg);
+        KARGSLOT(iov_t * smsg);
         KARGSLOT(int32_t sparts);
     } msg_replyv;
 
     struct kerargs_msg_readv {
         KARGSLOT(int32_t rcvid);
-        KARGSLOT(IOV * rmsg);
+        KARGSLOT(iov_t * rmsg);
         KARGSLOT(int32_t rparts);
         KARGSLOT(int32_t offset);
     } msg_readv;
 
     struct kerargs_msg_writev {
         KARGSLOT(int32_t rcvid);
-        KARGSLOT(IOV * smsg);
+        KARGSLOT(iov_t * smsg);
         KARGSLOT(int32_t sparts);
         KARGSLOT(int32_t offset);
     } msg_writev;
 
     struct kerargs_msg_readwritev {
         KARGSLOT(int32_t src_rcvid);
-        KARGSLOT(IOV * src_msg);
+        KARGSLOT(iov_t * src_msg);
         KARGSLOT(int32_t src_parts);
         KARGSLOT(int32_t src_offset);
         KARGSLOT(int32_t dst_rcvid);
-        KARGSLOT(IOV * dst_msg);
+        KARGSLOT(iov_t * dst_msg);
         KARGSLOT(int32_t dst_parts);
         KARGSLOT(int32_t dst_offset);
     } msg_readwritev;
 
     struct kerargs_msg_readiov {
         KARGSLOT(int32_t rcvid);
-        KARGSLOT(IOV * iov);
+        KARGSLOT(iov_t * iov);
         KARGSLOT(int32_t parts);
         KARGSLOT(int32_t offset);
         KARGSLOT(int32_t flags);
@@ -159,7 +159,7 @@ typedef union kerargs {
         KARGSLOT(int32_t op);
         KARGSLOT(uint32_t key);
         KARGSLOT(uint32_t * newkey);
-        KARGSLOT(IOV * msg);
+        KARGSLOT(iov_t * msg);
         KARGSLOT(int32_t parts);
     } msg_keydata;
 
@@ -182,7 +182,7 @@ typedef union kerargs {
     } signal_kill;
 
     struct kerargs_signal_return {
-        KARGSLOT(SIGSTACK * s);
+        KARGSLOT(tSigStack *s);
     } signal_return;
 
     struct kerargs_signal_action {

@@ -904,7 +904,7 @@ void comm_em(THREAD * thp, CONNECT * cop, uint32_t srcvid, uint32_t ev)
             }
         case _NTO_TRACE_COMM_RMSG:
             {
-                if (!(thp->flags & _NTO_TF_KERERR_SET)) {
+                if (!(thp->flags & QRV_FLG_THR_KERERR_SET)) {
                     pid = (uint32_t) thp->process->pid;
                     if ((srcvid = KSTATUS(thp)) == 0U) {
                         if (!(trace_masks.comm_mask[_NTO_TRACE_COMM_RPULSE] & _TRACE_ENTER_COMM))
@@ -942,7 +942,7 @@ void comm_em(THREAD * thp, CONNECT * cop, uint32_t srcvid, uint32_t ev)
         case (unsigned) ~_NTO_TRACE_COMM_RMSG:
         case (unsigned) ~_NTO_TRACE_COMM_RPULSE:
             if (_TRACE_IPCPTID(thp, ~ev)) {
-                if (!(thp->flags & _NTO_TF_KERERR_SET) && _TRACE_GETARGSFLAG(thp)) {
+                if (!(thp->flags & QRV_FLG_THR_KERERR_SET) && _TRACE_GETARGSFLAG(thp)) {
                     pid = (uint32_t) thp->process->pid;
                     if ((srcvid = KSTATUS(thp)) == 0U) {
                         if (!(trace_masks.comm_mask[_NTO_TRACE_COMM_RPULSE] & _TRACE_ENTER_COMM))

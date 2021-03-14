@@ -205,7 +205,7 @@ interrupt_attach(int level, const struct sigevent *(*handler) (void *area, int i
         return -1;
     }
     itp->id = id;
-    act->process->flags |= _NTO_PF_CHECK_INTR;
+    act->process->flags |= QRV_FLG_PROC_CHECK_INTR;
 
     // Add an interrupt handler to the interrupt table.
     itp->next = *owner;

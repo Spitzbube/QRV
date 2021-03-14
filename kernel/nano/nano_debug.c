@@ -57,7 +57,7 @@ int rdecl debug_process(PROCESS * prp, debug_process_t * dpp)
     if (prp->session) {
         dpp->sid = prp->session->leader;
         if (prp->session->pgrp != prp->pgrp) {
-            dpp->flags |= _NTO_PF_BKGND_PGRP;
+            dpp->flags |= QRV_FLG_PROC_BKGND_PGRP;
         }
     }
     dpp->base_address = prp->base_addr;
@@ -99,7 +99,7 @@ int rdecl debug_thread(PROCESS * prp, THREAD * thp, debug_thread_t * dtp)
 
     dtp->flags = 0;
     if (thp) {
-        if ((thp->flags & _NTO_TF_TO_BE_STOPPED) || thp->state == STATE_DEAD ||
+        if ((thp->flags & QRV_FLG_THR_TO_BE_STOPPED) || thp->state == STATE_DEAD ||
             thp->state == STATE_STOPPED) {
             dtp->flags |= _DEBUG_FLAG_STOPPED;
         }
@@ -116,10 +116,10 @@ int rdecl debug_thread(PROCESS * prp, THREAD * thp, debug_thread_t * dtp)
         if (thp && dep->tid == thp->tid) {
             dtp->flags |= _DEBUG_FLAG_CURTID;
         }
-    } else if (prp->flags & _NTO_PF_TERMING) {
+    } else if (prp->flags & QRV_FLG_PROC_TERMING) {
         dtp->why = _DEBUG_WHY_TERMINATED;
         dtp->what = prp->siginfo.si_status;
-    } else if ((prp->flags & _NTO_PF_COREDUMP) && prp->valid_thp == thp) {
+    } else if ((prp->flags & QRV_FLG_PROC_COREDUMP) && prp->valid_thp == thp) {
         dtp->why = _DEBUG_WHY_SIGNALLED;
         dtp->what = prp->siginfo.si_signo;
     } else {
@@ -146,7 +146,7 @@ int rdecl debug_thread(PROCESS * prp, THREAD * thp, debug_thread_t * dtp)
     dtp->stkbase = (uintptr_t) thp->un.lcl.stackaddr;
     dtp->stksize = thp->un.lcl.stacksize;
     dtp->tls = (uintptr_t) thp->un.lcl.tls;
-    dtp->tid_flags = thp->flags & _NTO_TF_PUBLIC_MASK;
+    dtp->tid_flags = thp->flags & QRV_FLG_THR_PUBLIC_MASK;
     dtp->priority = thp->priority;
     dtp->real_priority = thp->real_priority;
     dtp->policy = thp->policy;
@@ -197,7 +197,7 @@ int rdecl debug_thread(PROCESS * prp, THREAD * thp, debug_thread_t * dtp)
         dtp->blocked.sync.id = thp->blocked_on ? ((SYNC *) thp->blocked_on)->addr : 0;
         break;
     case STATE_STACK:
-        dtp->blocked.stack.size = (thp->flags & _NTO_TF_WAAA) ? thp->un.lcl.stacksize : 0;
+        dtp->blocked.stack.size = (thp->flags & QRV_FLG_THR_WAAA) ? thp->un.lcl.stacksize : 0;
         break;
     default:
         break;
@@ -251,9 +251,9 @@ int rdecl debug_stop(PROCESS * prp)
     if (!(dep = prp->debugger)) {
         return EINVAL;
     }
-    if (!(prp->flags & _NTO_PF_DEBUG_STOPPED)) {
+    if (!(prp->flags & QRV_FLG_PROC_DEBUG_STOPPED)) {
         lock_kernel();
-        prp->flags |= _NTO_PF_DEBUG_STOPPED;
+        prp->flags |= QRV_FLG_PROC_DEBUG_STOPPED;
         stop_threads(prp, 0, 0);
         dep->flags |= _DEBUG_FLAG_ISTOP;
         dep->why = _DEBUG_WHY_REQUESTED;
@@ -275,7 +275,7 @@ int rdecl debug_run(PROCESS * prp, debug_run_t * drp)
         return EBADF;
     }
 
-    if (!(prp->flags & _NTO_PF_DEBUG_STOPPED)) {
+    if (!(prp->flags & QRV_FLG_PROC_DEBUG_STOPPED)) {
         return EBUSY;
     }
 
@@ -326,17 +326,17 @@ int rdecl debug_run(PROCESS * prp, debug_run_t * drp)
                     _DEBUG_FLAG_TRACE_WR | _DEBUG_FLAG_TRACE_MODIFY | _DEBUG_FLAG_SSTEP);
 
     thp->internal_flags &= ~_NTO_ITF_SSTEP_SUSPEND;
-    thp->flags &= ~_NTO_TF_SSTEP;
+    thp->flags &= ~QRV_FLG_THR_SSTEP;
 
     dep->skip_brk = 0;
-    if (!(thp->flags & _NTO_TF_THREADS_HOLD)) {
+    if (!(thp->flags & QRV_FLG_THR_THREADS_HOLD)) {
         BREAKPT *d;
 
         for (d = dep->brk; d; d = d->next) {
             if ((d->brk.type & _DEBUG_BREAK_EXEC) && KIP(thp) == d->brk.addr) {
                 dep->skip_brk = d;
                 if (!(drp_flags & _DEBUG_RUN_STEP)) {
-                    prp->flags &= ~_NTO_PF_DEBUG_STOPPED;
+                    prp->flags &= ~QRV_FLG_PROC_DEBUG_STOPPED;
                 }
                 drp_flags = (drp_flags & ~_DEBUG_RUN_STEP_ALL) | _DEBUG_RUN_STEP;
                 break;
@@ -353,20 +353,20 @@ int rdecl debug_run(PROCESS * prp, debug_run_t * drp)
             // negative status, can't support RUN_STEP_ALL
             drp_flags = (drp_flags & ~_DEBUG_RUN_STEP_ALL) | _DEBUG_RUN_STEP;
         }
-        thp->flags |= _NTO_TF_SSTEP;
+        thp->flags |= QRV_FLG_THR_SSTEP;
     }
     if (drp_flags & _DEBUG_RUN_STEP) {
-        if (thp->flags & _NTO_TF_THREADS_HOLD) {
+        if (thp->flags & QRV_FLG_THR_THREADS_HOLD) {
             return EBUSY;
         }
-        if (!(prp->flags & _NTO_PF_STOPPED)) {
-            thp->flags &= ~_NTO_TF_TO_BE_STOPPED;
+        if (!(prp->flags & QRV_FLG_PROC_STOPPED)) {
+            thp->flags &= ~QRV_FLG_THR_TO_BE_STOPPED;
             if (thp->state == STATE_STOPPED) {
                 ready(thp);
             }
         }
     } else {
-        prp->flags &= ~_NTO_PF_DEBUG_STOPPED;
+        prp->flags &= ~QRV_FLG_PROC_DEBUG_STOPPED;
         cont_threads(prp, 0);
     }
     return EOK;
@@ -475,7 +475,7 @@ static int rdecl process_exit(PROCESS * prp, int priority)
         return 0;
     }
 
-    prp->flags |= _NTO_PF_DEBUG_STOPPED;
+    prp->flags |= QRV_FLG_PROC_DEBUG_STOPPED;
     dep->flags |= _DEBUG_FLAG_ISTOP;
     dep->why = _DEBUG_WHY_TERMINATED;
     dep->what = prp->siginfo.si_status;
@@ -497,7 +497,7 @@ static int rdecl handle_signal(PROCESS * prp, int tid, int signo, int sigcode, i
         return 0;
     }
     // set a process flag stating it is debug stopped.
-    prp->flags |= _NTO_PF_DEBUG_STOPPED;
+    prp->flags |= QRV_FLG_PROC_DEBUG_STOPPED;
     stop_threads(prp, 0, 0);
 
     // Save away fault state
@@ -550,7 +550,7 @@ static int rdecl thread_fault(THREAD * thp, siginfo_t * info)
         debug_detach_brkpts(dep);
         dep->skip_brk = 0;
         debug_attach_brkpts(dep);
-        if (!(prp->flags & _NTO_PF_DEBUG_STOPPED)) {
+        if (!(prp->flags & QRV_FLG_PROC_DEBUG_STOPPED)) {
             skip = _DEBUG_FLAG_SSTEP;
             cont_threads(prp, 0);
         }
@@ -568,7 +568,7 @@ static int rdecl thread_fault(THREAD * thp, siginfo_t * info)
         crash();
     }
 
-    thp->flags &= ~_NTO_TF_SSTEP;
+    thp->flags &= ~QRV_FLG_THR_SSTEP;
 
     // Is there any interest in the fault?
     if (!SIG_TST(dep->faults, info->si_fltno)) {
@@ -577,7 +577,7 @@ static int rdecl thread_fault(THREAD * thp, siginfo_t * info)
 
     _TRACE_SYS_EMIT_ADDRESS(thp, KIP(thp));
 
-    prp->flags |= _NTO_PF_DEBUG_STOPPED;
+    prp->flags |= QRV_FLG_PROC_DEBUG_STOPPED;
     stop_threads(prp, 0, 0);
 
     // Save away fault state
@@ -605,5 +605,3 @@ void DebugInstall(int code)
     debug_attach_brkpts = cpu_debug_attach_brkpts;
     debug_detach_brkpts = cpu_debug_detach_brkpts;
 }
-
-__SRCVERSION("nano_debug.c $Rev: 169879 $");

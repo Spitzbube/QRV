@@ -48,9 +48,8 @@
 #include <sys/netmgr.h>
 
 #include <kernel/startup.h>
-#include <kernel/types.h>
+#include <kernel/objects.h>
 #include <kernel/macros.h>
-#include <sys/neutrino.h>
 #include <pthread.h>
 #include <sys/kdebug.h>
 #include <sys/fault.h>
@@ -62,9 +61,7 @@
 #include <kernel/query.h>
 #include <sys/fault.h>
 #include <sys/kercalls.h>
-#ifdef CONFIG_ASYNC_MSG
 #include <sys/asyncmsg.h>
-#endif
 #include <kernel/smpswitch.h>
 
 #include "kermacros.h"
@@ -106,11 +103,11 @@
 #if !defined(NDEBUG)
     // Some debug globals. The code never touches them but you can assign
     // them values via wd to simplify structure viewing of void * ptrs.
-EXT PROCESS *__prp;
+EXT tProcess *__prp;
 EXT tThread *__thp;
 EXT tChannel *__chp;
-EXT CONNECT *__cop;
-EXT TIMER *__tip;
+EXT tConnect *__cop;
+EXT tTimer *__tip;
 EXT unsigned stats[4];
 #endif
 
@@ -126,7 +123,7 @@ EXT int align_fault;
 EXT int noncoherent_caches;
 EXT int fpuemul;
 EXT int nohalt;
-EXT unsigned user_boundry_addr INIT1(VM_USER_SPACE_BOUNDRY);
+EXT unsigned long user_boundry_addr INIT1(VM_USER_SPACE_BOUNDRY);
 EXT int ker_verbose;
 EXT long limits_max[LIMITS_NUM];
 EXT unsigned max_fds INIT1(1000);
@@ -139,38 +136,38 @@ EXT volatile int soul_compact;  // This is not currently used
 EXT int _argc;
 EXT char **_argv;
 EXT char **environ;
-EXT VECTOR interrupt_vector;
-EXT VECTOR process_vector;
-EXT VECTOR query_vector;
-EXT VECTOR soul_vector;
-EXT VECTOR vthread_vector;
-EXT VECTOR mempart_vector;
-EXT VECTOR schedpart_vector;
-EXT VECTOR chgbl_vector;
-EXT CREDENTIAL *credential_list;
-EXT LIMITS *limits_list;
-EXT PROCESS *procnto_prp;
+EXT tVector interrupt_vector;
+EXT tVector process_vector;
+EXT tVector query_vector;
+EXT tVector soul_vector;
+EXT tVector vthread_vector;
+EXT tVector mempart_vector;
+EXT tVector schedpart_vector;
+EXT tVector chgbl_vector;
+EXT tCredential *credential_list;
+EXT tLimits *limits_list;
+EXT tProcess *procnto_prp;
 EXT uintptr_t run_ker_stack_bot;
 EXT uintptr_t run_ker_stack_top;
 EXT struct cpupage_entry *_cpupage_ptr;
 EXT struct system_private_entry *privateptr;
 EXT unsigned intrinfo_num;
 EXT unsigned __cpu_flags;
-EXT NET net;
-EXT PROCMGR procmgr;
+EXT tNetEntry net;
+EXT tProcMgr procmgr;
 EXT int scheduler_type;         //one of SCHEDULER_TYPE_* values in kermacros.h
 
-EXT int (rdecl * debug_process_stopped) (PROCESS * prp, int signo, int sigcode, int sigval,
+EXT int (rdecl * debug_process_stopped) (tProcess * prp, int signo, int sigcode, int sigval,
                                          int sender);
 EXT int (rdecl * debug_thread_fault) (tThread * thp, siginfo_t * info);
 EXT int (rdecl * debug_thread_signal) (tThread * thp, int signo, int sigcode, int sigval,
                                        int sender);
-EXT int (rdecl * debug_process_exit) (PROCESS * prp, int priority);
-EXT void (rdecl * debug_attach_brkpts) (DEBUG * dep);
-EXT void (rdecl * debug_detach_brkpts) (DEBUG * dep);
-EXT void (rdecl * debug_moduleinfo) (PROCESS * prp, tThread * thp, void *dbg);
+EXT int (rdecl * debug_process_exit) (tProcess * prp, int priority);
+EXT void (rdecl * debug_attach_brkpts) (tDebug * dep);
+EXT void (rdecl * debug_detach_brkpts) (tDebug * dep);
+EXT void (rdecl * debug_moduleinfo) (tProcess * prp, tThread * thp, void *dbg);
 EXT void (*sched_trace_initial_parms)();
-EXT DISPATCH *(*init_scheduler)(void) INIT1(init_scheduler_default);
+EXT tDispatch *(*init_scheduler)(void) INIT1(init_scheduler_default);
 
 EXT uint64_t startup_stack[STARTUP_STACK_NBYTES / sizeof(uint64_t)] INIT1(__STACK_SIG);
 EXT int __ealready_value;
@@ -186,8 +183,8 @@ EXT volatile unsigned inkernel;
 EXT tThread *actives[PROCESSORS_MAX];
 #endif
 EXT int inspecret;
-EXT PROCESS *actives_prp[PROCESSORS_MAX];
-EXT PROCESS *aspaces_prp[PROCESSORS_MAX];
+EXT tProcess *actives_prp[PROCESSORS_MAX];
+EXT tProcess *aspaces_prp[PROCESSORS_MAX];
 EXT const struct fault_handlers *volatile xfer_handlers[PROCESSORS_MAX];
 EXT struct cpupage_entry *cpupageptr[PROCESSORS_MAX];
 #if !COND_EXT(HAVE_KERSTACK_STORAGE)
@@ -199,25 +196,23 @@ EXT tMemMgr memmgr;
 EXT memclass_id_t sys_memclass_id;  // generic system ram memory class
 EXT void (rdecl * mark_running) (tThread * act);
 EXT tThread *actives_pcr[PROCESSORS_MAX];
-EXT HASH sync_hash INIT1(0x3ff);    // Must be a mask
+EXT tHash sync_hash INIT1(0x3ff);    // Must be a mask
 
 
 // Interrupt path globals
-EXT INTREVENT *intrevent_pending;
+EXT tIntrEvent *intrevent_pending;
 EXT volatile unsigned queued_event_priority;
 EXT struct intrinfo_entry *intrinfoptr;
 EXT tIntrLevel *interrupt_level;
 EXT int intrs_aps_critical INIT1(1);
 EXT struct _thread_local_storage intr_tls INIT3(0, 0, &intr_tls.__errval);
 EXT int intrespsave;
-EXT struct sigevent intr_fault_event INIT3(SIGEV_SIGNAL_THREAD, {
-                                           SIGSEGV}, {
-                                           SI_IRQ});
+EXT struct sigevent intr_fault_event INIT3(SIGEV_SIGNAL_THREAD, {SIGSEGV}, {SI_IRQ});
 
 
 // Clock timer
 EXT char overrun;
-EXT INTERRUPT *clock_isr;
+EXT tInterrupt *clock_isr;
 EXT volatile uint8_t ticker_preamble;
 #if defined(COUNT_CYCLES)
 EXT uint64_t cycles;
@@ -225,9 +220,9 @@ EXT uint64_t cycles;
 EXT struct qtime_entry *qtimeptr;
 
 EXT struct syspage_entry *_syspage_ptr;
-EXT SSREPLENISH *ss_replenish_list;
+EXT tSchedReplenish *ss_replenish_list;
 EXT int (rdecl * scheduler_tick_hook) ();   /* return true if the current thread's timeslice should be ended */
-EXT int (rdecl * kerop_thread_create_hook) (tThread * act, PROCESS * prp,
+EXT int (rdecl * kerop_thread_create_hook) (tThread * act, tProcess * prp,
                                             const struct sigevent * evp,
                                             unsigned thread_create_flags, tThread * thp);
 EXT void (rdecl * kerop_thread_destroy_hook) (tThread * thp);
@@ -243,8 +238,8 @@ EXT int (*kdinvoke_hook)(union kd_request * r);
 EXT void (rdecl * interrupt_hook) (tIntrLevel * ilp);
 EXT void (rdecl * sync_mutex_lock_hook_for_block) (tThread * thp);
 EXT void (rdecl * clock_handler_hook_for_ts_preemption) (tThread * act, unsigned int reschedl);
-EXT void (rdecl * sync_create_hook) (PROCESS * prp);
-EXT void (rdecl * sync_destroy_hook) (PROCESS * prp, sync_t * sync);
+EXT void (rdecl * sync_create_hook) (tProcess * prp);
+EXT void (rdecl * sync_destroy_hook) (tProcess * prp, sync_t * sync);
 EXT uint64_t(rdecl * intrevent_drain_hook_enter) (void);
 EXT void (rdecl * intrevent_drain_hook_exit) (uint64_t id_hook_context);    //parm is output of interevent_drain_hook_enter
 EXT void (rdecl * timer_expiry_hook_max_timer_fires) (unsigned int nfires);
@@ -258,26 +253,28 @@ EXT uintptr_t mt_tracebuf_addr;
 
 // Object allocator - put most-used object pools at beginning.
 EXT int alloc_critical;
-EXT tSoul pulse_souls INITSOUL(LIMITS_PULSE, sizeof(PULSE), 64, SOUL_CRITICAL, 0);
-EXT tSoul sync_souls INITSOUL(LIMITS_SYNC, sizeof(SYNC), 64, 0, 0);
-EXT tSoul timer_souls INITSOUL(LIMITS_TIMER, sizeof(TIMER), 12, 0, 0);
+EXT tSoul pulse_souls INITSOUL(LIMITS_PULSE, sizeof(tPulse), 64, SOUL_CRITICAL, 0);
+EXT tSoul sync_souls INITSOUL(LIMITS_SYNC, sizeof(tSync), 64, 0, 0);
+EXT tSoul timer_souls INITSOUL(LIMITS_TIMER, sizeof(tTimer), 12, 0, 0);
 EXT tSoul thread_souls INITSOUL(LIMITS_THREAD, sizeof(tThread), 24, 0, 0);
-EXT tSoul connect_souls INITSOUL(LIMITS_CONNECT, sizeof(CONNECT), 64, 0, 0);
+EXT tSoul connect_souls INITSOUL(LIMITS_CONNECT, sizeof(tConnect), 64, 0, 0);
 EXT tSoul channel_souls INITSOUL(LIMITS_CHANNEL, sizeof(tChannel), 8, 0, 0);
-EXT tSoul process_souls INITSOUL(LIMITS_PROCESS, sizeof(PROCESS), 12, 0, 0);
-EXT tSoul chasync_souls INITSOUL(LIMITS_CHANNEL, sizeof(CHANNELASYNC), 8, 0, 0);
-EXT tSoul chgbl_souls INITSOUL(LIMITS_CHANNEL, sizeof(CHANNELGBL), 8, 0, 0);
-EXT tSoul interrupt_souls INITSOUL(LIMITS_INTERRUPT, sizeof(INTERRUPT), 8, 0, 0);
-EXT tSoul syncevent_souls INITSOUL(LIMITS_SYNCEVENT, sizeof(SYNCEVENT), 4, 0, 0);
+EXT tSoul process_souls INITSOUL(LIMITS_PROCESS, sizeof(tProcess), 12, 0, 0);
+#ifdef CONFIG_ASYNC_MSG
+EXT tSoul chasync_souls INITSOUL(LIMITS_CHANNEL, sizeof(tChannelAsync), 8, 0, 0);
+#endif
+EXT tSoul chgbl_souls INITSOUL(LIMITS_CHANNEL, sizeof(tChannelGbl), 8, 0, 0);
+EXT tSoul interrupt_souls INITSOUL(LIMITS_INTERRUPT, sizeof(tInterrupt), 8, 0, 0);
+EXT tSoul syncevent_souls INITSOUL(LIMITS_SYNCEVENT, sizeof(tSyncEvent), 4, 0, 0);
 EXT tSoul fpu_souls INITSOUL(0, sizeof(FPU_REGISTERS), 4, 0, FPUDATA_ALIGN);
-EXT tSoul sigtable_souls INITSOUL(0, sizeof(SIGTABLE), 8, 0, 0);
-EXT tSoul client_souls INITSOUL(0, sizeof(CLIENT), 4, 0, 0);
-EXT tSoul credential_souls INITSOUL(0, sizeof(CREDENTIAL), 4, 0, 0);
-EXT tSoul limits_souls INITSOUL(0, sizeof(LIMITS), 4, 0, 0);
+EXT tSoul sigtable_souls INITSOUL(0, sizeof(tSigTable), 8, 0, 0);
+EXT tSoul client_souls INITSOUL(0, sizeof(tClientInfo), 4, 0, 0);
+EXT tSoul credential_souls INITSOUL(0, sizeof(tCredential), 4, 0, 0);
+EXT tSoul limits_souls INITSOUL(0, sizeof(tLimits), 4, 0, 0);
 EXT tSoul vthread_souls INITSOUL(0, SIZEOF_VTHREAD, 4, 0, 0);
-EXT tSoul debug_souls INITSOUL(0, sizeof(DEBUG), 1, 0, 0);
-EXT tSoul breakpt_souls INITSOUL(0, sizeof(BREAKPT), 1, SOUL_CRITICAL, 0);
-EXT tSoul ssinfo_souls INITSOUL(0, sizeof(SSINFO), 1, 0, 0);
+EXT tSoul debug_souls INITSOUL(0, sizeof(tDebug), 1, 0, 0);
+EXT tSoul breakpt_souls INITSOUL(0, sizeof(tBreakpoint), 1, SOUL_CRITICAL, 0);
+EXT tSoul ssinfo_souls INITSOUL(0, sizeof(tSchedInfo), 1, 0, 0);
 EXT tSoul threadname_souls INITSOUL(0, THREAD_NAME_FIXED_SIZE, 1, 0, 0);
 
 
@@ -287,7 +284,7 @@ EXT int (rdecl * may_thread_run) (tThread * thp);
 EXT void (rdecl * block_and_ready) (tThread * thp);
 EXT void (rdecl * ready) (tThread * thp);
 EXT tThread *(rdecl * select_thread) (tThread * act, int cpu, int prio);
-EXT void (rdecl * adjust_priority) (tThread * thp, int prio, DISPATCH * dpp, int priority_inherit);
+EXT void (rdecl * adjust_priority) (tThread * thp, int prio, tDispatch * dpp, int priority_inherit);
 EXT void (rdecl * resched) (void);
 EXT void (rdecl * yield) (void);
 

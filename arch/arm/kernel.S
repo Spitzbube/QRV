@@ -272,7 +272,7 @@ cpunum:	.byte 0
 	.align 2
 	.text
 
-__specret_mask:		.word	_NTO_TF_SPECRET_MASK
+__specret_mask:		.word	QRV_FLG_THR_SPECRET_MASK
 .ifndef	VARIANT_v6
 __enable_domains:	.word	0x55555555
 .endif
@@ -525,8 +525,8 @@ __ker_entry_save:
 	/*
 	 * Clear act->flags and set act->syscall
 	 */
-	bic		r2, r2, #_NTO_TF_KERERR_SET
-	bic		r2, r2, #_NTO_TF_BUFF_MSG
+	bic		r2, r2, #QRV_FLG_THR_KERERR_SET
+	bic		r2, r2, #QRV_FLG_THR_BUFF_MSG
 	str		r2, [r4, #TFLAGS]
 	str		ip, [r4, #SYSCALL]
 
@@ -1180,9 +1180,9 @@ __fixup_kcall:
 	 * at the libc error handling code in the system call stub.
 	 */
 	ldr		ip, [r4, #TFLAGS]
-	tst		ip, #_NTO_TF_KERERR_SET
+	tst		ip, #QRV_FLG_THR_KERERR_SET
 	bne		__ker_exit
-	orr		ip, ip, #_NTO_TF_KERERR_SET
+	orr		ip, ip, #QRV_FLG_THR_KERERR_SET
 	str		ip, [r4, #TFLAGS]
 	ldr		ip, [r4, #REG_OFF + ARM_REG_PC*4]
 	add		ip, ip, #KERERR_SKIPAHEAD
@@ -2002,14 +2002,14 @@ __abt_common:
 
 	/*
 	 * Check if we need to do alignment fault emulation:
-	 * (fsr == 1 || fsr == 3) && (thp->flags & _NTO_TF_ALIGN_FAULT) == 0
+	 * (fsr == 1 || fsr == 3) && (thp->flags & QRV_FLG_THR_ALIGN_FAULT) == 0
 	 */
 	and		r1, r6, #0xf
 	teq		r1, #1
 	teqne	r1, #3
 	bne		0f
 	ldr		r1, [r4, #TFLAGS]
-	tst		r1, #_NTO_TF_ALIGN_FAULT
+	tst		r1, #QRV_FLG_THR_ALIGN_FAULT
 	bne		0f
 
 	/*

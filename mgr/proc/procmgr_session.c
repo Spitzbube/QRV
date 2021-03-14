@@ -30,10 +30,10 @@ int procmgr_sleader_detach(PROCESS * prp)
 {
     int fd = -1;
 
-    if (prp->flags & _NTO_PF_SLEADER) {
+    if (prp->flags & QRV_FLG_PROC_SLEADER) {
         SESSION *sep;
 
-        prp->flags &= ~_NTO_PF_SLEADER;
+        prp->flags &= ~QRV_FLG_PROC_SLEADER;
         if ((sep = prp->session)) {
             fd = sep->fd;
             sep->fd = -1;
@@ -62,7 +62,7 @@ int procmgr_msg_session(resmgr_context_t * ctp, proc_session_t * msg)
                 return EL2HLT;
             }
 
-            if (!(prp->flags & _NTO_PF_SLEADER) || !(sep = prp->session)
+            if (!(prp->flags & QRV_FLG_PROC_SLEADER) || !(sep = prp->session)
                 || msg->i.sid != sep->leader) {
                 return proc_error(EPERM, prp);
             }
@@ -146,7 +146,7 @@ int procmgr_msg_session(resmgr_context_t * ctp, proc_session_t * msg)
             return EL2HLT;
         }
         // Must not already be a session or process group leader
-        if ((prp->flags & _NTO_PF_SLEADER) || prp->pgrp == prp->pid) {
+        if ((prp->flags & QRV_FLG_PROC_SLEADER) || prp->pgrp == prp->pid) {
             return proc_error(EPERM, prp);
         }
         //TODO: There must be no other processes that have this pid as their group PR 1653
@@ -168,7 +168,7 @@ int procmgr_msg_session(resmgr_context_t * ctp, proc_session_t * msg)
             // This should only happen if the session leader died...
             _ksfree(prp->session, sizeof *prp->session);
         }
-        prp->flags |= _NTO_PF_SLEADER;
+        prp->flags |= QRV_FLG_PROC_SLEADER;
         prp->session = sep;
         ctp->status = prp->pgrp = prp->pid;
 
@@ -184,7 +184,7 @@ int procmgr_msg_session(resmgr_context_t * ctp, proc_session_t * msg)
                 break;
             }
             if (!(prp = proc_lock_pid(msg->i.sid)) ||
-                !(prp->flags & _NTO_PF_SLEADER) || !(sep = prp->session) || sep->fd < 0) {
+                !(prp->flags & QRV_FLG_PROC_SLEADER) || !(sep = prp->session) || sep->fd < 0) {
                 return proc_error(EINVAL, prp);
             }
 
@@ -241,7 +241,7 @@ int procmgr_msg_session(resmgr_context_t * ctp, proc_session_t * msg)
             break;
         }
         if (!(prp = proc_lock_pid(msg->i.sid)) ||
-            !(prp->flags & _NTO_PF_SLEADER) || !(sep = prp->session) || sep->fd < 0) {
+            !(prp->flags & QRV_FLG_PROC_SLEADER) || !(sep = prp->session) || sep->fd < 0) {
             return proc_error(EINVAL, prp);
         }
         SignalKill(ND_LOCAL_NODE, sep->leader, 0, msg->i.id, SI_USER, 0);

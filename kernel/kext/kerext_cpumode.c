@@ -45,5 +45,3 @@ int SysCpumode(int mode)
 {
     return __Ring0(cpumode, (void *) mode);
 }
-
-__SRCVERSION("kerext_cpumode.c $Rev: 153052 $");

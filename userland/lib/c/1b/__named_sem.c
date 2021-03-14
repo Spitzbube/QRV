@@ -72,7 +72,7 @@ struct nsem		*sem, *n;
 					return(&n->object);
 				}
 			}
-			sem->object.__owner = _NTO_SYNC_NAMED_SEM;
+			sem->object.__owner = QRV_SYNC_NAMED_SEM;
 			sem->refcnt = 1;
 			sem->link = _semctrl.nsems;
 			_semctrl.nsems = sem;

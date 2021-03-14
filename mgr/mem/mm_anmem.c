@@ -90,5 +90,3 @@ void anmem_unoffset(OBJECT * obp, off64_t off, size_t size)
     //RUSH2: nothing to do right now. See above.
     //RUSH2: Might turn out better passing the va in, rather than the offset.
 }
-
-__SRCVERSION("mm_anmem.c $Rev: 211761 $");

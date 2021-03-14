@@ -209,7 +209,7 @@ int kdecl ker_signal_return(THREAD * act, struct kerargs_signal_return *kap)
     // If the signal interrupted while waiting for a mutex then we set
     // a flag to attempt to reaquire it in specialret() before returning.
     if (ssp->mutex) {
-        act->flags |= _NTO_TF_ACQUIRE_MUTEX;
+        act->flags |= QRV_FLG_THR_ACQUIRE_MUTEX;
         act->args.mu.mutex = ssp->mutex;
         act->args.mu.saved_timeout_flags = ssp->mutex_timeout_flags;
         act->args.mu.incr = ssp->mutex_acquire_incr;
@@ -224,14 +224,14 @@ int kdecl ker_signal_return(THREAD * act, struct kerargs_signal_return *kap)
 
 //          You'd think we'd have to activate the timeout timer here, but
 //          we're not actually actually blocked at this point. When the
-//          _NTO_TF_ACQUIRE_MUTEX code runs in specret it will call block()
+//          QRV_FLG_THR_ACQUIRE_MUTEX code runs in specret it will call block()
 //          (if needed) and that will activate the timer.
 //          timer_activate(act->timeout);
         }
     }
 
     // Restore the "error set" flag if it was on originally.
-    act->flags |= ssp->old_flags & _NTO_TF_KERERR_SET;
+    act->flags |= ssp->old_flags & QRV_FLG_THR_KERERR_SET;
 
     // Restore saved signal blocked mask.
     signal_block(act, &ssp->sig_blocked);
@@ -330,7 +330,7 @@ int kdecl ker_signal_action(THREAD * act, struct kerargs_signal_action *kap)
         // We keep the NOCLDSTOP indication in the process flags and
         // the queued flags in process sig_queue.
         if (kap->signo == SIGCHLD) {
-            if (prp->flags & _NTO_PF_NOCLDSTOP) {
+            if (prp->flags & QRV_FLG_PROC_NOCLDSTOP) {
                 oact->sa_flags |= SA_NOCLDSTOP;
             }
             if (SIG_TST(prp->sig_ignore, kap->signo)) {
@@ -356,9 +356,9 @@ int kdecl ker_signal_action(THREAD * act, struct kerargs_signal_action *kap)
         // We keep NOCLDSTOP indication in the process flags.
         if (kap->signo == SIGCHLD) {
             if (new.sa_flags & SA_NOCLDSTOP) {
-                prp->flags |= _NTO_PF_NOCLDSTOP;
+                prp->flags |= QRV_FLG_PROC_NOCLDSTOP;
             } else {
-                prp->flags &= ~_NTO_PF_NOCLDSTOP;
+                prp->flags &= ~QRV_FLG_PROC_NOCLDSTOP;
             }
             if (new.sa_flags & SA_NOCLDWAIT) {
                 // @@@ Should remember original sa_handler
@@ -557,7 +557,7 @@ int kdecl ker_signal_suspend(THREAD * act, struct kerargs_signal_suspend *kap)
     signal_block(act, &bits);
 
     // Are there any unblocked signals queued on this process.
-    if ((act->flags & _NTO_TF_SIG_ACTIVE) == 0) {
+    if ((act->flags & QRV_FLG_THR_SIG_ACTIVE) == 0) {
         // No signal queued so we will attempt to block.
 
         // Check for an immediate timeout.
@@ -576,14 +576,14 @@ int kdecl ker_signal_suspend(THREAD * act, struct kerargs_signal_suspend *kap)
         act->state = STATE_SIGSUSPEND;
         _TRACE_TH_EMIT_STATE(act, SIGSUSPEND);
         block();
-        act->flags |= _NTO_TF_SIGSUSPEND;
+        act->flags |= QRV_FLG_THR_SIGSUSPEND;
         // Try to optimize signal delivery by looking at this thread first.
         act->process->sigtid_cache = act->tid;
     } else {
         // A signal is queued so force immediate error return.
         // Mask will be restored in specialret().
         kererr(act, EINTR);
-        act->flags |= _NTO_TF_SIGSUSPEND;
+        act->flags |= QRV_FLG_THR_SIGSUSPEND;
     }
     return ENOERROR;
 }
@@ -711,9 +711,7 @@ int kdecl ker_signal_fault(THREAD * act, struct kerargs_signal_fault *kap)
         usr_fault(MAKE_SIGCODE(SIGTRAP, TRAP_TRACE, FLTTRACE), act, addr);
     } else {
         // Make setting this bit stops other code from changeing the IP
-        act->flags |= _NTO_TF_KERERR_SET;
+        act->flags |= QRV_FLG_THR_KERERR_SET;
     }
     return ENOERROR;
 }
-
-__SRCVERSION("ker_signal.c $Rev: 204340 $");

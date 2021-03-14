@@ -51,12 +51,12 @@ static rsrcmgr_schedpart_fnctbl_t *rsrcmgr_schedpart_fnctbl = NULL;
  * against it. This eliminates a jump to unneeded stub routines
 */
 /* the following are proxy functions for when the scheduler partitioning module is not installed */
-static int schedpart_proc_disassociate(PROCESS * prp, part_id_t schedpart_id, ext_lockfncs_t * lf);
-static int schedpart_proc_associate(PROCESS * prp, part_id_t schedpart_id,
+static int schedpart_proc_disassociate(tProcess * prp, part_id_t schedpart_id, ext_lockfncs_t * lf);
+static int schedpart_proc_associate(tProcess * prp, part_id_t schedpart_id,
                                     schedpart_dcmd_flags_t flags, ext_lockfncs_t * lf);
-static int schedpart_getlist(PROCESS * prp, part_list_t * spart_list, int n,
+static int schedpart_getlist(tProcess * prp, part_list_t * spart_list, int n,
                              schedpart_flags_t flags, struct _cred_info *cred);
-static schedpart_node_t *schedpart_nodeget(PROCESS * prp);
+static schedpart_node_t *schedpart_nodeget(tProcess * prp);
 static void proxy_schedpart_init(part_id_t spid, sched_aps_partition_info * aps_info);
 static int _schedpart_validate_association(part_id_t spid, struct _cred_info *cred);
 
@@ -88,7 +88,7 @@ static part_id_t _schedpart_create(part_id_t parent_spid, const char *name,
 static int _schedpart_destroy(part_id_t spid);
 static int _schedpart_config(part_id_t spid, schedpart_cfg_t * cfg, unsigned key);
 static schedpart_info_t *_schedpart_getinfo(part_id_t spid, schedpart_info_t * info);
-static PROCESS *_schedpart_find_pid(pid_t pid, part_id_t spid);
+static tProcess *_schedpart_find_pid(pid_t pid, part_id_t spid);
 static int _validate_cfg_creation(part_id_t parent_mpid, schedpart_cfg_t * cfg);
 static int _validate_cfg_modification(part_id_t mpid, schedpart_cfg_t * cfg);
 static schedpart_rsrcmgr_fnctbl_t _schedpart_rsrcmgr_fnctbl = {
@@ -134,7 +134,7 @@ void (*schedpart_init)(part_id_t spid, sched_aps_partition_info * aps_info) = pr
  * in kerext_process_create().
  * If the aps module is not installed, it will remain NULL
 */
-DISPATCH *(*schedpart_select_dpp)(PROCESS * prp, int id) = NULL;
+DISPATCH *(*schedpart_select_dpp)(tProcess * prp, int id) = NULL;
 
 /*
  * default_schedpart_flags
@@ -249,7 +249,7 @@ static int _list_audit(part_qnodehdr_t * list)
 /* internal prototypes */
 static part_id_t i_schedpart_create(part_id_t parent_spid, const char *name,
                                     schedpart_cfg_t * child_cfg, part_id_t spid);
-static int schedpart_proc_disassociate_1(PROCESS * prp, schedpart_t * spart, ext_lockfncs_t * lf);
+static int schedpart_proc_disassociate_1(tProcess * prp, schedpart_t * spart, ext_lockfncs_t * lf);
 static int schedpart_validate_association(schedpart_t * spart, struct _cred_info *cred);
 
 /*******************************************************************************
@@ -295,7 +295,7 @@ void _schedpart_init(part_id_t spid, sched_aps_partition_info * aps_info)
  * Returns: the partition pointer or NULL if no partition of the scheduler class
  * 			is associated with the process
 */
-part_id_t schedpart_getid(PROCESS * prp)
+part_id_t schedpart_getid(tProcess * prp)
 {
     if (prp == NULL)
         return SCHEDPART_T_TO_ID(sys_schedpart);
@@ -495,7 +495,7 @@ schedpart_t *schedpart_vec_del(part_id_t spid)
  *
  * Returns EOK or an errno
 */
-static int schedpart_proc_associate(PROCESS * prp, part_id_t schedpart_id,
+static int schedpart_proc_associate(tProcess * prp, part_id_t schedpart_id,
                                     schedpart_dcmd_flags_t flags, ext_lockfncs_t * lf)
 {
     schedpart_t *schedpart = SCHEDPART_ID_TO_T(schedpart_id);
@@ -561,7 +561,7 @@ static int schedpart_proc_associate(PROCESS * prp, part_id_t schedpart_id,
  * Otherwise, the process is disassociated from partition <schedpart_id>.
  * _schedpart_proc_disassociate_1() actually does the work.
 */
-static int schedpart_proc_disassociate(PROCESS * prp, part_id_t schedpart_id, ext_lockfncs_t * lf)
+static int schedpart_proc_disassociate(tProcess * prp, part_id_t schedpart_id, ext_lockfncs_t * lf)
 {
     CRASHCHECK(prp == NULL);
 
@@ -597,7 +597,7 @@ static int schedpart_proc_disassociate(PROCESS * prp, part_id_t schedpart_id, ex
  * Since there are no actual partitions, this function always returns the
  * same thing
 */
-static int schedpart_getlist(PROCESS * prp, part_list_t * spart_list, int n,
+static int schedpart_getlist(tProcess * prp, part_list_t * spart_list, int n,
                              schedpart_flags_t flags, struct _cred_info *cred)
 {
     schedpart_node_t *sp_node;
@@ -661,7 +661,7 @@ static int schedpart_getlist(PROCESS * prp, part_list_t * spart_list, int n,
  * Since there are no actual partitions, this function always returns the
  * same thing
 */
-static schedpart_node_t *schedpart_nodeget(PROCESS * prp)
+static schedpart_node_t *schedpart_nodeget(tProcess * prp)
 {
 //  CRASHCHECK(!SCHEDPART_INSTALLED());
     CRASHCHECK(prp == NULL);
@@ -702,7 +702,7 @@ static int _schedpart_validate_association(part_id_t spid, struct _cred_info *cr
 
 /* remove this when we no longer support WATCOM, or WATCOM supports inlines */
 #if (defined(__WATCOMC__) || !defined(NDEBUG))
-void *_select_dpp(PROCESS * prp, part_id_t spid)
+void *_select_dpp(tProcess * prp, part_id_t spid)
 {
     if (!SCHEDPART_INSTALLED() || !apmgr_module_installed() || (schedpart_select_dpp == NULL)) {
         return NULL;
@@ -730,7 +730,7 @@ void *_select_dpp(PROCESS * prp, part_id_t spid)
  *
  * Returns: EOK on success, otherwise and errno
 */
-static int schedpart_proc_disassociate_1(PROCESS * prp, schedpart_t * spart, ext_lockfncs_t * lf)
+static int schedpart_proc_disassociate_1(tProcess * prp, schedpart_t * spart, ext_lockfncs_t * lf)
 {
     schedpart_node_t *n;
 
@@ -1152,12 +1152,12 @@ static schedpart_info_t *_schedpart_getinfo(part_id_t spid, schedpart_info_t * i
  * 			the partition associated instead of whether the partition has the
  * 			process in its list
  *
- * Returns: a PROCESS pointer if found, NULL otherwise
+ * Returns: a tProcess pointer if found, NULL otherwise
  *
 */
-static PROCESS *_schedpart_find_pid(pid_t pid, part_id_t spid)
+static tProcess *_schedpart_find_pid(pid_t pid, part_id_t spid)
 {
-    PROCESS *prp;
+    tProcess *prp;
 
     if ((prp = proc_lookup_pid(pid)) != NULL) {
 #if 1                           // this is the FIX ME - not implemented in apm.c yet

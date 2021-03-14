@@ -252,5 +252,3 @@ int kdecl ker_clock_id(THREAD * act, struct kerargs_clock_id *kap)
 
     return ENOERROR;
 }
-
-__SRCVERSION("ker_clock.c $Rev: 163913 $");

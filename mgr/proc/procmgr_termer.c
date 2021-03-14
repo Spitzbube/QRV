@@ -48,7 +48,7 @@ static int termer_done(resmgr_context_t * ctp, union proc_msg_union *msg, PROCES
         if (prp->session && prp->session->pgrp == PROCMGR_PID) {
             procmgr_trigger(PROCMGR_EVENT_DAEMON_DEATH);
         }
-        if (prp->flags & _NTO_PF_SLEADER) {
+        if (prp->flags & QRV_FLG_PROC_SLEADER) {
             fd = procmgr_sleader_detach(prp);
         }
     }
@@ -97,8 +97,8 @@ static int termer_done(resmgr_context_t * ctp, union proc_msg_union *msg, PROCES
         ProcessRestore(vip->rcvid, &vip->tls, vip->frame, vip->frame_base, vip->frame_size);
         ProcessBind(0);
     }
-    prp->flags |= _NTO_PF_ZOMBIE;
-    prp->flags &= ~(_NTO_PF_TERMING | _NTO_PF_RING0);
+    prp->flags |= QRV_FLG_PROC_ZOMBIE;
+    prp->flags &= ~(QRV_FLG_PROC_TERMING | QRV_FLG_PROC_RING0);
 
     pid = prp->pid;
 
@@ -137,7 +137,7 @@ static void termer_start(resmgr_context_t * ctp, union proc_msg_union *msg, PROC
 #endif
 
     // setup process so it can run the terminator thread
-    prp->flags |= _NTO_PF_RING0;
+    prp->flags |= QRV_FLG_PROC_RING0;
 
     // clear any pending wait's
     while ((wap = prp->wap)) {
@@ -178,20 +178,20 @@ int procmgr_termer(message_context_t * mctp, int code, unsigned flags, void *han
 
     if ((prp = proc_lock_pid(pid))) {
         if (prp->threads.nentries == prp->threads.nfree) {
-            if (prp->flags & _NTO_PF_LOADING) {
+            if (prp->flags & QRV_FLG_PROC_LOADING) {
                 loader_exit(ctp, msg, prp);
                 // Let termer clean up any resources that may have been allocated
-                prp->flags &= ~(_NTO_PF_LOADING | _NTO_PF_RING0);
-                prp->flags |= _NTO_PF_NOZOMBIE;
+                prp->flags &= ~(QRV_FLG_PROC_LOADING | QRV_FLG_PROC_RING0);
+                prp->flags |= QRV_FLG_PROC_NOZOMBIE;
             }
-            if (prp->flags & _NTO_PF_TERMING) {
+            if (prp->flags & QRV_FLG_PROC_TERMING) {
                 if ((prp->lcp == NULL) || !(prp->lcp->state & LC_TERMER_FINISHED)) {
                     termer_start(ctp, msg, prp);    // start the termination thread
                 } else {
                     fd = termer_done(ctp, msg, prp);    // cleanup termer context, and send SIGCHLD's
                 }
             }
-            if (!(prp->flags & (_NTO_PF_LOADING | _NTO_PF_TERMING | _NTO_PF_WAITINFO))) {
+            if (!(prp->flags & (QRV_FLG_PROC_LOADING | QRV_FLG_PROC_TERMING | QRV_FLG_PROC_WAITINFO))) {
                 pid_t pid2;
                 PROCESS *parent;
                 uint64_t sleepl = 1;

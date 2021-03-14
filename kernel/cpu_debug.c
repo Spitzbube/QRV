@@ -30,7 +30,7 @@
 
 /*
  * This routine does enables debugging on a thread. The thread
- * flag _NTO_TF_SSTEP is also set on this thread, so this could
+ * flag QRV_FLG_THR_SSTEP is also set on this thread, so this could
  * be used by the fault handler code if needed. If single stepping
  * is done throught temporary breakpoints, the temp information could
  * be stored in the cpu area off the DEBUG structure so the
@@ -40,7 +40,7 @@
  *   dep
  *      DEBUG structure attached to the process being debugged
  *   thp
- *      thread to debug (_NTO_TF_SSTEP) will be set if function succeeds
+ *      thread to debug (QRV_FLG_THR_SSTEP) will be set if function succeeds
  * On Exit:
  *   a errno is returned, single step will only occur if EOK is returned.
  */
@@ -161,5 +161,3 @@ int rdecl cpu_debug_set_altregs(THREAD * thp, debug_altreg_t * reg)
 
     return EINVAL;
 }
-
-__SRCVERSION("cpu_debug.c $Rev: 153052 $");

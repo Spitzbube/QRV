@@ -27,5 +27,3 @@ void rdecl smp_flush_tlb(void)
         }
     }
 }
-
-__SRCVERSION("smp_flush_tlb.c $Rev: 153052 $");

@@ -84,14 +84,14 @@ int rdecl sync_destroy(PROCESS * prp, sync_t * sync)
 
     // Make it invalid incase someone tried to use it in the future.
     // The owner must be zero or we are busy. If it is zero atomicly
-    // set it to _NTO_SYNC_DESTROYED (-2) to indicate it is destroyed.
+    // set it to QRV_SYNC_DESTROYED (-2) to indicate it is destroyed.
     // If the sync is a mutex owned by the caller, it can be destroyed.
     // If it is not a mutex also destroy the sync.
-    if ((owner = _smp_cmpxchg(&sync->__owner, 0, _NTO_SYNC_DESTROYED)) != 0 &&
-        SYNC_OWNER(act) != (owner & ~(_NTO_SYNC_WAITING)) && owner <= _NTO_SYNC_DEAD) {
+    if ((owner = _smp_cmpxchg(&sync->__owner, 0, QRV_SYNC_DESTROYED)) != 0 &&
+        SYNC_OWNER(act) != (owner & ~(QRV_SYNC_WAITING)) && owner <= _NTO_SYNC_DEAD) {
         return EBUSY;
     }
-    sync->__owner = _NTO_SYNC_DESTROYED;
+    sync->__owner = QRV_SYNC_DESTROYED;
 
     // Force ready any threads blocked on the sync.
     // Note: This will only happen for semaphore since they have no concept
@@ -181,8 +181,8 @@ SYNC *rdecl sync_lookup(sync_t * sync, unsigned create)
         }
     }
     // If sync object not found, then we autoinit a sync
-    //UNLESS we said don't autocreate (create:_NTO_SYNC_INITIALIZER)
-    if ((sync->__owner != _NTO_SYNC_INITIALIZER) || (create == _NTO_SYNC_INITIALIZER)) {
+    //UNLESS we said don't autocreate (create:QRV_SYNC_INITIALIZER)
+    if ((sync->__owner != QRV_SYNC_INITIALIZER) || (create == _NTO_SYNC_INITIALIZER)) {
         kererr(act, EINVAL);
         return (NULL);
     }
@@ -193,7 +193,7 @@ SYNC *rdecl sync_lookup(sync_t * sync, unsigned create)
     }
 
     sync->__owner = create;
-    if (create == _NTO_SYNC_COND) {
+    if (create == QRV_SYNC_COND) {
         sync->__count = CLOCK_REALTIME;
     }
 
@@ -201,7 +201,7 @@ SYNC *rdecl sync_lookup(sync_t * sync, unsigned create)
     KER_PREEMPT(act, NULL);
 
   found_it:
-    if (sync->__owner == _NTO_SYNC_INITIALIZER) {
+    if (sync->__owner == QRV_SYNC_INITIALIZER) {
         kererr(act, EINVAL);
         return (NULL);
     }
@@ -236,7 +236,7 @@ void rdecl sync_wakeup(SYNC * syp, int all)
         switch (thp->state) {
         case STATE_MUTEX:
         case STATE_CONDVAR:
-            thp->flags |= _NTO_TF_ACQUIRE_MUTEX;
+            thp->flags |= QRV_FLG_THR_ACQUIRE_MUTEX;
             if (first) {
                 if (thp->priority > act->priority) {
                     // Make sure that the first (highest priority) blocked
@@ -385,7 +385,7 @@ synchash_rem(unsigned addr, tPathMgrObject * obp, unsigned addr1, unsigned addr2
                                 }
                             }
                         }
-                        sync->__owner = _NTO_SYNC_DEAD;
+                        sync->__owner = QRV_SYNC_DEAD;
 
                     }
                     // looking for any event attached to the mutex
@@ -425,7 +425,7 @@ synchash_rem(unsigned addr, tPathMgrObject * obp, unsigned addr1, unsigned addr2
 
                     if (event_state == EVENT_DELIVER) {
                         // supposed to deliver event, but no event found
-                        sync->__owner = _NTO_SYNC_DESTROYED;
+                        sync->__owner = QRV_SYNC_DESTROYED;
                         while ((thp = pril_first(&syp->waiting))) {
                             if (TYPE_MASK(thp->type) != TYPE_THREAD) {
                                 thp = pril_next(thp);
@@ -607,5 +607,3 @@ void mutex_holdlist_rem(SYNC * syp)
         next_thp->args.mu.prev = thp->args.mu.prev;
     }
 }
-
-__SRCVERSION("nano_sync.c $Rev: 193078 $");

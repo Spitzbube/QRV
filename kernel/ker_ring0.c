@@ -20,10 +20,10 @@
 /**
  * \brief Execute a given function in supervisor level.
  */
-int kdecl ker_ring0(THREAD * act, struct kerargs_ring0 *kap)
+int kdecl ker_ring0(tThread * act, struct kerargs_ring0 *kap)
 {
 
-    if ((act->process->flags & _NTO_PF_RING0) == 0) {
+    if ((act->process->flags & QRV_FLG_PROC_RING0) == 0) {
         return EPERM;
     }
 
@@ -34,7 +34,7 @@ int kdecl ker_ring0(THREAD * act, struct kerargs_ring0 *kap)
 /*
  * This is used for async_flags processing in the SMP kernel
  */
-int kdecl ker_nop(THREAD * act, struct kerargs_null *kap)
+int kdecl ker_nop(tThread * act, struct kerargs_null *kap)
 {
     return ENOERROR;
 }

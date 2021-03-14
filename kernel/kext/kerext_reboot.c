@@ -39,5 +39,3 @@ void RebootSystem(int abnormal)
     for (;;) {
     }
 }
-
-__SRCVERSION("kerext_reboot.c $Rev: 153052 $");

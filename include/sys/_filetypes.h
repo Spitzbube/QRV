@@ -22,8 +22,11 @@ typedef unsigned nlink_t;
 
 /* Block counts */
 typedef uint64_t blkcnt_t;
+typedef uint64_t blkcnt64_t;
 typedef uint64_t blksize_t;
 typedef uint64_t fsblkcnt_t;
+typedef uint64_t fsblkcnt64_t;
 typedef uint64_t fsfilcnt_t;
+typedef uint64_t fsfilcnt64_t;
 
 #endif

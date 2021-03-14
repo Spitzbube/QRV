@@ -22,5 +22,3 @@ int rdecl get_cpunum(void)
 {
     return 0;
 }
-
-__SRCVERSION("smp_get_cpunum.c $Rev: 153052 $");

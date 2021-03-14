@@ -114,7 +114,7 @@ struct loader_context_base {
 #define LOADER_STACK_SIZE (3*__PAGESIZE - sizeof(struct loader_context_base) - sizeof(union proc_msg_union))
 
 struct loader_context {
-    struct loader_context_base base;
+    struct loader_context_base ctx;
     uint32_t stack[LOADER_STACK_SIZE / sizeof(uint32_t)];
 
     /* The 'msg' field has to go on the end so that we can expand

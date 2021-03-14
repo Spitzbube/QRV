@@ -59,9 +59,4 @@ extern bankruptcy_info last_bankrupter;
 extern bankruptcy_info last_logged_bankrupter;
 
 
-extern int	last_bankrupting_ap;
-
-
-
-__SRCVERSION("aps_crit.h $Rev: 153052 $");
-
+extern int last_bankrupting_ap;

@@ -420,7 +420,7 @@
 	
 	# irq or exception entry. Need to clear kcall bits
 	lwz		%r3,TFLAGS(%r31)
-	bitclr	%r3,%r3,_NTO_TF_KCALL_ACTIVE
+	bitclr	%r3,%r3,QRV_FLG_THR_KCALL_ACTIVE
 	stw		%r3,TFLAGS(%r31)
 .endm
 

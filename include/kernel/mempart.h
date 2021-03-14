@@ -29,6 +29,7 @@
 #include <sys/part.h>
 #include <kernel/memclass.h>
 
+typedef _Uint32t mempart_id_t;
 
 /*
  * mempart_attr_t

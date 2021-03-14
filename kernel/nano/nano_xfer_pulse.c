@@ -92,5 +92,3 @@ int xferpulse(THREAD * dthp, IOV * dst, int parts, uint32_t code, uint32_t value
     SET_XFER_HANDLER(0);
     return (0);
 }
-
-__SRCVERSION("nano_xfer_pulse.c $Rev: 153052 $");

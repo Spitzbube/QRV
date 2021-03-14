@@ -56,22 +56,22 @@ __BEGIN_DECLS
  * Synchronization manifests and structures.
  */
 /* On count */
-#define _NTO_SYNC_NONRECURSIVE	0x80000000  /* mutexes */
-#define _NTO_SYNC_NOERRORCHECK	0x40000000  /* mutexes */
-#define _NTO_SYNC_PRIOCEILING	0x20000000  /* mutexes */
-#define _NTO_SYNC_PRIONONE	0x10000000  /* mutexes */
-#define _NTO_SYNC_COUNTMASK	0x00ffffff  /* mutexes */
+#define QRV_SYNC_NONRECURSIVE	0x80000000  /* mutexes */
+#define QRV_SYNC_NOERRORCHECK	0x40000000  /* mutexes */
+#define QRV_SYNC_PRIOCEILING	0x20000000  /* mutexes */
+#define QRV_SYNC_PRIONONE	0x10000000  /* mutexes */
+#define QRV_SYNC_COUNTMASK	0x00ffffff  /* mutexes */
 /* On owner */
-#define _NTO_SYNC_MUTEX_FREE	0x00000000  /*    0  mutexes, and old cond, sem, spin */
-#define _NTO_SYNC_WAITING	0x80000000  /* Top bit used with mutexes */
-#define _NTO_SYNC_OWNER_MASK	0x7fffffff  /* Owner used with mutexes */
-#define _NTO_SYNC_INITIALIZER	0xffffffff  /*   -1  count is 0=mutexes, 0(old),-5(new)=cond */
-#define _NTO_SYNC_DESTROYED	0xfffffffe  /*   -2  mutexes, cond, sem, spin */
-#define _NTO_SYNC_NAMED_SEM	0xfffffffd  /*   -3  sem (count is handle) */
-#define _NTO_SYNC_SEM		0xfffffffc  /*   -4  sem (count is value) */
-#define _NTO_SYNC_COND		0xfffffffb  /*   -5  cond (count is clockid) */
-#define _NTO_SYNC_SPIN		0xfffffffa  /*   -6  spin (count is internal) */
-#define _NTO_SYNC_DEAD		0xffffff00  /* -256  mutex (when a process dies with a mutex locked) */
+#define QRV_SYNC_MUTEX_FREE	0x00000000  /*    0  mutexes, and old cond, sem, spin */
+#define QRV_SYNC_WAITING	0x80000000  /* Top bit used with mutexes */
+#define QRV_SYNC_OWNER_MASK	0x7fffffff  /* Owner used with mutexes */
+#define QRV_SYNC_INITIALIZER	0xffffffff  /*   -1  count is 0=mutexes, 0(old),-5(new)=cond */
+#define QRV_SYNC_DESTROYED	0xfffffffe  /*   -2  mutexes, cond, sem, spin */
+#define QRV_SYNC_NAMED_SEM	0xfffffffd  /*   -3  sem (count is handle) */
+#define QRV_SYNC_SEM		0xfffffffc  /*   -4  sem (count is value) */
+#define QRV_SYNC_COND		0xfffffffb  /*   -5  cond (count is clockid) */
+#define QRV_SYNC_SPIN		0xfffffffa  /*   -6  spin (count is internal) */
+#define QRV_SYNC_DEAD		0xffffff00  /* -256  mutex (when a process dies with a mutex locked) */
 
 #define PTHREAD_DETACHSTATE_MASK	0x01
 #define PTHREAD_CREATE_JOINABLE		0x00
@@ -222,18 +222,18 @@ extern int pthread_setspecific(pthread_key_t __key, const void *__value);
 
 
 /* pthread synchronization prototypes */
-#define PTHREAD_MUTEX_INITIALIZER	{ _NTO_SYNC_NONRECURSIVE, _NTO_SYNC_INITIALIZER }
+#define PTHREAD_MUTEX_INITIALIZER	{ QRV_SYNC_NONRECURSIVE, QRV_SYNC_INITIALIZER }
 #if defined(__EXT_XOPEN_EX)
-#define PTHREAD_MUTEX_DEFAULT		0   /* ((int)(_NTO_SYNC_NONRECURSIVE)) */
-#define PTHREAD_MUTEX_ERRORCHECK	1   /* ((int)(_NTO_SYNC_NONRECURSIVE)) */
+#define PTHREAD_MUTEX_DEFAULT		0   /* ((int)(QRV_SYNC_NONRECURSIVE)) */
+#define PTHREAD_MUTEX_ERRORCHECK	1   /* ((int)(QRV_SYNC_NONRECURSIVE)) */
 #define PTHREAD_MUTEX_RECURSIVE		2   /* (0) */
-#define PTHREAD_MUTEX_NORMAL		3   /* ((int)(_NTO_SYNC_NONRECURSIVE|_NTO_SYNC_NOERRORCHECK)) */
+#define PTHREAD_MUTEX_NORMAL		3   /* ((int)(QRV_SYNC_NONRECURSIVE|QRV_SYNC_NOERRORCHECK)) */
 #endif
 #if defined(__EXT_QNX)
-#define PTHREAD_RMUTEX_INITIALIZER	{ 0, _NTO_SYNC_INITIALIZER }
+#define PTHREAD_RMUTEX_INITIALIZER	{ 0, QRV_SYNC_INITIALIZER }
 #endif
 
-#define PTHREAD_COND_INITIALIZER	{ (int)_NTO_SYNC_COND, _NTO_SYNC_INITIALIZER }
+#define PTHREAD_COND_INITIALIZER	{ (int)QRV_SYNC_COND, QRV_SYNC_INITIALIZER }
 
 #define PTHREAD_PROCESSSHARED_MASK	0x01
 #define PTHREAD_PROCESS_PRIVATE		0x00
@@ -247,21 +247,21 @@ extern int pthread_setspecific(pthread_key_t __key, const void *__value);
 #define PTHREAD_ERRORCHECK_ENABLE	0x00
 #define PTHREAD_ERRORCHECK_DISABLE	0x04
 
-#define _NTO_ATTR_FLAGS			0x0000ffff  /* These flags are verified for each type */
+#define QRV_ATTR_FLAGS			0x0000ffff  /* These flags are verified for each type */
 
-#define _NTO_ATTR_MASK			0x000f0000
-#define _NTO_ATTR_UNKNOWN		0x00000000
-#define _NTO_ATTR_MUTEX			0x00010000
-#define _NTO_ATTR_COND			0x00020000
-#define _NTO_ATTR_RWLOCK		0x00030000
-#define _NTO_ATTR_BARRIER		0x00040000
+#define QRV_ATTR_MASK			0x000f0000
+#define QRV_ATTR_UNKNOWN		0x00000000
+#define QRV_ATTR_MUTEX			0x00010000
+#define QRV_ATTR_COND			0x00020000
+#define QRV_ATTR_RWLOCK		0x00030000
+#define QRV_ATTR_BARRIER		0x00040000
 
 #define PTHREAD_MUTEX_TYPE		0x40000000  /* non-default mutex type */
 /*
  * Used to identify that more than the first three ints
  * of struct _sync_attr are valid. This is for compatibility with old apps
  */
-#define _NTO_ATTR_EXTRA_FLAG		0x80000000
+#define QRV_ATTR_EXTRA_FLAG		0x80000000
 
 /*
  * These are inline mutex macros that do not perform error checking
@@ -271,7 +271,7 @@ extern int pthread_setspecific(pthread_key_t __key, const void *__value);
  */
 #define __mutex_lock(__m)	(__mutex_smp_cmpxchg(&(__m)->__owner, 0, __tls()->__owner) ? SyncMutexLock_r(__m) : 0 /* EOK */)
 #define __mutex_trylock(__m)	(__mutex_smp_cmpxchg(&(__m)->__owner, 0, __tls()->__owner) ? 16 /* EBUSY */ : 0 /* EOK */)
-#define __mutex_unlock(__m)	((__mutex_smp_xchg(&(__m)->__owner, 0) & _NTO_SYNC_WAITING) ? __cpu_membarrier(), SyncMutexUnlock_r((__m)) : 0 /* EOK */)
+#define __mutex_unlock(__m)	((__mutex_smp_xchg(&(__m)->__owner, 0) & QRV_SYNC_WAITING) ? __cpu_membarrier(), SyncMutexUnlock_r((__m)) : 0 /* EOK */)
 #if defined(__EXT_QNX)
 #define _mutex_lock(__m)	__mutex_lock(__m)
 #define _mutex_trylock(__m)	__mutex_trylock(__m)
@@ -305,8 +305,8 @@ extern int pthread_mutex_unlock(pthread_mutex_t * __mutex);
 #if defined(__INLINE_FUNCTIONS__) && 0  /* Not needed yet... */
 #define pthread_mutex_lock(__m)		(__mutex_smp_cmpxchg(&(__m)->__owner, 0, __tls()->__owner) ? (pthread_mutex_lock)(__m) : ((__m)->__count++, 0/* EOK */))
 #define pthread_mutex_trylock(__m)	(__mutex_smp_cmpxchg(&(__m)->__owner, 0, __tls()->__owner) ? 16 /* EBUSY */ : ((__m)->__count++, 0 /* EOK */))
-#define pthread_mutex_unlock(__m)	(((__m)->__owner & ~_NTO_SYNC_WAITING) == __tls()->__owner ? (--(__m)->__count <= 0 && \
-									(__cpu_membarrier(), (__mutex_smp_xchg(&(__m)->__owner, 0) & _NTO_SYNC_WAITING)) ? SyncMutexUnlock_r(__m) : 0 /* EOK */) : 1 /* EPERM */)
+#define pthread_mutex_unlock(__m)	(((__m)->__owner & ~QRV_SYNC_WAITING) == __tls()->__owner ? (--(__m)->__count <= 0 && \
+									(__cpu_membarrier(), (__mutex_smp_xchg(&(__m)->__owner, 0) & QRV_SYNC_WAITING)) ? SyncMutexUnlock_r(__m) : 0 /* EOK */) : 1 /* EPERM */)
 #if defined(__EXT_QNX)          /* Approved 1003.1d D14 */
 #define pthread_mutex_timedlock(__m, __t)	(__mutex_smp_cmpxchg(&(__m)->__owner, 0, __tls()->__owner) ? (pthread_mutex_timedlock)((__m), (__t)) : 0 /* EOK */)
 #endif

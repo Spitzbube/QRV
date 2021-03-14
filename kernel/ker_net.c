@@ -96,7 +96,7 @@ int kdecl ker_net_vtid(THREAD * act, struct kerargs_net_vtid *kap)
     vthp->type = TYPE_VTHREAD;
     vthp->dpp = net.prp->default_dpp;
     vthp->tid = kap->info->tid - 1;
-    vthp->flags |= _NTO_TF_TO_BE_STOPPED;   // To stop it from ever running
+    vthp->flags |= QRV_FLG_THR_TO_BE_STOPPED;   // To stop it from ever running
     vthp->state = STATE_STOPPED;
     vthp->args.ms.coid = kap->info->coid;
     vthp->process = act->process;

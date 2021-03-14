@@ -29,7 +29,7 @@
 static int validate_vaddr(PROCESS * prp, uintptr_t vaddr, size_t len, int flags)
 {
 
-    if (prp->flags & _NTO_PF_TERMING) {
+    if (prp->flags & QRV_FLG_PROC_TERMING) {
         // If we're terminating, we're running code in procnto and can
         // trust the values - sometimes we need to pass in things that
         // would normally be illegal.

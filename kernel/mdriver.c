@@ -165,5 +165,3 @@ int
     mdriver_num = last + 1;
     return count;
 }
-
-__SRCVERSION("mdriver.c $Rev: 153052 $");

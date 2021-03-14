@@ -71,8 +71,6 @@ static void _chk_dispatch(int chkstate, int line);
 #define chk_dispatch(chk)
 #endif
 
-__SRCVERSION("nano_aps.c $Rev: 212233 $");
-
 
 /* security */
 EXT uint32_t aps_security;      /* set of SCHED_APS_SEC_* flags from sys/sched_aps.h. located in ker_aps.c */
@@ -393,7 +391,7 @@ static void rdecl resched_ppg(void)
 
 
     // check if this process exceeded its max cpu usage
-    if (act->process->running_time > act->process->max_cpu_time && !(act->flags & _NTO_TF_KILLSELF)) {
+    if (act->process->running_time > act->process->max_cpu_time && !(act->flags & QRV_FLG_THR_KILLSELF)) {
 
         if (signal_kill_process(act->process, SIGXCPU, 0, 0, act->process->pid, 0) ==
             SIGSTAT_IGNORED) {
@@ -492,7 +490,7 @@ static void rdecl ready_ppg(THREAD * thp)
     }
 
     // Make sure the thread does not have a pending stop
-    if ((thp->flags & _NTO_TF_TO_BE_STOPPED) && !(thp->flags & _NTO_TF_KILLSELF)) {
+    if ((thp->flags & QRV_FLG_THR_TO_BE_STOPPED) && !(thp->flags & QRV_FLG_THR_KILLSELF)) {
         thp->state = STATE_STOPPED;
         trace_emit_th_state(thp, STATE_STOPPED);
         chk_dispatch(1);
@@ -585,7 +583,7 @@ static void rdecl ready_ppg(THREAD * thp)
 
                     //"need_to_run" stuff makes no sense for aps, (and little sense at any time). turn it off.
 #if 0
-                    if (need_to_run == NULL && (thp->flags & _NTO_TF_SPECRET_MASK) == 0) {
+                    if (need_to_run == NULL && (thp->flags & QRV_FLG_THR_SPECRET_MASK) == 0) {
                         need_to_run_cpu = cpu;
                         need_to_run = thp;
                     }
@@ -676,7 +674,7 @@ static void rdecl block_and_ready_ppg(THREAD * thp)
     thp->restart = NULL;
 
     // If thp has a pending stop then degrade block_and_ready() to just block()
-    if ((thp->flags & _NTO_TF_TO_BE_STOPPED) && !(thp->flags & _NTO_TF_KILLSELF)) {
+    if ((thp->flags & QRV_FLG_THR_TO_BE_STOPPED) && !(thp->flags & QRV_FLG_THR_KILLSELF)) {
         thp->state = STATE_STOPPED;
         trace_emit_th_state(thp, STATE_STOPPED);
         block();

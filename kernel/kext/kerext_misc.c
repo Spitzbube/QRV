@@ -64,5 +64,3 @@ int KerextSyncOwner(pid_t pid, int tid)
 {
     return SYNC_OWNER_BITS(pid, tid - 1);
 }
-
-__SRCVERSION("kerext_misc.c $Rev: 202687 $");

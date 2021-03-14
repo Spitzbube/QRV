@@ -40,5 +40,3 @@ extern uint64_t		max_microbill_cycles;
 
 extern uint32_t		cycles_left_in_tick; /* only valid if microbill() has been recently called */
 
-__SRCVERSION("aps_time.h $Rev: 153052 $");
-

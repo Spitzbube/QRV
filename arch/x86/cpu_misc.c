@@ -50,7 +50,7 @@ cpu_thread_init(THREAD *act, THREAD *thp, int align) {
 #endif
 	}
 	if(align == 1) {
-		thp->flags |= _NTO_TF_ALIGN_FAULT;
+		thp->flags |= QRV_FLG_THR_ALIGN_FAULT;
 		thp->reg.efl |= X86_PSW_AC;
 	}
 	thp->cpu.pcr = &disabled_perfregs; /* invalid part id */
@@ -95,7 +95,7 @@ cpu_thread_destroy(THREAD *thp) {
  */
 void
 cpu_thread_align_fault(THREAD *thp) {
-    if(thp->flags & _NTO_TF_ALIGN_FAULT) {
+    if(thp->flags & QRV_FLG_THR_ALIGN_FAULT) {
 		thp->reg.efl |= X86_PSW_AC;
 	} else {
 		thp->reg.efl &= ~X86_PSW_AC;

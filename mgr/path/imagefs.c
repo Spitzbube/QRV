@@ -33,7 +33,7 @@ struct image_data {
     dev_t devno;
     size_t size;
     size_t pg_offset;
-    OBJECT *obp;
+    tPathMgrObject *obp;
     int in_user_space;
 };
 
@@ -922,7 +922,7 @@ void *imagefs_mount(paddr_t paddr, unsigned size, unsigned offset, unsigned flag
 {
     void *addr;
     struct image_data *image;
-    OBJECT *obp;
+    tPathMgrObject *obp;
     int r;
     size_t pg_offset;
     mem_map_t msg;
@@ -1058,7 +1058,7 @@ void *imagefs_mount(paddr_t paddr, unsigned size, unsigned offset, unsigned flag
     return (void *) -1;
 }
 
-int imagefs_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *handle, OBJECT ** pobp)
+int imagefs_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *handle, tPathMgrObject ** pobp)
 {
     struct image_ocb *ocb = handle;
     struct image_file *file;
@@ -1176,7 +1176,7 @@ int imagefs_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *handle
     return EOK;
 }
 
-size_t imagefs_fname(OBJECT * obp, unsigned off, size_t max, char *dest)
+size_t imagefs_fname(tPathMgrObject * obp, unsigned off, size_t max, char *dest)
 {
     struct image_data *image;
     union image_dirent *dir;
@@ -1203,5 +1203,3 @@ size_t imagefs_fname(OBJECT * obp, unsigned off, size_t max, char *dest)
     IMAGE_ADDRESSABLE_RESTORE(image, old_aspace);
     return strlen(dest);
 }
-
-__SRCVERSION("imagefs.c $Rev: 198523 $");

@@ -159,6 +159,3 @@ int ProcessReassociate(PROCESS * prp, part_id_t mpid, mempart_dcmd_flags_t flags
 
     return data.err;
 }
-
-
-__SRCVERSION("kerext_mempart.c $Rev: 153001 $");

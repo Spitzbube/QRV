@@ -22,5 +22,3 @@ int vmm_pmem_add(paddr_t start, paddr_t len)
     return pa_pmem_add(start, len);
 }
 
-
-__SRCVERSION("vmm_pmem_add.c $Rev: 153052 $");

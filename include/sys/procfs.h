@@ -23,7 +23,7 @@
 #endif
 
 #ifndef _DCMD_PROC_H_INCLUDED
-#include <sys/dcmd_proc.h>
+#include <devctl/dcmd_proc.h>
 #endif
 
 #ifndef _SIGNAL_H_INCLUDED

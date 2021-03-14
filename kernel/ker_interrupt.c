@@ -33,7 +33,7 @@ int kdecl ker_interrupt_attach(THREAD * act, struct kerargs_interrupt_attach *ka
             return ENOTSUP;
 #endif
     } else {
-        if (!(act->flags & _NTO_TF_IOPRIV))
+        if (!(act->flags & QRV_FLG_THR_IOPRIV))
             return EPERM;
     }
 
@@ -94,7 +94,7 @@ int kdecl ker_interrupt_detach_func(THREAD * act, struct kerargs_interrupt_detac
 {
     int intr;
 
-    if (!(act->flags & _NTO_TF_IOPRIV))
+    if (!(act->flags & QRV_FLG_THR_IOPRIV))
         return EPERM;
 
     if ((intr = get_interrupt_level(act, kap->intr)) == -1)
@@ -110,7 +110,7 @@ int kdecl ker_interrupt_detach(THREAD * act, struct kerargs_interrupt_detach *ka
 {
     INTERRUPT *itp;
 
-    if (!(act->flags & _NTO_TF_IOPRIV))
+    if (!(act->flags & QRV_FLG_THR_IOPRIV))
         return EPERM;
 
     itp = vector_lookup(&interrupt_vector, kap->id);
@@ -131,7 +131,7 @@ int kdecl ker_interrupt_mask(THREAD * act, struct kerargs_interrupt_mask *kap)
     int status;
     int intr;
 
-    if (!(act->flags & _NTO_TF_IOPRIV))
+    if (!(act->flags & QRV_FLG_THR_IOPRIV))
         return EPERM;
 
     if ((intr = get_interrupt_level(act, kap->intr)) == -1)
@@ -151,7 +151,7 @@ int kdecl ker_interrupt_unmask(THREAD * act, struct kerargs_interrupt_unmask *ka
     int status;
     int intr;
 
-    if (!(act->flags & _NTO_TF_IOPRIV))
+    if (!(act->flags & QRV_FLG_THR_IOPRIV))
         return EPERM;
 
     if ((intr = get_interrupt_level(act, kap->intr)) == -1)
@@ -175,9 +175,9 @@ int kdecl ker_interrupt_wait(THREAD * act, struct kerargs_interrupt_wait *kap)
         return ENOERROR;
     }
 
-    if (act->flags & _NTO_TF_INTR_PENDING) {
+    if (act->flags & QRV_FLG_THR_INTR_PENDING) {
         lock_kernel();
-        act->flags &= ~_NTO_TF_INTR_PENDING;
+        act->flags &= ~QRV_FLG_THR_INTR_PENDING;
         act->timeout_flags = 0;
         //run threads getting a SIG_INTR as critical
         AP_MARK_THREAD_CRITICAL(act);
@@ -217,5 +217,3 @@ int kdecl ker_interrupt_wait(THREAD * act, struct kerargs_interrupt_wait *kap)
     block();
     return EOK;
 }
-
-__SRCVERSION("ker_interrupt.c $Rev: 153052 $");

@@ -12,6 +12,7 @@
 #define _STARTUP_PROTO_H
 
 #include <kernel/posix_types.h>
+#include <time.h>
 
 /* This function is usually called very first, at the start of _main() */
 void board_init(void);

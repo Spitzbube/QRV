@@ -26,10 +26,10 @@
 
 int
 (pthread_mutex_unlock)(pthread_mutex_t *mutex) {
-	if((mutex->__owner & ~_NTO_SYNC_WAITING) == LIBC_TLS()->__owner) {
-		if(--mutex->__count <= 0 || (mutex->__count & _NTO_SYNC_COUNTMASK) == 0) {
+	if((mutex->__owner & ~QRV_SYNC_WAITING) == LIBC_TLS()->__owner) {
+		if(--mutex->__count <= 0 || (mutex->__count & QRV_SYNC_COUNTMASK) == 0) {
 			mem_barrier();
-			if(__mutex_smp_xchg(&mutex->__owner, 0) & _NTO_SYNC_WAITING || mutex->__count & _NTO_SYNC_PRIOCEILING) {
+			if(__mutex_smp_xchg(&mutex->__owner, 0) & QRV_SYNC_WAITING || mutex->__count & _NTO_SYNC_PRIOCEILING) {
 				return SyncMutexUnlock_r((sync_t *)mutex);
 			}
 		}

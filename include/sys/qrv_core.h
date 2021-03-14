@@ -143,17 +143,17 @@ struct _timer_info {
 
 __BEGIN_DECLS
 
-#define _NTO_TIMEOUT_RECEIVE		(1<<STATE_RECEIVE)
-#define _NTO_TIMEOUT_SEND		(1<<STATE_SEND)
-#define _NTO_TIMEOUT_REPLY		(1<<STATE_REPLY)
-#define _NTO_TIMEOUT_SIGSUSPEND		(1<<STATE_SIGSUSPEND)
-#define _NTO_TIMEOUT_SIGWAITINFO	(1<<STATE_SIGWAITINFO)
-#define _NTO_TIMEOUT_NANOSLEEP		(1<<STATE_NANOSLEEP)
-#define _NTO_TIMEOUT_MUTEX		(1<<STATE_MUTEX)
-#define _NTO_TIMEOUT_CONDVAR		(1<<STATE_CONDVAR)
-#define _NTO_TIMEOUT_JOIN		(1<<STATE_JOIN)
-#define _NTO_TIMEOUT_INTR		(1<<STATE_INTR)
-#define _NTO_TIMEOUT_SEM		(1<<STATE_SEM)
+#define QRV_TIMEOUT_RECEIVE		(1<<STATE_RECEIVE)
+#define QRV_TIMEOUT_SEND		(1<<STATE_SEND)
+#define QRV_TIMEOUT_REPLY		(1<<STATE_REPLY)
+#define QRV_TIMEOUT_SIGSUSPEND		(1<<STATE_SIGSUSPEND)
+#define QRV_TIMEOUT_SIGWAITINFO	(1<<STATE_SIGWAITINFO)
+#define QRV_TIMEOUT_NANOSLEEP		(1<<STATE_NANOSLEEP)
+#define QRV_TIMEOUT_MUTEX		(1<<STATE_MUTEX)
+#define QRV_TIMEOUT_CONDVAR		(1<<STATE_CONDVAR)
+#define QRV_TIMEOUT_JOIN		(1<<STATE_JOIN)
+#define QRV_TIMEOUT_INTR		(1<<STATE_INTR)
+#define QRV_TIMEOUT_SEM		(1<<STATE_SEM)
 
 struct _msg_info {          /* _msg_info    _server_info */
     _Uint32t nd;                /*  client      server */
@@ -172,23 +172,23 @@ struct _msg_info {          /* _msg_info    _server_info */
 };
 
 #define _server_info	_msg_info
-#define _NTO_MI_ENDIAN_BIG	0x00000001  /* Same as _NTO_CI_ENDIAN_BIG */
-#define _NTO_MI_ENDIAN_DIFF	0x00000002
-#define _NTO_MI_NET_CRED_DIRTY	0x00000200
-#define _NTO_MI_UNBLOCK_REQ	0x00000100
+#define QRV_MI_ENDIAN_BIG	0x00000001  /* Same as QRV_CI_ENDIAN_BIG */
+#define QRV_MI_ENDIAN_DIFF	0x00000002
+#define QRV_MI_NET_CRED_DIRTY	0x00000200
+#define QRV_MI_UNBLOCK_REQ	0x00000100
 
-struct _client_info {
+typedef struct _client_info {
     _Uint32t nd;
     pid_t pid;
     pid_t sid;
     _Uint32t flags;
     struct _cred_info cred;
-};
+} tClientInfo;
 
-#define _NTO_CI_ENDIAN_BIG		0x00000001  /* Same as _NTO_MI_ENDIAN_BIG */
-#define _NTO_CI_BKGND_PGRP		0x00000004
-#define _NTO_CI_ORPHAN_PGRP		0x00000008
-#define _NTO_CI_STOPPED			0x00000080
+#define QRV_FLG_CI_ENDIAN_BIG		0x00000001  /* Same as QRV_MI_ENDIAN_BIG */
+#define QRV_FLG_CI_BKGND_PGRP		0x00000004
+#define QRV_FLG_CI_ORPHAN_PGRP		0x00000008
+#define QRV_FLG_CI_STOPPED		0x00000080
 
 struct _vtid_info {
     _Int32t tid;
@@ -201,8 +201,8 @@ struct _vtid_info {
     _Int32t zero;
 };
 
-#define _NTO_TIMER_SEARCH		0x00000001
-#define _NTO_TIMER_RESET_OVERRUNS	0x00000002
+#define QRV_TIMER_SEARCH		0x00000001
+#define QRV_TIMER_RESET_OVERRUNS	0x00000002
 
 struct _sighandler_info {
     siginfo_t siginfo;
@@ -219,11 +219,11 @@ struct _sched_info {
     int reserved[11];
 };
 
-#define _NTO_TI_ACTIVE			0x00000001
-#define _NTO_TI_ABSOLUTE		0x00000002
-#define _NTO_TI_EXPIRED			0x00000004
-#define _NTO_TI_TOD_BASED		0x00000008
-#define _NTO_TI_TARGET_PROCESS		0x00000010
+#define QRV_TI_ACTIVE			0x00000001
+#define QRV_TI_ABSOLUTE		0x00000002
+#define QRV_TI_EXPIRED			0x00000004
+#define QRV_TI_TOD_BASED		0x00000008
+#define QRV_TI_TARGET_PROCESS		0x00000010
 
 /*
  * Definitions for type and subtype of any pulse.
@@ -256,78 +256,78 @@ struct _pulse {
 /*
  * Define interrupt flags.
  */
-#define _NTO_HARD_FLAGS_END		0x01
+#define QRV_HARD_FLAGS_END		0x01
 
 /*
  * Define flags which can be applied to a pulse type.
  */
-#define _NTO_PULSE_IF_UNIQUE	0x1000
-#define _NTO_PULSE_REPLACE	0x2000
+#define QRV_PULSE_IF_UNIQUE	0x1000
+#define QRV_PULSE_REPLACE	0x2000
 
 /*
- * Define the flags of a process PROCESS.flags
+ * Define the flags of a process (tProcess.flags)
  */
-#define _NTO_PF_NOCLDSTOP		0x00000001
-#define _NTO_PF_LOADING			0x00000002
-#define _NTO_PF_TERMING			0x00000004
-#define _NTO_PF_ZOMBIE			0x00000008
-#define _NTO_PF_NOZOMBIE		0x00000010
-#define _NTO_PF_FORKED			0x00000020
-#define _NTO_PF_ORPHAN_PGRP		0x00000040
-#define _NTO_PF_STOPPED			0x00000080
-#define _NTO_PF_DEBUG_STOPPED		0x00000100
-#define _NTO_PF_BKGND_PGRP		0x00000200
-#define _NTO_PF_NO_LIMITS		0x00000400
-#define _NTO_PF_CONTINUED		0x00000800
-#define _NTO_PF_CHECK_INTR		0x00001000
-#define _NTO_PF_COREDUMP		0x00002000
-#define _NTO_PF_PTRACED			0x00004000
-#define _NTO_PF_RING0			0x00008000
-#define _NTO_PF_SLEADER			0x00010000
-#define _NTO_PF_WAITINFO		0x00020000
-#define _NTO_PF_VFORKED			0x00040000
-#define _NTO_PF_DESTROYALL		0x00080000
-#define _NTO_PF_NOCOREDUMP		0x00100000
-#define _NTO_PF_NOCTTY			0x00200000
-#define _NTO_PF_WAITDONE		0x00400000
-#define _NTO_PF_TERM_WAITING		0x00800000
-#define _NTO_PF_THREADWATCH		0x80000000
+#define QRV_FLG_PROC_NOCLDSTOP		1U
+#define QRV_FLG_PROC_LOADING		2U
+#define QRV_FLG_PROC_TERMING		4U
+#define QRV_FLG_PROC_ZOMBIE		8U
+#define QRV_FLG_PROC_NOZOMBIE		0x10U
+#define QRV_FLG_PROC_FORKED		0x20U
+#define QRV_FLG_PROC_ORPHAN_PGRP	0x40U
+#define QRV_FLG_PROC_STOPPED		0x80U
+#define QRV_FLG_PROC_DEBUG_STOPPED	0x100U
+#define QRV_FLG_PROC_BKGND_PGRP		0x200U
+#define QRV_FLG_PROC_NO_LIMITS		0x400U
+#define QRV_FLG_PROC_CONTINUED		0x800U
+#define QRV_FLG_PROC_CHECK_INTR		0x1000U
+#define QRV_FLG_PROC_COREDUMP		0x2000U
+#define QRV_FLG_PROC_PTRACED		0x4000U
+#define QRV_FLG_PROC_RING0		0x8000U
+#define QRV_FLG_PROC_SLEADER		0x10000U
+#define QRV_FLG_PROC_WAITINFO		0x20000U
+#define QRV_FLG_PROC_VFORKED		0x40000U
+#define QRV_FLG_PROC_DESTROYALL		0x80000U
+#define QRV_FLG_PROC_NOCOREDUMP		0x100000U
+#define QRV_FLG_PROC_NOCTTY		0x200000U
+#define QRV_FLG_PROC_WAITDONE		0x400000U
+#define QRV_FLG_PROC_TERM_WAITING	0x800000U
+#define QRV_FLG_PROC_THREADWATCH	0x80000000U
 
 /*
- * Define the flags of a thread THREAD.flags
+ * Define the flags of a thread tThread.flags
  */
-#define _NTO_TF_INTR_PENDING		0x00010000
-#define _NTO_TF_DETACHED		0x00020000
-#define _NTO_TF_THREADS_HOLD		0x00100000
-#define _NTO_TF_UNBLOCK_REQ		0x00400000
-#define _NTO_TF_ALIGN_FAULT		0x01000000
-#define _NTO_TF_SSTEP			0x02000000
-#define _NTO_TF_ALLOCED_STACK		0x04000000
-#define _NTO_TF_NOMULTISIG		0x08000000
-#define _NTO_TF_FROZEN			0x10000000
-#define _NTO_TF_IOPRIV			0x80000000
+#define QRV_FLG_THR_INTR_PENDING	0x00010000
+#define QRV_FLG_THR_DETACHED		0x00020000
+#define QRV_FLG_THR_THREADS_HOLD	0x00100000
+#define QRV_FLG_THR_UNBLOCK_REQ		0x00400000
+#define QRV_FLG_THR_ALIGN_FAULT		0x01000000
+#define QRV_FLG_THR_SSTEP		0x02000000
+#define QRV_FLG_THR_ALLOCED_STACK	0x04000000
+#define QRV_FLG_THR_NOMULTISIG		0x08000000
+#define QRV_FLG_THR_FROZEN		0x10000000
+#define QRV_FLG_THR_IOPRIV		0x80000000
 
 /*
  * Thread Control commands
  */
-#define _NTO_TCTL_IO				1
-#define _NTO_TCTL_THREADS_HOLD			2
-#define _NTO_TCTL_THREADS_CONT			3
-#define _NTO_TCTL_RUNMASK			4
-#define _NTO_TCTL_ALIGN_FAULT			5
-#define _NTO_TCTL_RUNMASK_GET_AND_SET		6
-#define _NTO_TCTL_PERFCOUNT			7
-#define _NTO_TCTL_ONE_THREAD_HOLD		8
-#define _NTO_TCTL_ONE_THREAD_CONT		9
-#define _NTO_TCTL_RUNMASK_GET_AND_SET_INHERIT	10
-#define _NTO_TCTL_NAME				11
-#define _NTO_TCTL_RESERVED			0x80000000
+#define QRV_TCTL_IO				1
+#define QRV_TCTL_THREADS_HOLD			2
+#define QRV_TCTL_THREADS_CONT			3
+#define QRV_TCTL_RUNMASK			4
+#define QRV_TCTL_ALIGN_FAULT			5
+#define QRV_TCTL_RUNMASK_GET_AND_SET		6
+#define QRV_TCTL_PERFCOUNT			7
+#define QRV_TCTL_ONE_THREAD_HOLD		8
+#define QRV_TCTL_ONE_THREAD_CONT		9
+#define QRV_TCTL_RUNMASK_GET_AND_SET_INHERIT	10
+#define QRV_TCTL_NAME				11
+#define QRV_TCTL_RESERVED			0x80000000
 
 
 /*
  * Limit on the maximum number of characters for a thread name
  */
-#define _NTO_THREAD_NAME_MAX			100
+#define QRV_FLG_THREAD_NAME_MAX			100
 
 struct _thread_name {
     int new_name_len;
@@ -361,33 +361,33 @@ struct _thread_runmask {
 /*
  * Define channel flags
  */
-#define _NTO_CHF_FIXED_PRIORITY		0x0001
-#define _NTO_CHF_UNBLOCK		0x0002
-#define _NTO_CHF_THREAD_DEATH		0x0004
-#define _NTO_CHF_DISCONNECT		0x0008
-#define _NTO_CHF_NET_MSG		0x0010
-#define _NTO_CHF_SENDER_LEN		0x0020
-#define _NTO_CHF_COID_DISCONNECT	0x0040
-#define _NTO_CHF_REPLY_LEN		0x0080
-#define _NTO_CHF_STICKY			0x0100
-#define _NTO_CHF_ASYNC_NONBLOCK		0x0200
-#define _NTO_CHF_ASYNC			0x0400
-#define _NTO_CHF_GLOBAL			0x0800
+#define QRV_FLG_CHF_FIXED_PRIORITY	0x0001
+#define QRV_FLG_CHF_UNBLOCK		0x0002
+#define QRV_FLG_CHF_THREAD_DEATH	0x0004
+#define QRV_FLG_CHF_DISCONNECT		0x0008
+#define QRV_FLG_CHF_NET_MSG		0x0010
+#define QRV_FLG_CHF_SENDER_LEN		0x0020
+#define QRV_FLG_CHF_COID_DISCONNECT	0x0040
+#define QRV_FLG_CHF_REPLY_LEN		0x0080
+#define QRV_FLG_CHF_STICKY		0x0100
+#define QRV_FLG_CHF_ASYNC_NONBLOCK	0x0200
+#define QRV_FLG_CHF_ASYNC		0x0400
+#define QRV_FLG_CHF_GLOBAL		0x0800
 
 
 /*
  * Define connect flags
  */
-#define _NTO_COF_CLOEXEC		0x0001
-#define _NTO_COF_DEAD			0x0002
-#define _NTO_COF_NOSHARE		0x0040
-#define _NTO_COF_NETCON			0x0080
-#define _NTO_COF_NONBLOCK		0x0100
-#define _NTO_COF_ASYNC			0x0200
-#define _NTO_COF_GLOBAL			0x0400
+#define QRV_FLG_COF_CLOEXEC		0x0001
+#define QRV_FLG_COF_DEAD		0x0002
+#define QRV_FLG_COF_NOSHARE		0x0040
+#define QRV_FLG_COF_NETCON		0x0080
+#define QRV_FLG_COF_NONBLOCK		0x0100
+#define QRV_FLG_COF_ASYNC		0x0200
+#define QRV_FLG_COF_GLOBAL		0x0400
 
 /* If the 2nd from top bit is set then we don't use the fd connection vector */
-#define _NTO_SIDE_CHANNEL		((~0u ^ (~0u >> 1)) >> 1)
+#define QRV_SIDE_CHANNEL		((~0u ^ (~0u >> 1)) >> 1)
 
 /* If the 2nd from top bit is set in the channel id, then it is a global channel */
 #define QRV_GLOBAL_CHANNEL		((~0u ^ (~0u >> 1)) >> 1)
@@ -397,34 +397,34 @@ struct _thread_runmask {
  * Define flags of a timeout
  * The first n bits are reserved for (1L << thp->state)
  */
-#define _NTO_TIMEOUT_MASK		((1 << STATE_MAX) - 1)
-#define _NTO_TIMEOUT_ACTIVE		(1 << STATE_MAX)
-#define _NTO_TIMEOUT_IMMEDIATE		(1 << (STATE_MAX+1))
+#define QRV_FLG_TIMEOUT_MASK		((1 << STATE_MAX) - 1)
+#define QRV_FLG_TIMEOUT_ACTIVE		(1 << STATE_MAX)
+#define QRV_FLG_TIMEOUT_IMMEDIATE	(1 << (STATE_MAX+1))
 
 /*
  * Flag bits for InterruptAttach[Event]
  */
-#define _NTO_INTR_FLAGS_END		0x01
-#define _NTO_INTR_FLAGS_PROCESS	0x04
-#define _NTO_INTR_FLAGS_TRK_MSK	0x08
+#define QRV_INTR_FLAGS_END	0x01
+#define QRV_INTR_FLAGS_PROCESS	0x04
+#define QRV_INTR_FLAGS_TRK_MSK	0x08
 
 /*
  * System independent interrupt classes for InterruptAttach[Event]
  */
-#define _NTO_INTR_CLASS_EXTERNAL	(0x0000UL << 16)
-#define _NTO_INTR_CLASS_SYNTHETIC	(0x7fffUL << 16)
+#define QRV_INTR_CLASS_EXTERNAL	(0x0000UL << 16)
+#define QRV_INTR_CLASS_SYNTHETIC	(0x7fffUL << 16)
 
-#define _NTO_INTR_SPARE			(_NTO_INTR_CLASS_SYNTHETIC|0xffff)
+#define QRV_INTR_SPARE			(QRV_INTR_CLASS_SYNTHETIC|0xffff)
 
-#define _NTO_HOOK_TRACE			(_NTO_INTR_CLASS_SYNTHETIC|0)
-#define _NTO_HOOK_IDLE			(_NTO_INTR_CLASS_SYNTHETIC|1)
-#define _NTO_HOOK_LAST			(_NTO_INTR_CLASS_SYNTHETIC|1)
+#define QRV_HOOK_TRACE			(QRV_INTR_CLASS_SYNTHETIC|0)
+#define QRV_HOOK_IDLE			(QRV_INTR_CLASS_SYNTHETIC|1)
+#define QRV_HOOK_LAST			(QRV_INTR_CLASS_SYNTHETIC|1)
 
 /*
  * Define flags for MsgReadiov
  */
-#define _NTO_READIOV_SEND		0
-#define _NTO_READIOV_REPLY		1
+#define QRV_READIOV_SEND		0
+#define QRV_READIOV_REPLY		1
 
 struct _clockperiod {
     unsigned long nsec;
@@ -448,19 +448,26 @@ struct _clockperiod {
 /*
  * Operation to tell MsgKeyData to verify instead of calculate
  */
-#define _NTO_KEYDATA_VERIFY	0
-#define _NTO_KEYDATA_CALCULATE	1
+#define QRV_KEYDATA_VERIFY	0
+#define QRV_KEYDATA_CALCULATE	1
 
 /*
  * Sync Control commands
  */
-#define _NTO_SCTL_SETPRIOCEILING	1   /* mutex    const int *prioceiling */
-#define _NTO_SCTL_GETPRIOCEILING	2   /* mutex    int *prioceiling */
-#define _NTO_SCTL_SETEVENT		3   /* mutex    struct sigevent *event */
+#define QRV_SCTL_SETPRIOCEILING		1   /* mutex    const int *prioceiling */
+#define QRV_SCTL_GETPRIOCEILING		2   /* mutex    int *prioceiling */
+#define QRV_SCTL_SETEVENT		3   /* mutex    struct sigevent *event */
 
 struct iovec;
 struct _asyncmsg_connection_descriptor;
 union _channel_connect_attr;
+
+#define QRV_VERSION     3     /* version number * 100 */
+
+#define SYSMGR_PID      1
+#define SYSMGR_CHID     1
+#define SYSMGR_COID     QRV_SIDE_CHANNEL   /* System process connection is always the first side channel */
+#define SYSMGR_HANDLE   0
 
 __END_DECLS
 

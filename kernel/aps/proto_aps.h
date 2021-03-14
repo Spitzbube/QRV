@@ -297,6 +297,3 @@ void sched_trace_initial_parms_ppg();
  * aps_bankruptcy_crash, just calls crash (at user's request when a partition goes bankrupt)
  */
 void aps_bankruptcy_crash(int ap, int pid, char *debug_name);
-
-
-__SRCVERSION("proto_aps.h $Rev: 168521 $");

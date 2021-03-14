@@ -68,7 +68,7 @@ void *rdecl object_alloc(PROCESS * prp, SOUL * soulp)
     if (prp && (lip = prp->limits)) {
         int type = soulp->type;
 
-        if (lip->cur[type] >= lip->max[type] && (prp->flags & _NTO_PF_NO_LIMITS) == 0) {
+        if (lip->cur[type] >= lip->max[type] && (prp->flags & QRV_FLG_PROC_NO_LIMITS) == 0) {
 
             ///////////////////////////////////////////////////////
             ////////////////////  FIX_ME!!  ///////////////////////
@@ -263,6 +263,3 @@ unsigned rdecl object_register_data(SOUL * soulp, size_t size)
     soulp->size = r + size;
     return (r);
 }
-
-
-__SRCVERSION("nano_object.c $Rev: 153052 $");

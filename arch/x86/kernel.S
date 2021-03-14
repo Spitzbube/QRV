@@ -345,7 +345,7 @@ nmi_save:		.long	0
 	// port access for normal user threads.
 	xorl	$1,&reg1
 	xorl	&reg3,&reg3 	// going to write all zeros into iomap
-	testl	$_NTO_TF_V86,TFLAGS(%ebx)
+	testl	$QRV_FLG_THR_V86,TFLAGS(%ebx)
 	jne		998f
 	notl	&reg3			// going to write all ones into iomap
 998:
@@ -570,7 +570,7 @@ end_acquire_kernel_attempt:
 
 	mov		%eax,SYSCALL(%ebx)
 	mov		TFLAGS(%ebx),%ecx
-	and		$~(_NTO_TF_KERERR_SET+_NTO_TF_BUFF_MSG),%ecx
+	and		$~(QRV_FLG_THR_KERERR_SET+QRV_FLG_THR_BUFF_MSG),%ecx
 	mov		%ecx,TFLAGS(%ebx)
 	cmp		$__KER_BAD,%eax
 	jae		bad_func
@@ -646,7 +646,7 @@ prpret:
 /
 / Check for special actions
 /
-	testl	$_NTO_TF_SPECRET_MASK,TFLAGS(%ebx)
+	testl	$QRV_FLG_THR_SPECRET_MASK,TFLAGS(%ebx)
 	jnz		__ker_specialret
 
 /
@@ -868,7 +868,7 @@ eip_mod:
 	iret
 
 not_sysexit:
-	testl	$_NTO_TF_V86,TFLAGS(%ebx)
+	testl	$QRV_FLG_THR_V86,TFLAGS(%ebx)
 	jnz		__v86_ret
 	lea		REG_OFF+REG_SS+4(%ebx),%eax	/ Set tss.esp to top of thread reg.
 	SETTSS	%ebp,%eax,%edx
@@ -2136,7 +2136,7 @@ __exc10:				/ Floating Point Error
 	jmp	exc
 
 /
-/ Debugger exceptions. If the _NTO_PF_DEBUGING process flag
+/ Debugger exceptions. If the QRV_FLG_PROC_DEBUGING process flag
 / is not set, they will try to pass debugging on to the low level
 / debugger. If they detect a debug point the usr_fault function
 / will stop all threads and/or enqueue a signal on the process.
@@ -2559,8 +2559,8 @@ fixup_kcall:
 	movl	$0,TIMEOUT_FLAGS(%ebx)	/ Remove any timeout flags
 	movl	$ERRNO_EFAULT,REG_OFF+REG_EAX(%ebx)
 	movl	TFLAGS(%ebx),%edx	/ Get flags
-	orl		$_NTO_TF_KERERR_SET,TFLAGS(%ebx)/ Set error indicator
-	test	$_NTO_TF_KERERR_SET,%edx	/ If indicator set we have already bumped eip
+	orl		$QRV_FLG_THR_KERERR_SET,TFLAGS(%ebx)/ Set error indicator
+	test	$QRV_FLG_THR_KERERR_SET,%edx	/ If indicator set we have already bumped eip
 	jnz		__ker_exit
   	incl	REG_OFF+REG_EIP(%ebx)		/ Set over kcall ret
 	jmp		__ker_exit

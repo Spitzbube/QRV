@@ -184,9 +184,9 @@ int procmgr_msg_resource(resmgr_context_t * ctp, void *vmsg)
             break;
         case RLIMIT_CORE:
             if (cur == 0) {
-                prp->flags |= _NTO_PF_NOCOREDUMP;
+                prp->flags |= QRV_FLG_PROC_NOCOREDUMP;
             } else {
-                prp->flags &= ~_NTO_PF_NOCOREDUMP;
+                prp->flags &= ~QRV_FLG_PROC_NOCOREDUMP;
             }
             break;
         default:

@@ -19,7 +19,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/neutrino.h>
 #include <inttypes.h>
 
 #ifndef _MALLOCDEBUG_H_

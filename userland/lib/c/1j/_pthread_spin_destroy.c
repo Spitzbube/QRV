@@ -21,7 +21,7 @@
 #include "spin.h"
 
 int _pthread_spin_destroy(pthread_spinlock_t *lock) {
-	lock->__owner = _NTO_SYNC_DESTROYED;
+	lock->__owner = QRV_SYNC_DESTROYED;
 	return EOK;
 }
 

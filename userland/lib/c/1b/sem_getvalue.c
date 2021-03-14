@@ -28,13 +28,13 @@
 int sem_getvalue(sem_t *sem, int *value) {
 
 	// Is it a destroyed semaphore.
-	if(sem->__owner == _NTO_SYNC_DESTROYED) {
+	if(sem->__owner == QRV_SYNC_DESTROYED) {
 		errno = EINVAL;
 		return -1;
 	}
 
 	// Is it a named semaphore.
-	if(sem->__owner == _NTO_SYNC_NAMED_SEM) {
+	if(sem->__owner == QRV_SYNC_NAMED_SEM) {
 		struct mq_attr attr;
 
 		if(_devctl(sem->__count, DCMD_MISC_MQGETATTR, &attr, sizeof attr, 0) == -1) {

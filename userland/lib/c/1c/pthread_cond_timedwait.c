@@ -30,7 +30,7 @@ pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struc
 	int					ret;
 	uint64_t			t;
 
-	if((mutex->__owner & ~_NTO_SYNC_WAITING) != LIBC_TLS()->__owner) {
+	if((mutex->__owner & ~QRV_SYNC_WAITING) != LIBC_TLS()->__owner) {
 		return EPERM;
 	}
 
@@ -41,7 +41,7 @@ pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struc
 	t = timespec2nsec(abstime);
 
 	// Passing a NULL for event is the same as notify = SIGEV_UNBLOCK
-	if((ret = TimerTimeout_r(cond->__owner == _NTO_SYNC_INITIALIZER ? CLOCK_REALTIME : cond->__count,
+	if((ret = TimerTimeout_r(cond->__owner == QRV_SYNC_INITIALIZER ? CLOCK_REALTIME : cond->__count,
 			TIMER_ABSTIME | _NTO_TIMEOUT_CONDVAR, 0, &t, 0)) != EOK) {
 		return ret;
 	}

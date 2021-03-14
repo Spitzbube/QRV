@@ -216,6 +216,3 @@ DISPATCH *create_default_dispatch(void);
 */
 #endif
 
-
-__SRCVERSION("aps_data.h $Rev: 153052 $");
-

@@ -27,9 +27,7 @@
 #ifndef _PROCESS_H_INCLUDED
 #define _PROCESS_H_INCLUDED
 
-#ifndef __PLATFORM_H_INCLUDED
-#include <sys/platform.h>
-#endif
+#include <sys/types.h>
 
 __BEGIN_DECLS
 #if defined(__EXT_POSIX1_198808)

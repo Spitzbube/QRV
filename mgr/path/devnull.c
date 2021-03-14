@@ -15,16 +15,17 @@
  * $
  */
 
+
 #include <fcntl.h>
-#include <sys/dcmd_all.h>
-#include "externs.h"
+#include <devctl/dcmd_all.h>
+#include <taskman/externs.h>
 #include "pinode.h"
 
 static dev_t null_devno;
 
 static int null_read(resmgr_context_t * ctp, io_read_t * msg, void *ocb)
 {
-    unsigned ioflag = (uintptr_t) ocb;
+    uintptr_t ioflag = (uintptr_t) ocb;
 
     if (!(ioflag & _IO_FLAG_RD)) {
         return EBADF;
@@ -43,7 +44,7 @@ static int null_read(resmgr_context_t * ctp, io_read_t * msg, void *ocb)
 
 static int null_write(resmgr_context_t * ctp, io_write_t * msg, void *ocb)
 {
-    unsigned ioflag = (uintptr_t) ocb;
+    uintptr_t ioflag = (uintptr_t) ocb;
 
     if (!(ioflag & _IO_FLAG_WR)) {
         return EBADF;
@@ -79,7 +80,7 @@ static int null_devctl(resmgr_context_t * ctp, io_devctl_t * msg, void *ocb)
         int oflag;
         int mountflag;
     } *data = (void *) (msg + 1);
-    unsigned ioflag = (uintptr_t) ocb;
+    uintptr_t ioflag = (uintptr_t) ocb;
     int nbytes = 0;
 
     switch ((unsigned) msg->i.dcmd) {

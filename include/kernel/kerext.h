@@ -36,17 +36,17 @@ int PageCont(pid_t pid, int tid, int err);
 int PageContErrno(pid_t pid, int tid, int sigcode);
 uintptr_t PageWaitInfo(union sigval value, pid_t * ppid, int *ptid, pid_t * paspace_pid,
                        unsigned *pflags);
-PROCESS *ProcessCreate(pid_t parent_pid, void *lcp, proc_create_attr_t * extra);
+tProcess *ProcessCreate(pid_t parent_pid, void *lcp, proc_create_attr_t * extra);
 int ProcessDestroy(pid_t pid);
 int ProcessDestroyAll(pid_t pid);
-int ProcessAssociate(PROCESS * prp, MPART_ID mpid, mempart_dcmd_flags_t flags);
-int ProcessReassociate(PROCESS * prp, MPART_ID mpid, mempart_dcmd_flags_t flags);
-int ProcessDisassociate(PROCESS * prp, MPART_ID mpid);
+int ProcessAssociate(tProcess * prp, mempart_id_t mpid, mempart_dcmd_flags_t flags);
+int ProcessReassociate(tProcess * prp, mempart_id_t mpid, mempart_dcmd_flags_t flags);
+int ProcessDisassociate(tProcess * prp, mempart_id_t mpid);
 void MemclassPidUse(pid_t pid, part_id_t mpart_id, memsize_t size);
 void MemclassPidFree(pid_t pid, part_id_t mpart_id, memsize_t size);
 int ProcessExec(void *lcp, int *prcvid, int rcvid, int ppid);
-int ProcessSwap(PROCESS * parent, PROCESS * child);
-int ProcessShutdown(PROCESS * prp, int exec);
+int ProcessSwap(tProcess * parent, tProcess * child);
+int ProcessShutdown(tProcess * prp, int exec);
 void ProcessRestore(int rcvid, struct _thread_local_storage *tsp, void *frame, void *frame_base,
                     unsigned frame_size);
 int ProcessBind(pid_t pid);
@@ -61,19 +61,19 @@ void KerextUnlock(void);
 int KerextAmInKernel(void);
 int KerextNeedPreempt(void);
 int KerextSyncOwner(pid_t, int);
-void KerextStatus(THREAD * thp, int status);
+void KerextStatus(tThread * thp, int status);
 void RebootSystem(int);
 int SysCpumode(int);
 int CacheControl(void *base, size_t len, int flags);
 int StackCont(pid_t pid, int tid, int err, struct _thread_attr *attr);
 int StackWaitInfo(union sigval value, pid_t * ppid, int *ptid, struct _thread_attr *attr);
-uintptr_t GetSp(THREAD * thp);
-int KerextThreadCtl(PROCESS * prp, int tid, int32_t cmd, void *data);
-void MemobjDestroyed(OBJECT * obp, off_t start, off_t end, PROCESS * prp, void *vaddr);
+uintptr_t GetSp(tThread * thp);
+int KerextThreadCtl(tProcess * prp, int tid, int32_t cmd, void *data);
+void MemobjDestroyed(tPathMgrObject * obp, off_t start, off_t end, tProcess * prp, void *vaddr);
 int KerextAddTraceEvent(int ev_class, int ev_code, void *data, int datalen);
-int KerextAddTraceEventIOV(int ev_class, int ev_code, IOV * iovs, int iovlen);
+int KerextAddTraceEventIOV(int ev_class, int ev_code, iov_t * iovs, int iovlen);
 int KerextSlogf(int opcode, int severity, const char *fmt, ...);
-int ValidateMpartId(MPART_ID mpid);
+int ValidateMpartId(mempart_id_t mpid);
 //
 // Kernel calls used by the idle thread
 //

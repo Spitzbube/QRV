@@ -12,9 +12,11 @@ TESTING = 1
 
 OBJECTS += init.o \
            kmain.o \
+           ker_call_table.o \
            ker_ring0.o \
            ker_channel.o \
-           ker_connect.o
+           ker_connect.o \
+           kexterns.o
 
 all: $(ARCHIVE)($(OBJECTS))
 

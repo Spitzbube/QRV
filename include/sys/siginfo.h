@@ -231,13 +231,13 @@
 #define	NSIGFPE		10
 #endif
 
-#define si_pid		__data.__proc.__pid
-#define si_value	__data.__proc.__pdata.__kill.__value
-#define si_uid		__data.__proc.__pdata.__kill.__uid
-#define si_status	__data.__proc.__pdata.__chld.__status
-#define si_utime	__data.__proc.__pdata.__chld.__utime
-#define si_stime	__data.__proc.__pdata.__chld.__stime
-#define si_fltno	__data.__fault.__fltno
+#define si_pid		__proc.__pid
+#define si_value	__proc.__pdata.__kill.__value
+#define si_uid		__proc.__pdata.__kill.__uid
+#define si_status	__proc.__pdata.__chld.__status
+#define si_utime	__proc.__pdata.__chld.__utime
+#define si_stime	__proc.__pdata.__chld.__stime
+#define si_fltno	__fault.__fltno
 #define si_trapno	si_fltno
 #define si_addr		__data.__fault.__addr
 #define si_fltip	__data.__fault.__fltip

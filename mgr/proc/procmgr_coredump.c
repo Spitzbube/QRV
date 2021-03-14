@@ -64,13 +64,13 @@ int procmgr_coredump(message_context_t * ctp, int code, unsigned flags, void *ha
     }
 
     /*
-     * Only leave the _NTO_PF_COREDUMP flag on if a dump file was
+     * Only leave the QRV_FLG_PROC_COREDUMP flag on if a dump file was
      * really created. The termer thread looks at this flag to report
      * if a coredump file was created.
      */
     if (!dumped) {
         if ((prp = proc_lock_pid(value.sival_int))) {
-            prp->flags &= ~_NTO_PF_COREDUMP;
+            prp->flags &= ~QRV_FLG_PROC_COREDUMP;
             proc_unlock(prp);
         }
     }

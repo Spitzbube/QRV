@@ -185,6 +185,3 @@ int KerextSlogf(int opcode, int severity, const char *fmt, ...)
 
     return 0;
 }
-
-
-__SRCVERSION("kerext_trace.c $Rev: 165321 $");

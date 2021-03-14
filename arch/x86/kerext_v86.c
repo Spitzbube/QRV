@@ -43,6 +43,6 @@ kerext_v86_enter(void *data) {
 	vp->reg.efl = 0x21200;
 
 	lock_kernel();
-	act->flags |= _NTO_TF_V86;
+	act->flags |= QRV_FLG_THR_V86;
 	SETKSTATUS(act, 0);
 }

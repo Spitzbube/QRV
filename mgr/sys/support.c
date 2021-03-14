@@ -97,9 +97,9 @@ static void rdecl release_lock(struct proc_mux_lock **lpp)
 }
 
 
-PROCESS *proc_lookup_pid(pid_t pid)
+tProcess *proc_lookup_pid(pid_t pid)
 {
-    PROCESS *prp;
+    tProcess *prp;
 
     prp = QueryObject(_QUERY_PROCESS, pid, _QUERY_PROCESS_VECTOR, 0, 0, 0, 0);
     if (prp != NULL) {
@@ -111,9 +111,9 @@ PROCESS *proc_lookup_pid(pid_t pid)
     return prp;
 }
 
-PROCESS *proc_lock_pid(pid_t pid)
+tProcess *proc_lock_pid(pid_t pid)
 {
-    PROCESS *prp;
+    tProcess *prp;
     int r;
 
     while (1) {
@@ -127,7 +127,7 @@ PROCESS *proc_lock_pid(pid_t pid)
 
         // Can say the query is done here because we've acquired the
         // process lock and that will keep the terminator thread from
-        // releasing the PROCESS structure (or acquire_lock failed and we
+        // releasing the tProcess structure (or acquire_lock failed and we
         // don't need the prp).
         QueryObjectDone(prp);
 
@@ -156,14 +156,14 @@ PROCESS *proc_lock_pid(pid_t pid)
     return prp;
 }
 
-void proc_unlock(PROCESS * prp)
+void proc_unlock(tProcess * prp)
 {
     release_lock(&prp->lock);
 }
 
-PROCESS *proc_lock_parent(PROCESS * prp)
+tProcess *proc_lock_parent(tProcess * prp)
 {
-    PROCESS *parent;
+    tProcess *parent;
     uint64_t sleepl;
     unsigned count;
 
@@ -208,7 +208,7 @@ int rdecl proc_mux_haslock(struct proc_mux_lock **mp, int owner)
     if (*mp != NULL) {
         if (owner == 0)
             owner = __tls()->__owner;
-        if (((*mp)->mux.__owner & ~_NTO_SYNC_WAITING) == owner) {
+        if (((*mp)->mux.__owner & ~QRV_SYNC_WAITING) == owner) {
             hasit = 1;
         }
     }
@@ -247,7 +247,7 @@ void proc_object_free(SOUL * soulp, void *ptr)
     pthread_mutex_unlock(&object_allocator_mutex);
 }
 
-int proc_error(int ret, PROCESS * prp)
+int proc_error(int ret, tProcess * prp)
 {
     if (prp != NULL)
         proc_unlock(prp);
@@ -255,7 +255,7 @@ int proc_error(int ret, PROCESS * prp)
     return ret;
 }
 
-int proc_isaccess(PROCESS * prp, struct _msg_info *rcvinfo)
+int proc_isaccess(tProcess * prp, struct _msg_info *rcvinfo)
 {
     struct _client_info info;
 

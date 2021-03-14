@@ -25,7 +25,6 @@
 #include <sys/iofunc.h>
 #include <sys/dispatch.h>
 #include <pthread.h>
-#include <sys/neutrino.h>
 #include <limits.h>
 #include <inttypes.h>
 #include <devctl.h>

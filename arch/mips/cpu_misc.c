@@ -321,7 +321,7 @@ cpu_thread_init(THREAD *act, THREAD *thp, int align) {
 	switch(align) {
 	case 0:
 	case 1:
-		thp->flags |= _NTO_TF_ALIGN_FAULT;
+		thp->flags |= QRV_FLG_THR_ALIGN_FAULT;
 		break;
 	default: break;
 	}

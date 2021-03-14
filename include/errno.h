@@ -45,7 +45,7 @@ __BEGIN_DECLS
 extern int errno;
 #ifndef errno
 int *__get_errno_ptr(void) __attribute__((__const__));
-#define errno (*_STD __get_errno_ptr())
+#define errno (*__get_errno_ptr())
 #endif
 extern int __ealready_value;
 

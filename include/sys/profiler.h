@@ -17,8 +17,8 @@
 
 
 
-#ifndef __NTO_PROFILER_H_INCLUDED
-#define __NTO_PROFILER_H_INCLUDED
+#ifndef _SYS_PROFILER_H
+#define _SYS_PROFILER_H
 
 #include <sys/types.h>
 #include <sys/queue.h>
@@ -28,7 +28,6 @@
 
 
 __BEGIN_DECLS
-
 /*
  * Client (process) to profiler agent interface
  */
@@ -37,9 +36,8 @@ __BEGIN_DECLS
 #define PROF_CAP_BBINFO		0x00000004
 #define PROF_CAP_THREAD		0x00000008
 #define PROF_CAP_SHLIB		0x00000010
-
-#define PROF_CMD_ARCS_2         0x00010000   // 'to' index into 'from' in memory format
-#define PROF_CMD_ARCS	        0x00020000   // 'from' index into 'to' in memroy format
+#define PROF_CMD_ARCS_2         0x00010000  // 'to' index into 'from' in memory format
+#define PROF_CMD_ARCS	        0x00020000  // 'from' index into 'to' in memroy format
 #define PROF_CMD_QUERY_THREAD	0x00100000
 #define PROF_CMD_QUERY_SHLIB	0x00200000
 #define PROF_CMD_REMOVE_MAPPING 0x20000000
@@ -67,25 +65,24 @@ __BEGIN_DECLS
  * track of thread-level profile info.
  *
  */
-
 struct __prof_clientinfo {
-	unsigned	cmd;		/* Command for this request */
-	unsigned 	cap_flags;	/* capabilities */
-	unsigned	version;	/* Version of the profile code */
-	int		    reserved;
-	_Uintptrt	lowpc;		/* Low address for this mapping */
-	_Uintptrt	highpc;		/* High address for this mapping */
-	void		*mcounts;	/* Address in process for count array if present */
-	void		*arcdata;	/* Address in process for arc data if present */
-	void		*bb_head;	/* Address in process for basic block info if present */
-	int		from_off;		/* Offset in shared memory for the from structures */
-	int		from_size;		/* Size of froms stryuctures in bytes */
-	int		tos_off;		/* Offset in shared memory for the tos structure */
-	int		tos_size;		/* Size of tos structures in bytes */
-	int		hash_frac;		/* Hash fraction for tos structures */
-	int		shmem_key;		/* Key used to identify shared memory */
-	int		map_name_len;	/* name of mapping identifier if present */
-	char	map_name[1];	/* name */
+    unsigned cmd;               /* Command for this request */
+    unsigned cap_flags;         /* capabilities */
+    unsigned version;           /* Version of the profile code */
+    int reserved;
+    _Uintptrt lowpc;            /* Low address for this mapping */
+    _Uintptrt highpc;           /* High address for this mapping */
+    void *mcounts;              /* Address in process for count array if present */
+    void *arcdata;              /* Address in process for arc data if present */
+    void *bb_head;              /* Address in process for basic block info if present */
+    int from_off;               /* Offset in shared memory for the from structures */
+    int from_size;              /* Size of froms stryuctures in bytes */
+    int tos_off;                /* Offset in shared memory for the tos structure */
+    int tos_size;               /* Size of tos structures in bytes */
+    int hash_frac;              /* Hash fraction for tos structures */
+    int shmem_key;              /* Key used to identify shared memory */
+    int map_name_len;           /* name of mapping identifier if present */
+    char map_name[1];           /* name */
 };
 
 __END_DECLS

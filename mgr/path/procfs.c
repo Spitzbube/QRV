@@ -395,7 +395,7 @@ static int proc_pathmgr_read(resmgr_context_t * ctp, io_read_t * msg, struct pro
 static int procfs_read(resmgr_context_t * ctp, io_read_t * msg, void *vocb)
 {
     struct procfs_ocb *ocb = vocb;
-    PROCESS *prp = NULL;
+    tProcess *prp = NULL;
     unsigned size;
     void *ptr;
     int nbytes;
@@ -652,7 +652,7 @@ static int procfs_read(resmgr_context_t * ctp, io_read_t * msg, void *vocb)
 static int procfs_write(resmgr_context_t * ctp, io_write_t * msg, void *vocb)
 {
     struct procfs_ocb *ocb = vocb;
-    PROCESS *prp;
+    tProcess *prp;
     unsigned size;
     uintptr_t *pos, offset;
     int nbytes, skip;
@@ -711,7 +711,7 @@ static int procfs_write(resmgr_context_t * ctp, io_write_t * msg, void *vocb)
     return proc_error(EOK, prp);
 }
 
-static int procfs_waitstop(PROCESS * prp, int rcvid)
+static int procfs_waitstop(tProcess * prp, int rcvid)
 {
     struct {
         struct _io_devctl_reply reply;
@@ -723,7 +723,7 @@ static int procfs_waitstop(PROCESS * prp, int rcvid)
         -1) {
         return MsgError_r(rcvid, errno);
     }
-    if ((prp->flags & _NTO_PF_TERMING) || (msg.status.flags & _DEBUG_FLAG_STOPPED)) {
+    if ((prp->flags & QRV_FLG_PROC_TERMING) || (msg.status.flags & _DEBUG_FLAG_STOPPED)) {
         msg.reply.zero = msg.reply.zero2 = msg.reply.ret_val = 0;
         msg.reply.nbytes = sizeof msg.status;
         return MsgReply_r(rcvid, 0, &msg, sizeof msg);
@@ -744,7 +744,7 @@ static int procfs_waitstop(PROCESS * prp, int rcvid)
  be freed (context switch to the procfs close_ocb code) and as
  a result can no longer be referenced by the prp.
 */
-int proc_debug_destroy(resmgr_context_t * ctp, PROCESS * prp)
+int proc_debug_destroy(resmgr_context_t * ctp, tProcess * prp)
 {
     struct procfs_ocb *ocb;
 
@@ -764,7 +764,7 @@ static int procfs_close_ocb(resmgr_context_t * ctp, void *reserved, void *vocb)
 {
     struct procfs_ocb *ocb = vocb;
     struct procfs_ocb *p, **pp;
-    PROCESS *prp;
+    tProcess *prp;
 
     if (ocb->pid > 0 && !(ocb->flags & PROCFS_FLAG_MASK)) {
         if ((prp = proc_lock_pid(ocb->pid))) {
@@ -788,7 +788,7 @@ static int procfs_close_ocb(resmgr_context_t * ctp, void *reserved, void *vocb)
 static int procfs_unblock(resmgr_context_t * ctp, io_pulse_t * msg, void *vocb)
 {
     struct procfs_ocb *ocb = vocb;
-    PROCESS *prp;
+    tProcess *prp;
 
     if (ocb && !(ocb->flags & PROCFS_FLAG_MASK) && (prp = proc_lock_pid(ocb->pid))) {
         struct procfs_waiting *p, **pp;
@@ -848,7 +848,7 @@ static int procfs_lseek(resmgr_context_t * ctp, io_lseek_t * msg, void *vocb)
 static int procfs_stat(resmgr_context_t * ctp, io_stat_t * msg, void *vocb)
 {
     struct procfs_ocb *ocb = vocb;
-    PROCESS *prp;
+    tProcess *prp;
 
     /* Case #1 a pid/AS stat */
     if (ocb->pid && (ocb->flags & PROCFS_FLAG_AS)) {
@@ -927,7 +927,7 @@ static int procfs_stat(resmgr_context_t * ctp, io_stat_t * msg, void *vocb)
  * The mapped address will be the same as for the shared mapping
  * but will be a private copy of <size> bytes
 */
-static int memmgr_shared_to_private(PROCESS * prp, uintptr_t addr, size_t size)
+static int memmgr_shared_to_private(tProcess * prp, uintptr_t addr, size_t size)
 {
     procfs_mapinfo info;
     struct {
@@ -1031,7 +1031,7 @@ static int memmgr_shared_to_private(PROCESS * prp, uintptr_t addr, size_t size)
     return 0;
 }
 
-static int procfs_regset_read(struct procfs_ocb *ocb, PROCESS * prp, int regset_id, void *buf,
+static int procfs_regset_read(struct procfs_ocb *ocb, tProcess * prp, int regset_id, void *buf,
                               int *nbytes)
 {
     switch (regset_id) {
@@ -1080,7 +1080,7 @@ static int procfs_regset_read(struct procfs_ocb *ocb, PROCESS * prp, int regset_
     return proc_error(EOK, prp);
 }
 
-static int procfs_regset_write(struct procfs_ocb *ocb, PROCESS * prp, int regset_id, void *buf,
+static int procfs_regset_write(struct procfs_ocb *ocb, tProcess * prp, int regset_id, void *buf,
                                int *nbytes)
 {
     switch (regset_id) {
@@ -1159,7 +1159,7 @@ static int procfs_devctl(resmgr_context_t * ctp, io_devctl_t * msg, void *vocb)
         part_list_t mpart_list;
     } *ioctl = (void *) (msg + 1);
     int nbytes = 0;
-    PROCESS *prp;
+    tProcess *prp;
     int ret_val = 0;
     int combine = msg->i.combine_len & _IO_COMBINE_FLAG;
 
@@ -2012,7 +2012,7 @@ static int procfs_open(resmgr_context_t * ctp, io_open_t * msg, void *handle, vo
     struct procfs_ocb *ocb;
     char *path;
     pid_t pid;
-    PROCESS *prp;
+    tProcess *prp;
     unsigned flags;
 
     if (msg->connect.path_len + sizeof(*msg) >= ctp->msg_max_size) {
@@ -2118,7 +2118,7 @@ static int procfs_open(resmgr_context_t * ctp, io_open_t * msg, void *handle, vo
     if (ocb->ioflag & _IO_FLAG_WR) {
         struct procfs_ocb *ocb2;
 
-        if (!prp || !(ocb->flags & PROCFS_FLAG_AS) || (prp->flags & _NTO_PF_ZOMBIE)) {
+        if (!prp || !(ocb->flags & PROCFS_FLAG_AS) || (prp->flags & QRV_FLG_PROC_ZOMBIE)) {
             _sfree(ocb, sizeof *ocb);
             return proc_error(EINVAL, prp);
         }
@@ -2161,7 +2161,7 @@ static const resmgr_connect_funcs_t procfs_connect_funcs = {
 
 static int pulse(message_context_t * ctp, int code, unsigned flags, void *handle)
 {
-    PROCESS *prp;
+    tProcess *prp;
     union sigval value = ctp->msg->pulse.value;
 
     if ((prp = proc_lock_pid(value.sival_int))) {

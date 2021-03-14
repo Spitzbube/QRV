@@ -28,7 +28,7 @@ static unsigned _dummy_alloc(unsigned size, void **addr)
 }
 
 int
-pmm_mmap(PROCESS * prp, uintptr_t addr, size_t len, int prot, int flags,
+pmm_mmap(tProcess * prp, uintptr_t addr, size_t len, int prot, int flags,
          OBJECT * obp, uint64_t boff, unsigned align, unsigned preload, int fd,
          void **vaddr, size_t *size, part_id_t mpart_id)
 {

@@ -27,51 +27,49 @@
 #define __IOFUNC_H_INCLUDED
 
 #ifndef _INTTYPES_H_INCLUDED
- #include <inttypes.h>
+#include <inttypes.h>
 #endif
 
 #ifndef __TYPES_H_INCLUDED
- #include <sys/types.h>
+#include <sys/types.h>
 #endif
 
-__BEGIN_DECLS
-
-struct _iofunc_attr;
+__BEGIN_DECLS struct _iofunc_attr;
 struct _iofunc_ocb;
 
 #ifndef RESMGR_HANDLE_T
- #ifndef IOFUNC_ATTR_T
-  #define RESMGR_HANDLE_T		struct _iofunc_attr
- #else
-  #define RESMGR_HANDLE_T		IOFUNC_ATTR_T
- #endif
+#ifndef IOFUNC_ATTR_T
+#define RESMGR_HANDLE_T		struct _iofunc_attr
+#else
+#define RESMGR_HANDLE_T		IOFUNC_ATTR_T
+#endif
 #endif
 
 #ifndef RESMGR_OCB_T
- #ifndef IOFUNC_OCB_T
-  #define RESMGR_OCB_T			struct _iofunc_ocb
- #else
-  #define RESMGR_OCB_T			IOFUNC_OCB_T
- #endif
+#ifndef IOFUNC_OCB_T
+#define RESMGR_OCB_T			struct _iofunc_ocb
+#else
+#define RESMGR_OCB_T			IOFUNC_OCB_T
+#endif
 #endif
 
 #ifndef __RESMGR_H_INCLUDED
- #include <sys/resmgr.h>
+#include <sys/resmgr.h>
 #endif
 
 /***********************************************************************
  * Mount point definition                                              *
  ***********************************************************************/
 
-typedef struct _iofunc_funcs		iofunc_funcs_t;
+typedef struct _iofunc_funcs iofunc_funcs_t;
 
 typedef struct _iofunc_mount {
-    uint32_t                        flags;
-    uint32_t                        conf;
-    dev_t                           dev;
-    int32_t                         blocksize;
-    iofunc_funcs_t                  *funcs;
-    void                            *power;     /* Reserved for future use */
+    uint32_t flags;
+    uint32_t conf;
+    dev_t dev;
+    int32_t blocksize;
+    iofunc_funcs_t *funcs;
+    void *power;                /* Reserved for future use */
 } iofunc_mount_t;
 
 #ifndef IOFUNC_MOUNT_T
@@ -94,68 +92,68 @@ typedef struct _iofunc_mount {
  ***********************************************************************/
 
 typedef struct _iofunc_attr {
-    IOFUNC_MOUNT_T                  *mount;     /* Used to find iofunc_mount_t */
-    uint32_t                        flags;      /* Dirty and invalid flags */
-    int32_t                         lock_tid;   /* Thread that has attr locked */
-    uint16_t                        lock_count; /* Lock count (0 == unlocked) */
-    uint16_t                        count;      /* File use count */
-    uint16_t                        rcount;     /* File reader count */
-    uint16_t                        wcount;     /* File writer count */
-    uint16_t                        rlocks;     /* Number of read locks */
-    uint16_t                        wlocks;     /* Number of write locks */
-    struct _iofunc_mmap_list        *mmap_list; /* List of mmap ids */
-    struct _iofunc_lock_list        *lock_list; /* Lock lists */
-    void                            *list;      /* Reserved for future use */
-    uint32_t                        list_size;  /* Size of reserved area */
+    IOFUNC_MOUNT_T *mount;      /* Used to find iofunc_mount_t */
+    uint32_t flags;             /* Dirty and invalid flags */
+    int32_t lock_tid;           /* Thread that has attr locked */
+    uint16_t lock_count;        /* Lock count (0 == unlocked) */
+    uint16_t count;             /* File use count */
+    uint16_t rcount;            /* File reader count */
+    uint16_t wcount;            /* File writer count */
+    uint16_t rlocks;            /* Number of read locks */
+    uint16_t wlocks;            /* Number of write locks */
+    struct _iofunc_mmap_list *mmap_list;    /* List of mmap ids */
+    struct _iofunc_lock_list *lock_list;    /* Lock lists */
+    void *list;                 /* Reserved for future use */
+    uint32_t list_size;         /* Size of reserved area */
 #if !defined(_IOFUNC_OFFSET_BITS) || _IOFUNC_OFFSET_BITS == 64
- #if _FILE_OFFSET_BITS - 0 == 64
-    off_t                           nbytes;     /* Always Number of bytes */
-    ino_t                           inode;      /* mount point specific inode */
- #else
-    off64_t                         nbytes;     /* Always Number of bytes */
-    ino64_t                         inode;      /* mount point specific inode */
- #endif
-#elif _IOFUNC_OFFSET_BITS - 0 == 32
- #if !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
-  #if defined(__LITTLEENDIAN__)
-    off_t                           nbytes;     /* Always Number of bytes */
-    off_t                           nbytes_hi;
-    ino_t                           inode;      /* mount point specific inode */
-    ino_t                           inode_hi;
-  #elif defined(__BIGENDIAN__)
-    off_t                           nbytes_hi;
-    off_t                           nbytes;     /* Always Number of bytes */
-    ino_t                           inode_hi;
-    ino_t                           inode;      /* mount point specific inode */
-  #else
-   #error endian not configured for system
-  #endif
- #else
-  #if defined(__LITTLEENDIAN__)
-    int32_t                         nbytes;     /* Always Number of bytes */
-    int32_t                         nbytes_hi;
-    int32_t                         inode;      /* mount point specific inode */
-    int32_t                         inode_hi;
-  #elif defined(__BIGENDIAN__)
-    int32_t                         nbytes_hi;
-    int32_t                         nbytes;     /* Always Number of bytes */
-    int32_t                         inode_hi;
-    int32_t                         inode;      /* mount point specific inode */
-  #else
-   #error endian not configured for system
-  #endif
- #endif
+#if _FILE_OFFSET_BITS - 0 == 64
+    off_t nbytes;               /* Always Number of bytes */
+    ino_t inode;                /* mount point specific inode */
 #else
- #error _IOFUNC_OFFSET_BITS value is unsupported
+    off64_t nbytes;             /* Always Number of bytes */
+    ino64_t inode;              /* mount point specific inode */
 #endif
-    uid_t                           uid;        /* User id */
-    gid_t                           gid;        /* Group id */
-    time_t                          mtime;      /* Modification time (write updates) */
-    time_t                          atime;      /* Access time (read updates */
-    time_t                          ctime;      /* Change time (write/ch* updates) */
-    mode_t                          mode;       /* File mode (S_* from stat.h) */
-    nlink_t                         nlink;      /* Number of links to the file */
-    dev_t                           rdev;       /* dev num for CHR special, rdev num for NAME special */
+#elif _IOFUNC_OFFSET_BITS - 0 == 32
+#if !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
+#if defined(__LITTLEENDIAN__)
+    off_t nbytes;               /* Always Number of bytes */
+    off_t nbytes_hi;
+    ino_t inode;                /* mount point specific inode */
+    ino_t inode_hi;
+#elif defined(__BIGENDIAN__)
+    off_t nbytes_hi;
+    off_t nbytes;               /* Always Number of bytes */
+    ino_t inode_hi;
+    ino_t inode;                /* mount point specific inode */
+#else
+#error endian not configured for system
+#endif
+#else
+#if defined(__LITTLEENDIAN__)
+    int32_t nbytes;             /* Always Number of bytes */
+    int32_t nbytes_hi;
+    int32_t inode;              /* mount point specific inode */
+    int32_t inode_hi;
+#elif defined(__BIGENDIAN__)
+    int32_t nbytes_hi;
+    int32_t nbytes;             /* Always Number of bytes */
+    int32_t inode_hi;
+    int32_t inode;              /* mount point specific inode */
+#else
+#error endian not configured for system
+#endif
+#endif
+#else
+#error _IOFUNC_OFFSET_BITS value is unsupported
+#endif
+    uid_t uid;                  /* User id */
+    gid_t gid;                  /* Group id */
+    time_t mtime;               /* Modification time (write updates) */
+    time_t atime;               /* Access time (read updates */
+    time_t ctime;               /* Change time (write/ch* updates) */
+    mode_t mode;                /* File mode (S_* from stat.h) */
+    nlink_t nlink;              /* Number of links to the file */
+    dev_t rdev;                 /* dev num for CHR special, rdev num for NAME special */
 } iofunc_attr_t;
 
 #ifndef IOFUNC_ATTR_T
@@ -184,51 +182,51 @@ typedef struct _iofunc_attr {
 
 
 typedef struct _iofunc_ocb {
-    IOFUNC_ATTR_T                   *attr;      /* Used to find iofunc_attr_t */
-    int32_t                         ioflag;     /* open's oflag + 1 */
+    IOFUNC_ATTR_T *attr;        /* Used to find iofunc_attr_t */
+    int32_t ioflag;             /* open's oflag + 1 */
 #if !defined(_IOFUNC_OFFSET_BITS) || _IOFUNC_OFFSET_BITS == 64
- #if _FILE_OFFSET_BITS - 0 == 64
-    off_t                           offset;
- #else
-    off64_t                         offset;
- #endif
-#elif _IOFUNC_OFFSET_BITS - 0 == 32
- #if !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
-  #if defined(__LITTLEENDIAN__)
-    off_t                           offset;
-    off_t                           offset_hi;
-  #elif defined(__BIGENDIAN__)
-    off_t                           offset_hi;
-    off_t                           offset;
-  #else
-   #error endian not configured for system
-  #endif
- #else
-  #if defined(__LITTLEENDIAN__)
-    int32_t                         offset;
-    int32_t                         offset_hi;
-  #elif defined(__BIGENDIAN__)
-    int32_t                         offset_hi;
-    int32_t                         offset;
-  #else
-   #error endian not configured for system
-  #endif
- #endif
+#if _FILE_OFFSET_BITS - 0 == 64
+    off_t offset;
 #else
- #error _IOFUNC_OFFSET_BITS value is unsupported
+    off64_t offset;
 #endif
-    uint16_t                        sflag;
-    uint16_t                        flags;
-    void                            *reserved;
+#elif _IOFUNC_OFFSET_BITS - 0 == 32
+#if !defined(_FILE_OFFSET_BITS) || _FILE_OFFSET_BITS == 32
+#if defined(__LITTLEENDIAN__)
+    off_t offset;
+    off_t offset_hi;
+#elif defined(__BIGENDIAN__)
+    off_t offset_hi;
+    off_t offset;
+#else
+#error endian not configured for system
+#endif
+#else
+#if defined(__LITTLEENDIAN__)
+    int32_t offset;
+    int32_t offset_hi;
+#elif defined(__BIGENDIAN__)
+    int32_t offset_hi;
+    int32_t offset;
+#else
+#error endian not configured for system
+#endif
+#endif
+#else
+#error _IOFUNC_OFFSET_BITS value is unsupported
+#endif
+    uint16_t sflag;
+    uint16_t flags;
+    void *reserved;
 } iofunc_ocb_t;
 
 #ifndef IOFUNC_OCB_T
 #define IOFUNC_OCB_T                iofunc_ocb_t
 #endif
 
-#define IOFUNC_OCB_PRIVILEGED       0x0001      /* set if ocb opened by privileged process */
-#define IOFUNC_OCB_MMAP             0x0002      /* set if ocb used by mmap */
-#define IOFUNC_OCB_FLAGS_PRIVATE    0xF000      /* Bits for private implementation */
+#define IOFUNC_OCB_PRIVILEGED       0x0001  /* set if ocb opened by privileged process */
+#define IOFUNC_OCB_MMAP             0x0002  /* set if ocb used by mmap */
+#define IOFUNC_OCB_FLAGS_PRIVATE    0xF000  /* Bits for private implementation */
 
 
 /***********************************************************************
@@ -236,17 +234,17 @@ typedef struct _iofunc_ocb {
  ***********************************************************************/
 
 struct _iofunc_funcs {
-	unsigned				nfuncs;
-	IOFUNC_OCB_T			*(*ocb_calloc)(resmgr_context_t *ctp, IOFUNC_ATTR_T *attr);
-	void					(*ocb_free)(IOFUNC_OCB_T *ocb);
-	int						(*attr_lock)(IOFUNC_ATTR_T *attr);
-	int						(*attr_unlock)(IOFUNC_ATTR_T *attr);
-	int						(*attr_trylock)(IOFUNC_ATTR_T *attr);
+    unsigned nfuncs;
+    IOFUNC_OCB_T *(*ocb_calloc)(resmgr_context_t * ctp, IOFUNC_ATTR_T * attr);
+    void (*ocb_free)(IOFUNC_OCB_T * ocb);
+    int (*attr_lock)(IOFUNC_ATTR_T * attr);
+    int (*attr_unlock)(IOFUNC_ATTR_T * attr);
+    int (*attr_trylock)(IOFUNC_ATTR_T * attr);
 };
 #define _IOFUNC_NFUNCS		((sizeof(iofunc_funcs_t)-sizeof(unsigned))/sizeof(void *))
 
-typedef struct _iofunc_mmap_list    iofunc_mmap_list_t;
-typedef struct _iofunc_lock_list    iofunc_lock_list_t;
+typedef struct _iofunc_mmap_list iofunc_mmap_list_t;
+typedef struct _iofunc_lock_list iofunc_lock_list_t;
 
 
 /***********************************************************************
@@ -266,33 +264,33 @@ typedef struct _iofunc_lock_list    iofunc_lock_list_t;
  ***********************************************************************/
 
 typedef struct _iofunc_notify_event {
-	struct _iofunc_notify_event	*next;
-	int							rcvid;
-	int							scoid;
-	int							cnt;
-	struct sigevent				event;
-	unsigned					flags;
-	int							coid;
+    struct _iofunc_notify_event *next;
+    int rcvid;
+    int scoid;
+    int cnt;
+    struct sigevent event;
+    unsigned flags;
+    int coid;
 } iofunc_notify_event_t;
 
 typedef struct _iofunc_notify {
-	int							cnt;
-	struct _iofunc_notify_event	*list;
+    int cnt;
+    struct _iofunc_notify_event *list;
 } iofunc_notify_t;
 
 /* Indexes to the array of struct _iofunc_notify */
-#define IOFUNC_NOTIFY_INPUT		0
+#define IOFUNC_NOTIFY_INPUT	0
 #define IOFUNC_NOTIFY_OUTPUT	1
-#define IOFUNC_NOTIFY_OBAND		2
+#define IOFUNC_NOTIFY_OBAND	2
 
 #define IOFUNC_NOTIFY_RDNORM	IOFUNC_NOTIFY_INPUT
 #define IOFUNC_NOTIFY_WRNORM	IOFUNC_NOTIFY_OUTPUT
 #define IOFUNC_NOTIFY_RDBAND	IOFUNC_NOTIFY_OBAND
-#define IOFUNC_NOTIFY_PRI		3
+#define IOFUNC_NOTIFY_PRI	3
 #define IOFUNC_NOTIFY_WRBAND	4
-#define IOFUNC_NOTIFY_ERR		5
-#define IOFUNC_NOTIFY_HUP		6
-#define IOFUNC_NOTIFY_NVAL		12
+#define IOFUNC_NOTIFY_ERR	5
+#define IOFUNC_NOTIFY_HUP	6
+#define IOFUNC_NOTIFY_NVAL	12
 
 /* Macros to be used to see if iofunc_notify_trigger should be called. */
 #define IOFUNC_NOTIFY_INPUT_CHECK(__nop, __cnt, __tran)	\
@@ -316,107 +314,146 @@ typedef struct _iofunc_notify {
  ***********************************************************************/
 
 /* Default function initialization */
-extern void iofunc_func_init(unsigned __nconnect, resmgr_connect_funcs_t *__connect, unsigned __nio, resmgr_io_funcs_t *__io);
+extern void iofunc_func_init(unsigned __nconnect, resmgr_connect_funcs_t * __connect,
+                             unsigned __nio, resmgr_io_funcs_t * __io);
 
 /* Default resmgr functions */
-extern int iofunc_chmod_default(resmgr_context_t *__ctp, io_chmod_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_chown_default(resmgr_context_t *__ctp, io_chown_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_close_dup_default(resmgr_context_t *__ctp, io_close_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_close_ocb_default(resmgr_context_t *__ctp, void *__reserved, iofunc_ocb_t *__ocb);
-extern int iofunc_devctl_default(resmgr_context_t *__ctp, io_devctl_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_lock_default(resmgr_context_t *__ctp, io_lock_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_lock_ocb_default(resmgr_context_t *__ctp, void *__reserved, iofunc_ocb_t *__ocb);
-extern int iofunc_lseek_default(resmgr_context_t *__ctp, io_lseek_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_mmap_default(resmgr_context_t *__ctp, io_mmap_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_open_default(resmgr_context_t *__ctp, io_open_t *__msg, iofunc_attr_t *__attr, void *__extra);
-extern int iofunc_openfd_default(resmgr_context_t *__ctp, io_openfd_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_fdinfo_default(resmgr_context_t *__ctp, io_fdinfo_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_pathconf_default(resmgr_context_t *__ctp, io_pathconf_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_read_default(resmgr_context_t *__ctp, io_read_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_stat_default(resmgr_context_t *__ctp, io_stat_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_unblock_default(resmgr_context_t *__ctp, io_pulse_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_unlock_ocb_default(resmgr_context_t *__ctp, void *__reserved, iofunc_ocb_t *__ocb);
-extern int iofunc_utime_default(resmgr_context_t *__ctp, io_utime_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_write_default(resmgr_context_t *__ctp, io_write_t *__msg, iofunc_ocb_t *__ocb);
-extern int iofunc_sync_default(resmgr_context_t *__ctp, io_sync_t *__msg, iofunc_ocb_t *__ocb);
+extern int iofunc_chmod_default(resmgr_context_t * __ctp, io_chmod_t * __msg, iofunc_ocb_t * __ocb);
+extern int iofunc_chown_default(resmgr_context_t * __ctp, io_chown_t * __msg, iofunc_ocb_t * __ocb);
+extern int iofunc_close_dup_default(resmgr_context_t * __ctp, io_close_t * __msg,
+                                    iofunc_ocb_t * __ocb);
+extern int iofunc_close_ocb_default(resmgr_context_t * __ctp, void *__reserved,
+                                    iofunc_ocb_t * __ocb);
+extern int iofunc_devctl_default(resmgr_context_t * __ctp, io_devctl_t * __msg,
+                                 iofunc_ocb_t * __ocb);
+extern int iofunc_lock_default(resmgr_context_t * __ctp, io_lock_t * __msg, iofunc_ocb_t * __ocb);
+extern int iofunc_lock_ocb_default(resmgr_context_t * __ctp, void *__reserved,
+                                   iofunc_ocb_t * __ocb);
+extern int iofunc_lseek_default(resmgr_context_t * __ctp, io_lseek_t * __msg, iofunc_ocb_t * __ocb);
+extern int iofunc_mmap_default(resmgr_context_t * __ctp, io_mmap_t * __msg, iofunc_ocb_t * __ocb);
+extern int iofunc_open_default(resmgr_context_t * __ctp, io_open_t * __msg, iofunc_attr_t * __attr,
+                               void *__extra);
+extern int iofunc_openfd_default(resmgr_context_t * __ctp, io_openfd_t * __msg,
+                                 iofunc_ocb_t * __ocb);
+extern int iofunc_fdinfo_default(resmgr_context_t * __ctp, io_fdinfo_t * __msg,
+                                 iofunc_ocb_t * __ocb);
+extern int iofunc_pathconf_default(resmgr_context_t * __ctp, io_pathconf_t * __msg,
+                                   iofunc_ocb_t * __ocb);
+extern int iofunc_read_default(resmgr_context_t * __ctp, io_read_t * __msg, iofunc_ocb_t * __ocb);
+extern int iofunc_stat_default(resmgr_context_t * __ctp, io_stat_t * __msg, iofunc_ocb_t * __ocb);
+extern int iofunc_unblock_default(resmgr_context_t * __ctp, io_pulse_t * __msg,
+                                  iofunc_ocb_t * __ocb);
+extern int iofunc_unlock_ocb_default(resmgr_context_t * __ctp, void *__reserved,
+                                     iofunc_ocb_t * __ocb);
+extern int iofunc_utime_default(resmgr_context_t * __ctp, io_utime_t * __msg, iofunc_ocb_t * __ocb);
+extern int iofunc_write_default(resmgr_context_t * __ctp, io_write_t * __msg, iofunc_ocb_t * __ocb);
+extern int iofunc_sync_default(resmgr_context_t * __ctp, io_sync_t * __msg, iofunc_ocb_t * __ocb);
 #ifdef CONFIG_POWER_MANAGEMENT
-extern int iofunc_power_default(resmgr_context_t *__ctp, io_power_t *__msg, iofunc_ocb_t *__ocb);
+extern int iofunc_power_default(resmgr_context_t * __ctp, io_power_t * __msg, iofunc_ocb_t * __ocb);
 #endif
 /* If iofunc_lock_default is used, iofunc_close_dup_default and iofunc_unblock_default must be used */
 
 /* Used by iofunc's for multithread protection */
-extern int iofunc_attr_lock(iofunc_attr_t *__attr);
-extern int iofunc_attr_trylock(iofunc_attr_t *__attr);
-extern int iofunc_attr_unlock(iofunc_attr_t *__attr);
+extern int iofunc_attr_lock(iofunc_attr_t * __attr);
+extern int iofunc_attr_trylock(iofunc_attr_t * __attr);
+extern int iofunc_attr_unlock(iofunc_attr_t * __attr);
 
 /* used by iofuncs to allocate/deallocate an ocb */
-extern IOFUNC_OCB_T *iofunc_ocb_calloc(resmgr_context_t *__ctp, IOFUNC_ATTR_T *__attr);
-extern void iofunc_ocb_free(IOFUNC_OCB_T *__ocb);
+extern IOFUNC_OCB_T *iofunc_ocb_calloc(resmgr_context_t * __ctp, IOFUNC_ATTR_T * __attr);
+extern void iofunc_ocb_free(IOFUNC_OCB_T * __ocb);
 
 /* used by iofuncs to allocate/deallocate a lock */
-extern iofunc_lock_list_t *iofunc_lock_calloc(resmgr_context_t *__ctp, IOFUNC_OCB_T *__ocb, size_t __size);
-extern void iofunc_lock_free(iofunc_lock_list_t *__lock, size_t __size);
+extern iofunc_lock_list_t *iofunc_lock_calloc(resmgr_context_t * __ctp, IOFUNC_OCB_T * __ocb,
+                                              size_t __size);
+extern void iofunc_lock_free(iofunc_lock_list_t * __lock, size_t __size);
 
 /* Used by iofunc_open_default */
-extern void iofunc_attr_init(iofunc_attr_t *__attr, mode_t __mode, iofunc_attr_t *__dattr, struct _client_info *__info);
-extern int iofunc_check_access(resmgr_context_t *__ctp, const iofunc_attr_t *__attr, mode_t __checkmode, const struct _client_info *__info);
-extern int iofunc_client_info(resmgr_context_t *__ctp, int __ioflag, struct _client_info *__info);
-extern int iofunc_link(resmgr_context_t *__ctp, io_link_t *__msg, iofunc_attr_t *__attr, iofunc_attr_t *__dattr, struct _client_info *__info);
-extern int iofunc_mknod(resmgr_context_t *__ctp, io_mknod_t *__msg, iofunc_attr_t *__attr, iofunc_attr_t *__dattr, struct _client_info *__info);
-extern int iofunc_ocb_attach(resmgr_context_t *__ctp, io_open_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr, const resmgr_io_funcs_t *__io_funcs);
-extern int iofunc_open(resmgr_context_t *__ctp, io_open_t *__msg, iofunc_attr_t *__attr, iofunc_attr_t *__dattr, struct _client_info *__info);
-extern int iofunc_readlink(resmgr_context_t *__ctp, io_readlink_t *__msg, iofunc_attr_t *__attr, struct _client_info *__info);
-extern int iofunc_rename(resmgr_context_t *__ctp, io_rename_t *__msg, iofunc_attr_t *__oldattr, iofunc_attr_t *__olddattr, iofunc_attr_t *__newattr, iofunc_attr_t *__newdattr, struct _client_info *__info);
-extern int iofunc_unlink(resmgr_context_t *__ctp, io_unlink_t *__msg, iofunc_attr_t *__attr, iofunc_attr_t *__dattr, struct _client_info *__info);
+extern void iofunc_attr_init(iofunc_attr_t * __attr, mode_t __mode, iofunc_attr_t * __dattr,
+                             struct _client_info *__info);
+extern int iofunc_check_access(resmgr_context_t * __ctp, const iofunc_attr_t * __attr,
+                               mode_t __checkmode, const struct _client_info *__info);
+extern int iofunc_client_info(resmgr_context_t * __ctp, int __ioflag, struct _client_info *__info);
+extern int iofunc_link(resmgr_context_t * __ctp, io_link_t * __msg, iofunc_attr_t * __attr,
+                       iofunc_attr_t * __dattr, struct _client_info *__info);
+extern int iofunc_mknod(resmgr_context_t * __ctp, io_mknod_t * __msg, iofunc_attr_t * __attr,
+                        iofunc_attr_t * __dattr, struct _client_info *__info);
+extern int iofunc_ocb_attach(resmgr_context_t * __ctp, io_open_t * __msg, iofunc_ocb_t * __ocb,
+                             iofunc_attr_t * __attr, const resmgr_io_funcs_t * __io_funcs);
+extern int iofunc_open(resmgr_context_t * __ctp, io_open_t * __msg, iofunc_attr_t * __attr,
+                       iofunc_attr_t * __dattr, struct _client_info *__info);
+extern int iofunc_readlink(resmgr_context_t * __ctp, io_readlink_t * __msg, iofunc_attr_t * __attr,
+                           struct _client_info *__info);
+extern int iofunc_rename(resmgr_context_t * __ctp, io_rename_t * __msg, iofunc_attr_t * __oldattr,
+                         iofunc_attr_t * __olddattr, iofunc_attr_t * __newattr,
+                         iofunc_attr_t * __newdattr, struct _client_info *__info);
+extern int iofunc_unlink(resmgr_context_t * __ctp, io_unlink_t * __msg, iofunc_attr_t * __attr,
+                         iofunc_attr_t * __dattr, struct _client_info *__info);
 
 /* Should be at start of read handler function */
-extern int iofunc_read_verify(resmgr_context_t *__ctp, io_read_t *__msg, iofunc_ocb_t *__ocb, int *__nonblock);
+extern int iofunc_read_verify(resmgr_context_t * __ctp, io_read_t * __msg, iofunc_ocb_t * __ocb,
+                              int *__nonblock);
 
 /* Should be at start of write handler function */
-extern int iofunc_write_verify(resmgr_context_t *__ctp, io_write_t *__msg, iofunc_ocb_t *__ocb, int *__nonblock);
+extern int iofunc_write_verify(resmgr_context_t * __ctp, io_write_t * __msg, iofunc_ocb_t * __ocb,
+                               int *__nonblock);
 
 /* Should be at start of space handler function */
-extern int iofunc_space_verify(resmgr_context_t *__ctp, io_space_t *__msg, iofunc_ocb_t *__ocb, int *__nonblock);
+extern int iofunc_space_verify(resmgr_context_t * __ctp, io_space_t * __msg, iofunc_ocb_t * __ocb,
+                               int *__nonblock);
 
 /* Should be used by unlink handler function */
 /*extern int iofunc_unlink(resmgr_context_t *__ctp, io_unlink_t *__msg, iofunc_attr_t *__attr, iofunc_attr_t *__dattr, struct _client_info *__info);*/
 
 /* Used by iofunc_close_ocb_default */
-extern int iofunc_ocb_detach(resmgr_context_t *__ctp, iofunc_ocb_t *__ocb);
+extern int iofunc_ocb_detach(resmgr_context_t * __ctp, iofunc_ocb_t * __ocb);
 
 /* Used to verify SYNC message */
-extern int iofunc_sync_verify(resmgr_context_t *__ctp, io_sync_t *__msg, iofunc_ocb_t *__ocb);
+extern int iofunc_sync_verify(resmgr_context_t * __ctp, io_sync_t * __msg, iofunc_ocb_t * __ocb);
 
 /* Used by iofunc_*_default functions */
-extern int iofunc_chmod(resmgr_context_t *__ctp, io_chmod_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_chown(resmgr_context_t *__ctp, io_chown_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_close_dup(resmgr_context_t *__ctp, io_close_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_close_ocb(resmgr_context_t *__ctp, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_devctl(resmgr_context_t *__ctp, io_devctl_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_lock(resmgr_context_t *__ctp, io_lock_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_lseek(resmgr_context_t *__ctp, io_lseek_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_mmap(resmgr_context_t *__ctp, io_mmap_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_openfd(resmgr_context_t *__ctp, io_openfd_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_fdinfo(resmgr_context_t *__ctp, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr, struct _fdinfo *__info);
-extern int iofunc_pathconf(resmgr_context_t *__ctp, io_pathconf_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_stat(resmgr_context_t *__ctp, iofunc_attr_t *__attr, struct stat *__stat);
-extern int iofunc_unblock(resmgr_context_t *__ctp, iofunc_attr_t *__attr);
-extern int iofunc_utime(resmgr_context_t *__ctp, io_utime_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
-extern int iofunc_sync(resmgr_context_t *__ctp, iofunc_ocb_t *__ocb, int __ioflag);
+extern int iofunc_chmod(resmgr_context_t * __ctp, io_chmod_t * __msg, iofunc_ocb_t * __ocb,
+                        iofunc_attr_t * __attr);
+extern int iofunc_chown(resmgr_context_t * __ctp, io_chown_t * __msg, iofunc_ocb_t * __ocb,
+                        iofunc_attr_t * __attr);
+extern int iofunc_close_dup(resmgr_context_t * __ctp, io_close_t * __msg, iofunc_ocb_t * __ocb,
+                            iofunc_attr_t * __attr);
+extern int iofunc_close_ocb(resmgr_context_t * __ctp, iofunc_ocb_t * __ocb, iofunc_attr_t * __attr);
+extern int iofunc_devctl(resmgr_context_t * __ctp, io_devctl_t * __msg, iofunc_ocb_t * __ocb,
+                         iofunc_attr_t * __attr);
+extern int iofunc_lock(resmgr_context_t * __ctp, io_lock_t * __msg, iofunc_ocb_t * __ocb,
+                       iofunc_attr_t * __attr);
+extern int iofunc_lseek(resmgr_context_t * __ctp, io_lseek_t * __msg, iofunc_ocb_t * __ocb,
+                        iofunc_attr_t * __attr);
+extern int iofunc_mmap(resmgr_context_t * __ctp, io_mmap_t * __msg, iofunc_ocb_t * __ocb,
+                       iofunc_attr_t * __attr);
+extern int iofunc_openfd(resmgr_context_t * __ctp, io_openfd_t * __msg, iofunc_ocb_t * __ocb,
+                         iofunc_attr_t * __attr);
+extern int iofunc_fdinfo(resmgr_context_t * __ctp, iofunc_ocb_t * __ocb, iofunc_attr_t * __attr,
+                         struct _fdinfo *__info);
+extern int iofunc_pathconf(resmgr_context_t * __ctp, io_pathconf_t * __msg, iofunc_ocb_t * __ocb,
+                           iofunc_attr_t * __attr);
+extern int iofunc_stat(resmgr_context_t * __ctp, iofunc_attr_t * __attr, struct stat *__stat);
+extern int iofunc_unblock(resmgr_context_t * __ctp, iofunc_attr_t * __attr);
+extern int iofunc_utime(resmgr_context_t * __ctp, io_utime_t * __msg, iofunc_ocb_t * __ocb,
+                        iofunc_attr_t * __attr);
+extern int iofunc_sync(resmgr_context_t * __ctp, iofunc_ocb_t * __ocb, int __ioflag);
 #ifdef CONFIG_POWER_MANAGEMENT
-extern int iofunc_power(resmgr_context_t *__ctp, io_power_t *__msg, iofunc_ocb_t *__ocb, iofunc_attr_t *__attr);
+extern int iofunc_power(resmgr_context_t * __ctp, io_power_t * __msg, iofunc_ocb_t * __ocb,
+                        iofunc_attr_t * __attr);
 #endif
 
 /* Used to force invalid times to be updated */
-extern int iofunc_time_update(iofunc_attr_t *__attr);
+extern int iofunc_time_update(iofunc_attr_t * __attr);
 
 /* notify functions */
-extern int iofunc_notify(resmgr_context_t *__ctp, io_notify_t *__msg, iofunc_notify_t *__nop, int __trig, const int *__notifycnts, int *__armed);
-extern void iofunc_notify_remove(resmgr_context_t *__ctp, iofunc_notify_t *__nop);
-extern void iofunc_notify_remove_strict(resmgr_context_t *__ctp, iofunc_notify_t *__nop, int __lim);
-extern void iofunc_notify_trigger(iofunc_notify_t *__nop, int __cnt, int __index);
-extern void iofunc_notify_trigger_strict(resmgr_context_t *__ctp, iofunc_notify_t *__nop, int __cnt, int __index);
+extern int iofunc_notify(resmgr_context_t * __ctp, io_notify_t * __msg, iofunc_notify_t * __nop,
+                         int __trig, const int *__notifycnts, int *__armed);
+extern void iofunc_notify_remove(resmgr_context_t * __ctp, iofunc_notify_t * __nop);
+extern void iofunc_notify_remove_strict(resmgr_context_t * __ctp, iofunc_notify_t * __nop,
+                                        int __lim);
+extern void iofunc_notify_trigger(iofunc_notify_t * __nop, int __cnt, int __index);
+extern void iofunc_notify_trigger_strict(resmgr_context_t * __ctp, iofunc_notify_t * __nop,
+                                         int __cnt, int __index);
 
 __END_DECLS
-
 #endif

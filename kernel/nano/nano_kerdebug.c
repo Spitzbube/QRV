@@ -217,5 +217,3 @@ void kdebug_kdump_private(const struct kdump_private *kdump)
 {
     register_info()->kdump_private = kdump;
 }
-
-__SRCVERSION("nano_kerdebug.c $Rev: 207533 $");

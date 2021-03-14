@@ -38,9 +38,9 @@ struct vfork_info {
     unsigned frame[1];
 };
 
-extern SOUL wait_souls;
+extern tSoul wait_souls;
 
-#include "procmgr_proto.h"
+#include <taskman/procmgr_proto.h>
 
 extern void procmgr_context_init(void);
 

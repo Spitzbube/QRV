@@ -1753,7 +1753,7 @@ int trigger_kercall_event( unsigned * event_p)
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
 			delay(10);
-			global_vals[0]=SyncTypeCreate(_NTO_SYNC_SEM, &mysync, &mysyncattr);
+			global_vals[0]=SyncTypeCreate(QRV_SYNC_SEM, &mysync, &mysyncattr);
 			SyncDestroy(&mysync);
 			break;
 		case __KER_SYNC_DESTROY:
@@ -1761,7 +1761,7 @@ int trigger_kercall_event( unsigned * event_p)
 			memset(&mysync, 0, sizeof(mysync));
 			mysync.count=0;
 			mysync.owner=0;
-			SyncTypeCreate(_NTO_SYNC_SEM, &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_SEM, &mysync, NULL);
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1771,7 +1771,7 @@ int trigger_kercall_event( unsigned * event_p)
 		case __KER_SYNC_MUTEX_LOCK:
 			memset(global_vals, 0, sizeof(global_vals));
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_MUTEX_FREE , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_MUTEX_FREE , &mysync, NULL);
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1782,7 +1782,7 @@ int trigger_kercall_event( unsigned * event_p)
 		case __KER_SYNC_MUTEX_UNLOCK:
 			memset(global_vals, 0, sizeof(global_vals));
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_MUTEX_FREE , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_MUTEX_FREE , &mysync, NULL);
 			SyncMutexLock(&mysync);
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
@@ -1801,8 +1801,8 @@ int trigger_kercall_event( unsigned * event_p)
 			MsgSend(coid, "CONDSIGNAL", 11, reply_buf, sizeof(reply_buf));
 
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_COND  , &mysync, NULL);
-			SyncTypeCreate(_NTO_SYNC_MUTEX_FREE , &mysync2, NULL);
+			SyncTypeCreate(QRV_SYNC_COND  , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_MUTEX_FREE , &mysync2, NULL);
 			SyncMutexLock(&mysync2);
 			global_vals[0]=(unsigned)&mysync;
 			/* Start logging */
@@ -1816,7 +1816,7 @@ int trigger_kercall_event( unsigned * event_p)
 		case __KER_SYNC_CONDVAR_SIGNAL:
 			memset(global_vals, 0, sizeof(global_vals));
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_COND  , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_COND  , &mysync, NULL);
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1827,7 +1827,7 @@ int trigger_kercall_event( unsigned * event_p)
 		case __KER_SYNC_SEM_POST:
 			memset(global_vals, 0, sizeof(global_vals));
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_SEM, &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_SEM, &mysync, NULL);
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1838,7 +1838,7 @@ int trigger_kercall_event( unsigned * event_p)
 		case __KER_SYNC_SEM_WAIT:
 			memset(global_vals, 0, sizeof(global_vals));
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_SEM, &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_SEM, &mysync, NULL);
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1849,7 +1849,7 @@ int trigger_kercall_event( unsigned * event_p)
 		case __KER_SYNC_CTL:
 			memset(&mysync, 0, sizeof(mysync));
 			memset(global_vals, 0, sizeof(global_vals));
-			SyncTypeCreate(_NTO_SYNC_MUTEX_FREE , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_MUTEX_FREE , &mysync, NULL);
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);
@@ -1860,7 +1860,7 @@ int trigger_kercall_event( unsigned * event_p)
 		case __KER_SYNC_MUTEX_REVIVE:
 			memset(global_vals, 0, sizeof(global_vals));
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_MUTEX_FREE , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_MUTEX_FREE , &mysync, NULL);
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
 			assert(rc!=-1);

@@ -59,5 +59,3 @@ int kdecl ker_sys_cpupage_set(THREAD * act, struct kerargs_sys_cpupage_set *kap)
 
     return EOK;
 }
-
-__SRCVERSION("ker_sys.c $Rev: 153052 $");

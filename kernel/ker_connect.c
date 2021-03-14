@@ -18,12 +18,12 @@
 #include "externs.h"
 #include <sys/procmsg.h>
 
-int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
+int kdecl ker_connect_attach(tThread * act, struct kerargs_connect_attach *kap)
 {
-    PROCESS *prpc, *prps;
+    tProcess *prpc, *prps;
     tChannel *chp;
-    CONNECT *cop, *cop_master = NULL;
-    VECTOR *vec, *newvec;
+    tConnect *cop, *cop_master = NULL;
+    tVector *vec, *newvec;
     int i, coid, scoid, special;
     unsigned chid;
     unsigned status;
@@ -32,14 +32,14 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
     prps = kap->pid ? lookup_pid(kap->pid) : prpc;
     special = prpc->pid == PROCMGR_PID && !kap->flags;
 
-    if (kap->flags & ~(_NTO_COF_CLOEXEC | _NTO_COF_DEAD | _NTO_COF_NOSHARE |
-                       _NTO_COF_NETCON | _NTO_COF_NONBLOCK | _NTO_COF_ASYNC | _NTO_COF_GLOBAL)) {
+    if (kap->flags & ~(QRV_FLG_COF_CLOEXEC | QRV_FLG_COF_DEAD | QRV_FLG_COF_NOSHARE |
+                       QRV_FLG_COF_NETCON | QRV_FLG_COF_NONBLOCK | QRV_FLG_COF_ASYNC | QRV_FLG_COF_GLOBAL)) {
         /* invalid flags specified */
         return EINVAL;
     }
     // Don't let them pick an index for side channels. They always get first avail.
-    if (kap->index & _NTO_SIDE_CHANNEL) {
-        kap->index = _NTO_SIDE_CHANNEL;
+    if (kap->index & QRV_SIDE_CHANNEL) {
+        kap->index = QRV_SIDE_CHANNEL;
         // Make sure they don't pick one beyond their limits.
     } else if (kap->index >= prpc->rlimit_vals_soft[RLIMIT_NOFILE]) {
         return EINVAL;
@@ -68,9 +68,9 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
 
     vec = &prps->chancons;
     chid = kap->chid;
-    if (chid & _NTO_GLOBAL_CHANNEL) {
+    if (chid & QRV_GLOBAL_CHANNEL) {
         vec = &chgbl_vector;
-        chid &= ~_NTO_GLOBAL_CHANNEL;
+        chid &= ~QRV_GLOBAL_CHANNEL;
     }
     // Make sure channel is valid.
     chp = vector_lookup(vec, (int)chid);
@@ -79,14 +79,14 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
     }
 
   common:
-    if (prps->flags & (_NTO_PF_TERMING | _NTO_PF_ZOMBIE | _NTO_PF_COREDUMP)) {
+    if (prps->flags & (QRV_FLG_PROC_TERMING | QRV_FLG_PROC_ZOMBIE | QRV_FLG_PROC_COREDUMP)) {
         return ENXIO;
     }
 
-    newvec = (kap->index & _NTO_SIDE_CHANNEL) ? &prpc->chancons : &prpc->fdcons;
+    newvec = (kap->index & QRV_SIDE_CHANNEL) ? &prpc->chancons : &prpc->fdcons;
 
     // The network manager uses this to prevent connection sharing.
-    if ((kap->flags & (_NTO_COF_NOSHARE | _NTO_COF_NETCON)) == 0) {
+    if ((kap->flags & (QRV_FLG_COF_NOSHARE | QRV_FLG_COF_NETCON)) == 0) {
         // Scan for an existing connection in either channel vector.
         for (vec = &prpc->fdcons;;) {
             for (i = 0; i < vec->nentries; ++i) {
@@ -103,11 +103,11 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
                     } else {
                         lock_kernel();
                         if ((coid =
-                             vector_add(newvec, cop, kap->index & ~_NTO_SIDE_CHANNEL)) == -1) {
+                             vector_add(newvec, cop, kap->index & ~QRV_SIDE_CHANNEL)) == -1) {
                             return EAGAIN;
                         }
                         // Check coid is allowed
-                        if ((kap->index & _NTO_SIDE_CHANNEL) == 0 && !special
+                        if ((kap->index & QRV_SIDE_CHANNEL) == 0 && !special
                             && coid >= prpc->rlimit_vals_soft[RLIMIT_NOFILE]) {
                             vector_rem(newvec, coid);
                             return EMFILE;
@@ -115,11 +115,11 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
 
                         ++cop->links;
 
-                        if (kap->flags & _NTO_COF_CLOEXEC) {
+                        if (kap->flags & QRV_FLG_COF_CLOEXEC) {
                             vector_flag(newvec, coid, 1);
                         }
 
-                        status = coid | (kap->index & _NTO_SIDE_CHANNEL);
+                        status = coid | (kap->index & QRV_SIDE_CHANNEL);
                         SETKSTATUS(act, status);
                         prpc->nfds++;
 
@@ -136,7 +136,7 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
         }
     }
 
-    if (chp->flags & _NTO_CHF_ASYNC) {
+    if (chp->flags & QRV_FLG_CHF_ASYNC) {
         WR_PROBE_INT(act, kap->cd, sizeof(struct _asyncmsg_connection_descriptor) / sizeof(int));
     }
 
@@ -147,12 +147,12 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
         return ENFILE;
     }
     // Add connect to the clients channel vector.
-    if ((coid = vector_add(newvec, cop, kap->index & ~_NTO_SIDE_CHANNEL)) == -1) {
+    if ((coid = vector_add(newvec, cop, kap->index & ~QRV_SIDE_CHANNEL)) == -1) {
         object_free(prpc, &connect_souls, cop);
         return EAGAIN;
     }
     // Check coid is allowed
-    if ((kap->index & _NTO_SIDE_CHANNEL) == 0 && !special
+    if ((kap->index & QRV_SIDE_CHANNEL) == 0 && !special
         && coid >= prpc->rlimit_vals_soft[RLIMIT_NOFILE]) {
         vector_rem(newvec, coid);
         object_free(prpc, &connect_souls, cop);
@@ -160,14 +160,14 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
     }
     // Add connect to the servers channel vector.
     scoid = 0;
-    if (!(chp->flags & _NTO_CHF_GLOBAL)) {
+    if (!(chp->flags & QRV_FLG_CHF_GLOBAL)) {
         if (cop_master) {
             // same connection, different quality of service
             scoid = cop_master->scoid;
             cop_master->links++;
             cop->flags |= COF_VCONNECT;
             cop->un.lcl.cop = cop_master;
-            LINK1_BEG(cop_master->next, cop, CONNECT);
+            LINK1_BEG(cop_master->next, cop, tConnect);
         } else {
             if ((scoid = vector_add(&prps->chancons, cop, 1)) == -1) {
                 vector_rem(newvec, coid);
@@ -176,14 +176,14 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
             }
             cop->next = NULL;
         }
-        if (chp->flags & _NTO_CHF_ASYNC) {
+        if (chp->flags & QRV_FLG_CHF_ASYNC) {
             cop->cd = kap->cd;
             cop->sendq_size = cop->cd->sendq_size;
         }
     } else {
         // link the connection to the global channel queue
-        LINK1_BEG(((CHANNELGBL *) chp)->cons, cop, CONNECT);
-        cop->flags |= _NTO_COF_GLOBAL;
+        LINK1_BEG(((tChannelGbl *) chp)->cons, cop, tConnect);
+        cop->flags |= QRV_FLG_COF_GLOBAL;
     }
 
     cop->type = TYPE_CONNECTION;
@@ -197,8 +197,8 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
         cop->infoscoid = scoid;
     }
     // Network manager allocates a place to hold remote process info.
-    if (kap->flags & _NTO_COF_NETCON) {
-        if (prpc != net.prp || (kap->index & _NTO_SIDE_CHANNEL) == 0) {
+    if (kap->flags & QRV_FLG_COF_NETCON) {
+        if (prpc != net.prp || (kap->index & QRV_SIDE_CHANNEL) == 0) {
             vector_rem(&prps->chancons, scoid);
             vector_rem(newvec, coid);
             object_free(prpc, &connect_souls, cop);
@@ -213,11 +213,11 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
         cop->un.lcl.chid = kap->chid;
     }
 
-    if (kap->flags & _NTO_COF_CLOEXEC) {
+    if (kap->flags & QRV_FLG_COF_CLOEXEC) {
         vector_flag(newvec, coid, 1);
     }
 
-    status = coid | (kap->index & _NTO_SIDE_CHANNEL);
+    status = coid | (kap->index & QRV_SIDE_CHANNEL);
     SETKSTATUS(act, status);
 
     prpc->nfds++;
@@ -226,20 +226,20 @@ int kdecl ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
 }
 
 
-int kdecl ker_connect_detach(THREAD * act, struct kerargs_connect_detach *kap)
+int kdecl ker_connect_detach(tThread * act, struct kerargs_connect_detach *kap)
 {
-    PROCESS *prp = act->process;
-    CONNECT *cop;
+    tProcess *prp = act->process;
+    tConnect *cop;
     tChannel *chp;
-    VECTOR *vec;
+    tVector *vec;
     int coid;
 
     // Make sure the connection is valid.
-    vec = (kap->coid & _NTO_SIDE_CHANNEL) ? &prp->chancons : &prp->fdcons;
-    coid = kap->coid & ~_NTO_SIDE_CHANNEL;
+    vec = (kap->coid & QRV_SIDE_CHANNEL) ? &prp->chancons : &prp->fdcons;
+    coid = kap->coid & ~QRV_SIDE_CHANNEL;
     if ((cop = vector_lookup2(vec, coid)) == NULL || cop->type != TYPE_CONNECTION ||
         ((chp = cop->channel) && chp->process == prp &&
-         kap->coid == (cop->scoid | _NTO_SIDE_CHANNEL) && cop->links != 0)) {
+         kap->coid == (cop->scoid | QRV_SIDE_CHANNEL) && cop->links != 0)) {
         return EINVAL;
     }
 
@@ -253,16 +253,16 @@ int kdecl ker_connect_detach(THREAD * act, struct kerargs_connect_detach *kap)
         int tid;
 
         for (tid = 0; tid < prp->threads.nentries; tid++) {
-            THREAD *thp;
+            tThread *thp;
 
             if ((thp = VECP(thp, &prp->threads, tid)) &&
                 ((thp->args.ms.coid == kap->coid) &&
                  (thp->state == STATE_SEND ||
                   (thp->state == STATE_REPLY &&
-                   !(((CONNECT *) thp->blocked_on)->flags & COF_NETCON)))
+                   !(((tConnect *) thp->blocked_on)->flags & COF_NETCON)))
                  || (thp->state == STATE_RECEIVE && thp->args.ri.id == kap->coid
-                     && (((CONNECT *) thp->blocked_on)->type == TYPE_CONNECTION)
-                     && (((CONNECT *) thp->blocked_on)->flags & _NTO_COF_GLOBAL)))) {
+                     && (((tConnect *) thp->blocked_on)->type == TYPE_CONNECTION)
+                     && (((tConnect *) thp->blocked_on)->flags & QRV_FLG_COF_GLOBAL)))) {
                 force_ready(thp, EBADF);
             }
             KER_PREEMPT(act, ENOERROR);
@@ -270,11 +270,11 @@ int kdecl ker_connect_detach(THREAD * act, struct kerargs_connect_detach *kap)
     }
     if (cop->flags & COF_NETCON) {
         int i, prio;
-        THREAD *thp;
+        tThread *thp;
 
         for (i = 0; i < vthread_vector.nentries; ++i) {
-            VTHREAD *vthp;
-            CONNECT *cop1;
+            tVthread *vthp;
+            tConnect *cop1;
 
             KER_PREEMPT(act, ENOERROR);
 
@@ -298,7 +298,7 @@ int kdecl ker_connect_detach(THREAD * act, struct kerargs_connect_detach *kap)
                     continue;
             }
             vector_rem(&vthread_vector, i);
-            if (force_ready((THREAD *) (void *) vthp, EBADF)) {
+            if (force_ready((tThread *) (void *) vthp, EBADF)) {
                 object_free(NULL, &vthread_souls, vthp);
             }
         }
@@ -326,26 +326,28 @@ int kdecl ker_connect_detach(THREAD * act, struct kerargs_connect_detach *kap)
 
     vector_rem(vec, coid);
     if (cop->links == 0) {
-        // It is a server connect, just free it.
-        if (cop->channel && (cop->channel->flags & _NTO_CHF_ASYNC)) {
-            LINK1_REM(*(CONNECT **) (&((CHANNELASYNC *) cop->channel)->ch.reply_queue), cop,
-                      CONNECT);
+            // It is a server connect, just free it.
+#ifdef CONFIG_ASYNC_MSG
+        if (cop->channel && (cop->channel->flags & QRV_FLG_CHF_ASYNC)) {
+            LINK1_REM(*(tConnect **) (&((CHANNELASYNC *) cop->channel)->ch.reply_queue), cop,
+                      tConnect);
         }
+#endif
         object_free(prp, &connect_souls, cop);
     } else {
         // Decrement the link count and return if > 0.
-        if (!(cop->flags & _NTO_COF_GLOBAL)) {  // no scoid and disconnect pulse for gbl channel connections
+        if (!(cop->flags & QRV_FLG_COF_GLOBAL)) {  // no scoid and disconnect pulse for gbl channel connections
             if (--cop->links == 0) {
                 connect_detach(cop, act->real_priority);
             }
         } else {
-            if (cop->channel && (((CHANNELGBL *) cop->channel)->ev_coid == kap->coid)) {
+            if (cop->channel && (((tChannelGbl *) cop->channel)->ev_coid == kap->coid)) {
                 /* get rid of any event registered */
-                ((CHANNELGBL *) cop->channel)->ev_prp = NULL;
+                ((tChannelGbl *) cop->channel)->ev_prp = NULL;
             }
             if (--cop->links == 0) {
                 if (cop->channel) {
-                    LINK1_REM(((CHANNELGBL *) cop->channel)->cons, cop, CONNECT);
+                    LINK1_REM(((tChannelGbl *) cop->channel)->cons, cop, tConnect);
                 }
                 object_free(cop->process, &connect_souls, cop);
             }
@@ -360,11 +362,11 @@ int kdecl ker_connect_detach(THREAD * act, struct kerargs_connect_detach *kap)
 
 
 
-int kdecl ker_connect_server_info(THREAD * act, struct kerargs_connect_server_info *kap)
+int kdecl ker_connect_server_info(tThread * act, struct kerargs_connect_server_info *kap)
 {
-    PROCESS *prp;
-    VECTOR *vec;
-    CONNECT *cop;
+    tProcess *prp;
+    tVector *vec;
+    tConnect *cop;
     tChannel *chp;
     unsigned coid;
     unsigned flags;
@@ -376,8 +378,8 @@ int kdecl ker_connect_server_info(THREAD * act, struct kerargs_connect_server_in
         return ESRCH;
     }
     // Get correct connection vector.
-    vec = (kap->coid & _NTO_SIDE_CHANNEL) ? &prp->chancons : &prp->fdcons;
-    coid = kap->coid & ~_NTO_SIDE_CHANNEL;
+    vec = (kap->coid & QRV_SIDE_CHANNEL) ? &prp->chancons : &prp->fdcons;
+    coid = kap->coid & ~QRV_SIDE_CHANNEL;
 
 
     // Search for next connection (making sure to avoid server connections).
@@ -409,13 +411,13 @@ int kdecl ker_connect_server_info(THREAD * act, struct kerargs_connect_server_in
     }
 
     // save flags for later
-    flags = VECAND(VEC(vec, coid), 2) ? _NTO_COF_CLOEXEC : 0;
+    flags = VECAND(VEC(vec, coid), 2) ? QRV_FLG_COF_CLOEXEC : 0;
     if (!chp) {
-        flags |= _NTO_COF_DEAD;
+        flags |= QRV_FLG_COF_DEAD;
     }
     // Was it from the side channel vector?
     if (vec == &prp->chancons) {
-        coid |= _NTO_SIDE_CHANNEL;
+        coid |= QRV_SIDE_CHANNEL;
     }
 
 
@@ -432,9 +434,9 @@ int kdecl ker_connect_server_info(THREAD * act, struct kerargs_connect_server_in
             sep->chid = cop->un.lcl.chid;
         }
         if (cop->flags & COF_VCONNECT) {
-            sep->scoid = cop->un.lcl.cop->infoscoid | _NTO_SIDE_CHANNEL;
+            sep->scoid = cop->un.lcl.cop->infoscoid | QRV_SIDE_CHANNEL;
         } else {
-            sep->scoid = cop->infoscoid | _NTO_SIDE_CHANNEL;
+            sep->scoid = cop->infoscoid | QRV_SIDE_CHANNEL;
         }
         sep->coid = coid;
         sep->flags = flags;
@@ -447,18 +449,18 @@ int kdecl ker_connect_server_info(THREAD * act, struct kerargs_connect_server_in
 
 
 
-int kdecl ker_connect_client_info(THREAD * act, struct kerargs_connect_client_info *kap)
+int kdecl ker_connect_client_info(tThread * act, struct kerargs_connect_client_info *kap)
 {
-    PROCESS *prp = act->process;
-    CONNECT *cop;
+    tProcess *prp = act->process;
+    tConnect *cop;
     tChannel *chp;
-    CLIENT *clp;
-    int scoid = kap->scoid & ~_NTO_SIDE_CHANNEL;
+    tClientInfo *clp;
+    int scoid = kap->scoid & ~QRV_SIDE_CHANNEL;
 
     // If scoid is -1 it get info on calling process
     cop = NULL;
     if (kap->scoid != -1) {
-        if ((kap->scoid & _NTO_SIDE_CHANNEL) == 0
+        if ((kap->scoid & QRV_SIDE_CHANNEL) == 0
             || (cop = vector_lookup(&prp->chancons, scoid)) == NULL
             || (cop->type != TYPE_CONNECTION)
             || (chp = cop->channel) == NULL || (chp->process != prp)
@@ -477,7 +479,7 @@ int kdecl ker_connect_client_info(THREAD * act, struct kerargs_connect_client_in
         WR_PROBE_OPT(act, clp, sizeof(*clp) / sizeof(int));
 
         if (cop && (cop->flags & COF_NETCON) != 0) {
-            CREDENTIAL *crp;
+            tCredential *crp;
 
             if (!(crp = cop->un.net.cred)) {
                 // Not a complete connection yet!!
@@ -489,13 +491,13 @@ int kdecl ker_connect_client_info(THREAD * act, struct kerargs_connect_client_in
             clp->sid = cop->un.net.sid;
             clp->flags = cop->un.net.flags;
         } else {
-            SESSION *sep;
+            tSession *sep;
 
             clp->nd = ND_LOCAL_NODE;
             clp->pid = prp->pid;
             clp->sid = 0;
 #if defined(__BIGENDIAN__)
-            clp->flags = _NTO_CI_ENDIAN_BIG;
+            clp->flags = QRV_FLG_CI_ENDIAN_BIG;
 #elif defined(__LITTLEENDIAN__)
             clp->flags = 0;
 #else
@@ -504,14 +506,14 @@ int kdecl ker_connect_client_info(THREAD * act, struct kerargs_connect_client_in
             if ((sep = prp->session)) {
                 clp->sid = sep->leader;
                 if (sep->pgrp != prp->pgrp) {
-                    clp->flags |= _NTO_CI_BKGND_PGRP;
+                    clp->flags |= QRV_FLG_CI_BKGND_PGRP;
                 }
             }
-            if (prp->flags & _NTO_PF_ORPHAN_PGRP) {
-                clp->flags |= _NTO_CI_ORPHAN_PGRP;
+            if (prp->flags & QRV_FLG_PROC_ORPHAN_PGRP) {
+                clp->flags |= QRV_FLG_CI_ORPHAN_PGRP;
             }
-            if (prp->flags & _NTO_PF_STOPPED) {
-                clp->flags |= _NTO_CI_STOPPED;
+            if (prp->flags & QRV_FLG_PROC_STOPPED) {
+                clp->flags |= QRV_FLG_CI_STOPPED;
             }
             cip = &prp->cred->info;
         }
@@ -526,10 +528,10 @@ int kdecl ker_connect_client_info(THREAD * act, struct kerargs_connect_client_in
 }
 
 
-int kdecl ker_connect_flags(THREAD * act, struct kerargs_connect_flags *kap)
+int kdecl ker_connect_flags(tThread * act, struct kerargs_connect_flags *kap)
 {
-    PROCESS *prp;
-    VECTOR *vec;
+    tProcess *prp;
+    tVector *vec;
     void *ptr;
     unsigned old;
     unsigned coid;
@@ -544,25 +546,25 @@ int kdecl ker_connect_flags(THREAD * act, struct kerargs_connect_flags *kap)
         return ENOERROR;
     }
     // Lookup connect.
-    vec = (kap->coid & _NTO_SIDE_CHANNEL) ? &prp->chancons : &prp->fdcons;
-    coid = kap->coid & ~_NTO_SIDE_CHANNEL;
+    vec = (kap->coid & QRV_SIDE_CHANNEL) ? &prp->chancons : &prp->fdcons;
+    coid = kap->coid & ~QRV_SIDE_CHANNEL;
     if (coid >= vec->nentries || VECAND(ptr = VEC(vec, coid), 1)) {
         return EBADF;
     }
 
-    old = VECAND(ptr, 2) ? _NTO_COF_CLOEXEC : 0;
+    old = VECAND(ptr, 2) ? QRV_FLG_COF_CLOEXEC : 0;
 
     lock_kernel();
 
-    if (kap->mask & _NTO_COF_CLOEXEC) {
-        vector_flag(vec, coid, (kap->bits & _NTO_COF_CLOEXEC) ? 1 : 0);
+    if (kap->mask & QRV_FLG_COF_CLOEXEC) {
+        vector_flag(vec, coid, (kap->bits & QRV_FLG_COF_CLOEXEC) ? 1 : 0);
     }
 
     SETKSTATUS(act, old);
     return ENOERROR;
 }
 
-int kdecl ker_channel_connect_attrs(THREAD * act, struct kerargs_channel_connect_attr *kap)
+int kdecl ker_channel_connect_attrs(tThread * act, struct kerargs_channel_connect_attr *kap)
 {
 
     if (kap->old_attrs) {
@@ -574,27 +576,26 @@ int kdecl ker_channel_connect_attrs(THREAD * act, struct kerargs_channel_connect
         RD_PROBE_INT(act, kap->new_attrs, sizeof(*kap->new_attrs) / sizeof(int));
     }
 
-    if (kap->flags != _NTO_CHANCON_ATTR_CONFLAGS) {
-        CHANNELGBL *chgblp;
+    if (kap->flags != QRV_CHANCON_ATTR_CONFLAGS) {
+        tChannelGbl *chgblp;
 
-        if (!(kap->id & _NTO_GLOBAL_CHANNEL)) {
+        if (!(kap->id & QRV_GLOBAL_CHANNEL)) {
             return EINVAL;
         }
 
-        if ((chgblp =
-             (CHANNELGBL *) vector_lookup2(&chgbl_vector, kap->id & ~_NTO_GLOBAL_CHANNEL)) == NULL
-            || chgblp->ch.type != TYPE_CHANNEL) {
+        chgblp = (tChannelGbl *) vector_lookup2(&chgbl_vector, kap->id & ~QRV_GLOBAL_CHANNEL);
+        if (chgblp == NULL || chgblp->ch.type != TYPE_CHANNEL) {
             return EINVAL;
         }
 
         switch (kap->flags) {
-        case _NTO_CHANCON_ATTR_CURMSGS:
+        case QRV_CHANCON_ATTR_CURMSGS:
             if (kap->old_attrs != NULL) {
                 kap->old_attrs->num_curmsgs = chgblp->num_curr_msg;
             }
             break;
 
-        case _NTO_CHANCON_ATTR_EVENT:
+        case QRV_CHANCON_ATTR_EVENT:
             if (kap->old_attrs != NULL) {
                 kap->old_attrs->ev.event = chgblp->event;
                 kap->old_attrs->ev.coid = chgblp->ev_coid;
@@ -621,17 +622,17 @@ int kdecl ker_channel_connect_attrs(THREAD * act, struct kerargs_channel_connect
             }
             break;
 
-        case _NTO_CHANCON_ATTR_CHANFLAGS:
+        case QRV_CHANCON_ATTR_CHANFLAGS:
             if (kap->old_attrs != NULL) {
-                kap->old_attrs->flags = chgblp->ch.flags & _NTO_CHF_ASYNC_NONBLOCK;
+                kap->old_attrs->flags = chgblp->ch.flags & QRV_FLG_CHF_ASYNC_NONBLOCK;
             }
 
             if (kap->new_attrs != NULL) {
                 lock_kernel();
-                if (kap->new_attrs->flags & _NTO_CHF_ASYNC_NONBLOCK) {
-                    chgblp->ch.flags |= _NTO_CHF_ASYNC_NONBLOCK;
+                if (kap->new_attrs->flags & QRV_FLG_CHF_ASYNC_NONBLOCK) {
+                    chgblp->ch.flags |= QRV_FLG_CHF_ASYNC_NONBLOCK;
                 } else {
-                    chgblp->ch.flags &= ~_NTO_CHF_ASYNC_NONBLOCK;
+                    chgblp->ch.flags &= ~QRV_FLG_CHF_ASYNC_NONBLOCK;
                 }
             }
             break;
@@ -641,27 +642,27 @@ int kdecl ker_channel_connect_attrs(THREAD * act, struct kerargs_channel_connect
         }
 
     } else {                    /* only connection attributes */
-        CONNECT *cop;
-        VECTOR *vec;
-        PROCESS *prp;
+        tConnect *cop;
+        tVector *vec;
+        tProcess *prp;
 
         prp = act->process;
-        vec = (kap->id & _NTO_SIDE_CHANNEL) ? &prp->chancons : &prp->fdcons;
-        if ((cop = vector_lookup2(vec, kap->id & ~_NTO_SIDE_CHANNEL)) == NULL
+        vec = (kap->id & QRV_SIDE_CHANNEL) ? &prp->chancons : &prp->fdcons;
+        if ((cop = vector_lookup2(vec, kap->id & ~QRV_SIDE_CHANNEL)) == NULL
             || cop->type != TYPE_CONNECTION) {
             return EINVAL;
         }
 
         if (kap->old_attrs != NULL) {
-            kap->old_attrs->flags = cop->flags & _NTO_COF_NONBLOCK;
+            kap->old_attrs->flags = cop->flags & QRV_FLG_COF_NONBLOCK;
         }
 
         if (kap->new_attrs != NULL) {
             lock_kernel();
-            if (kap->new_attrs->flags & _NTO_COF_NONBLOCK) {
-                cop->flags |= _NTO_COF_NONBLOCK;
+            if (kap->new_attrs->flags & QRV_FLG_COF_NONBLOCK) {
+                cop->flags |= QRV_FLG_COF_NONBLOCK;
             } else {
-                cop->flags &= ~_NTO_COF_NONBLOCK;
+                cop->flags &= ~QRV_FLG_COF_NONBLOCK;
             }
         }
     }
@@ -669,6 +670,3 @@ int kdecl ker_channel_connect_attrs(THREAD * act, struct kerargs_channel_connect
     return EOK;
 
 }
-
-
-__SRCVERSION("ker_connect.c $Rev: 169918 $");

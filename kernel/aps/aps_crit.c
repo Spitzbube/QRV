@@ -98,6 +98,3 @@ void handle_bankruptcy(THREAD * act, PPG * ppg)
     SET_BANKRUPTCY_INFO(&ppg->bnkr_info, act);
     last_bankrupting_ap = act->dpp->id;
 }
-
-
-__SRCVERSION("aps_crit.c $Rev: 153052 $");

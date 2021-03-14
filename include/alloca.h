@@ -36,7 +36,7 @@ extern size_t __stackavail(void);
 
 #undef alloca
 
-#define __ALLOCA_ALIGN( s )   (((s)+(sizeof(_Uint64t)-1))&~(sizeof(_Uint64t)-1))
+#define __ALLOCA_ALIGN( s )   (((s)+(sizeof(_Uint64t)-1)) & ~(sizeof(_Uint64t)-1))
 
 #if defined(__GNUC__) || defined(__INTEL_COMPILER)
 extern void *__builtin_alloca(unsigned long __size);

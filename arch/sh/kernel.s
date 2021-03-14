@@ -1154,7 +1154,7 @@ routine_start __ker_entry, 1
 	ldc		r0, sr
 
 	#
-	# act->flags &= ~(_NTO_TF_KERERR_SET|_NTO_TF_BUFF_MSG)
+	# act->flags &= ~(QRV_FLG_THR_KERERR_SET|QRV_FLG_THR_BUFF_MSG)
 	#
 	mov.l	Lke_TFLAGS, r0
 	mov.l	Lke_TF_mask, r3
@@ -1739,11 +1739,11 @@ Lke_KER_BAD:				.long	__KER_BAD<<2
 Lke_SR_not_RB_BL_FD_IMASK:	.long	~(SH_SR_RB | SH_SR_BL | SH_SR_FD | SH_SR_IMASK)
 Lke_SR_FD:					.long	SH_SR_FD
 Lke_TFLAGS:					.long	TFLAGS
-Lke_TF_mask:				.long	~(_NTO_TF_KERERR_SET | _NTO_TF_BUFF_MSG)
+Lke_TF_mask:				.long	~(QRV_FLG_THR_KERERR_SET | QRV_FLG_THR_BUFF_MSG)
 Lke_SR_not_BL_IMASK:		.long	~(SH_SR_BL | SH_SR_IMASK)
 Lke_PROCESS:				.long	PROCESS
 Lke_ASPACE_PRP:				.long	ASPACE_PRP
-Lke_SPECRET_MASK:			.long	_NTO_TF_SPECRET_MASK
+Lke_SPECRET_MASK:			.long	QRV_FLG_THR_SPECRET_MASK
 Lke_ATFLAGS:				.long	ATFLAGS
 Lke_TLS:					.long	TLS
 Lke_PLS:					.long	PLS
@@ -2735,7 +2735,7 @@ __exc_general_start:
 	#
 __exc_emu_interrupt_mask:
 	#
-	# Don't bother with emulation if (act->flags & _NTO_TF_IOPRIV) == 0)
+	# Don't bother with emulation if (act->flags & QRV_FLG_THR_IOPRIV) == 0)
 	#
 	mov.l	Leg_TFLAGS, r0
 	mov.l	@r4, r2
@@ -2974,7 +2974,7 @@ Leg_shadow_imask:				.long	__shadow_imask
 Leg_SH_EXC_CODE_GILLINST:		.long	SH_EXC_CODE_GILLINST
 Leg_SH_EXC_CODE_SILLINST:		.long	SH_EXC_CODE_SILLINST
 Leg_TFLAGS:						.long	TFLAGS
-Leg_TF_IOPRIV:					.long	_NTO_TF_IOPRIV
+Leg_TF_IOPRIV:					.long	QRV_FLG_THR_IOPRIV
 Leg_SR_not_BL_RB:				.long	~(SH_SR_BL | SH_SR_RB)
 Leg_SR_IMASK:					.long	SH_SR_IMASK
 Leg_SR_RB:						.long	SH_SR_RB
@@ -3515,7 +3515,7 @@ __exc_access_write:
 	bt		1f
 
 	#
-	# Don't emulate if act->flags has _NTO_TF_ALIGN_FAULT set
+	# Don't emulate if act->flags has QRV_FLG_THR_ALIGN_FAULT set
 	#
 	mov.l	Lea_TFLAGS, r4
 	mov.l	Lea_TF_ALIGN_FAULT, r5
@@ -3918,7 +3918,7 @@ Lea_VM_USER_SPACE_BOUNDRY:	.long	VM_USER_SPACE_BOUNDRY
 Lea_SR_not_IMASK:			.long	~SH_SR_IMASK
 Lea_emulate_alignment:		.long	emulate_alignment
 Lea_TFLAGS:					.long	TFLAGS
-Lea_TF_ALIGN_FAULT:			.long	_NTO_TF_ALIGN_FAULT
+Lea_TF_ALIGN_FAULT:			.long	QRV_FLG_THR_ALIGN_FAULT
 Lea_SH_MMR_CCN_PTEH:		.long	SH_MMR_CCN_PTEH
 Lea_SH_MMR_CCN_TEA:			.long	SH_MMR_CCN_TEA
 Lea_SIGCODE_KERNEL:			.long	SIGCODE_KERNEL
@@ -4256,8 +4256,8 @@ fixup_specret:
 #	}
 #	act->timeout_flags = 0;
 #	act->reg.gpr[R0] = EFAULT;
-#	if ((act->flags & _NTO_TF_KERERR_SET) == 0) {
-#		act->flags |= _NTO_TF_KERERR_SET;
+#	if ((act->flags & QRV_FLG_THR_KERERR_SET) == 0) {
+#		act->flags |= QRV_FLG_THR_KERERR_SET;
 #		act->reg.gpr[PC] += KERERR_SKIPAHEAD;
 #	}
 #   __ker_exit();
@@ -4312,7 +4312,7 @@ fixup_kcall:
 	tst		r1, r2
 	bf		1f
 	or		r1, r2
-	mov.l	r2, @(r0, r12)				! act->flags |= _NTO_TF_KERERR_SET
+	mov.l	r2, @(r0, r12)				! act->flags |= QRV_FLG_THR_KERERR_SET
 	mov.l	Lex_REG_OFF_PC, r0
 	mov.l	@(r0, r12), r2
 	add		#KERERR_SKIPAHEAD, r2
@@ -4355,7 +4355,7 @@ Lex_xfer_handlers:			.long	xfer_handlers
 Lex_SIGCODE_KERNEL:			.long	SIGCODE_KERNEL
 Lex_TIMEOUT_FLAGS:			.long	TIMEOUT_FLAGS
 Lex_TFLAGS:					.long	TFLAGS
-Lex_TF_KERERR_SET:			.long	_NTO_TF_KERERR_SET
+Lex_TF_KERERR_SET:			.long	QRV_FLG_THR_KERERR_SET
 Lex_REG_OFF_PC:				.long	REG_OFF+REG_PC
 Lex_REG_OFF_R0:				.long	REG_OFF+REG_GR
 Lex_inspectret:				.long	inspecret

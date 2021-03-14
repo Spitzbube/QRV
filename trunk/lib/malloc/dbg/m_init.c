@@ -573,24 +573,6 @@ malloc_init()
 	_malloc_initialized = 1;
 }
 
-#if (_NTO_VERSION <= 632)
-/**
- * this code is make librcheck run on 6.3.0 system where they don't have getpagesize function in libc
- */
-#include <unistd.h>
-#include <sys/mman.h>
-#include <confname.h>
-
-int
-getpagesize(void)
-{
-	int pagesize;
-
-	pagesize = sysconf(_SC_PAGESIZE);
-	return (pagesize == -1) ? __PAGESIZE : pagesize;
-}
-#endif
-
 /*
  * $Log$
  * Revision 1.22  2007/05/04 18:47:44  elaskavaia

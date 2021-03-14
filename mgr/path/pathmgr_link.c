@@ -272,7 +272,7 @@ pathmgr_resmgrlink(resmgr_context_t * ctp, io_link_t * msg, void *handle,
                    struct _io_resmgr_link_extra *extra)
 {
     OBJECT *obp;
-    PROCESS *prp;
+    tProcess *prp;
 
     /* For FTYPE_NAME object, we let non-root users do the attach, but
        only if an attached object doesn't already exist in that space. */
@@ -330,7 +330,7 @@ int symlink_create(OBJECT * obp, void *data)
 static int pathmgr_sys_symlink(resmgr_context_t * ctp, io_link_t * msg, void *handle, char *path)
 {
     OBJECT *obp;
-    PROCESS *prp;
+    tProcess *prp;
 
     if (!proc_isaccess(0, &ctp->info)) {
         return EPERM;

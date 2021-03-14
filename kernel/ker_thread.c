@@ -53,7 +53,7 @@ static void create_sigchld(PROCESS * prp, int status)
     uint64_t runtime;
     uint64_t systime;
 
-    if ((prp->flags & _NTO_PF_NOZOMBIE) && !(prp->flags & _NTO_PF_LOADING)) {
+    if ((prp->flags & QRV_FLG_PROC_NOZOMBIE) && !(prp->flags & QRV_FLG_PROC_LOADING)) {
         return;                 /* daemon, not change exit status */
     }
 
@@ -126,18 +126,18 @@ int kdecl ker_thread_destroyall(THREAD * act, struct kerargs_null *kap)
     lock_kernel();
     // If ONLYME is set, thp->status was must be set before setting KILLSELF
     // If there is only one thread left, cleanup any zombies (for race condition in stack de-allocation)
-    if ((act->flags & _NTO_TF_ONLYME) == 0 || prp->num_active_threads == 1) {
+    if ((act->flags & QRV_FLG_THR_ONLYME) == 0 || prp->num_active_threads == 1) {
         for (tid = 0; tid < prp->threads.nentries; ++tid) {
             if ((thp = VECP2(thp, &prp->threads, tid)) && thp != act &&
                 !(prp->pid == SYSMGR_PID && thp->tid < NUM_PROCESSORS)) {
-                thp->flags |= (_NTO_TF_DETACHED | _NTO_TF_KILLSELF);
+                thp->flags |= (QRV_FLG_THR_DETACHED | QRV_FLG_THR_KILLSELF);
                 thp->status = 0;
                 thread_destroy(thp);
-                act->flags &= ~_NTO_TF_ONLYME;
+                act->flags &= ~QRV_FLG_THR_ONLYME;
                 KER_PREEMPT(act, ENOERROR);
             }
         }
-        act->flags |= _NTO_TF_DETACHED;
+        act->flags |= QRV_FLG_THR_DETACHED;
         act->status = 0;
     }
 
@@ -155,7 +155,7 @@ int kdecl ker_thread_detach(THREAD * act, struct kerargs_thread_detach *kap)
         return ESRCH;
     }
 
-    if (thp->flags & _NTO_TF_DETACHED) {
+    if (thp->flags & QRV_FLG_THR_DETACHED) {
         return EINVAL;
     }
 
@@ -166,7 +166,7 @@ int kdecl ker_thread_detach(THREAD * act, struct kerargs_thread_detach *kap)
         force_ready(thp->join, EINVAL);
         thp->join = NULL;
     }
-    thp->flags |= _NTO_TF_DETACHED;
+    thp->flags |= QRV_FLG_THR_DETACHED;
 
     if (thp->state == STATE_DEAD) {
         thp->status = 0;
@@ -187,7 +187,7 @@ int kdecl ker_thread_join(THREAD * act, struct kerargs_thread_join *kap)
         return ESRCH;
     }
     // It is invalid to join a detached thread.
-    if (thp->flags & _NTO_TF_DETACHED) {
+    if (thp->flags & QRV_FLG_THR_DETACHED) {
         return EINVAL;
     }
     // It is invalid to join a thread which is already being joined.
@@ -232,7 +232,7 @@ int kdecl ker_thread_join(THREAD * act, struct kerargs_thread_join *kap)
     lock_kernel();
 
     act->timeout_flags = 0;
-    thp->flags |= _NTO_TF_DETACHED;
+    thp->flags |= QRV_FLG_THR_DETACHED;
     thp->status = 0;
     thread_destroy(thp);
 
@@ -256,7 +256,7 @@ int kdecl ker_thread_cancel(THREAD * act, struct kerargs_thread_cancel *kap)
     }
     // Check for WAAA as stack (where tls is usually located) may not
     // have a stack yet.
-    if (!(thp->flags & _NTO_TF_WAAA)) {
+    if (!(thp->flags & QRV_FLG_THR_WAAA)) {
         atomic_set(&thp->un.lcl.tls->__flags, PTHREAD_CANCEL_PENDING);
     }
 
@@ -267,7 +267,7 @@ int kdecl ker_thread_cancel(THREAD * act, struct kerargs_thread_cancel *kap)
     // If cancelation is enabled and we are blocked, force thread ready
     // at address of cancelation handler.
     // We also make thread birth a cancellation point.
-    if ((thp->flags & _NTO_TF_WAAA) ||
+    if ((thp->flags & QRV_FLG_THR_WAAA) ||
         ((thp->un.lcl.tls->__flags & PTHREAD_CANCEL_DISABLE) == 0 &&
          (STATE_CANCELABLE(thp) || (thp->un.lcl.tls->__flags & PTHREAD_CANCEL_ASYNCHRONOUS)))) {
         force_ready(thp, EINTR);
@@ -329,29 +329,29 @@ int kerop_thread_ctl(THREAD * act, THREAD * op, struct kerargs_thread_ctl *kap)
         if (r != EOK)
             return r;
         cpu_thread_priv(act);
-        act->flags |= _NTO_TF_IOPRIV;
+        act->flags |= QRV_FLG_THR_IOPRIV;
         break;
 
     case _NTO_TCTL_ONE_THREAD_HOLD:
-        if (!stop_one_thread(op->process, (int) kap->data - 1, _NTO_TF_THREADS_HOLD, 0)) {
+        if (!stop_one_thread(op->process, (int) kap->data - 1, QRV_FLG_THR_THREADS_HOLD, 0)) {
             return ESRCH;
         }
-        op->flags &= ~(_NTO_TF_TO_BE_STOPPED | _NTO_TF_THREADS_HOLD);
+        op->flags &= ~(QRV_FLG_THR_TO_BE_STOPPED | QRV_FLG_THR_THREADS_HOLD);
         break;
 
     case _NTO_TCTL_THREADS_HOLD:
-        stop_threads(op->process, _NTO_TF_THREADS_HOLD, 0);
-        op->flags &= ~(_NTO_TF_TO_BE_STOPPED | _NTO_TF_THREADS_HOLD);
+        stop_threads(op->process, QRV_FLG_THR_THREADS_HOLD, 0);
+        op->flags &= ~(QRV_FLG_THR_TO_BE_STOPPED | QRV_FLG_THR_THREADS_HOLD);
         break;
 
     case _NTO_TCTL_ONE_THREAD_CONT:
-        if (!cont_one_thread(op->process, (int) kap->data - 1, _NTO_TF_THREADS_HOLD)) {
+        if (!cont_one_thread(op->process, (int) kap->data - 1, QRV_FLG_THR_THREADS_HOLD)) {
             return ESRCH;
         }
         break;
 
     case _NTO_TCTL_THREADS_CONT:
-        cont_threads(op->process, _NTO_TF_THREADS_HOLD);
+        cont_threads(op->process, QRV_FLG_THR_THREADS_HOLD);
         break;
 
     case _NTO_TCTL_RUNMASK:
@@ -488,12 +488,12 @@ int kerop_thread_ctl(THREAD * act, THREAD * op, struct kerargs_thread_ctl *kap)
         unlock_kernel();
         WR_VERIFY_PTR(act, kap->data, sizeof(int));
         WR_PROBE_INT(act, kap->data, 1);
-        prev = (op->flags & _NTO_TF_ALIGN_FAULT) ? 1 : -1;
+        prev = (op->flags & QRV_FLG_THR_ALIGN_FAULT) ? 1 : -1;
         lock_kernel();
         if (*(int *) kap->data > 0) {
-            op->flags |= _NTO_TF_ALIGN_FAULT;
+            op->flags |= QRV_FLG_THR_ALIGN_FAULT;
         } else if (*(int *) kap->data < 0) {
-            op->flags &= ~_NTO_TF_ALIGN_FAULT;
+            op->flags &= ~QRV_FLG_THR_ALIGN_FAULT;
         }
         cpu_thread_align_fault(op);
         *(int *) kap->data = prev;
@@ -576,5 +576,3 @@ int kerop_thread_ctl(THREAD * act, THREAD * op, struct kerargs_thread_ctl *kap)
 
     return EOK;
 }
-
-__SRCVERSION("ker_thread.c $Rev: 204471 $");

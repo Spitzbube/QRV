@@ -528,7 +528,7 @@ int main(int argc, char *argv[])
 #else
 		{12, __KER_TIMER_TIMEOUT, (unsigned)"TimerTimeout", 6, 7, CLOCK_REALTIME, _NTO_TIMEOUT_JOIN, 10,10, SIGEV_SIGNAL_CODE, SIGUSR1, 0xababcdcd, 0xff810000 },
 #endif
-		{12, __KER_SYNC_CREATE, (unsigned)"SyncTypeCreate", 5, 6, _NTO_SYNC_SEM, USE_GLOBAL_VAL1,10, 0, PTHREAD_PRIO_PROTECT, 0, 15, CLOCK_REALTIME },
+		{12, __KER_SYNC_CREATE, (unsigned)"SyncTypeCreate", 5, 6, QRV_SYNC_SEM, USE_GLOBAL_VAL1,10, 0, PTHREAD_PRIO_PROTECT, 0, 15, CLOCK_REALTIME },
 		{8, __KER_SYNC_DESTROY, (unsigned)"SyncDestroy", 5, 7, USE_GLOBAL_VAL1,0,-4,0},
 		{8, __KER_SYNC_MUTEX_LOCK, (unsigned)"SyncMutexLock", 5, 7, USE_GLOBAL_VAL1,USE_GLOBAL_VAL2,0,0},
 		{8, __KER_SYNC_MUTEX_UNLOCK, (unsigned)"SyncMutexUnlock", 5, 7, USE_GLOBAL_VAL1,0x80000000, USE_GLOBAL_VAL2,0},
@@ -1461,7 +1461,7 @@ int trigger_kercall_event( unsigned * event_p)
 			memset(&mysync, 0, sizeof(mysync));
 			mysync.count=event_p[6];
 			mysync.owner=event_p[7];
-			SyncTypeCreate(_NTO_SYNC_SEM, &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_SEM, &mysync, NULL);
 			global_vals[0]=(unsigned)&mysync;
 			/* Start logging */
 			rc=TraceEvent(_NTO_TRACE_STARTNOSTATE);
@@ -1471,7 +1471,7 @@ int trigger_kercall_event( unsigned * event_p)
 			break;
 		case __KER_SYNC_MUTEX_LOCK:
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_MUTEX_FREE , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_MUTEX_FREE , &mysync, NULL);
 			global_vals[0]=(unsigned)&mysync;
 			global_vals[1]=mysync.count;
 			/* Start logging */
@@ -1483,7 +1483,7 @@ int trigger_kercall_event( unsigned * event_p)
 			break;
 		case __KER_SYNC_MUTEX_UNLOCK:
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_MUTEX_FREE , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_MUTEX_FREE , &mysync, NULL);
 			SyncMutexLock(&mysync);
 			global_vals[0]=(unsigned)&mysync;
 			global_vals[1]=mysync.owner;
@@ -1503,8 +1503,8 @@ int trigger_kercall_event( unsigned * event_p)
 			MsgSend(coid, "CONDSIGNAL", 11, reply_buf, sizeof(reply_buf));
 
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_COND  , &mysync, NULL);
-			SyncTypeCreate(_NTO_SYNC_MUTEX_FREE , &mysync2, NULL);
+			SyncTypeCreate(QRV_SYNC_COND  , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_MUTEX_FREE , &mysync2, NULL);
 			SyncMutexLock(&mysync2);
 			global_vals[0]=(unsigned)&mysync;
 			global_vals[1]=(unsigned)&mysync2;
@@ -1522,7 +1522,7 @@ int trigger_kercall_event( unsigned * event_p)
 			break;
 		case __KER_SYNC_CONDVAR_SIGNAL:
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_COND  , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_COND  , &mysync, NULL);
 			global_vals[0]=(unsigned)&mysync;
 			global_vals[1]=mysync.count;
 			global_vals[2]=mysync.owner;
@@ -1535,7 +1535,7 @@ int trigger_kercall_event( unsigned * event_p)
 			break;
 		case __KER_SYNC_SEM_POST:
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_SEM, &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_SEM, &mysync, NULL);
 			global_vals[0]=(unsigned)&mysync;
 			global_vals[1]=mysync.count;
 			global_vals[2]=mysync.owner;
@@ -1548,7 +1548,7 @@ int trigger_kercall_event( unsigned * event_p)
 			break;
 		case __KER_SYNC_SEM_WAIT:
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_SEM, &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_SEM, &mysync, NULL);
 			global_vals[0]=(unsigned)&mysync;
 			global_vals[1]=mysync.count;
 			global_vals[2]=mysync.owner;
@@ -1561,7 +1561,7 @@ int trigger_kercall_event( unsigned * event_p)
 			break;
 		case __KER_SYNC_CTL:
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_MUTEX_FREE , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_MUTEX_FREE , &mysync, NULL);
 			global_vals[0]=(unsigned)&mysync;
 			global_vals[1]=(unsigned)&timeout;
 			global_vals[2]=mysync.count;
@@ -1575,7 +1575,7 @@ int trigger_kercall_event( unsigned * event_p)
 			break;
 		case __KER_SYNC_MUTEX_REVIVE:
 			memset(&mysync, 0, sizeof(mysync));
-			SyncTypeCreate(_NTO_SYNC_MUTEX_FREE , &mysync, NULL);
+			SyncTypeCreate(QRV_SYNC_MUTEX_FREE , &mysync, NULL);
 			global_vals[0]=(unsigned)&mysync;
 			global_vals[1]=mysync.count;
 			global_vals[2]=mysync.owner;

@@ -93,6 +93,3 @@ extern int      sb_partition_is_ready[APS_MAX_PARTITIONS][PROCESSORS_MAX];
 #define SB_PARTITION_IS_READY(ap) (sb_partition_is_ready[ap][KERNCPU] = 1)
 #define SB_PARTITION_IS_NOT_READY(ap) (sb_partition_is_ready[ap][KERNCPU] = 0)
 
-
-__SRCVERSION("aps_alg.h $Rev: 153052 $");
-

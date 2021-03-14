@@ -60,7 +60,7 @@ uintptr_t rdecl fpu_emulation_prep(CPU_REGISTERS * src, THREAD * act, int size)
 
 int rdecl begin_fp_emulation(THREAD * act)
 {
-    if (act->flags & _NTO_TF_SSTEP) {
+    if (act->flags & QRV_FLG_THR_SSTEP) {
         DEBUG *dep = act->process->debugger;
 
         debug_detach_brkpts(dep);
@@ -70,5 +70,3 @@ int rdecl begin_fp_emulation(THREAD * act)
     }
     return 0;
 }
-
-__SRCVERSION("nano_fp_emu.c $Rev: 153052 $");

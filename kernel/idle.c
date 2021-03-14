@@ -185,5 +185,3 @@ void idle(void)
 
     crash();
 }
-
-__SRCVERSION("idle.c $Rev: 165879 $");

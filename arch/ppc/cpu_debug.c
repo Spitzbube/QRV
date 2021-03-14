@@ -49,7 +49,7 @@ extern uintptr_t next_instruction(CPU_REGISTERS *ctx);
 
 /*
  * This routine does enables debugging on a thread. The thread
- * flag _NTO_TF_SSTEP is also set on this thread, so this could
+ * flag QRV_FLG_THR_SSTEP is also set on this thread, so this could
  * be used by the fault handler code if needed. If single stepping
  * is done throught temporary breakpoints, the temp information could
  * be stored in the cpu area off the DEBUG structure so the 
@@ -59,7 +59,7 @@ extern uintptr_t next_instruction(CPU_REGISTERS *ctx);
  *   dep
  *      DEBUG structure attached to the process being debugged
  *   thp
- *      thread to debug (_NTO_TF_SSTEP) will be set if function succeeds
+ *      thread to debug (QRV_FLG_THR_SSTEP) will be set if function succeeds
  * On Exit:
  *   a errno is returned, single step will only occur if EOK is returned.
  */
@@ -313,7 +313,7 @@ cpu_debug_attach_brkpts(DEBUG *dep) {
 
 	act = actives[KERNCPU];
 
-	if((act->flags & _NTO_TF_SSTEP) && !(act->internal_flags & _NTO_ITF_SSTEP_SUSPEND)) {
+	if((act->flags & QRV_FLG_THR_SSTEP) && !(act->internal_flags & _NTO_ITF_SSTEP_SUSPEND)) {
 		step = 1;
 	}
 	for(d = dep->brk; d; d = d->next) {
@@ -437,9 +437,9 @@ cpu_debug_fault(DEBUG *dep, THREAD *thp, siginfo_t *info, unsigned *pflags) {
 	}
 
 	if(info->si_fltno == FLTTRACE) {
-		if((thp->flags & _NTO_TF_SSTEP) && !(thp->internal_flags & _NTO_ITF_SSTEP_SUSPEND)) {
+		if((thp->flags & QRV_FLG_THR_SSTEP) && !(thp->internal_flags & _NTO_ITF_SSTEP_SUSPEND)) {
 			*pflags |= _DEBUG_FLAG_SSTEP;
-			thp->flags &= ~_NTO_TF_SSTEP;
+			thp->flags &= ~QRV_FLG_THR_SSTEP;
 		}
 	}
 	if(info->si_fltno == FLTBPT) {

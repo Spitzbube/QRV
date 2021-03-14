@@ -235,7 +235,7 @@ EXC_COPY_CODE_START mmu_off
 	stw		%r4,RESERVED_BASE+LOWMAP_OFFSET(%r5)
 	bgt		1f
 	lwz		%r5,TFLAGS(%r31)
-	bittst	%r3,%r5,_NTO_TF_IOPRIV
+	bittst	%r3,%r5,QRV_FLG_THR_IOPRIV
 	beq+	1f
 
 #

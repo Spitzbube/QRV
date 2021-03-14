@@ -1504,7 +1504,7 @@ FRAME(r4k_addrerr_handler,sp,0,ra)
 	GETCPU_2(k1,2)
 	SMPADDR(k0,k1)
 	lw		k0,%lo(actives)(k0)
-	li		k1,_NTO_TF_ALIGN_FAULT
+	li		k1,QRV_FLG_THR_ALIGN_FAULT
 	lw		k0,TFLAGS(k0)
 	and		k0,k1
 	bne		zero,k0,r4k_exception_handler	/* fault alignment errors */
@@ -2369,7 +2369,7 @@ no_xfer:
 	li		t1,ERRNO_EFAULT
 	SAVE_ONE_REG(t1,V0,REG_OFF,s0)
 	lw		t1,TFLAGS(s0)
-	li		t7,_NTO_TF_KERERR_SET
+	li		t7,QRV_FLG_THR_KERERR_SET
 	or		t6,t1,t7
 	sw		t6,TFLAGS(s0)
 
@@ -2393,7 +2393,7 @@ fixup_specret:
 	xori	t1,t1,INKERNEL_SPECRET
 	NEW_INKERNEL_BITS_REG(t1,t1)
 
-	/* if we took a WATCH fault processing the _NTO_TF_SHORT_MSG then we simply
+	/* if we took a WATCH fault processing the QRV_FLG_THR_SHORT_MSG then we simply
 	 * note the fact by setting _NTO_ATF_WATCHPOINT, and allow the message copy
 	 * to complete
 	 */
@@ -2508,7 +2508,7 @@ FRAME(r4k_syscall_handler,sp,0,ra)
 	 * Clear the "saw error" flag
 	 */
 	lw		t0,TFLAGS(s0)
-	li		t1,~(_NTO_TF_KERERR_SET | _NTO_TF_BUFF_MSG)
+	li		t1,~(QRV_FLG_THR_KERERR_SET | QRV_FLG_THR_BUFF_MSG)
 	and		t0,t0,t1
 	sw		t0,TFLAGS(s0)
 	/*
@@ -2627,7 +2627,7 @@ prpret:
 	 * like proc manager threads will not require such a switch.
 	 */
 	lw	t3,TFLAGS(s0)
-	li	t1,_NTO_TF_SPECRET_MASK
+	li	t1,QRV_FLG_THR_SPECRET_MASK
 	and	t3,t1,t3
 	bne	t3,zero,ker_specialret
 	 nop

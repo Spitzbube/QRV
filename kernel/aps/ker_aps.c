@@ -28,7 +28,6 @@
 #include <sys/sched_aps.h>
 #include "proto_aps.h"
 
-__SRCVERSION("ker_aps.c $Rev: 168521 $");
 
 /* security */
 

@@ -575,7 +575,3 @@ THREAD *choose_between(THREAD * a, THREAD * b)
         return a;
     return b;
 }
-
-
-
-__SRCVERSION("aps_alg.c $Rev: 199396 $");

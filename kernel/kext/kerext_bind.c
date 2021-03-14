@@ -48,7 +48,7 @@ static void kerext_process_bind(void *data)
     {
         PROCESS *child = act->process;
 
-        if ((child->pid != SYSMGR_PID) && !(child->flags & _NTO_PF_VFORKED)) {
+        if ((child->pid != SYSMGR_PID) && !(child->flags & QRV_FLG_PROC_VFORKED)) {
             crash();
         }
     }

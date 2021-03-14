@@ -15,7 +15,6 @@
  * $
  */
 
-#include <sys/neutrino.h>
 #include <sys/syspage.h>
 #include <hw/sysinfo.h>
 #include <sys/rsrcdbmgr.h>

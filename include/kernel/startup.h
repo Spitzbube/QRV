@@ -25,7 +25,6 @@
 
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <sys/neutrino.h>
 #include <sys/syspage.h>
 #include <sys/elf.h>
 

@@ -15,47 +15,50 @@
  * $
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
 #include <share.h>
-#include <sys/dcmd_all.h>
-#include <sys/stat.h>
-#include "externs.h"
 #include <termios.h>
+#include <sys/stat.h>
+
+#include <devctl/dcmd_all.h>
+
+#include <taskman/externs.h>
 
 static void set_signal(int signo, void (*func)(int))
 {
     struct sigaction act;
 
-    act.sa_sigaction = act.sa_handler = func;
-    act.sa_mask.__bits[0] = act.sa_mask.__bits[1] = 0;
+    act.sa_sigaction = NULL;
+#warning Setting sigaction handler to NULL
+    act.sa_handler = func;
+    act.sa_mask.bits[0] = act.sa_mask.bits[1] = 0;
     act.sa_flags = 0;
     (void) SignalAction(0, 0, signo, &act, 0);
 }
 
-void loader_exit(resmgr_context_t * ctp, union proc_msg_union *msg, PROCESS * prp)
+void loader_exit(resmgr_context_t * ctp, union proc_msg_union *msg, tProcess * prp)
 {
     struct loader_context *lcp;
     int r;
 
     if ((lcp = prp->lcp)) {
-        if (lcp->rcvid != -1) {
+        if (lcp->base.rcvid != -1) {
             switch (prp->siginfo.si_signo) {
             case SIGCHLD:
                 r = prp->siginfo.si_status;
                 break;
             case SIGBUS:
-                r = (lcp->fault_errno != EOK) ? lcp->fault_errno : ENOMEM;
+                r = (lcp->base.fault_errno != EOK) ? lcp->base.fault_errno : ENOMEM;
                 break;
             default:
                 r = EINTR;
                 break;
             }
-            MsgError(lcp->rcvid, r);
+            MsgError(lcp->base.rcvid, r);
         }
         procmgr_context_free(lcp);
         prp->lcp = 0;
@@ -332,7 +335,7 @@ static int loader_fd(struct loader_context *lcp)
 void *loader_fork(void *parm)
 {
     struct loader_context *lcp = parm;
-    PROCESS *prp;
+    tProcess *prp;
     int fd, status = 0;
     int sig;
     THREAD *thp = lcp->process->valid_thp;
@@ -376,7 +379,7 @@ void *loader_fork(void *parm)
             }
             proc_unlock_adp(sysmgr_prp);
         }
-        lcp->process->flags |= _NTO_PF_VFORKED;
+        lcp->process->flags |= QRV_FLG_PROC_VFORKED;
         lcp->process->memory = prp->memory;
         ProcessBind(lcp->process->pid);
     }

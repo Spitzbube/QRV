@@ -22,7 +22,7 @@
 
 int _spin_destroy(spinlock_t *lock) {
 #ifdef ALLOW_SPIN_SMP
-	if(lock->owner == _NTO_SYNC_SPIN) {
+	if(lock->owner == QRV_SYNC_SPIN) {
 		return _pthread_spin_destroy(lock);
 	}
 #endif

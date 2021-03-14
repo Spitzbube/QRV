@@ -27,7 +27,7 @@ int
 pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex) {
 	int				ret;
 
-	if((mutex->__owner & ~_NTO_SYNC_WAITING) != LIBC_TLS()->__owner) {
+	if((mutex->__owner & ~QRV_SYNC_WAITING) != LIBC_TLS()->__owner) {
 		return EPERM;
 	}
 	if((ret = SyncCondvarWait_r((sync_t *)cond, (sync_t *)mutex)) == EINTR) {

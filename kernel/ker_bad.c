@@ -21,5 +21,3 @@ int kdecl ker_bad(THREAD * act, struct kerargs_null *kap)
 {
     return ENOSYS;
 }
-
-__SRCVERSION("ker_bad.c $Rev: 153052 $");

@@ -24,7 +24,7 @@
 /*
  * ===========================================================================
  *
- * 			Memory Partitioning Compile time Behaviour Modification
+ * Memory Partitioning Compile time Behaviour Modification
  *
  * ===========================================================================
 */
@@ -62,7 +62,8 @@
 #define MEMPART_DFLT_INHERIT_BEHVR_1
 //#define MEMPART_DFLT_INHERIT_BEHVR_2
 
-#include "ap.h"
+#include <taskman/partitioning.h>
+
 #include "mclass.h"
 // FIX ME #include <sys/mempart.h>
 #include <kernel/mempart.h>
@@ -75,7 +76,7 @@
  * similar to process id's, memory partition id's are kept unique
  * Wrap will occur at MPID_UNIQUE_MASK
 */
-#define MPID_MASK			0xfff
+#define MPID_MASK		0xfff
 #define MPINDEX(mpid)		((mpid) & MPID_MASK)
 #define MPID_UNIQUE_MASK	(UINT_MAX & ~parttype_MASK)
 extern int mpid_unique;

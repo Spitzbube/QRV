@@ -273,7 +273,7 @@ fill_name(struct shared_info *i, int fd)
 		if (i->info || !fill_info(i, fd)) {
 			if (i->info->pid == SYSMGR_PID) {
 			        strcpy(name.info.path, "procnto");
-			} else if (i->info->flags & _NTO_PF_LOADING) {
+			} else if (i->info->flags & QRV_FLG_PROC_LOADING) {
 				strcpy(name.info.path, "(Loading)");
 			}
 		}
@@ -887,7 +887,7 @@ format_mutex(pid_t mypid, const sync_t *mu, pid_t *pid, int *tid, int *count) {
 	int pindex, retval;
 
 	if (count) {
-		*count = mu->__count & _NTO_SYNC_COUNTMASK;
+		*count = mu->__count & QRV_SYNC_COUNTMASK;
 	}
 	if (tid) {
 		MUTEX_GET_OWNERTID(mu, *tid);
@@ -1955,7 +1955,7 @@ stacksize(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct share
 		size = i->stack;
 		// @@@ for now.
 		vsize = i->status->stksize;
-		if (!(i->status->tid_flags & _NTO_TF_ALLOCED_STACK)) {
+		if (!(i->status->tid_flags & QRV_FLG_THR_ALLOCED_STACK)) {
 			vsize = i->status->stksize;
 			if(*tid != 1) {
 				size = vsize;
@@ -1969,7 +1969,7 @@ stacksize(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct share
 
 		fwoutput(fp, fmt->width - strlen(buffer) - 1, spaces);
 		fwoutput(fp, strlen(buffer), buffer);
-		if (!(i->status->tid_flags & _NTO_TF_ALLOCED_STACK)) {
+		if (!(i->status->tid_flags & QRV_FLG_THR_ALLOCED_STACK)) {
 			fwoutput(fp, 1, "*");
 		} else {
 			fwoutput(fp, 1, " ");
@@ -2462,7 +2462,7 @@ Rmasks(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_i
 	procfs_threadctl	*threadctl;
 	const char		*header;
 
-	if (sinfo->info->flags & _NTO_PF_ZOMBIE) {
+	if (sinfo->info->flags & QRV_FLG_PROC_ZOMBIE) {
 		/* Save the _devctl() below which will fail with ESRCH */
 		return 0;
 	}

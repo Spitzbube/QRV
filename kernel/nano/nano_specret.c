@@ -54,21 +54,21 @@ void specialret_attr specialret(THREAD * thp)
 #endif
     specret_kernel();
 
-    while ((flags = (thp->flags & _NTO_TF_SPECRET_MASK))) {
+    while ((flags = (thp->flags & QRV_FLG_THR_SPECRET_MASK))) {
         unlock_kernel();
         SPECRET_PREEMPT(thp);
         switch ((inspecret = GET_BOTTOM_BIT(flags))) {
 
-        case _NTO_TF_TO_BE_STOPPED:{
+        case QRV_FLG_THR_TO_BE_STOPPED:{
                 lock_kernel();
-                thp->flags &= ~_NTO_TF_TO_BE_STOPPED;
+                thp->flags &= ~QRV_FLG_THR_TO_BE_STOPPED;
                 thp->state = STATE_STOPPED;
                 _TRACE_TH_EMIT_STATE(thp, STOPPED);
                 block();
                 break;
             }
 
-        case _NTO_TF_RCVINFO:{
+        case QRV_FLG_THR_RCVINFO:{
                 struct _msg_info *mep = thp->args.ri.info;
                 CONNECT *cop = thp->args.ri.cop;
                 THREAD *thp2 = thp->args.ri.thp;
@@ -78,7 +78,7 @@ void specialret_attr specialret(THREAD * thp)
                     mep->msglen = thp->args.ri.id;
                 } else {
                     get_rcvinfo(thp2, -1, cop, mep);
-                    if ((thp->flags & _NTO_TF_SHORT_MSG) == 0) {
+                    if ((thp->flags & QRV_FLG_THR_SHORT_MSG) == 0) {
                         // If there is no short message, remove the connection
                         // of the client thread to the server thread.
                         lock_kernel();
@@ -92,12 +92,12 @@ void specialret_attr specialret(THREAD * thp)
                         }
                     }
                 }
-                thp->flags &= ~_NTO_TF_RCVINFO;
+                thp->flags &= ~QRV_FLG_THR_RCVINFO;
 
                 break;
             }
 
-        case _NTO_TF_SHORT_MSG:{
+        case QRV_FLG_THR_SHORT_MSG:{
                 int status = 0;
                 THREAD *thp2 = thp->blocked_on;
 
@@ -114,14 +114,14 @@ void specialret_attr specialret(THREAD * thp)
                                   thp->args.ri.rparts, thp2->args.msbuff.msglen);
 
                 lock_kernel();
-                thp->flags &= ~(_NTO_TF_SHORT_MSG | _NTO_TF_BUFF_MSG);
+                thp->flags &= ~(QRV_FLG_THR_SHORT_MSG | QRV_FLG_THR_BUFF_MSG);
 
                 // Clear the flag that indicates we (the client) need data from thp2's
                 // (the sender's) control block.
                 if (thp != thp2) {
                     thp2->internal_flags &= ~_NTO_ITF_SPECRET_PENDING;
                 }
-                // Since _NTO_TF_RCVINFO is higher priority, we can always
+                // Since QRV_FLG_THR_RCVINFO is higher priority, we can always
                 // clear the client connection to the server thread.
                 thp2->restart = 0;
 
@@ -136,14 +136,14 @@ void specialret_attr specialret(THREAD * thp)
                 break;
             }
 
-        case _NTO_TF_PULSE:{
+        case QRV_FLG_THR_PULSE:{
                 int status;
 
                 status = xferpulse(thp, thp->args.ri.rmsg, thp->args.ri.rparts,
                                    thp->args.ri.code, thp->args.ri.value, thp->args.ri.id);
 
                 lock_kernel();
-                thp->flags &= ~_NTO_TF_PULSE;
+                thp->flags &= ~QRV_FLG_THR_PULSE;
                 if (status) {
                     kererr(thp, EFAULT);
                 }
@@ -151,31 +151,31 @@ void specialret_attr specialret(THREAD * thp)
                 break;
             }
 
-        case _NTO_TF_NANOSLEEP:{
+        case QRV_FLG_THR_NANOSLEEP:{
                 /* use memcpy to avoid f.p. on PPC */
                 if (thp->args.to.timeptr) {
                     memcpy(thp->args.to.timeptr,
                            &thp->args.to.left.nsec, sizeof(*thp->args.to.timeptr));
                 }
 
-                thp->flags &= ~_NTO_TF_NANOSLEEP;
+                thp->flags &= ~QRV_FLG_THR_NANOSLEEP;
                 break;
             }
 
-        case _NTO_TF_JOIN:{
+        case QRV_FLG_THR_JOIN:{
                 if (thp->args.jo.statusptr) {
                     *thp->args.jo.statusptr = thp->args.jo.status;
                 }
 
-                thp->flags &= ~_NTO_TF_JOIN;
+                thp->flags &= ~QRV_FLG_THR_JOIN;
                 break;
             }
 
-        case _NTO_TF_WAAA:
+        case QRV_FLG_THR_WAAA:
             thread_specret(thp);
             break;
 
-        case _NTO_TF_SIGWAITINFO:{
+        case QRV_FLG_THR_SIGWAITINFO:{
                 siginfo_t *sip = thp->args.sw.sig_info;
 
                 if (sip) {      // May be passed as NULL
@@ -188,22 +188,22 @@ void specialret_attr specialret(THREAD * thp)
 
                 lock_kernel();
                 SETKSTATUS(thp, thp->args.sw.signo);
-                thp->flags &= ~_NTO_TF_SIGWAITINFO;
+                thp->flags &= ~QRV_FLG_THR_SIGWAITINFO;
                 break;
             }
 
-        case _NTO_TF_SIG_ACTIVE:
+        case QRV_FLG_THR_SIG_ACTIVE:
             signal_specret(thp);
             break;
 
-        case _NTO_TF_SIGSUSPEND:{
+        case QRV_FLG_THR_SIGSUSPEND:{
                 // Handle case where sigsuspend is unblocked without a signal.
                 SIGMASK_CPY(&thp->sig_blocked, &thp->args.ss.sig_blocked);
-                thp->flags &= ~_NTO_TF_SIGSUSPEND;
+                thp->flags &= ~QRV_FLG_THR_SIGSUSPEND;
                 break;
             }
 
-        case _NTO_TF_ACQUIRE_MUTEX:{
+        case QRV_FLG_THR_ACQUIRE_MUTEX:{
                 // We need to save status since sync_mutex_lock() will probably
                 // set it to zero. In the case of a condvar timeout we need
                 // to preserve it.
@@ -214,7 +214,7 @@ void specialret_attr specialret(THREAD * thp)
 
                 sync_mutex_lock(thp, mutex,
                                 (thp->
-                                 flags & _NTO_TF_MUTEX_CEILING) ? _MUTEXLOCK_FLAGS_NOCEILING : 0);
+                                 flags & QRV_FLG_THR_MUTEX_CEILING) ? _MUTEXLOCK_FLAGS_NOCEILING : 0);
 
                 if (thp->state == STATE_RUNNING) {
                     // We got the mutex, update the count. Normally incr is
@@ -227,38 +227,38 @@ void specialret_attr specialret(THREAD * thp)
                     SETKSTATUS(thp, status);
                 }
 
-                thp->flags &= ~_NTO_TF_ACQUIRE_MUTEX;
+                thp->flags &= ~QRV_FLG_THR_ACQUIRE_MUTEX;
                 break;
             }
 
-        case _NTO_TF_KILLSELF:{
+        case QRV_FLG_THR_KILLSELF:{
                 SIGMASK_ONES(&thp->sig_blocked);
                 lock_kernel();
                 cpu_force_thread_destroyall(thp);
-                if (thp->flags & _NTO_TF_RCVINFO) {
+                if (thp->flags & QRV_FLG_THR_RCVINFO) {
                     thp->args.ri.thp->restart = 0;
                 }
-                if (thp->flags & _NTO_TF_SHORT_MSG) {
+                if (thp->flags & QRV_FLG_THR_SHORT_MSG) {
                     ((THREAD *) thp->blocked_on)->restart = 0;
                 }
-                thp->flags &= ~_NTO_TF_SPECRET_MASK;
+                thp->flags &= ~QRV_FLG_THR_SPECRET_MASK;
                 break;
             }
 
-        case _NTO_TF_CANCELSELF:{
+        case QRV_FLG_THR_CANCELSELF:{
                 lock_kernel();
-                thp->flags |= _NTO_TF_KERERR_SET;
+                thp->flags |= QRV_FLG_THR_KERERR_SET;
                 SETKIP_FUNC(thp, thp->process->canstub);
-                thp->flags &= ~_NTO_TF_CANCELSELF;
+                thp->flags &= ~QRV_FLG_THR_CANCELSELF;
                 break;
             }
 
-        case _NTO_TF_MUTEX_CEILING:{
+        case QRV_FLG_THR_MUTEX_CEILING:{
                 SYNC *syp;
                 unsigned ceiling_old;
                 int ret;
 
-                if ((syp = sync_lookup(thp->args.mu.mutex, _NTO_SYNC_MUTEX_FREE)) == NULL) {
+                if ((syp = sync_lookup(thp->args.mu.mutex, QRV_SYNC_MUTEX_FREE)) == NULL) {
                     break;
                 }
 
@@ -273,7 +273,7 @@ void specialret_attr specialret(THREAD * thp)
                 break;
             }
 
-        case _NTO_TF_ASYNC_RECEIVE:{
+        case QRV_FLG_THR_ASYNC_RECEIVE:{
                 CHANNEL *chp;
                 CONNECT *cop;
                 int coid, err;
@@ -309,5 +309,3 @@ void specialret_attr specialret(THREAD * thp)
     unspecret_kernel();
     thp->restart = 0;
 }
-
-__SRCVERSION("nano_specret.c $Rev: 158207 $");

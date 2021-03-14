@@ -15,7 +15,7 @@
  * $
  */
 
-#include "externs.h"
+#include "taskman/externs.h"
 #include <gulliver.h>
 #include <sys/conf.h>
 #include <sys/sysmgr.h>
@@ -34,7 +34,7 @@ no limits to what we can accomplish.\n"
 
 int sysmgr_confstr_set(int cmd, int name, const char *str)
 {
-    int len = strlen(str);
+    size_t len = strlen(str);
 
     if (strchr(str, ' ')) {
         char *p1, *s = 0;
@@ -68,7 +68,7 @@ void sysmgr_init(void)
     _sysconf_list = (long *) &sysmgr_internal_table;
 
     // "os_version_string" defined in automatically created timestamp.c
-    // file, value determined by the _NTO_VERSION macro in <sys/neutrino.h>
+    // file, value determined by the _NTO_VERSION macro in <sys/qrv_core.h>
     sysmgr_confstr_set(0, _CS_RELEASE, os_version_string);
 
     // "timestamp" defined in automatically created timestamp.c file,
@@ -78,5 +78,3 @@ void sysmgr_init(void)
     sysmgr_confstr_set(0, _CS_ARCHITECTURE, CPU_STRINGNAME ENDIAN);
     sysmgr_confstr_set(0, _CS_DANH, DANH);
 }
-
-__SRCVERSION("sysmgr_init.c $Rev: 160761 $");

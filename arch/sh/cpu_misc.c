@@ -290,7 +290,7 @@ kprintf("CPU thread init. act=%x, thp=%x, pc=%x\n",actives[KERNCPU],thp, thp->re
 	switch(align) {
 	case 0:
 	case 1:
-		thp->flags |= _NTO_TF_ALIGN_FAULT;
+		thp->flags |= QRV_FLG_THR_ALIGN_FAULT;
 		break;
 	default: break;
 	}

@@ -27,7 +27,7 @@ static int pathmgr_resolve_handler(resmgr_context_t * ctp, void *msg)
 {
     struct _io_connect *connect = msg;
     struct node_entry *node;
-    PROCESS *prp;
+    tProcess *prp;
     const char *result;
     int ret;
 
@@ -94,7 +94,7 @@ static int pathmgr_handler(message_context_t * ctp, int code, unsigned value, vo
     struct _io_connect *connect = (struct _io_connect *) (void *) ctp->msg;
     struct node_entry *node, *tmpnode;
     struct node_entry **np;
-    PROCESS *prp;
+    tProcess *prp;
     int ret;
 
     ret = ENOSYS;

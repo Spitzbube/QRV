@@ -188,7 +188,7 @@ cpu_debug_fault(DEBUG *dep, THREAD *thp, siginfo_t *info, unsigned *pflags)
 		if (dep->cpu.step.planted && KIP(thp) == dep->cpu.step.brk.addr) {
 			info->si_fltno = FLTTRACE;
 			*pflags |= _DEBUG_FLAG_SSTEP;
-			thp->flags &= ~_NTO_TF_SSTEP;
+			thp->flags &= ~QRV_FLG_THR_SSTEP;
 			break_clr(&dep->cpu.step);
 			return 0;
 		}
@@ -232,7 +232,7 @@ cpu_debug_attach_brkpts(DEBUG *dep)
 	 * Check if single-step breakpoints need to be added
 	 */
 	act = actives[KERNCPU];
-	if (act->flags & _NTO_TF_SSTEP) {
+	if (act->flags & QRV_FLG_THR_SSTEP) {
 		dep->cpu.step.brk.addr = next_instruction(&act->reg);
 		break_set(&dep->cpu.step);
 	}

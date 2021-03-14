@@ -16,14 +16,14 @@
  */
 
 #define _LARGEFILE64_SOURCE 1
-#include "externs.h"
+#include <taskman/externs.h>
 #include <fcntl.h>
 #include <share.h>
-#include <sys/dcmd_all.h>
+#include <devctl/dcmd_all.h>
 #include <sys/procfs.h>
-#include "pathmgr_node.h"
-#include "pathmgr_object.h"
-#include "pathmgr_proto.h"
+#include "taskman/pathmgr_node.h"
+#include "taskman/pathmgr_object.h"
+#include "taskman/pathmgr_proto.h"
 
 // Interface break - we really shouldn't be referencing mm fields here,
 // but it's silly to go through the extra hassle.
@@ -33,7 +33,7 @@ static int mem_handle;
 static dev_t mem_devno;
 
 struct mem_ocb {
-    unsigned pos;
+    uint64_t pos;
     int ioflag;
     int tflags;                 // for typed memory objects
     tPathMgrObject *object;
@@ -53,12 +53,11 @@ typedef struct {
 static int mem_read_write(resmgr_context_t * ctp, resmgr_iomsgs_t * msg, struct mem_ocb *ocb)
 {
     void *addr;
-    unsigned nbytes;
-    unsigned size;
-    PROCESS *proc;
+    size_t nbytes, size;
+    tProcess *proc;
     tPathMgrObject *obp;
-    unsigned *pos;
-    unsigned offset;
+    uint64_t *pos;
+    off_t offset;
     size_t skip;
 
     // IO_READ and IO_WRITE messages exactly overlay, as does XTYPE_OFFSET!
@@ -190,7 +189,7 @@ static int mem_close_ocb(resmgr_context_t * ctp, void *reserved, void *vocb)
     struct mem_ocb *ocb = vocb;
 
     if (ocb) {
-        OBJECT *obp;
+        tPathMgrObject *obp;
 
         if ((obp = ocb->object)) {
             //RUSH3: Should get rid of memmgr_tymem_close() and
@@ -273,7 +272,7 @@ static int mem_stat(resmgr_context_t * ctp, io_stat_t * msg, void *vocb)
 static int mem_devctl(resmgr_context_t * ctp, io_devctl_t * msg, void *vocb)
 {
     struct mem_ocb *ocb = vocb;
-    OBJECT *obp;
+    tPathMgrObject *obp;
     union {
         int oflag;
         int mountflag;
@@ -488,7 +487,7 @@ int devmem_check_perm(resmgr_context_t * ctp, mode_t mode, uid_t uid, gid_t gid,
 
 int mem_open(resmgr_context_t * ctp, io_open_t * msg, void *handle, void *extra)
 {
-    OBJECT *object = handle;
+    tPathMgrObject *object = handle;
     struct mem_ocb *ocb;
 
     if (object) {
@@ -727,7 +726,7 @@ void devmem_init(void)
 }
 
 
-int devmem_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *handle, OBJECT ** pobp)
+int devmem_check(const resmgr_io_funcs_t * funcs, mem_map_t * msg, void *handle, tPathMgrObject ** pobp)
 {
     struct mem_ocb *ocb = handle;
 
@@ -784,5 +783,3 @@ int devmem_check_ocb_phys(resmgr_context_t * ctp, void *vocb)
 
     return ((_resmgr_iofuncs(ctp, &info) == &mem_io_funcs) && (ocb->object != NULL));
 }
-
-__SRCVERSION("devmem.c $Rev: 198540 $");

@@ -72,6 +72,3 @@ int xferlen(THREAD * thp, IOV * iov, int parts)
 
     return (len);
 }
-
-
-__SRCVERSION("nano_xfer_len.c $Rev: 153052 $");

@@ -454,7 +454,7 @@ int procmgr_spawn(resmgr_context_t * ctp, void *vmsg, proc_create_attr_t * partl
 
             if ((status = ThreadCreate_r((prp = lcp->process)->pid, loader_load, lcp, &attr)) < 0) {
                 // Turn terming flag on, we're not doing a thread_destroy
-                prp->flags |= _NTO_PF_TERMING;
+                prp->flags |= QRV_FLG_PROC_TERMING;
                 (void) MsgSendPulse_r(PROCMGR_COID, attr.__param.__sched_priority, PROC_CODE_TERM,
                                       prp->pid);
                 return -status;
@@ -761,11 +761,11 @@ struct loader_context *procmgr_exec(resmgr_context_t * ctp, void *msg, PROCESS *
     // Need to access child through lcp->pid, lcp->process may be invalid
     if (MsgInfo(lcp->rcvid, &ctp->info) == -1 || !prp->child
         || (prp->pid != lcp->ppid) || !(child = proc_lock_pid(lcp->pid))
-        || (child->parent != prp) || (child->flags & (_NTO_PF_TERMING | _NTO_PF_ZOMBIE))) {
+        || (child->parent != prp) || (child->flags & (QRV_FLG_PROC_TERMING | QRV_FLG_PROC_ZOMBIE))) {
         // Child started terming or is gone; don't try to swap
         // Need to term again without LC_EXEC_SWAP set
         lcp->state = LC_TERM;
-        prp->flags |= _NTO_PF_TERMING;
+        prp->flags |= QRV_FLG_PROC_TERMING;
         (void) MsgSendPulse_r(PROCMGR_COID, -1, PROC_CODE_TERM, prp->pid);
         if (child) {
             proc_unlock(child);

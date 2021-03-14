@@ -256,13 +256,13 @@ thread_create(THREAD * act, PROCESS * prp, const struct sigevent *evp, unsigned 
     // Figure out the default aligment
     if (prp != act->process) {
         align = align_fault;
-    } else if (act->flags & _NTO_TF_ALIGN_FAULT) {
+    } else if (act->flags & QRV_FLG_THR_ALIGN_FAULT) {
         align = +1;
     } else {
         align = -1;
     }
     cpu_thread_init(act, thp, align);
-    thp->flags |= (act->flags & _NTO_TF_IOPRIV);
+    thp->flags |= (act->flags & QRV_FLG_THR_IOPRIV);
 
     // Stash some stuff for use in the WAAA special return code
     thp->args.wa.not_sigev_thread = (thread_create_flags & THREAD_CREATE_BLOCK_FLAG) != 0;
@@ -274,7 +274,7 @@ thread_create(THREAD * act, PROCESS * prp, const struct sigevent *evp, unsigned 
     // We cannot initalize the thread private data at this time because
     // we may not have addressability to it. We set a flag which will
     // initalize it when it runs for the first time (its birth cry).
-    thp->flags |= _NTO_TF_WAAA | _NTO_TF_DETACHED;
+    thp->flags |= QRV_FLG_THR_WAAA | QRV_FLG_THR_DETACHED;
 
     if (prp->num_active_threads == 0) {
         //get a default value for process/termination priority
@@ -325,7 +325,7 @@ void rdecl thread_destroy(THREAD * thp)
     if (thp->state != STATE_DEAD) {
         if (thp->state == STATE_RUNNING && thp != actives[KERNCPU]) {
             // The thread is running on another processor in an SMP system.
-            thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+            thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
             SENDIPI(thp->runcpu, IPI_RESCHED);
             return;
         }
@@ -342,7 +342,7 @@ void rdecl thread_destroy(THREAD * thp)
             if (FPUDATA_INUSE(thp->fpudata)) {
                 if (FPUDATA_CPU(thp->fpudata) != KERNCPU) {
                     // Context still in use on another CPU; need to flush it out
-                    thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+                    thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
                     SENDIPI(FPUDATA_CPU(thp->fpudata), IPI_CONTEXT_SAVE);
                     return;
                 }
@@ -357,10 +357,10 @@ void rdecl thread_destroy(THREAD * thp)
 
         SIGMASK_ONES(&thp->sig_blocked);
 
-        if (thp->flags & _NTO_TF_RCVINFO) {
+        if (thp->flags & QRV_FLG_THR_RCVINFO) {
             thp->args.ri.thp->restart = 0;
         }
-        if (thp->flags & _NTO_TF_SHORT_MSG) {
+        if (thp->flags & QRV_FLG_THR_SHORT_MSG) {
             ((THREAD *) thp->blocked_on)->restart = 0;
         }
 
@@ -399,7 +399,7 @@ void rdecl thread_destroy(THREAD * thp)
         }
 
         // Release the stack if it was dynamically allocated
-        if (thp->flags & _NTO_TF_ALLOCED_STACK) {
+        if (thp->flags & QRV_FLG_THR_ALLOCED_STACK) {
             if (prp->pid != PROCMGR_PID && procmgr.process_stack_code) {
                 if (thp->state != STATE_STACK) {
                     struct sigevent event;
@@ -408,8 +408,8 @@ void rdecl thread_destroy(THREAD * thp)
                     thp->state = STATE_STACK;
 
                     _TRACE_TH_EMIT_STATE(thp, STACK);
-                    thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
-                    thp->flags &= ~(_NTO_TF_TO_BE_STOPPED | _NTO_TF_WAAA);
+                    thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
+                    thp->flags &= ~(QRV_FLG_THR_TO_BE_STOPPED | QRV_FLG_THR_WAAA);
 
                     event.sigev_notify = SIGEV_PULSE;
                     event.sigev_coid = PROCMGR_COID;
@@ -426,7 +426,7 @@ void rdecl thread_destroy(THREAD * thp)
                 return;
             }
             procmgr_stack_free(thp);
-            thp->flags &= ~_NTO_TF_ALLOCED_STACK;
+            thp->flags &= ~QRV_FLG_THR_ALLOCED_STACK;
         }
 
         // Make thread lookups invalid
@@ -492,7 +492,7 @@ void rdecl thread_destroy(THREAD * thp)
         }
 
         // Release any attached interrupts
-        if (prp->flags & _NTO_PF_CHECK_INTR) {
+        if (prp->flags & QRV_FLG_PROC_CHECK_INTR) {
             INTERRUPT *itp;
 
             for (i = 0; i < interrupt_vector.nentries; ++i) {
@@ -533,7 +533,7 @@ void rdecl thread_destroy(THREAD * thp)
     }
 
     // A zombie if nobody waiting, not detached and not last thread.
-    if (thp->join == NULL && (thp->flags & _NTO_TF_DETACHED) == 0 &&
+    if (thp->join == NULL && (thp->flags & QRV_FLG_THR_DETACHED) == 0 &&
         (prp->threads.nentries - 1 != prp->threads.nfree)) {
         return;
     }
@@ -549,7 +549,7 @@ void rdecl thread_destroy(THREAD * thp)
         } else {
             // This is a normal thread death...
             jthp->args.jo.status = thp->status;
-            jthp->flags |= _NTO_TF_JOIN;
+            jthp->flags |= QRV_FLG_THR_JOIN;
             SETKSTATUS(jthp, EOK);
         }
         ready(jthp);
@@ -602,7 +602,7 @@ void rdecl thread_destroy(THREAD * thp)
         }
 
         // setup process so it can run as a terminator thread
-        prp->flags |= _NTO_PF_TERMING;
+        prp->flags |= QRV_FLG_PROC_TERMING;
         prp->boundry_addr = VM_KERN_SPACE_BOUNDRY;
         SIGMASK_ONES(&prp->sig_ignore);
 
@@ -634,8 +634,8 @@ static void threadstack_fault(THREAD * thp, CPU_REGISTERS * reg, unsigned flags)
     chk_lock();
     // This will cause the parent thread to return from ThreadCreate
     // with an ENOMEM or EINVAL error.
-    thp->status = (thp->flags & _NTO_TF_ALLOCED_STACK) ? (void *) ENOMEM : (void *) EINVAL;
-    thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+    thp->status = (thp->flags & QRV_FLG_THR_ALLOCED_STACK) ? (void *) ENOMEM : (void *) EINVAL;
+    thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
     __ker_exit();
 }
 
@@ -681,14 +681,14 @@ void rdecl thread_specret(THREAD * thp)
         if (verify != EOK) {
             lock_kernel();
             thp->status = (void *) verify;
-            thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+            thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
             return;
             // RUSH3: this comes out in loader_exit() but EINTR overridden
         }
     }
 
     // Check if we need to allocate a stack
-    if (!(thp->flags & _NTO_TF_ALLOCED_STACK)) {
+    if (!(thp->flags & QRV_FLG_THR_ALLOCED_STACK)) {
         uintptr_t guardsize = 0;
         unsigned lazystate = 0;
         unsigned prealloc = 0;
@@ -701,7 +701,7 @@ void rdecl thread_specret(THREAD * thp)
                 !WR_PROBE_PTR(thp, thp->un.lcl.stackaddr, thp->un.lcl.stacksize)) {
                 lock_kernel();
                 thp->status = (void *) EINVAL;
-                thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+                thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
                 return;
             }
             guardsize = attr->__guardsize;
@@ -736,7 +736,7 @@ void rdecl thread_specret(THREAD * thp)
                     if (sigevent_proc(&event)) {
                         // Pulse failed...
                         thp->status = (void *) EAGAIN;
-                        thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+                        thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
                         return;
                     }
 
@@ -752,10 +752,10 @@ void rdecl thread_specret(THREAD * thp)
             guardsize = 0;
             if (procmgr_stack_alloc(thp) != EOK) {
                 thp->status = (void *) EAGAIN;
-                thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+                thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
                 return;
             }
-            thp->flags |= _NTO_TF_ALLOCED_STACK;
+            thp->flags |= QRV_FLG_THR_ALLOCED_STACK;
             unlock_kernel();
             SPECRET_PREEMPT(thp);
         }
@@ -764,7 +764,7 @@ void rdecl thread_specret(THREAD * thp)
     // Inherit or assign a scheduling policy and params.
     if (attr) {
         if (attr->__flags & PTHREAD_MULTISIG_DISALLOW) {
-            thp->flags |= _NTO_TF_NOMULTISIG;
+            thp->flags |= QRV_FLG_THR_NOMULTISIG;
         }
         thp->args.wa.exitfunc = attr->__exitfunc;
     }
@@ -775,7 +775,7 @@ void rdecl thread_specret(THREAD * thp)
     // NULL'd out thp->args.wa.attr and then been preempted
     attr = thp->args.wa.real_attr;
     if (thp->join && (!attr || !(attr->__flags & PTHREAD_CREATE_DETACHED))) {
-        thp->flags &= ~_NTO_TF_DETACHED;
+        thp->flags &= ~QRV_FLG_THR_DETACHED;
     }
 
     // Make thread lookups valid
@@ -857,7 +857,7 @@ void rdecl thread_specret(THREAD * thp)
         if (sched_thread(thp, attr->__policy, (struct sched_param *) &attr->__param) != EOK) {
             /* We should have some error handling if sched_thread() fails ...
                thp->status = (void *)EAGAIN;
-               thp->flags |= (_NTO_TF_KILLSELF | _NTO_TF_ONLYME);
+               thp->flags |= (QRV_FLG_THR_KILLSELF | QRV_FLG_THR_ONLYME);
                return;
              */
         }
@@ -869,10 +869,10 @@ void rdecl thread_specret(THREAD * thp)
     }
 
     /* a thread is born unto a STOPPED process - make sure it stops too! */
-    if (thp->process->flags & (_NTO_PF_DEBUG_STOPPED | _NTO_PF_STOPPED)) {
-        thp->flags |= _NTO_TF_TO_BE_STOPPED;
+    if (thp->process->flags & (QRV_FLG_PROC_DEBUG_STOPPED | QRV_FLG_PROC_STOPPED)) {
+        thp->flags |= QRV_FLG_THR_TO_BE_STOPPED;
     }
-    thp->flags &= ~_NTO_TF_WAAA;
+    thp->flags &= ~QRV_FLG_THR_WAAA;
 }
 
 /**
@@ -888,13 +888,13 @@ void rdecl thread_destroyall(THREAD * thp)
 
     chk_lock();
     SIGMASK_ONES(&thp->sig_blocked);
-    thp->flags &= ~_NTO_TF_SIG_ACTIVE;
+    thp->flags &= ~QRV_FLG_THR_SIG_ACTIVE;
 
     for (tid = 0; tid < prp->threads.nentries; ++tid) {
         if (VECP(thp2, &prp->threads, tid)) {
-            thp2->flags |= _NTO_TF_DETACHED | _NTO_TF_KILLSELF;
+            thp2->flags |= QRV_FLG_THR_DETACHED | QRV_FLG_THR_KILLSELF;
             // Knock down the stack flag, faster to do it when we unmap all
-            thp2->flags &= ~(_NTO_TF_TO_BE_STOPPED | _NTO_TF_ALLOCED_STACK);
+            thp2->flags &= ~(QRV_FLG_THR_TO_BE_STOPPED | QRV_FLG_THR_ALLOCED_STACK);
 #ifdef _mt_LTT_TRACES_          /* PDB */
             //mt_TRACE_DEBUG("bad_destroy");
             //mt_trace_task_delete(prp->pid, tid, 0);
@@ -903,7 +903,7 @@ void rdecl thread_destroyall(THREAD * thp)
     }
 
     cpu_force_thread_destroyall(thp);
-    prp->flags |= _NTO_PF_DESTROYALL;
+    prp->flags |= QRV_FLG_PROC_DESTROYALL;
 }
 
 
@@ -912,22 +912,20 @@ void rdecl thread_cancel(THREAD * thp)
     chk_lock();
     if (thp->state == STATE_RUNNING && thp != actives[KERNCPU]) {
         // The thread is running on another processor in an SMP system.
-        thp->flags |= _NTO_TF_CANCELSELF;
+        thp->flags |= QRV_FLG_THR_CANCELSELF;
         SENDIPI(thp->runcpu, IPI_RESCHED);
         return;
     }
 
 #if defined(VARIANT_smp) && defined(SMP_MSGOPT)
     if (thp->internal_flags & _NTO_ITF_MSG_DELIVERY) {
-        thp->flags |= _NTO_TF_CANCELSELF;
+        thp->flags |= QRV_FLG_THR_CANCELSELF;
     } else {
-        thp->flags |= _NTO_TF_KERERR_SET;
+        thp->flags |= QRV_FLG_THR_KERERR_SET;
         SETKIP_FUNC(thp, thp->process->canstub);
     }
 #else
-    thp->flags |= _NTO_TF_KERERR_SET;
+    thp->flags |= QRV_FLG_THR_KERERR_SET;
     SETKIP_FUNC(thp, thp->process->canstub);
 #endif
 }
-
-__SRCVERSION("nano_thread.c $Rev: 211554 $");

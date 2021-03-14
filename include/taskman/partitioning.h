@@ -27,6 +27,7 @@
  *
  * ===========================================================================
 */
+
 /*
  * USE_PROC_OBJ_LISTS
  *
@@ -38,8 +39,7 @@
  * conditional compilation control ... although I have not compiled with this
  * #define off in many moons so it may not even build without it anymore.
  *
- * Just leave it alone ... go away ... skedaddle
-*/
+ */
 #define USE_PROC_OBJ_LISTS
 
 /*

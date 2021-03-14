@@ -110,7 +110,7 @@ static int getpidinfo(char const *name,ProcessInfo_t *pip)
 			!strncmp(pip->name, "devf-", 5) ||
 			!strcmp(pip->name, "pipe"))
 		pip->class = CLASS_FSYS;
-	else if((pi.flags & _NTO_PF_CHECK_INTR) || pi.sid == 1)
+	else if((pi.flags & QRV_FLG_PROC_CHECK_INTR) || pi.sid == 1)
 		pip->class = CLASS_DAEMON;
 	else
 		pip->class = shutdown_classify(pip);

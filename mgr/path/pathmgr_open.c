@@ -569,7 +569,7 @@ int pathmgr_open(resmgr_context_t * ctp, io_open_t * msg, void *handle, void *ex
     case _FTYPE_SHMEM:{
             OBJECT *obp;
             int status;
-            PROCESS *prp;
+            tProcess *prp;
 
             prp = proc_lookup_pid(ctp->info.pid);
             if (MEMPART_INSTALLED()) {

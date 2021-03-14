@@ -264,7 +264,7 @@ int pretend_to_be_pidin()
             if (info.pid == SYSMGR_PID) {
                 strcpy(name.info.path, "procnto");
             } else {
-                if (!(info.flags & _NTO_PF_LOADING))    //Don't warn if process not fully loaded.
+                if (!(info.flags & QRV_FLG_PROC_LOADING))    //Don't warn if process not fully loaded.
                     fprintf(stderr, "Warning: no name info for %s: %s\n", aspath, strerror(errno));
                 close(fd);
                 continue;

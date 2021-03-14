@@ -67,14 +67,14 @@ int rdecl proc_rlock_adp(PROCESS * prp)
         adp->rwlock.lock |= _PENDING;
         r = pthread_cond_wait(&mm_cond, &mm_mux);
         CRASHCHECK(r != EOK);
-        CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+        CRASHCHECK((mm_mux.__owner & ~QRV_SYNC_WAITING) != __tls()->__owner);
     }
 
     adp->rwlock.lock++;
     if (adp->rwlock.lock & _WLOCK_BIT)
         crash();
 
-    CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+    CRASHCHECK((mm_mux.__owner & ~QRV_SYNC_WAITING) != __tls()->__owner);
     r = pthread_mutex_unlock(&mm_mux);
     CRASHCHECK(r != EOK);
     return 0;
@@ -95,11 +95,11 @@ int rdecl proc_wlock_adp(PROCESS * prp)
         adp->rwlock.lock |= _PENDING;
         r = pthread_cond_wait(&mm_cond, &mm_mux);
         CRASHCHECK(r != EOK);
-        CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+        CRASHCHECK((mm_mux.__owner & ~QRV_SYNC_WAITING) != __tls()->__owner);
     }
     adp->rwlock.lock = _WLOCK_BIT;
 
-    CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+    CRASHCHECK((mm_mux.__owner & ~QRV_SYNC_WAITING) != __tls()->__owner);
     r = pthread_mutex_unlock(&mm_mux);
     CRASHCHECK(r != EOK);
     return 0;
@@ -127,13 +127,13 @@ int rdecl proc_rlock_promote_adp(PROCESS * prp)
             adp->rwlock.lock |= _PENDING;
             r = pthread_cond_wait(&mm_cond, &mm_mux);
             CRASHCHECK(r != EOK);
-            CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+            CRASHCHECK((mm_mux.__owner & ~QRV_SYNC_WAITING) != __tls()->__owner);
         }
         adp->rwlock.lock = _WLOCK_BIT;
         ret = 0;
     }
 
-    CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+    CRASHCHECK((mm_mux.__owner & ~QRV_SYNC_WAITING) != __tls()->__owner);
     r = pthread_mutex_unlock(&mm_mux);
     CRASHCHECK(r != EOK);
     return ret;
@@ -167,7 +167,7 @@ int rdecl proc_unlock_adp(PROCESS * prp)
     }
     adp->rwlock.lock = locked;
 
-    CRASHCHECK((mm_mux.__owner & ~_NTO_SYNC_WAITING) != __tls()->__owner);
+    CRASHCHECK((mm_mux.__owner & ~QRV_SYNC_WAITING) != __tls()->__owner);
     pthread_mutex_unlock(&mm_mux);
     return 0;
 }

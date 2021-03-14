@@ -127,5 +127,3 @@ LIMITS *rdecl lookup_limits(uid_t uid)
 
     return (lip);
 }
-
-__SRCVERSION("nano_lookup.c $Rev: 153052 $");

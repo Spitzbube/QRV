@@ -188,19 +188,12 @@ void rdecl send_ipi(int cpu, int cmd);
 int rdecl get_cpunum(void);
 void rdecl smp_flush_tlb(void);
 
-void rdecl crash(const char *file, int line);
+void rdecl panic(const char *file, int line);
 struct asinfo_entry;
 int walk_asinfo(const char *name, int (*func)(struct asinfo_entry *, char *, void *), void *data);
 int (xfer_memprobe) (void *ptr);
 
-#define XSTR(x)	#x
-#define STRINGIZE(x) XSTR(x)
-
-#ifdef _lint
-#define		crash()	(exit(-1))
-#else
-#define		crash() (crash)(STRINGIZE(_BASE_FILE_), __LINE__)
-#endif
+#define crash() panic(__FILE__, __LINE__)
 
 /*
  * STRLCPY(dst, src, len)

@@ -78,5 +78,3 @@ int getopt(int argc, char *const argv[], const char *opts)
     }
     return optopt;
 }
-
-__SRCVERSION("kgetopt.c $Rev: 153052 $");

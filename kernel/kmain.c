@@ -16,7 +16,7 @@
  */
 
 #include "externs.h"
-#include "apm.h"
+#include <taskman/mempart_adv.h>
 #include <unistd.h>
 
 struct module_entry {

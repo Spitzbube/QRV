@@ -18,95 +18,95 @@
 #include "externs.h"
 
 #define MK_KERTABLE(pref)	\
-	pref##_nop,				\
-	pref##_trace_event,		\
-	pref##_ring0,			\
-	pref##_bad,				\
-	pref##_bad,				\
-	pref##_bad,				\
-	pref##_bad,				\
-							\
+	pref##_nop,		\
+	pref##_trace_event,	\
+	pref##_ring0,		\
+	pref##_bad,		\
+	pref##_bad,		\
+	pref##_bad,		\
+	pref##_bad,		\
+				\
 	pref##_sys_cpupage_get,	\
 	pref##_sys_cpupage_set,	\
-	pref##_bad,				\
-							\
-	pref##_msg_current,		\
-	pref##_msg_sendv,		\
-	pref##_msg_sendv,		\
-	pref##_msg_error,		\
+	pref##_bad,		\
+				\
+	pref##_msg_current,	\
+	pref##_msg_sendv,	\
+	pref##_msg_sendv,	\
+	pref##_msg_error,	\
 	pref##_msg_receivev,	\
-	pref##_msg_replyv,		\
-	pref##_msg_readv,		\
-	pref##_msg_writev,		\
+	pref##_msg_replyv,	\
+	pref##_msg_readv,	\
+	pref##_msg_writev,	\
 	pref##_msg_readwritev,	\
-	pref##_msg_info,		\
+	pref##_msg_info,	\
 	pref##_msg_sendpulse,	\
 	pref##_msg_deliver_event,\
-	pref##_msg_keydata,		\
-	pref##_msg_readiov,		\
+	pref##_msg_keydata,	\
+	pref##_msg_readiov,	\
 	pref##_msg_receivev,	\
 	pref##_msg_verify_event,\
-							\
-	pref##_signal_kill,		\
+				\
+	pref##_signal_kill,	\
 	pref##_signal_return,	\
 	pref##_signal_fault,	\
 	pref##_signal_action,	\
 	pref##_signal_procmask,	\
 	pref##_signal_suspend,	\
 	pref##_signal_waitinfo,	\
-	pref##_bad,				\
-	pref##_bad,				\
-							\
+	pref##_bad,		\
+	pref##_bad,		\
+				\
 	pref##_channel_create,	\
 	pref##_channel_destroy,	\
 	pref##_channel_connect_attrs,	\
-	pref##_bad,				\
-							\
+	pref##_bad,		\
+				\
 	pref##_connect_attach,	\
 	pref##_connect_detach,	\
 	pref##_connect_server_info,\
 	pref##_connect_client_info,\
 	pref##_connect_flags,	\
-	pref##_bad,				\
-	pref##_bad,				\
-							\
+	pref##_bad,		\
+	pref##_bad,		\
+				\
 	pref##_thread_create,	\
 	pref##_thread_destroy,	\
 	pref##_thread_destroyall,\
 	pref##_thread_detach,	\
-	pref##_thread_join,		\
+	pref##_thread_join,	\
 	pref##_thread_cancel,	\
-	pref##_thread_ctl,		\
-	pref##_bad,				\
-	pref##_bad,				\
-							\
+	pref##_thread_ctl,	\
+	pref##_bad,		\
+	pref##_bad,		\
+				\
 	pref##_interrupt_attach,\
 	pref##_interrupt_detach_func,\
 	pref##_interrupt_detach,\
 	pref##_interrupt_wait,	\
 	pref##_interrupt_mask,	\
 	pref##_interrupt_unmask,\
-	pref##_bad,				\
-	pref##_bad,				\
-	pref##_bad,				\
-	pref##_bad,				\
-							\
-	pref##_clock_time,		\
+	pref##_bad,		\
+	pref##_bad,		\
+	pref##_bad,		\
+	pref##_bad,		\
+				\
+	pref##_clock_time,	\
 	pref##_clock_adjust,	\
 	pref##_clock_period,	\
-	pref##_clock_id,		\
-	pref##_bad,				\
-							\
+	pref##_clock_id,	\
+	pref##_bad,		\
+				\
 	pref##_timer_create,	\
 	pref##_timer_destroy,	\
 	pref##_timer_settime,	\
-	pref##_timer_info,		\
-	pref##_timer_alarm,		\
+	pref##_timer_info,	\
+	pref##_timer_alarm,	\
 	pref##_timer_timeout,	\
-	pref##_bad,				\
-	pref##_bad,				\
-							\
-	pref##_sync_create,		\
+	pref##_bad,		\
+	pref##_bad,		\
+				\
+	pref##_sync_create,	\
 	pref##_sync_destroy,	\
 	pref##_sync_mutex_lock,	\
 	pref##_sync_mutex_unlock,\
@@ -114,24 +114,24 @@
 	pref##_sync_condvar_signal,\
 	pref##_sync_sem_post,	\
 	pref##_sync_sem_wait,	\
-	pref##_sync_ctl,		\
+	pref##_sync_ctl,	\
 	pref##_sync_mutex_revive,\
-							\
-	pref##_sched_get,		\
-	pref##_sched_set,		\
-	pref##_sched_yield,		\
-	pref##_sched_info,		\
+				\
+	pref##_sched_get,	\
+	pref##_sched_set,	\
+	pref##_sched_yield,	\
+	pref##_sched_info,	\
 	pref##_bad,		\
-							\
-	pref##_net_cred,		\
-	pref##_net_vtid,		\
-	pref##_net_unblock,		\
+				\
+	pref##_net_cred,	\
+	pref##_net_vtid,	\
+	pref##_net_unblock,	\
 	pref##_net_infoscoid,	\
 	pref##_net_signal_kill,	\
-							\
-	pref##_bad,				\
-	pref##_bad,             \
-                                                        \
+				\
+	pref##_bad,		\
+	pref##_bad,		\
+                                \
         pref##_mt_ctl         \
 
 int kdecl(*ker_call_table[]) () = {
@@ -164,11 +164,11 @@ int kdecl(*ker_call_table[]) () = {
 
 #define _TRACE_TESTARGRET(c)  ((((c)->syscall&(0x3<<12))==(0x3<<12)))   /* kercall returned ENOERROR, KSTATUS() should be valid */
 #define _TRACE_TESTARGSTAT(c) ((((c)->syscall&(0x3<<12))!=(0x1<<12)))   /* kercall returned ENOERROR or EOK */
-#define _TRACE_TESTARGERR(c)  (!((c)->flags&_NTO_TF_KERERR_SET)&&_TRACE_TESTARGSTAT(c)) /* kercall DIDN'T fail */
-#define _TRACE_GETRETVAL(c)   (((c)->flags&_NTO_TF_KERERR_SET)?(-1):(_TRACE_TESTARGRET(c)? \
+#define _TRACE_TESTARGERR(c)  (!((c)->flags&QRV_FLG_THR_KERERR_SET)&&_TRACE_TESTARGSTAT(c)) /* kercall DIDN'T fail */
+#define _TRACE_GETRETVAL(c)   (((c)->flags&QRV_FLG_THR_KERERR_SET)?(-1):(_TRACE_TESTARGRET(c)? \
                               (KSTATUS(c)):((c)->syscall&(0x3<<12)?(-1):(0))))
 #define _TRACE_SETRETSTAT(r,a) \
-	r = (*((int kdecl(*)(THREAD*, void*))ker_call_table[num]))(a, (void*) kap); \
+	r = (*((int kdecl(*)(tThread*, void*))ker_call_table[num]))(a, (void*) kap); \
 	if ((r)==ENOERROR) { \
 		(a)->syscall |= (0x3<<12); \
 	} else if (r) { \
@@ -181,15 +181,15 @@ int kdecl(*ker_call_table[]) () = {
 // Emitting macro definitions used/valid only within
 // intercepting ker-call macro-functions: F-fast, W-wide
 #define _TRACE_IN_F_0PTR(n,a,b) \
-	return (_trace_emit_in_f(act, kap, n, a, b))
+	return _trace_emit_in_f(act, kap, n, a, b)
 #define _TRACE_IN_W_0PTR(n,R,S) \
-	return (_trace_emit_in_w(act, kap, n, R, S))
+	return _trace_emit_in_w(act, kap, n, R, S)
 #define _TRACE_IN_F_1PTR(n,a,b,p) \
 	(void) _TRACE_VER_PTR(p); \
-	return (_trace_emit_in_f(act, kap, n, a, b))
+	return _trace_emit_in_f(act, kap, n, a, b)
 #define _TRACE_IN_W_1PTR(n,R,S,p) \
 	(void) _TRACE_VER_PTR(p); \
-	return (_trace_emit_in_w(act, kap, n, R, S))
+	return _trace_emit_in_w(act, kap, n, R, S)
 #define _TRACE_IN_F_2PTR(n,a,b,p,q) \
 	(void) _TRACE_VER_PTR(p); \
 	(void) _TRACE_VER_PTR(q); \
@@ -197,7 +197,7 @@ int kdecl(*ker_call_table[]) () = {
 #define _TRACE_IN_W_2PTR(n,R,S,p,q) \
 	(void) _TRACE_VER_PTR(p); \
 	(void) _TRACE_VER_PTR(q); \
-	return (_trace_emit_in_w(act, kap, n, R, S))
+	return _trace_emit_in_w(act, kap, n, R, S)
 #define _TRACE_OUT_W(n,R,S)  _trace_emit_out_w(act, n, R, S);
 #define _TRACE_OUT_F(n,r)    _trace_emit_out_f(act, n, _TRACE_TESTARGERR(act)?(r):(NULL))
 
@@ -213,7 +213,7 @@ int kdecl(*ker_call_table[]) () = {
 #define _TRACE_PARTS(n)           (((int32_t)(n)<0)?(1):(n))
 
 // Supporting function definitions and structures
-static void fill_12B_IOV(THREAD * thp, IOV * msg, int32_t parts, uint32_t * out_buff)
+static void fill_12B_IOV(tThread * thp, IOV * msg, int32_t parts, uint32_t * out_buff)
 {
     if (msg) {
         uint32_t len;
@@ -247,7 +247,7 @@ static void fill_12B_IOV(THREAD * thp, IOV * msg, int32_t parts, uint32_t * out_
     return;
 }
 
-static uint32_t read_4B_IOV(THREAD * thp, IOV * msg, int32_t parts)
+static uint32_t read_4B_IOV(tThread * thp, IOV * msg, int32_t parts)
 {
     if (msg) {
         uint32_t len;
@@ -279,7 +279,7 @@ static uint32_t read_4B_IOV(THREAD * thp, IOV * msg, int32_t parts)
     }
 }
 
-static void fill_52B_msg_info(THREAD * thp, struct _msg_info *info_p, uint32_t * out_buff)
+static void fill_52B_msg_info(tThread * thp, struct _msg_info *info_p, uint32_t * out_buff)
 {
     if (info_p && _TRACE_IN_BOUNDRY(thp, info_p, sizeof *info_p)) {
         (void) memcpy((void *) out_buff, (void *) info_p, offsetof(struct _msg_info, priority)
@@ -294,7 +294,7 @@ static void fill_52B_msg_info(THREAD * thp, struct _msg_info *info_p, uint32_t *
     return;
 }
 
-static void fill_16B_itimer(THREAD * thp, struct _itimer *it_p, uint32_t * out_buff)
+static void fill_16B_itimer(tThread * thp, struct _itimer *it_p, uint32_t * out_buff)
 {
     if (it_p && _TRACE_IN_BOUNDRY(thp, it_p, sizeof(*it_p))) {
         out_buff[0] = _TRACE_SEC(it_p->nsec);
@@ -308,7 +308,7 @@ static void fill_16B_itimer(THREAD * thp, struct _itimer *it_p, uint32_t * out_b
     return;
 }
 
-static void fill_8B_sync_t(THREAD * thp, sync_t * s_p, uint32_t * out_buff)
+static void fill_8B_sync_t(tThread * thp, sync_t * s_p, uint32_t * out_buff)
 {
     if (s_p && _TRACE_IN_BOUNDRY(thp, s_p, sizeof(*s_p))) {
         out_buff[0] = s_p->__count;
@@ -321,7 +321,7 @@ static void fill_8B_sync_t(THREAD * thp, sync_t * s_p, uint32_t * out_buff)
     return;
 }
 
-static void fill_mem(THREAD * thp, void *d, const void *s, size_t l)
+static void fill_mem(tThread * thp, void *d, const void *s, size_t l)
 {
     if (s && _TRACE_IN_BOUNDRY(thp, s, l)) {
         (void) memcpy(d, s, l);
@@ -332,7 +332,7 @@ static void fill_mem(THREAD * thp, void *d, const void *s, size_t l)
     return;
 }
 
-static int _trace_emit_in_f(THREAD * act, void *kap, uint32_t num, uint32_t arg_1, uint32_t arg_2)
+static int _trace_emit_in_f(tThread * act, void *kap, uint32_t num, uint32_t arg_1, uint32_t arg_2)
 {
     int h_r_v = 1;
 
@@ -366,7 +366,7 @@ static int _trace_emit_in_f(THREAD * act, void *kap, uint32_t num, uint32_t arg_
     return (h_r_v);
 }
 
-static void _trace_emit_out_f(THREAD * act, uint32_t num, uint32_t arg_2)
+static void _trace_emit_out_f(tThread * act, uint32_t num, uint32_t arg_2)
 {
     int h_r_v = 1;
     int arg_1 = _TRACE_GETRETVAL(act);
@@ -397,7 +397,7 @@ static void _trace_emit_out_f(THREAD * act, uint32_t num, uint32_t arg_2)
     return;
 }
 
-static int _trace_emit_in_w(THREAD * act, void *kap, uint32_t num, uint32_t * arg_arr, uint32_t len)
+static int _trace_emit_in_w(tThread * act, void *kap, uint32_t num, uint32_t * arg_arr, uint32_t len)
 {
     int h_r_v = 1;
 
@@ -433,7 +433,7 @@ static int _trace_emit_in_w(THREAD * act, void *kap, uint32_t num, uint32_t * ar
     return (h_r_v);
 }
 
-static void _trace_emit_out_w(THREAD * act, int num, uint32_t * arg_arr, uint32_t len)
+static void _trace_emit_out_w(tThread * act, int num, uint32_t * arg_arr, uint32_t len)
 {
     int h_r_v = 1;
     uint32_t header = _TRACE_MAKE_CODE(RUNCPU,
@@ -466,7 +466,7 @@ static void _trace_emit_out_w(THREAD * act, int num, uint32_t * arg_arr, uint32_
     return;
 }
 
-static void xfer_trace_fault_handler(THREAD * act, CPU_REGISTERS * regs, unsigned flags)
+static void xfer_trace_fault_handler(tThread * act, CPU_REGISTERS * regs, unsigned flags)
 {
     _TRACE_OUT_F(_TRACE_GETSYSCALL(act->syscall), NULL);
     _TRACE_EXITCALL(act->syscall);
@@ -484,14 +484,14 @@ const static struct fault_handlers xfer_trace_str_fault_handler = {
 //      ii) sizeof(unsigned) == sizeof(_uint32) == 4
 //
 
-int kdecl _trace_ker_empty(THREAD * act, struct kerargs_null *kap)
+int kdecl _trace_ker_empty(tThread * act, struct kerargs_null *kap)
 {
     int n = KTYPE(act);
 
     _TRACE_IN_F_0PTR(n, NULL, NULL);
 }
 
-int kdecl _trace_ker_trace_event(THREAD * act, struct kerargs_trace_event *kap)
+int kdecl _trace_ker_trace_event(tThread * act, struct kerargs_trace_event *kap)
 {
     uint32_t len;
 
@@ -537,7 +537,7 @@ int kdecl _trace_ker_trace_event(THREAD * act, struct kerargs_trace_event *kap)
     }
 }
 
-int kdecl _trace_ker_ring0(THREAD * act, struct kerargs_ring0 *kap)
+int kdecl _trace_ker_ring0(tThread * act, struct kerargs_ring0 *kap)
 {
 #ifdef VARIANT_ring0
     _TRACE_IN_F_0PTR(__KER_RING0, (uint32_t) kap->func, (uint32_t) kap->arg);
@@ -546,22 +546,22 @@ int kdecl _trace_ker_ring0(THREAD * act, struct kerargs_ring0 *kap)
 #endif
 }
 
-int kdecl _trace_ker_sys_cpupage_get(THREAD * act, struct kerargs_sys_cpupage_get *kap)
+int kdecl _trace_ker_sys_cpupage_get(tThread * act, struct kerargs_sys_cpupage_get *kap)
 {
     _TRACE_IN_F_0PTR(__KER_SYS_CPUPAGE_GET, kap->index, NULL);
 }
 
-int kdecl _trace_ker_sys_cpupage_set(THREAD * act, struct kerargs_sys_cpupage_set *kap)
+int kdecl _trace_ker_sys_cpupage_set(tThread * act, struct kerargs_sys_cpupage_set *kap)
 {
     _TRACE_IN_F_0PTR(__KER_SYS_CPUPAGE_SET, kap->index, kap->value);
 }
 
-int kdecl _trace_ker_msg_current(THREAD * act, struct kerargs_msg_current *kap)
+int kdecl _trace_ker_msg_current(tThread * act, struct kerargs_msg_current *kap)
 {
     _TRACE_IN_F_0PTR(__KER_MSG_CURRENT, kap->rcvid, NULL);
 }
 
-int kdecl _trace_ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
+int kdecl _trace_ker_msg_sendv(tThread * act, struct kerargs_msg_sendv *kap)
 {
     int n = KTYPE(act);
 
@@ -579,12 +579,12 @@ int kdecl _trace_ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
     }
 }
 
-int kdecl _trace_ker_msg_error(THREAD * act, struct kerargs_msg_error *kap)
+int kdecl _trace_ker_msg_error(tThread * act, struct kerargs_msg_error *kap)
 {
     _TRACE_IN_F_0PTR(__KER_MSG_ERROR, kap->rcvid, kap->err);
 }
 
-int kdecl _trace_ker_msg_receivev(THREAD * act, struct kerargs_msg_receivev *kap)
+int kdecl _trace_ker_msg_receivev(tThread * act, struct kerargs_msg_receivev *kap)
 {
     int n = KTYPE(act);
 
@@ -595,7 +595,7 @@ int kdecl _trace_ker_msg_receivev(THREAD * act, struct kerargs_msg_receivev *kap
     }
 }
 
-int kdecl _trace_ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
+int kdecl _trace_ker_msg_replyv(tThread * act, struct kerargs_msg_replyv *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_MSG_REPLYV]) {
         uint32_t arg_arr[6];
@@ -611,7 +611,7 @@ int kdecl _trace_ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
     }
 }
 
-int kdecl _trace_ker_msg_readv(THREAD * act, struct kerargs_msg_readv *kap)
+int kdecl _trace_ker_msg_readv(tThread * act, struct kerargs_msg_readv *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_MSG_READV]) {
         uint32_t arg_arr[4];
@@ -627,7 +627,7 @@ int kdecl _trace_ker_msg_readv(THREAD * act, struct kerargs_msg_readv *kap)
     }
 }
 
-int kdecl _trace_ker_msg_writev(THREAD * act, struct kerargs_msg_writev *kap)
+int kdecl _trace_ker_msg_writev(tThread * act, struct kerargs_msg_writev *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_MSG_WRITEV]) {
         uint32_t arg_arr[6];
@@ -643,17 +643,17 @@ int kdecl _trace_ker_msg_writev(THREAD * act, struct kerargs_msg_writev *kap)
     }
 }
 
-int kdecl _trace_ker_msg_readwritev(THREAD * act, struct kerargs_msg_readwritev *kap)
+int kdecl _trace_ker_msg_readwritev(tThread * act, struct kerargs_msg_readwritev *kap)
 {
     _TRACE_IN_F_0PTR(__KER_MSG_READWRITEV, kap->src_rcvid, kap->dst_rcvid);
 }
 
-int kdecl _trace_ker_msg_info(THREAD * act, struct kerargs_msg_info *kap)
+int kdecl _trace_ker_msg_info(tThread * act, struct kerargs_msg_info *kap)
 {
     _TRACE_IN_F_1PTR(__KER_MSG_INFO, kap->rcvid, (uint32_t) kap->info, kap->info);
 }
 
-int kdecl _trace_ker_msg_sendpulse(THREAD * act, struct kerargs_msg_sendpulse *kap)
+int kdecl _trace_ker_msg_sendpulse(tThread * act, struct kerargs_msg_sendpulse *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_MSG_SEND_PULSE]) {
         uint32_t arg_arr[4];
@@ -669,7 +669,7 @@ int kdecl _trace_ker_msg_sendpulse(THREAD * act, struct kerargs_msg_sendpulse *k
     }
 }
 
-int kdecl _trace_ker_msg_deliver_event(THREAD * act, struct kerargs_msg_deliver_event *kap)
+int kdecl _trace_ker_msg_deliver_event(tThread * act, struct kerargs_msg_deliver_event *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_MSG_DELIVER_EVENT]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct sigevent))];
@@ -685,12 +685,12 @@ int kdecl _trace_ker_msg_deliver_event(THREAD * act, struct kerargs_msg_deliver_
     }
 }
 
-int kdecl _trace_ker_msg_keydata(THREAD * act, struct kerargs_msg_keydata *kap)
+int kdecl _trace_ker_msg_keydata(tThread * act, struct kerargs_msg_keydata *kap)
 {
     _TRACE_IN_F_1PTR(__KER_MSG_KEYDATA, kap->rcvid, kap->op, kap->newkey);
 }
 
-int kdecl _trace_ker_msg_readiov(THREAD * act, struct kerargs_msg_readiov *kap)
+int kdecl _trace_ker_msg_readiov(tThread * act, struct kerargs_msg_readiov *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_MSG_READIOV]) {
         uint32_t arg_arr[4];
@@ -706,7 +706,7 @@ int kdecl _trace_ker_msg_readiov(THREAD * act, struct kerargs_msg_readiov *kap)
     }
 }
 
-int kdecl _trace_ker_msg_verify_event(THREAD * act, struct kerargs_msg_verify_event *kap)
+int kdecl _trace_ker_msg_verify_event(tThread * act, struct kerargs_msg_verify_event *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_MSG_VERIFY_EVENT]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct sigevent))];
@@ -722,7 +722,7 @@ int kdecl _trace_ker_msg_verify_event(THREAD * act, struct kerargs_msg_verify_ev
     }
 }
 
-int kdecl _trace_ker_signal_kill(THREAD * act, struct kerargs_signal_kill *kap)
+int kdecl _trace_ker_signal_kill(tThread * act, struct kerargs_signal_kill *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SIGNAL_KILL]) {
         uint32_t arg_arr[6];
@@ -740,17 +740,17 @@ int kdecl _trace_ker_signal_kill(THREAD * act, struct kerargs_signal_kill *kap)
     }
 }
 
-int kdecl _trace_ker_signal_return(THREAD * act, struct kerargs_signal_return *kap)
+int kdecl _trace_ker_signal_return(tThread * act, struct kerargs_signal_return *kap)
 {
     _TRACE_IN_F_0PTR(__KER_SIGNAL_RETURN, (uint32_t) kap->s, NULL);
 }
 
-int kdecl _trace_ker_signal_fault(THREAD * act, struct kerargs_signal_fault *kap)
+int kdecl _trace_ker_signal_fault(tThread * act, struct kerargs_signal_fault *kap)
 {
     _TRACE_IN_F_1PTR(__KER_SIGNAL_FAULT, kap->sigcode, kap->addr, (uint32_t *) kap->regs);
 }
 
-int kdecl _trace_ker_signal_action(THREAD * act, struct kerargs_signal_action *kap)
+int kdecl _trace_ker_signal_action(tThread * act, struct kerargs_signal_action *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SIGNAL_ACTION]) {
         uint32_t arg_arr[7];
@@ -768,7 +768,7 @@ int kdecl _trace_ker_signal_action(THREAD * act, struct kerargs_signal_action *k
     }
 }
 
-int kdecl _trace_ker_signal_procmask(THREAD * act, struct kerargs_signal_procmask *kap)
+int kdecl _trace_ker_signal_procmask(tThread * act, struct kerargs_signal_procmask *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SIGNAL_PROCMASK]) {
         uint32_t arg_arr[5];
@@ -784,7 +784,7 @@ int kdecl _trace_ker_signal_procmask(THREAD * act, struct kerargs_signal_procmas
     }
 }
 
-int kdecl _trace_ker_signal_suspend(THREAD * act, struct kerargs_signal_suspend *kap)
+int kdecl _trace_ker_signal_suspend(tThread * act, struct kerargs_signal_suspend *kap)
 {
     if (kap->sig_blocked) {
         _TRACE_IN_F_0PTR
@@ -795,7 +795,7 @@ int kdecl _trace_ker_signal_suspend(THREAD * act, struct kerargs_signal_suspend 
     }
 }
 
-int kdecl _trace_ker_signal_waitinfo(THREAD * act, struct kerargs_signal_wait *kap)
+int kdecl _trace_ker_signal_waitinfo(tThread * act, struct kerargs_signal_wait *kap)
 {
     if (kap->sig_wait) {
         _TRACE_IN_F_1PTR
@@ -807,17 +807,17 @@ int kdecl _trace_ker_signal_waitinfo(THREAD * act, struct kerargs_signal_wait *k
     }
 }
 
-int kdecl _trace_ker_channel_create(THREAD * act, struct kerargs_channel_create *kap)
+int kdecl _trace_ker_channel_create(tThread * act, struct kerargs_channel_create *kap)
 {
     _TRACE_IN_F_0PTR(__KER_CHANNEL_CREATE, kap->flags, NULL);
 }
 
-int kdecl _trace_ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
+int kdecl _trace_ker_channel_destroy(tThread * act, struct kerargs_channel_destroy *kap)
 {
     _TRACE_IN_F_0PTR(__KER_CHANNEL_DESTROY, kap->chid, NULL);
 }
 
-int kdecl _trace_ker_channel_connect_attrs(THREAD * act, struct kerargs_channel_connect_attr *kap)
+int kdecl _trace_ker_channel_connect_attrs(tThread * act, struct kerargs_channel_connect_attr *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CHANCON_ATTR]) {
         uint32_t arg_arr[2 + _TRACE_ROUND_UP(sizeof(union _channel_connect_attr))];
@@ -837,7 +837,7 @@ int kdecl _trace_ker_channel_connect_attrs(THREAD * act, struct kerargs_channel_
     }
 }
 
-int kdecl _trace_ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
+int kdecl _trace_ker_connect_attach(tThread * act, struct kerargs_connect_attach *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CONNECT_ATTACH]) {
         uint32_t arg_arr[5];
@@ -854,22 +854,22 @@ int kdecl _trace_ker_connect_attach(THREAD * act, struct kerargs_connect_attach 
     }
 }
 
-int kdecl _trace_ker_connect_detach(THREAD * act, struct kerargs_connect_detach *kap)
+int kdecl _trace_ker_connect_detach(tThread * act, struct kerargs_connect_detach *kap)
 {
     _TRACE_IN_F_0PTR(__KER_CONNECT_DETACH, kap->coid, NULL);
 }
 
-int kdecl _trace_ker_connect_server_info(THREAD * act, struct kerargs_connect_server_info *kap)
+int kdecl _trace_ker_connect_server_info(tThread * act, struct kerargs_connect_server_info *kap)
 {
     _TRACE_IN_F_1PTR(__KER_CONNECT_SERVER_INFO, kap->pid, kap->coid, kap->info);
 }
 
-int kdecl _trace_ker_connect_client_info(THREAD * act, struct kerargs_connect_client_info *kap)
+int kdecl _trace_ker_connect_client_info(tThread * act, struct kerargs_connect_client_info *kap)
 {
     _TRACE_IN_F_1PTR(__KER_CONNECT_CLIENT_INFO, kap->scoid, kap->ngroups, kap->info);
 }
 
-int kdecl _trace_ker_connect_flags(THREAD * act, struct kerargs_connect_flags *kap)
+int kdecl _trace_ker_connect_flags(tThread * act, struct kerargs_connect_flags *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CONNECT_FLAGS]) {
         uint32_t arg_arr[4];
@@ -885,7 +885,7 @@ int kdecl _trace_ker_connect_flags(THREAD * act, struct kerargs_connect_flags *k
     }
 }
 
-int kdecl _trace_ker_thread_create(THREAD * act, struct kerargs_thread_create *kap)
+int kdecl _trace_ker_thread_create(tThread * act, struct kerargs_thread_create *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_THREAD_CREATE]) {
         uint32_t arg_arr[3 + _TRACE_ROUND_UP(sizeof(struct _thread_attr))];
@@ -901,7 +901,7 @@ int kdecl _trace_ker_thread_create(THREAD * act, struct kerargs_thread_create *k
     }
 }
 
-int kdecl _trace_ker_thread_destroy(THREAD * act, struct kerargs_thread_destroy *kap)
+int kdecl _trace_ker_thread_destroy(tThread * act, struct kerargs_thread_destroy *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_THREAD_DESTROY]) {
         uint32_t arg_arr[3];
@@ -916,32 +916,32 @@ int kdecl _trace_ker_thread_destroy(THREAD * act, struct kerargs_thread_destroy 
     }
 }
 
-int kdecl _trace_ker_thread_destroyall(THREAD * act, struct kerargs_null *kap)
+int kdecl _trace_ker_thread_destroyall(tThread * act, struct kerargs_null *kap)
 {
     _TRACE_IN_F_0PTR(__KER_THREAD_DESTROYALL, NULL, NULL);
 }
 
-int kdecl _trace_ker_thread_detach(THREAD * act, struct kerargs_thread_detach *kap)
+int kdecl _trace_ker_thread_detach(tThread * act, struct kerargs_thread_detach *kap)
 {
     _TRACE_IN_F_0PTR(__KER_THREAD_DETACH, kap->tid, NULL);
 }
 
-int kdecl _trace_ker_thread_join(THREAD * act, struct kerargs_thread_join *kap)
+int kdecl _trace_ker_thread_join(tThread * act, struct kerargs_thread_join *kap)
 {
     _TRACE_IN_F_1PTR(__KER_THREAD_JOIN, kap->tid, (uint32_t) kap->status, kap->status);
 }
 
-int kdecl _trace_ker_thread_cancel(THREAD * act, struct kerargs_thread_cancel *kap)
+int kdecl _trace_ker_thread_cancel(tThread * act, struct kerargs_thread_cancel *kap)
 {
     _TRACE_IN_F_0PTR(__KER_THREAD_CANCEL, kap->tid, (uint32_t) kap->canstub);
 }
 
-int kdecl _trace_ker_thread_ctl(THREAD * act, struct kerargs_thread_ctl *kap)
+int kdecl _trace_ker_thread_ctl(tThread * act, struct kerargs_thread_ctl *kap)
 {
     _TRACE_IN_F_0PTR(__KER_THREAD_CTL, kap->cmd, (uint32_t) kap->data);
 }
 
-int kdecl _trace_ker_interrupt_attach(THREAD * act, struct kerargs_interrupt_attach *kap)
+int kdecl _trace_ker_interrupt_attach(tThread * act, struct kerargs_interrupt_attach *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_INTERRUPT_ATTACH]) {
         uint32_t arg_arr[5];
@@ -956,17 +956,17 @@ int kdecl _trace_ker_interrupt_attach(THREAD * act, struct kerargs_interrupt_att
     }
 }
 
-int kdecl _trace_ker_interrupt_detach_func(THREAD * act, struct kerargs_interrupt_detach_func *kap)
+int kdecl _trace_ker_interrupt_detach_func(tThread * act, struct kerargs_interrupt_detach_func *kap)
 {
     _TRACE_IN_F_0PTR(__KER_INTERRUPT_DETACH_FUNC, kap->intr, (uint32_t) kap->handler);
 }
 
-int kdecl _trace_ker_interrupt_detach(THREAD * act, struct kerargs_interrupt_detach *kap)
+int kdecl _trace_ker_interrupt_detach(tThread * act, struct kerargs_interrupt_detach *kap)
 {
     _TRACE_IN_F_0PTR(__KER_INTERRUPT_DETACH, kap->id, NULL);
 }
 
-int kdecl _trace_ker_interrupt_wait(THREAD * act, struct kerargs_interrupt_wait *kap)
+int kdecl _trace_ker_interrupt_wait(tThread * act, struct kerargs_interrupt_wait *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_INTERRUPT_WAIT]) {
         uint32_t arg_arr[3];
@@ -986,17 +986,17 @@ int kdecl _trace_ker_interrupt_wait(THREAD * act, struct kerargs_interrupt_wait 
     }
 }
 
-int kdecl _trace_ker_interrupt_mask(THREAD * act, struct kerargs_interrupt_mask *kap)
+int kdecl _trace_ker_interrupt_mask(tThread * act, struct kerargs_interrupt_mask *kap)
 {
     _TRACE_IN_F_0PTR(__KER_INTERRUPT_MASK, kap->intr, kap->id);
 }
 
-int kdecl _trace_ker_interrupt_unmask(THREAD * act, struct kerargs_interrupt_unmask *kap)
+int kdecl _trace_ker_interrupt_unmask(tThread * act, struct kerargs_interrupt_unmask *kap)
 {
     _TRACE_IN_F_0PTR(__KER_INTERRUPT_UNMASK, kap->intr, kap->id);
 }
 
-int kdecl _trace_ker_clock_time(THREAD * act, struct kerargs_clock_time *kap)
+int kdecl _trace_ker_clock_time(tThread * act, struct kerargs_clock_time *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CLOCK_TIME]) {
         uint32_t arg_arr[3];
@@ -1016,7 +1016,7 @@ int kdecl _trace_ker_clock_time(THREAD * act, struct kerargs_clock_time *kap)
     }
 }
 
-int kdecl _trace_ker_clock_adjust(THREAD * act, struct kerargs_clock_adjust *kap)
+int kdecl _trace_ker_clock_adjust(tThread * act, struct kerargs_clock_adjust *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CLOCK_ADJUST]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct _clockadjust))];
@@ -1030,7 +1030,7 @@ int kdecl _trace_ker_clock_adjust(THREAD * act, struct kerargs_clock_adjust *kap
     }
 }
 
-int kdecl _trace_ker_clock_period(THREAD * act, struct kerargs_clock_period *kap)
+int kdecl _trace_ker_clock_period(tThread * act, struct kerargs_clock_period *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CLOCK_PERIOD]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct _clockperiod))];
@@ -1043,12 +1043,12 @@ int kdecl _trace_ker_clock_period(THREAD * act, struct kerargs_clock_period *kap
     }
 }
 
-int kdecl _trace_ker_clock_id(THREAD * act, struct kerargs_clock_id *kap)
+int kdecl _trace_ker_clock_id(tThread * act, struct kerargs_clock_id *kap)
 {
     _TRACE_IN_F_0PTR(__KER_CLOCK_ID, kap->pid, kap->tid);
 }
 
-int kdecl _trace_ker_timer_create(THREAD * act, struct kerargs_timer_create *kap)
+int kdecl _trace_ker_timer_create(tThread * act, struct kerargs_timer_create *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_TIMER_CREATE]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct sigevent))];
@@ -1064,12 +1064,12 @@ int kdecl _trace_ker_timer_create(THREAD * act, struct kerargs_timer_create *kap
     }
 }
 
-int kdecl _trace_ker_timer_destroy(THREAD * act, struct kerargs_timer_destroy *kap)
+int kdecl _trace_ker_timer_destroy(tThread * act, struct kerargs_timer_destroy *kap)
 {
     _TRACE_IN_F_0PTR(__KER_TIMER_DESTROY, kap->id, NULL);
 }
 
-int kdecl _trace_ker_timer_settime(THREAD * act, struct kerargs_timer_settime *kap)
+int kdecl _trace_ker_timer_settime(tThread * act, struct kerargs_timer_settime *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_TIMER_SETTIME]) {
         uint32_t arg_arr[6];
@@ -1085,7 +1085,7 @@ int kdecl _trace_ker_timer_settime(THREAD * act, struct kerargs_timer_settime *k
     }
 }
 
-int kdecl _trace_ker_timer_info(THREAD * act, struct kerargs_timer_info *kap)
+int kdecl _trace_ker_timer_info(tThread * act, struct kerargs_timer_info *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_TIMER_INFO]) {
         uint32_t arg_arr[4];
@@ -1101,7 +1101,7 @@ int kdecl _trace_ker_timer_info(THREAD * act, struct kerargs_timer_info *kap)
     }
 }
 
-int kdecl _trace_ker_timer_alarm(THREAD * act, struct kerargs_timer_alarm *kap)
+int kdecl _trace_ker_timer_alarm(tThread * act, struct kerargs_timer_alarm *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_TIMER_ALARM]) {
         uint32_t arg_arr[5];
@@ -1116,7 +1116,7 @@ int kdecl _trace_ker_timer_alarm(THREAD * act, struct kerargs_timer_alarm *kap)
     }
 }
 
-int kdecl _trace_ker_timer_timeout(THREAD * act, struct kerargs_timer_timeout *kap)
+int kdecl _trace_ker_timer_timeout(tThread * act, struct kerargs_timer_timeout *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_TIMER_TIMEOUT]) {
         uint32_t arg_arr[4 + _TRACE_ROUND_UP(sizeof(struct sigevent))];
@@ -1139,7 +1139,7 @@ int kdecl _trace_ker_timer_timeout(THREAD * act, struct kerargs_timer_timeout *k
     }
 }
 
-int kdecl _trace_ker_sync_create(THREAD * act, struct kerargs_sync_create *kap)
+int kdecl _trace_ker_sync_create(tThread * act, struct kerargs_sync_create *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SYNC_CREATE]) {
         uint32_t arg_arr[8];
@@ -1154,7 +1154,7 @@ int kdecl _trace_ker_sync_create(THREAD * act, struct kerargs_sync_create *kap)
     }
 }
 
-int kdecl _trace_ker_sync_destroy(THREAD * act, struct kerargs_sync_destroy *kap)
+int kdecl _trace_ker_sync_destroy(tThread * act, struct kerargs_sync_destroy *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SYNC_DESTROY]) {
         uint32_t arg_arr[3];
@@ -1169,7 +1169,7 @@ int kdecl _trace_ker_sync_destroy(THREAD * act, struct kerargs_sync_destroy *kap
     }
 }
 
-int kdecl _trace_ker_sync_mutex_lock(THREAD * act, struct kerargs_sync_mutex_lock *kap)
+int kdecl _trace_ker_sync_mutex_lock(tThread * act, struct kerargs_sync_mutex_lock *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SYNC_MUTEX_LOCK]) {
         uint32_t arg_arr[3];
@@ -1184,7 +1184,7 @@ int kdecl _trace_ker_sync_mutex_lock(THREAD * act, struct kerargs_sync_mutex_loc
     }
 }
 
-int kdecl _trace_ker_sync_mutex_unlock(THREAD * act, struct kerargs_sync_mutex_unlock *kap)
+int kdecl _trace_ker_sync_mutex_unlock(tThread * act, struct kerargs_sync_mutex_unlock *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SYNC_MUTEX_UNLOCK]) {
         uint32_t arg_arr[3];
@@ -1199,7 +1199,7 @@ int kdecl _trace_ker_sync_mutex_unlock(THREAD * act, struct kerargs_sync_mutex_u
     }
 }
 
-int kdecl _trace_ker_sync_condvar_wait(THREAD * act, struct kerargs_sync_condvar_wait *kap)
+int kdecl _trace_ker_sync_condvar_wait(tThread * act, struct kerargs_sync_condvar_wait *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SYNC_CONDVAR_WAIT]) {
         uint32_t arg_arr[6];
@@ -1214,7 +1214,7 @@ int kdecl _trace_ker_sync_condvar_wait(THREAD * act, struct kerargs_sync_condvar
     }
 }
 
-int kdecl _trace_ker_sync_condvar_signal(THREAD * act, struct kerargs_sync_condvar_signal *kap)
+int kdecl _trace_ker_sync_condvar_signal(tThread * act, struct kerargs_sync_condvar_signal *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SYNC_CONDVAR_SIGNAL]) {
         uint32_t arg_arr[4];
@@ -1228,7 +1228,7 @@ int kdecl _trace_ker_sync_condvar_signal(THREAD * act, struct kerargs_sync_condv
     }
 }
 
-int kdecl _trace_ker_sync_sem_post(THREAD * act, struct kerargs_sync_sem_post *kap)
+int kdecl _trace_ker_sync_sem_post(tThread * act, struct kerargs_sync_sem_post *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SYNC_SEM_POST]) {
         uint32_t arg_arr[3];
@@ -1243,7 +1243,7 @@ int kdecl _trace_ker_sync_sem_post(THREAD * act, struct kerargs_sync_sem_post *k
     }
 }
 
-int kdecl _trace_ker_sync_sem_wait(THREAD * act, struct kerargs_sync_sem_wait *kap)
+int kdecl _trace_ker_sync_sem_wait(tThread * act, struct kerargs_sync_sem_wait *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SYNC_SEM_WAIT]) {
         uint32_t arg_arr[4];
@@ -1259,7 +1259,7 @@ int kdecl _trace_ker_sync_sem_wait(THREAD * act, struct kerargs_sync_sem_wait *k
     }
 }
 
-int kdecl _trace_ker_sync_ctl(THREAD * act, struct kerargs_sync_ctl *kap)
+int kdecl _trace_ker_sync_ctl(tThread * act, struct kerargs_sync_ctl *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SYNC_CTL]) {
         uint32_t arg_arr[5];
@@ -1274,7 +1274,7 @@ int kdecl _trace_ker_sync_ctl(THREAD * act, struct kerargs_sync_ctl *kap)
     }
 }
 
-int kdecl _trace_ker_sync_mutex_revive(THREAD * act, struct kerargs_sync_mutex_revive *kap)
+int kdecl _trace_ker_sync_mutex_revive(tThread * act, struct kerargs_sync_mutex_revive *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SYNC_MUTEX_REVIVE]) {
         uint32_t arg_arr[3];
@@ -1289,12 +1289,12 @@ int kdecl _trace_ker_sync_mutex_revive(THREAD * act, struct kerargs_sync_mutex_r
     }
 }
 
-int kdecl _trace_ker_sched_get(THREAD * act, struct kerargs_sched_get *kap)
+int kdecl _trace_ker_sched_get(tThread * act, struct kerargs_sched_get *kap)
 {
     _TRACE_IN_F_1PTR(__KER_SCHED_GET, kap->pid, kap->tid, kap->param);
 }
 
-int kdecl _trace_ker_sched_set(THREAD * act, struct kerargs_sched_set *kap)
+int kdecl _trace_ker_sched_set(tThread * act, struct kerargs_sched_set *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SCHED_SET]) {
         uint32_t arg_arr[3 + _TRACE_ROUND_UP(sizeof(struct sched_param))];
@@ -1311,12 +1311,12 @@ int kdecl _trace_ker_sched_set(THREAD * act, struct kerargs_sched_set *kap)
     }
 }
 
-int kdecl _trace_ker_sched_yield(THREAD * act, struct kerargs_null *kap)
+int kdecl _trace_ker_sched_yield(tThread * act, struct kerargs_null *kap)
 {
     _TRACE_IN_F_0PTR(__KER_SCHED_YIELD, NULL, NULL);
 }
 
-int kdecl _trace_ker_sched_info(THREAD * act, struct kerargs_sched_info *kap)
+int kdecl _trace_ker_sched_info(tThread * act, struct kerargs_sched_info *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SCHED_INFO]) {
         _TRACE_IN_F_1PTR(__KER_SCHED_INFO, kap->pid, kap->policy, kap->info);
@@ -1325,12 +1325,12 @@ int kdecl _trace_ker_sched_info(THREAD * act, struct kerargs_sched_info *kap)
     }
 }
 
-int kdecl _trace_ker_net_cred(THREAD * act, struct kerargs_net_cred *kap)
+int kdecl _trace_ker_net_cred(tThread * act, struct kerargs_net_cred *kap)
 {
     _TRACE_IN_F_1PTR(__KER_NET_CRED, kap->coid, (uint32_t) kap->info, kap->info);
 }
 
-int kdecl _trace_ker_net_vtid(THREAD * act, struct kerargs_net_vtid *kap)
+int kdecl _trace_ker_net_vtid(tThread * act, struct kerargs_net_vtid *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_NET_VTID]) {
         uint32_t arg_arr[2 + _TRACE_ROUND_UP(sizeof(struct _vtid_info))];
@@ -1344,17 +1344,17 @@ int kdecl _trace_ker_net_vtid(THREAD * act, struct kerargs_net_vtid *kap)
     }
 }
 
-int kdecl _trace_ker_net_unblock(THREAD * act, struct kerargs_net_unblock *kap)
+int kdecl _trace_ker_net_unblock(tThread * act, struct kerargs_net_unblock *kap)
 {
     _TRACE_IN_F_0PTR(__KER_NET_UNBLOCK, kap->vtid, NULL);
 }
 
-int kdecl _trace_ker_net_infoscoid(THREAD * act, struct kerargs_net_infoscoid *kap)
+int kdecl _trace_ker_net_infoscoid(tThread * act, struct kerargs_net_infoscoid *kap)
 {
     _TRACE_IN_F_0PTR(__KER_NET_INFOSCOID, kap->scoid, kap->infoscoid);
 }
 
-int kdecl _trace_ker_net_signal_kill(THREAD * act, struct kerargs_net_signal_kill *kap)
+int kdecl _trace_ker_net_signal_kill(tThread * act, struct kerargs_net_signal_kill *kap)
 {
     struct signal_info {
         unsigned nd;
@@ -1388,42 +1388,42 @@ int kdecl _trace_ker_net_signal_kill(THREAD * act, struct kerargs_net_signal_kil
     }
 }
 
-int kdecl _trace_ker_mt_ctl(THREAD * act, struct kerargs_mt_ctl *kap)
+int kdecl _trace_ker_mt_ctl(tThread * act, struct kerargs_mt_ctl *kap)
 {
 }
 
 // Intercepting return values/"input arguments"
-static void _trace_ex_ker_empty(THREAD * act, struct kerargs_null *kap)
+static void _trace_ex_ker_empty(tThread * act, struct kerargs_null *kap)
 {
     _TRACE_OUT_F(_TRACE_GETSYSCALL(act->syscall), NULL);
 }
 
-static void _trace_ex_ker_trace_event(THREAD * act, struct kerargs_trace_event *kap)
+static void _trace_ex_ker_trace_event(tThread * act, struct kerargs_trace_event *kap)
 {
     _TRACE_OUT_F(__KER_TRACE_EVENT, NULL);
 }
 
-static void _trace_ex_ker_ring0(THREAD * act, struct kerargs_ring0 *kap)
+static void _trace_ex_ker_ring0(tThread * act, struct kerargs_ring0 *kap)
 {
     _TRACE_OUT_F(__KER_RING0, NULL);
 }
 
-static void _trace_ex_ker_sys_cpupage_get(THREAD * act, struct kerargs_sys_cpupage_get *kap)
+static void _trace_ex_ker_sys_cpupage_get(tThread * act, struct kerargs_sys_cpupage_get *kap)
 {
     _TRACE_OUT_F(__KER_SYS_CPUPAGE_GET, NULL);
 }
 
-static void _trace_ex_ker_sys_cpupage_set(THREAD * act, struct kerargs_sys_cpupage_set *kap)
+static void _trace_ex_ker_sys_cpupage_set(tThread * act, struct kerargs_sys_cpupage_set *kap)
 {
     _TRACE_OUT_F(__KER_SYS_CPUPAGE_SET, NULL);
 }
 
-static void _trace_ex_ker_msg_current(THREAD * act, struct kerargs_msg_current *kap)
+static void _trace_ex_ker_msg_current(tThread * act, struct kerargs_msg_current *kap)
 {
     _TRACE_OUT_F(__KER_MSG_CURRENT, NULL);
 }
 
-static void _trace_ex_ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
+static void _trace_ex_ker_msg_sendv(tThread * act, struct kerargs_msg_sendv *kap)
 {
     int n = _TRACE_GETSYSCALL(act->syscall);
 
@@ -1447,12 +1447,12 @@ static void _trace_ex_ker_msg_sendv(THREAD * act, struct kerargs_msg_sendv *kap)
     }
 }
 
-static void _trace_ex_ker_msg_error(THREAD * act, struct kerargs_msg_error *kap)
+static void _trace_ex_ker_msg_error(tThread * act, struct kerargs_msg_error *kap)
 {
     _TRACE_OUT_F(__KER_MSG_ERROR, NULL);
 }
 
-static void _trace_ex_ker_msg_receivev(THREAD * act, struct kerargs_msg_receivev *kap)
+static void _trace_ex_ker_msg_receivev(tThread * act, struct kerargs_msg_receivev *kap)
 {
     int n = _TRACE_GETSYSCALL(act->syscall);
 
@@ -1477,12 +1477,12 @@ static void _trace_ex_ker_msg_receivev(THREAD * act, struct kerargs_msg_receivev
     SET_XFER_HANDLER(NULL);
 }
 
-static void _trace_ex_ker_msg_replyv(THREAD * act, struct kerargs_msg_replyv *kap)
+static void _trace_ex_ker_msg_replyv(tThread * act, struct kerargs_msg_replyv *kap)
 {
     _TRACE_OUT_F(__KER_MSG_REPLYV, NULL);
 }
 
-static void _trace_ex_ker_msg_readv(THREAD * act, struct kerargs_msg_readv *kap)
+static void _trace_ex_ker_msg_readv(tThread * act, struct kerargs_msg_readv *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_MSG_READV]) {
         uint32_t arg_arr[4];
@@ -1496,17 +1496,17 @@ static void _trace_ex_ker_msg_readv(THREAD * act, struct kerargs_msg_readv *kap)
     }
 }
 
-static void _trace_ex_ker_msg_writev(THREAD * act, struct kerargs_msg_writev *kap)
+static void _trace_ex_ker_msg_writev(tThread * act, struct kerargs_msg_writev *kap)
 {
     _TRACE_OUT_F(__KER_MSG_WRITEV, NULL);
 }
 
-static void _trace_ex_ker_msg_readwritev(THREAD * act, struct kerargs_msg_readwritev *kap)
+static void _trace_ex_ker_msg_readwritev(tThread * act, struct kerargs_msg_readwritev *kap)
 {
     _TRACE_OUT_F(__KER_MSG_READWRITEV, NULL);
 }
 
-static void _trace_ex_ker_msg_info(THREAD * act, struct kerargs_msg_info *kap)
+static void _trace_ex_ker_msg_info(tThread * act, struct kerargs_msg_info *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_MSG_INFO]) {
         uint32_t arg_arr[14];
@@ -1520,22 +1520,22 @@ static void _trace_ex_ker_msg_info(THREAD * act, struct kerargs_msg_info *kap)
     }
 }
 
-static void _trace_ex_ker_msg_sendpulse(THREAD * act, struct kerargs_msg_sendpulse *kap)
+static void _trace_ex_ker_msg_sendpulse(tThread * act, struct kerargs_msg_sendpulse *kap)
 {
     _TRACE_OUT_F(__KER_MSG_SEND_PULSE, NULL);
 }
 
-static void _trace_ex_ker_msg_deliver_event(THREAD * act, struct kerargs_msg_deliver_event *kap)
+static void _trace_ex_ker_msg_deliver_event(tThread * act, struct kerargs_msg_deliver_event *kap)
 {
     _TRACE_OUT_F(__KER_MSG_DELIVER_EVENT, (uint32_t) kap->event);
 }
 
-static void _trace_ex_ker_msg_keydata(THREAD * act, struct kerargs_msg_keydata *kap)
+static void _trace_ex_ker_msg_keydata(tThread * act, struct kerargs_msg_keydata *kap)
 {
     _TRACE_OUT_F(__KER_MSG_KEYDATA, kap->newkey ? *kap->newkey : NULL);
 }
 
-static void _trace_ex_ker_msg_readiov(THREAD * act, struct kerargs_msg_readiov *kap)
+static void _trace_ex_ker_msg_readiov(tThread * act, struct kerargs_msg_readiov *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_MSG_READIOV]) {
         uint32_t arg_arr[4];
@@ -1549,22 +1549,22 @@ static void _trace_ex_ker_msg_readiov(THREAD * act, struct kerargs_msg_readiov *
     }
 }
 
-static void _trace_ex_ker_msg_verify_event(THREAD * act, struct kerargs_msg_verify_event *kap)
+static void _trace_ex_ker_msg_verify_event(tThread * act, struct kerargs_msg_verify_event *kap)
 {
     _TRACE_OUT_F(__KER_MSG_VERIFY_EVENT, NULL);
 }
 
-static void _trace_ex_ker_signal_kill(THREAD * act, struct kerargs_signal_kill *kap)
+static void _trace_ex_ker_signal_kill(tThread * act, struct kerargs_signal_kill *kap)
 {
     _TRACE_OUT_F(__KER_SIGNAL_KILL, NULL);
 }
 
-static void _trace_ex_ker_signal_return(THREAD * act, struct kerargs_signal_return *kap)
+static void _trace_ex_ker_signal_return(tThread * act, struct kerargs_signal_return *kap)
 {
     _TRACE_OUT_F(__KER_SIGNAL_RETURN, NULL);
 }
 
-static void _trace_ex_ker_signal_fault(THREAD * act, struct kerargs_signal_fault *kap)
+static void _trace_ex_ker_signal_fault(tThread * act, struct kerargs_signal_fault *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SIGNAL_KILL]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(CPU_REGISTERS))];
@@ -1578,7 +1578,7 @@ static void _trace_ex_ker_signal_fault(THREAD * act, struct kerargs_signal_fault
     }
 }
 
-static void _trace_ex_ker_signal_action(THREAD * act, struct kerargs_signal_action *kap)
+static void _trace_ex_ker_signal_action(tThread * act, struct kerargs_signal_action *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SIGNAL_ACTION]) {
         uint32_t arg_arr[5];
@@ -1592,7 +1592,7 @@ static void _trace_ex_ker_signal_action(THREAD * act, struct kerargs_signal_acti
     }
 }
 
-static void _trace_ex_ker_signal_procmask(THREAD * act, struct kerargs_signal_procmask *kap)
+static void _trace_ex_ker_signal_procmask(tThread * act, struct kerargs_signal_procmask *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SIGNAL_PROCMASK]) {
         uint32_t arg_arr[3];
@@ -1606,12 +1606,12 @@ static void _trace_ex_ker_signal_procmask(THREAD * act, struct kerargs_signal_pr
     }
 }
 
-static void _trace_ex_ker_signal_suspend(THREAD * act, struct kerargs_signal_suspend *kap)
+static void _trace_ex_ker_signal_suspend(tThread * act, struct kerargs_signal_suspend *kap)
 {
     _TRACE_OUT_F(__KER_SIGNAL_SUSPEND, (uint32_t) kap->sig_blocked);
 }
 
-static void _trace_ex_ker_signal_waitinfo(THREAD * act, struct kerargs_signal_wait *kap)
+static void _trace_ex_ker_signal_waitinfo(tThread * act, struct kerargs_signal_wait *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SIGNAL_WAITINFO]) {
         uint32_t arg_arr[11];
@@ -1633,17 +1633,17 @@ static void _trace_ex_ker_signal_waitinfo(THREAD * act, struct kerargs_signal_wa
     }
 }
 
-static void _trace_ex_ker_channel_create(THREAD * act, struct kerargs_channel_create *kap)
+static void _trace_ex_ker_channel_create(tThread * act, struct kerargs_channel_create *kap)
 {
     _TRACE_OUT_F(__KER_CHANNEL_CREATE, NULL);
 }
 
-static void _trace_ex_ker_channel_destroy(THREAD * act, struct kerargs_channel_destroy *kap)
+static void _trace_ex_ker_channel_destroy(tThread * act, struct kerargs_channel_destroy *kap)
 {
     _TRACE_OUT_F(__KER_CHANNEL_DESTROY, NULL);
 }
 
-static void _trace_ex_ker_channel_connect_attrs(THREAD * act,
+static void _trace_ex_ker_channel_connect_attrs(tThread * act,
                                                 struct kerargs_channel_connect_attr *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CHANCON_ATTR]) {
@@ -1664,17 +1664,17 @@ static void _trace_ex_ker_channel_connect_attrs(THREAD * act,
     }
 }
 
-static void _trace_ex_ker_connect_attach(THREAD * act, struct kerargs_connect_attach *kap)
+static void _trace_ex_ker_connect_attach(tThread * act, struct kerargs_connect_attach *kap)
 {
     _TRACE_OUT_F(__KER_CONNECT_ATTACH, NULL);
 }
 
-static void _trace_ex_ker_connect_detach(THREAD * act, struct kerargs_connect_detach *kap)
+static void _trace_ex_ker_connect_detach(tThread * act, struct kerargs_connect_detach *kap)
 {
     _TRACE_OUT_F(__KER_CONNECT_DETACH, NULL);
 }
 
-static void _trace_ex_ker_connect_server_info(THREAD * act, struct kerargs_connect_server_info *kap)
+static void _trace_ex_ker_connect_server_info(tThread * act, struct kerargs_connect_server_info *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CONNECT_SERVER_INFO]) {
         uint32_t arg_arr[14];
@@ -1688,7 +1688,7 @@ static void _trace_ex_ker_connect_server_info(THREAD * act, struct kerargs_conne
     }
 }
 
-static void _trace_ex_ker_connect_client_info(THREAD * act, struct kerargs_connect_client_info *kap)
+static void _trace_ex_ker_connect_client_info(tThread * act, struct kerargs_connect_client_info *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CONNECT_CLIENT_INFO]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct _client_info))];
@@ -1702,78 +1702,78 @@ static void _trace_ex_ker_connect_client_info(THREAD * act, struct kerargs_conne
     }
 }
 
-static void _trace_ex_ker_connect_flags(THREAD * act, struct kerargs_connect_flags *kap)
+static void _trace_ex_ker_connect_flags(tThread * act, struct kerargs_connect_flags *kap)
 {
     _TRACE_OUT_F(__KER_CONNECT_FLAGS, NULL);
 }
 
-static void _trace_ex_ker_thread_create(THREAD * act, struct kerargs_thread_create *kap)
+static void _trace_ex_ker_thread_create(tThread * act, struct kerargs_thread_create *kap)
 {
     _TRACE_OUT_F(__KER_THREAD_CREATE, SYNC_OWNER(act));
 }
 
-static void _trace_ex_ker_thread_destroy(THREAD * act, struct kerargs_thread_destroy *kap)
+static void _trace_ex_ker_thread_destroy(tThread * act, struct kerargs_thread_destroy *kap)
 {
     _TRACE_OUT_F(__KER_THREAD_DESTROY, NULL);
 }
 
-static void _trace_ex_ker_thread_destroyall(THREAD * act, struct kerargs_null *kap)
+static void _trace_ex_ker_thread_destroyall(tThread * act, struct kerargs_null *kap)
 {
     _TRACE_OUT_F(__KER_THREAD_DESTROYALL, NULL);
 }
 
-static void _trace_ex_ker_thread_detach(THREAD * act, struct kerargs_thread_detach *kap)
+static void _trace_ex_ker_thread_detach(tThread * act, struct kerargs_thread_detach *kap)
 {
     _TRACE_OUT_F(__KER_THREAD_DETACH, NULL);
 }
 
-static void _trace_ex_ker_thread_join(THREAD * act, struct kerargs_thread_join *kap)
+static void _trace_ex_ker_thread_join(tThread * act, struct kerargs_thread_join *kap)
 {
     _TRACE_OUT_F(__KER_THREAD_JOIN, kap->status ? *(uint32_t *) kap->status : NULL);
 }
 
-static void _trace_ex_ker_thread_cancel(THREAD * act, struct kerargs_thread_cancel *kap)
+static void _trace_ex_ker_thread_cancel(tThread * act, struct kerargs_thread_cancel *kap)
 {
     _TRACE_OUT_F(__KER_THREAD_CANCEL, NULL);
 }
 
-static void _trace_ex_ker_thread_ctl(THREAD * act, struct kerargs_thread_ctl *kap)
+static void _trace_ex_ker_thread_ctl(tThread * act, struct kerargs_thread_ctl *kap)
 {
     _TRACE_OUT_F(__KER_THREAD_CTL, NULL);
 }
 
-static void _trace_ex_ker_interrupt_attach(THREAD * act, struct kerargs_interrupt_attach *kap)
+static void _trace_ex_ker_interrupt_attach(tThread * act, struct kerargs_interrupt_attach *kap)
 {
     _TRACE_OUT_F(__KER_INTERRUPT_ATTACH, NULL);
 }
 
-static void _trace_ex_ker_interrupt_detach_func(THREAD * act,
+static void _trace_ex_ker_interrupt_detach_func(tThread * act,
                                                 struct kerargs_interrupt_detach_func *kap)
 {
     _TRACE_OUT_F(__KER_INTERRUPT_DETACH_FUNC, NULL);
 }
 
-static void _trace_ex_ker_interrupt_detach(THREAD * act, struct kerargs_interrupt_detach *kap)
+static void _trace_ex_ker_interrupt_detach(tThread * act, struct kerargs_interrupt_detach *kap)
 {
     _TRACE_OUT_F(__KER_INTERRUPT_DETACH, NULL);
 }
 
-static void _trace_ex_ker_interrupt_wait(THREAD * act, struct kerargs_interrupt_wait *kap)
+static void _trace_ex_ker_interrupt_wait(tThread * act, struct kerargs_interrupt_wait *kap)
 {
     _TRACE_OUT_F(__KER_INTERRUPT_WAIT, (uint32_t) kap->timeout);
 }
 
-static void _trace_ex_ker_interrupt_mask(THREAD * act, struct kerargs_interrupt_mask *kap)
+static void _trace_ex_ker_interrupt_mask(tThread * act, struct kerargs_interrupt_mask *kap)
 {
     _TRACE_OUT_F(__KER_INTERRUPT_MASK, NULL);
 }
 
-static void _trace_ex_ker_interrupt_unmask(THREAD * act, struct kerargs_interrupt_unmask *kap)
+static void _trace_ex_ker_interrupt_unmask(tThread * act, struct kerargs_interrupt_unmask *kap)
 {
     _TRACE_OUT_F(__KER_INTERRUPT_UNMASK, NULL);
 }
 
-static void _trace_ex_ker_clock_time(THREAD * act, struct kerargs_clock_time *kap)
+static void _trace_ex_ker_clock_time(tThread * act, struct kerargs_clock_time *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CLOCK_TIME]) {
         uint32_t arg_arr[3];
@@ -1791,7 +1791,7 @@ static void _trace_ex_ker_clock_time(THREAD * act, struct kerargs_clock_time *ka
     }
 }
 
-static void _trace_ex_ker_clock_adjust(THREAD * act, struct kerargs_clock_adjust *kap)
+static void _trace_ex_ker_clock_adjust(tThread * act, struct kerargs_clock_adjust *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CLOCK_ADJUST]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct _clockadjust))];
@@ -1805,7 +1805,7 @@ static void _trace_ex_ker_clock_adjust(THREAD * act, struct kerargs_clock_adjust
     }
 }
 
-static void _trace_ex_ker_clock_period(THREAD * act, struct kerargs_clock_period *kap)
+static void _trace_ex_ker_clock_period(tThread * act, struct kerargs_clock_period *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_CLOCK_PERIOD]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct _clockperiod))];
@@ -1819,22 +1819,22 @@ static void _trace_ex_ker_clock_period(THREAD * act, struct kerargs_clock_period
     }
 }
 
-static void _trace_ex_ker_clock_id(THREAD * act, struct kerargs_clock_id *kap)
+static void _trace_ex_ker_clock_id(tThread * act, struct kerargs_clock_id *kap)
 {
     _TRACE_OUT_F(__KER_CLOCK_ID, NULL);
 }
 
-static void _trace_ex_ker_timer_create(THREAD * act, struct kerargs_timer_create *kap)
+static void _trace_ex_ker_timer_create(tThread * act, struct kerargs_timer_create *kap)
 {
     _TRACE_OUT_F(__KER_TIMER_CREATE, NULL);
 }
 
-static void _trace_ex_ker_timer_destroy(THREAD * act, struct kerargs_timer_destroy *kap)
+static void _trace_ex_ker_timer_destroy(tThread * act, struct kerargs_timer_destroy *kap)
 {
     _TRACE_OUT_F(__KER_TIMER_DESTROY, NULL);
 }
 
-static void _trace_ex_ker_timer_settime(THREAD * act, struct kerargs_timer_settime *kap)
+static void _trace_ex_ker_timer_settime(tThread * act, struct kerargs_timer_settime *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_TIMER_SETTIME]) {
         uint32_t arg_arr[6];
@@ -1848,7 +1848,7 @@ static void _trace_ex_ker_timer_settime(THREAD * act, struct kerargs_timer_setti
     }
 }
 
-static void _trace_ex_ker_timer_info(THREAD * act, struct kerargs_timer_info *kap)
+static void _trace_ex_ker_timer_info(tThread * act, struct kerargs_timer_info *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_TIMER_INFO]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct _timer_info))];
@@ -1871,7 +1871,7 @@ static void _trace_ex_ker_timer_info(THREAD * act, struct kerargs_timer_info *ka
     }
 }
 
-static void _trace_ex_ker_timer_alarm(THREAD * act, struct kerargs_timer_alarm *kap)
+static void _trace_ex_ker_timer_alarm(tThread * act, struct kerargs_timer_alarm *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_TIMER_ALARM]) {
         uint32_t arg_arr[5];
@@ -1885,7 +1885,7 @@ static void _trace_ex_ker_timer_alarm(THREAD * act, struct kerargs_timer_alarm *
     }
 }
 
-static void _trace_ex_ker_timer_timeout(THREAD * act, struct kerargs_timer_timeout *kap)
+static void _trace_ex_ker_timer_timeout(tThread * act, struct kerargs_timer_timeout *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_TIMER_TIMEOUT]) {
         uint32_t arg_arr[4 + _TRACE_ROUND_UP(sizeof(struct sigevent))];
@@ -1903,57 +1903,57 @@ static void _trace_ex_ker_timer_timeout(THREAD * act, struct kerargs_timer_timeo
     }
 }
 
-static void _trace_ex_ker_sync_create(THREAD * act, struct kerargs_sync_create *kap)
+static void _trace_ex_ker_sync_create(tThread * act, struct kerargs_sync_create *kap)
 {
     _TRACE_OUT_F(__KER_SYNC_CREATE, NULL);
 }
 
-static void _trace_ex_ker_sync_destroy(THREAD * act, struct kerargs_sync_destroy *kap)
+static void _trace_ex_ker_sync_destroy(tThread * act, struct kerargs_sync_destroy *kap)
 {
     _TRACE_OUT_F(__KER_SYNC_DESTROY, NULL);
 }
 
-static void _trace_ex_ker_sync_mutex_lock(THREAD * act, struct kerargs_sync_mutex_lock *kap)
+static void _trace_ex_ker_sync_mutex_lock(tThread * act, struct kerargs_sync_mutex_lock *kap)
 {
     _TRACE_OUT_F(__KER_SYNC_MUTEX_LOCK, NULL);
 }
 
-static void _trace_ex_ker_sync_mutex_unlock(THREAD * act, struct kerargs_sync_mutex_unlock *kap)
+static void _trace_ex_ker_sync_mutex_unlock(tThread * act, struct kerargs_sync_mutex_unlock *kap)
 {
     _TRACE_OUT_F(__KER_SYNC_MUTEX_UNLOCK, NULL);
 }
 
-static void _trace_ex_ker_sync_condvar_wait(THREAD * act, struct kerargs_sync_condvar_wait *kap)
+static void _trace_ex_ker_sync_condvar_wait(tThread * act, struct kerargs_sync_condvar_wait *kap)
 {
     _TRACE_OUT_F(__KER_SYNC_CONDVAR_WAIT, NULL);
 }
 
-static void _trace_ex_ker_sync_condvar_signal(THREAD * act, struct kerargs_sync_condvar_signal *kap)
+static void _trace_ex_ker_sync_condvar_signal(tThread * act, struct kerargs_sync_condvar_signal *kap)
 {
     _TRACE_OUT_F(__KER_SYNC_CONDVAR_SIGNAL, NULL);
 }
 
-static void _trace_ex_ker_sync_sem_post(THREAD * act, struct kerargs_sync_sem_post *kap)
+static void _trace_ex_ker_sync_sem_post(tThread * act, struct kerargs_sync_sem_post *kap)
 {
     _TRACE_OUT_F(__KER_SYNC_SEM_POST, NULL);
 }
 
-static void _trace_ex_ker_sync_sem_wait(THREAD * act, struct kerargs_sync_sem_wait *kap)
+static void _trace_ex_ker_sync_sem_wait(tThread * act, struct kerargs_sync_sem_wait *kap)
 {
     _TRACE_OUT_F(__KER_SYNC_SEM_WAIT, NULL);
 }
 
-static void _trace_ex_ker_sync_ctl(THREAD * act, struct kerargs_sync_ctl *kap)
+static void _trace_ex_ker_sync_ctl(tThread * act, struct kerargs_sync_ctl *kap)
 {
     _TRACE_OUT_F(__KER_SYNC_CTL, NULL);
 }
 
-static void _trace_ex_ker_sync_mutex_revive(THREAD * act, struct kerargs_sync_mutex_revive *kap)
+static void _trace_ex_ker_sync_mutex_revive(tThread * act, struct kerargs_sync_mutex_revive *kap)
 {
     _TRACE_OUT_F(__KER_SYNC_MUTEX_REVIVE, NULL);
 }
 
-static void _trace_ex_ker_sched_get(THREAD * act, struct kerargs_sched_get *kap)
+static void _trace_ex_ker_sched_get(tThread * act, struct kerargs_sched_get *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SCHED_GET]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct sched_param))];
@@ -1967,17 +1967,17 @@ static void _trace_ex_ker_sched_get(THREAD * act, struct kerargs_sched_get *kap)
     }
 }
 
-static void _trace_ex_ker_sched_set(THREAD * act, struct kerargs_sched_set *kap)
+static void _trace_ex_ker_sched_set(tThread * act, struct kerargs_sched_set *kap)
 {
     _TRACE_OUT_F(__KER_SCHED_SET, NULL);
 }
 
-static void _trace_ex_ker_sched_yield(THREAD * act, struct kerargs_null *kap)
+static void _trace_ex_ker_sched_yield(tThread * act, struct kerargs_null *kap)
 {
     _TRACE_OUT_F(__KER_SCHED_YIELD, NULL);
 }
 
-static void _trace_ex_ker_sched_info(THREAD * act, struct kerargs_sched_info *kap)
+static void _trace_ex_ker_sched_info(tThread * act, struct kerargs_sched_info *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_SCHED_INFO]) {
         uint32_t arg_arr[6];
@@ -2001,7 +2001,7 @@ static void _trace_ex_ker_sched_info(THREAD * act, struct kerargs_sched_info *ka
     }
 }
 
-static void _trace_ex_ker_net_cred(THREAD * act, struct kerargs_net_cred *kap)
+static void _trace_ex_ker_net_cred(tThread * act, struct kerargs_net_cred *kap)
 {
     if (_TRACE_CALL_ARG_WIDE & trace_masks.ker_call_masks[__KER_NET_CRED]) {
         uint32_t arg_arr[1 + _TRACE_ROUND_UP(sizeof(struct _client_info))];
@@ -2015,27 +2015,27 @@ static void _trace_ex_ker_net_cred(THREAD * act, struct kerargs_net_cred *kap)
     }
 }
 
-static void _trace_ex_ker_net_vtid(THREAD * act, struct kerargs_net_vtid *kap)
+static void _trace_ex_ker_net_vtid(tThread * act, struct kerargs_net_vtid *kap)
 {
     _TRACE_OUT_F(__KER_NET_VTID, NULL);
 }
 
-static void _trace_ex_ker_net_unblock(THREAD * act, struct kerargs_net_unblock *kap)
+static void _trace_ex_ker_net_unblock(tThread * act, struct kerargs_net_unblock *kap)
 {
     _TRACE_OUT_F(__KER_NET_UNBLOCK, NULL);
 }
 
-static void _trace_ex_ker_net_infoscoid(THREAD * act, struct kerargs_net_infoscoid *kap)
+static void _trace_ex_ker_net_infoscoid(tThread * act, struct kerargs_net_infoscoid *kap)
 {
     _TRACE_OUT_F(__KER_NET_INFOSCOID, NULL);
 }
 
-static void _trace_ex_ker_net_signal_kill(THREAD * act, struct kerargs_net_signal_kill *kap)
+static void _trace_ex_ker_net_signal_kill(tThread * act, struct kerargs_net_signal_kill *kap)
 {
     _TRACE_OUT_F(__KER_NET_SIGNAL_KILL, NULL);
 }
 
-static void _trace_ex_ker_mt_ctl(THREAD * act, struct kerargs_mt_ctl *kap)
+static void _trace_ex_ker_mt_ctl(tThread * act, struct kerargs_mt_ctl *kap)
 {
     _TRACE_OUT_F(__KER_MT_CTL, NULL);
 }
@@ -2047,7 +2047,7 @@ void (*const _trace_ex_ker_table[])() = {
     MK_KERTABLE(_trace_ex_ker)
 };
 
-void _trace_ker_exit(THREAD * act)
+void _trace_ker_exit(tThread * act)
 {
     uint32_t n = _TRACE_GETSYSCALL(act->syscall);
 
@@ -2099,5 +2099,3 @@ int kdecl(*_trace_call_table[]) () = {
 const int ker_call_entry_num = NUM_ELTS(_trace_call_table);
 
 #endif
-
-__SRCVERSION("ker_call_table.c $Rev: 173881 $");

@@ -679,7 +679,7 @@ int rdecl sigevent_exe(const struct sigevent *evp, THREAD * thp, int deliver)
         break;
 
     case SIGEV_THREAD:
-        if (thp->process->flags & _NTO_PF_DESTROYALL) {
+        if (thp->process->flags & QRV_FLG_PROC_DESTROYALL) {
             return EBUSY;
         }
         if (!(get_inkernel() & INKERNEL_NOW)) {
@@ -763,7 +763,7 @@ int rdecl sigevent_exe(const struct sigevent *evp, THREAD * thp, int deliver)
                     AP_MARK_THREAD_CRITICAL(thp);
                 ready(thp);
             } else {
-                thp->flags |= _NTO_TF_INTR_PENDING;
+                thp->flags |= QRV_FLG_THR_INTR_PENDING;
             }
         }
         break;
@@ -793,5 +793,3 @@ int rdecl sigevent_proc(const struct sigevent *evp)
 
     return -1;
 }
-
-__SRCVERSION("nano_event.c $Rev: 204178 $");

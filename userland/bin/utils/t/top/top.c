@@ -370,7 +370,7 @@ process_entry * do_process(char * node, pid_t pid, int calc_mem)
                &pe_p->info, sizeof pe_p->info, 0) != -1) {
         int             lasttid, tid;
 
-        if (pe_p->info.flags & _NTO_PF_ZOMBIE) {
+        if (pe_p->info.flags & QRV_FLG_PROC_ZOMBIE) {
             free_process_entry(pe_p);
             pe_p = NULL;
         } else {

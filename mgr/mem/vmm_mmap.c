@@ -634,7 +634,7 @@ vmm_mmap(PROCESS * prp, uintptr_t vaddr_requested, size_t size_requested,
     if ((obp != NULL)
         && ((flags & (MAP_TYPE | MAP_ANON | MAP_ELF | MAP_FIXED)) ==
             (MAP_PRIVATE | MAP_ELF | MAP_FIXED))
-        && !(prp->flags & _NTO_PF_LOADING)) {
+        && !(prp->flags & QRV_FLG_PROC_LOADING)) {
         uintptr_t end_vaddr;
 
         switch (obp->hdr.type) {
@@ -659,7 +659,7 @@ vmm_mmap(PROCESS * prp, uintptr_t vaddr_requested, size_t size_requested,
 #endif
 
     obp_flags = 0;
-    if (prp->flags & _NTO_PF_LOADING)
+    if (prp->flags & QRV_FLG_PROC_LOADING)
         extra_flags |= EXTRA_FLAG_LOADER;
     if (flags & IMAP_OCB_RDONLY) {
         if ((flags & PROT_WRITE) && !(extra_flags & EXTRA_FLAG_LOADER)) {
@@ -1162,5 +1162,3 @@ vmm_mmap(PROCESS * prp, uintptr_t vaddr_requested, size_t size_requested,
 #endif
     return r;
 }
-
-__SRCVERSION("vmm_mmap.c $Rev: 211761 $");

@@ -35,15 +35,15 @@ int
 	}
 
 	// Is it recursive and locked by me?
-	if((mutex->__count & _NTO_SYNC_NONRECURSIVE) == 0) {
-		if((owner & ~_NTO_SYNC_WAITING) == id) {
+	if((mutex->__count & QRV_SYNC_NONRECURSIVE) == 0) {
+		if((owner & ~QRV_SYNC_WAITING) == id) {
 			++mutex->__count;
 			return EOK;
 		}
 	}
 
 	// Static intialized. Do an immediate tineout so no threads block.
-	if(owner == _NTO_SYNC_INITIALIZER) {
+	if(owner == QRV_SYNC_INITIALIZER) {
 		(void)TimerTimeout_r(CLOCK_REALTIME, _NTO_TIMEOUT_MUTEX, NULL, NULL, NULL);
 		if((ret = SyncMutexLock_r((sync_t *)mutex)) != EOK) {
 			return ((ret == ETIMEDOUT) ? EBUSY : ret);
@@ -53,7 +53,7 @@ int
 		return EOK;
 	}
 
-	if(mutex->__owner == _NTO_SYNC_DESTROYED) {
+	if(mutex->__owner == QRV_SYNC_DESTROYED) {
 		return EINVAL;
 	}
 
