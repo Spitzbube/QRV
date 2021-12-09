@@ -42,4 +42,4 @@ sem_t *sem_open(const char *name, int oflag, ...) {
 	return _nsem_open(name, (oflag & ~O_ACCMODE) | O_RDWR, mode, value);
 }
 
-__SRCVERSION("sem_open.c $Rev: 153052 $");
+

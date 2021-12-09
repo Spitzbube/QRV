@@ -66,4 +66,4 @@ int lockf(int fd, int function, off_t size) {
 }
 
 
-__SRCVERSION("lockf.c $Rev: 153052 $");
+

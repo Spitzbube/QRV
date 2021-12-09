@@ -43,4 +43,4 @@ char *strrev( char *s )
 	return( s );
 }
 
-__SRCVERSION("strrev.c $Rev: 167420 $");
+

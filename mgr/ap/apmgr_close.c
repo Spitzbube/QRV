@@ -53,5 +53,5 @@ int apmgr_close(resmgr_context_t *ctp, void *reserved, void *_ocb)
 }
 
 
-__SRCVERSION("$IQ: apmgr_close.c,v 1.23 $");
+
 

@@ -57,4 +57,4 @@ int (barrier_wait)(barrier_t *b) {
 	return pthread_barrier_wait((pthread_barrier_t *)b);
 }
 
-__SRCVERSION("barrier_wait.c $Rev: 153052 $");
+

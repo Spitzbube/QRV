@@ -35,4 +35,4 @@ int sigqueue(pid_t pid, int signo, union sigval data) {
     return(SignalKill(ND_LOCAL_NODE, pid, 0, signo, SI_QUEUE, *(int *) &data));
 	}
 
-__SRCVERSION("sigqueue.c $Rev: 153052 $");
+

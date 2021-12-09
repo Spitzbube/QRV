@@ -53,4 +53,4 @@ struct ocbget {
 
 #define OCBGET(ocb)		((struct ocbget *)&ocb->offset)->get
 
-/* __SRCVERSION("struct.h $Rev: 157840 $"); */
+/* 

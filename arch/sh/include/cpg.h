@@ -50,4 +50,4 @@
 #define	SH_CPG_FRQCR_PFC_8		_BITFIELD16L( 0, 0x4)
 
 
-/* __SRCVERSION("cpg.h $Rev: 153052 $"); */
+/* 

@@ -25,4 +25,4 @@ int iofunc_pathconf_default(resmgr_context_t *ctp, io_pathconf_t *msg, iofunc_oc
 	return iofunc_pathconf(ctp, msg, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_pathconf_default.c $Rev: 153052 $");
+

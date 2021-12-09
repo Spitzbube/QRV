@@ -56,4 +56,4 @@ times(struct tms *tms) {
 		(unsigned)ts.tv_nsec / ((uint64_t)1000000000 / tck);
 }
 
-__SRCVERSION("times.c $Rev: 153052 $");
+

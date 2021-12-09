@@ -466,5 +466,5 @@ static void unregister_event(part_qnodehdr2_t *evlist, part_evt_t *reg_event)
 
 
 
-__SRCVERSION("$IQ: apmgr_support.c,v 1.23 $");
+
 

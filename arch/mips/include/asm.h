@@ -237,4 +237,4 @@ name:                                                         \
 
 #endif /* _MIPS_ASM_H */
 
-/* __SRCVERSION("asm.h $Rev: 153052 $"); */
+/* 

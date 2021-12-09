@@ -26,4 +26,4 @@ int pthread_abort(pthread_t target)
 	return ThreadDestroy_r(target, -1, PTHREAD_ABORTED);
 }
 
-__SRCVERSION("pthread_abort.c $Rev: 153052 $");
+

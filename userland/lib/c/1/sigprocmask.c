@@ -34,4 +34,4 @@ int sigprocmask(int how, const sigset_t *set, sigset_t *oset) {
 	return(SignalProcmask(0, 0, how, set, oset));
 	}
 
-__SRCVERSION("sigprocmask.c $Rev: 153052 $");
+

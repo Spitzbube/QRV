@@ -33,4 +33,4 @@ pid_t tcgetsid(int fd) {
 	return pid;
 }
 
-__SRCVERSION("tcgetsid.c $Rev: 153052 $");
+

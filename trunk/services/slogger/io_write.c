@@ -259,4 +259,4 @@ io_console_write(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *ocb) {
 	return(ret);
 }
 
-__SRCVERSION("io_write.c $Rev: 204636 $");
+

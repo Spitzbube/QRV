@@ -56,4 +56,4 @@
 
 #endif
 
-/* __SRCVERSION("getcpu.h $Rev: 153052 $"); */
+/* 

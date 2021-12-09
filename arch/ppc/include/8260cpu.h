@@ -448,5 +448,3 @@
 #define PPC8260_IMMR(reg,size)	(*(volatile uint##size##_t *)(PPC8260_IMMR_ISB_DEFAULT+PPC8260_IMMR_OFF_##reg))
 
 #endif
-
-/* __SRCVERSION("8260cpu.h $Rev: 153052 $"); */

@@ -1391,5 +1391,5 @@ int traceparser(traceparser_state_t* tps_p, void* u_d, const char *tracefile)
 }
 
 #ifdef __QNXNTO__
-__SRCVERSION("traceparser.c $Rev: 166135 $");
+
 #endif

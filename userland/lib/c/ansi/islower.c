@@ -13,4 +13,4 @@ _STD_END
  * Consult your license regarding permissions and restrictions.
 V5.00:1296 */
 
-__SRCVERSION("islower.c $Rev: 153052 $");
+

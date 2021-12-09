@@ -58,4 +58,4 @@ int readlink(const char *path, char *buf, size_t bufsize) {
 	return len;
 }
 
-__SRCVERSION("readlink.c $Rev: 153052 $");
+

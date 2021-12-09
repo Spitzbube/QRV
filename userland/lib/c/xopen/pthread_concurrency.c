@@ -35,4 +35,4 @@ int pthread_getconcurrency(void) {
 	return concurrency;
 }
 
-__SRCVERSION("pthread_concurrency.c $Rev: 153052 $");
+

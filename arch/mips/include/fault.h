@@ -29,4 +29,4 @@
 #define FLTNOFPU		(_FIRST_CPU_FAULT+3) 	/* No Floating Point Device */
 #define FLTWATCH		(_FIRST_CPU_FAULT+4) 	/* Watchpoint */
 
-/* __SRCVERSION("fault.h $Rev: 153052 $"); */
+/* 

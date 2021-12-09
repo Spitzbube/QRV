@@ -34,4 +34,4 @@ waitpid(pid_t pid, int *stat_loc, int options) {
 	return wait4(pid, stat_loc, options, NULL);
 }
 
-__SRCVERSION("waitpid.c $Rev: 153052 $");
+

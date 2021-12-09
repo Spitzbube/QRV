@@ -72,4 +72,4 @@ int asyncmsg_channel_destroy(int chid)
 	return 0;
 }
 
-__SRCVERSION("asyncmsg_channel_destroy.c $Rev: 153052 $");
+

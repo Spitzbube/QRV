@@ -167,4 +167,4 @@ cpu_colour_clean(struct pa_quantum *qp, int cacheop)
 	}
 }
 
-__SRCVERSION("cpu_colour.c $Rev: 170760 $");
+

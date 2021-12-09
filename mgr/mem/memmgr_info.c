@@ -101,5 +101,3 @@ int memmgr_info(resmgr_context_t * ctp, PROCESS * prp, mem_info_t * msg)
     msg->o.info.posix_tmi_length = mem_free_size;
     return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o);
 }
-
-__SRCVERSION("memmgr_info.c $Rev: 174147 $");

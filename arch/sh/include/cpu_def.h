@@ -150,4 +150,4 @@ void	tlb_flush_va(struct mm_aspace *adp, uintptr_t start, uintptr_t end);
 
 #endif /* _KERNEL_CPU_SH_H */
 
-/* __SRCVERSION("cpu_sh.h $Rev: 198837 $"); */
+/* 

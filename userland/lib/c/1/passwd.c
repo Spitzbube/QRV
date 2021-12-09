@@ -1065,4 +1065,4 @@ void main(int argc, char *argv[]) {
 
 #endif
 
-__SRCVERSION("passwd.c $Rev: 212726 $");
+

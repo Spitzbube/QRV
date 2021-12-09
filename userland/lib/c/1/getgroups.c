@@ -38,4 +38,4 @@ int getgroups(int gidsetsize, gid_t grouplist[]) {
 	return info.cred.ngroups;
 }
 
-__SRCVERSION("getgroups.c $Rev: 153052 $");
+

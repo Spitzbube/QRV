@@ -30,4 +30,4 @@ FILE *fopen(const char *filename, const char *mode) {
 
 _STD_END
 
-__SRCVERSION("fopen.c $Rev: 153052 $");
+

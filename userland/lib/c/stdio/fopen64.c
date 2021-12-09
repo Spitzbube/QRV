@@ -32,4 +32,4 @@ extern FILE *__fsopen(const char *filename, const char *mode, int sflag, int lar
 
 _STD_END
 
-__SRCVERSION("fopen64.c $Rev: 153052 $");
+

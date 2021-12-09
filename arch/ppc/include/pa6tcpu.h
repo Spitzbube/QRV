@@ -206,4 +206,4 @@
 
 #endif
 
-/* __SRCVERSION("pa6tcpu.h $Rev: 153052 $"); */
+/* 

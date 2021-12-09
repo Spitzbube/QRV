@@ -78,4 +78,4 @@ int name_close(int fd) {
 	return ConnectDetach(fd);
 }
 
-__SRCVERSION("name_open.c $Rev: 153052 $");
+

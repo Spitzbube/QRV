@@ -68,4 +68,4 @@ io_closeocb(resmgr_context_t *ctp, void *reserved, struct ocb *ocb) {
 	return EOK;
 }
 
-__SRCVERSION("io_closeocb.c $Rev: 153052 $");
+

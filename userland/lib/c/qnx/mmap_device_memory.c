@@ -25,4 +25,4 @@ void *mmap_device_memory(void *addr, size_t len, int prot, int flags, uint64_t p
 	return mmap64(addr, len, prot, (flags & ~MAP_TYPE) | MAP_PHYS|MAP_SHARED, NOFD, physical);
 }
 
-__SRCVERSION("mmap_device_memory.c $Rev: 153052 $");
+

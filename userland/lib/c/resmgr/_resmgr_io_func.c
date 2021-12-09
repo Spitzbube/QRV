@@ -33,4 +33,4 @@ _resmgr_func_t _resmgr_io_func(const resmgr_io_funcs_t *funcs, unsigned type) {
 	return 0;
 }
 
-__SRCVERSION("_resmgr_io_func.c $Rev: 153052 $");
+

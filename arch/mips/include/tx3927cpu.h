@@ -174,4 +174,4 @@
 
 #endif /* __MIPS_TX3927CPU_H_INCLUDED */
 
-/* __SRCVERSION("tx3927cpu.h $Rev: 153052 $"); */
+/* 

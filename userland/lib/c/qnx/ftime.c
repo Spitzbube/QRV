@@ -45,4 +45,4 @@ int ftime(struct timeb *timeptr) {
 	return 0;
 }
 
-__SRCVERSION("ftime.c $Rev: 153052 $");
+

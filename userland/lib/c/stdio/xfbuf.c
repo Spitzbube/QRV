@@ -35,4 +35,4 @@ _STD_END
  * Consult your license regarding permissions and restrictions.
  */
 
-__SRCVERSION("xfbuf.c $Rev: 153052 $");
+

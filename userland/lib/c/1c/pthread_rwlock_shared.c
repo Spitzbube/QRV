@@ -103,4 +103,4 @@ int
 }
 
 
-__SRCVERSION("pthread_rwlock_shared.c $Rev: 153052 $");
+

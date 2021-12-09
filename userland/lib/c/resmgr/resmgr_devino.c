@@ -46,4 +46,4 @@ int resmgr_devino(int id, dev_t *pdevno, ino64_t *pino) {
 	return 0;
 }
 
-__SRCVERSION("resmgr_devino.c $Rev: 153052 $");
+

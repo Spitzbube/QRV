@@ -70,4 +70,4 @@ int pathmgr_link(const char *path, uint32_t nd, pid_t pid, int chid, unsigned ha
 	return fd;
 }
 
-__SRCVERSION("pathmgr_link.c $Rev: 153052 $");
+

@@ -145,4 +145,4 @@ int resmgr_detach(dispatch_t *dpp, int id, unsigned flags) {
 }
 
 
-__SRCVERSION("resmgr_detach.c $Rev: 162224 $");
+

@@ -30,4 +30,4 @@ weak_alias(posix_memalign,_posix_memalign)
 #endif
 
 
-__SRCVERSION("posix_memalign.c $Rev: 153052 $");
+

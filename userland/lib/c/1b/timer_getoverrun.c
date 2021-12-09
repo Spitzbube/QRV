@@ -31,4 +31,4 @@ int timer_getoverrun(timer_t timerid) {
 	return info.overruns;
 }
 
-__SRCVERSION("timer_getoverrun.c $Rev: 153052 $");
+

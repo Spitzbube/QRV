@@ -216,5 +216,5 @@ void apmmgr_init(char *basepath)
 
 
 
-__SRCVERSION("$IQ: apmmgr_init.c,v 1.23 $");
+
 

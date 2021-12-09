@@ -47,4 +47,4 @@ int _spin_init(spinlock_t *lock, int pshared) {
 	return status;
 }
 
-__SRCVERSION("_spin_init.c $Rev: 153052 $");
+

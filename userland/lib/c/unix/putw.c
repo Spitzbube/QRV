@@ -25,4 +25,4 @@ int putw(int value, FILE *fp) {
     return value;
 }
 
-__SRCVERSION("putw.c $Rev: 153052 $");
+

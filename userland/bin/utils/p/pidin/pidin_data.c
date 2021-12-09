@@ -476,4 +476,4 @@ procfs_debuginfo	name;
 procfs_mapinfo		mem;
 procfs_status		status;
 
-__SRCVERSION("pidin_data.c $Rev: 209166 $");
+

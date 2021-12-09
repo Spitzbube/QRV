@@ -68,4 +68,4 @@ int pthread_rwlock_init(pthread_rwlock_t *l, const pthread_rwlockattr_t *cattr)
 	return EOK;
 }
 
-__SRCVERSION("pthread_rwlock_init.c $Rev: 153052 $");
+

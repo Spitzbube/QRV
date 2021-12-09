@@ -31,4 +31,4 @@ int pmm_resize(OBJECT * obp, size_t size)
     return EOK;
 }
 
-__SRCVERSION("pmm_resize.c $Rev: 153052 $");
+

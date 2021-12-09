@@ -29,4 +29,4 @@ int pthread_kill( pthread_t thread, int sig )
 	return( SignalKill_r(ND_LOCAL_NODE, getpid(), thread, sig, SI_USER, 0 ) );
 }
 
-__SRCVERSION("pthread_kill.c $Rev: 153052 $");
+

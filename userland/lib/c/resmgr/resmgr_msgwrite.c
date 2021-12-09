@@ -25,4 +25,4 @@ int resmgr_msgwrite(resmgr_context_t *ctp, const void *msg, int nbytes, int offs
 	return MsgWrite(ctp->rcvid, msg, nbytes, offset);
 }
 
-__SRCVERSION("resmgr_msgwrite.c $Rev: 153052 $");
+

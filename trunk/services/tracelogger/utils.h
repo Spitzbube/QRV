@@ -52,4 +52,4 @@ __END_DECLS
 
 #endif /* __UTILS_H_ */
 
-/* __SRCVERSION("utils.h $Rev: 153052 $"); */
+/* 

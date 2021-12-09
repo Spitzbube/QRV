@@ -85,4 +85,4 @@ determine_family(unsigned pvr) {
 	return PPC_FAMILY_UNKNOWN;
 }
 
-__SRCVERSION("init_cpu400.c $Rev: 170836 $");
+

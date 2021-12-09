@@ -39,4 +39,4 @@ int _posix_memalign(void **memptr, size_t alignment, size_t size)
 	return(__posix_memalign(memptr, alignment, size));
 }
 
-__SRCVERSION("_posix_memalign.c $Rev: 153052 $");
+

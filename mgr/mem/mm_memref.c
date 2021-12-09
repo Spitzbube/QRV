@@ -175,4 +175,4 @@ int memref_walk(OBJECT * obp, int (*func)(struct mm_object_ref *, struct mm_map 
     return EOK;
 }
 
-__SRCVERSION("mm_memref.c $Rev: 199396 $");
+

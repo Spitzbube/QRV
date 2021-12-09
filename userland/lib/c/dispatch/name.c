@@ -199,4 +199,4 @@ int name_handler(resmgr_context_t *ctp) {
 }
 #endif
 
-__SRCVERSION("name.c $Rev: 153052 $");
+

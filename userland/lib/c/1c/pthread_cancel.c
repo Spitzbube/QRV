@@ -33,4 +33,4 @@ int pthread_cancel( pthread_t thread )
 
 // This is an async-cancel safe function
 
-__SRCVERSION("pthread_cancel.c $Rev: 153052 $");
+

@@ -39,4 +39,4 @@ munmap(void *addr, size_t len) {
 	return munmap_flags(addr, len, 0);
 }
 
-__SRCVERSION("munmap.c $Rev: 153052 $");
+

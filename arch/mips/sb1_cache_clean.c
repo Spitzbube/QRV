@@ -18,7 +18,7 @@
 #include "externs.h"
 #include <mips/vm.h>
 
-__SRCVERSION("sb1_cache_clean.c $Rev: 153052 $");
+
 
 /* 
  * Broadcom SB-1 Specific method for cleaning out corrupt cache data when the

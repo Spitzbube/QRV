@@ -61,4 +61,4 @@
 
 #endif
 
-/* __SRCVERSION("sh4acpu.h $Rev: 204740 $"); */
+/* 

@@ -35,4 +35,4 @@ int io_notify(resmgr_context_t *ctp, io_notify_t *msg, iofunc_ocb_t *ocb) {
 }
 
 
-__SRCVERSION("io_notify.c $Rev: 153052 $");
+

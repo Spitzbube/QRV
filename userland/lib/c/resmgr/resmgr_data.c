@@ -43,4 +43,4 @@ pthread_key_t						_resmgr_thread_key;
 
 
 
-__SRCVERSION("resmgr_data.c $Rev: 153052 $");
+

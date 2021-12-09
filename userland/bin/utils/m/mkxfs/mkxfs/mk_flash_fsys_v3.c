@@ -1355,4 +1355,4 @@ ffs_make_fsys_3(FILE *dst_fp, struct file_entry *list, char *mountpoint, char *d
 #endif
 
 
-__SRCVERSION("mk_flash_fsys_v3.c $Rev: 153052 $");
+

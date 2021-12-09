@@ -28,4 +28,4 @@ int resmgr_unbind(resmgr_context_t *ctp) {
 	return _resmgr_unbind(&ctp->info);
 }
 
-__SRCVERSION("resmgr_unbind.c $Rev: 153052 $");
+

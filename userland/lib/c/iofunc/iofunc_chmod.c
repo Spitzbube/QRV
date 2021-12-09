@@ -69,4 +69,4 @@ int iofunc_chmod(resmgr_context_t *ctp, io_chmod_t *msg, iofunc_ocb_t *ocb, iofu
 	return EOK;
 }
 
-__SRCVERSION("iofunc_chmod.c $Rev: 153052 $");
+

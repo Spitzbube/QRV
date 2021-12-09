@@ -32,4 +32,4 @@ extern FILE *_freopen(const char *filename, const char *mode, FILE *fp, int larg
 
 _STD_END
 
-__SRCVERSION("freopen.c $Rev: 153052 $");
+

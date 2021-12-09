@@ -38,4 +38,4 @@ void *malloc(size_t size)
 #endif
 }
 
-__SRCVERSION("_malloc.c $Rev: 212948 $");
+

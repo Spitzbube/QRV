@@ -426,4 +426,4 @@ int rsrcdbmgr_proc_devno(char *name, dev_t * devno, int minor_request, int flags
     return (ret);
 }
 
-__SRCVERSION("rsrcdbmgr_cmd.c $Rev: 153052 $");
+

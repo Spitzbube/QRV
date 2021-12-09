@@ -41,4 +41,4 @@ InterruptPending(void)
 }
 #endif
 
-__SRCVERSION("interruptpending.c $Rev: 153052 $");
+

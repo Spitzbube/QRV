@@ -979,4 +979,4 @@ void *loader_load(void *parm)
     return 0;
 }
 
-__SRCVERSION("proc_loader.c $Rev: 199544 $");
+

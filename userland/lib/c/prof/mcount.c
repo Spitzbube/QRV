@@ -245,4 +245,4 @@ overflow:
  */
 MCOUNT
 
-__SRCVERSION("mcount.c $Rev: 159982 $");
+

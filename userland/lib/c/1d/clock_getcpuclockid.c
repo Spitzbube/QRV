@@ -33,4 +33,4 @@ clock_getcpuclockid(pid_t pid, clockid_t *clock_id) {
 	return EOK;
 }
 
-__SRCVERSION("clock_getcpuclockid.c $Rev: 153052 $");
+

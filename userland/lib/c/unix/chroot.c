@@ -89,4 +89,4 @@ int chroot(const char *path) {
 	return MsgSendv(PATHMGR_COID, iov, 2, 0, 0);
 }
 
-__SRCVERSION("chroot.c $Rev: 153052 $");
+

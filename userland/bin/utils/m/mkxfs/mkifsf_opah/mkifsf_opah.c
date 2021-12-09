@@ -101,5 +101,5 @@ main(int argc, char *argv[]) {
 }
 
 #ifdef __QNXNTO__
-__SRCVERSION("mkifsf_opah.c $Rev: 153052 $");
+
 #endif

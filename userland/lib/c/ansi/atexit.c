@@ -35,4 +35,4 @@ int atexit(void (*func)(void)) {
 	return -1;
 }
 
-__SRCVERSION("atexit.c $Rev: 153052 $");
+

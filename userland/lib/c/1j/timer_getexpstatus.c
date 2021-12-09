@@ -35,4 +35,4 @@ int timer_getexpstatus(timer_t timerid) {
 	return 0;
 }
 
-__SRCVERSION("timer_getexpstatus.c $Rev: 153052 $");
+

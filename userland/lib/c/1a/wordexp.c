@@ -28,4 +28,4 @@ int wordexp(const char *string, wordexp_t *pwordexp, int flags) {
 void wordfree(wordexp_t *pwordexp) {
 }
 
-__SRCVERSION("wordexp.c $Rev: 153052 $");
+

@@ -35,4 +35,4 @@ void perror(const char *ustr) {
 	write(STDERR_FILENO, "\n", sizeof "\n" - 1);
 }
 
-__SRCVERSION("perror.c $Rev: 153052 $");
+

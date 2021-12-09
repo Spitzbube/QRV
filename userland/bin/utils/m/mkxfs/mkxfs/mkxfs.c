@@ -2262,4 +2262,4 @@ make_tree(struct file_entry *list) {
 	return(root.child);
 }
 
-__SRCVERSION("mkxfs.c $Rev: 200993 $");
+

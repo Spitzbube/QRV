@@ -45,4 +45,4 @@ int netmgr_strtond(const char *nodename, char **endstr) {
 	return msg.o.nd;
 }
 
-__SRCVERSION("netmgr_strtond.c $Rev: 153052 $");
+

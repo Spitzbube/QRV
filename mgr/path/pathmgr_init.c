@@ -15,12 +15,13 @@
  * $
  */
 
-#include "externs.h"
+#include "taskman/externs.h"
+#include "taskman/pathmgr_node.h"
+#include "taskman/pathmgr_object.h"
+#include "taskman/pathmgr_proto.h"
+
 #include <sys/iofunc.h>
 #include <sys/pathmgr.h>
-#include "pathmgr_node.h"
-#include "pathmgr_object.h"
-#include "pathmgr_proto.h"
 #include <sys/trace.h>
 
 static int pathmgr_resolve_handler(resmgr_context_t * ctp, void *msg)
@@ -260,7 +261,7 @@ int pathmgr_link(const char *path, uint32_t nd, pid_t pid, int chid, unsigned ha
     ret = -1;
     if ((node = pathmgr_resolve_path(pathmgr_prp->root, 0, buff, pathmgr_prp->root))) {
         struct _io_resmgr_link_extra extra;
-        OBJECT *obp;
+        tPathMgrObject *obp;
 
         extra.nd = ND_LOCAL_NODE;
         extra.pid = pid ? pid : SYSMGR_PID;

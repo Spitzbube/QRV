@@ -187,4 +187,4 @@ _ULonglong _Stoint(const char *nptr, char **endptr, int base, int flags) {
 
 _STD_END
 
-__SRCVERSION("xstoint.c $Rev: 153052 $");
+

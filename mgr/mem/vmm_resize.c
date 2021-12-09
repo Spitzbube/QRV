@@ -228,4 +228,4 @@ int vmm_resize(OBJECT * obp, size_t size)
     return r;
 }
 
-__SRCVERSION("vmm_resize.c $Rev: 211761 $");
+

@@ -34,4 +34,4 @@ int spawnle(int mode, const char *path, const char *arg0, ...) {
 	return spawnve(mode, path, argv, envv);
 }
 
-__SRCVERSION("spawnle.c $Rev: 153052 $");
+

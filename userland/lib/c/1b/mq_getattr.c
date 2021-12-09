@@ -33,4 +33,4 @@ int mq_getattr(mqd_t mq, struct mq_attr *attr) {
 	return((rc == -1) ? __mq_check(!0, mq) : 0);
 }
 
-__SRCVERSION("mq_getattr.c $Rev: 153052 $");
+

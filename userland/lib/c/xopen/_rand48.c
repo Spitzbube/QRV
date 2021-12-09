@@ -65,4 +65,4 @@ __dorand48(unsigned short xseed[3])
 	xseed[2] = (unsigned short) accu;
 }
 
-__SRCVERSION("_rand48.c $Rev: 153052 $");
+

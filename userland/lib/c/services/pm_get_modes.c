@@ -33,4 +33,4 @@ int pm_get_modes(int fd, pm_power_mode_t *modes, int nmodes) {
 	return MsgSend(fd, &msg.i, sizeof msg.i, modes, nmodes * sizeof(pm_power_mode_t));
 }
 
-__SRCVERSION("pm_get_modes.c $Rev: 153052 $");
+

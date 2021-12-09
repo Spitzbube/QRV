@@ -203,4 +203,4 @@ cpu_debug_init_perfregs(void)
 	disabled_perfregs.id = PERFREGS_ENABLED_FLAG | cpu_perfreg_id();
 }
 
-__SRCVERSION("cpu_perfregs.c $Rev: 167933 $");
+

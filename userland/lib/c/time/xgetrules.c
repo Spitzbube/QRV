@@ -108,4 +108,4 @@ _STD_END
  * Consult your license regarding permissions and restrictions.
 V4.02:1296 */
 
-__SRCVERSION("xgetrules.c $Rev: 153052 $");
+

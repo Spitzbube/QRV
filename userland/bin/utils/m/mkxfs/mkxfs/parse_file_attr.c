@@ -676,4 +676,4 @@ etfs_parse_init(struct attr_file_entry *attrp) {
 	attrp->search_path = "";
 }
 
-__SRCVERSION("parse_file_attr.c $Rev: 203655 $");
+

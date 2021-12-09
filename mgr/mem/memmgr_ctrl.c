@@ -180,4 +180,4 @@ int memmgr_ctrl(PROCESS * prp, mem_ctrl_t * msg)
     return ENOSYS;
 }
 
-__SRCVERSION("memmgr_ctrl.c $Rev: 160638 $");
+

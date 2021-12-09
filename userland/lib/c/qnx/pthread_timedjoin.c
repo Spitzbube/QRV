@@ -37,4 +37,4 @@ int pthread_timedjoin(pthread_t thread, void **value_ptr, const struct timespec 
 	return rc;
 }
 
-__SRCVERSION("pthread_timedjoin.c $Rev: 153052 $");
+

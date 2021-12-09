@@ -32,4 +32,4 @@ int ffs( int val )
 	return(0);
 }
 
-__SRCVERSION("ffs.c $Rev: 153052 $");
+

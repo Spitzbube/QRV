@@ -260,7 +260,7 @@ else
 	return r;
 }
 
-__SRCVERSION("posix_spawn.c $Rev: 200568 $");
+
 
 
 #endif	/* _POSIX_SPAWN */

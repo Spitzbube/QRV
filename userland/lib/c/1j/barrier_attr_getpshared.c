@@ -33,4 +33,4 @@ int (barrier_attr_getpshared)(const barrier_attr_t *attr, int *pshared) {
 	return pthread_barrierattr_getpshared((pthread_barrierattr_t *)attr, pshared);
 }
 
-__SRCVERSION("barrier_attr_getpshared.c $Rev: 153052 $");
+

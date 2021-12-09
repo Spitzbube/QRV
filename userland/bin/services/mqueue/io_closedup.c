@@ -68,4 +68,4 @@ io_closedup(resmgr_context_t *ctp, io_close_t *msg, struct ocb *ocb) {
 	return EOK;
 }
 
-__SRCVERSION("io_closedup.c $Rev: 153052 $");
+

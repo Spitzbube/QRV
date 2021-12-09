@@ -15,12 +15,13 @@
  * $
  */
 
-#include "externs.h"
+#include "taskman/externs.h"
+#include "taskman/pathmgr_node.h"
+#include "taskman/pathmgr_object.h"
+#include "taskman/pathmgr_proto.h"
+
 #include <sys/pathmgr.h>
 #include <sys/procmgr.h>
-#include "pathmgr_node.h"
-#include "pathmgr_object.h"
-#include "pathmgr_proto.h"
 
 int reply_symlink(resmgr_context_t * ctp, unsigned eflag, struct _io_connect_link_reply *linkp,
                   struct symlink_object *symlinkp, const char *path, const char *tail)
@@ -88,8 +89,8 @@ static int pathmgr_stat(resmgr_context_t * ctp, io_stat_t * msg, void *ocb)
 
 static int pathmgr_object_exists(char *path, int type)
 {
-    OBJECT *obp;
-    NODE *nop;
+    tPathMgrObject *obp;
+    tNode *nop;
 
     if ((nop = pathmgr_node_lookup(0, path, PATHMGR_LOOKUP_ATTACH, 0))) {
         for (obp = nop->object; obp; obp = obp->hdr.next) {
@@ -162,13 +163,13 @@ int _netmgr_connect(int base, const char *path, mode_t mode, unsigned oflag, uns
 
 static int pathmgr_fdinfo(resmgr_context_t * ctp, io_fdinfo_t * msg, void *vocb)
 {
-    OBJECT *obp = (OBJECT *) vocb;
+    tPathMgrObject *obp = (tPathMgrObject *) vocb;
     char *path;
     int size;
     size_t pathmax;
     int len;
     unsigned flags = msg->i.flags;
-    NODE *node, *prev;
+    tNode *node, *prev;
 
     if (obp->hdr.type != OBJECT_SERVER) {
         return ENOSYS;
@@ -252,7 +253,7 @@ static const resmgr_io_funcs_t resmgrlink_io_funcs = {
     pathmgr_fdinfo
 };
 
-int server_create(OBJECT * obp, void *data)
+int server_create(tPathMgrObject * obp, void *data)
 {
     struct _io_resmgr_link_extra *extra = data;
 
@@ -271,7 +272,7 @@ static int
 pathmgr_resmgrlink(resmgr_context_t * ctp, io_link_t * msg, void *handle,
                    struct _io_resmgr_link_extra *extra)
 {
-    OBJECT *obp;
+    tPathMgrObject *obp;
     tProcess *prp;
 
     /* For FTYPE_NAME object, we let non-root users do the attach, but
@@ -312,7 +313,7 @@ pathmgr_resmgrlink(resmgr_context_t * ctp, io_link_t * msg, void *handle,
     return EOK;
 }
 
-int symlink_create(OBJECT * obp, void *data)
+int symlink_create(tPathMgrObject * obp, void *data)
 {
     char *path = data;
     int len;
@@ -329,7 +330,7 @@ int symlink_create(OBJECT * obp, void *data)
 
 static int pathmgr_sys_symlink(resmgr_context_t * ctp, io_link_t * msg, void *handle, char *path)
 {
-    OBJECT *obp;
+    tPathMgrObject *obp;
     tProcess *prp;
 
     if (!proc_isaccess(0, &ctp->info)) {
@@ -392,14 +393,12 @@ static char *add_piece(char *p, char *endp, char *src, unsigned len)
  return len (include the last NULL character)
 */
 
-int pathmgr_node2fullpath(NODE * node, char *path, int pathmax)
+int pathmgr_node2fullpath(tNode * node, char *path, int pathmax)
 {
     int len;
     char *p;
     char *endp;
-    NODE *n;
-    NODE *prev;
-    NODE *parent;
+    tNode *n,  *prev, *parent;
     pid_t mypid;
     int save_netmgr_coid = 0;   //to shut the compiler up
     extern int __netmgr_send_private(int);
@@ -468,4 +467,4 @@ int pathmgr_node2fullpath(NODE * node, char *path, int pathmax)
     return len;
 }
 
-__SRCVERSION("pathmgr_link.c $Rev: 205218 $");
+

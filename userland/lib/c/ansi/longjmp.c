@@ -24,4 +24,4 @@ void (longjmp)(jmp_buf env, int val) {
     longjmp(env, val);
 }
 
-__SRCVERSION("longjmp.c $Rev: 153052 $");
+

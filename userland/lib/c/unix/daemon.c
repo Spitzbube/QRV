@@ -62,4 +62,4 @@ int daemon(int nochdir, int noclose) {
 	return 0;
 }
 
-__SRCVERSION("daemon.c $Rev: 153052 $");
+

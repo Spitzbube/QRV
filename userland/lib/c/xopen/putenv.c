@@ -63,4 +63,4 @@ int putenv(char *str) {
 	return rc;
 }
 
-__SRCVERSION("putenv.c $Rev: 166470 $");
+

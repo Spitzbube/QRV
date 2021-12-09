@@ -27,4 +27,4 @@ int pthread_attr_getguardsize(const pthread_attr_t *attr, size_t *guardsize) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_getguardsize.c $Rev: 153052 $");
+

@@ -184,4 +184,4 @@ pmm_mmap(tProcess * prp, uintptr_t addr, size_t len, int prot, int flags,
     return EOK;
 }
 
-__SRCVERSION("pmm_mmap.c $Rev: 168445 $");
+

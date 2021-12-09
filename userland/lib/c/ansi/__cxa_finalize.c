@@ -47,4 +47,4 @@ __cxa_finalize (void *dso) {
 	}
 }
 
-__SRCVERSION("__cxa_finalize.c $Rev: 153052 $");
+

@@ -84,4 +84,4 @@ initgroups(const char *uname, gid_t agroup)
 	return (setgroups(ngroups, groups));
 }
 
-__SRCVERSION("initgroups.c $Rev: 153052 $");
+

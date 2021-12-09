@@ -51,4 +51,4 @@ int resmgr_open_bind(resmgr_context_t *ctp, void *ocb, const resmgr_io_funcs_t *
 	return 0;
 }
 
-__SRCVERSION("resmgr_open_bind.c $Rev: 153052 $");
+

@@ -35,4 +35,4 @@ int tcsetsize(int fd, int rows, int cols) {
 	return _devctl(fd, DCMD_CHR_SETSIZE, &lwinsize, sizeof(lwinsize), _DEVCTL_FLAG_NORETVAL | _DEVCTL_FLAG_NOTTY);
 }
 
-__SRCVERSION("tcsetsize.c $Rev: 153052 $");
+

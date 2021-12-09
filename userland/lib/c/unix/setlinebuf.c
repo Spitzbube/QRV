@@ -24,4 +24,4 @@ int setlinebuf(FILE *stream) {
     return setvbuf(stream, 0, _IOLBF, 0);
 }
 
-__SRCVERSION("setlinebuf.c $Rev: 153052 $");
+

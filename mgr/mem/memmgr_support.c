@@ -214,5 +214,3 @@ void rdecl memobj_unlock(OBJECT * obp)
     proc_mux_unlock(&obp->mem.mm.mux);
     pathmgr_object_done(obp);
 }
-
-__SRCVERSION("memmgr_support.c $Rev: 174147 $");

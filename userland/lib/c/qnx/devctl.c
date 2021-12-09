@@ -57,4 +57,4 @@ int devctl(int fd, int dcmd, void *data_ptr, size_t nbytes, int *info_ptr) {
 	return EOK;
 }
 
-__SRCVERSION("devctl.c $Rev: 153052 $");
+

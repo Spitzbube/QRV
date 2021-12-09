@@ -282,4 +282,4 @@ proc_booter_filter(unsigned startup_offset, char *intermediate_path, char *outpu
 		error_exit("Unable to run filter program '%s'.\n", buf);
 }
 
-__SRCVERSION("booter.c $Rev: 200993 $");
+

@@ -67,4 +67,4 @@ int _connect_entry(int base, const char *path, mode_t mode, unsigned oflag, unsi
     return fd;
 }
 
-__SRCVERSION("_connect_entry.c $Rev: 153052 $");
+

@@ -25,4 +25,4 @@ char *strerror(int err) {
 	return (err < 0 || err >= sys_nerr) ? "Unknown error" : (char *)sys_errlist[err];
 }
 
-__SRCVERSION("strerror.c $Rev: 153052 $");
+

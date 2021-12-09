@@ -64,4 +64,4 @@ _C_STD_END
  * Consult your license regarding permissions and restrictions.
 V3.05:1296 */
 
-/* __SRCVERSION("xalloc.h $Rev: 153052 $"); */
+/* 

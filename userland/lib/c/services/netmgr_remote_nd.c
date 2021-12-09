@@ -41,4 +41,4 @@ int netmgr_remote_nd(int remote_nd, int local_nd) {
 	return __netmgr_send(&msg.i, sizeof msg.i, 0, 0, 0, 0);
 }
 
-__SRCVERSION("netmgr_remote_nd.c $Rev: 153052 $");
+

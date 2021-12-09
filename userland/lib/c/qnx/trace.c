@@ -119,4 +119,4 @@ int trace_func_exit( void *this_fn, void *call_site ) {
 	return TraceEvent( _NTO_TRACE_INSERTSCLASSEVENT, _NTO_TRACE_SYSTEM, _NTO_TRACE_SYS_FUNC_EXIT, (unsigned)this_fn, (unsigned)call_site );
 }
 
-__SRCVERSION("trace.c $Rev$");
+

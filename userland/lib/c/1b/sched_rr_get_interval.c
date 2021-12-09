@@ -34,4 +34,4 @@ int (sched_rr_get_interval)(pid_t pid, struct timespec *t) {
 	return 0;
 }
 
-__SRCVERSION("sched_rr_get_interval.c $Rev: 153052 $");
+

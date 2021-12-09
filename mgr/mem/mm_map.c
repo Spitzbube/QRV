@@ -710,5 +710,3 @@ int map_fini(struct mm_map_head *mh)
     }
     return EOK;
 }
-
-__SRCVERSION("mm_map.c $Rev: 174317 $");

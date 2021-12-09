@@ -37,4 +37,4 @@ int pthread_attr_setschedpolicy(pthread_attr_t *attr, int policy) {
 }
 
 
-__SRCVERSION("pthread_attr_setschedpolicy.c $Rev: 153052 $");
+

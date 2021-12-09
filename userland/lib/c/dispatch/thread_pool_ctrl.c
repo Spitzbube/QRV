@@ -283,4 +283,4 @@ int thread_pool_limits(thread_pool_t *pool, int lowater, int hiwater,
 	return thread_pool_control(pool, &tpattr, lower, upper, flags);
 }
 
-__SRCVERSION("thread_pool_ctrl.c $Rev: 167279 $");
+

@@ -64,4 +64,4 @@ int _resmgr_unblock_handler(resmgr_context_t *ctp, resmgr_iomsgs_t *msg, int rcv
 
 }
 
-__SRCVERSION("_resmgr_unblock_handler.c $Rev: 153052 $");
+

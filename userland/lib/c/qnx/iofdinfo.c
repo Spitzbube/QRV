@@ -45,4 +45,4 @@ int iofdinfo(int fd, unsigned flags, struct _fdinfo *info, char *path, int maxle
 	return MsgSendsvnc(fd, &msg.i, sizeof msg.i, iov, 3);
 }
 
-__SRCVERSION("iofdinfo.c $Rev: 153052 $");
+

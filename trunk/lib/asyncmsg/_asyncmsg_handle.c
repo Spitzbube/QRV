@@ -104,4 +104,4 @@ void * _asyncmsg_handle(int id, int cmd, void *handle)
 	return handle;
 }
 
-__SRCVERSION("_asyncmsg_handle.c $Rev: 157149 $");
+

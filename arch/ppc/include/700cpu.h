@@ -160,4 +160,4 @@
 
 #endif
 
-/* __SRCVERSION("700cpu.h $Rev: 169331 $"); */
+/* 

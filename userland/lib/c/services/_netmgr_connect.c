@@ -31,4 +31,4 @@ int _netmgr_connect(int base, const char *path, mode_t mode, unsigned oflag, uns
 	return _connect(base, path, mode, oflag, sflag, subtype, testcancel, accessl, file_type, extra_type, extra_len, extra, response_len, response, status);
 }
 
-__SRCVERSION("_netmgr_connect.c $Rev: 153052 $");
+

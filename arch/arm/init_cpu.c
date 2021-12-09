@@ -62,4 +62,4 @@ init_cpu()
 	}
 }
 
-__SRCVERSION("init_cpu.c $Rev: 153052 $");
+

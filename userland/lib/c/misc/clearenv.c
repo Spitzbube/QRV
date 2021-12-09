@@ -35,4 +35,4 @@ int clearenv(void) {
 }
 
 
-__SRCVERSION("clearenv.c $Rev: 153052 $");
+

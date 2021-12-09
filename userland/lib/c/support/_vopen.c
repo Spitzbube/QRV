@@ -33,4 +33,4 @@ int _vopen(const char *path, int oflag, int sflag, va_list ap)
                     0, 0, 0, 0, 0, 0);
 }
 
-__SRCVERSION("_vopen.c $Rev: 153052 $");
+

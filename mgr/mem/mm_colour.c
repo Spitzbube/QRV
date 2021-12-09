@@ -101,4 +101,4 @@ void colour_set(uintptr_t va, struct pa_quantum *pq, unsigned num)
     } while (num != 0);
 }
 
-__SRCVERSION("mm_colour.c $Rev: 153052 $");
+

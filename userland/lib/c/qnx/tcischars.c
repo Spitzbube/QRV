@@ -32,4 +32,4 @@ int tcischars(int fd) {
 	return n;
 }
 
-__SRCVERSION("tcischars.c $Rev: 153052 $");
+

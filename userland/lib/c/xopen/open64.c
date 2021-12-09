@@ -32,4 +32,4 @@ int open64(const char *path, int oflag, ...) {
 	return fd;
 }
 
-__SRCVERSION("open64.c $Rev: 153052 $");
+

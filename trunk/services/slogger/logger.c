@@ -114,4 +114,4 @@ static int openlog(char *fname, int fsize, int flags) {
 	return(fd);
 }
 
-__SRCVERSION("logger.c $Rev: 157840 $");
+

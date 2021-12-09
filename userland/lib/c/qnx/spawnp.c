@@ -43,4 +43,4 @@ pid_t spawnp(const char *file, int fd_count, const int fd_map[],
 	return spawn(file, fd_count, fd_map, &attr, argv, envp);
 }
 
-__SRCVERSION("spawnp.c $Rev: 153052 $");
+

@@ -45,4 +45,4 @@ char *strlwr( char *str )
 	return( str );
 }
 
-__SRCVERSION("strlwr.c $Rev: 167420 $");
+

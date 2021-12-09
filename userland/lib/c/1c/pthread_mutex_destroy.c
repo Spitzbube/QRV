@@ -26,4 +26,4 @@ int pthread_mutex_destroy( pthread_mutex_t * mutex )
 	return( SyncDestroy_r( ( sync_t * ) mutex ) );
 }
 
-__SRCVERSION("pthread_mutex_destroy.c $Rev: 153052 $");
+

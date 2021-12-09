@@ -35,4 +35,4 @@ int mem_access_clear(int master_fd, struct access_info *info) {
 	return -1;
 }
 
-__SRCVERSION("mem_access_clear.c $Rev: 153052 $");
+

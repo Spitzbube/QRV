@@ -53,4 +53,4 @@ off_t tell(int fd)
     return lseek64(fd, 0, SEEK_CUR);
 }
 
-__SRCVERSION("lseek.c $Rev: 153052 $");
+

@@ -40,4 +40,4 @@ int InterruptMask(int intr, int id)
 	return( status );
 }
 
-__SRCVERSION("interruptmask.c $Rev: 153052 $");
+

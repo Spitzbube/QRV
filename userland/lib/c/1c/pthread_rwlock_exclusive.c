@@ -96,4 +96,4 @@ int
 	return _pthread_timedrwlock_exclusive(l, 1, 0);
 }
 
-__SRCVERSION("pthread_rwlock_exclusive.c $Rev: 153052 $");
+

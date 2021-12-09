@@ -29,4 +29,4 @@ pthread_getspecific(pthread_key_t key) {
 	return( NULL );
 }
 
-__SRCVERSION("pthread_getspecific.c $Rev: 153052 $");
+

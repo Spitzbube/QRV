@@ -44,4 +44,4 @@ iofunc_notify_remove_strict(resmgr_context_t *ctp, iofunc_notify_t *nop, int lim
 	}
 }
 
-__SRCVERSION("iofunc_notify_remove.c $Rev: 153052 $");
+

@@ -46,4 +46,4 @@ int _resmgr_link_handler(resmgr_context_t *ctp, resmgr_iomsgs_t *msg, struct lin
 	return func(ctp, msg, link->handle, (io_link_extra_t *)&binding->ocb);
 }
 
-__SRCVERSION("_resmgr_link_handler.c $Rev: 153052 $");
+

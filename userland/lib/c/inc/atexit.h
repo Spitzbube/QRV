@@ -33,4 +33,4 @@ EXT struct atexit_func {
 }							*_atexit_list;
 
 
-/* __SRCVERSION("atexit.h $Rev: 153052 $"); */
+/* 

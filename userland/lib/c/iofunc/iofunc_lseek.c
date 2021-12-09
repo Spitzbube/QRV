@@ -63,4 +63,4 @@ int iofunc_lseek(resmgr_context_t *ctp, io_lseek_t *msg, iofunc_ocb_t *ocb, iofu
 	return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o);
 }
 
-__SRCVERSION("iofunc_lseek.c $Rev: 153052 $");
+

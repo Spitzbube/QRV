@@ -880,4 +880,4 @@ qprintf(str, s)
 }
 #endif
 
-__SRCVERSION("glob.c $Rev: 165345 $");
+

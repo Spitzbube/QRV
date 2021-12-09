@@ -25,4 +25,4 @@ int iofunc_close_ocb_default(resmgr_context_t *ctp, void *reserved, iofunc_ocb_t
 	return iofunc_close_ocb(ctp, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_close_ocb_default.c $Rev: 153052 $");
+

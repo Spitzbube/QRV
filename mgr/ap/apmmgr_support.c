@@ -349,5 +349,5 @@ int validate_mp_association(apmmgr_attr_t *attr, struct _cred_info *cred)
 
 
 
-__SRCVERSION("$IQ: apmmgr_support.c,v 1.23 $");
+
 

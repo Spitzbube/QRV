@@ -35,4 +35,4 @@ int io_unlink(resmgr_context_t *ctp, io_unlink_t *msg, RESMGR_HANDLE_T *handle, 
 	return(EOK);
 }
 
-__SRCVERSION("io_unlink.c $Rev: 153052 $");
+

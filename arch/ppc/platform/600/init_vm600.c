@@ -65,4 +65,4 @@ copy_vm_code() {
 	}
 }
 
-__SRCVERSION("init_vm600.c $Rev: 153052 $");
+

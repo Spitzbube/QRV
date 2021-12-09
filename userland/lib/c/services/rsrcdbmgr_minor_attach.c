@@ -74,4 +74,4 @@ dev_t rsrcdbmgr_devno_attach(const char *name, int minor_guess, int flags) {
 }
 
 
-__SRCVERSION("rsrcdbmgr_minor_attach.c $Rev: 153052 $");
+

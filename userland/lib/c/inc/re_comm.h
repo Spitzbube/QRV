@@ -203,4 +203,4 @@ LOCAL	jmp_buf	wherewasi;
 
 /* -- END OF COMMON SECTION --*/
 
-/* __SRCVERSION("re_comm.h $Rev: 153052 $"); */
+/* 

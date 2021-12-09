@@ -15,4 +15,4 @@ getpagesize(void)
 	return (pagesize == -1) ? __PAGESIZE : pagesize;
 }
 
-__SRCVERSION("getpagesize.c $Rev$");
+

@@ -50,4 +50,4 @@ int timer_settime(timer_t timerid, int flags, const struct itimerspec *value, st
 	return ret;
 }
 
-__SRCVERSION("timer_settime.c $Rev: 166190 $");
+

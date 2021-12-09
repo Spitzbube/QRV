@@ -716,4 +716,4 @@ int _connect_ctrl(struct _connect_ctrl *ctrl, const char *path, unsigned respons
 }
 
 
-__SRCVERSION("_connect_ctrl.c $Rev: 205764 $");
+

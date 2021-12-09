@@ -517,4 +517,4 @@ cpu_interrupt_init(unsigned num_levels)
 	CacheControl(&intrentry_base[0], intrentry_size, MS_SYNC);
 }
 
-__SRCVERSION("interrupt.c $Rev: 203119 $");
+

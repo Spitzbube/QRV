@@ -25,4 +25,4 @@ int mkdir(const char *path, mode_t mode) {
 }
 
 
-__SRCVERSION("mkdir.c $Rev: 153052 $");
+

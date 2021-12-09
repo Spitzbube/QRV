@@ -47,4 +47,4 @@ int statvfs(const char *path, struct statvfs *statvfsp) {
 	return(__statvfs_check(statvfsp));
 }
 
-__SRCVERSION("statvfs.c $Rev: 153052 $");
+

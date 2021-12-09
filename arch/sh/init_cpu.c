@@ -117,4 +117,4 @@ halt() {
 	//NIY: add power management code later
 }
 
-__SRCVERSION("init_cpu.c $Rev: 156873 $");
+

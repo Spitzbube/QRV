@@ -176,4 +176,4 @@ int iofunc_notify(resmgr_context_t *ctp, io_notify_t *msg, iofunc_notify_t *nop,
 	return EAGAIN;
 }
 
-__SRCVERSION("iofunc_notify.c $Rev: 168079 $");
+

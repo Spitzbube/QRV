@@ -25,4 +25,4 @@ int sched_getscheduler(pid_t pid) {
 	return(SchedGet(pid, (pid == 0) ? 0 : 1, NULL));
 }
 
-__SRCVERSION("sched_getscheduler.c $Rev: 153052 $");
+

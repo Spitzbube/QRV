@@ -40,4 +40,4 @@ int (barrier_attr_init)(barrier_attr_t *attr) {
 	return pthread_barrierattr_init((pthread_barrierattr_t *)attr);
 }
 
-__SRCVERSION("barrier_attr_init.c $Rev: 153052 $");
+

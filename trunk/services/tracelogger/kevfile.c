@@ -427,4 +427,4 @@ static size_t kwrite( kevfile_t *kev, const char *data, size_t n )
 	return r;
 }
 
-__SRCVERSION("kevfile.c $Rev: 153052 $");
+

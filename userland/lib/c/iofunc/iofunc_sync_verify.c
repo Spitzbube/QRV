@@ -34,4 +34,4 @@ int iofunc_sync_verify(resmgr_context_t *ctp, io_sync_t *msg, iofunc_ocb_t *ocb)
 	return EOK;
 }
 
-__SRCVERSION("iofunc_sync_verify.c $Rev: 153052 $");
+

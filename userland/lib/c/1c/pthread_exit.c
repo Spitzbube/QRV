@@ -81,4 +81,4 @@ pthread_exit(void *value_ptr) {
 #endif
 }
 
-__SRCVERSION("pthread_exit.c $Rev: 204471 $");
+

@@ -53,4 +53,4 @@ int iofunc_mknod(resmgr_context_t *ctp, io_mknod_t *msg, iofunc_attr_t *attr, io
 	return EOK;
 }
 
-__SRCVERSION("iofunc_mknod.c $Rev: 153052 $");
+

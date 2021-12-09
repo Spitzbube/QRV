@@ -301,5 +301,3 @@ extern void (*pmem_stats_hook)(OBJECT * obp, size_t size, unsigned type);
 #else
 #define ANMEM_MULTI_REFS(obp)	1
 #endif
-
-/* __SRCVERSION("vmm.h,v $Rev: 211761 $"); */

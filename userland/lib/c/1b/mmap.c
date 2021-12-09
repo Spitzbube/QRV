@@ -84,4 +84,4 @@ _mmap(void *addr, size_t len, int prot, int flags, int fd, off64_t off,
 	return _mmap2(addr, len, prot, flags, fd, off, align, 0, base, size);
 }
 
-__SRCVERSION("mmap.c $Rev: 153052 $");
+

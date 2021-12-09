@@ -33,4 +33,4 @@ int msync(void *addr, size_t len, int flags) {
 	return MsgSendnc(MEMMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("msync.c $Rev: 153052 $");
+

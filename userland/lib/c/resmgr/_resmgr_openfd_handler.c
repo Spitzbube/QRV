@@ -51,4 +51,4 @@ int _resmgr_openfd_handler(resmgr_context_t *ctp, resmgr_iomsgs_t *msg) {
 	return n;
 }
 
-__SRCVERSION("_resmgr_openfd_handler.c $Rev: 153052 $");
+

@@ -26,4 +26,4 @@ int pthread_mutexattr_getprotocol(const pthread_mutexattr_t *attr, int *protocol
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutexattr_getprotocol.c $Rev: 153052 $");
+

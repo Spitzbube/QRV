@@ -48,4 +48,4 @@ fpusave_alloc() {
 	act->fpudata->fpcr31 = MIPS_FCR31_FS;
 }
 
-__SRCVERSION("nano_fpu.c $Rev: 153052 $");
+

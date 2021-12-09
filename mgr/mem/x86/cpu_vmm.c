@@ -833,5 +833,3 @@ unsigned cpu_vmm_vaddrinfo(PROCESS * prp, uintptr_t vaddr, paddr_t * paddrp, siz
     }
     return prot;
 }
-
-__SRCVERSION("cpu_vmm.c $Rev: 175229 $");

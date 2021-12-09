@@ -132,4 +132,4 @@ exc_report_unexpected(unsigned vector) {
 			vector >> 4);
 }
 
-__SRCVERSION("exc_vector.c $Rev: 199396 $");
+

@@ -25,4 +25,4 @@ unsigned atoh( const char *p )
 	return( strtoul( p, NULL, 16 ) );
 }
 
-__SRCVERSION("atoh.c $Rev: 153052 $");
+

@@ -26,4 +26,4 @@ extern void __cnvs2d(char *buf, double *value);
 
 extern void (*__EFG_scanf)(char *buf, double *value);
 
-/* __SRCVERSION("efg.h $Rev: 153052 $"); */
+/* 

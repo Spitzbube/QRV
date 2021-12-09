@@ -41,4 +41,4 @@ asm static /*inline*/ void __cpu_membarrier(void) {
 
 #endif
 
-/* __SRCVERSION("cpuinline.h $Rev: 153052 $"); */
+/* 

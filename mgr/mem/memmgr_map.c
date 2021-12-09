@@ -272,5 +272,3 @@ int memmgr_map(resmgr_context_t * ctp, tProcess * prp, mem_map_t * msg)
 
     return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o);
 }
-
-__SRCVERSION("memmgr_map.c $Rev: 174894 $");

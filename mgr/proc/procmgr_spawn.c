@@ -799,6 +799,3 @@ struct loader_context *procmgr_exec(resmgr_context_t * ctp, void *msg, PROCESS *
         return lcp;             // termer can get rid of loader context
     }
 }
-
-
-__SRCVERSION("procmgr_spawn.c $Rev: 198777 $");

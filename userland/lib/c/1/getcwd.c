@@ -107,7 +107,7 @@ char *getcwd(char *buf, size_t size) {
 	return buf;
 }
 
-__SRCVERSION("getcwd.c $Rev: 206511 $");
+
 
 
 

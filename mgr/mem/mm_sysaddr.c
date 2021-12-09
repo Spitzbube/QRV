@@ -36,5 +36,3 @@ void sysaddr_map(void *d)
     }
     data->start = va;
 }
-
-__SRCVERSION("mm_sysaddr.c $Rev: 153052 $");

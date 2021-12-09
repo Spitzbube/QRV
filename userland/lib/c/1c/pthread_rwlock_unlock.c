@@ -65,4 +65,4 @@ pthread_rwlock_unlock(pthread_rwlock_t *l) {
 	return (status) ? status : altstat;
 }
 
-__SRCVERSION("pthread_rwlock_unlock.c $Rev: 153052 $");
+

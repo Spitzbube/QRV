@@ -31,4 +31,4 @@ void *memalign_pc(size_t alignment, size_t size, unsigned int *pc)
 }
 #endif
 
-__SRCVERSION("_memalign_pc.c $Rev: 153052 $");
+

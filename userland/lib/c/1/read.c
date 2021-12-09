@@ -33,4 +33,4 @@ ssize_t read(int fd, void *buff, size_t nbytes) {
 }
 
 
-__SRCVERSION("read.c $Rev: 153052 $");
+

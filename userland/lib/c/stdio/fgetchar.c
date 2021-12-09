@@ -25,4 +25,4 @@ int fgetchar(void) {
 	return fgetc(stdin);
 }
 
-__SRCVERSION("fgetchar.c $Rev: 153052 $");
+

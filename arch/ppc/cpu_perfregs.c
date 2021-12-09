@@ -48,4 +48,4 @@ int	rdecl cpu_debug_get_perfregs(THREAD *thp, debug_perfreg_t *regs)
 	return ENXIO;
 }
 
-__SRCVERSION("cpu_perfregs.c $Rev: 153052 $");
+

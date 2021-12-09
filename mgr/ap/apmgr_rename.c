@@ -210,5 +210,5 @@ int apmgr_rename(resmgr_context_t *ctp, io_rename_t *msg, RESMGR_HANDLE_T *handl
 	return ENOSYS;
 }
 
-__SRCVERSION("$IQ: apmgr_rename.c,v 1.23 $");
+
 

@@ -2195,4 +2195,4 @@ void procfs_init(void)
     rsrcdbmgr_proc_devno(_MAJOR_FSYS, &procfs_devno, -1, 0);
 }
 
-__SRCVERSION("procfs.c $Rev: 209169 $");
+

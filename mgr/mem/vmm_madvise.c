@@ -33,5 +33,3 @@ int vmm_madvise(PROCESS * prp, uintptr_t vaddr, size_t len, int flags)
     map_coalese(&ms);
     return EOK;
 }
-
-__SRCVERSION("vmm_madvise.c $Rev: 153052 $");

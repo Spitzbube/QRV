@@ -27,4 +27,4 @@ void asyncmsg_free(void *buf)
 	return;
 }
 
-__SRCVERSION("asyncmsg_free.c $Rev: 153052 $");
+

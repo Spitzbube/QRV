@@ -36,4 +36,4 @@ struct _sleepon_handle {
 	int						reserved[6];
 };
 
-/* __SRCVERSION("sleepon.h $Rev: 153052 $"); */
+/* 

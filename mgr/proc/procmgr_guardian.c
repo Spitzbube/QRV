@@ -52,5 +52,3 @@ int procmgr_msg_guardian(resmgr_context_t * ctp, proc_guardian_t * msg)
     SETIOV(ctp->iov + 0, &msg->o, sizeof msg->o);
     return _RESMGR_NPARTS(1);
 }
-
-__SRCVERSION("procmgr_guardian.c $Rev: 153052 $");

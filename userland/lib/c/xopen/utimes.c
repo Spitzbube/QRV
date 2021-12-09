@@ -29,4 +29,4 @@ int utimes(const char *path, const struct timeval tv[2]) {
     return utime(path, &ub);
 }
 
-__SRCVERSION("utimes.c $Rev: 153052 $");
+

@@ -26,4 +26,4 @@ int pmm_msync(PROCESS * prp, uintptr_t addr, size_t len, int flags)
     return EOK;
 }
 
-__SRCVERSION("pmm_msync.c $Rev: 153052 $");
+

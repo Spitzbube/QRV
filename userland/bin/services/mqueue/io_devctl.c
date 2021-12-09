@@ -107,4 +107,4 @@ io_devctl(resmgr_context_t *ctp, io_devctl_t *msg, struct ocb *ocb) {
 	return _RESMGR_NPARTS(1);
 }
 
-__SRCVERSION("$File: io_devctl.c $$Rev: 169544 $");
+

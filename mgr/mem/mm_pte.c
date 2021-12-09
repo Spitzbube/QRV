@@ -240,5 +240,3 @@ int pte_bad(ADDRESS * adp, uintptr_t vaddr)
     manip.data.paddr = 0;
     return pte_manipulate(&manip);
 }
-
-__SRCVERSION("mm_pte.c $Rev: 172513 $");

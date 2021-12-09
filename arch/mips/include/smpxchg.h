@@ -117,4 +117,4 @@ top:
 
 #endif
 
-/* __SRCVERSION("smpxchg.h $Rev: 153052 $"); */
+/* 

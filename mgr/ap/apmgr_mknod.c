@@ -50,5 +50,5 @@ int apmgr_mknod(resmgr_context_t *ctp, io_mknod_t *msg, RESMGR_HANDLE_T *handle,
 	}
 }
 
-__SRCVERSION("$IQ: apmgr_mknod.c,v 1.23 $");
+
 

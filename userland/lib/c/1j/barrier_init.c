@@ -73,4 +73,4 @@ int (barrier_init)(barrier_t *b, const barrier_attr_t *attr, int count) {
 	return pthread_barrier_init((pthread_barrier_t *)b, (pthread_barrierattr_t *)attr, count);
 }
 
-__SRCVERSION("barrier_init.c $Rev: 153052 $");
+

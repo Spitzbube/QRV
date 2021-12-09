@@ -109,4 +109,4 @@ struct nsem		**n, *sem;
 	return(-1);
 }
 
-__SRCVERSION("__named_sem.c $Rev: 153052 $");
+

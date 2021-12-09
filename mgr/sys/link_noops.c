@@ -81,4 +81,4 @@ int iofunc_power_default(resmgr_context_t * ctp, io_power_t * msg, iofunc_ocb_t 
     return ENOSYS;
 }
 
-__SRCVERSION("link_noops.c $Rev: 161179 $");
+

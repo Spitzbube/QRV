@@ -28,4 +28,4 @@ int pthread_condattr_setclock(pthread_condattr_t *attr, int id) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_condattr_setclock.c $Rev: 153052 $");
+

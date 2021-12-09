@@ -125,4 +125,4 @@ extern uintptr_t	xfer_diff[NUM_XFER_MAPPINGS];
 extern uintptr_t	xfer_lastaddr[NUM_XFER_MAPPINGS];
 extern unsigned		xfer_rotor;
 
-/* __SRCVERSION("cpu_mm_internal.h $Rev: 199396 $"); */
+/* 

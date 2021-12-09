@@ -25,4 +25,4 @@ int pthread_attr_destroy(pthread_attr_t *attr) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_destroy.c $Rev: 153052 $");
+

@@ -183,5 +183,3 @@ procmgr_thread_attr(struct _thread_attr *attr, struct loader_context *lcp, resmg
             SchedGet(ctp->info.pid, ctp->info.tid, (struct sched_param *) &attr->__param);
     }
 }
-
-__SRCVERSION("procmgr_misc.c $Rev: 164352 $");

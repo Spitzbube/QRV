@@ -33,4 +33,4 @@ int fchown(int fd, uid_t uid, gid_t gid) {
 	return MsgSendnc(fd, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("fchown.c $Rev: 153052 $");
+

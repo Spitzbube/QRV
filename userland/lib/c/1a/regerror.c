@@ -145,4 +145,4 @@ char *localbuf;
 	return(localbuf);
 }
 
-__SRCVERSION("regerror.c $Rev: 153052 $");
+

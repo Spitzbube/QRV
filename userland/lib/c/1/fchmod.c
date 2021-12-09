@@ -33,4 +33,4 @@ int fchmod(int fd, mode_t mode) {
 }
 
 
-__SRCVERSION("fchmod.c $Rev: 153052 $");
+

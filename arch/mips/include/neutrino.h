@@ -202,4 +202,4 @@ __END_DECLS
 
 #endif /* __MIPS_NEUTRINO_H_INCLUDED */
 
-/* __SRCVERSION("neutrino.h $Rev: 174980 $"); */
+/* 

@@ -29,4 +29,4 @@ void *memalign(size_t alignment, size_t size)
 	return(__memalign(alignment, size));
 }
 
-__SRCVERSION("_memalign.c $Rev: 153052 $");
+

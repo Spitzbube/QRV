@@ -156,5 +156,5 @@ extern dev_t apsmgr_devno;
 
 
 
-__SRCVERSION("$IQ: apmgr_misc.c,v 1.23 $");
+
 

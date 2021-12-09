@@ -15,18 +15,18 @@
  * $
  */
 
-#include "externs.h"
-#include "pathmgr_node.h"
-#include "pathmgr_object.h"
-#include "pathmgr_proto.h"
-#include "apm.h"
+#include "taskman/externs.h"
+#include "taskman/pathmgr_node.h"
+#include "taskman/pathmgr_object.h"
+#include "taskman/pathmgr_proto.h"
+
 #include <sys/pathmgr.h>
 
 
 /*
  * Mark flags for quicker searching later
  */
-static void object_set_flags(NODE * nop, OBJECT * obp)
+static void object_set_flags(tNode * nop, tPathMgrObject * obp)
 {
     switch (obp->hdr.type) {
     case OBJECT_SERVER:
@@ -53,10 +53,10 @@ static void object_set_flags(NODE * nop, OBJECT * obp)
  * allow the scaning routine to stop early when checking for
  * objects.
  */
-OBJECT *pathmgr_object_attach(tProcess * prp, NODE * nop, const char *path, int type, unsigned flags,
+tPathMgrObject *pathmgr_object_attach(tProcess * prp, tNode * nop, const char *path, int type, unsigned flags,
                               void *data)
 {
-    OBJECT *obp, *p, **pp;
+    tPathMgrObject *obp, *p, **pp;
 
     /* Create the node in the pathname space */
     if (!(nop = pathmgr_node_lookup(nop, path, PATHMGR_LOOKUP_ATTACH | PATHMGR_LOOKUP_CREATE, 0))) {
@@ -129,11 +129,10 @@ OBJECT *pathmgr_object_attach(tProcess * prp, NODE * nop, const char *path, int 
  * unlink from the node. The object must be freed by the calling
  * routine after the unlink.
  */
-void pathmgr_object_detach(OBJECT * obp)
+void pathmgr_object_detach(tPathMgrObject * obp)
 {
-    OBJECT *p, **pp;
-    NODE *nop;
-    NODE *anc;
+    tPathMgrObject *p, **pp;
+    tNode *nop, *anc;
 #ifndef NDEBUG
     int found = 0;
 #endif
@@ -183,7 +182,7 @@ void pathmgr_object_detach(OBJECT * obp)
 }
 
 
-size_t pathmgr_object_pathname(OBJECT * obp, size_t max, char *dest)
+size_t pathmgr_object_pathname(tPathMgrObject * obp, size_t max, char *dest)
 {
     int len;
 
@@ -201,20 +200,20 @@ size_t pathmgr_object_pathname(OBJECT * obp, size_t max, char *dest)
 }
 
 
-OBJECT *pathmgr_object_clone(OBJECT * obp)
+tPathMgrObject *pathmgr_object_clone(tPathMgrObject * obp)
 {
     atomic_add(&obp->hdr.refs, 1);
     return obp;
 }
 
 
-void pathmgr_object_unclone(OBJECT * obp)
+void pathmgr_object_unclone(tPathMgrObject * obp)
 {
     atomic_sub(&obp->hdr.refs, 1);
 }
 
 
-void pathmgr_object_done(OBJECT * obp)
+void pathmgr_object_done(tPathMgrObject * obp)
 {
     if (atomic_sub_value(&obp->hdr.refs, 1) == 1) {
         object_done(obp);
@@ -222,12 +221,12 @@ void pathmgr_object_done(OBJECT * obp)
 }
 
 
-static int dummy_done(OBJECT * o)
+static int dummy_done(tPathMgrObject * o)
 {
     return 1;
 }
 
-static size_t dummy_name(OBJECT * o, size_t max, char *dst)
+static size_t dummy_name(tPathMgrObject * o, size_t max, char *dst)
 {
 
     if (dst)
@@ -235,32 +234,32 @@ static size_t dummy_name(OBJECT * o, size_t max, char *dst)
     return 0;
 }
 
-static int dummy_devctl(resmgr_context_t * ctp, io_devctl_t * msg, OBJECT * obp)
+static int dummy_devctl(resmgr_context_t * ctp, io_devctl_t * msg, tPathMgrObject * obp)
 {
     return ENOSYS;
 }
 
-extern int server_create(OBJECT *, void *);
-extern int symlink_create(OBJECT *, void *);
-extern int anmem_create(OBJECT *, void *);
-extern int anmem_done(OBJECT *);
-extern size_t anmem_name(OBJECT *, size_t, char *);
-extern int shmem_create(OBJECT *, void *);
-extern int shmem_done(OBJECT *);
-extern size_t shmem_name(OBJECT *, size_t, char *);
-extern int shmem_devctl(resmgr_context_t * ctp, io_devctl_t * msg, OBJECT * obp);
-extern int fdmem_create(OBJECT *, void *);
-extern int fdmem_done(OBJECT *);
-extern size_t fdmem_name(OBJECT *, size_t, char *);
-extern int tymem_create(OBJECT *, void *);
-extern int tymem_done(OBJECT *);
+extern int server_create(tPathMgrObject *, void *);
+extern int symlink_create(tPathMgrObject *, void *);
+extern int anmem_create(tPathMgrObject *, void *);
+extern int anmem_done(tPathMgrObject *);
+extern size_t anmem_name(tPathMgrObject *, size_t, char *);
+extern int shmem_create(tPathMgrObject *, void *);
+extern int shmem_done(tPathMgrObject *);
+extern size_t shmem_name(tPathMgrObject *, size_t, char *);
+extern int shmem_devctl(resmgr_context_t * ctp, io_devctl_t * msg, tPathMgrObject * obp);
+extern int fdmem_create(tPathMgrObject *, void *);
+extern int fdmem_done(tPathMgrObject *);
+extern size_t fdmem_name(tPathMgrObject *, size_t, char *);
+extern int tymem_create(tPathMgrObject *, void *);
+extern int tymem_done(tPathMgrObject *);
 
 struct object_info {
     unsigned len;
-    int (*create)(OBJECT *, void *);
-    int (*done)(OBJECT *);
-    size_t (*name)(OBJECT *, size_t, char *);
-    int (*devctl)(resmgr_context_t * ctp, io_devctl_t * msg, OBJECT * obp);
+    int (*create)(tPathMgrObject *, void *);
+    int (*done)(tPathMgrObject *);
+    size_t (*name)(tPathMgrObject *, size_t, char *);
+    int (*devctl)(resmgr_context_t * ctp, io_devctl_t * msg, tPathMgrObject * obp);
 };
 
 struct object_info obj_info[] = {
@@ -283,11 +282,11 @@ struct object_info obj_info[] = {
 };
 
 
-OBJECT *object_create(int type, void *extra, tProcess * prp, memclass_id_t mcid)
+tPathMgrObject *object_create(int type, void *extra, tProcess * prp, memclass_id_t mcid)
 {
     struct object_info *info;
     unsigned len;
-    OBJECT *obp;
+    tPathMgrObject *obp;
     part_id_t mpart_id = mempart_getid(prp, mcid);
 
     CRASHCHECK(mcid == memclass_id_t_INVALID);
@@ -325,7 +324,7 @@ OBJECT *object_create(int type, void *extra, tProcess * prp, memclass_id_t mcid)
 
 #define OBJECT_DONE_INPROGRESS	0x80000000
 
-int object_done(OBJECT * obp)
+int object_done(tPathMgrObject * obp)
 {
     int r = 0;
 
@@ -342,10 +341,10 @@ int object_done(OBJECT * obp)
              * would have required inclusion of the mm_mempart_internal.h file
              * creating a linkage between pathmgr and memmgr that did not otherwise
              * exist. Although functionally identical, the implementation instead
-             * includes a function pointer within the OBJECT.hdr field into which
+             * includes a function pointer within the tPathMgrObject.hdr field into which
              * is stored the disassociate function when the object is first
              * associated. The disassociate function will remove itself from the
-             * OBJECT.hdr, thereby preventing being called more than once"
+             * tPathMgrObject.hdr, thereby preventing being called more than once"
              */
             if (obp->hdr.mpart_disassociate != NULL) {
                 obp->hdr.mpart_disassociate(obp);
@@ -358,15 +357,13 @@ int object_done(OBJECT * obp)
 }
 
 
-size_t object_name(OBJECT * obp, size_t max, char *name)
+size_t object_name(tPathMgrObject * obp, size_t max, char *name)
 {
     return obj_info[obp->hdr.type].name(obp, max, name);
 }
 
 
-int object_devctl(resmgr_context_t * ctp, io_devctl_t * msg, OBJECT * obp)
+int object_devctl(resmgr_context_t * ctp, io_devctl_t * msg, tPathMgrObject * obp)
 {
     return obj_info[obp->hdr.type].devctl(ctp, msg, obp);
 }
-
-__SRCVERSION("pathmgr_object.c $Rev: 198777 $");

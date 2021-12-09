@@ -57,4 +57,4 @@ int procmgr_event_notify_delete(int id)
     return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("procmgr_event_notify.c $Rev: 159359 $");
+

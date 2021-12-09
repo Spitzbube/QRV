@@ -216,4 +216,4 @@
 
 #endif /* __MIPS_OPCODE_H_INCLUDED */
 
-/* __SRCVERSION("opcode.h $Rev: 153052 $"); */
+/* 

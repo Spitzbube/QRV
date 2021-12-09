@@ -35,4 +35,4 @@ void _flush_cache(const void *addr, size_t len, unsigned flags)
     (void) msync((void *) addr, len, MS_INVALIDATE_ICACHE);
 }
 
-__SRCVERSION("_flush_cache.c $Rev: 153052 $");
+

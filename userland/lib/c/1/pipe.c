@@ -38,4 +38,4 @@ int pipe(int fildes[2]) {
 	return -1;
 }
 
-__SRCVERSION("pipe.c $Rev: 153052 $");
+

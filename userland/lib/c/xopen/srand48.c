@@ -49,4 +49,4 @@ srand48(long seed)
 	__rand48_add = RAND48_ADD;
 }
 
-__SRCVERSION("srand48.c $Rev: 153052 $");
+

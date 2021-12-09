@@ -25,4 +25,4 @@ _Longlong atoll( const char *p )
 	return( strtoll( p, NULL, 10 ) );
 }
 
-__SRCVERSION("atoll.c $Rev: 153052 $");
+

@@ -32,4 +32,4 @@ int munlockall(void) {
 	return MsgSendnc(MEMMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("munlockall.c $Rev: 153052 $");
+

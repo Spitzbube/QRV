@@ -122,4 +122,4 @@ kdebug_callout(unsigned long sigcode, MIPS_CPU_REGISTERS *ctx, unsigned loc) {
 	return(kdebug_enter(prp, sigcode, ctx));
 }
 
-__SRCVERSION("kdebug.c $Rev: 161879 $");
+

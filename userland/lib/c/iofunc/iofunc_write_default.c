@@ -46,4 +46,4 @@ int iofunc_write_default(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *o
 	return EOK;
 }
 
-__SRCVERSION("iofunc_write_default.c $Rev: 153052 $");
+

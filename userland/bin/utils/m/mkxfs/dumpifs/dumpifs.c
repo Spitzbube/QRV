@@ -1242,5 +1242,5 @@ void compute_md5(
 }
 
 #ifdef __QNXNTO__
-__SRCVERSION("dumpifs.c $Rev: 207305 $");
+
 #endif

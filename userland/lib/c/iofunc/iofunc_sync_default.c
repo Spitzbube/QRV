@@ -27,4 +27,4 @@ int iofunc_sync_default(resmgr_context_t *ctp, io_sync_t *msg, iofunc_ocb_t *ocb
 	return iofunc_sync_verify(ctp, msg, ocb);
 }
 
-__SRCVERSION("iofunc_sync_default.c $Rev: 153052 $");
+

@@ -34,4 +34,4 @@ isfdtype(int fd, int fdtype)
 		return(0);
 }
 
-__SRCVERSION("isfdtype.c $Rev: 153052 $");
+

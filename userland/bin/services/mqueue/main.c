@@ -180,4 +180,4 @@ MQMSG	*m;
 	}
 }
 
-__SRCVERSION("main.c $Rev: 169544 $");
+

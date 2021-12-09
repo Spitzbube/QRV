@@ -24,4 +24,4 @@ int pthread_rwlockattr_destroy(pthread_rwlockattr_t *attr) {
 	return pthread_mutexattr_destroy((pthread_mutexattr_t *)attr);
 }
 
-__SRCVERSION("pthread_rwlockattr_destroy.c $Rev: 153052 $");
+

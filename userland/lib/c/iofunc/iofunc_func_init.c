@@ -87,4 +87,4 @@ void iofunc_func_init(unsigned nconnect, resmgr_connect_funcs_t *connect, unsign
 }
 
 
-__SRCVERSION("iofunc_func_init.c $Rev: 153052 $");
+

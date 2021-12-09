@@ -33,4 +33,4 @@ int fstatvfs64(int fd, struct statvfs64 *statvfsp) {
 	return _devctl(fd, DCMD_FSYS_STATVFS, statvfsp, sizeof *statvfsp, _DEVCTL_FLAG_NORETVAL);
 }
 
-__SRCVERSION("fstatvfs64.c $Rev: 153052 $");
+

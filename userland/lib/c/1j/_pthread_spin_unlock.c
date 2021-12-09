@@ -26,4 +26,4 @@ int _pthread_spin_unlock(pthread_spinlock_t *lock) {
 }
 
 
-__SRCVERSION("_pthread_spin_unlock.c $Rev: 153052 $");
+

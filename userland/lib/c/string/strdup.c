@@ -39,4 +39,4 @@ char *strdup( const char *__string )
 	return( p );
 }
 
-__SRCVERSION("strdup.c $Rev: 153052 $");
+

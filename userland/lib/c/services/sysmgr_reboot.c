@@ -32,4 +32,4 @@ int sysmgr_reboot(void) {
 	return MsgSendnc(SYSMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("sysmgr_reboot.c $Rev: 153052 $");
+

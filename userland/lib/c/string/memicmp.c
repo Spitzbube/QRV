@@ -49,4 +49,4 @@ int memicmp( const void *_s1, const void *_s2, size_t len )
 	}
 }
 
-__SRCVERSION("memicmp.c $Rev: 167420 $");
+

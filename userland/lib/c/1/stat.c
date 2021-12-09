@@ -45,4 +45,4 @@ int stat(const char *path, struct stat *statl) {
 	return _stat(path, statl, 0);
 }
 
-__SRCVERSION("stat.c $Rev: 153052 $");
+

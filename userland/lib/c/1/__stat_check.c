@@ -32,4 +32,4 @@ int __stat_check(const struct stat *st)
 	return(0);
 }
 
-__SRCVERSION("__stat_check.c $Rev: 153052 $");
+

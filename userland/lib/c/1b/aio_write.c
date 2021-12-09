@@ -45,4 +45,4 @@ int aio_write(struct aiocb *aiocbp)
 	return aio_write64((struct aiocb64 *)aiocbp);
 }
 
-__SRCVERSION("aio_write.c $Rev: 153052 $");
+

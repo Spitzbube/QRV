@@ -37,4 +37,4 @@ int __cxa_atexit (void (*func) (void *), void *arg, void *dso) {
 	return -1;
 }
 
-__SRCVERSION("__cxa_atexit.c $Rev: 153052 $");
+

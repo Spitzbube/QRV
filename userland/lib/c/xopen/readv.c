@@ -36,4 +36,4 @@ ssize_t readv(int fd, const iov_t *iov, int nparts) {
 	return MsgSendv(fd, (iov_t *)&msg.i, -sizeof msg.i, iov, nparts);
 }
 
-__SRCVERSION("readv.c $Rev: 153052 $");
+

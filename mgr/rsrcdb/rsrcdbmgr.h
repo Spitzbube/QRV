@@ -176,4 +176,4 @@ int rsrcmgr_handle_minor(resmgr_context_t *ctp, rsrc_cmd_t *msg, rsrc_minor_requ
 
 #endif
 
-/* __SRCVERSION("rsrcdbmgr.h $Rev: 153052 $"); */
+/* 

@@ -27,4 +27,4 @@ pthread_self( void ) {
 	return( ( pthread_t ) LIBC_TLS()->__tid );
 }
 
-__SRCVERSION("pthread_self.c $Rev: 153052 $");
+

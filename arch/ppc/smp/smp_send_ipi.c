@@ -23,5 +23,3 @@ void rdecl
 send_ipi(int cpu, int cmd) {
 	send_ipi_rtn(_syspage_ptr, cpu, cmd, (unsigned *)&ipicmds[cpu]);
 }
-
-__SRCVERSION("smp_send_ipi.c $Rev: 153052 $");

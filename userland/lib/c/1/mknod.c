@@ -24,4 +24,4 @@ int mknod(const char *path, mode_t mode, dev_t dev) {
 	return _mknod_extra(path, mode, dev, 0, 0, 0);
 }
 
-__SRCVERSION("mknod.c $Rev: 153052 $");
+

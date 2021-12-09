@@ -44,4 +44,4 @@ int pthread_key_delete(pthread_key_t key) {
 }
 
 
-__SRCVERSION("pthread_key_delete.c $Rev: 153052 $");
+

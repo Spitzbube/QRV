@@ -25,4 +25,4 @@ int pthread_condattr_destroy(pthread_condattr_t *attr) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_condattr_destroy.c $Rev: 153052 $");
+

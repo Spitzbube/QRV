@@ -239,5 +239,5 @@ main(int argc, char *argv[]) {
 }
 
 #ifdef __QNXNTO__
-__SRCVERSION("mkifsf_srec.c $Rev: 153052 $");
+
 #endif

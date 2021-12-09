@@ -55,4 +55,4 @@ int iofunc_close_ocb(resmgr_context_t *ctp, iofunc_ocb_t *ocb, iofunc_attr_t *at
 	return EOK;
 }
 
-__SRCVERSION("iofunc_close_ocb.c $Rev: 153052 $");
+

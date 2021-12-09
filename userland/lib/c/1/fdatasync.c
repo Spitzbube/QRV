@@ -32,4 +32,4 @@ int fdatasync(int fd) {
 	return MsgSendnc(fd, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("fdatasync.c $Rev: 153052 $");
+

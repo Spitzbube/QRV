@@ -36,4 +36,4 @@ extern void					_key_delete(pthread_key_t);
 
 #endif
 
-/* __SRCVERSION("pthread_key.h $Rev: 153052 $"); */
+/* 

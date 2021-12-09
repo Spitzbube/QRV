@@ -27,4 +27,4 @@ int timer_delete(timer_t timerid) {
 	return(TimerDestroy(timerid));
 	}
 
-__SRCVERSION("timer_delete.c $Rev: 153052 $");
+

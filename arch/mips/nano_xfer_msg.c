@@ -94,4 +94,4 @@ if(soff > GETIOVLEN(src)) crash();
 }
 
 
-__SRCVERSION("nano_xfer_msg.c $Rev: 153052 $");
+

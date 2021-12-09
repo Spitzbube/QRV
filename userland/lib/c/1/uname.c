@@ -35,4 +35,4 @@ int uname(struct utsname *name) {
 	return 0;
 }
 
-__SRCVERSION("uname.c $Rev: 153052 $");
+

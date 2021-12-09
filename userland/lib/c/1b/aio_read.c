@@ -46,4 +46,4 @@ int aio_read(struct aiocb *aiocbp)
 	return aio_read64((struct aiocb64 *)aiocbp);
 }
 
-__SRCVERSION("aio_read.c $Rev: 153052 $");
+

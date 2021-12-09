@@ -37,4 +37,4 @@ int futime(int fd, const struct utimbuf *times) {
 	return MsgSendnc(fd, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("futime.c $Rev: 153052 $");
+

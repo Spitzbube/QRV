@@ -36,4 +36,4 @@ int		fd, rc, saved;
 	return(rc);
 }
 
-__SRCVERSION("truncate.c $Rev: 153052 $");
+

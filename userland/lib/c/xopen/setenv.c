@@ -81,4 +81,4 @@ int setenv(const char *name, const char *value, int rewrite) {
 }
 
 
-__SRCVERSION("setenv.c $Rev: 153052 $");
+

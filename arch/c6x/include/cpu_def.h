@@ -57,4 +57,4 @@ struct cpu_extra_state {
 	char	dummy;
 };
 
-/* __SRCVERSION("cpu_c6x.h $Rev: 153052 $"); */
+/* 

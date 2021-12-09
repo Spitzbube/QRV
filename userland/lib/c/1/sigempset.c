@@ -27,4 +27,4 @@ int sigemptyset(sigset_t *set)
 }
 
 
-__SRCVERSION("sigempset.c $Rev: 153052 $");
+

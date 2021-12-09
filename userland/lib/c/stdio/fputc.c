@@ -39,4 +39,4 @@ _STD_END
  * Consult your license regarding permissions and restrictions.
 V5.00:1296 */
 
-__SRCVERSION("fputc.c $Rev: 153052 $");
+

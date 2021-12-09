@@ -60,4 +60,4 @@ VALUE(ARM_CPU_FLAG_XSCALE_CP0,	ARM_CPU_FLAG_XSCALE_CP0);
 
 VALUE(FI_CPU_CODE,			offsetof(struct fault_info, cpu.code));
 
-/* __SRCVERSION("cpu_asmoff.h $Rev: 153052 $"); */
+/* 

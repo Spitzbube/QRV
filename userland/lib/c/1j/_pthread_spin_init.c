@@ -27,4 +27,4 @@ int _pthread_spin_init(pthread_spinlock_t *lock, int pshared) {
 	return EOK;
 }
 
-__SRCVERSION("_pthread_spin_init.c $Rev: 153052 $");
+

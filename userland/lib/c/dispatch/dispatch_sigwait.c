@@ -42,4 +42,4 @@ int _sigwait_handler(dispatch_context_t *ctp) {
 	return 0;
 }
 
-__SRCVERSION("dispatch_sigwait.c $Rev: 153052 $");
+

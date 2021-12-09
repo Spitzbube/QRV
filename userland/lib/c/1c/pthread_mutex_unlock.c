@@ -38,4 +38,4 @@ int
 	return EPERM;
 }
 
-__SRCVERSION("pthread_mutex_unlock.c $Rev: 153052 $");
+

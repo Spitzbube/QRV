@@ -23,4 +23,4 @@
 extern char	*__progname;
 #include "externs.c"
 
-/* __SRCVERSION("externs.h $Rev: 153052 $"); */
+/* 

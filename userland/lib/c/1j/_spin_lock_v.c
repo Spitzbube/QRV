@@ -24,4 +24,4 @@ int (*_spin_lock_v)(sync_t *sync) =
 	(int(*)(sync_t *sync)) pthread_mutex_lock;
 
 
-__SRCVERSION("_spin_lock_v.c $Rev: 153052 $");
+

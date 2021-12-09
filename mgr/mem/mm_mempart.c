@@ -751,5 +751,3 @@ char *strrchr(const char *s, int c)
             return ((char *) sc);
     }
 }
-
-__SRCVERSION("mm_mempart.c $Rev$");

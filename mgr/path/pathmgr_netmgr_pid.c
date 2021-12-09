@@ -43,4 +43,4 @@ pid_t pathmgr_netmgr_pid(void)
     return pid;
 }
 
-__SRCVERSION("pathmgr_netmgr_pid.c $Rev: 153052 $");
+

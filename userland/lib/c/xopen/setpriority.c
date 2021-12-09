@@ -41,4 +41,4 @@ int  setpriority(int which, id_t who, int priority) {
 #endif
 }
 
-__SRCVERSION("setpriority.c $Rev: 153052 $");
+

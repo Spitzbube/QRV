@@ -158,5 +158,5 @@ int apxmgr_lseek(resmgr_context_t *ctp, io_lseek_t *msg, RESMGR_OCB_T *_ocb)
 
 
 
-__SRCVERSION("$IQ: apxmgr_resmgrfuncs.c,v 1.23 $");
+
 

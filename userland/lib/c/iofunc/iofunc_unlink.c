@@ -133,4 +133,4 @@ int iofunc_unlink(resmgr_context_t *ctp, io_unlink_t *msg, iofunc_attr_t *attr, 
 	return EOK;
 }
 
-__SRCVERSION("iofunc_unlink.c $Rev: 153052 $");
+

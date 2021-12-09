@@ -36,4 +36,4 @@ int pthread_mutexattr_setprotocol(pthread_mutexattr_t *attr, int protocol) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutexattr_setprotocol.c $Rev: 153052 $");
+

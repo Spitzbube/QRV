@@ -521,4 +521,4 @@ cpu_interrupt_init(unsigned num_levels) {
 	_sfree(labels, lsize);
 }
 
-__SRCVERSION("interrupt.c $Rev: 199396 $");
+

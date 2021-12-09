@@ -55,4 +55,4 @@ int readblock(int fd, size_t blksize, unsigned block, int numblks, void *buff) {
 	return nbytes / (int)blksize;
 }
 
-__SRCVERSION("readblock.c $Rev: 153052 $");
+

@@ -113,4 +113,4 @@ struct _asyncmsg_get_header* asyncmsg_get(int chid)
 	return agh;
 }
 
-__SRCVERSION("asyncmsg_get.c $Rev: 157149 $");
+

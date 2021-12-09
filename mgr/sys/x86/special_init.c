@@ -43,4 +43,4 @@ special_init(void) {
 	message_attach(dpp, NULL, _CPUMSG_BASE, _CPUMSG_MAX, special_handler, NULL);
 }
 
-__SRCVERSION("special_init.c $Rev: 160662 $");
+

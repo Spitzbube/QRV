@@ -110,4 +110,4 @@ OBJECT *vmm_vaddr_to_memobj(PROCESS * prp, void *addr, unsigned *offset, int mar
     return (OBJECT *) - 1;
 }
 
-__SRCVERSION("vmm_vaddr_to_memobj.c $Rev: 199396 $");
+

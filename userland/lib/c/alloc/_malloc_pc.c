@@ -31,4 +31,4 @@ void *malloc_pc(size_t size, unsigned int *pc)
 }
 #endif
 
-__SRCVERSION("_malloc_pc.c $Rev: 153052 $");
+

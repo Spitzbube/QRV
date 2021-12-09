@@ -27,4 +27,4 @@ int shm_close(int fd) {
 	return close(fd);
 }
 
-__SRCVERSION("shm_close.c $Rev: 153052 $");
+

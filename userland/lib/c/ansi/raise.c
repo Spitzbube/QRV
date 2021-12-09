@@ -30,4 +30,4 @@ int raise(int signo) {
     return(SignalKill(ND_LOCAL_NODE, getpid(), gettid(), signo, SI_USER, 0));
 	}
 
-__SRCVERSION("raise.c $Rev: 153052 $");
+

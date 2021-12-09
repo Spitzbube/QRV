@@ -38,4 +38,4 @@ int waitid(idtype_t idtype, id_t id, siginfo_t *infop, int options) {
 	return MsgSendv(PROCMGR_COID, iov + 0, 1, iov + 1, infop ? 1 : 0);
 }
 
-__SRCVERSION("waitid.c $Rev: 153052 $");
+

@@ -58,5 +58,3 @@ init_smp(void) {
 	_cpupage_ptr = (void *)VM_CPUPAGE_ADDR;
 	ker_start();
 }
-
-__SRCVERSION("init_smp.c $Rev: 166033 $");

@@ -28,4 +28,4 @@ int pthread_attr_setguardsize(pthread_attr_t *attr, size_t guardsize) {
 }
 
 
-__SRCVERSION("pthread_attr_setguardsize.c $Rev: 153052 $");
+

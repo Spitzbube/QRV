@@ -53,4 +53,4 @@ void *memcpy(void *dst, const void *src, size_t nbytes) {
 	return ret;
 }
 
-__SRCVERSION("memcpy.c $Rev: 153052 $");
+

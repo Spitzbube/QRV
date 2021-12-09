@@ -72,4 +72,4 @@ int __parse_oflag(const char *mode) {
 	return oflag;
 }
 
-__SRCVERSION("__parse_oflag.c $Rev: 153052 $");
+

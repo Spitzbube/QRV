@@ -25,4 +25,4 @@ int sched_getparam(pid_t pid, struct sched_param *param) {
 	return((SchedGet(pid, (pid == 0) ? 0 : 1, param) == -1) ? -1 : 0);
 }
 
-__SRCVERSION("sched_getparam.c $Rev: 153052 $");
+

@@ -26,4 +26,4 @@ getpid(void) {
 	return LIBC_TLS()->__pid;
 }
 
-__SRCVERSION("getpid.c $Rev: 153052 $");
+

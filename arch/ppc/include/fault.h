@@ -28,4 +28,4 @@
 #define FLTBUSERR	(_FIRST_CPU_FAULT+2) /* Bus Error */
 #define FLTBUSTIMOUT (_FIRST_CPU_FAULT+3)/* Bus Timeout */
 
-/* __SRCVERSION("fault.h $Rev: 153052 $"); */
+/* 

@@ -46,4 +46,4 @@ int stat64(const char *path, struct stat64 *statp) {
 	return _stat64(path, statp, 0);
 }
 
-__SRCVERSION("stat64.c $Rev: 153052 $");
+

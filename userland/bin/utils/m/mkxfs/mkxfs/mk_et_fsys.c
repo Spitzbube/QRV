@@ -380,4 +380,4 @@ etfs_need_seekable(struct file_entry *list) {
 	return(0);
 }
 
-__SRCVERSION("mk_et_fsys.c $Rev: 153052 $");
+

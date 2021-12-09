@@ -130,4 +130,4 @@ forkpty(int *amaster, char *name, struct termios *termp, struct winsize *winp) {
 	return (pid);
 }
 
-__SRCVERSION("pty.c $Rev: 153052 $");
+

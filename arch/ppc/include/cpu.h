@@ -463,4 +463,4 @@
 
 #endif /* __PPC_CPU_H_INCLUDED */
 
-/* __SRCVERSION("cpu.h $Rev: 212521 $"); */
+/* 

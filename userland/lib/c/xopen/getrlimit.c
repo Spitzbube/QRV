@@ -91,4 +91,4 @@ int  getrlimit(int resource, struct rlimit *rlp) {
 	return 0;
 }
 
-__SRCVERSION("getrlimit.c $Rev: 153052 $");
+

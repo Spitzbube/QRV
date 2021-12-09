@@ -153,7 +153,7 @@ join - perform a relational database join operation
 //#define NDEBUG
 
 #ifdef NDEBUG
-#	define DBG(x)	/* */
+#	define DBG(x)
 #else
 #	define DBG(x)   x
 #endif

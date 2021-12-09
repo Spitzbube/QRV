@@ -53,4 +53,4 @@ void _CMain(int argc, char *args, ...) {
 	exit(main(argc, argv, envp));
 }
 
-__SRCVERSION("_CMain.c $Rev: 153052 $");
+

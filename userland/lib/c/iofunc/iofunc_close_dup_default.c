@@ -24,4 +24,4 @@ int iofunc_close_dup_default(resmgr_context_t *ctp, io_close_t *msg, iofunc_ocb_
 	return iofunc_close_dup(ctp, msg, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_close_dup_default.c $Rev: 153052 $");
+

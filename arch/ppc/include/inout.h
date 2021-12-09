@@ -217,4 +217,4 @@ __swap_out32(volatile _Uintptrt __addr, _Uint32t __data) {
 
 #endif
 
-/* __SRCVERSION("inout.h $Rev: 153052 $"); */
+/* 

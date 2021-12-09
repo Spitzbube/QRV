@@ -51,4 +51,4 @@ int resmgr_pathname_attach(const char *path, int chid, enum _file_type file_type
 	return linkp->id;
 }
 
-__SRCVERSION("resmgr_pathname_attach.c $Rev: 153052 $");
+

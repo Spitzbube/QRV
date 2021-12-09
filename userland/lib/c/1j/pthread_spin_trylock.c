@@ -25,4 +25,4 @@ int (pthread_spin_trylock)(pthread_spinlock_t *lock)
 	return pthread_spin_trylock(lock);
 }
 
-__SRCVERSION("pthread_spin_trylock.c $Rev: 153052 $");
+

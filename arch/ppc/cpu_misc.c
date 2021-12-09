@@ -266,4 +266,4 @@ cpu_force_thread_destroyall(THREAD *thp) {
 	SETKIP(thp, kercallptr);
 }
 
-__SRCVERSION("cpu_misc.c $Rev: 153052 $");
+

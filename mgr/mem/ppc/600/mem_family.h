@@ -66,4 +66,4 @@ typedef uint32_t	pte_t;
 	: : "b" (__vsid), "i" (sr));\
 	}
 
-/* __SRCVERSION("mem_family.h $Rev: 164196 $"); */
+/* 

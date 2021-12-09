@@ -28,4 +28,4 @@ void
 	__inline_InterruptLock(spin);
 }
 
-__SRCVERSION("interruptlock.c $Rev: 153052 $");
+

@@ -115,4 +115,4 @@ int pthread_atfork( void ( * prepare )( void ), void ( * parent )( void ), void 
 	return( EOK );
 }
 
-__SRCVERSION("pthread_atfork.c $Rev: 153052 $");
+

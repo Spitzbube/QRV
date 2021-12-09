@@ -73,4 +73,4 @@ int openfd(int fd, int oflag) {
 	return sopenfd(fd, oflag, SH_DENYNO);
 }
 
-__SRCVERSION("openfd.c $Rev: 153052 $");
+

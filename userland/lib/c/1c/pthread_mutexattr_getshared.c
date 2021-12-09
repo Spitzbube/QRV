@@ -31,4 +31,4 @@ int pthread_mutexattr_getpshared(const pthread_mutexattr_t *attr, int *pshared) 
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutexattr_getshared.c $Rev: 153052 $");
+

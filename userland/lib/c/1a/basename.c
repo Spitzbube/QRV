@@ -69,4 +69,4 @@ int main(void) {
 }
 #endif
 
-__SRCVERSION("basename.c $Rev: 153052 $");
+

@@ -26,4 +26,4 @@ void flockfile(FILE *fp) {
 	_Lockfileatomic(fp);
 }
 
-__SRCVERSION("flockfile.c $Rev: 153052 $");
+

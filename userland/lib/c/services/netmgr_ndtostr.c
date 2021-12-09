@@ -125,4 +125,4 @@ int netmgr_ndtostr(unsigned flags, int nd, char *buf, size_t maxbuf) {
 	return len;
 }
 
-__SRCVERSION("netmgr_ndtostr.c $Rev: 153052 $");
+

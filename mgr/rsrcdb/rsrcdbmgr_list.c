@@ -1277,4 +1277,4 @@ void dump_list(char *name)
 #endif
 
 
-__SRCVERSION("rsrcdbmgr_list.c $Rev: 153052 $");
+

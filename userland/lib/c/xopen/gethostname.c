@@ -26,4 +26,4 @@ int gethostname(char *host, size_t len) {
 	return 0;
 }
 
-__SRCVERSION("gethostname.c $Rev: 153052 $");
+

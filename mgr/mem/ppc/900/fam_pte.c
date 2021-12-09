@@ -481,4 +481,4 @@ cpu_pte_manipulate(struct mm_pte_manipulate *data) {
 	return r;
 }
 
-__SRCVERSION("fam_pte.c $Rev: 201493 $");
+

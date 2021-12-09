@@ -74,4 +74,4 @@ int iofunc_space_verify(resmgr_context_t *ctp, io_space_t *msg, iofunc_ocb_t *oc
 	return EOK;
 }
 
-__SRCVERSION("iofunc_space_verify.c $Rev: 153052 $");
+

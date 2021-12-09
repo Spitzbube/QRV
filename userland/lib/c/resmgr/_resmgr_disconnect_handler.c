@@ -35,4 +35,4 @@ int _resmgr_disconnect_handler(resmgr_context_t *ctp, resmgr_iomsgs_t *msg, int 
 	return _RESMGR_NOREPLY;
 }
 
-__SRCVERSION("_resmgr_disconnect_handler.c $Rev: 153052 $");
+

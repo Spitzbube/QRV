@@ -26,4 +26,4 @@ int iofunc_chown_default(resmgr_context_t *ctp, io_chown_t *msg, iofunc_ocb_t *o
 	return iofunc_chown(ctp, msg, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_chown_default.c $Rev: 153052 $");
+

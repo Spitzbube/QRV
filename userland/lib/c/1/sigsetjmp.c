@@ -24,4 +24,4 @@ int (sigsetjmp)(sigjmp_buf env, int savemask) {
     return sigsetjmp(env, savemask);
 }
 
-__SRCVERSION("sigsetjmp.c $Rev: 153052 $");
+

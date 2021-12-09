@@ -56,4 +56,4 @@ int rsrcdbmgr_attach(rsrc_request_t *list, int32_t count) {
 	return ret;
 }
 
-__SRCVERSION("rsrcdbmgr_attach.c $Rev: 153052 $");
+

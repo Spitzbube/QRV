@@ -55,4 +55,4 @@ seed48(unsigned short xseed[3])
 	return sseed;
 }
 
-__SRCVERSION("seed48.c $Rev: 153052 $");
+

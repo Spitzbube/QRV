@@ -50,4 +50,4 @@ void iofunc_attr_init(iofunc_attr_t *attr, mode_t mode, iofunc_attr_t *dattr, st
 	attr->nlink = 1;
 }
 
-__SRCVERSION("iofunc_attr_init.c $Rev: 153052 $");
+

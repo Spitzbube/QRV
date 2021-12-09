@@ -29,4 +29,4 @@ _Uintmaxt strtoumax(const char *__restrict nptr, char **__restrict endptr, int b
 	return (_Uintmaxt)_Stoint(nptr, endptr, base, _STOINT_LLONG);
 }
 
-__SRCVERSION("strtoumax.c $Rev: 153052 $");
+

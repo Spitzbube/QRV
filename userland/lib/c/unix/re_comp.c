@@ -38,4 +38,4 @@ int re_exec(char *s) {
     return regexec(&re, s, 0, 0, 0) == REG_OK ? 1 : 0;
 }
 
-__SRCVERSION("re_comp.c $Rev: 153052 $");
+

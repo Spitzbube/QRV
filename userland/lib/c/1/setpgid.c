@@ -33,4 +33,4 @@ int setpgid(pid_t pid, pid_t pgid) {
 	return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("setpgid.c $Rev: 153052 $");
+

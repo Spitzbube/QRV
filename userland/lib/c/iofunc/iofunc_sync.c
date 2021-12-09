@@ -61,4 +61,4 @@ int iofunc_sync(resmgr_context_t *ctp, iofunc_ocb_t *ocb, int ioflag) {
 	return 0;
 }
 
-__SRCVERSION("iofunc_sync.c $Rev: 153052 $");
+

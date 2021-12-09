@@ -40,4 +40,4 @@ nrand48(unsigned short xseed[3])
 	return ((long) xseed[2] << 15) + ((long) xseed[1] >> 1);
 }
 
-__SRCVERSION("nrand48.c $Rev: 153052 $");
+

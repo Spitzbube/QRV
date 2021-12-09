@@ -40,4 +40,4 @@ jrand48(unsigned short xseed[3])
 	return ((long) xseed[2] << 16) + (long) xseed[1];
 }
 
-__SRCVERSION("jrand48.c $Rev: 153052 $");
+

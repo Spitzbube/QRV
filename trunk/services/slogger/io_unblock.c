@@ -39,4 +39,4 @@ io_unblock(resmgr_context_t *ctp, io_pulse_t *msg, iofunc_ocb_t *ocb) {
 	return(_RESMGR_NOREPLY);
 }
 
-__SRCVERSION("io_unblock.c $Rev: 153052 $");
+

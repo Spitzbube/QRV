@@ -24,4 +24,4 @@ int pthread_spin_destroy(pthread_spinlock_t *lock) {
 	return _spin_destroy(lock);
 }
 
-__SRCVERSION("pthread_spin_destroy.c $Rev: 153052 $");
+

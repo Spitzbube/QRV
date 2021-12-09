@@ -35,4 +35,4 @@ char *strnset( char *s, int fill, size_t n )
 	return( s );
 }
 
-__SRCVERSION("strnset.c $Rev: 167420 $");
+

@@ -266,4 +266,4 @@ void logwtmp(const char *line, const char *name, const char *host) {
 
 
 
-__SRCVERSION("getut.c $Rev: 153052 $");
+

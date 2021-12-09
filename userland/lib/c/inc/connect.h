@@ -71,4 +71,4 @@ struct _connect_ctrl {
 
 int _connect_ctrl(struct _connect_ctrl *ctrl, const char *path, unsigned response_len, void *response);
 
-/* __SRCVERSION("connect.h $Rev: 205764 $"); */
+/* 

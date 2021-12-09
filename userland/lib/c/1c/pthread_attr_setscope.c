@@ -33,4 +33,4 @@ int pthread_attr_setscope(pthread_attr_t *attr, int contentionscope) {
 	return EINVAL;
 }
 
-__SRCVERSION("pthread_attr_setscope.c $Rev: 153052 $");
+

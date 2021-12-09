@@ -258,4 +258,4 @@ void pathmgr_node_detach(NODE * nop)
     pathmgr_node_detach_flags(nop, 0);
 }
 
-__SRCVERSION("pathmgr_node.c $Rev: 159046 $");
+

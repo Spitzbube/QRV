@@ -225,4 +225,4 @@ mov.(w,l)	@(R0,Rm),Rn
 
 #endif
 
-/* __SRCVERSION("opcodes.h $Rev: 153052 $"); */
+/* 

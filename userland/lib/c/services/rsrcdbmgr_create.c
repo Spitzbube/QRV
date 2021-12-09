@@ -56,4 +56,4 @@ int rsrcdbmgr_create(rsrc_alloc_t *list, int32_t count) {
 	return ret;
 }
 
-__SRCVERSION("rsrcdbmgr_create.c $Rev: 153052 $");
+

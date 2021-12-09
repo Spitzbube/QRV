@@ -291,4 +291,4 @@ emulate_alignment(CPU_REGISTERS *ctx, uint32_t flags) {
 	return ret;
 }
 
-__SRCVERSION("emulate.c $Rev: 163913 $");
+

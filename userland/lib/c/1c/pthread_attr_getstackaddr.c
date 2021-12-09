@@ -27,4 +27,4 @@ int pthread_attr_getstackaddr(const pthread_attr_t *attr, void **stackaddr) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_getstackaddr.c $Rev: 153052 $");
+

@@ -38,4 +38,4 @@ char *_cmdname(char *name) {
 	return 0;
 }
 
-__SRCVERSION("_cmdname.c $Rev: 153052 $");
+

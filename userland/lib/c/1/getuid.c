@@ -28,4 +28,4 @@ uid_t getuid(void) {
 	return info.cred.ruid;
 }
 
-__SRCVERSION("getuid.c $Rev: 153052 $");
+

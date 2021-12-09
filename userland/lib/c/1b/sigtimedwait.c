@@ -50,4 +50,4 @@ int sigtimedwait(const sigset_t *set, siginfo_t *info, const struct timespec *ti
 	return rc;
 }
 
-__SRCVERSION("sigtimedwait.c $Rev: 166190 $");
+

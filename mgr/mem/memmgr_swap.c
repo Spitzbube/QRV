@@ -35,4 +35,4 @@ int memmgr_swap(resmgr_context_t * ctp, PROCESS * prp, mem_swap_t * msg)
     return ENOSYS;
 }
 
-__SRCVERSION("memmgr_swap.c $Rev: 153052 $");
+

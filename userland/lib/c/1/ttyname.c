@@ -36,4 +36,4 @@ char *ttyname(int fd) {
 	return(buf);
 	}
 
-__SRCVERSION("ttyname.c $Rev: 153052 $");
+

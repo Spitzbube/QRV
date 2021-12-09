@@ -287,5 +287,5 @@ static bool node_is_in_hierarchy(apsmgr_attr_t *node, part_list_t *spart_list)
 }
 
 
-__SRCVERSION("$IQ: apsmgr_read.c,v 1.23 $");
+
 

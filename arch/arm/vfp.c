@@ -239,4 +239,4 @@ vfp_init()
 	(void) coproc_attach(11, vfp_handler);
 }
 
-__SRCVERSION("vfp.c $Rev: 211084 $");
+

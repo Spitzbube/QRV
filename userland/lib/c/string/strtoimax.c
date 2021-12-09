@@ -29,4 +29,4 @@ _Intmaxt strtoimax(const char *__restrict nptr, char **__restrict endptr, int ba
 	return (_Intmaxt)_Stoint(nptr, endptr, base, _STOINT_SIGNED | _STOINT_LLONG);
 }
 
-__SRCVERSION("strtoimax.c $Rev: 153052 $");
+

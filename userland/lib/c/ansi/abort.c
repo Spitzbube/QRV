@@ -64,4 +64,4 @@ void abort(void) {
 	_exit(EXIT_FAILURE);
 }
 
-__SRCVERSION("abort.c $Rev: 153052 $");
+

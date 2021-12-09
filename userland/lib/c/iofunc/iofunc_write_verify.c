@@ -83,4 +83,4 @@ int iofunc_write_verify(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *oc
 	return EOK;
 }
 
-__SRCVERSION("iofunc_write_verify.c $Rev: 153052 $");
+

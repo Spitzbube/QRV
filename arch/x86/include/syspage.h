@@ -103,4 +103,4 @@ struct x86_kernel_entry {
 	unsigned char	code[4];
 };
 
-/* __SRCVERSION("syspage.h $Rev: 175130 $"); */
+/* 

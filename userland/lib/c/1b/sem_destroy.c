@@ -34,4 +34,4 @@ sem_destroy(sem_t *sem) {
 	return(SyncDestroy((sync_t *) sem));
 }
 
-__SRCVERSION("sem_destroy.c $Rev: 153052 $");
+

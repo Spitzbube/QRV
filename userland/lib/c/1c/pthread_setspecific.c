@@ -119,4 +119,4 @@ _key_delete(pthread_key_t key)
 	}
 }
 
-__SRCVERSION("pthread_setspecific.c $Rev: 153052 $");
+

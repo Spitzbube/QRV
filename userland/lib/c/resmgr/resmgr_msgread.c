@@ -25,4 +25,4 @@ int resmgr_msgread(resmgr_context_t *ctp, void *msg, int nbytes, int offset) {
 	return MsgRead(ctp->rcvid, msg, nbytes, ctp->offset + offset);
 }
 
-__SRCVERSION("resmgr_msgread.c $Rev: 153052 $");
+

@@ -42,4 +42,4 @@ int chown(const char *path, uid_t uid, gid_t gid) {
 	return _chown(path, uid, gid, 0);
 }
 
-__SRCVERSION("chown.c $Rev: 153052 $");
+

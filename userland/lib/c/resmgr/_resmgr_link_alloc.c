@@ -59,4 +59,4 @@ struct link *_resmgr_link_alloc(void) {
 	return p;
 }
 
-__SRCVERSION("_resmgr_link_alloc.c $Rev: 153052 $");
+

@@ -49,4 +49,4 @@ int posix_fadvise(int fd, off_t offset, off_t len, int advice) {
 	return posix_fadvise64(fd, offset, len, advice);
 }
 
-__SRCVERSION("posix_fadvise.c $Rev: 153052 $");
+

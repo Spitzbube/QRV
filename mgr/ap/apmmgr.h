@@ -178,5 +178,5 @@ extern int apm_deliver_event(evtdest_t *evtdest, struct sigevent *se);
 
 #endif	/* _include_APMMGR_H_ */
 
-__SRCVERSION("$IQ: apmmgr.h,v 1.23 $");
+
 

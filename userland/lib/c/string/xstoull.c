@@ -130,4 +130,4 @@ _STD_END
  * Consult your license regarding permissions and restrictions.
 V5.00:1296 */
 
-__SRCVERSION("xstoull.c $Rev: 153052 $");
+

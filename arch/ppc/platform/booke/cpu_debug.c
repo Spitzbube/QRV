@@ -573,4 +573,4 @@ cpu_debug_set_altregs(THREAD *thp, debug_altreg_t *reg) {
 	return EOK;
 }
 
-__SRCVERSION("$IQ$");
+

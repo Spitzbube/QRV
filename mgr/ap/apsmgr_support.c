@@ -184,5 +184,5 @@ int validate_sp_association(apsmgr_attr_t *attr, struct _cred_info *cred)
 
 
 
-__SRCVERSION("$IQ: apsmgr_support.c,v 1.23 $");
+
 

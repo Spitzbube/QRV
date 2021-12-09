@@ -55,4 +55,4 @@ char *ultoa(unsigned long int value, char *buf, int radix) {
 
 #endif
 
-__SRCVERSION("ultoa.c $Rev: 153052 $");
+

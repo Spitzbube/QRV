@@ -28,4 +28,4 @@ int timer_create(clockid_t clock_id, struct sigevent *evp,
 	return(((*timerid = TimerCreate(clock_id, evp)) == -1) ? -1 : 0);
 	}
 
-__SRCVERSION("timer_create.c $Rev: 153052 $");
+

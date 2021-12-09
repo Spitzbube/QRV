@@ -79,4 +79,4 @@ void vmm_configure(char *cfg)
     mm_flags_default = mm_flags;
 }
 
-__SRCVERSION("vmm_configure.c $Rev: 199574 $");
+

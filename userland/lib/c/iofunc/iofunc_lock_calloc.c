@@ -30,4 +30,4 @@ void iofunc_lock_free(iofunc_lock_list_t *lock, size_t size) {
 	free(lock);
 }
 
-__SRCVERSION("iofunc_lock_calloc.c $Rev: 153052 $");
+

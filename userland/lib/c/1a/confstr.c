@@ -162,4 +162,4 @@ size_t confstr(int name, char *buff, size_t len) {
 	return size;
 }
 
-__SRCVERSION("confstr.c $Rev: 159798 $");
+

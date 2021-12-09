@@ -70,4 +70,4 @@ int iofunc_pathconf(resmgr_context_t *ctp, io_pathconf_t *msg, iofunc_ocb_t *ocb
 	return EOK;
 }
 
-__SRCVERSION("iofunc_pathconf.c $Rev: 153052 $");
+

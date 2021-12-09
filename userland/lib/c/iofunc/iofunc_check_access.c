@@ -85,4 +85,4 @@ int iofunc_check_access(resmgr_context_t *ctp, const iofunc_attr_t *attr, mode_t
 	return EOK;
 }
 
-__SRCVERSION("iofunc_check_access.c $Rev: 153052 $");
+

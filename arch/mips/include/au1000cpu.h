@@ -299,4 +299,4 @@
 
 #endif /* __MIPS_AU1000CPU_H_INCLUDED */
 
-/* __SRCVERSION("au1000cpu.h $Rev: 153052 $"); */
+/* 

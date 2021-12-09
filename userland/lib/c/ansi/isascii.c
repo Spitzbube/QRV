@@ -25,4 +25,4 @@ int (isascii)( int c )
 	return( isascii( c ) );
 }
 
-__SRCVERSION("isascii.c $Rev: 153052 $");
+

@@ -31,4 +31,4 @@ smp_init_cpu()
 	init_cpu();
 }
 
-__SRCVERSION("smp_init_cpu.c $Rev: 199330 $");
+

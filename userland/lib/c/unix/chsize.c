@@ -52,4 +52,4 @@ int chsize( int fd, long size ){
 #endif
 }
 
-__SRCVERSION("chsize.c $Rev: 153052 $");
+

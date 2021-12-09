@@ -26,4 +26,4 @@ int _cmdfd(void) {
 	return open(_cmdname(0), O_RDONLY);
 }
 
-__SRCVERSION("_cmdfd.c $Rev: 153052 $");
+

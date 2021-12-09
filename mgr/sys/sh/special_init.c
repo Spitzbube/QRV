@@ -21,4 +21,4 @@ void
 special_init(void) {
 }
 
-__SRCVERSION("special_init.c $Rev: 153052 $");
+

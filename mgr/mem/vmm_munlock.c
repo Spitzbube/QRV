@@ -120,4 +120,3 @@ int vmm_munlock(PROCESS * prp, uintptr_t vaddr, size_t len, int flags)
     return r;
 }
 
-__SRCVERSION("vmm_munlock.c $Rev: 153052 $");

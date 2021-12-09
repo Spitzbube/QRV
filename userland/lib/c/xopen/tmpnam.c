@@ -101,4 +101,4 @@ char* tempnam(const char* dir, const char* pfx)
 }
 
 
-__SRCVERSION("tmpnam.c $Rev: 153052 $");
+

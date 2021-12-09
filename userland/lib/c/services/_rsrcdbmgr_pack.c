@@ -197,4 +197,4 @@ int rsrcdbmgr_detach(rsrc_request_t *list, int32_t count) {
 #endif
 
 
-__SRCVERSION("_rsrcdbmgr_pack.c $Rev: 153052 $");
+

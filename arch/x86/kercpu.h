@@ -178,4 +178,4 @@ void smp_clr_INKERNEL_SPECRET(void);
 
 #define GOT_HERE(c,l)	(*(volatile char *)(realmode_addr + (0xb8000+(160*(l))) + RUNCPU*2) = (c))
 
-/* __SRCVERSION("kercpu.h $Rev: 201493 $"); */
+/* 

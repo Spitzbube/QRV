@@ -269,5 +269,5 @@ extern bool isStringOfDigits(char *part_name);
 
 #endif	/* _include_APMGR_H_ */
 
-__SRCVERSION("$IQ: apmgr.h,v 1.23 $");
+
 

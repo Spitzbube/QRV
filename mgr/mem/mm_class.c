@@ -528,4 +528,4 @@ void _memclass_pid_free(PROCESS * prp, memclass_id_t mclass_id, memsize_t size)
 #endif                          /* NDEBUG */
 
 
-__SRCVERSION("mm_class.c $Rev$");
+

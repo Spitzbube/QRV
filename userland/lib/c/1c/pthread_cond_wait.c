@@ -36,4 +36,4 @@ pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex) {
 	return ret;
 }
 
-__SRCVERSION("pthread_cond_wait.c $Rev: 157815 $");
+

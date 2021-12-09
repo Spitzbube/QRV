@@ -44,4 +44,4 @@ Band *__static_Bands[] = {
 };
 unsigned __static_nband=8;
 
-__SRCVERSION("malloc-config.c $Rev: 153052 $");
+

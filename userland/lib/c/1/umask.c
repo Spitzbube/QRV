@@ -41,4 +41,4 @@ mode_t umask(mode_t cmask) {
 	return _umask(0, cmask);
 }
 
-__SRCVERSION("umask.c $Rev: 153052 $");
+

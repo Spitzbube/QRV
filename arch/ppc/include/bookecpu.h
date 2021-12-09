@@ -575,4 +575,4 @@ they're 'supposed' to have.
 
 #endif
 
-/* __SRCVERSION("bookecpu.h $Rev: 153052 $"); */
+/* 

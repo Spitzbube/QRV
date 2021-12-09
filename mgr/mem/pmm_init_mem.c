@@ -32,4 +32,4 @@ void pmm_init_mem(int phase)
     }
 }
 
-__SRCVERSION("pmm_init_mem.c $Rev: 153052 $");
+

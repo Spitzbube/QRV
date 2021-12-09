@@ -72,4 +72,4 @@ int modem_open(char *device, speed_t baud) {
 	return(fd);
 	}
 
-__SRCVERSION("modem_open.c $Rev: 153052 $");
+

@@ -39,4 +39,4 @@ const pthread_attr_t pthread_attr_default = {
 	0,							/* Default stack preallocation */
 };
 
-__SRCVERSION("pthread_attr_default.c $Rev: 153052 $");
+

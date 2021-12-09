@@ -53,4 +53,4 @@ void __assert(const char *expr, const char *file, unsigned line, const char *fun
 
 _STD_END
 
-__SRCVERSION("assert.c $Rev: 167935 $");
+

@@ -185,4 +185,4 @@ void devtext_init(void)
     rsrcdbmgr_proc_devno("dev", &text_devno, -1, 0);
 }
 
-__SRCVERSION("devtext.c $Rev: 211988 $");
+

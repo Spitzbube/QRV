@@ -438,4 +438,4 @@ struct mq_attr	saved;
 	return(0);
 }
 
-__SRCVERSION("mq.c $Rev: 200517 $");
+

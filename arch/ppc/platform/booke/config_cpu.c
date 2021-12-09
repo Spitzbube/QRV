@@ -168,4 +168,4 @@ determine_family(unsigned pvr) {
 	return PPC_FAMILY_UNKNOWN;
 }
 
-__SRCVERSION("config_cpu.c $Rev: 164330 $");
+

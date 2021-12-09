@@ -69,4 +69,4 @@ int _iofunc_create(resmgr_context_t *ctp, iofunc_attr_t *attr, mode_t *mode, iof
 	return EOK;
 }
 
-__SRCVERSION("_iofunc_create.c $Rev: 153052 $");
+

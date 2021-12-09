@@ -27,4 +27,4 @@ int pthread_attr_getstacklazy(const pthread_attr_t *attr, int *lazystack) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_getstacklazy.c $Rev: 153052 $");
+

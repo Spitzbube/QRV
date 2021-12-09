@@ -105,4 +105,4 @@ vmm_aspace(PROCESS *actprp, PROCESS **pactprp)
 	}
 }
 
-__SRCVERSION("vmm_aspace.c $Rev: 153052 $");
+

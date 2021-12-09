@@ -76,4 +76,4 @@ int asyncmsg_connect_detach(int coid)
 	return 0;
 }
 
-__SRCVERSION("asyncmsg_connect_detach.c $Rev: 153052 $");
+

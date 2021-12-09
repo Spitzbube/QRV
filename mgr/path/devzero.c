@@ -189,4 +189,4 @@ void devzero_init(void)
     rsrcdbmgr_proc_devno("dev", &zero_devno, -1, 0);
 }
 
-__SRCVERSION("devzero.c $Rev: 211988 $");
+

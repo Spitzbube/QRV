@@ -62,4 +62,4 @@ __END_DECLS
 
 #endif
 
-/* __SRCVERSION("inline.h $Rev: 153052 $"); */
+/* 

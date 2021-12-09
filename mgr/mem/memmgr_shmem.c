@@ -151,4 +151,4 @@ int shmem_devctl(resmgr_context_t * ctp, io_devctl_t * msg, OBJECT * obp)
     return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o);
 }
 
-__SRCVERSION("memmgr_shmem.c $Rev: 198777 $");
+

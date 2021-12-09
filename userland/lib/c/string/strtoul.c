@@ -32,4 +32,4 @@ unsigned long int (strtoul)(const char *nptr, char **endptr, int base) {
 
 _STD_END
 
-__SRCVERSION("strtoul.c $Rev: 153052 $");
+

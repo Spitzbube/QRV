@@ -207,4 +207,4 @@ int _resmgr_msg_handler(message_context_t *ctp, int code, unsigned flags, void *
 }
 
 
-__SRCVERSION("resmgr.c $Rev: 159268 $");
+

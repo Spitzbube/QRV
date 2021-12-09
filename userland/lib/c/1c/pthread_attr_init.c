@@ -45,4 +45,4 @@ int pthread_attr_init(pthread_attr_t *attr) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_init.c $Rev: 153052 $");
+

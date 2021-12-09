@@ -59,4 +59,4 @@ int writeblock(int fd, size_t blksize, unsigned block, int numblks, const void *
 	return nbytes / (int)blksize;
 }
 
-__SRCVERSION("writeblock.c $Rev: 153052 $");
+

@@ -52,4 +52,4 @@ void __fpbufinit(FILE *fp) {
 
 _STD_END
 
-__SRCVERSION("__fpbufinit.c $Rev: 153052 $");
+

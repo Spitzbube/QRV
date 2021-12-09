@@ -28,4 +28,4 @@ return	MsgReceivev(chid, iov, parts, NULL);
 }
 
 
-__SRCVERSION("msgreceiveasync.c $Rev: 153052 $");
+

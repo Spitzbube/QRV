@@ -103,4 +103,4 @@ int rsrcdbmgr_query(rsrc_alloc_t *list, int listcnt, int start, uint32_t type) {
 	return (ret != -1) ? count : ret;
 }
 
-__SRCVERSION("rsrcdbmgr_query.c $Rev: 153052 $");
+

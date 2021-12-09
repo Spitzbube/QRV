@@ -60,4 +60,4 @@ OBJECT *vmm_vaddr_to_memobj(PROCESS * prp, void *vaddr, unsigned *offset, int cr
     return PADDR_TO_SYNC_OBJ(paddr);
 }
 
-__SRCVERSION("vmm_vaddr_to_memobj.c $Rev: 153052 $");
+

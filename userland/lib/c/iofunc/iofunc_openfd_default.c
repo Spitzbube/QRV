@@ -32,4 +32,4 @@ int iofunc_openfd_default(resmgr_context_t *ctp, io_openfd_t *msg, iofunc_ocb_t 
 	return iofunc_openfd(ctp, msg, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_openfd_default.c $Rev: 153052 $");
+

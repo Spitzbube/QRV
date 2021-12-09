@@ -56,4 +56,4 @@ int iofunc_utime(resmgr_context_t *ctp, io_utime_t *msg, iofunc_ocb_t *ocb, iofu
 	return iofunc_time_update(attr);
 }
 
-__SRCVERSION("iofunc_utime.c $Rev: 153052 $");
+

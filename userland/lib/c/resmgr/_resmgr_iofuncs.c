@@ -30,4 +30,4 @@ const resmgr_io_funcs_t *_resmgr_iofuncs(resmgr_context_t *ctp, struct _msg_info
 	return binding->funcs;
 }
 
-__SRCVERSION("_resmgr_iofuncs.c $Rev: 153052 $");
+

@@ -36,4 +36,4 @@
 
 #endif /* __C6X_CPU_H_INCLUDED */
 
-/* __SRCVERSION("cpu.h $Rev: 153052 $"); */
+/* 

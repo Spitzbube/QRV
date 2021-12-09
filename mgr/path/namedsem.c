@@ -715,4 +715,4 @@ void namedsem_init(void)
     sysmgr_conf_set(0, _CONF_NUM, _SC_SEM_VALUE_MAX, SEM_VALUE_MAX, NULL);
 }
 
-__SRCVERSION("namedsem.c $Rev: 164026 $");
+

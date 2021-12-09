@@ -85,4 +85,4 @@ int iofunc_chown(resmgr_context_t *ctp, io_chown_t *msg, iofunc_ocb_t *ocb, iofu
 	return EOK;
 }
 
-__SRCVERSION("iofunc_chown.c $Rev: 153052 $");
+

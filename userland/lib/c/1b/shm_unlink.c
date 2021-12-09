@@ -30,4 +30,4 @@ int shm_unlink(const char *name) {
 	return _unlink_object(name, "/dev/shmem", _FTYPE_SHMEM);
 }
 
-__SRCVERSION("shm_unlink.c $Rev: 153052 $");
+

@@ -147,4 +147,4 @@ _gettemp(path, doopen)
 	/*NOTREACHED*/
 }
 
-__SRCVERSION("mktemp.c $Rev: 153052 $");
+

@@ -38,4 +38,4 @@ verrx(eval, fmt, ap)
 	exit(eval);
 }
 
-__SRCVERSION("verrx.c $Rev: 153052 $");
+

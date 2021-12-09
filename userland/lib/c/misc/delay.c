@@ -33,4 +33,4 @@ unsigned delay(unsigned msec) {
 	return(tim.tv_sec*1000 + tim.tv_nsec/1000000);
 	}
 
-__SRCVERSION("delay.c $Rev: 153052 $");
+

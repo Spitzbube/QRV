@@ -246,4 +246,4 @@ clean_init(void) {
 	}
 }
 
-__SRCVERSION("mem_cache.c $Rev: 168445 $");
+

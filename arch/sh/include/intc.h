@@ -32,4 +32,4 @@
 #define	SH_INTC_ICR_IRLM		_ONEBIT16L(7)
 
 
-/* __SRCVERSION("intc.h $Rev: 153052 $"); */
+/* 

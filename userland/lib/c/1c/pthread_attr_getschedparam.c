@@ -27,4 +27,4 @@ int pthread_attr_getschedparam(const pthread_attr_t *attr, struct sched_param *p
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_getschedparam.c $Rev: 153052 $");
+

@@ -313,4 +313,4 @@ int _resmgr_detach_id(resmgr_context_t *ctp, int id, unsigned flags) {
 #endif
 
 
-__SRCVERSION("_resmgr_detach_id.c $Rev: 153052 $");
+

@@ -48,4 +48,4 @@ hwi_find_tag(unsigned start, int curr_item, const char *name) {
 	}
 }
 
-__SRCVERSION("hwi_find_tag.c $Rev: 153052 $");
+

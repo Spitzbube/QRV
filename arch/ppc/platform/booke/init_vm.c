@@ -241,4 +241,4 @@ tlbop_get_wired(void) {
 	return *(uint8_t *)(PPCBKE_RANDOM_BASE + (RUNCPU << PPCBKE_RANDOM_SHIFT));
 }
 
-__SRCVERSION("init_vm.c $Rev: 199396 $");
+

@@ -63,4 +63,4 @@ stricmp( const char *s1, const char *s2 ) {
 	}
 }
 
-__SRCVERSION("stricmp.c $Rev: 167420 $");
+

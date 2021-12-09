@@ -109,4 +109,4 @@ int _conf_set(long **plist, int cmd, int name, long value, const char *str)
     return EOK;
 }
 
-__SRCVERSION("_conf_set.c $Rev: 153052 $");
+

@@ -120,4 +120,4 @@ extern void	vfp_init();
 
 #endif	// __KERCPU_H
 
-/* __SRCVERSION("kercpu.h $Rev: 153052 $"); */
+/* 

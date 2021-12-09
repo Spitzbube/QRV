@@ -39,4 +39,4 @@ mq_close(mqd_t mq) {
 	return close(mq);
 }
 
-__SRCVERSION("mq_close.c $Rev: 153052 $");
+

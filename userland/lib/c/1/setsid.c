@@ -28,4 +28,4 @@ int setsid(void) {
 	return procmgr_session(ND_LOCAL_NODE, 0, 0, PROCMGR_SESSION_SETSID);
 }
 
-__SRCVERSION("setsid.c $Rev: 153052 $");
+

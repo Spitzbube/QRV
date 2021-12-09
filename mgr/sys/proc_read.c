@@ -74,4 +74,4 @@ ssize_t proc_read(int fd, void *buff, ssize_t nbytes, off64_t off)
     return received;
 }
 
-__SRCVERSION("proc_read.c $Rev: 153052 $");
+

@@ -558,4 +558,4 @@ int					daemonize = 1;
 	return(EXIT_FAILURE);
 }
 
-__SRCVERSION("mq.c $Rev: 169543 $");
+

@@ -34,4 +34,4 @@ int pthread_getschedparam(pthread_t thread, int *policy, struct sched_param *par
 	return EOK;
 }
 
-__SRCVERSION("pthread_getschedparam.c $Rev: 153052 $");
+

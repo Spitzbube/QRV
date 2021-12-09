@@ -45,4 +45,4 @@ int pthread_rwlock_destroy(pthread_rwlock_t *l)
 }
 
 
-__SRCVERSION("pthread_rwlock_destroy.c $Rev: 153052 $");
+

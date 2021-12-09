@@ -31,4 +31,4 @@ int aio_error(__const struct aiocb *aiocbp)
 	return aiocbp->_aio_error;
 }
 
-__SRCVERSION("aio_error.c $Rev: 153052 $");
+

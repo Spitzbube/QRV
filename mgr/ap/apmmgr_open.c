@@ -461,5 +461,5 @@ static int redirect_pid_open(resmgr_context_t *ctp, io_open_t *msg, char *name)
 
 
 
-__SRCVERSION("$IQ: apmmgr_open.c,v 1.23 $");
+
 

@@ -170,5 +170,5 @@ static void apmgr_init(const char * const path)
 }
 
 
-__SRCVERSION("$IQ: apmgr_init.c,v 1.23 $");
+
 

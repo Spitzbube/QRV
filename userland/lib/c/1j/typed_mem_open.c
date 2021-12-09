@@ -47,4 +47,4 @@ int
 	return -1;
 }
 
-__SRCVERSION("typed_mem_open.c $Rev: 153052 $");
+

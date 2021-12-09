@@ -312,4 +312,4 @@ Things to fill in:
     return info.size;
 }
 
-__SRCVERSION("vmm_mapinfo.c $Rev: 207313 $");
+

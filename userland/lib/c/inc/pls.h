@@ -27,4 +27,4 @@
 EXT struct _process_local_storage		_pls;
 
 
-/* __SRCVERSION("pls.h $Rev: 153052 $"); */
+/* 

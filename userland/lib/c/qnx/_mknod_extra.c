@@ -36,4 +36,4 @@ int _mknod_extra(const char *path, mode_t mode, dev_t dev, unsigned extra_type, 
 	return status;
 }
 
-__SRCVERSION("_mknod_extra.c $Rev: 153052 $");
+

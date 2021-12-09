@@ -19,4 +19,4 @@
 
 #define static_mod( a, b ) (a) % (b)
 
-/* __SRCVERSION("ldd_mod.h $Rev: 153052 $"); */
+/* 

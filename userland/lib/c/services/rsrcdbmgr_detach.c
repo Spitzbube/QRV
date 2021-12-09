@@ -56,4 +56,4 @@ int rsrcdbmgr_detach(rsrc_request_t *list, int32_t count) {
 	return ret;
 }
 
-__SRCVERSION("rsrcdbmgr_detach.c $Rev: 153052 $");
+

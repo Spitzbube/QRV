@@ -532,4 +532,4 @@ _band_rlse (Block *b, void *x)
 	}
 }
 
-__SRCVERSION("band.c $Rev: 167195 $");
+

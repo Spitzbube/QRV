@@ -34,4 +34,4 @@ pid_t getppid(void) {
 	return msg.o.ppid;
 }
 
-__SRCVERSION("getppid.c $Rev: 153052 $");
+

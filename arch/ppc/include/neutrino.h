@@ -161,4 +161,4 @@ extern unsigned __get_cpu_flags(void);
 
 __END_DECLS
 
-/* __SRCVERSION("neutrino.h $Rev: 200054 $"); */
+/* 

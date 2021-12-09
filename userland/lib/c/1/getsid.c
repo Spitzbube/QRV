@@ -35,4 +35,4 @@ pid_t getsid(pid_t pid) {
 	return msg.o.sid;
 }
 
-__SRCVERSION("getsid.c $Rev: 153052 $");
+

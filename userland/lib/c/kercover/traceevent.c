@@ -92,4 +92,4 @@ int TraceEvent(int code, ...) {
  #error instrumentation not supported
 #endif
 
-__SRCVERSION("traceevent.c $Rev: 153052 $");
+

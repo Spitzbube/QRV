@@ -51,4 +51,4 @@ int pthread_mutexattr_settype(pthread_mutexattr_t *attr, int type) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutexattr_settype.c $Rev: 153052 $");
+

@@ -403,4 +403,4 @@ _poll(struct pollfd *fds, nfds_t nfds, int fd_first, int64_t timo, int extra_mas
 	}
 }
 
-__SRCVERSION("poll.c $Rev: 200715 $");
+

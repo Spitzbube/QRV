@@ -37,4 +37,4 @@ int sysmgr_confstr_set(int cmd, int name, const char *str) {
 	return MsgSendvnc(SYSMGR_COID, iov, 2, 0, 0);
 }
 
-__SRCVERSION("sysmgr_confstr_set.c $Rev: 153052 $");
+

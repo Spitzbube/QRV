@@ -38,4 +38,4 @@ int getprio(pid_t pid) {
 	return (status != -1) ? (params.sched_priority) : -1;
 	}
 
-__SRCVERSION("getprio.c $Rev: 153052 $");
+

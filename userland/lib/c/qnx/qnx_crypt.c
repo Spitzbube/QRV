@@ -75,4 +75,4 @@ qnx_crypt(char *pw, char *salt)
     return buf;
 }
 
-__SRCVERSION("qnx_crypt.c $Rev: 153052 $");
+

@@ -133,4 +133,4 @@ _STD_END
  * Consult your license regarding permissions and restrictions.
 V5.00:1296 */
 
-__SRCVERSION("xstoflt.c $Rev: 159979 $");
+

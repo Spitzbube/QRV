@@ -29,4 +29,4 @@ __hwi_find_string(unsigned off) {
 	return &SYSPAGE_ENTRY(strings)->data[off];
 }
 
-__SRCVERSION("__hwi_find_string.c $Rev: 153052 $");
+

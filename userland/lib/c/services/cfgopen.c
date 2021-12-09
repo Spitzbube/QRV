@@ -473,4 +473,4 @@ int main(int argc, char **argv)
 }
 #endif
 
-__SRCVERSION("cfgopen.c $Rev: 159804 $");
+

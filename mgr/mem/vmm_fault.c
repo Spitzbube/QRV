@@ -245,4 +245,4 @@ void fault_init(void)
     memmgr.fault_pulse_code = pulse_attach(dpp, MSG_FLAG_ALLOC_PULSE, 0, fault_pulse, NULL);
 }
 
-__SRCVERSION("vmm_fault.c $Rev: 172504 $");
+

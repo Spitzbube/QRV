@@ -39,4 +39,4 @@ void srand(unsigned seed) {
 	next = seed;
 }
 
-__SRCVERSION("rand.c $Rev: 153052 $");
+

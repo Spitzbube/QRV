@@ -47,4 +47,4 @@ int vmm_debuginfo(PROCESS * prp, struct _mem_debug_info *info)
     return r;
 }
 
-__SRCVERSION("vmm_debuginfo.c $Rev: 153052 $");
+

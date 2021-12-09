@@ -33,4 +33,4 @@ int spawnlp(int mode, const char *file, const char *arg0, ...) {
 	return spawnvpe(mode, file, argv, 0);
 }
 
-__SRCVERSION("spawnlp.c $Rev: 153052 $");
+

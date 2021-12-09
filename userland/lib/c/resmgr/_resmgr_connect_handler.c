@@ -147,4 +147,4 @@ int _resmgr_connect_handler(resmgr_context_t *ctp, resmgr_iomsgs_t *msg) {
 	return _RESMGR_DEFAULT;
 }
 
-__SRCVERSION("_resmgr_connect_handler.c $Rev: 153052 $");
+

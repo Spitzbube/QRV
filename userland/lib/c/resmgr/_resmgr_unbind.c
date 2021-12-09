@@ -37,4 +37,4 @@ int _resmgr_unbind(struct _msg_info *rep) {
 	return 0;
 }
 
-__SRCVERSION("_resmgr_unbind.c $Rev: 153052 $");
+

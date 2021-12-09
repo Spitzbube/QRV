@@ -144,6 +144,3 @@ extern bool mempart_module_loaded(void);
 
 
 #endif	/* _APM_INTERNAL_H_ */
-
-
-/* __SRCVERSION("$IQ: apm.h,v 1.91 $"); */

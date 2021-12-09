@@ -46,4 +46,4 @@
 #define FLTNOFPU	(_FIRST_CPU_FAULT+7) /* exc7  No Floating Point Device */
 #define FLTMACHCHK	(_FIRST_CPU_FAULT+8) /* exc12 Machine Check */
 
-/* __SRCVERSION("fault.h $Rev: 153052 $"); */
+/* 

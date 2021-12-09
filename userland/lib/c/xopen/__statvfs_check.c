@@ -32,4 +32,4 @@ int __statvfs_check(const struct statvfs *st)
 	return(0);
 }
 
-__SRCVERSION("__statvfs_check.c $Rev: 153052 $");
+

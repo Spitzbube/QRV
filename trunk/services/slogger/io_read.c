@@ -154,4 +154,4 @@ wait_add(struct slogdev *trp, int rcvid, int priority) {
 	return(0);
 	}
 
-__SRCVERSION("io_read.c $Rev: 153052 $");
+

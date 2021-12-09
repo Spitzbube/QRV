@@ -561,4 +561,4 @@ int _aio_destroy()
 	return 0;
 }
 
-__SRCVERSION("_aio_init.c $Rev: 168079 $");
+

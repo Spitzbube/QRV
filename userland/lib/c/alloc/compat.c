@@ -144,4 +144,4 @@ mallopt(int cmd, int value)
     return status;
 }
 
-__SRCVERSION("compat.c $Rev: 167420 $");
+

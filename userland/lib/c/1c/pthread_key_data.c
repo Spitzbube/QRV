@@ -25,4 +25,4 @@ _key_count_t _key_count = 0;
 _key_destructor_t * _key_destructor = NULL;
 pthread_mutex_t _key_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-__SRCVERSION("pthread_key_data.c $Rev: 153052 $");
+

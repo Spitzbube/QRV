@@ -37,4 +37,4 @@ char	buffer[PATH_MAX + 1];
 	return(-1);
 }
 
-__SRCVERSION("fchdir.c $Rev: 153052 $");
+

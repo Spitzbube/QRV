@@ -79,4 +79,4 @@ int
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutex_timedlock.c $Rev: 166190 $");
+

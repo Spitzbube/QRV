@@ -212,4 +212,4 @@ int _select_event(int nfds, fd_set *readfds, fd_set *writefds,
 	return pollsuccess;
 }
 
-__SRCVERSION("select_event.c $Rev: 153052 $");
+

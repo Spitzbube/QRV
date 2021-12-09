@@ -335,4 +335,4 @@ void rsrcdbmgr_seed()
 #endif
 }
 
-__SRCVERSION("rsrcdbmgr_seed.c $Rev: 153052 $");
+

@@ -30,4 +30,4 @@ int pthread_mutexattr_destroy(pthread_mutexattr_t *attr) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutexattr_destroy.c $Rev: 153052 $");
+

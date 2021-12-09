@@ -55,4 +55,4 @@ int __waitid_net(int nd, idtype_t idtype, id_t id, siginfo_t *infop, int options
 	return ret;
 }
 
-__SRCVERSION("__waitid_net.c $Rev: 153052 $");
+

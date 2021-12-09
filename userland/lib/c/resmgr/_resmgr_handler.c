@@ -188,4 +188,4 @@ void _resmgr_handler(resmgr_context_t *ctp) {
 }
 
 
-__SRCVERSION("_resmgr_handler.c $Rev: 155997 $");
+

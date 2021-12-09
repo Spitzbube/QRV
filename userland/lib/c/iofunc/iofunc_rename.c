@@ -110,4 +110,4 @@ int iofunc_rename(resmgr_context_t *ctp, io_rename_t *msg, iofunc_attr_t *oldatt
 	return EOK;
 }
 
-__SRCVERSION("iofunc_rename.c $Rev: 153052 $");
+

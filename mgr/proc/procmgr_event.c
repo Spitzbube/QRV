@@ -205,5 +205,3 @@ int procmgr_event(resmgr_context_t * ctp, proc_event_t * msg)
     }
     return ENOSYS;
 }
-
-__SRCVERSION("procmgr_event.c $Rev: 198544 $");

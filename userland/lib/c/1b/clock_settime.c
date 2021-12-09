@@ -41,4 +41,4 @@ clock_settime(clockid_t clock_id, const struct timespec *tp) {
 	return(ClockTime(clock_id, &t, 0));
 }
 
-__SRCVERSION("clock_settime.c $Rev: 166190 $");
+

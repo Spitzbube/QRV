@@ -31,4 +31,4 @@ hwi_next_item(unsigned off) {
 	return(off);
 }
 
-__SRCVERSION("hwi_next_item.c $Rev: 153052 $");
+

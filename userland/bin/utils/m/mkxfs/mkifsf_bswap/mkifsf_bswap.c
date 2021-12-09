@@ -100,5 +100,5 @@ main(int argc, char *argv[])
 }
 
 #ifdef __QNXNTO__
-__SRCVERSION("mkifsf_bswap.c $Rev: 153052 $");
+
 #endif

@@ -69,4 +69,4 @@ FILE *fdopen(int fd, const char *mode) {
 
 _STD_END
 
-__SRCVERSION("fdopen.c $Rev: 153052 $");
+

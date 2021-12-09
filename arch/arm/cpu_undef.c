@@ -252,4 +252,4 @@ arm_undef(THREAD *thp, CPU_REGISTERS *reg)
 	}
 }
 
-__SRCVERSION("cpu_undef.c $Rev: 153052 $");
+

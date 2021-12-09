@@ -26,4 +26,4 @@ void *resmgr_ocb(resmgr_context_t *ctp) {
 	return _resmgr_ocb(ctp, &ctp->info);
 }
 
-__SRCVERSION("resmgr_ocb.c $Rev: 153052 $");
+

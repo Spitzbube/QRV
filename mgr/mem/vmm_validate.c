@@ -77,4 +77,4 @@ int vmm_validate(tProcess * prp, uintptr_t vaddr, size_t len, int flags)
     return r;
 }
 
-__SRCVERSION("vmm_validate.c $Rev: 153052 $");
+

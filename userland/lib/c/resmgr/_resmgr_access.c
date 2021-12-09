@@ -66,4 +66,4 @@ int _resmgr_access(resmgr_context_t *ctp, struct _msg_info *msginfo, int ioflag,
 	return EACCES;
 }
 
-__SRCVERSION("_resmgr_access.c $Rev: 153052 $");
+

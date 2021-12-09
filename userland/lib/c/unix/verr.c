@@ -45,4 +45,4 @@ verr(eval, fmt, ap)
 	exit(eval);
 }
 
-__SRCVERSION("verr.c $Rev: 153052 $");
+

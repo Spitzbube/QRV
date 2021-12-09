@@ -33,4 +33,4 @@ int tcsendbreak(int fd, int duration) {
 	return _devctl(fd, DCMD_CHR_SERCTL, &duration, sizeof duration, _DEVCTL_FLAG_NORETVAL | _DEVCTL_FLAG_NOTTY);
 }
 
-__SRCVERSION("tcsendbreak.c $Rev: 153052 $");
+

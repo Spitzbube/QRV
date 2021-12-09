@@ -26,4 +26,4 @@ int (spin_lock)(spinlock_t *lock)
 }
 
 
-__SRCVERSION("spin_lock.c $Rev: 153052 $");
+

@@ -75,4 +75,4 @@ int setregid(gid_t rid, gid_t eid) {
 	return _qnx_setids(0, eid, rid, _PROC_ID_SETREGID);
 }
 
-__SRCVERSION("setids.c $Rev: 153052 $");
+

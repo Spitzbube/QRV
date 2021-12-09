@@ -31,4 +31,4 @@ int clock_getres(clockid_t clock_id, struct timespec *res) {
 	return 0;
 }
 
-__SRCVERSION("clock_getres.c $Rev: 153052 $");
+

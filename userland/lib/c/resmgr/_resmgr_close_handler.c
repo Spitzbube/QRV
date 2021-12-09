@@ -42,4 +42,4 @@ void _resmgr_close_handler(resmgr_context_t *ctp, struct binding *binding) {
 	}
 }
 
-__SRCVERSION("_resmgr_close_handler.c $Rev: 153052 $");
+

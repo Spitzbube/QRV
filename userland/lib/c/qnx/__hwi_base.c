@@ -29,4 +29,4 @@ __hwi_base() {
 	return SYSPAGE_ENTRY(hwinfo);
 }
 
-__SRCVERSION("__hwi_base.c $Rev: 153052 $");
+

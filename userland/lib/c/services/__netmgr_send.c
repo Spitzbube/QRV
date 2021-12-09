@@ -103,4 +103,4 @@ __netmgr_send(void *smsg1, int ssize1, const void *smsg2, int ssize2,
 	return status;
 }
 
-__SRCVERSION("__netmgr_send.c $Rev: 206031 $");
+

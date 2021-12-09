@@ -160,4 +160,4 @@ next_instruction(CPU_REGISTERS *ctx) {
 	return pc;
 }
 
-__SRCVERSION("next_instruction.c $Rev: 199396 $");
+

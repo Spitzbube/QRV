@@ -73,4 +73,4 @@ int scandir(char *dirname, struct dirent ***namelist,
     return nentries;
 }
 
-__SRCVERSION("scandir.c $Rev: 163784 $");
+

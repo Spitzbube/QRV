@@ -26,4 +26,4 @@ int iofunc_chmod_default(resmgr_context_t *ctp, io_chmod_t *msg, iofunc_ocb_t *o
 	return iofunc_chmod(ctp, msg, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_chmod_default.c $Rev: 153052 $");
+

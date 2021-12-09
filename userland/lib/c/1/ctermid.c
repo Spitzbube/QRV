@@ -33,4 +33,4 @@ char *ctermid(char *s) {
 }
 
 
-__SRCVERSION("ctermid.c $Rev: 153052 $");
+

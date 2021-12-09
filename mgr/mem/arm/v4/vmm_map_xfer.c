@@ -142,4 +142,4 @@ vmm_map_xfer(PROCESS *actptp, PROCESS *prp, IOV **piov, int *pparts, int *poff, 
 	return nbytes;
 }
 
-__SRCVERSION("vmm_map_xfer.c $Rev: 198521 $");
+

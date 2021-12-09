@@ -64,4 +64,4 @@ struct kdump_note_cpu {
 
 #endif
 
-/* __SRCVERSION("kdump.h $Rev: 168306 $"); */
+/* 

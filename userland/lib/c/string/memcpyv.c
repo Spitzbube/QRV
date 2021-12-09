@@ -94,4 +94,4 @@ size_t memcpyv(const struct iovec *dst, int dparts, int doff, const struct iovec
 	return nbytes;
 }
 
-__SRCVERSION("memcpyv.c $Rev: 167420 $");
+

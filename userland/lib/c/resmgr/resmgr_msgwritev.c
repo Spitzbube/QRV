@@ -25,4 +25,4 @@ int resmgr_msgwritev(resmgr_context_t *ctp, const struct iovec *smsg, int sparts
 	return MsgWritev(ctp->rcvid, smsg, sparts, offset);
 }
 
-__SRCVERSION("resmgr_msgwritev.c $Rev: 153052 $");
+

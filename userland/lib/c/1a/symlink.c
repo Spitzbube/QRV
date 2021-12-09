@@ -36,4 +36,4 @@ int symlink(const char *psymlink, const char *path) {
 	return status;
 }
 
-__SRCVERSION("symlink.c $Rev: 153052 $");
+

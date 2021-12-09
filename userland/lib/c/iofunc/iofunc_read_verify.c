@@ -49,4 +49,4 @@ int iofunc_read_verify(resmgr_context_t *ctp, io_read_t *msg, iofunc_ocb_t *ocb,
 	return EOK;
 }
 
-__SRCVERSION("iofunc_read_verify.c $Rev: 153052 $");
+

@@ -49,4 +49,4 @@ struct mm_pte_manipulate;
 extern void			wire_init(void);
 extern void			wire_check(struct mm_pte_manipulate *);
 
-/* __SRCVERSION("mem_family.h $Rev: 164196 $"); */
+/* 

@@ -27,4 +27,4 @@ void (nsec2timespec)(struct timespec *timespec, uint64_t nsec) {
 	timespec->tv_nsec = nsec % (uint64_t)1000000000;
 }
 
-__SRCVERSION("nsec2timespec.c $Rev: 153052 $");
+

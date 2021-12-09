@@ -44,4 +44,4 @@ int procmgr_session(uint32_t nd, pid_t sid, int id, unsigned event)
     return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("procmgr_session.c $Rev: 153052 $");
+

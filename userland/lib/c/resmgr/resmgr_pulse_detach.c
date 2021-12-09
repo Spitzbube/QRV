@@ -44,4 +44,4 @@ int resmgr_pulse_detach(int code) {
 	return -1;
 }
 
-__SRCVERSION("resmgr_pulse_detach.c $Rev: 153052 $");
+

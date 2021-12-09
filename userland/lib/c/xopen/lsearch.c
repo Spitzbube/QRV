@@ -103,4 +103,4 @@ int main(int argc, char **argv) {
 
 #endif
 
-__SRCVERSION("lsearch.c $Rev: 153052 $");
+

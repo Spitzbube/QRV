@@ -39,4 +39,4 @@ typedef unsigned char uch;
 #define	memmove(d, s, c)	bcopy(s, d, c)
 #endif
 
-/* __SRCVERSION("utils.h $Rev: 153052 $"); */
+/* 

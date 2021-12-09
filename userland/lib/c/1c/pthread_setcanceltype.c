@@ -57,4 +57,4 @@ pthread_setcanceltype(int type, int *oldtype) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_setcanceltype.c $Rev: 204471 $");
+

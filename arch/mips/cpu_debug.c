@@ -580,4 +580,4 @@ cpu_debug_set_altregs(THREAD *thp, debug_altreg_t *reg) {
 #endif
 }
 
-__SRCVERSION("cpu_debug.c $Rev: 167933 $");
+

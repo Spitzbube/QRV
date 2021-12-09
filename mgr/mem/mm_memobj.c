@@ -490,4 +490,4 @@ int memobj_offset_check(OBJECT * obp, off64_t off, uint64_t len)
     return EOK;
 }
 
-__SRCVERSION("mm_memobj.c $Rev: 211761 $");
+

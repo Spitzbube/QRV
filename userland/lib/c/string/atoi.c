@@ -27,4 +27,4 @@ int (atoi)(const char *s) {
 }
 _STD_END
 
-__SRCVERSION("atoi.c $Rev: 153052 $");
+

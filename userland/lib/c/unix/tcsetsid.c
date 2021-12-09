@@ -31,4 +31,4 @@ int tcsetsid(int fd, pid_t pid) {
 	return procmgr_session(ND_LOCAL_NODE, pid, fd, PROCMGR_SESSION_TCSETSID);
 }
 
-__SRCVERSION("tcsetsid.c $Rev: 153052 $");
+

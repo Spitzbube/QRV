@@ -32,4 +32,4 @@ int  getrusage(int who, struct rusage *usage) {
 	return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, usage, sizeof *usage);
 }
 
-__SRCVERSION("getrusage.c $Rev: 153052 $");
+

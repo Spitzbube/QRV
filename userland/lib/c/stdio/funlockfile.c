@@ -25,4 +25,4 @@ void funlockfile(FILE *fp) {
 	_Unlockfileatomic(fp);
 }
 
-__SRCVERSION("funlockfile.c $Rev: 153052 $");
+

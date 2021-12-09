@@ -82,4 +82,4 @@ int iofunc_ocb_detach(resmgr_context_t *ctp, iofunc_ocb_t *ocb) {
 	return flag;
 }
 
-__SRCVERSION("iofunc_ocb_detach.c $Rev: 153052 $");
+

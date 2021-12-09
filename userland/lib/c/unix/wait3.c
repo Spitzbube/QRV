@@ -29,4 +29,4 @@ wait3(int *stat_loc, int options, struct rusage *resource_usage) {
 	return wait4(0, stat_loc, options, resource_usage);
 }
 
-__SRCVERSION("wait3.c $Rev: 153052 $");
+

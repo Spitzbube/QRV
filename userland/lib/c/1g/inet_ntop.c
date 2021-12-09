@@ -245,4 +245,4 @@ inet_ntop6(src, dst, size)
 	return (dst);
 }
 
-__SRCVERSION("inet_ntop.c $Rev: 153052 $");
+

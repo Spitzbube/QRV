@@ -26,4 +26,4 @@ char *realpath(const char *path, char *realpathp) {
 	return _fullpath(realpathp, path, PATH_MAX);
 }
 
-__SRCVERSION("realpath.c $Rev: 153052 $");
+

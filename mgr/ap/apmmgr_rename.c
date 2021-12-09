@@ -181,5 +181,5 @@ int apmmgr_rename(resmgr_context_t *ctp, io_rename_t *msg, RESMGR_HANDLE_T *hand
 	return ENOSYS;
 }
 
-__SRCVERSION("$IQ: apmmgr_mknod.c,v 1.23 $");
+
 

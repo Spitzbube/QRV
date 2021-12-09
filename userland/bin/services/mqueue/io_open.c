@@ -160,4 +160,4 @@ race:
 	return EOK;
 }
 
-__SRCVERSION("io_open.c $Rev: 153052 $");
+

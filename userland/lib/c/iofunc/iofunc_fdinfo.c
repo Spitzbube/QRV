@@ -53,4 +53,4 @@ int iofunc_fdinfo(resmgr_context_t *ctp, iofunc_ocb_t *ocb, iofunc_attr_t *attr,
 	return EOK;
 }
 
-__SRCVERSION("iofunc_fdinfo.c $Rev: 153052 $");
+

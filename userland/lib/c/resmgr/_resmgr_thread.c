@@ -136,4 +136,4 @@ void *_resmgr_thread(void *data) {
 	return( 0 );
 }
 
-__SRCVERSION("_resmgr_thread.c $Rev: 155997 $");
+

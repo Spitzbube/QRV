@@ -33,4 +33,4 @@ int shm_open(const char *name, int oflag, mode_t mode) {
 	return _connect_object(name, "/dev/shmem", mode, oflag, _FTYPE_SHMEM, 0, 0, 0);
 }
 
-__SRCVERSION("shm_open.c $Rev: 153052 $");
+

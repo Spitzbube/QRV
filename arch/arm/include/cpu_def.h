@@ -84,4 +84,4 @@ struct cpu_extra_state {
 
 extern void	mmu_set_domain(unsigned);
 
-/* __SRCVERSION("cpu_arm.h $Rev: 153052 $"); */
+/* 

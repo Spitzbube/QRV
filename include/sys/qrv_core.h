@@ -138,7 +138,7 @@ struct _timer_info {
 
 #if defined(__GNUC__) || defined(__INTEL_COMPILER)
 #define __SECSTR(__sec, __s) __asm__(".section " #__sec ";.asciz \"" __s "\";.previous")
-#define __SRCVERSION(__s) __SECSTR(.ident, __s)
+#define 
 #endif
 
 __BEGIN_DECLS

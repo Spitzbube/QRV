@@ -26,4 +26,4 @@ int pthread_cond_signal( pthread_cond_t * cond )
 	return( SyncCondvarSignal_r( ( sync_t * ) cond, 0 ) );
 }
 
-__SRCVERSION("pthread_cond_signal.c $Rev: 153052 $");
+

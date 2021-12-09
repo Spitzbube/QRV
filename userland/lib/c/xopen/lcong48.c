@@ -49,4 +49,4 @@ lcong48(unsigned short p[7])
 	__rand48_add = p[6];
 }
 
-__SRCVERSION("lcong48.c $Rev: 153052 $");
+

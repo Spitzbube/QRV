@@ -44,4 +44,4 @@ sigaction(int signo, const struct sigaction *act, struct sigaction *oact) {
 	return(SignalAction(0, stub, signo, act, oact));
 }
 
-__SRCVERSION("sigaction.c $Rev: 153052 $");
+

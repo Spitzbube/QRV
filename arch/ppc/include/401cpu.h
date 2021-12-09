@@ -108,5 +108,3 @@
 #define PPC401_DCR_IOCR		0xa0
 
 #endif
-
-/* __SRCVERSION("401cpu.h $Rev: 153052 $"); */

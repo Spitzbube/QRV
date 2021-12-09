@@ -47,4 +47,4 @@ int _resmgr_link_free(int id, unsigned flags) {
 	return -1;
 }
 
-__SRCVERSION("_resmgr_link_free.c $Rev: 153052 $");
+

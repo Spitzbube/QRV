@@ -29,4 +29,4 @@ int cfmakeraw(struct termios *t) {
 	return 0;
 }
 
-__SRCVERSION("cfmakeraw.c $Rev: 153052 $");
+

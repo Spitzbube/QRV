@@ -36,4 +36,4 @@
 
 typedef uint32_t	pte_t;
 
-/* __SRCVERSION("mem_family.h $Rev: 153052 $"); */
+/* 

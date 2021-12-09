@@ -35,4 +35,4 @@ int procmgr_event_trigger(unsigned flags)
     return MsgSendnc(PROCMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("procmgr_event_trigger.c $Rev: 153052 $");
+

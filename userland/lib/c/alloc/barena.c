@@ -145,4 +145,4 @@ void __return_barena(__BandArena *ba)
 	return;
 }
 
-__SRCVERSION("barena.c $Rev: 159801 $");
+

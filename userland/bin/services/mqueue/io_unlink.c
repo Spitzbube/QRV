@@ -92,4 +92,4 @@ io_unlink(resmgr_context_t *ctp, io_unlink_t *msg, MQDEV *dev, void *reserved) {
 	return EOK;
 }
 
-__SRCVERSION("io_unlink.c $Rev: 153052 $");
+

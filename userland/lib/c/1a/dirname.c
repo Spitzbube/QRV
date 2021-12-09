@@ -80,4 +80,4 @@ int main(void) {
 }
 #endif
 
-__SRCVERSION("dirname.c $Rev: 153052 $");
+

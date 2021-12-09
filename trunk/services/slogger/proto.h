@@ -35,4 +35,4 @@ int io_unblock(resmgr_context_t *ctp, io_pulse_t *msg, iofunc_ocb_t *ocb);
 int io_unlink(resmgr_context_t *ctp, io_unlink_t *msg, RESMGR_HANDLE_T *handle, void *extra);
 int io_console_write(resmgr_context_t *ctp, io_write_t *msg, iofunc_ocb_t *ocb);
 
-/* __SRCVERSION("proto.h $Rev: 153052 $"); */
+/* 

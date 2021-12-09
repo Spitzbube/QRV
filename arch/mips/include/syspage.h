@@ -78,4 +78,4 @@ struct mips_kernel_entry {
 	_Uint32t 				code[2];
 };
 
-/* __SRCVERSION("syspage.h $Rev: 153052 $"); */
+/* 

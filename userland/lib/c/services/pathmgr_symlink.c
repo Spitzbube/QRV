@@ -41,4 +41,4 @@ int pathmgr_symlink(const char *path, const char *symlinkp) {
 	return 0;
 }
 
-__SRCVERSION("pathmgr_symlink.c $Rev: 153052 $");
+

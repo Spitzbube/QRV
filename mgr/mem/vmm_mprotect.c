@@ -94,5 +94,3 @@ int vmm_mprotect(PROCESS * prp, uintptr_t vaddr, size_t len, int prot)
   fail1:
     return r;
 }
-
-__SRCVERSION("vmm_mprotect.c $Rev: 161772 $");

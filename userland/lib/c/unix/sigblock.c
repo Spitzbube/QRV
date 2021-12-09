@@ -59,4 +59,4 @@ int sigunblock(int mask) {
     return (int)m.__bits[0];
 }
 
-__SRCVERSION("sigblock.c $Rev: 153052 $");
+

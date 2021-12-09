@@ -1635,4 +1635,4 @@ register struct re_guts *g;
 	return(maxnest);
 }
 
-__SRCVERSION("regcomp.c $Rev: 153052 $");
+

@@ -208,4 +208,4 @@ _mux_smp_xchg(volatile unsigned *__dst, unsigned __new) {
 #endif
 #endif
 
-/* __SRCVERSION("smpxchg.h $Rev: 164019 $"); */
+/* 

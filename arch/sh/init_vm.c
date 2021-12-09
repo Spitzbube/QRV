@@ -37,4 +37,4 @@ copy_vm_code() {
 	}
 }
 
-__SRCVERSION("init_vm.c $Rev: 159814 $");
+

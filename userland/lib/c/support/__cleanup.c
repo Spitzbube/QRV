@@ -43,4 +43,4 @@ struct __cleanup_handler *__cleanup_pop(int ex)
 
 
 
-__SRCVERSION("__cleanup.c $Rev: 153052 $");
+

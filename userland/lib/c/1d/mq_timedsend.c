@@ -52,4 +52,4 @@ int mq_timedsend_monotonic(mqd_t mq, const char *buff, size_t nbytes,
 }
 
 
-__SRCVERSION("mq_timedsend.c $Rev: 199491 $");
+

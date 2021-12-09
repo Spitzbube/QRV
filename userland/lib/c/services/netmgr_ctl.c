@@ -34,4 +34,4 @@ int netmgr_ctl(int nd, int op) {
 	return __netmgr_send(&msg.i, sizeof msg.i, 0, 0, 0, 0);
 }
 
-__SRCVERSION("netmgr_ctl.c $Rev: 153052 $");
+

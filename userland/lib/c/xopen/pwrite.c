@@ -52,4 +52,4 @@ ssize_t	pwrite(int fd, const void *buff, size_t nbytes, off_t offset) {
 	return pwrite64(fd, buff, nbytes, offset);
 }
 
-__SRCVERSION("pwrite.c $Rev: 153052 $");
+

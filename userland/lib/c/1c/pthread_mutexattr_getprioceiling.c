@@ -26,4 +26,4 @@ int pthread_mutexattr_getprioceiling(const pthread_mutexattr_t *attr, int *prioc
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutexattr_getprioceiling.c $Rev: 153052 $");
+

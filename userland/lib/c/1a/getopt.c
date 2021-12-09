@@ -212,4 +212,4 @@ int main(int argc, char *argv[]) {
 }
 #endif
 
-__SRCVERSION("getopt.c $Rev: 153052 $");
+

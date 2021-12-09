@@ -78,4 +78,4 @@ int _iofunc_llist_unlock(iofunc_attr_t *attr);
 
 extern struct _sleepon_handle _iofunc_sleepon_default;
 
-/* __SRCVERSION("iofunc.h $Rev: 153052 $"); */
+/* 

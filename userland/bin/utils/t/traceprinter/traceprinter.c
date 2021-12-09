@@ -3145,5 +3145,5 @@ int main(int argc, char **argv)
 }
 
 #ifdef __QNXNTO__
-__SRCVERSION("traceprinter.c $Rev: 173790 $");
+
 #endif

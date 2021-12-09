@@ -157,4 +157,4 @@ int fcntl(int fd, int cmd, ...) {
 	return ret;
 }
 
-__SRCVERSION("fcntl.c $Rev: 153052 $");
+

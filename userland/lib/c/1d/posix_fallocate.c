@@ -71,4 +71,4 @@ int posix_fallocate64(int fd, off64_t offset, size_t len) {
 #error "fcntl.h" must be updated to remove the #define for posix_fallocate64
 #endif
 
-__SRCVERSION("posix_fallocate.c $Rev: 171092 $");
+

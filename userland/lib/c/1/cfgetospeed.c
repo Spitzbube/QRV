@@ -26,4 +26,4 @@ const struct termios *termios_p;
 	return(termios_p->c_ospeed);
 	}
 
-__SRCVERSION("cfgetospeed.c $Rev: 153052 $");
+

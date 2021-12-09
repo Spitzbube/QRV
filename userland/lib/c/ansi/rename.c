@@ -82,4 +82,4 @@ int rename(const char *old, const char *new) {
 	return 0;
 }
 
-__SRCVERSION("rename.c $Rev: 153052 $");
+

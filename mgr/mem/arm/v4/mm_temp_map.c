@@ -188,4 +188,4 @@ pte_temp_map(ADDRESS *adp, uintptr_t user_va, struct pa_quantum *pq,
 	return r;
 }
 
-__SRCVERSION("mm_temp_map.c $Rev: 172513 $");
+

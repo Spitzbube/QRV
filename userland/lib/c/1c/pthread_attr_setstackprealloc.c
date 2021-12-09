@@ -27,4 +27,4 @@ int pthread_attr_setstackprealloc(pthread_attr_t *attr, size_t prealloc) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_setstackprealloc.c $Rev: 153052 $");
+

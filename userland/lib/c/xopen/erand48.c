@@ -48,4 +48,4 @@ erand48(unsigned short xseed[3])
 	       small_ldexp((double)xseed[2], -16);
 }
 
-__SRCVERSION("erand48.c $Rev: 153052 $");
+

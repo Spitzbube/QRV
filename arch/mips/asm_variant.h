@@ -71,4 +71,4 @@
 
 #endif /* ASM_VARIANT_H */
 
-/* __SRCVERSION("asm_variant.h $Rev: 153052 $"); */
+/* 

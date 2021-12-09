@@ -64,4 +64,4 @@ restart:
 	return 0;
 }
 
-__SRCVERSION("resmgr_pathname_detach.c $Rev: 153052 $");
+

@@ -91,4 +91,4 @@ char *getlogin(void)
 	return name;
 }
 
-__SRCVERSION("getlogin.c $Rev: 153052 $");
+

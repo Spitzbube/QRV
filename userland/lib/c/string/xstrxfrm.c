@@ -196,4 +196,4 @@ _STD_END
  * Consult your license regarding permissions and restrictions.
 V5.04:1296 */
 
-__SRCVERSION("xstrxfrm.c $Rev: 159923 $");
+

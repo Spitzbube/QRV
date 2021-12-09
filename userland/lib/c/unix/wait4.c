@@ -88,4 +88,4 @@ wait4(pid_t pid, int *stat_loc, int options, struct rusage *resource_usage) {
 	return info.si_pid;
 }
 
-__SRCVERSION("wait4.c $Rev: 153052 $");
+

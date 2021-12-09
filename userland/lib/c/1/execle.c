@@ -34,4 +34,4 @@ int execle(const char *path, const char *arg0, ...) {
 	return execve(path, argv, envv);
 }
 
-__SRCVERSION("execle.c $Rev: 153052 $");
+

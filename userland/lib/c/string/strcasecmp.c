@@ -43,4 +43,4 @@ strcasecmp( const char *s1, const char *s2 ) {
 	}
 }
 
-__SRCVERSION("strcasecmp.c $Rev: 153052 $");
+

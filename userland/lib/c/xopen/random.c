@@ -384,4 +384,4 @@ random()
 	return(i);
 }
 
-__SRCVERSION("random.c $Rev: 153052 $");
+

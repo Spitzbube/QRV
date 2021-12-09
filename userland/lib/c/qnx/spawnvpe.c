@@ -63,4 +63,4 @@ int spawnvp(int mode, const char *file, char * const *argv) {
 	return spawnvpe(mode, file, (char **)argv, 0);
 }
 
-__SRCVERSION("spawnvpe.c $Rev: 153052 $");
+

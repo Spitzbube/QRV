@@ -178,4 +178,4 @@
 
 #endif
 
-/* __SRCVERSION("970cpu.h $Rev: 153052 $"); */
+/* 

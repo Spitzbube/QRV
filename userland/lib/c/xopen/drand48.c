@@ -41,4 +41,4 @@ drand48(void)
 	return erand48(__rand48_seed);
 }
 
-__SRCVERSION("drand48.c $Rev: 153052 $");
+

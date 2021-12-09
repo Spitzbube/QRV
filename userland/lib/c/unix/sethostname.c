@@ -37,4 +37,4 @@ sethostname(const char *name, size_t namelen)
 	return 0;
 }
 
-__SRCVERSION("sethostname.c $Rev: 153052 $");
+

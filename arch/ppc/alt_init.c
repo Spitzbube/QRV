@@ -23,4 +23,4 @@ alt_context_init(THREAD *act) {
 	// This routine is overridden in the 600 & booke versions
 }
 
-__SRCVERSION("alt_init.c $Rev: 153052 $");
+

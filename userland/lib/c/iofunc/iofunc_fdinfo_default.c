@@ -53,4 +53,4 @@ int iofunc_fdinfo_default(resmgr_context_t *ctp, io_fdinfo_t *msg, iofunc_ocb_t 
 	return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o + min(pathmax, len));
 }
 
-__SRCVERSION("iofunc_fdinfo_default.c $Rev: 153052 $");
+

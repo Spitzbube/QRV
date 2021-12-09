@@ -52,4 +52,4 @@ int dup2(int fd, int fd2) {
 	return fd;
 }
 
-__SRCVERSION("dup2.c $Rev: 153052 $");
+

@@ -29,4 +29,4 @@ char *getwd(char *pathname) {
 	return getcwd(pathname, PATH_MAX);
 }
 
-__SRCVERSION("getwd.c $Rev: 153052 $");
+

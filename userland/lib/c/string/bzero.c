@@ -25,4 +25,4 @@ void (bzero)( void *d, size_t n )
 	memset( d, 0, n );
 }
 
-__SRCVERSION("bzero.c $Rev: 153052 $");
+

@@ -106,7 +106,7 @@ extern void bz__AssertH__fail ( int errcode );
       exit(1); \
    }}
 #else
-#define AssertD(cond,msg) /* */
+#define AssertD(cond,msg)
 #endif
 #define VPrintf0(zf) \
    fprintf(stderr,zf)

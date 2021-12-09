@@ -56,4 +56,4 @@ int rsrcdbmgr_destroy(rsrc_alloc_t *list, int32_t count) {
 	return ret;
 }
 
-__SRCVERSION("rsrcdbmgr_destroy.c $Rev: 153052 $");
+

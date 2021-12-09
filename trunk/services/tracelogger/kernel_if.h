@@ -39,4 +39,4 @@ __END_DECLS
 
 #endif //_KERNEL_IF_H_
 
-/* __SRCVERSION("kernel_if.h $Rev: 157117 $"); */
+/* 

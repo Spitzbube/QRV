@@ -28,4 +28,4 @@ void (InterruptEnable)(void)
 	__inline_InterruptEnable();
 }
 
-__SRCVERSION("interruptenable.c $Rev: 153052 $");
+

@@ -31,4 +31,4 @@ warn(const char *fmt, ...)
 	va_end(ap);
 }
 
-__SRCVERSION("warn.c $Rev: 153052 $");
+

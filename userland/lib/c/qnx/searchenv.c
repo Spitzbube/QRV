@@ -28,4 +28,4 @@ void searchenv(const char *name, const char *env_var, char *buf) {
 	}
 }
 
-__SRCVERSION("searchenv.c $Rev: 153052 $");
+

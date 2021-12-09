@@ -33,4 +33,4 @@ int usleep(useconds_t usec) {
     return clock_nanosleep(CLOCK_REALTIME, 0, &ts, 0);
 }
 
-__SRCVERSION("usleep.c $Rev: 153052 $");
+

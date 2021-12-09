@@ -53,4 +53,4 @@ char *getpass(const char *prompt) {
     return pw;
 }
 
-__SRCVERSION("getpass.c $Rev: 153052 $");
+

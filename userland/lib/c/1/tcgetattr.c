@@ -27,4 +27,4 @@ int tcgetattr(int fd, struct termios *termios_p) {
 	return _devctl(fd, DCMD_CHR_TCGETATTR, termios_p, sizeof *termios_p, _DEVCTL_FLAG_NORETVAL | _DEVCTL_FLAG_NOTTY);
 }
 
-__SRCVERSION("tcgetattr.c $Rev: 153052 $");
+

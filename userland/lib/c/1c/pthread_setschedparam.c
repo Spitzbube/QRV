@@ -26,4 +26,4 @@ int pthread_setschedparam( pthread_t thread, int policy, const struct sched_para
 	return( SchedSet_r( 0, thread, policy, param ) );
 }
 
-__SRCVERSION("pthread_setschedparam.c $Rev: 153052 $");
+

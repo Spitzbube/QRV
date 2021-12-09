@@ -252,5 +252,3 @@ int procmgr_msg_session(resmgr_context_t * ctp, proc_session_t * msg)
 
     return ENOSYS;
 }
-
-__SRCVERSION("procmgr_session.c $Rev: 169209 $");

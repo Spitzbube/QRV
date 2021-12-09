@@ -36,4 +36,4 @@ int execvp(const char *file, char * const *argv) {
 	return execvpe(file, argv, 0);
 }
 
-__SRCVERSION("execvpe.c $Rev: 153052 $");
+

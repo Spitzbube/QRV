@@ -29,4 +29,4 @@ cpu_whitewash(struct pa_quantum *pq) {
 	return PAQ_FLAG_ZEROED;
 }
 
-__SRCVERSION("cpu_pa.c $Rev: 153052 $");
+

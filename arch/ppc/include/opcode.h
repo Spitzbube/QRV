@@ -315,4 +315,4 @@
 
 #endif
 
-/* __SRCVERSION("opcode.h $Rev: 153052 $"); */
+/* 

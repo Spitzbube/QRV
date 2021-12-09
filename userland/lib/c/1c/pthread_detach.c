@@ -29,4 +29,4 @@ int pthread_detach( pthread_t thread )
 
 
 
-__SRCVERSION("pthread_detach.c $Rev: 153052 $");
+

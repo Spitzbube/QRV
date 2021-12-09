@@ -33,4 +33,4 @@ int sigismember(const sigset_t *set, int signo) {
 			(1UL << ((unsigned long) signo % BITS_SIZE))) != 0;
 }
 
-__SRCVERSION("sigismem.c $Rev: 153052 $");
+

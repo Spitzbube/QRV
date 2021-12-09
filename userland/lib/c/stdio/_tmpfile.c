@@ -40,4 +40,4 @@ FILE	*fp;
 	return(fp);
 }
 
-__SRCVERSION("_tmpfile.c $Rev: 153052 $");
+

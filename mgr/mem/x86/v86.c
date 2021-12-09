@@ -138,4 +138,4 @@ int v86_handle(resmgr_context_t * ctp, x86_cpu_v86_t * msg)
     return _RESMGR_NOREPLY;
 }
 
-__SRCVERSION("v86.c $Rev: 202117 $");
+

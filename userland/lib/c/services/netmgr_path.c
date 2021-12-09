@@ -46,4 +46,4 @@ int netmgr_path(const char *netname, const char *suffix, char *path, size_t path
 	return size;
 }
 
-__SRCVERSION("netmgr_path.c $Rev: 153052 $");
+

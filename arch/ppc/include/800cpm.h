@@ -639,4 +639,4 @@ typedef enum {
 
 #endif
 
-/* __SRCVERSION("800cpm.h $Rev: 153052 $"); */
+/* 

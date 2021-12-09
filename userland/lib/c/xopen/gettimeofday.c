@@ -39,4 +39,4 @@ gettimeofday(struct timeval *tp, void *zp)
 	return 0;
 }
 
-__SRCVERSION("gettimeofday.c $Rev: 153052 $");
+

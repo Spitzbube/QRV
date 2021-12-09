@@ -84,4 +84,4 @@ int memmgr_offset(resmgr_context_t * ctp, PROCESS * prp, mem_offset_t * msg)
     return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o);
 }
 
-__SRCVERSION("memmgr_offset.c $Rev: 174147 $");
+

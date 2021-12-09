@@ -28,4 +28,4 @@ int tcsetpgrp(int fd, pid_t pgrp) {
 	return _devctl(fd, DCMD_CHR_TCSETPGRP, &pgrp, sizeof pgrp, _DEVCTL_FLAG_NORETVAL | _DEVCTL_FLAG_NOTTY);
 }
 
-__SRCVERSION("tcsetpgrp.c $Rev: 153052 $");
+

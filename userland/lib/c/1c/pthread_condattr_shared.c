@@ -31,4 +31,4 @@ int pthread_condattr_setpshared(pthread_condattr_t *attr, int pshared) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_condattr_shared.c $Rev: 153052 $");
+

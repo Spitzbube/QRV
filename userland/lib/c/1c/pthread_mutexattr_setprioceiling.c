@@ -37,4 +37,4 @@ int pthread_mutexattr_setprioceiling(pthread_mutexattr_t *attr, int prioceiling)
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutexattr_setprioceiling.c $Rev: 153052 $");
+

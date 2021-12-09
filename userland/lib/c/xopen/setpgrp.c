@@ -28,4 +28,4 @@ int setpgrp(void) {
 	return (npgid < 0) ? getpgrp() : npgid;
 }
 
-__SRCVERSION("setpgrp.c $Rev: 153052 $");
+

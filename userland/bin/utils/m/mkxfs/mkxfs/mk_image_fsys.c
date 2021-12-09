@@ -2442,4 +2442,4 @@ ifs_make_fsys(FILE *dst_fp, struct file_entry *list, char *mountpoint, char *des
 	return(bsize+booter.notloaded_len);
 }
 
-__SRCVERSION("mk_image_fsys.c $Rev: 203655 $");
+

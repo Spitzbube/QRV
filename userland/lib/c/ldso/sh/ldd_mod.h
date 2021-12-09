@@ -40,4 +40,4 @@ static_mod(unsigned long num, unsigned long den)
 	return num;
 }
 
-/* __SRCVERSION("ldd_mod.h $Rev: 153052 $"); */
+/* 

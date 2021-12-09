@@ -27,4 +27,4 @@ long (atol)(const char *s) {
 }
 _STD_END
 
-__SRCVERSION("atol.c $Rev: 153052 $");
+

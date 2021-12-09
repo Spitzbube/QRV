@@ -78,5 +78,3 @@ void procmgr_stack_executable(int enable)
         thread_stack_prot &= ~PROT_EXEC;
     }
 }
-
-__SRCVERSION("procmgr_stack.c $Rev: 169350 $");

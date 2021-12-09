@@ -124,4 +124,4 @@ int iofunc_mmap(resmgr_context_t *ctp, io_mmap_t *msg, iofunc_ocb_t *ocb, iofunc
 	return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o);
 }
 
-__SRCVERSION("iofunc_mmap.c $Rev: 153052 $");
+

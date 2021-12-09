@@ -30,4 +30,4 @@ settimeofday(const struct timeval *tp, const struct timezone *tzp) {
 	return clock_settime(CLOCK_REALTIME, &ts);
 }
 
-__SRCVERSION("settimeofday.c $Rev: 153052 $");
+

@@ -30,4 +30,4 @@ int killpg(int pgrp, int sig) {
     return kill(-pgrp, sig);
 }
 
-__SRCVERSION("killpg.c $Rev: 153052 $");
+

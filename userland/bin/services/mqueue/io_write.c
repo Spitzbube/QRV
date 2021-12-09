@@ -164,4 +164,4 @@ io_write(resmgr_context_t *ctp, io_write_t *msg, struct ocb *ocb) {
 	return _RESMGR_NOREPLY;
 }
 
-__SRCVERSION("io_write.c $Rev: 153052 $");
+

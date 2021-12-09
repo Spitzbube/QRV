@@ -36,4 +36,4 @@ int fstat64(int fd, struct stat64 *statp) {
 	return MsgSendnc(fd, &msg.i, sizeof msg.i, statp, sizeof *statp) == -1 ? -1 : 0;
 }
 
-__SRCVERSION("fstat64.c $Rev: 153052 $");
+

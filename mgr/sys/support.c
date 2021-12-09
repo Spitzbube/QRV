@@ -277,4 +277,4 @@ int proc_status(resmgr_context_t * ctp, int status)
     return 0;
 }
 
-__SRCVERSION("support.c $Rev: 201354 $");
+

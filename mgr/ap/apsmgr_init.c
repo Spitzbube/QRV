@@ -189,5 +189,5 @@ void apsmgr_init(char *basepath)
 
 
 
-__SRCVERSION("$IQ: apsmgr_init.c,v 1.23 $");
+
 

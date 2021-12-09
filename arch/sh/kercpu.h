@@ -441,4 +441,4 @@ ClockCycles(void) {
 }
 #endif
 
-/* __SRCVERSION("kercpu.h $Rev: 199716 $"); */
+/* 

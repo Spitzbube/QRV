@@ -29,4 +29,4 @@ int kill(pid_t pid, int signo) {
     return(SignalKill(ND_LOCAL_NODE, pid, 0, signo, SI_USER, 0));
 	}
 
-__SRCVERSION("kill.c $Rev: 153052 $");
+

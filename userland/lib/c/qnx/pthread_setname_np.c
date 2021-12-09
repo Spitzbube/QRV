@@ -25,4 +25,4 @@ int pthread_setname_np(pthread_t tid, const char *name) {
 }
 
 
-__SRCVERSION("pthread_setname_np.c $Rev: 153052 $");
+

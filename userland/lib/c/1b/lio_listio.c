@@ -177,4 +177,4 @@ int lio_listio(int mode, struct aiocb * __const list[], int nent,
 	return lio_listio64(mode, (struct aiocb64 **)list, nent, sig);
 }
 
-__SRCVERSION("lio_listio.c $Rev: 159798 $");
+

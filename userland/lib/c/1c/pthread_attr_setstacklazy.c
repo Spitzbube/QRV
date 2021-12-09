@@ -34,4 +34,4 @@ int pthread_attr_setstacklazy(pthread_attr_t *attr, int lazystate) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_setstacklazy.c $Rev: 153052 $");
+

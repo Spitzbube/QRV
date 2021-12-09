@@ -39,4 +39,4 @@ int resmgr_pathname(int id, unsigned flags, char *path, int maxbuf) {
 	return len;
 }
 
-__SRCVERSION("resmgr_pathname.c $Rev: 153052 $");
+

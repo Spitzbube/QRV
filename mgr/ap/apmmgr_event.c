@@ -1411,5 +1411,5 @@ static char *mclass_evt_string(memclass_evttype_t evt) {return mclass_evt_string
 #endif	/* NDEBUG */
 
 
-__SRCVERSION("$IQ: apmmgr_event.c,v 1.23 $");
+
 

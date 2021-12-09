@@ -212,5 +212,5 @@ static int _apmmgr_st_size(apmmgr_attr_t *attr, struct stat *st)
 }
 
 
-__SRCVERSION("$IQ: apmmgr_stat.c,v 1.23 $");
+
 

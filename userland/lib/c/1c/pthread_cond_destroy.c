@@ -26,4 +26,4 @@ int pthread_cond_destroy( pthread_cond_t * cond )
 	return( SyncDestroy_r( ( sync_t * ) cond ) );
 }
 
-__SRCVERSION("pthread_cond_destroy.c $Rev: 153052 $");
+

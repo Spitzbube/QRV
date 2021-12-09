@@ -47,4 +47,4 @@ int iofunc_openfd(resmgr_context_t *ctp, io_openfd_t *msg, iofunc_ocb_t *ocb, io
 	return iofunc_ocb_attach(ctp, &io_open, 0, attr, _resmgr_iofuncs(ctp, &msg->i.info));
 }
 
-__SRCVERSION("iofunc_openfd.c $Rev: 153052 $");
+

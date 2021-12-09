@@ -73,4 +73,4 @@ _smp_xchg(volatile unsigned *__dst, unsigned __new) {
 
 #endif
 
-/* __SRCVERSION("smpxchg.h $Rev: 153052 $"); */
+/* 

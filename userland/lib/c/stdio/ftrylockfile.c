@@ -25,4 +25,4 @@ int ftrylockfile(FILE *fp) {
 	return _Ftrylockfile(fp);
 }
 
-__SRCVERSION("ftrylockfile.c $Rev: 153052 $");
+

@@ -56,4 +56,4 @@ int aio_fsync(int op, struct aiocb *aiocbp)
 	return _aio_insert(aiocbp);
 }
 
-__SRCVERSION("aio_fsync.c $Rev: 153052 $");
+

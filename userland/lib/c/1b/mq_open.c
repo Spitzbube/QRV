@@ -53,4 +53,4 @@ mqd_t mq_open(const char *name, int oflag, ...) {
 	return((ret == (mqd_t)-1) ? __mq_check(0, ret) : ret);
 }
 
-__SRCVERSION("mq_open.c $Rev: 153052 $");
+

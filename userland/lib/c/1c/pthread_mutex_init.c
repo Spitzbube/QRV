@@ -25,4 +25,4 @@ int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr) 
 	return SyncTypeCreate_r(QRV_SYNC_MUTEX_FREE, (sync_t *)mutex, attr);
 }
 
-__SRCVERSION("pthread_mutex_init.c $Rev: 153052 $");
+

@@ -156,4 +156,4 @@ vmm_vaddrinfo(PROCESS * prp, uintptr_t vaddr, paddr_t * paddrp, size_t *lenp, un
     return prot;
 }
 
-__SRCVERSION("vmm_vaddrinfo.c $Rev: 163915 $");
+

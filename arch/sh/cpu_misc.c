@@ -492,4 +492,4 @@ void cpu_mutex_adjust(THREAD *act) {
 }
  
 
-__SRCVERSION("cpu_misc.c $Rev: 201493 $");
+

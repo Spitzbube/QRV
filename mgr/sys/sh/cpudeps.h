@@ -19,4 +19,4 @@
 
 #define CPU_ELF_NUMBERS	EM_SH
 
-/* __SRCVERSION("cpudeps.h $Rev: 153052 $"); */
+/* 

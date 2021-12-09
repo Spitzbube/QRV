@@ -56,4 +56,4 @@ FILE *__fpinit(FILE *fp, int fd, int oflag) {
 }
 _STD_END
 
-__SRCVERSION("__fpinit.c $Rev: 153052 $");
+

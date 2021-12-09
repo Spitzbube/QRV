@@ -26,4 +26,4 @@ uint64_t (timespec2nsec)(const struct timespec *timespec) {
 	return (timespec->tv_sec * (uint64_t)1000000000) + timespec->tv_nsec;
 }
 
-__SRCVERSION("timespec2nsec.c $Rev: 153052 $");
+

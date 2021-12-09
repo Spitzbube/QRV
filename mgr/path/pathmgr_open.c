@@ -612,4 +612,4 @@ int pathmgr_readlink(resmgr_context_t * ctp, io_readlink_t * msg, void *handle, 
 }
 
 
-__SRCVERSION("pathmgr_open.c $Rev: 174910 $");
+

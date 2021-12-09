@@ -32,4 +32,4 @@ int clock_nanosleep(clockid_t clock_id, int flags, const struct timespec *rqtp, 
 	return(timer_timeout_r(clock_id, (flags & TIMER_ABSTIME) | (1 << STATE_NANOSLEEP), 0, rqtp, rmtp));
 }
 
-__SRCVERSION("clock_nanosleep.c $Rev: 166190 $");
+

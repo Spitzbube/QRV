@@ -38,4 +38,4 @@ posix_madvise(void *addr, size_t len, int advice) {
 	return -r;
 }
 
-__SRCVERSION("posix_madvise.c $Rev: 153052 $");
+

@@ -32,4 +32,4 @@ int nanosleep( const struct timespec *rqtp, struct timespec *rmtp) {
 	return(timer_timeout(CLOCK_REALTIME, 1 << STATE_NANOSLEEP, 0, rqtp, rmtp));
 	}
 
-__SRCVERSION("nanosleep.c $Rev: 166190 $");
+

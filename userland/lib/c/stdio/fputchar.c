@@ -25,4 +25,4 @@ int fputchar(int c) {
 	return fputc(c, stdout);
 }
 
-__SRCVERSION("fputchar.c $Rev: 153052 $");
+

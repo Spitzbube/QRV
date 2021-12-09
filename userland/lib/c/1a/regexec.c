@@ -159,4 +159,4 @@ int eflags;
 		return(lmatcher(g, (char *)string, nmatch, pmatch, eflags));
 }
 
-__SRCVERSION("regexec.c $Rev: 153052 $");
+

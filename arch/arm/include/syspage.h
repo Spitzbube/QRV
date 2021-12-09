@@ -86,4 +86,4 @@ struct arm_kernel_entry {
 	unsigned long	code[2];
 };
 
-/* __SRCVERSION("syspage.h $Rev: 160127 $"); */
+/* 

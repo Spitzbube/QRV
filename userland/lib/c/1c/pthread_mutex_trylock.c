@@ -60,4 +60,4 @@ int
 	return EBUSY;
 }
 
-__SRCVERSION("pthread_mutex_trylock.c $Rev: 153052 $");
+

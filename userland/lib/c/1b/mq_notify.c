@@ -44,4 +44,4 @@ int mq_notify(mqd_t mq, const struct sigevent *event) {
 	return((rc == -1) ? __mq_check(!0, mq) : 0);
 }
 
-__SRCVERSION("mq_notify.c $Rev: 168079 $");
+

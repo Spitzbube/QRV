@@ -55,4 +55,4 @@ int pthread_once(pthread_once_t *once_control, void (*init_routine)(void)) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_once.c $Rev: 153052 $");
+

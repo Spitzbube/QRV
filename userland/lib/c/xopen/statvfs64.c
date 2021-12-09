@@ -48,4 +48,4 @@ int statvfs64(const char *path, struct statvfs64 *statvfsp) {
 	return 0;
 }
 
-__SRCVERSION("statvfs64.c $Rev: 153052 $");
+

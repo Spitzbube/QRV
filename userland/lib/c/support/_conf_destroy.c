@@ -53,4 +53,4 @@ void _conf_destroy(long *list)
 }
 
 
-__SRCVERSION("_conf_destroy.c $Rev: 153052 $");
+

@@ -51,4 +51,4 @@ int fcloseall(void) {
 	return 0;
 }
 
-__SRCVERSION("fcloseall.c $Rev: 153052 $");
+

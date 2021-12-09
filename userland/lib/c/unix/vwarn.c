@@ -42,4 +42,4 @@ vwarn(fmt, ap)
 	(void)fprintf(stderr, "%s\n", strerror(sverrno));
 }
 
-__SRCVERSION("vwarn.c $Rev: 153052 $");
+

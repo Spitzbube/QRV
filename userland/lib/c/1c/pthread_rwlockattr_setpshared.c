@@ -26,4 +26,4 @@ int pthread_rwlockattr_setpshared(pthread_rwlockattr_t *attr, int pshared) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_rwlockattr_setpshared.c $Rev: 153052 $");
+

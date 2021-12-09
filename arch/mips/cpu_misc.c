@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -37,7 +37,7 @@ void sb1_cache_clean(paddr_t bad_paddr);
 
 /*
  * cache_error()
- *	Parse the COP0 cache_error register and report 
+ *	Parse the COP0 cache_error register and report
  *	the details of the cache exception. Then either crash
  * 	or try to recover and continue from the error.
  */
@@ -72,7 +72,7 @@ cache_error(void) {
 		uint32_t errctl = CP0REG_SEL_GET(26,0);
 		uint32_t cerr_dpa = CP0REG_SEL_GET(27,3); /* getcp0_cerr_dpa() */
 		if ( errctl & SB_CERR_INST ) {
-			kprintf("\n*** Cache Error Exception at 0x%x, Instruction Cache ErrCtl 0x%x CacheErr-I 0x%x ***\n", 
+			kprintf("\n*** Cache Error Exception at 0x%x, Instruction Cache ErrCtl 0x%x CacheErr-I 0x%x ***\n",
 								err_epc, errctl, cerr);
 			kprintf("%s error, %s cache",
 				   (cerr & SB_I_TAG) ? "tag_parity" : "data_array",
@@ -80,7 +80,7 @@ cache_error(void) {
 		} else if ( errctl & SB_CERR_DATA ) {
 			/* always _try_ to clean out cache data */
 			sb1_cache_clean(cerr_dpa);
-			kprintf("\n*** Cache Error Exception at 0x%x, Data Cache ErrCtl 0x%x CacheErr-D 0x%x ***\n", 
+			kprintf("\n*** Cache Error Exception at 0x%x, Data Cache ErrCtl 0x%x CacheErr-D 0x%x ***\n",
 								err_epc, errctl, cerr_d);
 			if ( cerr_d & SB_D_MUTIPLE ) {
 				kprintf("multiple ");
@@ -117,11 +117,11 @@ cache_error(void) {
 			}
 			kprintf("error, CacheErr-DPA=0x%x\n", cerr_dpa );
 		} else {
-			kprintf("\n*** Cache Error Exception at 0x%x, errctl 0x%x ***\n", 
+			kprintf("\n*** Cache Error Exception at 0x%x, errctl 0x%x ***\n",
 								err_epc, errctl);
 		}
   } else {
-    kprintf("\n*** Cache Error Exception at 0x%x, cerr 0x%x epc 0x%x***\n", 
+    kprintf("\n*** Cache Error Exception at 0x%x, cerr 0x%x epc 0x%x***\n",
 						err_epc, cerr, epc);
     kprintf("%s reference, %s cache, %s %s",
            (cerr & MIPS_CACHE_ERR_ER) ? "data" : "instruction",
@@ -308,7 +308,7 @@ cpu_thread_init(THREAD *act, THREAD *thp, int align) {
 	 * PIC-compiled code.
 	 */
 	if (act) {
-		MIPS_REG_SETx64(r, MIPS_REG_T9, REGIP(r));	
+		MIPS_REG_SETx64(r, MIPS_REG_T9, REGIP(r));
 		MIPS_REG_SETx64(r, MIPS_REG_GP, act->reg.regs[MIPS_CREG(MIPS_REG_GP)]);
 		sreg &= ~MIPS_SREG_CU1;
 	} else {
@@ -347,7 +347,7 @@ void
 cpu_process_startup(THREAD *thp, int forking) {
 	MIPS_CPU_REGISTERS *r = &thp->reg;
  	unsigned sreg;
- 
+
 	if(!forking) {
 		sreg = r->regs[MIPS_CREG(MIPS_REG_SREG)];
 
@@ -447,7 +447,5 @@ cpu_force_thread_destroyall(THREAD *thp) {
 void
 cpu_invoke_func(THREAD *thp, uintptr_t addr) {
 	SETKIP(thp, addr);
-	MIPS_REG_SETx64(&thp->reg, MIPS_REG_T9, REGIP(&thp->reg));	
+	MIPS_REG_SETx64(&thp->reg, MIPS_REG_T9, REGIP(&thp->reg));
 }
-
-__SRCVERSION("cpu_misc.c $Rev: 161879 $");

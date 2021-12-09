@@ -38,4 +38,4 @@
 #define SH_RTC_RCR1_RESET	_ONEBIT8L(1)
 #define SH_RTC_RCR1_START	_ONEBIT8L(0)
 
-/* __SRCVERSION("rtc.h $Rev: 153052 $"); */
+/* 

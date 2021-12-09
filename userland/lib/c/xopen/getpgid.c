@@ -34,4 +34,4 @@ pid_t getpgid(pid_t pid) {
 	return msg.o.pgrp;
 }
 
-__SRCVERSION("getpgid.c $Rev: 153052 $");
+

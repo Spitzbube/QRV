@@ -37,4 +37,4 @@ int sigdelset(sigset_t *set, int signo)
 }
 
 
-__SRCVERSION("sigdelset.c $Rev: 153052 $");
+

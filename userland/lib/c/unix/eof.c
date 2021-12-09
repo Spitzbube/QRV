@@ -35,4 +35,4 @@ int eof(int fd) {
 	return(pos == sbuf.st_size);
 	}
 
-__SRCVERSION("eof.c $Rev: 153052 $");
+

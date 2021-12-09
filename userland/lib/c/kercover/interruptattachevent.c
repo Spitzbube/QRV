@@ -27,4 +27,4 @@ int InterruptAttachEvent(int intr, const struct sigevent *event, unsigned flags)
 	return InterruptAttach( intr, NULL, event, sizeof( *event ), flags);
 }
 
-__SRCVERSION("interruptattachevent.c $Rev: 153052 $");
+

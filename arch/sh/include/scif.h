@@ -170,4 +170,4 @@
 #define	SH_X3P_SCIF_BASE2	0xffc50000
 #define	SH_X3P_SCIF_BASE3	0xffc60000
 
-/* __SRCVERSION("scif.h $Rev: 153052 $"); */
+/* 

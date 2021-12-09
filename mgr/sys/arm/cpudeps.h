@@ -22,4 +22,4 @@
 
 #define CPU_ELF_NUMBERS	EM_ARM
 
-/* __SRCVERSION("cpudeps.h $Rev: 153052 $"); */
+/* 

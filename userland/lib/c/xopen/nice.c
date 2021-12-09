@@ -36,4 +36,4 @@ int nice(int incr) {
 	return -1;
 }
 
-__SRCVERSION("nice.c $Rev: 153052 $");
+

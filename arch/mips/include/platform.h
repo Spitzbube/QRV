@@ -69,4 +69,4 @@ typedef unsigned 		__jmpbufalign;
 
 #endif
 
-/* __SRCVERSION("platform.h $Rev: 167027 $"); */
+/* 

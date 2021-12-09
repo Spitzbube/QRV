@@ -27,4 +27,4 @@ int pthread_condattr_getclock(const pthread_condattr_t *attr, clockid_t *id) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_condattr_getclock.c $Rev: 153052 $");
+

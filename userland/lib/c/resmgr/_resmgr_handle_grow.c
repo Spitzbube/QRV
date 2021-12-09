@@ -55,4 +55,4 @@ int _resmgr_handle_grow(unsigned min) {
 }
 
 
-__SRCVERSION("_resmgr_handle_grow.c $Rev: 153052 $");
+

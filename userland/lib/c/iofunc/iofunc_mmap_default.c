@@ -25,4 +25,4 @@ int iofunc_mmap_default(resmgr_context_t *ctp, io_mmap_t *msg, iofunc_ocb_t *ocb
 	return iofunc_mmap(ctp, msg, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_mmap_default.c $Rev: 153052 $");
+

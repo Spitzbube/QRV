@@ -260,4 +260,4 @@ main( int argc, char *argv[] ) {
 	return(0);
 }
 
-__SRCVERSION("mkifsf_elf.c $Rev: 153052 $");
+

@@ -24,4 +24,4 @@ int rdchk(int fd) {
     return tcischars(fd);
 }
 
-__SRCVERSION("rdchk.c $Rev: 153052 $");
+

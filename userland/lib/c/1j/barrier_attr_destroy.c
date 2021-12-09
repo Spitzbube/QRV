@@ -31,4 +31,4 @@ int (barrier_attr_destroy)(barrier_attr_t *attr) {
 	return pthread_barrierattr_destroy((pthread_barrierattr_t *)attr);
 }
 
-__SRCVERSION("barrier_attr_destroy.c $Rev: 153052 $");
+

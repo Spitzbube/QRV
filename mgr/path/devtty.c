@@ -133,4 +133,4 @@ void devtty_init(void)
     rsrcdbmgr_proc_devno("dev", &tty_devno, -1, 0);
 }
 
-__SRCVERSION("devtty.c $Rev: 211988 $");
+

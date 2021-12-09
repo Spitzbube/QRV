@@ -222,7 +222,7 @@ int (xfer_memprobe) (void *ptr);
 		if(memccpy((d), (s), '\0', (l)) == NULL) { \
 			(d)[((l) > 0) ? (l)-1 : (l)] = '\0'; \
 			if ( ker_verbose >= 2 ) { \
-				STR_OVERFLOW(STRINGIZE(_BASE_FILE_), __LINE__, (s), (d), (l)); \
+				STR_OVERFLOW(STRINGIZE(__BASE_FILE__), __LINE__, (s), (d), (l)); \
 			} \
 		} \
 	})

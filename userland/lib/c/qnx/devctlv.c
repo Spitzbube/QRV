@@ -75,4 +75,4 @@ int devctlv(int fd, int dcmd, int sparts, int rparts, const iov_t *sv, const iov
 	return EOK;
 }
 
-__SRCVERSION("devctlv.c $Rev: 153052 $");
+

@@ -25,4 +25,4 @@ int creat64(const char *path, mode_t mode) {
 	return open64(path, O_WRONLY | O_CREAT | O_TRUNC, mode);
 }
 
-__SRCVERSION("creat64.c $Rev: 153052 $");
+

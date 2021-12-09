@@ -35,4 +35,4 @@ useconds_t ualarm(useconds_t usec, useconds_t interval) {
 	return (o.nsec && ret == 0) ? 1 : ret;
 }
 
-__SRCVERSION("ualarm.c $Rev: 209348 $");
+

@@ -71,4 +71,4 @@ fpusave_alloc()
 	fpu_ctx_init(act->fpudata);
 }
 
-__SRCVERSION("nano_fpu.c $Rev: 153052 $");
+

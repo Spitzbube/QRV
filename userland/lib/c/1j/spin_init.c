@@ -24,4 +24,4 @@ int (spin_init)(spinlock_t *lock) {
 	return _spin_init(lock, PTHREAD_PROCESS_SHARED);
 }
 
-__SRCVERSION("spin_init.c $Rev: 153052 $");
+

@@ -31,4 +31,4 @@ EXT pthread_mutex_t _dl_list_mutex = PTHREAD_MUTEX_INITIALIZER;
 EXT pthread_mutex_t _dl_list_mutex;
 #endif
 
-/* __SRCVERSION("externs.h $Rev: 153052 $"); */
+/* 

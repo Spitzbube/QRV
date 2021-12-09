@@ -46,4 +46,4 @@ int setprio(pid_t pid, int prio) {
 	return(oldprio);
 	}
 
-__SRCVERSION("setprio.c $Rev: 153052 $");
+

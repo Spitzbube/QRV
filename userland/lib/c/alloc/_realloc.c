@@ -29,4 +29,4 @@ void *realloc(void *ptr, size_t size)
 	return(__realloc(ptr, size));
 }
 
-__SRCVERSION("_realloc.c $Rev: 153052 $");
+

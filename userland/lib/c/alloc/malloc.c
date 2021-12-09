@@ -794,4 +794,4 @@ __calloc (size_t n, size_t size)
 	return p;
 }
 
-__SRCVERSION("malloc.c $Rev: 212948 $");
+

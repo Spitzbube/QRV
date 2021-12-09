@@ -190,4 +190,4 @@ extern void			wire_mcreate(PROCESS *);
 //RUSH3: the pa_quantum pointers around. Something to think about later.
 #undef PTEHACK_SUPPORT
 
-/* __SRCVERSION("cpu_mm_internal.h $Rev: 165175 $"); */
+/* 

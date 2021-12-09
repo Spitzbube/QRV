@@ -30,4 +30,4 @@ int _spin_destroy(spinlock_t *lock) {
 }
 
 
-__SRCVERSION("_spin_destroy.c $Rev: 153052 $");
+

@@ -67,4 +67,4 @@ extern int _aio_init(thread_pool_attr_t *pool_attr);
 extern int _aio_insert(struct aiocb *aiocbp);
 extern int _aio_insert_prio(struct aiocb *aiocbp);
 
-/* __SRCVERSION("aio_priv.h $Rev: 153052 $"); */
+/* 

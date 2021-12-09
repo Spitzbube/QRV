@@ -28,4 +28,4 @@ int sched_yield(void) {
 	return(SchedYield());
 	}
 
-__SRCVERSION("sched_yield.c $Rev: 153052 $");
+

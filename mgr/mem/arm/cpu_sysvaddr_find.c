@@ -81,4 +81,4 @@ cpu_sysvaddr_find(uintptr_t start, unsigned size)
 	}
 }
 
-__SRCVERSION("cpu_sysvaddr_find.c $Rev: 170757 $");
+

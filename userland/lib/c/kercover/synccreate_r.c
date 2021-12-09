@@ -32,4 +32,4 @@ int SyncCreate_r(sync_t *sync, const struct _sync_attr *attr) {
 	return SyncTypeCreate_r((unsigned)sync, (sync_t *)attr, 0);
 }
 
-__SRCVERSION("synccreate_r.c $Rev: 153052 $");
+

@@ -89,4 +89,4 @@ int asyncmsg_put(int coid, const void *buff, size_t size, unsigned handle, int (
 }
 
 
-__SRCVERSION("asyncmsg_put.c $Rev: 153052 $");
+

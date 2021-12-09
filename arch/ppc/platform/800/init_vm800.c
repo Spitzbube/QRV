@@ -37,4 +37,4 @@ copy_vm_code() {
 	copy_code(&_syspage_ptr->un.ppc.exceptptr[PPC800_EXC_ID_ITLB_MISS], &__exc_itlb);
 }
 
-__SRCVERSION("init_vm800.c $Rev: 153052 $");
+

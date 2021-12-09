@@ -46,4 +46,4 @@ init_cpu() {
 	cpu_debug_init_perfregs();
 }
 
-__SRCVERSION("init_cpu.c $Rev: 153052 $");
+

@@ -51,4 +51,4 @@ int sem_getvalue(sem_t *sem, int *value) {
 	return 0;
 }
 
-__SRCVERSION("sem_getvalue.c $Rev: 153052 $");
+

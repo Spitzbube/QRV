@@ -24,4 +24,4 @@
 int (*_spin_destroy_v)(sync_t *sync) = pthread_spin_destroy;
 #endif
 
-__SRCVERSION("_spin_destroy_v.c $Rev: 153052 $");
+

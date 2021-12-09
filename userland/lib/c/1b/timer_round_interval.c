@@ -34,4 +34,4 @@ void _timer_round_interval( _Uint64t* intervalp ) {
 
 }
 
-__SRCVERSION("timer_round_interval.c $Rev: 159797 $");
+

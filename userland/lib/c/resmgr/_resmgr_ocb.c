@@ -30,4 +30,4 @@ void *_resmgr_ocb(resmgr_context_t *ctp, struct _msg_info *info) {
 	return binding->ocb;
 }
 
-__SRCVERSION("_resmgr_ocb.c $Rev: 153052 $");
+

@@ -40,4 +40,4 @@ int _select_block(const struct timespec *ts, union sigval *value, void *arg)
 	return 0;
 }
 
-__SRCVERSION("select_block.c $Rev: 153052 $");
+

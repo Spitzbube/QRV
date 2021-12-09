@@ -162,4 +162,4 @@ main(int argc, char **argv)
 #endif
 
 
-__SRCVERSION("elf_getsecinfo.c $Rev: 153052 $");
+

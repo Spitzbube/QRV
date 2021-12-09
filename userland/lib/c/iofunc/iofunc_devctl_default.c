@@ -28,4 +28,4 @@ int iofunc_devctl_default(resmgr_context_t *ctp, io_devctl_t *msg, iofunc_ocb_t 
 	return iofunc_devctl(ctp, msg, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_devctl_default.c $Rev: 153052 $");
+

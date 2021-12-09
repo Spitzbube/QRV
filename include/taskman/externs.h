@@ -53,8 +53,6 @@
 #include "taskman/pathmgr_proto.h"
 #include "taskman/memmgr_proto.h"
 #include "mclass.h"
-#include "apm.h"
-#include "aps.h"
 
 #undef EXT
 #undef INIT1

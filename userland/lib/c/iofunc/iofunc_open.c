@@ -37,4 +37,4 @@ int iofunc_open(resmgr_context_t *ctp, io_open_t *msg, iofunc_attr_t *attr, iofu
 	return _iofunc_open(ctp, msg, attr, dattr, info);
 }
 
-__SRCVERSION("iofunc_open.c $Rev: 153052 $");
+

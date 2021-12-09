@@ -38,4 +38,4 @@ pid_t procmgr_guardian(pid_t pid)
     return msg.o.pid;
 }
 
-__SRCVERSION("procmgr_guardian.c $Rev: 153052 $");
+

@@ -94,4 +94,4 @@ cpu_colour_clean(struct pa_quantum *qp, int cacheop) {
 	}
 }
 
-__SRCVERSION("mem_cache.c $Rev: 159814 $");
+

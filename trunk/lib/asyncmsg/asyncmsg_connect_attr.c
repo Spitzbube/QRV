@@ -45,4 +45,4 @@ int asyncmsg_connect_attr(int coid, struct _asyncmsg_connection_attr *old_attr, 
 	return 0;
 }
 
-__SRCVERSION("asyncmsg_connect_attr.c $Rev: 153052 $");
+

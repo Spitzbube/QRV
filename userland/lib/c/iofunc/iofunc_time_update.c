@@ -51,4 +51,4 @@ int iofunc_time_update(iofunc_attr_t *attr) {
 	return EOK;
 }
 
-__SRCVERSION("iofunc_time_update.c $Rev: 153052 $");
+

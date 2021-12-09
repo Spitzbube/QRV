@@ -75,4 +75,4 @@ int pthread_key_create(pthread_key_t *key, void (*destructor)(void *)) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_key_create.c $Rev: 153052 $");
+

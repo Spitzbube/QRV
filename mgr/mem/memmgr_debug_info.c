@@ -38,5 +38,3 @@ int memmgr_debug_info(resmgr_context_t * ctp, PROCESS * prp, mem_debug_info_t * 
 
     return ret;
 }
-
-__SRCVERSION("memmgr_debug_info.c $Rev: 153052 $");

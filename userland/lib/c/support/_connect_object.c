@@ -54,4 +54,4 @@ int _connect_object(const char *name, const char *prefix, mode_t mode, int oflag
                     extra ? extra_len : 0, extra, 0, 0, 0);
 }
 
-__SRCVERSION("_connect_object.c $Rev: 153052 $");
+

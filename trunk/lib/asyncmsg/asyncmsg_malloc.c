@@ -26,4 +26,4 @@ void *asyncmsg_malloc(size_t size)
 	return malloc(size);
 }
 
-__SRCVERSION("asyncmsg_malloc.c $Rev: 153052 $");
+

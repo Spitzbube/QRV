@@ -59,4 +59,4 @@ strnicmp( const char *s1, const char *s2, size_t n ) {
 	}
 }
 
-__SRCVERSION("strnicmp.c $Rev: 167420 $");
+

@@ -34,4 +34,4 @@ isatty(int fd) {
 	return(1);
 }
 
-__SRCVERSION("isatty.c $Rev: 153052 $");
+

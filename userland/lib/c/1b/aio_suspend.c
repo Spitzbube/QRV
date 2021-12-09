@@ -100,4 +100,4 @@ int aio_suspend(__const struct aiocb * __const list[], int nent,
 	return (ret == EOK) ? 0 : -1;
 }
 
-__SRCVERSION("aio_suspend.c $Rev: 153052 $");
+

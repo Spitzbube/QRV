@@ -485,5 +485,5 @@ int apmmgr_devctl(resmgr_context_t *ctp, io_devctl_t *msg, RESMGR_OCB_T *_ocb)
 	return EOK;
 }
 
-__SRCVERSION("$IQ: apmmgr_devctl.c,v 1.23 $");
+
 

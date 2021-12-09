@@ -196,4 +196,4 @@ donecore(void *cp, unsigned nbytes)
 	return 0;
 }
 
-__SRCVERSION("core.c $Rev: 174612 $");
+

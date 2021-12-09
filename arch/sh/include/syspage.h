@@ -110,4 +110,4 @@ struct sh_cpupage_entry {
 	volatile unsigned long	imask;
 };
 
-/* __SRCVERSION("syspage.h $Rev: 159814 $"); */
+/* 

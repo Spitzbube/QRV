@@ -24,4 +24,4 @@ int sigmask(int signo) {
     return 1L << (signo - 1);
 }
 
-__SRCVERSION("sigmask.c $Rev: 153052 $");
+

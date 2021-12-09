@@ -55,4 +55,4 @@ EXT char					*LogFname;		// Name of logfile
 EXT int						 FilterLog;		// Severity filter for logging
 struct slogdev				 SlogDev;		// The slog dev data
 
-__SRCVERSION("externs.c $Rev: 157840 $");
+

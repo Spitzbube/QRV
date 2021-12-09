@@ -105,4 +105,4 @@ int
 	return ret;
 }
 
-__SRCVERSION("mem_offset.c $Rev: 153052 $");
+

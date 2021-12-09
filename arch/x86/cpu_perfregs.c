@@ -634,4 +634,4 @@ int	rdecl cpu_debug_get_perfregs(THREAD *thp, debug_perfreg_t *regs)
 #endif
 }
 
-__SRCVERSION("cpu_perfregs.c $Rev: 198534 $");
+

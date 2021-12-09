@@ -30,4 +30,4 @@ int pause(void) {
 	return SignalWaitinfo(&mask, NULL);
 }
 
-__SRCVERSION("pause.c $Rev: 153052 $");
+

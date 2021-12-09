@@ -2202,4 +2202,4 @@ int main(int argc, char *argv[])
 #undef LDD_C_USEAGE_ATTRIBUTE
 
 
-__SRCVERSION("ldd.c $Rev: 201235 $");
+

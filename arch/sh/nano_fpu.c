@@ -42,4 +42,4 @@ fpusave_alloc()
 	act->fpudata->fpscr = SH_FPSCR_PR | SH_FPSCR_DN | SH_FPSCR_ENABLE_Z;
 }
 
-__SRCVERSION("nano_fpu.c $Rev: 153052 $");
+

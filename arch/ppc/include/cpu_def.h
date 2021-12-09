@@ -306,4 +306,4 @@ extern void			copy_vm_code(void);
 extern unsigned		get_spr_indirect(unsigned spr);
 extern void			set_spr_indirect(unsigned spr, unsigned val);
 
-/* __SRCVERSION("cpu_ppc.h $Rev: 204741 $"); */
+/* 

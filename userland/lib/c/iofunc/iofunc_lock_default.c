@@ -25,4 +25,4 @@ int iofunc_lock_default(resmgr_context_t *ctp, io_lock_t *msg, iofunc_ocb_t *ocb
 	return iofunc_lock(ctp, msg, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_lock_default.c $Rev: 153052 $");
+

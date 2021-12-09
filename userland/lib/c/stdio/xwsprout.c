@@ -25,4 +25,4 @@ _STD_END
  * Consult your license regarding permissions and restrictions.
 V3.05:1296 */
 
-__SRCVERSION("xwsprout.c $Rev: 153052 $");
+

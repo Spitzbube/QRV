@@ -35,4 +35,4 @@ int pthread_condattr_init(pthread_condattr_t *attr) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_condattr_init.c $Rev: 153052 $");
+

@@ -49,4 +49,4 @@ int iofunc_open_default(resmgr_context_t *ctp, io_open_t *msg, iofunc_attr_t *at
 	return EOK;
 }
 
-__SRCVERSION("iofunc_open_default.c $Rev: 153052 $");
+

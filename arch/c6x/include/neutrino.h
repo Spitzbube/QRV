@@ -58,4 +58,4 @@ __END_DECLS
 
 #endif /* __C6X_NEUTRINO_H_INCLUDED */
 
-/* __SRCVERSION("neutrino.h $Rev: 153052 $"); */
+/* 

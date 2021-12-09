@@ -45,4 +45,4 @@ char *strupr( char *str )
 	return( str );
 }
 
-__SRCVERSION("strupr.c $Rev: 167420 $");
+

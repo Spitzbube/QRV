@@ -33,4 +33,4 @@ char *strset( char *s, int fill )
 	return( s );
 }
 
-__SRCVERSION("strset.c $Rev: 167420 $");
+

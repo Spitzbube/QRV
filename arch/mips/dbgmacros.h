@@ -190,4 +190,4 @@
 #define CSHOWPROGRESS(off, smp) \
 	CSHOWME(getcp0_count(), off, smp)
 
-/* __SRCVERSION("dbgmacros.h $Rev: 153052 $"); */
+/* 

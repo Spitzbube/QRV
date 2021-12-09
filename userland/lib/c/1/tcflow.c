@@ -28,4 +28,4 @@ int tcflow(int fd, int action) {
 	return _devctl(fd, DCMD_CHR_TCFLOW, &action, sizeof action, _DEVCTL_FLAG_NORETVAL | _DEVCTL_FLAG_NOTTY);
 }
 
-__SRCVERSION("tcflow.c $Rev: 153052 $");
+

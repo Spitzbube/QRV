@@ -35,4 +35,4 @@ copy_vm_code() {
 	copy_code(&_syspage_ptr->un.ppc.exceptptr[PPC400_EXC_ITLB_MISS], &__exc_itlb_400);
 }
 
-__SRCVERSION("init_vm400.c $Rev: 153052 $");
+

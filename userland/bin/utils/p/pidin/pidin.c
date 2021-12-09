@@ -1392,4 +1392,4 @@ void warning_exit(int printmsg, int expectwarn, const char *fmt, ...)
 }
 
 
-__SRCVERSION("pidin.c $Rev: 210372 $");
+

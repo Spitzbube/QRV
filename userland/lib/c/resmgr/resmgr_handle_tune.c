@@ -73,4 +73,4 @@ resmgr_handle_tune(int min_handles, int min_clients, int max_client_handles,
 	return 0;
 }
 
-__SRCVERSION("resmgr_handle_tune.c $Rev: 153052 $");
+

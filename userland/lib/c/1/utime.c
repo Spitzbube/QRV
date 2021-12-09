@@ -40,4 +40,4 @@ int utime(const char *path, const struct utimbuf *times) {
 }
 
 
-__SRCVERSION("utime.c $Rev: 153052 $");
+

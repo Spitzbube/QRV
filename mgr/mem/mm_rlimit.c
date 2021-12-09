@@ -30,5 +30,3 @@ int rdecl rlimit_blown(PROCESS * prp, int which, size_t new)
         return 0;
     return 1;
 }
-
-__SRCVERSION("mm_rlimit.c $Rev: 153052 $");

@@ -33,4 +33,4 @@ int sopen(const char *path, int oflag, int sflag, ...) {
 	return fd;
 }
 
-__SRCVERSION("sopen.c $Rev: 167420 $");
+

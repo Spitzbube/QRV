@@ -78,4 +78,4 @@ strsep(stringp, delim)
 	/* NOTREACHED */
 }
 
-__SRCVERSION("strsep.c $Rev: 153052 $");
+

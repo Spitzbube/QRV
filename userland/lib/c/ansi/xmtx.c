@@ -124,4 +124,4 @@ void (_Mtxunlock)(_Rmtx *_Mtx)
  * Consult your license regarding permissions and restrictions.
 V5.00:1296 */
 
-__SRCVERSION("xmtx.c $Rev: 153052 $");
+

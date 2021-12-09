@@ -72,4 +72,4 @@ int resmgr_pulse_attach(int code, void (*func)(resmgr_context_t *ctp, int code, 
 	return code;
 }
 
-__SRCVERSION("resmgr_pulse_attach.c $Rev: 153052 $");
+

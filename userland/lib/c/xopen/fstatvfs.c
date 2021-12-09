@@ -33,4 +33,4 @@ extern int		__statvfs_check(const struct statvfs *);
 	return(__statvfs_check(statvfsp));
 }
 
-__SRCVERSION("fstatvfs.c $Rev: 153052 $");
+

@@ -259,4 +259,4 @@ extern int malloc_opts(int cmd, void *arg2);
 
 #endif /* malloc_lib_h */
 
-/* __SRCVERSION("malloc-lib.h $Rev: 159801 $"); */
+/* 

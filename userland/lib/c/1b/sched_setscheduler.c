@@ -25,4 +25,4 @@ int sched_setscheduler(pid_t pid, int policy, const struct sched_param *param) {
 	return(SchedSet(pid, (pid == 0) ? 0 : 1, policy, param));
 }
 
-__SRCVERSION("sched_setscheduler.c $Rev: 153052 $");
+

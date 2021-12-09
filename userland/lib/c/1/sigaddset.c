@@ -36,4 +36,4 @@ int sigaddset(sigset_t *set, int signo)
 	return(0);
 }
 
-__SRCVERSION("sigaddset.c $Rev: 153052 $");
+

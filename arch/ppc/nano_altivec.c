@@ -59,4 +59,4 @@ alt_context_free(THREAD *thp) {
 	thp->cpu.alt = NULL;
 }
 
-__SRCVERSION("nano_altivec.c $Rev: 153052 $");
+

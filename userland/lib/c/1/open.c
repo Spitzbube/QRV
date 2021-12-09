@@ -32,4 +32,4 @@ int open(const char *path, int oflag, ...) {
 	return fd;
 }
 
-__SRCVERSION("open.c $Rev: 153052 $");
+

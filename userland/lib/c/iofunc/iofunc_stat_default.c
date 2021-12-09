@@ -31,4 +31,4 @@ int iofunc_stat_default(resmgr_context_t *ctp, io_stat_t *msg, iofunc_ocb_t *ocb
 	return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o);
 }
 
-__SRCVERSION("iofunc_stat_default.c $Rev: 153052 $");
+

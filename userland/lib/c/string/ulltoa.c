@@ -43,4 +43,4 @@ char *ulltoa(_uint64 value, char *buf, int radix) {
 	return buf;
 }
 
-__SRCVERSION("ulltoa.c $Rev: 153052 $");
+

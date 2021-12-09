@@ -318,4 +318,4 @@ ffs_need_seekable(struct file_entry *list) {
 }
 
 
-__SRCVERSION("mkffs.c $Rev: 153052 $");
+

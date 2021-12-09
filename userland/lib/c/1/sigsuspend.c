@@ -27,4 +27,4 @@ int sigsuspend(const sigset_t *set) {
 	return(SignalSuspend(set));
 	}
 
-__SRCVERSION("sigsuspend.c $Rev: 153052 $");
+

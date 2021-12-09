@@ -43,4 +43,4 @@ int asyncmsg_flush(int coid, int mode)
 	return 0;
 }
 
-__SRCVERSION("asyncmsg_flush.c $Rev: 153052 $");
+

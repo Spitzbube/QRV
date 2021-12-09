@@ -353,4 +353,4 @@ int _message_handler(dispatch_context_t *dctp) {
 	return -1;
 }
 
-__SRCVERSION("message.c $Rev: 171666 $");
+

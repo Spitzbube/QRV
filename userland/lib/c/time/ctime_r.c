@@ -27,4 +27,4 @@ ctime_r(const time_t *timep, char *buff) {
 	return( asctime_r(localtime_r(timep, &tm),buff) );
 }
 
-__SRCVERSION("ctime_r.c $Rev: 153052 $");
+

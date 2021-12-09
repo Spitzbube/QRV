@@ -114,4 +114,4 @@ void *_dll_list(void)
     return (list_iszero(&_dl_all_objects) ? NULL : &_dl_all_objects);
 }
 
-__SRCVERSION("dladdr.c $Rev: 153052 $");
+

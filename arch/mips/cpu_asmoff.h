@@ -40,4 +40,4 @@ VALUE(SB1_PERF_PTR,				offsetof(MIPS_PERFREGS, sb1.PTR ));
 
 VALUE(FI_CPU_REGS, 				offsetof(struct fault_info, cpu.regs));
 
-/* __SRCVERSION("cpu_asmoff.h $Rev: 153052 $"); */
+/* 

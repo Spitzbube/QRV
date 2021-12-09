@@ -26,4 +26,4 @@ void sync(void) {
 	(void)procmgr_event_trigger(PROCMGR_EVENT_SYNC);
 }
 
-__SRCVERSION("sync.c $Rev: 153052 $");
+

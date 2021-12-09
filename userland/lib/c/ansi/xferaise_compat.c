@@ -56,4 +56,4 @@ _STD_END
 V3.05:1296 */
 
 
-__SRCVERSION("xferaise_compat.c $Rev: 171092 $");
+

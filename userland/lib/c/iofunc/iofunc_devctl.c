@@ -73,4 +73,4 @@ int iofunc_devctl(resmgr_context_t *ctp, io_devctl_t *msg, iofunc_ocb_t *ocb, io
 	return EOK;
 }
 
-__SRCVERSION("iofunc_devctl.c $Rev: 153052 $");
+

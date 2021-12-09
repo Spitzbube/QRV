@@ -33,4 +33,4 @@ int rmdir(const char *path) {
 	return 0;
 }
 
-__SRCVERSION("rmdir.c $Rev: 153052 $");
+

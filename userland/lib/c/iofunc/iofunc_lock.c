@@ -217,4 +217,4 @@ setlk:
 	return _RESMGR_PTR(ctp, &msg->o, sizeof msg->o + sizeof *lockp);
 }
 
-__SRCVERSION("iofunc_lock.c $Rev: 153052 $");
+

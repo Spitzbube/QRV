@@ -62,4 +62,4 @@ io_notify(resmgr_context_t *ctp, io_notify_t *msg, struct ocb *ocb) {
 	return status;
 }
 
-__SRCVERSION("io_notify.c $Rev: 153052 $");
+

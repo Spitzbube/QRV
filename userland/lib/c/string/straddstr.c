@@ -43,4 +43,4 @@ int straddstr(const char *str, int len, char **pbuf, size_t *pmaxbuf) {
 	return len;
 }
 
-__SRCVERSION("straddstr.c $Rev: 167420 $");
+

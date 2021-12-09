@@ -24,4 +24,4 @@ char *strsignal(int signo) {
 	return (char *)(((unsigned)signo < sys_nsig) ? sys_siglist[signo] : "");
 }
 
-__SRCVERSION("strsignal.c $Rev: 153052 $");
+

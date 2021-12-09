@@ -197,4 +197,4 @@ extern const struct exc_copy_block	intr_entry_critical;
 #define PPC_KERENTRY_COMMON 0x2c00
 #define PPC_KEREXIT_COMMON	0x2e00
 
-/* __SRCVERSION("kercpu.h $Rev: 170836 $"); */
+/* 

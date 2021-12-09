@@ -38,4 +38,4 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_
 	return EOK;
 }
 
-__SRCVERSION("pthread_create.c $Rev: 153052 $");
+

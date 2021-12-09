@@ -39,4 +39,4 @@ int close(int fd) {
 	return -1;
 }
 
-__SRCVERSION("close.c $Rev: 153052 $");
+

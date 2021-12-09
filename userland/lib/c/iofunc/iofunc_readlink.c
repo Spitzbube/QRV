@@ -36,4 +36,4 @@ int iofunc_readlink(resmgr_context_t *ctp, io_readlink_t *msg, iofunc_attr_t *at
 	return EOK;
 }
 
-__SRCVERSION("iofunc_readlink.c $Rev: 153052 $");
+

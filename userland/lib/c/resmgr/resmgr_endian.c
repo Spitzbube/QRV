@@ -463,4 +463,4 @@ struct _xendian_context	*xendian;
 		xendian->hint = hint;
 }
 
-__SRCVERSION("resmgr_endian.c $Rev: 153052 $");
+

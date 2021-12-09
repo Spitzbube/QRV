@@ -65,4 +65,4 @@ int
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutex_lock.c $Rev: 153052 $");
+

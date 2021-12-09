@@ -23,4 +23,4 @@ int pthread_getname_np(pthread_t tid, char *buff, int buff_size) {
 	return __getset_thread_name(0, tid, NULL, -1, buff, buff_size);
 }
 
-__SRCVERSION("pthread_getname_np.c $Rev: 153052 $");
+

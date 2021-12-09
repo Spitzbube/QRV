@@ -98,4 +98,4 @@ int profil(char *buffer, size_t size, unsigned lowpc, unsigned histfraction) {
 	return 0;
 }
 
-__SRCVERSION("sample.c $Rev: 153052 $");
+

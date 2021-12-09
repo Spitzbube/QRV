@@ -57,5 +57,3 @@
 
 //To fix some funkiness with C macro expansion & token concatenation
 #define MIPS_REG_MYAT	MIPS_REG_AT
-
-/* __SRCVERSION("loadstore.h $Rev: 153052 $"); */

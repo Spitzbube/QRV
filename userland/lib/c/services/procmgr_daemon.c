@@ -63,4 +63,4 @@ int procmgr_daemon(int status, unsigned flags)
     return nfds;
 }
 
-__SRCVERSION("procmgr_daemon.c $Rev: 153052 $");
+

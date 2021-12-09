@@ -33,4 +33,4 @@ int chmod(const char *path, mode_t mode) {
 	return _connect_combine(path, 0, O_NONBLOCK | O_LARGEFILE | O_NOCTTY, SH_DENYNO, 0, 0, sizeof msg, &msg, 0, 0);
 }
 
-__SRCVERSION("chmod.c $Rev: 153052 $");
+

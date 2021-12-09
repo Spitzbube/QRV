@@ -113,4 +113,4 @@ extern void			xfer_init(void);
 #define VX_CACHE_COLOURS()		v6_cache_colours()
 #define VX_XFER_INIT()			xfer_init()
 
-/* __SRCVERSION("vx_mm_internal.h $Rev: 173587 $"); */
+/* 

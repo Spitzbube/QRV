@@ -443,5 +443,3 @@ void procmgr_nozombie(PROCESS * prp, int status)
         SignalKill(ND_LOCAL_NODE, prp->parent->pid, 0, SIGCHLD, SI_USER, prp->pid);
     }
 }
-
-__SRCVERSION("procmgr_wait.c $Rev: 166042 $");

@@ -942,4 +942,4 @@ cpu_vmm_vaddrinfo(PROCESS *prp, uintptr_t vaddr, paddr_t *paddrp, size_t *lenp) 
 	return prot;
 }
 
-__SRCVERSION("cpu_vmm.c $Rev: 201442 $");
+

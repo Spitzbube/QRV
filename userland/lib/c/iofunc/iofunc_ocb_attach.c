@@ -93,4 +93,4 @@ int iofunc_ocb_attach(resmgr_context_t *ctp, io_open_t *msg, iofunc_ocb_t *ocb,
 	return EOK;
 }
 
-__SRCVERSION("iofunc_ocb_attach.c $Rev: 153052 $");
+

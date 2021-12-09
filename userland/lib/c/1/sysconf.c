@@ -198,4 +198,4 @@ long sysconf(int name) {
 	return _sysconf(name);
 }
 
-__SRCVERSION("sysconf.c $Rev: 153052 $");
+

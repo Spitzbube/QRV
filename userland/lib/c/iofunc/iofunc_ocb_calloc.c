@@ -36,4 +36,4 @@ void iofunc_ocb_free(iofunc_ocb_t *ocb) {
 	free(ocb);
 }
 
-__SRCVERSION("iofunc_ocb_calloc.c $Rev: 153052 $");
+

@@ -47,4 +47,4 @@ set_spr_indirect(unsigned spr, unsigned value) {
 	((void (*)(unsigned))instrs)(value);
 }
 
-__SRCVERSION("spr_indirect.c $Rev: 153052 $");
+

@@ -57,4 +57,4 @@ sem_timedwait(sem_t *sem, const struct timespec *abs_timeout) {
 	return(SyncSemWait((sync_t *)sem, 0));
 }
 
-__SRCVERSION("sem_timedwait.c $Rev: 166190 $");
+

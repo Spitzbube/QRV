@@ -48,4 +48,4 @@ struct procfs_waiting {
 
 #endif
 
-/* __SRCVERSION("procfs.h $Rev: 0 $"); */
+/* 

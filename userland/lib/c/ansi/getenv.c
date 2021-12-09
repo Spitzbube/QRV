@@ -35,4 +35,4 @@ char *getenv(const char *name) {
 	return temp;
 }
 
-__SRCVERSION("getenv.c $Rev: 153052 $");
+

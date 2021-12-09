@@ -161,4 +161,4 @@ void lock_init(void)
     pulse_code_lock = pulse_attach(dpp, MSG_FLAG_ALLOC_PULSE, 0, lock_pulse, NULL);
 }
 
-__SRCVERSION("vmm_mlock.c $Rev: 172504 $");
+

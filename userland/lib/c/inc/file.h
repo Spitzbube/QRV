@@ -36,4 +36,4 @@ extern int __parse_oflag(const char *mode);
 EXT pthread_mutex_t		_stdio_mutex	INIT(PTHREAD_MUTEX_INITIALIZER);
 EXT pthread_cond_t		_stdio_cond		INIT(PTHREAD_COND_INITIALIZER);
 
-/* __SRCVERSION("file.h $Rev: 153052 $"); */
+/* 

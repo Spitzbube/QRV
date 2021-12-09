@@ -168,5 +168,5 @@ extern int spmgr_get_st_size(apsmgr_attr_t *attr, struct stat *st);
 
 #endif	/* _include_APSMGR_H_ */
 
-__SRCVERSION("$IQ: apsmgr.h,v 1.23 $");
+
 

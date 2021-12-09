@@ -38,4 +38,4 @@ int tcgetsize(int fd, int *prows, int *pcols) {
 	return 0;
 }
 
-__SRCVERSION("tcgetsize.c $Rev: 153052 $");
+

@@ -31,4 +31,4 @@ int (sched_get_priority_min)(int alg) {
 	return info.priority_min;
 }
 
-__SRCVERSION("sched_get_priority_min.c $Rev: 153052 $");
+

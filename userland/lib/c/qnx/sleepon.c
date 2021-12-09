@@ -352,4 +352,4 @@ int (pthread_sleepon_broadcast)(const volatile void *addr) {
 	return _sleepon_wakeup(&_sleepon_default, addr, FLAG_BROADCAST);
 }
 
-__SRCVERSION("sleepon.c $Rev: 153052 $");
+

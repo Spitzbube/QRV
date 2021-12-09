@@ -25,4 +25,4 @@ int pthread_spin_init(pthread_spinlock_t *lock, int pshared) {
 }
 
 
-__SRCVERSION("pthread_spin_init.c $Rev: 153052 $");
+

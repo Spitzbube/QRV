@@ -33,4 +33,4 @@ int sysmgr_sysconf_set(int cmd, int name, long value) {
 	return MsgSendnc(SYSMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("sysmgr_sysconf_set.c $Rev: 153052 $");
+

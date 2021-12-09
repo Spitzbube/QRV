@@ -41,4 +41,4 @@ int iofunc_attr_lock(iofunc_attr_t *attr) {
 	return _sleepon_unlock(&_iofunc_sleepon_default);
 }
 
-__SRCVERSION("iofunc_attr_lock.c $Rev: 153052 $");
+

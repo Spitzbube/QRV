@@ -206,4 +206,4 @@ int x86_set_mtrr(paddr_t start, unsigned size, unsigned flags, unsigned op)
 }
 
 
-__SRCVERSION("x86_mtrr.c $Rev: 153052 $");
+

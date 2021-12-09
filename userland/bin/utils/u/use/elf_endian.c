@@ -114,4 +114,4 @@ void endian_adjust_shdrs(Elf32_Shdr *shdr,int nentries,int flip)
 	return;
 }
 
-__SRCVERSION("elf_endian.c $Rev: 153052 $");
+

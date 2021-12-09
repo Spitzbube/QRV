@@ -259,4 +259,4 @@ MemchunkHdr			*hdr;
 #endif
 }
 
-__SRCVERSION("memchunk.c $Rev: 153052 $");
+

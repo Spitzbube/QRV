@@ -31,4 +31,4 @@ errx(int eval, const char *fmt, ...)
 	va_end(ap);
 }
 
-__SRCVERSION("errx.c $Rev: 153052 $");
+

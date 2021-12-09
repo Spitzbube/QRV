@@ -39,4 +39,4 @@ int iofunc_client_info(resmgr_context_t *ctp, int ioflag, struct _client_info *i
 	return EOK;
 }
 
-__SRCVERSION("iofunc_client_info.c $Rev: 153052 $");
+

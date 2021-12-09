@@ -32,4 +32,4 @@ ssize_t aio_return(struct aiocb *aiocbp)
 	return aiocbp->_aio_result;
 }
 
-__SRCVERSION("aio_return.c $Rev: 153052 $");
+

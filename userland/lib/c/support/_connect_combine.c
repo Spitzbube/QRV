@@ -38,4 +38,4 @@ int _connect_combine(const char *path, mode_t mode, unsigned oflag, unsigned sfl
     return status;
 }
 
-__SRCVERSION("_connect_combine.c $Rev: 153052 $");
+

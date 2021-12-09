@@ -89,4 +89,4 @@ int main(int argc, char *argv[]) {
 }
 #endif
 
-__SRCVERSION("getsubopt.c $Rev: 153052 $");
+

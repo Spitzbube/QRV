@@ -25,4 +25,4 @@ int mkfifo(const char *path, mode_t mode) {
 }
 
 
-__SRCVERSION("mkfifo.c $Rev: 153052 $");
+

@@ -33,4 +33,4 @@ int pm_set_power(int fd, pm_power_mode_t mode, unsigned flags) {
 	return MsgSend(fd, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("pm_set_power.c $Rev: 153052 $");
+

@@ -164,4 +164,4 @@ char *pathfind(const char *path, const char *name, const char *mode) {
 	return pathfind_r(path, name, mode, buff, sizeof buff);
 }
 
-__SRCVERSION("pathfind.c $Rev: 153052 $");
+

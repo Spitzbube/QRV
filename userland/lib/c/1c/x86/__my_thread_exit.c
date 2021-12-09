@@ -51,4 +51,4 @@ __my_thread_exit( void * value_ptr ) {
 #undef  __MY_THREAD_EXIT_ATTR_REGPARM
 
 
-__SRCVERSION("__my_thread_exit.c $Rev: 153052 $");
+

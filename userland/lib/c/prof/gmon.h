@@ -283,4 +283,4 @@ extern struct gmonparam _gmonparam;
 #endif /* !_SYS_GMON_H_ */
 
 
-/* __SRCVERSION("gmon.h $Rev: 166179 $"); */
+/* 

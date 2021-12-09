@@ -73,4 +73,4 @@ char *_fullpath(char *buffer, const char *path, size_t size)
     return 0;
 }
 
-__SRCVERSION("_fullpath.c $Rev: 153052 $");
+

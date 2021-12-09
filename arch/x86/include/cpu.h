@@ -356,4 +356,4 @@ typedef struct x86_tss_entry {
 
 #endif /* __X86_CPU_H_INCLUDED */
 
-/* __SRCVERSION("cpu.h $Rev: 163913 $"); */
+/* 

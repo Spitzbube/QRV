@@ -96,4 +96,4 @@ int  setrlimit(int resource , const struct rlimit *rlp) {
 	return setrlimit64(resource, &limit);
 }
 
-__SRCVERSION("setrlimit.c $Rev: 153052 $");
+

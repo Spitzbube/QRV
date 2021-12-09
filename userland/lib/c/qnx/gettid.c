@@ -26,4 +26,4 @@ gettid(void) {
 	return LIBC_TLS()->__tid;
 }
 
-__SRCVERSION("gettid.c $Rev: 153052 $");
+

@@ -21,4 +21,4 @@
 
 #define CPU_ELF_NUMBERS	EM_MIPS: case EM_MIPS_RS3_LE
 
-/* __SRCVERSION("cpudeps.h $Rev: 161879 $"); */
+/* 

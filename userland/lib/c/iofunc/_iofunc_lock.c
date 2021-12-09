@@ -555,4 +555,4 @@ static int deadlock (iofunc_lock_list_t *llist, int scoid, int type, off64_t sta
 }
 #endif
 
-__SRCVERSION("_iofunc_lock.c $Rev: 200568 $");
+

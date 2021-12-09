@@ -100,4 +100,4 @@ int modem_script(int fd, struct modem_script *table, speed_t *baud, void (*io)(c
 		}
 	}
 
-__SRCVERSION("modem_script.c $Rev: 153052 $");
+

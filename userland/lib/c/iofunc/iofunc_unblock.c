@@ -50,4 +50,4 @@ int iofunc_unblock(resmgr_context_t *ctp, iofunc_attr_t *attr) {
 	return _RESMGR_DEFAULT;
 }
 
-__SRCVERSION("iofunc_unblock.c $Rev: 153052 $");
+

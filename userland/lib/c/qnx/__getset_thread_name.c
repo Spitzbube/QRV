@@ -144,4 +144,4 @@ int __getset_thread_name(pid_t pid, pthread_t tid,
 
 
 
-__SRCVERSION("__getset_thread_name.c $Rev: 153052 $");
+

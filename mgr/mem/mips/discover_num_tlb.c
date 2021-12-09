@@ -70,4 +70,4 @@ discover_num_tlb(unsigned shift) {
 	return high + 1;
 }
 
-__SRCVERSION("discover_num_tlb.c $Rev: 153052 $");
+

@@ -25,4 +25,4 @@ char *(rindex)(const char *s, int c)
 	return( (char *)strrchr( s, c ) );
 }
 
-__SRCVERSION("rindex.c $Rev: 153052 $");
+

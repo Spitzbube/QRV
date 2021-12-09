@@ -31,4 +31,4 @@ void __exit(int status) {
 	#endif
 }
 
-__SRCVERSION("__exit.c $Rev: 153052 $");
+

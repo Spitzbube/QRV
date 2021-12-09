@@ -35,4 +35,4 @@ int _iofunc_isnonblock(int ioflag, int xtype) {
 	return ioflag & O_NONBLOCK;
 }
 
-__SRCVERSION("_iofunc_misc.c $Rev: 153052 $");
+

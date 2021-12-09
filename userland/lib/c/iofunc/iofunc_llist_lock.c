@@ -59,4 +59,4 @@ int _iofunc_llist_unlock(iofunc_attr_t *attr) {
 	return _sleepon_unlock(&_iofunc_sleepon_default);
 }
 
-__SRCVERSION("iofunc_llist_lock.c $Rev: 153052 $");
+

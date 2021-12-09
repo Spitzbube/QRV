@@ -34,4 +34,4 @@ int mq_unlink(const char *name) {
 	return(0);
 }
 
-__SRCVERSION("mq_unlink.c $Rev: 153052 $");
+

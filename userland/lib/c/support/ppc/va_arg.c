@@ -34,4 +34,4 @@ __va_arg_type_violation(void) {
 }
 
 
-__SRCVERSION("va_arg.c $Rev: 200568 $");
+

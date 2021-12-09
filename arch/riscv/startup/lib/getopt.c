@@ -69,6 +69,6 @@ int getopt(int argc, char **argv, char *opts)
 
 #if defined(__QNXNTO__) && defined(__USESRCVERSION)
 #include <sys/srcversion.h>
-__SRCVERSION
+
     ("$URL: http://svn/product/branches/6.6.0/trunk/hardware/startup/lib/getopt.c $ $Rev: 680332 $")
 #endif

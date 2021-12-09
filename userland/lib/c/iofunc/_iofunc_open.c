@@ -138,4 +138,4 @@ int _iofunc_open(resmgr_context_t *ctp, io_open_t *msg, iofunc_attr_t *attr, iof
 	return EOK;
 }
 
-__SRCVERSION("_iofunc_open.c $Rev: 153052 $");
+

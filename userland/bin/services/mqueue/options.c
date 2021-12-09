@@ -47,4 +47,4 @@ options(int argc, char *argv[]) {
 	}
 }
 
-__SRCVERSION("options.c $Rev: 169544 $");
+

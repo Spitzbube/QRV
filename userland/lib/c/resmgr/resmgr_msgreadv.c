@@ -25,4 +25,4 @@ int resmgr_msgreadv(resmgr_context_t *ctp, struct iovec *rmsg, int rparts, int o
 	return MsgReadv(ctp->rcvid, rmsg, rparts, ctp->offset + offset);
 }
 
-__SRCVERSION("resmgr_msgreadv.c $Rev: 153052 $");
+

@@ -83,4 +83,4 @@ int iofunc_stat(resmgr_context_t *ctp, iofunc_attr_t *attr, struct stat *pstat) 
 	return EOK;
 }
 
-__SRCVERSION("iofunc_stat.c $Rev: 153052 $");
+

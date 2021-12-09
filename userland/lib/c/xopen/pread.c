@@ -48,4 +48,4 @@ ssize_t	pread(int fd, void *buff, size_t nbytes, off_t offset) {
 	return pread64(fd, buff, nbytes, offset);
 }
 
-__SRCVERSION("pread.c $Rev: 153052 $");
+

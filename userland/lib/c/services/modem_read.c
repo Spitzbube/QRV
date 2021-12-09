@@ -111,4 +111,4 @@ int modem_read(int fd, char *buf, int bufsize, int quiet, int timeout, int flags
 		}
 	}
 
-__SRCVERSION("modem_read.c $Rev: 153052 $");
+

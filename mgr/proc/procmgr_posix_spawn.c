@@ -1017,6 +1017,3 @@ static void display_factlist(posix_spawn_file_actions_t * fact_p)
     }
 }
 #endif                          /* EXTRA_DEBUG */
-
-
-__SRCVERSION("procmgr_posix_spawn.c $Rev: 162527 $");

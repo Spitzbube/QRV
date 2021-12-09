@@ -58,4 +58,4 @@ pthread_setcancelstate(int state, int *oldstate) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_setcancelstate.c $Rev: 204471 $");
+

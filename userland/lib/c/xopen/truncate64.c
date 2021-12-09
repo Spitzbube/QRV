@@ -38,4 +38,4 @@ int		fd, rc, saved;
 	return(rc);
 }
 
-__SRCVERSION("truncate64.c $Rev: 153052 $");
+

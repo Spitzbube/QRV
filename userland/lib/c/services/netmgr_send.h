@@ -23,4 +23,4 @@
 
 extern int __netmgr_send(void *smsg1, int ssize1, const void *smsg2, int ssize2, void *rmsg, int rsize);
 
-/* __SRCVERSION("netmgr_send.h $Rev: 153052 $"); */
+/* 

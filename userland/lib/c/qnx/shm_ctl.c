@@ -58,4 +58,4 @@ shm_ctl(int fd, int flags, uint64_t paddr, uint64_t size) {
 	return do_ctl(fd, flags & ~SHMCTL_HAS_SPECIAL, paddr, size, 0);
 }
 
-__SRCVERSION("shm_ctl.c $Rev: 153052 $");
+

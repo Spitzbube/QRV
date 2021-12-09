@@ -26,4 +26,4 @@ int pthread_mutexattr_setrecursive(pthread_mutexattr_t *attr, int recursive) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutexattr_setrecursive.c $Rev: 153052 $");
+

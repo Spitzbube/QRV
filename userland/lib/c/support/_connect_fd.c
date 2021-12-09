@@ -97,4 +97,4 @@ int _connect_fd(int base, const char *path, mode_t mode, unsigned oflag, unsigne
     return fd;
 }
 
-__SRCVERSION("_connect_fd.c $Rev: 153052 $");
+

@@ -31,4 +31,4 @@ InterruptHookIdle(void (*handler)(uint64_t *, struct qtime_entry *), unsigned fl
 			NULL, 0, flags|_NTO_INTR_FLAGS_PROCESS));
 }
 
-__SRCVERSION("interrupthookidle.c $Rev: 153052 $");
+

@@ -75,4 +75,4 @@ extern void	__cpu_membarrier(void);
 
 #endif
 
-/* __SRCVERSION("cpuinline.h $Rev: 212414 $"); */
+/* 

@@ -46,5 +46,4 @@
 #define	C1_END_LESSKEY_MAGIC	'n'
 #define	C2_END_LESSKEY_MAGIC	'd'
 
-/* */
 #define	KRADIX		64

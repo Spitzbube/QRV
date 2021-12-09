@@ -122,4 +122,4 @@ extern ptrdiff_t	xfer_diff;
 extern void			domain_free(ADDRESS *);
 extern void			arm_gbl_update(ADDRESS *, int);
 
-/* __SRCVERSION("vx_mm_internal.h $Rev: 153052 $"); */
+/* 

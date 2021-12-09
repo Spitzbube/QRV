@@ -31,4 +31,4 @@ warnx(const char *fmt, ...)
 	va_end(ap);
 }
 
-__SRCVERSION("warnx.c $Rev: 153052 $");
+

@@ -30,4 +30,4 @@ int pthread_join(pthread_t thread, void **value_ptr) {
 	return status;
 }
 
-__SRCVERSION("pthread_join.c $Rev: 153052 $");
+

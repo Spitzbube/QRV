@@ -34,4 +34,4 @@ sysmgr_cpumode(int cpumode) {
 	return MsgSendnc(SYSMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("sysmgr_cpumode.c $Rev: 153052 $");
+

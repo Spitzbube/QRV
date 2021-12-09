@@ -100,4 +100,4 @@ FTYPE _Stodx(const CTYPE *s, CTYPE **endptr, long pten, int *perr)
  * Consult your license regarding permissions and restrictions.
 V5.00:1296 */
 
-/* __SRCVERSION("xxstod.h $Rev: 200565 $"); */
+/* 

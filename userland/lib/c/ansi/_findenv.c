@@ -77,4 +77,4 @@ char *_findenv(const char *name, int *offset, int grow) {
 }
 
 
-__SRCVERSION("_findenv.c $Rev: 153052 $");
+

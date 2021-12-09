@@ -68,4 +68,4 @@
 
 #endif
 
-/* __SRCVERSION("vm.h $Rev: 154853 $"); */
+/* 

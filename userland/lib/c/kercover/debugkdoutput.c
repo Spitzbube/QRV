@@ -28,4 +28,4 @@ void
 	__inline_DebugKDOutput(text, len);
 }
 
-__SRCVERSION("debugkdoutput.c $Rev: 153052 $");
+

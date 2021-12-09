@@ -44,4 +44,4 @@ sched_get_priority_adjust(int prio, int alg, int adjust) {
 	return prio;
 }
 
-__SRCVERSION("sched_get_priority_adjust.c $Rev: 153052 $");
+

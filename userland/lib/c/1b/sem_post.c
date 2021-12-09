@@ -43,4 +43,4 @@ sem_post(sem_t *sem) {
 	return(SyncSemPost((sync_t *) sem));
 }
 
-__SRCVERSION("sem_post.c $Rev: 153052 $");
+

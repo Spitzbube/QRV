@@ -169,4 +169,4 @@ wire_init(void) {
 	wire_cookie = object_register_data(&process_souls, wire_max*sizeof(struct wire_entry));
 }
 
-__SRCVERSION("wired.c $Rev$");
+

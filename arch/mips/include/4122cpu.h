@@ -151,4 +151,4 @@
 
 #endif /* __MIPS_4122CPU_H_INCLUDED */
 
-/* __SRCVERSION("4122cpu.h $Rev: 153052 $"); */
+/* 

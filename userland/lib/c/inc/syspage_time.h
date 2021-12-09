@@ -24,4 +24,4 @@
 
 uint64_t _syspage_time(clockid_t clock_id);
 
-/* __SRCVERSION("syspage_time.h $Rev: 153052 $"); */
+/* 

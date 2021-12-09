@@ -84,5 +84,5 @@ int apsmgr_readlink(resmgr_context_t *ctp, io_readlink_t *msg, RESMGR_HANDLE_T *
 }
 
 
-__SRCVERSION("$IQ: apsmgr_readlink.c,v 1.23 $");
+
 

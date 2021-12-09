@@ -25,4 +25,4 @@ int (max)( int a, int b )
 	return( max( a, b ) );
 }
 
-__SRCVERSION("max.c $Rev: 153052 $");
+

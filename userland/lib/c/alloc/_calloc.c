@@ -37,4 +37,4 @@ void *calloc(size_t n, size_t size)
 #endif
 }
 
-__SRCVERSION("_calloc.c $Rev: 212948 $");
+

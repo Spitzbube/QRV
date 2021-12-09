@@ -98,4 +98,4 @@ Flink *__malloc_getflistptr(void);
 
 #endif /* malloc_common_h */
 
-/* __SRCVERSION("malloc-common.h $Rev: 165018 $"); */
+/* 

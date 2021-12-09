@@ -91,4 +91,4 @@ int iofunc_link(resmgr_context_t *ctp, io_link_t *msg, iofunc_attr_t *attr, iofu
 	return EOK;
 }
 
-__SRCVERSION("iofunc_link.c $Rev: 153052 $");
+

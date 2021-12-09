@@ -52,4 +52,4 @@ pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struc
 	return ret;
 }
 
-__SRCVERSION("pthread_cond_timedwait.c $Rev: 166190 $");
+

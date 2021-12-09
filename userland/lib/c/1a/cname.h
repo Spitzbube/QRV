@@ -123,4 +123,4 @@ static const struct cname {
 	{ NULL,	0 }
 };
 
-/* __SRCVERSION("cname.h $Rev: 153052 $"); */
+/* 

@@ -33,4 +33,4 @@ int mprotect(void *addr, size_t len, int prot) {
 	return MsgSendnc(MEMMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("mprotect.c $Rev: 153052 $");
+

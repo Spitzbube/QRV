@@ -66,4 +66,4 @@ int asyncmsg_channel_create(unsigned flags,  mode_t mode, size_t buffer_size, un
 	return chid;
 }
 
-__SRCVERSION("asyncmsg_channel_create.c $Rev: 153052 $");
+

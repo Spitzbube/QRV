@@ -91,4 +91,4 @@ int setitimer(int which, const struct itimerval *value, struct itimerval *ovalue
     }
 }
 
-__SRCVERSION("getitimer.c $Rev: 153052 $");
+

@@ -77,4 +77,4 @@ typedef union {
 
 #endif
 
-/* __SRCVERSION("cpumsg.h $Rev: 153052 $"); */
+/* 

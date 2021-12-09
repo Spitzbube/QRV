@@ -23,4 +23,4 @@ int vmm_swapper(PROCESS * prp, unsigned *offset, size_t len, int action)
     return ENOTSUP;
 }
 
-__SRCVERSION("vmm_swapper.c $Rev: 153052 $");
+

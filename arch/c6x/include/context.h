@@ -42,4 +42,4 @@ typedef struct c6x_fpu_registers {
 
 #endif /* __C6X_CONTEXT_H_INCLUDED */
 
-/* __SRCVERSION("context.h $Rev: 153052 $"); */
+/* 

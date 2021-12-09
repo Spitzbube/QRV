@@ -32,4 +32,4 @@ int mq_send(mqd_t mq, const char *buff, size_t nbytes, unsigned msgprio) {
 	return(0);
 }
 
-__SRCVERSION("mq_send.c $Rev: 153052 $");
+

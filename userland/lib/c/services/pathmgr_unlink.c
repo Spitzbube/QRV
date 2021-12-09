@@ -40,4 +40,4 @@ int pathmgr_unlink(const char *path) {
 	return 0;
 }
 
-__SRCVERSION("pathmgr_unlink.c $Rev: 153052 $");
+

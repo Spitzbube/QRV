@@ -41,4 +41,4 @@ _STD_END
  * Consult your license regarding permissions and restrictions.
  */
 
-__SRCVERSION("xsnprout.c $Rev: 153052 $");
+

@@ -427,4 +427,4 @@ fail_instr:
 	return(sigcode);
 }
 
-__SRCVERSION("emulate.c $Rev: 160636 $");
+

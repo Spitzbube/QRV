@@ -118,4 +118,4 @@ int eaccess(const char *path, int amode) {
 	return __access(path, amode, 0);
 }
 
-__SRCVERSION("access.c $Rev: 153052 $");
+

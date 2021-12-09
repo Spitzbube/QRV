@@ -63,4 +63,4 @@ void *memset(void *s, int c, size_t n) {
 	return s;
 }
 
-__SRCVERSION("memset.c $Rev: 153052 $");
+

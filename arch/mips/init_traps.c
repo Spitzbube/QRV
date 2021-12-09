@@ -129,4 +129,4 @@ init_traps(void) {
 	// care of everything.
 }
 
-__SRCVERSION("init_traps.c $Rev: 156872 $");
+

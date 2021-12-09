@@ -42,4 +42,4 @@ int readcond(int fd, void *buff, int nbytes, int min, int timel, int timeout) {
 	return MsgSend(fd, &msg, sizeof msg, buff, nbytes);
 }
 
-__SRCVERSION("readcond.c $Rev: 153052 $");
+

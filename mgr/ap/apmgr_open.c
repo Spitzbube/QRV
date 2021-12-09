@@ -260,5 +260,5 @@ int apmgr_open(resmgr_context_t *ctp, io_open_t *msg, void *extra, void *reserve
 }
 
 
-__SRCVERSION("$IQ: apmgr_open.c,v 1.23 $");
+
 

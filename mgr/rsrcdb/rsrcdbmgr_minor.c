@@ -215,4 +215,4 @@ int rsrcmgr_handle_minor(resmgr_context_t * ctp, rsrc_cmd_t * msg, rsrc_minor_re
 }
 
 
-__SRCVERSION("rsrcdbmgr_minor.c $Rev: 153052 $");
+

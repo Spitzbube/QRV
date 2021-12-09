@@ -110,4 +110,4 @@
 
 #endif /* __MIPS_SB1_CPU_H_INCLUDED */
 
-/* __SRCVERSION("sb1cpu.h $Rev: 153052 $"); */
+/* 

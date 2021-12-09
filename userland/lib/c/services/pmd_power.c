@@ -29,4 +29,4 @@ int pmd_power(void *ctp, void *msg, pmd_attr_t *attr) {
 	return ENOSYS;
 }
 
-__SRCVERSION("pmd_power.c $Rev: 153052 $");
+

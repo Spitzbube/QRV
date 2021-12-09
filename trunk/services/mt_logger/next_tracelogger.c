@@ -180,7 +180,7 @@ int _main(void) {
 		}
 
 	datctl = info + 1;
-	dalta = dc->buf_begin - (dc + cpus * montt_TRACESETS_PER_CPU);	/* */
+	dalta = dc->buf_begin - (dc + cpus * montt_TRACESETS_PER_CPU);
 
 	// register handler and wait...
 

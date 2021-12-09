@@ -28,4 +28,4 @@ int ftruncate(int fd, off_t length) {
 	return ftruncate64(fd, length);
 }
 
-__SRCVERSION("ftruncate.c $Rev: 153052 $");
+

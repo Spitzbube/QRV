@@ -28,4 +28,4 @@ speed_t speed;
 	return(0);
 	}
 
-__SRCVERSION("cfsetispeed.c $Rev: 153052 $");
+

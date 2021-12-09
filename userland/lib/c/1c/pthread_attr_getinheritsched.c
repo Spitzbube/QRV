@@ -27,4 +27,4 @@ int pthread_attr_getinheritsched(const pthread_attr_t *attr, int *inheritsched) 
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_getinheritsched.c $Rev: 153052 $");
+

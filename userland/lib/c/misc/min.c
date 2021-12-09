@@ -25,4 +25,4 @@ int (min)( int a, int b )
 	return( min( a, b ) );
 }
 
-__SRCVERSION("min.c $Rev: 153052 $");
+

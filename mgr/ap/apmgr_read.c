@@ -334,5 +334,5 @@ static int _apmgr_readdir(apmgr_attr_t *attr, off_t *offset, void *buf, size_t s
 }
 
 
-__SRCVERSION("$IQ: apmgr_read.c,v 1.23 $");
+
 

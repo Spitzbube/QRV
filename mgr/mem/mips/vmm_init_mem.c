@@ -138,4 +138,4 @@ vmm_init_mem(int phase) {
 	clean_init();
 }
 
-__SRCVERSION("vmm_init_mem.c $Rev: 157044 $");
+

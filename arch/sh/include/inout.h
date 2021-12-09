@@ -177,4 +177,4 @@ __END_DECLS
 
 #endif
 
-/* __SRCVERSION("inout.h $Rev: 153052 $"); */
+/* 

@@ -27,4 +27,4 @@ extern FILE *_tmpfile(FILE *(*func)(const char *, const char *));
 	return(_tmpfile(fopen64));
 }
 
-__SRCVERSION("tmpfile64.c $Rev: 153052 $");
+

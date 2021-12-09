@@ -33,4 +33,4 @@ int sigwait( const sigset_t * set, int * sig )
 	return( EOK );
 }
 
-__SRCVERSION("sigwait.c $Rev: 153052 $");
+

@@ -80,4 +80,4 @@ swab(char *from, char *to, int len)
 	}
 }
 
-__SRCVERSION("swab.c $Rev: 153052 $");
+

@@ -28,4 +28,4 @@ int tcdrain(int fd) {
 	return _devctl(fd, DCMD_CHR_TCDRAIN, 0, 0, _DEVCTL_FLAG_NORETVAL | _DEVCTL_FLAG_NOTTY);
 }
 
-__SRCVERSION("tcdrain.c $Rev: 153052 $");
+

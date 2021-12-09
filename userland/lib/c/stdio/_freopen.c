@@ -86,4 +86,4 @@ int		oflag, fd, err;
 
 _STD_END
 
-__SRCVERSION("_freopen.c $Rev: 153052 $");
+

@@ -689,4 +689,4 @@ instr_emulation(CPU_REGISTERS *ctx) {
 	return ret;
 }
 
-__SRCVERSION("fault.c $Rev: 209153 $");
+

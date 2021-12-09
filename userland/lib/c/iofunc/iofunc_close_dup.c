@@ -74,4 +74,4 @@ int iofunc_close_dup(resmgr_context_t *ctp, io_close_t *msg, iofunc_ocb_t *ocb, 
 	return EOK;
 }
 
-__SRCVERSION("iofunc_close_dup.c $Rev: 153052 $");
+

@@ -32,4 +32,4 @@ EXT struct _pthread_atfork_func {
 
 EXT pthread_mutex_t pthread_atfork_mutex INIT(PTHREAD_MUTEX_INITIALIZER);
 
-/* __SRCVERSION("pthread_fork.h $Rev: 153052 $"); */
+/* 

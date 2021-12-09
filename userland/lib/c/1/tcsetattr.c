@@ -47,4 +47,4 @@ int tcsetattr(int fd, int optact, const struct termios *termios_p) {
 	return _devctl(fd, dcmd, (void *)termios_p, sizeof *termios_p, _DEVCTL_FLAG_NORETVAL | _DEVCTL_FLAG_NOTTY);
 }
 
-__SRCVERSION("tcsetattr.c $Rev: 153052 $");
+

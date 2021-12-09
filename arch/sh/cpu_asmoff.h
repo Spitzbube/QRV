@@ -63,4 +63,4 @@ VALUE(SH4A_MMR_CPIDR,		SH4A_MMR_CPIDR);
 VALUE(SIGCODE_FLAGS_MASK,	SIGCODE_FLAGS_MASK);
 VALUE(FI_CPU_FLAGS,			offsetof(struct fault_info, cpu.flags));
 
-/* __SRCVERSION("cpu_asmoff.h $Rev: 170865 $"); */
+/* 

@@ -40,4 +40,4 @@ int ionotify(int fd, int action, int flags, const struct sigevent *event) {
 	return msg.o.flags;
 }
 
-__SRCVERSION("ionotify.c $Rev: 153052 $");
+

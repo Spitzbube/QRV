@@ -47,4 +47,4 @@ ssize_t writev(int fd, const iov_t *iov, int nparts) {
 	return MsgSendv(fd, newiov, nparts, 0, 0);
 }
 
-__SRCVERSION("writev.c $Rev: 153052 $");
+

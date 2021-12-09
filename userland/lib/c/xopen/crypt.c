@@ -448,4 +448,4 @@ char *crypt(const char *pw, const char *insalt)
 	return result;
 }
 
-__SRCVERSION("crypt.c $Rev: 153052 $");
+

@@ -50,4 +50,4 @@ int flock(int fd, int operation) {
 }
 
 
-__SRCVERSION("flock.c $Rev: 153052 $");
+

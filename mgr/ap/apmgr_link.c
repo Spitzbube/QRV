@@ -178,5 +178,5 @@ int apmgr_link(resmgr_context_t *ctp, io_link_t *msg, void *attr, io_link_extra_
 }
 
 
-__SRCVERSION("$IQ: apmmgr_link.c,v 1.23 $");
+
 

@@ -32,5 +32,3 @@ struct mem_phys_entry {
 
 extern uintptr_t user_addr;
 extern uintptr_t user_addr_end;
-
-/* __SRCVERSION("pmm.h $Rev: 153052 $"); */

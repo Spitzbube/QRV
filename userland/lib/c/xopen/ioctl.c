@@ -802,4 +802,4 @@ static void modem2serctl(int *modem, int *serctl) {
 }
 
 
-__SRCVERSION("ioctl.c $Rev: 170700 $");
+

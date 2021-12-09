@@ -86,4 +86,4 @@ int thread_pool_start(void *tp) {
 	return EOK;
 }
 
-__SRCVERSION("thread_pool.c $Rev: 198218 $");
+

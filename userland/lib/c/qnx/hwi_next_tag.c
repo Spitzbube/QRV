@@ -35,4 +35,4 @@ hwi_next_tag(unsigned off, int curr_item) {
 	return(off);
 }
 
-__SRCVERSION("hwi_next_tag.c $Rev: 153052 $");
+

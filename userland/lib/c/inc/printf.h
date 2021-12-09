@@ -29,4 +29,4 @@ int __prt(const char *format_str, va_list arg, size_t len, void *ptr, int (*func
 
 #endif
 
-/* __SRCVERSION("printf.h $Rev: 153052 $"); */
+/* 

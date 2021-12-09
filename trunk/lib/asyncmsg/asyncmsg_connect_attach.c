@@ -178,4 +178,4 @@ int asyncmsg_connect_attach(uint32_t nd, pid_t pid, int chid, unsigned index, un
 	return id;
 }
 
-__SRCVERSION("asyncmsg_connect_attach.c $Rev: 153052 $");
+

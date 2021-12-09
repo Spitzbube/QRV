@@ -92,4 +92,4 @@ int modem_write(int fd, char *str) {
 	return(0);
 	}
 
-__SRCVERSION("modem_write.c $Rev: 153052 $");
+

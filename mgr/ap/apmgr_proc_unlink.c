@@ -61,5 +61,5 @@ int apmgr_proc_unlink(resmgr_context_t *ctp, io_unlink_t *msg, void *handle, voi
 }
 
 
-__SRCVERSION("$IQ: apmgr_unlink.c,v 1.23 $");
+
 

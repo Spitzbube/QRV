@@ -116,4 +116,4 @@ const unsigned char fpuerr2code[6] ={
 	FPE_FLTOVF, FPE_FLTUND, FPE_FLTRES
 };
 
-__SRCVERSION("nano_fpu.c $Rev: 153052 $");
+

@@ -63,4 +63,4 @@ ssize_t mq_timedreceive_monotonic(mqd_t mq, char *buff, size_t nbytes,
 }
 
 
-__SRCVERSION("mq_timedreceive.c $Rev: 199491 $");
+

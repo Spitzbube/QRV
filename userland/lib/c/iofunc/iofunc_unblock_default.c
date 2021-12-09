@@ -25,4 +25,4 @@ int iofunc_unblock_default(resmgr_context_t *ctp, io_pulse_t *msg, iofunc_ocb_t 
 	return iofunc_unblock(ctp, ocb->attr);
 }
 
-__SRCVERSION("iofunc_unblock_default.c $Rev: 153052 $");
+

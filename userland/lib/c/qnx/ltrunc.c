@@ -42,4 +42,4 @@ off_t ltrunc(int fd, off_t offset, int whence) {
 	return msg.o;
 }
 
-__SRCVERSION("ltrunc.c $Rev: 153052 $");
+

@@ -45,4 +45,4 @@ void *_dispatch_vector_grow(void *vec, int newnum) {
 	return realloc(vec, sizeof(message_vec_t) * newnum);
 }
 
-__SRCVERSION("vec_util.c $Rev: 153052 $");
+

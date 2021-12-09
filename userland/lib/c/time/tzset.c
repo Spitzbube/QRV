@@ -29,4 +29,4 @@ void (tzset)(void) {
 
 _STD_END
 
-__SRCVERSION("tzset.c $Rev: 153052 $");
+

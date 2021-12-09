@@ -259,5 +259,3 @@ int procmgr_termer(message_context_t * mctp, int code, unsigned flags, void *han
 
     return 0;
 }
-
-__SRCVERSION("procmgr_termer.c $Rev: 153052 $");

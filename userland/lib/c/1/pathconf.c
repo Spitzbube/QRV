@@ -51,4 +51,4 @@ long pathconf(const char *path, int name) {
 
 }
 
-__SRCVERSION("pathconf.c $Rev: 158217 $");
+

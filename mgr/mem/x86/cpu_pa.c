@@ -154,4 +154,4 @@ unsigned cpu_whitewash(struct pa_quantum *pq)
     return 0;
 }
 
-__SRCVERSION("cpu_pa.c $Rev: 201702 $");
+

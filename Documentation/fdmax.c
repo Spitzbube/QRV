@@ -1,16 +1,16 @@
 /*
  * $QNXLicenseC:
  * Copyright 2007, QNX Software Systems. All Rights Reserved.
- * 
- * You must obtain a written license from and pay applicable license fees to QNX 
- * Software Systems before you may reproduce, modify or distribute this software, 
- * or any work that includes all or part of this software.   Free development 
- * licenses are available for evaluation and non-commercial purposes.  For more 
+ *
+ * You must obtain a written license from and pay applicable license fees to QNX
+ * Software Systems before you may reproduce, modify or distribute this software,
+ * or any work that includes all or part of this software.   Free development
+ * licenses are available for evaluation and non-commercial purposes.  For more
  * information visit http://licensing.qnx.com or email licensing@qnx.com.
- *  
- * This file may contain contributions from others.  Please review this entire 
- * file for other proprietary rights or license notices, as well as the QNX 
- * Development Suite License Guide at http://licensing.qnx.com/license-guide/ 
+ *
+ * This file may contain contributions from others.  Please review this entire
+ * file for other proprietary rights or license notices, as well as the QNX
+ * Development Suite License Guide at http://licensing.qnx.com/license-guide/
  * for other information.
  * $
  */
@@ -69,7 +69,7 @@ main(int argc, char **argv)
 
 	/* get the current limits again */
 	getrlimit(RLIMIT_NOFILE, &lim);
-	
+
 	/* test: max < hard && max > soft/cur */
 	lim.rlim_cur -= 1;
 	lim.rlim_max  = lim.rlim_cur + 1;
@@ -89,7 +89,7 @@ main(int argc, char **argv)
 		printf("setting max < soft/cur limit should have failed "
 			   "(max %d cur %d)\n", lim.rlim_max, lim.rlim_cur);
 	}
-	
+
 	/* get the current limits again */
 	getrlimit(RLIMIT_NOFILE, &lim);
 
@@ -97,11 +97,11 @@ main(int argc, char **argv)
 	lim.rlim_cur = lim.rlim_max - 1;
 	x = setrlimit(RLIMIT_NOFILE, &lim);
 	if (x != 0) {
-		printf("setting cur > soft limit should have succeeded (%s)\n", 
+		printf("setting cur > soft limit should have succeeded (%s)\n",
 			   strerror(errno));
 		errno = 0;
 	}
-	
+
 	/* get the current limits again */
 	getrlimit(RLIMIT_NOFILE, &lim);
 
@@ -109,7 +109,7 @@ main(int argc, char **argv)
 	lim.rlim_cur = lim.rlim_cur - 1;
 	x = setrlimit(RLIMIT_NOFILE, &lim);
 	if (x != 0) {
-		printf("setting cur < soft limit should have succeeded (%s)\n", 
+		printf("setting cur < soft limit should have succeeded (%s)\n",
 			   strerror(errno));
 		errno = 0;
 	}
@@ -117,5 +117,3 @@ main(int argc, char **argv)
 	printf("End of RLIMIT_NOFILE test. (no printfs == success)\n");
 	return 0;
 }
-
-__SRCVERSION("fdmax.c $Rev: 153052 $");

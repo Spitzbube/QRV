@@ -39,4 +39,4 @@ char *ltoa(long int value, char *buf, int radix) {
 
 #endif
 
-__SRCVERSION("ltoa.c $Rev: 153052 $");
+

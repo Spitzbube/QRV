@@ -214,4 +214,4 @@ pointer
   }
 }
 
-__SRCVERSION("alloca.c $Rev: 153052 $");
+

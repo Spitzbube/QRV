@@ -141,4 +141,4 @@ static char		name[_POSIX_PATH_MAX];
 	return(ptsname_r(filedes, name, sizeof(name)));
 }
 
-__SRCVERSION("pty.c $Rev: 153052 $");
+

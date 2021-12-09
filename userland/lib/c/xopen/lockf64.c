@@ -59,4 +59,4 @@ int			ret, cmd;
 	return(ret);
 }
 
-__SRCVERSION("lockf64.c $Rev: 153052 $");
+

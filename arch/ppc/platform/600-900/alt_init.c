@@ -26,4 +26,4 @@ alt_context_init(THREAD *act) {
 	act->cpu.alt->vmx.vscr.u32[3] = 0x00010000; 
 }
 
-__SRCVERSION("alt_init.c $Rev: 153052 $");
+

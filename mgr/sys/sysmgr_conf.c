@@ -228,4 +228,4 @@ int sysmgr_conf(resmgr_context_t * ctp, sys_conf_t * msg)
     return ENOSYS;
 }
 
-__SRCVERSION("sysmgr_conf.c $Rev: 199396 $");
+

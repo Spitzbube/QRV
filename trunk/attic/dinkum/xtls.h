@@ -259,4 +259,4 @@ _END_C_LIB_DECL
  * Consult your license regarding permissions and restrictions.
 V5.00:1296 */
 
-/* __SRCVERSION("xtls.h $Rev: 169976 $"); */
+/* 

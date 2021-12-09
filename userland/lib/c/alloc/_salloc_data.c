@@ -25,4 +25,4 @@ void				*_Sfree_list;
 pthread_mutex_t		_Salloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_once_t		_Salloc_once = PTHREAD_ONCE_INIT;
 
-__SRCVERSION("_salloc_data.c $Rev: 153052 $");
+

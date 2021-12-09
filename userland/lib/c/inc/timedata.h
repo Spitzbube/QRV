@@ -83,4 +83,4 @@ const short __month_to_days[2][13] =
 
 #endif
 
-/* __SRCVERSION("timedata.h $Rev: 153052 $"); */
+/* 

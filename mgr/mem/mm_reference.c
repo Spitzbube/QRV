@@ -765,4 +765,4 @@ memory_reference(struct mm_map **mmp, uintptr_t start, uintptr_t end,
     return r;
 }
 
-__SRCVERSION("mm_reference.c $Rev: 211761 $");
+

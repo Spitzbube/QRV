@@ -44,4 +44,4 @@ int mq_setattr(mqd_t mq, const struct mq_attr *attr, struct mq_attr *oattr) {
 	return 0;
 }
 
-__SRCVERSION("mq_setattr.c $Rev: 153052 $");
+

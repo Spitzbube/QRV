@@ -39,4 +39,4 @@ int __mq_check(int opened, mqd_t mq) {
 	return(-1);
 }
 
-__SRCVERSION("__mq_check.c $Rev: 153052 $");
+

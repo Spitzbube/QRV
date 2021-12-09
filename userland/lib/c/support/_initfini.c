@@ -43,4 +43,4 @@ void _fini_array(void (**start)(void), void(**end)(void))
     }
 }
 
-__SRCVERSION("_initfini.c $Rev$");
+

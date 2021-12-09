@@ -97,5 +97,5 @@ int apmgr_utime(resmgr_context_t *ctp, io_utime_t *msg, void *_ocb)
 	return iofunc_utime_default(ctp, msg, ocb);
 }
 
-__SRCVERSION("$IQ: apmgr_resmgrfuncs.c,v 1.23 $");
+
 

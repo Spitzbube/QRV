@@ -33,4 +33,4 @@ int pthread_rwlockattr_init(pthread_rwlockattr_t *attr) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_rwlockattr_init.c $Rev: 153052 $");
+

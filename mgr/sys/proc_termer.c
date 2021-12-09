@@ -347,4 +347,4 @@ void *terminator(void *parm)
     return 0;
 }
 
-__SRCVERSION("proc_termer.c $Rev: 199085 $");
+

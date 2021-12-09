@@ -92,4 +92,4 @@ malloc_abort(enum mcheck_status status)
 }
 
 
-__SRCVERSION("util.c $Rev: 153052 $");
+

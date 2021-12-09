@@ -30,4 +30,4 @@ int (*_spin_init_v)(sync_t *sync, const sync_attr_t *attr) = _old_spin_init;
 
 #endif
 
-__SRCVERSION("_spin_init_v.c $Rev: 153052 $");
+

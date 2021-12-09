@@ -146,4 +146,4 @@ int _conf_get(const long *list, int name, long *value, char *str)
     return -1;
 }
 
-__SRCVERSION("_conf_get.c $Rev: 153052 $");
+

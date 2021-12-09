@@ -1144,4 +1144,4 @@ void _unraw() {
 	tcsetattr(0, TCSANOW, &termsave);
 	}
 
-__SRCVERSION("slay.c $Rev: 154696 $");
+

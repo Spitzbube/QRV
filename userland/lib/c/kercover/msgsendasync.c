@@ -33,4 +33,4 @@ int MsgSendAsyncGbl(int coid, const void *smsg, size_t sbytes, unsigned msg_prio
 }
 
 
-__SRCVERSION("msgsendasync.c $Rev: 153052 $");
+

@@ -30,4 +30,4 @@ int pthread_attr_setstack(pthread_attr_t *attr, void *stackaddr, size_t stacksiz
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_setstack.c $Rev: 153052 $");
+

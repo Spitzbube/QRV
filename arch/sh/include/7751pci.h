@@ -41,4 +41,4 @@
 #define SH4_PCIMBR_MASK(x)			((x) & 0xff000000)
 
 
-/* __SRCVERSION("7751pci.h $Rev: 159814 $"); */
+/* 

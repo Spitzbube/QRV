@@ -31,4 +31,4 @@ int pthread_sigmask( int how, const sigset_t * set, sigset_t * oset )
 	return( SignalProcmask_r( 0, 0, how, set, oset ) );
 }
 
-__SRCVERSION("pthread_sigmask.c $Rev: 153052 $");
+

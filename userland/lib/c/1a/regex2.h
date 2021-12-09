@@ -156,4 +156,4 @@ struct re_guts {
 #define	OUT	(CHAR_MAX+1)	/* a non-character value */
 #define	ISWORD(c)	(isalnum(c) || (c) == '_')
 
-/* __SRCVERSION("regex2.h $Rev: 153052 $"); */
+/* 

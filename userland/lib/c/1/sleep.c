@@ -35,4 +35,4 @@ sleep(unsigned seconds) {
 	return ot / (uint64_t)1000000000;
 }
 
-__SRCVERSION("sleep.c $Rev: 153052 $");
+

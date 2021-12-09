@@ -1667,4 +1667,4 @@ static void rmtrailslash(char *filename)
 		filename[fnameend] = '\0';
 }
 
-__SRCVERSION("qkcp.c $Rev: 210967 $");
+

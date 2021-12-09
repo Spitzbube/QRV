@@ -350,4 +350,4 @@ char * mount_parse_generic_args(char *options, int *flags) {
 }
 
 
-__SRCVERSION("mount.c $Rev: 153052 $");
+

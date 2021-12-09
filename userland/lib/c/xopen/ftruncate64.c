@@ -69,4 +69,4 @@ int ftruncate64(int fd, off64_t length) {
 	return 0;
 }
 
-__SRCVERSION("ftruncate64.c $Rev: 153052 $");
+

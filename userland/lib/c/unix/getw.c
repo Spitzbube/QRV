@@ -26,4 +26,4 @@ int getw(FILE *fp) {
     return value;
 }
 
-__SRCVERSION("getw.c $Rev: 153052 $");
+

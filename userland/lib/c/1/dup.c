@@ -25,4 +25,4 @@ int dup(int fd) {
 	return fcntl(fd, F_DUPFD, 0);
 }
 
-__SRCVERSION("dup.c $Rev: 153052 $");
+

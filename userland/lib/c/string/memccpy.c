@@ -35,4 +35,4 @@ void *memccpy( void *dest, const void *src, int c, size_t cnt )
 	}
 }
 
-__SRCVERSION("memccpy.c $Rev: 153052 $");
+

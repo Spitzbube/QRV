@@ -120,4 +120,4 @@ int _resmgr_io_handler(resmgr_context_t *ctp, resmgr_iomsgs_t *msg, struct bindi
 	return n;
 }
 
-__SRCVERSION("_resmgr_io_handler.c $Rev: 153052 $");
+

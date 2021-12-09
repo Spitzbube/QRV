@@ -378,4 +378,4 @@ inet_aton(cp, addr)
 	return inet_pton4(cp, (u_char *)(void *)&addr->s_addr, 0);
 }
 
-__SRCVERSION("inet_pton.c $Rev: 153052 $");
+

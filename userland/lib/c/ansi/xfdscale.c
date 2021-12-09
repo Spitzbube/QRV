@@ -73,4 +73,4 @@ _STD_END
  * Consult your license regarding permissions and restrictions.
 V5.00:1296 */
 
-__SRCVERSION("xfdscale.c $Rev: 153052 $");
+

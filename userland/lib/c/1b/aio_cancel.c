@@ -164,4 +164,4 @@ int aio_cancel(int fd, struct aiocb *aiocbp)
 	return AIO_CANCELED;
 }
 
-__SRCVERSION("aio_cancel.c $Rev: 158434 $");
+

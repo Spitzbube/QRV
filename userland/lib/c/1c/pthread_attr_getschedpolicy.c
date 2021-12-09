@@ -27,4 +27,4 @@ int pthread_attr_getschedpolicy(const pthread_attr_t *attr, int *policy) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_getschedpolicy.c $Rev: 153052 $");
+

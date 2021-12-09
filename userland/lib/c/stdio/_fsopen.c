@@ -57,4 +57,4 @@ FILE *_fsopen(const char *filename, const char *mode, int sflag) {
 _STD_END
 
 
-__SRCVERSION("_fsopen.c $Rev: 153052 $");
+

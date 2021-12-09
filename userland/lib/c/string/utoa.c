@@ -25,4 +25,4 @@ char *utoa(unsigned int value, char *buf, int radix) {
 	return ultoa(value, buf, radix);
 }
 
-__SRCVERSION("utoa.c $Rev: 153052 $");
+

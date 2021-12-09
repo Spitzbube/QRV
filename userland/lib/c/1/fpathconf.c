@@ -46,4 +46,4 @@ long fpathconf(int fd, int name) {
         return (status);
 }
 
-__SRCVERSION("fpathconf.c $Rev: 155374 $");
+

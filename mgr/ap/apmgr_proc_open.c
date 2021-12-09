@@ -279,5 +279,5 @@ static int init_ocb(apmgr_ocb_t *ocb, pid_t pid, const char *path)
 
 
 
-__SRCVERSION("$IQ: apmgr_open.c,v 1.23 $");
+
 

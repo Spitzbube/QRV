@@ -95,4 +95,4 @@ int _resmgr_mount_handler(resmgr_context_t *ctp, resmgr_iomsgs_t *msg, struct li
 	return(status);
 }
 
-__SRCVERSION("_resmgr_mount_handler.c $Rev: 153052 $");
+

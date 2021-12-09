@@ -35,4 +35,4 @@ int mem_access_set(const void *addr, size_t len, int fd, int master_fd, struct a
 	return -1;
 }
 
-__SRCVERSION("mem_access_set.c $Rev: 153052 $");
+

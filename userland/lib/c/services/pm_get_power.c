@@ -34,4 +34,4 @@ int pm_get_power(int fd, pm_power_attr_t *attr) {
 	return MsgSend(fd, &msg.i, sizeof msg.i, attr, sizeof *attr);
 }
 
-__SRCVERSION("pm_get_power.c $Rev: 153052 $");
+

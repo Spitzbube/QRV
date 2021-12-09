@@ -56,4 +56,4 @@ void func_init(void) {
 	iofunc_func_init(0, 0, _RESMGR_IO_NFUNCS, &mq_io_dir_funcs);
 }
 
-__SRCVERSION("io_func_tables.c $Rev: 153052 $");
+

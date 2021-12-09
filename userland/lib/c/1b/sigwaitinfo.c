@@ -27,4 +27,4 @@ int sigwaitinfo(const sigset_t *set, siginfo_t *info) {
 	return(SignalWaitinfo(set, info));
 	}
 
-__SRCVERSION("sigwaitinfo.c $Rev: 153052 $");
+

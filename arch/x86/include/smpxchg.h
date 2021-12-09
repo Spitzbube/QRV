@@ -110,4 +110,4 @@ __END_DECLS
 
 #endif
 
-/* __SRCVERSION("smpxchg.h $Rev: 153052 $"); */
+/* 

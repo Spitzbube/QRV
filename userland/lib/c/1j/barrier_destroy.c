@@ -34,4 +34,4 @@ int (barrier_destroy)(barrier_t *b) {
 }
 
 
-__SRCVERSION("barrier_destroy.c $Rev: 153052 $");
+

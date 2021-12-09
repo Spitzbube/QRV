@@ -30,4 +30,4 @@ char *lltoa(_int64 value, char *buf, int radix) {
 	return ulltoa(value, buf, radix) ? save : 0;
 }
 
-__SRCVERSION("lltoa.c $Rev: 153052 $");
+

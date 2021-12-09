@@ -71,4 +71,4 @@ void siglongjmp(sigjmp_buf env, int val) {
 	_longjmp(env, val);
 }
 
-__SRCVERSION("sigjmp.c $Rev: 153052 $");
+

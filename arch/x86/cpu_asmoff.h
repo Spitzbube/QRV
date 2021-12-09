@@ -58,4 +58,4 @@ VALUE( X86_CPU_FXSR   , X86_CPU_FXSR);
 VALUE( X86_V86_GPF_CS , 0x78); // CS value used for handling V86 GPF exceptions
 VALUE( TSS_IOMAP_DATA , offsetof(X86_TSS, iomap_data));
 
-/* __SRCVERSION("cpu_asmoff.h $Rev: 202117 $"); */
+/* 

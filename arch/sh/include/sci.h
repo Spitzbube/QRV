@@ -75,4 +75,4 @@
 #define	SH_SCI_SCSPTR_SPB0DT	_ONEBIT8L(0)
 
 
-/* __SRCVERSION("sci.h $Rev: 153052 $"); */
+/* 

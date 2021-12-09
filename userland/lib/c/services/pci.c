@@ -411,4 +411,4 @@ char	*data;
 	return (status);
 }
 
-__SRCVERSION("pci.c $Rev: 153052 $");
+

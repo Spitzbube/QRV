@@ -29,4 +29,4 @@ pthread_testcancel( void ) {
 		pthread_exit( PTHREAD_CANCELED );
 }
 
-__SRCVERSION("pthread_testcancel.c $Rev: 153052 $");
+

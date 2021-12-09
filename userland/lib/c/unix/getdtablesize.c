@@ -27,4 +27,4 @@ int getdtablesize(void) {
 	return ((rc = sysconf(_SC_OPEN_MAX)) == -1) ? 32 : rc;
 }
 
-__SRCVERSION("getdtablesize.c $Rev: 153052 $");
+

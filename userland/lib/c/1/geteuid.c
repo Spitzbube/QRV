@@ -28,4 +28,4 @@ uid_t geteuid(void) {
 	return info.cred.euid;
 }
 
-__SRCVERSION("geteuid.c $Rev: 153052 $");
+

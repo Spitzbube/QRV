@@ -42,4 +42,4 @@ lrand48(void)
 	return ((long) __rand48_seed[2] << 15) + ((long) __rand48_seed[1] >> 1);
 }
 
-__SRCVERSION("lrand48.c $Rev: 153052 $");
+

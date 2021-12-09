@@ -46,4 +46,4 @@ int pthread_mutex_getprioceiling(const pthread_mutex_t *mutex, int *prioceiling)
 }
 
 
-__SRCVERSION("pthread_mutex_prioceiling.c $Rev: 153052 $");
+

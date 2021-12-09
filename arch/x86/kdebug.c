@@ -28,4 +28,4 @@ kdebug_callout(unsigned sigcode, CPU_REGISTERS *reg) {
 	return kdebug_enter((sigcode & SIGCODE_INTR) ? aspaces_prp[KERNCPU] : 0, sigcode, reg);
 }
 
-__SRCVERSION("kdebug.c $Rev: 153052 $");
+

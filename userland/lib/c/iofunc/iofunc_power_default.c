@@ -24,4 +24,4 @@ int iofunc_power_default(resmgr_context_t *ctp, io_power_t *msg, iofunc_ocb_t *o
 	return iofunc_power(ctp, msg, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_power_default.c $Rev: 153052 $");
+

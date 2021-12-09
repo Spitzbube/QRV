@@ -187,4 +187,4 @@ _resmgr_notify_handler(resmgr_context_t *ctp, resmgr_iomsgs_t *msg_in)
 	return _RESMGR_PTR(ctp, &msg->o, ret);
 }
 
-__SRCVERSION("_resmgr_notify_handler.c $Rev: 153052 $");
+

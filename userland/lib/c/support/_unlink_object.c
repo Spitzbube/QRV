@@ -52,4 +52,4 @@ int _unlink_object(const char *name, const char *prefix, unsigned file_type)
     return status;
 }
 
-__SRCVERSION("_unlink_object.c $Rev: 153052 $");
+

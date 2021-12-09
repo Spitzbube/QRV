@@ -1196,4 +1196,4 @@ malloc_opts(int cmd, void *arg2)
 	return 0;
 }
 
-__SRCVERSION("dlist.c $Rev: 200568 $");
+

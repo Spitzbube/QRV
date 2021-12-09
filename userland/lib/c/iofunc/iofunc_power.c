@@ -50,4 +50,4 @@ int iofunc_power(resmgr_context_t *ctp, io_power_t *msg, iofunc_ocb_t *ocb, iofu
 	return status;
 }
 
-__SRCVERSION("iofunc_power.c $Rev: 153052 $");
+

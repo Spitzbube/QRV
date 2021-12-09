@@ -241,5 +241,3 @@ int procmgr_msg_resource(resmgr_context_t * ctp, void *vmsg)
 
     return proc_error(EOK, prp);
 }
-
-__SRCVERSION("procmgr_resource.c $Rev: 153052 $");

@@ -28,4 +28,4 @@ gid_t getgid(void) {
 	return info.cred.rgid;
 }
 
-__SRCVERSION("getgid.c $Rev: 153052 $");
+

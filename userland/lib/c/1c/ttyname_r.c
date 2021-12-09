@@ -59,4 +59,4 @@ int ttyname_r(int fd, char *buf, size_t bufsize) {
 	return(EOK);
 }
 
-__SRCVERSION("ttyname_r.c $Rev: 153052 $");
+

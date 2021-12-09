@@ -2291,5 +2291,3 @@ void pa_memclass_init(memclass_attr_t * attr, const char *sysmem_name, allocator
         MEMPART_INIT(attr->size, sys_memclass_id);
     }
 }
-
-__SRCVERSION("pa.c $Rev: 209133 $");

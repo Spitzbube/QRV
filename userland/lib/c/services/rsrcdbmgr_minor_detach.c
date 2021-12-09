@@ -61,4 +61,4 @@ int rsrcdbmgr_devno_detach(dev_t devno, int flags) {
 	return(EOK);
 }
 
-__SRCVERSION("rsrcdbmgr_minor_detach.c $Rev: 153052 $");
+

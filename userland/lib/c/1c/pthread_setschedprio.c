@@ -29,4 +29,4 @@ pthread_setschedprio( pthread_t thread, int priority)
 	return (SchedSet_r( 0, thread, SCHED_SETPRIO, &param ));
 }
 
-__SRCVERSION("pthread_setschedprio.c $Rev: 153052 $");
+

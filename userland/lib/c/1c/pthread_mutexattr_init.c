@@ -39,4 +39,4 @@ int pthread_mutexattr_init(pthread_mutexattr_t *attr) {
 	return EOK;
 }
 
-__SRCVERSION("pthread_mutexattr_init.c $Rev: 153052 $");
+

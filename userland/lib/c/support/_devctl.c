@@ -59,4 +59,4 @@ int _devctl(int fd, int dcmd, void *data_ptr, size_t nbytes, unsigned flags)
     return (flags & _DEVCTL_FLAG_NORETVAL) ? 0 : msg.o.ret_val;
 }
 
-__SRCVERSION("_devctl.c $Rev: 153052 $");
+

@@ -26,4 +26,4 @@ const resmgr_io_funcs_t *resmgr_iofuncs(resmgr_context_t *ctp) {
 	return _resmgr_iofuncs(ctp, &ctp->info);
 }
 
-__SRCVERSION("resmgr_iofuncs.c $Rev: 153052 $");
+

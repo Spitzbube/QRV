@@ -28,4 +28,4 @@ int pthread_attr_getstack(const pthread_attr_t *attr, void **stackaddr, size_t *
 	return EOK;
 }
 
-__SRCVERSION("pthread_attr_getstack.c $Rev: 153052 $");
+

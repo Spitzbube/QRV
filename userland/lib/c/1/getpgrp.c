@@ -34,4 +34,4 @@ pid_t getpgrp(void) {
 	return msg.o.pgrp;
 }
 
-__SRCVERSION("getpgrp.c $Rev: 153052 $");
+

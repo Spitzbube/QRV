@@ -66,4 +66,4 @@ int link(const char *old, const char *new) {
 	return ret;
 }
 
-__SRCVERSION("link.c $Rev: 153052 $");
+

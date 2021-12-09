@@ -27,4 +27,4 @@ int sigpending(sigset_t *set) {
 	return(SignalProcmask(0, 0, SIG_PENDING, 0, set));
 	}
 
-__SRCVERSION("sigpending.c $Rev: 153052 $");
+

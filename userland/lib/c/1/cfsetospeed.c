@@ -26,4 +26,4 @@ int cfsetospeed ( struct termios *termios_p, speed_t speed)
 	return(0);
 	}
 
-__SRCVERSION("cfsetospeed.c $Rev: 153052 $");
+

@@ -27,4 +27,4 @@ extern void _math_emu_stub(unsigned sigcode, void **pdata, void *regs);
 extern void *_dll_list(void);
 extern void _init_libc(int argc, char *argv[], char *arge[], auxv_t auxv[], void (*exit_func)(void));
 
-/* __SRCVERSION("init.h $Rev: 158864 $"); */
+/* 

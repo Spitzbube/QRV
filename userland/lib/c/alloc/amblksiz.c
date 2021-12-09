@@ -25,4 +25,4 @@
 
 unsigned _amblksiz = 8*PSIZ;
 
-__SRCVERSION("amblksiz.c $Rev: 153052 $");
+

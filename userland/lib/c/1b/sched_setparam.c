@@ -25,4 +25,4 @@ int sched_setparam(pid_t pid, const struct sched_param *param) {
 	return(SchedSet(pid, (pid == 0) ? 0 : 1, SCHED_NOCHANGE, param));
 }
 
-__SRCVERSION("sched_setparam.c $Rev: 153052 $");
+

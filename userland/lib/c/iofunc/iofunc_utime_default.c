@@ -25,4 +25,4 @@ int iofunc_utime_default(resmgr_context_t *ctp, io_utime_t *msg, iofunc_ocb_t *o
 	return iofunc_utime(ctp, msg, ocb, ocb->attr);
 }
 
-__SRCVERSION("iofunc_utime_default.c $Rev: 153052 $");
+

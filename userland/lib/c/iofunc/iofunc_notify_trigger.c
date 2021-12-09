@@ -70,4 +70,4 @@ iofunc_notify_trigger_strict(resmgr_context_t *ctp, iofunc_notify_t *nop, int cn
 	}
 }
 
-__SRCVERSION("iofunc_notify_trigger.c $Rev: 168079 $");
+

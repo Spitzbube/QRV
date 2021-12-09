@@ -30,4 +30,4 @@ __stackavail(void) {
 	return _sp() - (uintptr_t)LIBC_TLS()->__stackaddr;
 }
 
-__SRCVERSION("__stackavail.c $Rev: 153052 $");
+

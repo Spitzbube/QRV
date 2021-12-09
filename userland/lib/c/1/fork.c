@@ -73,4 +73,4 @@ pid_t fork(void) {
 	return _fork(_FORK_ASPACE, 0);
 }
 
-__SRCVERSION("fork.c $Rev: 153052 $");
+

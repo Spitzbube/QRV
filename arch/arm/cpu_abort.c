@@ -425,4 +425,4 @@ arm_align_emulate(CPU_REGISTERS *reg, unsigned addr)
 	return 0;
 }
 
-__SRCVERSION("cpu_abort.c $Rev: 160053 $");
+

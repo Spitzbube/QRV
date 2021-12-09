@@ -24,4 +24,4 @@ int SyncMutexEvent_r(sync_t *sync, struct sigevent *event) {
 	return SyncCtl_r(_NTO_SCTL_SETEVENT, sync, (void*)event);
 }
 
-__SRCVERSION("syncmutexevent_r.c $Rev: 153052 $");
+

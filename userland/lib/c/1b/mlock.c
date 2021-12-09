@@ -33,4 +33,4 @@ int mlock(const void *addr, size_t len) {
 	return MsgSendnc(MEMMGR_COID, &msg.i, sizeof msg.i, 0, 0);
 }
 
-__SRCVERSION("mlock.c $Rev: 153052 $");
+

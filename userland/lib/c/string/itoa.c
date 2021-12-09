@@ -25,4 +25,4 @@ char *itoa(int value, char *buf, int radix) {
 	return ltoa(value, buf, radix);
 }
 
-__SRCVERSION("itoa.c $Rev: 153052 $");
+

@@ -52,4 +52,4 @@ int (mem_get_info)(int fd, int flags, struct mem_info *info) {
 	return _mem_get_info(fd, flags, (struct posix_typed_mem_info *)info);
 }
 
-__SRCVERSION("mem_get_info.c $Rev: 153052 $");
+

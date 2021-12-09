@@ -369,4 +369,4 @@ int pathmgr_resolve_servers(resmgr_context_t * ctp, struct node_entry *node,
 }
 
 
-__SRCVERSION("pathmgr_resolve.c $Rev: 153052 $");
+

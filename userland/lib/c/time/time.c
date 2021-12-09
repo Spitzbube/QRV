@@ -38,4 +38,4 @@ time(time_t *tloc)
 	return ret;
 }
 
-__SRCVERSION("time.c $Rev: 153052 $");
+

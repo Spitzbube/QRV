@@ -321,4 +321,4 @@ void *_resmgr_handle(struct _msg_info *rep, void *handle, enum _resmgr_handle_ty
 	return handle;
 }
 
-__SRCVERSION("_resmgr_handle.c $Rev: 153052 $");
+

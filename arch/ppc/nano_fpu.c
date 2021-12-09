@@ -46,4 +46,4 @@ if((unsigned) act->fpudata & 0x0f) crash();
 	return;
 }
 
-__SRCVERSION("nano_fpu.c $Rev: 153052 $");
+

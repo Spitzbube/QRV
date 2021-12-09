@@ -32,4 +32,4 @@ int (sched_get_priority_max)(int alg) {
 	return info.priority_max;
 }
 
-__SRCVERSION("sched_get_priority_max.c $Rev: 153052 $");
+

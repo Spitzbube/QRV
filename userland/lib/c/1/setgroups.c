@@ -38,4 +38,4 @@ int setgroups(int gidsetsize, const gid_t *grouplist) {
 	return MsgSendvnc(PROCMGR_COID, iov + 0, 2, 0, 0);
 }
 
-__SRCVERSION("setgroups.c $Rev: 153052 $");
+

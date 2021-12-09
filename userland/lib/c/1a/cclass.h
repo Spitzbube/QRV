@@ -41,4 +41,4 @@ static const struct cclass {
 	{ NULL,		0,		"" }
 };
 
-/* __SRCVERSION("cclass.h $Rev: 153052 $"); */
+/* 

@@ -121,4 +121,4 @@ io_read(resmgr_context_t *ctp, io_read_t *msg, struct ocb *ocb) {
 	return _RESMGR_NOREPLY;
 }
 
-__SRCVERSION("io_read.c $Rev: 153052 $");
+

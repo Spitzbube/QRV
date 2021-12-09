@@ -35,4 +35,4 @@ key_t ftok(const char *path, int id)
 		(sbuf.st_ino & 0xFFF));
 }
 
-__SRCVERSION("ftok.c $Rev: 153052 $");
+

@@ -28,4 +28,4 @@ int pthread_attr_getscope(const pthread_attr_t *attr, int *contentionscope) {
 }
 
 
-__SRCVERSION("pthread_attr_getscope.c $Rev: 153052 $");
+

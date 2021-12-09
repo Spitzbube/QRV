@@ -56,4 +56,4 @@ void _resmgr_link_return(struct link *link, int countadj) {
 }
 
 
-__SRCVERSION("_resmgr_link_query.c $Rev: 162224 $");
+

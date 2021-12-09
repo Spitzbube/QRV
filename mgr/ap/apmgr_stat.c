@@ -165,5 +165,5 @@ int apmgr_stat(resmgr_context_t *ctp, io_stat_t *msg, void *_ocb)
 }
 
 
-__SRCVERSION("$IQ: apmgr_stat.c,v 1.23 $");
+
 

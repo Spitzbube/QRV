@@ -319,4 +319,4 @@ int vmm_msync(PROCESS * prp, uintptr_t vaddr, size_t len, int flags)
     return r;
 }
 
-__SRCVERSION("vmm_msync.c $Rev: 199396 $");
+

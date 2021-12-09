@@ -38,4 +38,4 @@ unsigned alarm(unsigned secs) {
 	return (o.nsec && ret == 0) ? 1 : ret;
 }
 
-__SRCVERSION("alarm.c $Rev: 153052 $");
+

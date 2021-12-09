@@ -235,4 +235,4 @@ int kernel_detach( paddr_t kernel_buffers_paddr, int persist_buffers )
 	return 0;
 }
 
-__SRCVERSION("kernel_if.c $Rev: 157117 $");
+

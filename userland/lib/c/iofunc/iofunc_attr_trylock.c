@@ -39,4 +39,4 @@ int iofunc_attr_trylock(iofunc_attr_t *attr) {
 	return _sleepon_unlock(&_iofunc_sleepon_default);
 }
 
-__SRCVERSION("iofunc_attr_trylock.c $Rev: 153052 $");
+

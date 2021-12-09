@@ -33,4 +33,4 @@ int tcgetpgrp(int fd) {
 	return pgrp;
 }
 
-__SRCVERSION("tcgetpgrp.c $Rev: 153052 $");
+

@@ -28,4 +28,4 @@ int tcflush(int fd, int queue) {
 	return _devctl(fd, DCMD_CHR_TCFLUSH, &queue, sizeof queue, _DEVCTL_FLAG_NORETVAL | _DEVCTL_FLAG_NOTTY);
 }
 
-__SRCVERSION("tcflush.c $Rev: 153052 $");
+

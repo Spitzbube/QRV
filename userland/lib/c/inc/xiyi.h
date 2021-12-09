@@ -36,4 +36,4 @@ extern struct __xiyi_init __xibeg, __xiend, __yibeg, __yiend;
 #define INIT_PRIORITY_PROGRAM		64	// default program-initialization priority
 #define DTOR_PRIORITY			40	// priority for module DTOR
 
-/* __SRCVERSION("xiyi.h $Rev: 153052 $"); */
+/* 

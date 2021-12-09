@@ -518,4 +518,4 @@ int nftw64(const char *path, int (*fn)(const char *, const struct stat64 *, int,
 	return(filetreewalk(FTW_NFTW | FTW_64BIT, path, fn, depth, flags));
 }
 
-__SRCVERSION("nftw.c $Rev: 156761 $");
+

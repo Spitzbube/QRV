@@ -603,4 +603,4 @@ __attribute__((weak)) __bb_init_func(struct __bb * block)
 	bb_head = block;
 }
 
-__SRCVERSION("gmon.c $Rev: 159933 $");
+

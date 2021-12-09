@@ -44,4 +44,4 @@ int resmgr_start(resmgr_ctrl_t *ctrl) {
 	return -1;
 }
 
-__SRCVERSION("resmgr_start.c $Rev: 153052 $");
+

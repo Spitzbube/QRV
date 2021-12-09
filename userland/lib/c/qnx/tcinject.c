@@ -34,4 +34,4 @@ int tcinject(int fd, const char *buf, int n) {
 	return _devctl(fd, dcmd, (void *)buf, n, _DEVCTL_FLAG_NORETVAL | _DEVCTL_FLAG_NOTTY);
 }
 
-__SRCVERSION("tcinject.c $Rev: 153052 $");
+

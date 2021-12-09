@@ -41,4 +41,4 @@ int mq_receive(mqd_t mq, char *buff, size_t nbytes, unsigned *msgprio) {
 	return len;
 }
 
-__SRCVERSION("mq_receive.c $Rev: 153052 $");
+

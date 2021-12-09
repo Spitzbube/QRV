@@ -58,4 +58,4 @@ regex_t *preg;
 	free((char *)g);
 }
 
-__SRCVERSION("regfree.c $Rev: 153052 $");
+

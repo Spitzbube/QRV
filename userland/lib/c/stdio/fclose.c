@@ -96,4 +96,4 @@ int fclose(FILE *fp) {
 
 _STD_END
 
-__SRCVERSION("fclose.c $Rev: 153052 $");
+

@@ -33,4 +33,4 @@ int iofunc_lock_ocb_default(resmgr_context_t *ctp, void *reserved, iofunc_ocb_t 
 	return (*attr_lock)(ocb->attr);
 }
 
-__SRCVERSION("iofunc_lock_ocb_default.c $Rev: 153052 $");
+

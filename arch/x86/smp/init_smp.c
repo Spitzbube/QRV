@@ -34,4 +34,4 @@ init_smp() {
 	ker_start();
 }
 
-__SRCVERSION("init_smp.c $Rev: 153052 $");
+

@@ -35,7 +35,7 @@ struct qkcp_shmem
 
 #endif
 
-/* __SRCVERSION("qkcp_if.h $Rev: 157947 $"); */
+/* 
 
 
 

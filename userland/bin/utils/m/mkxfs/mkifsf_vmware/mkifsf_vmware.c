@@ -144,5 +144,5 @@ cleanup:
 }
 
 #ifdef __QNXNTO__
-__SRCVERSION("mkifsf_vmware.c $Rev: 153052 $");
+
 #endif

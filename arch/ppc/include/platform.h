@@ -334,4 +334,4 @@ typedef	double			__jmpbufalign;
 
 #endif
 
-/* __SRCVERSION("platform.h $Rev: 164949 $"); */
+/* 

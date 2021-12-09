@@ -28,4 +28,4 @@ _ULonglong (strtoull)(const char *nptr, char **endptr, int base) {
 	return (_ULonglong)_Stoint(nptr, endptr, base, _STOINT_LLONG);
 }
 
-__SRCVERSION("strtoull.c $Rev: 153052 $");
+

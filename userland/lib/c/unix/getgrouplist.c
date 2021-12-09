@@ -109,4 +109,4 @@ skip:
 	return (ret);
 }
 
-__SRCVERSION("getgrouplist.c $Rev: 153052 $");
+

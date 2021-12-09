@@ -170,6 +170,6 @@ static int parse_envvar_str(char *str, char *token, char ***value)
 }
 
 
-__SRCVERSION("posix_spawnp.c $Rev: 211778 $");
+
 
 #endif	/* _POSIX_SPAWN */

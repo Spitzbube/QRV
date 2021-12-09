@@ -39,4 +39,4 @@ int resmgr_msg_again(resmgr_context_t *ctp, int rcvid) {
 	return 0;
 }
 
-__SRCVERSION("resmgr_again.c $Rev: 153052 $");
+

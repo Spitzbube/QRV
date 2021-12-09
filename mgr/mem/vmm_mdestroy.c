@@ -33,4 +33,4 @@ void vmm_mdestroy(PROCESS * prp)
     }
 }
 
-__SRCVERSION("vmm_mdestroy.c $Rev: 174147 $");
+

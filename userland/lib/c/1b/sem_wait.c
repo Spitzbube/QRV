@@ -43,4 +43,4 @@ sem_wait(sem_t *sem) {
 	return(SyncSemWait((sync_t *) sem, 0));
 }
 
-__SRCVERSION("sem_wait.c $Rev: 153052 $");
+

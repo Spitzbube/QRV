@@ -46,4 +46,4 @@ uint16_t ntohs(uint16_t x)
 	return ENDIAN_BE16(x);
 }
 
-__SRCVERSION("tohn.c $Rev: 153052 $");
+

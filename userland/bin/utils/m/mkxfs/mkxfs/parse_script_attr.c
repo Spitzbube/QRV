@@ -129,4 +129,4 @@ void parse_script_init(struct attr_script_entry *attrp) {
 	memset(&attrp->extsched, 0, sizeof(attrp->extsched));
 }
 
-__SRCVERSION("parse_script_attr.c $Rev: 153052 $");
+

@@ -378,4 +378,4 @@ char *tzsetp;
 
 _STD_END
 
-__SRCVERSION("xtzset.c $Rev: 171665 $");
+

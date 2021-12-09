@@ -40,4 +40,4 @@ sem_init(sem_t *sem, int pshared, unsigned int value) {
 	return(0);
 }
 
-__SRCVERSION("sem_init.c $Rev: 153052 $");
+

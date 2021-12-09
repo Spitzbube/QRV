@@ -357,4 +357,4 @@ setlogmask(pmask)
 	return (omask);
 }
 
-__SRCVERSION("syslog.c $Rev: 153052 $");
+

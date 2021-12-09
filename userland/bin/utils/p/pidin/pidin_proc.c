@@ -2517,4 +2517,4 @@ Rmasks(FILE * fp, int pid, int *tid, struct format *fmt, int fd, struct shared_i
 	return 0;
 }
 
-__SRCVERSION("pidin_proc.c $Rev: 210372 $");
+

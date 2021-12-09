@@ -525,4 +525,4 @@
 
 #endif /* __SH_CPU_H_INCLUDED */
 
-/* __SRCVERSION("cpu.h $Rev: 169667 $"); */
+/* 

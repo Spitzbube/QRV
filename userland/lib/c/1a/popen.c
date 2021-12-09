@@ -167,4 +167,4 @@ int pclose(FILE *fp) {
 	return status;
 }
 
-__SRCVERSION("popen.c $Rev: 153052 $");
+

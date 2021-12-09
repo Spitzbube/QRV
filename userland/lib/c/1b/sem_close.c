@@ -25,4 +25,4 @@ int sem_close(sem_t *sem) {
 	return _nsem_close(sem);
 }
 
-__SRCVERSION("sem_close.c $Rev: 153052 $");
+

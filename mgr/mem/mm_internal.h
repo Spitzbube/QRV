@@ -212,6 +212,3 @@ extern void rdecl memobj_unlock(OBJECT *);
 #define MM_ANMEM_MULTI_REFS			0x00000010
 
 #define VERIFY_OBJ_LOCK(o)	CRASHCHECK(!((o)->mem.mm.flags & MM_MEM_SKIPLOCKCHECK) && !proc_mux_haslock(&(o)->mem.mm.mux, 0))
-
-
-/* __SRCVERSION("mm_internal.h $Rev: 207313 $"); */

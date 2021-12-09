@@ -193,4 +193,4 @@ static int sameCMD( char *s, char *s1 ) {
 	return( *s == *s1 );
 	}
 
-__SRCVERSION("inpline.c $Rev: 153052 $");
+

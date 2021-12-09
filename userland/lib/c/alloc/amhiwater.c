@@ -24,4 +24,4 @@
 
 unsigned _amhiwater = 2; /* 2*amblksiz */
 
-__SRCVERSION("amhiwater.c $Rev: 153052 $");
+

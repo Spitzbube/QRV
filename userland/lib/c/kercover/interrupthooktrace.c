@@ -30,4 +30,4 @@ InterruptHookTrace(const struct sigevent *(*handler)(int), unsigned flags) {
 					NULL, 0, flags|_NTO_INTR_FLAGS_PROCESS));
 }
 
-__SRCVERSION("interrupthooktrace.c $Rev: 153052 $");
+

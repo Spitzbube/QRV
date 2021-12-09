@@ -222,4 +222,4 @@ void *_dll_list(void);
 
 #endif
 
-/* __SRCVERSION("ldd.h $Rev: 201235 $"); */
+/* 

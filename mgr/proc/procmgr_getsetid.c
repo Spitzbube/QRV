@@ -166,5 +166,3 @@ int procmgr_getsetid(resmgr_context_t * ctp, proc_getsetid_t * msg)
 
     return proc_error(EOK, prp);
 }
-
-__SRCVERSION("procmgr_getsetid.c $Rev: 153052 $");

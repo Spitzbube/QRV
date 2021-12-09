@@ -37,4 +37,4 @@ strerror_r(int err, char *buf, size_t buflen)
 	return 0;
 }
 
-__SRCVERSION("strerror_r.c $Rev: 153052 $");
+

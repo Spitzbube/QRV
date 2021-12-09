@@ -166,4 +166,4 @@ rangematch(pattern, test, flags)
 	return (ok == negate ? NULL : pattern);
 }
 
-__SRCVERSION("fnmatch.c $Rev: 153052 $");
+

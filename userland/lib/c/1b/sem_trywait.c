@@ -43,4 +43,4 @@ sem_trywait(sem_t *sem) {
 	return(SyncSemWait((sync_t *) sem, 1));
 }
 
-__SRCVERSION("sem_trywait.c $Rev: 153052 $");
+

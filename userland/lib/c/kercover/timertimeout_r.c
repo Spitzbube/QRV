@@ -41,4 +41,4 @@ int timer_timeout_r(clockid_t id, int flags, const struct sigevent *notify,
 }
 
 
-__SRCVERSION("timertimeout_r.c $Rev: 153052 $");
+

@@ -31,5 +31,3 @@ int vmm_memobj_phys(OBJECT * obp, paddr_t pa)
     }
     return r;
 }
-
-__SRCVERSION("vmm_memobj_phys.c $Rev: 153052 $");

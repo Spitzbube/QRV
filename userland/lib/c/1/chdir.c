@@ -136,4 +136,4 @@ int chdir(const char *path) {
 	return MsgSendv(PATHMGR_COID, iov, 2, 0, 0);
 }
 
-__SRCVERSION("chdir.c $Rev: 205764 $");
+

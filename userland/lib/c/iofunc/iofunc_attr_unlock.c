@@ -42,4 +42,4 @@ int iofunc_attr_unlock(iofunc_attr_t *attr) {
 	return EPERM;
 }
 
-__SRCVERSION("iofunc_attr_unlock.c $Rev: 153052 $");
+

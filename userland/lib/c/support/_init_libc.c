@@ -180,4 +180,4 @@ void _init_libc(int argc, char *argv[], char *arge[], auxv_t auxv[], void (*exit
     errno = 0;
 }
 
-__SRCVERSION("_init_libc.c $Rev: 174656 $");
+

@@ -39,4 +39,4 @@ int timer_gettime(timer_t timerid, struct itimerspec *value) {
 	return 0;
 }
 
-__SRCVERSION("timer_gettime.c $Rev: 153052 $");
+

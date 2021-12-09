@@ -31,4 +31,4 @@ void (*signal(int signo, void (*func)(int)))(int) {
     return(sigaction(signo, &act, &act) ? SIG_ERR : (void (*)())act.sa_handler);
 	}
 
-__SRCVERSION("signal.c $Rev: 153052 $");
+
