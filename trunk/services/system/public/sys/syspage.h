@@ -30,11 +30,14 @@
 #include <sys/platform.h>
 #endif
 
+#if 0
 /* Leave deprecated sections enabled for right now */
 #if !defined(ENABLE_DEPRECATED_SYSPAGE_SECTIONS)
     #define ENABLE_DEPRECATED_SYSPAGE_SECTIONS
 #elif ENABLE_DEPRECATED_SYSPAGE_SECTIONS == 0
 	#undef ENABLE_DEPRECATED_SYSPAGE_SECTIONS
+#endif
+#else
 #endif
 
 #if defined(ENABLE_DEPRECATED_SYSPAGE_SECTIONS)

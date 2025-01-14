@@ -8,7 +8,7 @@ PINFO DESCRIPTION=quick copy utility using DirectIO method
 endef
 
 USEFILE=$(PROJECT_ROOT)/qkcp.use
-CCFLAGS+=-w9
+#CCFLAGS+=-w9
 
 INSTALLDIR=usr/bin
 
